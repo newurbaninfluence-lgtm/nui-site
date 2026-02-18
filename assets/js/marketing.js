@@ -426,33 +426,39 @@ function loadHomeView() {
     const video = document.getElementById('heroVideo');
     if (video) { video.muted = true; video.play().catch(e => {}); }
 
-    // GSAP Empire Reveal — full hero entrance sequence
+    // GSAP Empire Reveal — dramatic hero entrance sequence
     if (typeof gsap !== 'undefined') {
-        var tl = gsap.timeline({ delay: 0.3 });
-        // Badge drops in first
+        var tl = gsap.timeline({ delay: 0.2 });
+        // Badge drops in first with bounce
         tl.fromTo('.badge',
-            { opacity: 0, y: -20, scale: 0.9 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.4)' }
+            { opacity: 0, y: -30, scale: 0.8 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: 'back.out(1.7)' }
         );
-        // Empire words stagger in with slight scale punch
-        tl.fromTo('.empire-word',
-            { opacity: 0, y: 40, scale: 0.95 },
-            { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'expo.out', stagger: 0.18 },
-            '-=0.2'
+        // BUILD and YOUR stagger up from deep below with scale punch
+        tl.fromTo('.empire-word:not(.red)',
+            { opacity: 0, y: 80, scale: 0.85, rotationX: 15 },
+            { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 1.0, ease: 'expo.out', stagger: 0.25 },
+            '-=0.1'
         );
-        // Red word gets an extra glow pulse
+        // EMPIRE lands heavy — bigger, slower, with crimson glow
         tl.fromTo('.empire-word.red',
-            { textShadow: '0 0 0px rgba(255,0,0,0)' },
-            { textShadow: '0 0 40px rgba(255,0,0,0.6)', duration: 0.8, ease: 'power2.out' },
-            '-=0.4'
+            { opacity: 0, y: 100, scale: 0.7 },
+            { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: 'expo.out' },
+            '-=0.3'
+        );
+        // Red word glow pulse — intense crimson bloom
+        tl.fromTo('.empire-word.red',
+            { textShadow: '0 0 0px rgba(153,0,0,0)' },
+            { textShadow: '0 0 60px rgba(153,0,0,0.8), 0 0 120px rgba(153,0,0,0.3)', duration: 1.2, ease: 'power2.out' },
+            '-=0.8'
         );
         // Paragraph and buttons slide up
         tl.fromTo('.hero-content p',
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out' }, '-=0.4');
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out' }, '-=0.5');
         tl.fromTo('.hero-buttons',
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out' }, '-=0.4');
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out' }, '-=0.5');
         // Scroll indicator fades in last
         tl.fromTo('.scroll-indicator',
             { opacity: 0 },
