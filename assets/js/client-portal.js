@@ -742,32 +742,88 @@ function approveClientBrandProof(clientId) {
     showClientPortal(client);
 }
 
-// Approve moodboard (for client portal)
+// Approve moodboard (for client portal) — Full Approval Cascade
+// Merged from nui-system-patch.js Step 4:
+//   1. Update moodboard status → approved
+//   2. Create formal Supabase approval record (timestamp + client_id)
+//   3. Advance project stage to 'Design'
+//   4. Log to CRM + notify admin
 function approveMoodboard(clientId, moodboardId) {
+    if (typeof proofs === 'undefined') return;
+
     const mb = proofs.find(p => p.id == moodboardId);
     if (!mb) return;
 
-    // Update moodboard status
+    // Validate: client must own this moodboard
+    if (mb.clientId && mb.clientId != clientId) {
+        alert('You are not authorized to approve this moodboard.');
+        return;
+    }
+
+    // 1) Update moodboard status
     mb.status = 'approved';
     mb.approvedAt = new Date().toISOString();
-    saveProofs();
+    mb.approved_by = clientId;
+    if (typeof saveProofs === 'function') saveProofs();
 
-    // Log to CRM
+    // 2) CREATE FORMAL APPROVAL RECORD in Supabase
+    if (typeof supabaseClient !== 'undefined' && mb.project_id) {
+        supabaseClient.from('approvals').insert({
+            project_id: mb.project_id,
+            entity_type: 'moodboard',
+            entity_id: mb.id,
+            status: 'approved',
+            client_id: clientId,
+            approved_by: clientId,
+            approved_at: new Date().toISOString(),
+            metadata: { title: mb.title, clientName: mb.clientName }
+        }).then(function(res) {
+            if (res.error) console.error('Approval record error:', res.error);
+            else console.log('✅ Approval record created for moodboard:', mb.title);
+        });
+    }
+
+    // 3) ADVANCE PROJECT STAGE to 'Design' (moodboard approved = ready for design)
+    if (mb.project_id && typeof projects !== 'undefined') {
+        const project = projects.find(p => p.id == mb.project_id);
+        if (project) {
+            project.stage = 'Design';
+            project.activityLog = project.activityLog || [];
+            project.activityLog.push({
+                action: 'Moodboard approved — stage advanced to Design',
+                timestamp: new Date().toISOString(),
+                stage: 'Design',
+                entity: 'moodboard',
+                entityId: mb.id
+            });
+            if (typeof saveProjects === 'function') saveProjects();
+            console.log('✅ Project stage updated to Design');
+        }
+    }
+
+    // 4) Log to CRM
     if (typeof logProofActivity === 'function') {
         logProofActivity('approved', mb.clientName || 'Client', mb.title + ' moodboard approved by client');
     }
 
-    // Notify admin via email
+    // 5) Notify admin via email
     if (typeof simulateEmailNotification === 'function') {
-        simulateEmailNotification('newurbaninfluence@gmail.com', 'Moodboard Approved: ' + mb.title,
-            '<h2>Moodboard Approved!</h2><p>' + (mb.clientName || 'Client') + ' has approved the moodboard: <strong>' + mb.title + '</strong></p><p>You can now proceed with creating the brand guide.</p>');
+        simulateEmailNotification(
+            'newurbaninfluence@gmail.com',
+            'Moodboard Approved: ' + mb.title,
+            '<h2>Moodboard Approved</h2><p>' + (mb.clientName || 'Client') +
+            ' has approved the moodboard: <strong>' + mb.title +
+            '</strong></p><p>Project stage advanced to Design. You can now proceed with the brand guide.</p>'
+        );
     }
 
     alert('Moodboard approved! Your designer will begin working on your brand guide.');
 
     // Refresh portal
     const client = clients.find(c => c.id == clientId);
-    if (client) showClientPortal(client);
+    if (client && typeof showClientPortal === 'function') {
+        showClientPortal(client);
+    }
 }
 
 // Request moodboard changes (for client portal)
