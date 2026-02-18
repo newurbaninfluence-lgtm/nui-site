@@ -687,7 +687,11 @@ function saveSeo() { localStorage.setItem('nui_seo', JSON.stringify(seoData)); }
 
 // Projects/Tracker System
 let projects = JSON.parse(localStorage.getItem('nui_projects')) || [];
-function saveProjects() { localStorage.setItem('nui_projects', JSON.stringify(projects)); }
+function saveProjects() {
+    localStorage.setItem('nui_projects', JSON.stringify(projects));
+    // Sync to Supabase backend (was missing — merged from nui-system-patch.js)
+    if (typeof syncToBackend === 'function') { syncToBackend('projects', projects); }
+}
 
 // ==================== PAYMENTS & INVOICES ====================
 let payments = JSON.parse(localStorage.getItem('nui_payments')) || [];
@@ -1689,3 +1693,87 @@ function getFooterHTML() {
 }
 
 // ==================== VIEW MANAGEMENT ====================
+
+// ==================== NUI ERROR HANDLER (merged from nui-system-patch.js) ====================
+window.NuiError = {
+    handle: function(context, error) {
+        console.error('[NUI ' + context + ']', error);
+        if (typeof showNotification === 'function') {
+            showNotification('Something went wrong: ' + context, 'error');
+        }
+    },
+    toast: function(message, type) {
+        if (typeof showNotification === 'function') {
+            showNotification(message, type || 'info');
+        } else {
+            console.log('[NUI] ' + message);
+        }
+    }
+};
+
+// ==================== PROJECT SERVICE API (merged from nui-system-patch.js) ====================
+window.ProjectService = {
+    getProject: async function(projectId) {
+        try {
+            if (typeof NuiDB !== 'undefined' && NuiDB.projects) {
+                const all = await NuiDB.projects.getAll();
+                return all.find(p => p.id == projectId) || null;
+            }
+            return (typeof projects !== 'undefined') ? projects.find(p => p.id == projectId) : null;
+        } catch(e) { NuiError.handle('getProject', e); return null; }
+    },
+    getMoodboards: async function(projectId) {
+        try {
+            if (typeof proofs !== 'undefined') {
+                return proofs.filter(p => p.type === 'moodboard' && p.project_id == projectId);
+            }
+            return [];
+        } catch(e) { NuiError.handle('getMoodboards', e); return []; }
+    },
+    getApprovals: async function(projectId) {
+        try {
+            if (typeof supabaseClient !== 'undefined') {
+                const { data, error } = await supabaseClient.from('approvals').select('*').eq('project_id', projectId).order('created_at', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            }
+            return [];
+        } catch(e) { NuiError.handle('getApprovals', e); return []; }
+    },
+    getTasks: async function(projectId, stage) {
+        try {
+            if (typeof supabaseClient !== 'undefined') {
+                let query = supabaseClient.from('tasks').select('*').eq('project_id', projectId).order('sort_order', { ascending: true });
+                if (stage) query = query.eq('stage', stage);
+                const { data, error } = await query;
+                if (error) throw error;
+                return data || [];
+            }
+            return [];
+        } catch(e) { NuiError.handle('getTasks', e); return []; }
+    },
+    updateStage: async function(projectId, newStage, reason) {
+        try {
+            if (typeof projects === 'undefined') return false;
+            const project = projects.find(p => p.id == projectId);
+            if (!project) return false;
+            project.stage = newStage;
+            project.activityLog = project.activityLog || [];
+            project.activityLog.push({ action: reason || ('Stage updated to ' + newStage), timestamp: new Date().toISOString(), stage: newStage });
+            if (typeof saveProjects === 'function') saveProjects();
+            return true;
+        } catch(e) { NuiError.handle('updateStage', e); return false; }
+    },
+    createMoodboard: function(projectId, title, clientId) {
+        if (!projectId || !title || !clientId) { NuiError.toast('Project, title, and client are required', 'error'); return null; }
+        const client = (typeof clients !== 'undefined') ? clients.find(c => c.id == clientId) : null;
+        const mb = {
+            id: Date.now(), type: 'moodboard', clientId: clientId, clientName: client ? client.name : '',
+            project_id: parseInt(projectId), title: title, collageItems: [], canvasBackground: '#111111',
+            canvasWidth: 1200, canvasHeight: 800, comments: [], status: 'draft',
+            createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()
+        };
+        if (typeof proofs !== 'undefined') { proofs.push(mb); if (typeof saveProofs === 'function') saveProofs(); }
+        return mb;
+    }
+};
