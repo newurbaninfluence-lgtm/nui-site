@@ -38,8 +38,8 @@ section[style*="background"]{contain:layout style paint;}
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 48px 80px;position:relative;overflow:hidden;perspective:1000px;}
 .hero-media{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;}
 .hero-media-container{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;}
-.hero-media-container video{width:100%;height:100%;object-fit:cover;opacity:0.35;}
-.hero-media-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.55) 50%,rgba(0,0,0,0.9) 100%);z-index:2;}
+.hero-media-container video{width:100%;height:100%;object-fit:cover;opacity:0.55;}
+.hero-media-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to bottom,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.3) 40%,rgba(0,0,0,0.7) 100%);z-index:2;}
 .hero-content{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center;}
 .badge{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border:1px solid rgba(255,255,255,0.2);border-radius:50px;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;}
 .badge::before{content:'';width:8px;height:8px;background:var(--red);border-radius:50%;animation:pulse 2s infinite;}
@@ -47,6 +47,11 @@ section[style*="background"]{contain:layout style paint;}
 50%{opacity:0.5;}
 }
 .empire-word{display:inline-block;opacity:0;transform-style:preserve-3d;}.empire-word.red{color:var(--red);position:relative;z-index:2;transform-style:preserve-3d;}
+
+/* Safety: if GSAP doesn't fire within 2.5s, fade words in via CSS */
+@keyframes nuiSafetyFadeIn{to{opacity:1;transform:none;}}
+.empire-word{animation:nuiSafetyFadeIn 1s ease 2.5s forwards;}
+.hero.gsap-controlled .empire-word{animation:none;} /* GSAP takes over, cancel CSS fallback */
 .hero h1{font-size:clamp(48px,12vw,140px);font-weight:900;line-height:0.95;letter-spacing:-2px;margin-bottom:32px;text-transform:uppercase;text-shadow:0 4px 20px rgba(0,0,0,0.5);}
 .hero p{font-size:18px;color:rgba(255,255,255,0.95);max-width:600px;margin:0 auto 40px;line-height:1.6;text-align:center;text-shadow:0 2px 8px rgba(0,0,0,0.5);}
 .hero p span{color:var(--red);}
@@ -135,12 +140,12 @@ section[style*="background"]{contain:layout style paint;}
 .portfolio-card .tag{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--red);margin-bottom:12px;}
 .portfolio-card h3{font-size:24px;font-weight:700;margin-bottom:8px;}
 .portfolio-card p{color:var(--gray);font-size:14px;}
-.about-hero{min-height:70vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 48px 80px;position:relative;background:url('https://images.unsplash.com/photo-1534430480872-3498386e7856?w=1920&q=80') center/cover no-repeat;}
-.about-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.85) 50%,rgba(0,0,0,0.95) 100%);z-index:1;}
+.about-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 48px 80px;position:relative;background:url('https://images.unsplash.com/photo-1534430480872-3498386e7856?w=1920&q=80') center/cover no-repeat;overflow:hidden;perspective:1200px;}
+.about-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.5) 40%,rgba(0,0,0,0.9) 100%);z-index:1;}
 .about-hero .hero-content{position:relative;z-index:2;}
-.about-hero h1{font-size:clamp(48px,10vw,120px);font-weight:900;text-transform:uppercase;text-shadow:0 4px 40px rgba(0,0,0,0.5);}
-.about-hero h1 span{color:var(--red);text-shadow:0 0 60px rgba(255,59,48,0.4);}
-.about-hero p{font-size:20px;color:rgba(255,255,255,0.85);max-width:600px;margin-top:24px;text-shadow:0 2px 10px rgba(0,0,0,0.3);}
+.about-hero h2{font-size:clamp(80px,18vw,220px);font-weight:900;text-transform:uppercase;line-height:0.85;letter-spacing:-4px;text-shadow:0 8px 60px rgba(0,0,0,0.8);}
+.about-hero h2 span{color:var(--red);text-shadow:0 0 80px rgba(153,0,0,0.8),0 0 160px rgba(153,0,0,0.3);}
+.about-hero p{font-size:clamp(20px,3vw,28px);color:rgba(255,255,255,0.9);max-width:750px;margin-top:40px;line-height:1.6;text-shadow:0 2px 10px rgba(0,0,0,0.3);font-weight:300;letter-spacing:0.5px;}
 .story-section{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1400px;margin:0 auto;}
 .story-content h2{font-size:clamp(36px,5vw,56px);font-weight:900;line-height:1.1;text-transform:uppercase;margin-bottom:24px;}
 .story-content h2 .red{color:var(--red);}
@@ -587,3 +592,90 @@ to{opacity:1;transform:translateY(0);}
 .bg-red{background:var(--red);}.bg-green{background:#10b981;}.bg-yellow{background:#f59e0b;}
 .fs-28{font-size:28px;}.max-w-700{max-width:700px;}.opacity-50{opacity:0.5;}.lh-17{line-height:1.7;}
 .flex-between.mb-8{margin-bottom:8px;}.flex-between.mb-24{margin-bottom:24px;}.flex-between.mb-32{margin-bottom:32px;}
+
+
+/* ═══════════════════════════════════════════════════════════
+   NUI MOTION SYSTEM — 2026 High-End Experience Layer
+   ScrollTrigger-powered reveals, parallax, and micro-interactions
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Scroll Reveal Base States ───────────── */
+.nui-reveal{opacity:0;transform:translateY(60px);transition:none;}
+.nui-reveal-left{opacity:0;transform:translateX(-80px);transition:none;}
+.nui-reveal-right{opacity:0;transform:translateX(80px);transition:none;}
+.nui-reveal-scale{opacity:0;transform:scale(0.85);transition:none;}
+.nui-reveal-rotate{opacity:0;transform:translateY(40px) rotate(3deg);transition:none;}
+
+/* ── Stagger Children ────────────────────── */
+.nui-stagger > *{opacity:0;transform:translateY(40px);}
+
+/* ── Parallax Section Depth ──────────────── */
+.nui-parallax-bg{position:relative;overflow:hidden;}
+.nui-parallax-bg::after{content:'';position:absolute;inset:-20%;background:inherit;background-size:cover;background-position:center;will-change:transform;z-index:0;pointer-events:none;}
+
+/* ── Section Glow Dividers ───────────────── */
+.nui-glow-line{position:relative;}
+.nui-glow-line::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);transition:width 1.5s cubic-bezier(0.22,1,0.36,1);z-index:10;}
+.nui-glow-line.active::before{width:80%;}
+
+/* ── Card Hover Elevations (premium feel) ── */
+.problem-card,.service-card-simple,.value-card,.why-card,.testimonial-card,.stat-box{
+    transition:transform 0.5s cubic-bezier(0.22,1,0.36,1),box-shadow 0.5s cubic-bezier(0.22,1,0.36,1),border-color 0.5s ease;
+}
+.service-card-simple:hover{transform:translateY(-12px);box-shadow:0 30px 60px rgba(153,0,0,0.15);border-color:rgba(153,0,0,0.4);}
+.stat-box:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(153,0,0,0.12);}
+
+/* ── Floating Ambient Particles ──────────── */
+.nui-particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
+.nui-particle{position:absolute;width:2px;height:2px;background:var(--red);border-radius:50%;opacity:0;animation:nuiFloat 8s infinite ease-in-out;}
+@keyframes nuiFloat{
+0%{opacity:0;transform:translateY(100vh) scale(0);}
+15%{opacity:0.6;}
+85%{opacity:0.6;}
+100%{opacity:0;transform:translateY(-10vh) scale(1.5);}
+}
+
+/* ── Smooth Scroll Behavior ──────────────── */
+html{scroll-behavior:smooth;}
+
+/* ── Cursor Glow Follower (desktop only) ─── */
+.nui-cursor-glow{position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(153,0,0,0.12) 0%,transparent 70%);pointer-events:none;z-index:0;transform:translate(-50%,-50%);will-change:transform;transition:opacity 0.4s;}
+@media (hover:none){.nui-cursor-glow{display:none;}}
+
+/* ── Ambient Section Gradient Orbs ───────── */
+.section.dark{position:relative;overflow:hidden;}
+.section.dark::before{content:'';position:absolute;top:-50%;right:-30%;width:80%;height:80%;background:radial-gradient(circle,rgba(153,0,0,0.06) 0%,transparent 60%);pointer-events:none;z-index:0;animation:nuiOrbitRight 20s ease-in-out infinite alternate;}
+.section.dark::after{content:'';position:absolute;bottom:-40%;left:-30%;width:70%;height:70%;background:radial-gradient(circle,rgba(153,0,0,0.04) 0%,transparent 60%);pointer-events:none;z-index:0;animation:nuiOrbitLeft 25s ease-in-out infinite alternate;}
+@keyframes nuiOrbitRight{0%{transform:translate(0,0);}100%{transform:translate(-10%,10%);}}
+@keyframes nuiOrbitLeft{0%{transform:translate(0,0);}100%{transform:translate(10%,-10%);}}
+
+/* ── Premium Card 3D Tilt ────────────────── */
+.nui-tilt{transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);transform-style:preserve-3d;}
+
+/* ── Section Content Layer (above gradient orbs) ── */
+.section.dark > *{position:relative;z-index:1;}
+.stat-number,.stat-box .stat-number{transition:text-shadow 0.6s ease;}
+.stat-number.glow{text-shadow:0 0 40px rgba(153,0,0,0.7),0 0 80px rgba(153,0,0,0.3);}
+
+/* ── Hero Cinematic Vignette ─────────────── */
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,0.6) 100%);z-index:2;pointer-events:none;}
+
+/* ── Section Backgrounds — subtle motion ── */
+.section.dark{position:relative;overflow:hidden;}
+.section.dark::before{content:'';position:absolute;top:-50%;right:-50%;width:100%;height:100%;background:radial-gradient(circle,rgba(153,0,0,0.04) 0%,transparent 70%);pointer-events:none;z-index:0;}
+
+/* ── Service Cards — glass morphism ──────── */
+.service-card-simple{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:12px;}
+
+/* ── Text Gradient Shimmer (for headings) ── */
+.nui-shimmer{background:linear-gradient(90deg,#fff 0%,rgba(153,0,0,0.8) 50%,#fff 100%);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:nuiShimmer 4s ease-in-out infinite;}
+@keyframes nuiShimmer{
+0%,100%{background-position:200% center;}
+50%{background-position:-200% center;}
+}
+
+/* ── Magnetic Cursor Effect Area ─────────── */
+.nui-magnetic{transition:transform 0.3s cubic-bezier(0.22,1,0.36,1);}
+
+/* ── Scroll Progress Bar ─────────────────── */
+.nui-scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--red),#ff4444);z-index:9999;transform-origin:left;transform:scaleX(0);will-change:transform;}

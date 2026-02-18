@@ -82,13 +82,13 @@ function loadHomeView() {
 </div>
 </div>
 </section>
-<section class="section dark">
+<section class="section dark nui-glow-line">
 <div class="struggle-section">
-<div class="struggle-left">
+<div class="struggle-left nui-reveal-left">
 <h2>THE<br><span class="red">STRUGGLE</span><br>IS REAL.</h2>
 <p>Most brands fade into the background noise. In a city that never sleeps and a digital world that never stops, being "good enough" is a death sentence.</p>
 </div>
-<div class="problem-cards">
+<div class="problem-cards nui-stagger">
 <div class="problem-card"><div class="problem-meta"><div class="number">01</div><span class="problem-detect">Problem Detected</span></div><h3>Your brand looks generic and forgettable</h3></div>
 <div class="problem-card"><div class="problem-meta"><div class="number">02</div><span class="problem-detect">Problem Detected</span></div><h3>Your website doesn't convert visitors into customers</h3></div>
 <div class="problem-card"><div class="problem-meta"><div class="number">03</div><span class="problem-detect">Problem Detected</span></div><h3>Your social media feels disconnected from your brand</h3></div>
@@ -96,15 +96,15 @@ function loadHomeView() {
 </div>
 </div>
 </section>
-<section class="section dark">
+<section class="section dark nui-glow-line">
 <div class="services-layout">
-<div class="services-header">
+<div class="services-header nui-reveal-left">
 <div class="label">Our Expertise</div>
 <h2 class="section-title">WHAT WE<br><span class="red">CREATE</span></h2>
 <p style="color: var(--gray); margin-top: 24px;">We don't just make things look pretty. We build systems, brands, and experiences that print money and build legacy.</p>
 <button class="btn-cta mt-32" onclick="showView('services')">Explore All Services</button>
 </div>
-<div class="services-grid home-services">
+<div class="services-grid home-services nui-stagger">
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Brand Identity Design</h3><p>Forge Your Legacy. Define Your Empire.</p></div>
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Website Design & Dev</h3><p>Your Digital Headquarters. Built for Conversion.</p></div>
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Social Media & Ads</h3><p>Command Attention. Drive Engagement.</p></div>
@@ -112,19 +112,19 @@ function loadHomeView() {
 </div>
 </div>
 </section>
-<section class="section dark" style="border-top: 1px solid rgba(255,255,255,0.1);">
+<section class="section dark nui-glow-line" style="border-top: 1px solid rgba(255,255,255,0.1);">
 <div class="roots-section">
-<div class="roots-left">
+<div class="roots-left nui-reveal-left">
 <div class="label">Our Roots</div>
 <h2>BUILT IN<br><span class="red">DETROIT.</span></h2>
 <p>We don't just work here. We are part of the fabric of this city. The grit, the hustle, the innovation—it's in our DNA and in every pixel we push.</p>
 </div>
-<div class="roots-right"><div class="area-code">313</div></div>
+<div class="roots-right nui-reveal-scale"><div class="area-code">313</div></div>
 </div>
 </section>
-<section class="section dark results-section">
+<section class="section dark results-section nui-glow-line">
 <div class="label" style="text-align: center; justify-content: center; margin-bottom: 40px;">The Results Speak</div>
-<div class="stats-boxes">
+<div class="stats-boxes nui-stagger">
 <div class="stat-box">
 <div class="stat-number">50+</div>
 <div class="stat-label">Brands Elevated</div>
@@ -182,8 +182,8 @@ function loadHomeView() {
 </div>
 </div>
 </section>
-<section class="section dark brands-elevated-section">
-<div class="section-header">
+<section class="section dark brands-elevated-section nui-glow-line">
+<div class="section-header nui-reveal">
 <div class="label" style="justify-content: center;">Case Studies</div>
 <h2 class="section-title">BRANDS WE'VE <span class="red">ELEVATED</span></h2>
 <p class="section-subtitle">Real results for real businesses. Click to explore each success story.</p>
@@ -193,12 +193,12 @@ function loadHomeView() {
 <button class="btn-cta" onclick="showView('portfolio')">View All Case Studies →</button>
 </div>
 </section>
-<section class="section dark">
-<div class="section-header">
+<section class="section dark nui-glow-line">
+<div class="section-header nui-reveal">
 <h2 class="section-title">WHY <span class="red">US?</span></h2>
 <p class="section-subtitle">We're not for everyone. We're for the ones who want to win.</p>
 </div>
-<div class="why-grid">
+<div class="why-grid nui-stagger">
 <div class="why-card"><div class="icon">★</div><h3>Detroit-Rooted Creativity</h3><p>We bring the bold, unapologetic energy of Detroit to every project.</p></div>
 <div class="why-card"><div class="icon">$</div><h3>Revenue-Focused Design</h3><p>Beautiful brands that actually drive business results and conversions.</p></div>
 <div class="why-card"><div class="icon">♥</div><h3>Elite but Approachable</h3><p>Premium quality without the corporate stuffiness or agency BS.</p></div>
@@ -430,9 +430,13 @@ function loadHomeView() {
     function _nuiEmpireReveal() {
         if (typeof gsap === 'undefined') return;
         // Bail if hero isn't in DOM (user navigated away before load)
-        if (!document.querySelector('.empire-word')) return;
+        var hero = document.querySelector('.hero');
+        if (!hero || !document.querySelector('.empire-word')) return;
 
-        var tl = gsap.timeline({ delay: 0.2 });
+        // Signal GSAP is handling it — cancels CSS safety-net animation
+        hero.classList.add('gsap-controlled');
+
+        var tl = gsap.timeline({ delay: 0.3 });
         // Badge drops in first with bounce
         tl.fromTo('.badge',
             { opacity: 0, y: -30, scale: 0.8 },
@@ -475,6 +479,249 @@ function loadHomeView() {
     } else {
         window.addEventListener('load', _nuiEmpireReveal, { once: true });
     }
+
+    // Initialize scroll animations for this page
+    requestAnimationFrame(function() { _nuiMotionEngine(); });
+}
+
+// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// NUI MOTION ENGINE v2 — 2026 High-End Scroll Experience
+// Auto-detecting parallax, reveals, cursor effects, 3D tilt
+// ═══════════════════════════════════════════════════════════
+
+function _nuiMotionEngine() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Kill old ScrollTrigger instances (SPA re-nav safety)
+    ScrollTrigger.getAll().forEach(function(t) { t.kill(); });
+
+    // ── 1. EXPLICIT Scroll Reveals (elements with nui-* classes) ──
+    document.querySelectorAll('.nui-reveal').forEach(function(el) {
+        gsap.fromTo(el, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 1, ease: 'expo.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } });
+    });
+    document.querySelectorAll('.nui-reveal-left').forEach(function(el) {
+        gsap.fromTo(el, { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 1.2, ease: 'expo.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } });
+    });
+    document.querySelectorAll('.nui-reveal-right').forEach(function(el) {
+        gsap.fromTo(el, { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 1.2, ease: 'expo.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } });
+    });
+    document.querySelectorAll('.nui-reveal-scale').forEach(function(el) {
+        gsap.fromTo(el, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 1, ease: 'expo.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } });
+    });
+
+    // ── 2. Stagger Children ──
+    document.querySelectorAll('.nui-stagger').forEach(function(container) {
+        gsap.fromTo(container.children, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out', stagger: 0.12,
+            scrollTrigger: { trigger: container, start: 'top 85%', toggleActions: 'play none none none' } });
+    });
+
+    // ── 3. Glow Line Dividers ──
+    document.querySelectorAll('.nui-glow-line').forEach(function(el) {
+        ScrollTrigger.create({ trigger: el, start: 'top 90%', onEnter: function() { el.classList.add('active'); } });
+    });
+
+    // ── 4. Parallax Backgrounds ──
+    document.querySelectorAll('.nui-parallax').forEach(function(el) {
+        gsap.to(el, { yPercent: -15, ease: 'none',
+            scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 1.5 } });
+    });
+
+    // ── 5. Stats Number Count-Up ──
+    document.querySelectorAll('.stat-number').forEach(function(el) {
+        var text = el.textContent.trim();
+        var match = text.match(/^([\$]?)([\d,.]+)(\+?)(.*)/);
+        if (!match) return;
+        var prefix = match[1], numStr = match[2], plus = match[3], suffix = match[4];
+        var target = parseFloat(numStr.replace(/,/g, ''));
+        if (isNaN(target)) return;
+        var isDecimal = numStr.includes('.');
+        var obj = { val: 0 };
+        gsap.to(obj, { val: target, duration: 2, ease: 'expo.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' },
+            onUpdate: function() {
+                var display = isDecimal ? obj.val.toFixed(1) : Math.round(obj.val).toLocaleString();
+                el.textContent = prefix + display + plus + suffix;
+            },
+            onComplete: function() { el.textContent = text; el.classList.add('glow'); }
+        });
+    });
+
+    // ── 6. Scroll Progress Bar ──
+    var bar = document.querySelector('.nui-scroll-progress');
+    if (!bar) { bar = document.createElement('div'); bar.className = 'nui-scroll-progress'; document.body.appendChild(bar); }
+    gsap.to(bar, { scaleX: 1, ease: 'none',
+        scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 0.3 } });
+
+    // ── 7. Floating Ambient Particles ──
+    var pc = document.querySelector('.nui-particles');
+    if (!pc) { pc = document.createElement('div'); pc.className = 'nui-particles'; document.body.appendChild(pc); }
+    pc.innerHTML = '';
+    for (var p = 0; p < 20; p++) {
+        var dot = document.createElement('div');
+        dot.className = 'nui-particle';
+        dot.style.left = Math.random() * 100 + '%';
+        dot.style.animationDelay = Math.random() * 8 + 's';
+        dot.style.animationDuration = (6 + Math.random() * 6) + 's';
+        dot.style.width = dot.style.height = (1 + Math.random() * 3) + 'px';
+        pc.appendChild(dot);
+    }
+
+    // ── 8. Hero Parallax Depth (video moves slower than content) ──
+    var heroMedia = document.querySelector('.hero-media-container');
+    if (heroMedia) {
+        gsap.to(heroMedia, { yPercent: 30, ease: 'none',
+            scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+    }
+
+    // ── 9. About Hero Parallax + Dramatic Entrance ──
+    var aboutHero = document.querySelector('.about-hero');
+    if (aboutHero) {
+        gsap.to(aboutHero, { backgroundPositionY: '30%', ease: 'none',
+            scrollTrigger: { trigger: aboutHero, start: 'top top', end: 'bottom top', scrub: true } });
+        // Dramatic entrance for About heading
+        var aboutH2 = aboutHero.querySelector('h2');
+        var aboutP = aboutHero.querySelector('p');
+        if (aboutH2) {
+            gsap.fromTo(aboutH2, { opacity: 0, y: 100, scale: 0.8, rotationX: 10 },
+                { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 1.6, ease: 'expo.out', delay: 0.3 });
+        }
+        if (aboutP) {
+            gsap.fromTo(aboutP, { opacity: 0, y: 40 },
+                { opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', delay: 0.8 });
+        }
+    }
+
+    // ── 10. AUTO-DETECT: Animate ALL section headings on scroll ──
+    document.querySelectorAll('.section-header .section-title, .struggle-left h2, .roots-left h2, .services-header h2, .story-content h2, .portfolio-header h2').forEach(function(el) {
+        if (el.closest('.nui-reveal') || el.closest('.nui-reveal-left')) return;
+        gsap.fromTo(el,
+            { opacity: 0, y: 40, clipPath: 'inset(0 0 100% 0)' },
+            { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 1.2, ease: 'expo.out',
+              scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } });
+    });
+
+    // ── 11. AUTO-DETECT: Animate ALL paragraphs and subtitles in sections ──
+    document.querySelectorAll('.section-subtitle, .struggle-left p, .roots-left p, .story-content p, .service-description').forEach(function(el) {
+        if (el.closest('.nui-reveal') || el.closest('.nui-reveal-left')) return;
+        gsap.fromTo(el,
+            { opacity: 0, y: 25 },
+            { opacity: 1, y: 0, duration: 1, ease: 'expo.out',
+              scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' } });
+    });
+
+    // ── 12. AUTO-DETECT: Cards with 3D tilt entrance ──
+    document.querySelectorAll('.testimonial-card, .value-card, .why-card, .problem-card').forEach(function(card, i) {
+        gsap.fromTo(card,
+            { opacity: 0, y: 60, rotateY: i % 2 === 0 ? -5 : 5, rotateX: 3 },
+            { opacity: 1, y: 0, rotateY: 0, rotateX: 0, duration: 1, ease: 'expo.out',
+              scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' } });
+    });
+
+    // ── 13. Service Cards — stagger in with scale ──
+    document.querySelectorAll('.service-card').forEach(function(card, i) {
+        gsap.fromTo(card,
+            { opacity: 0, y: 50, scale: 0.92 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'expo.out',
+              scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' } });
+    });
+
+    // ── 14. Portfolio Cards — clip reveal ──
+    document.querySelectorAll('.portfolio-card, .case-study-grid > a').forEach(function(card) {
+        gsap.fromTo(card,
+            { opacity: 0, y: 40, clipPath: 'inset(10% 10% 10% 10%)' },
+            { opacity: 1, y: 0, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'expo.out',
+              scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' } });
+    });
+
+    // ── 15. CTA Section — scale punch ──
+    var cta = document.querySelector('.cta-section');
+    if (cta) {
+        gsap.fromTo(cta.children, { opacity: 0, y: 50, scale: 0.95 },
+            { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'expo.out', stagger: 0.15,
+              scrollTrigger: { trigger: cta, start: 'top 80%', toggleActions: 'play none none none' } });
+    }
+
+    // ── 16. Story Image — slide + reveal ──
+    document.querySelectorAll('.story-image, .roots-right').forEach(function(el) {
+        gsap.fromTo(el,
+            { opacity: 0, x: 60, scale: 0.9 },
+            { opacity: 1, x: 0, scale: 1, duration: 1.3, ease: 'expo.out',
+              scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } });
+    });
+
+    // ── 17. Stats Boxes — depth parallax (scrub) ──
+    document.querySelectorAll('.stats-boxes, .stats-grid').forEach(function(grid) {
+        Array.prototype.forEach.call(grid.children, function(child, i) {
+            gsap.fromTo(child,
+                { y: 30 + (i * 10) },
+                { y: 0, ease: 'none',
+                  scrollTrigger: { trigger: grid, start: 'top 90%', end: 'top 40%', scrub: 1 } });
+        });
+    });
+
+    // ── 18. Section Divider Lines ──
+    document.querySelectorAll('.section').forEach(function(sec) {
+        gsap.fromTo(sec,
+            { borderTopColor: 'rgba(255,255,255,0)' },
+            { borderTopColor: 'rgba(255,255,255,0.08)', duration: 1,
+              scrollTrigger: { trigger: sec, start: 'top 95%', toggleActions: 'play none none none' } });
+    });
+
+    // ── 19. CURSOR GLOW FOLLOWER (desktop only) ──
+    if (window.matchMedia('(hover: hover)').matches) {
+        var glow = document.querySelector('.nui-cursor-glow');
+        if (!glow) {
+            glow = document.createElement('div');
+            glow.className = 'nui-cursor-glow';
+            document.body.appendChild(glow);
+        }
+        var mx = 0, my = 0;
+        document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; });
+        gsap.ticker.add(function() {
+            gsap.set(glow, { x: mx, y: my });
+        });
+        // Brighten glow near interactive elements
+        document.querySelectorAll('.btn-cta, .btn-service, .btn-white, .btn-outline, .service-card, .portfolio-card, a').forEach(function(el) {
+            el.addEventListener('mouseenter', function() { gsap.to(glow, { scale: 1.5, opacity: 1, duration: 0.4 }); });
+            el.addEventListener('mouseleave', function() { gsap.to(glow, { scale: 1, opacity: 0.7, duration: 0.4 }); });
+        });
+    }
+
+    // ── 20. 3D CARD TILT ON HOVER ──
+    document.querySelectorAll('.service-card, .testimonial-card, .value-card, .why-card, .stat-box').forEach(function(card) {
+        card.addEventListener('mousemove', function(e) {
+            var rect = card.getBoundingClientRect();
+            var x = (e.clientX - rect.left) / rect.width - 0.5;
+            var y = (e.clientY - rect.top) / rect.height - 0.5;
+            gsap.to(card, { rotateY: x * 8, rotateX: -y * 8, duration: 0.4, ease: 'power2.out',
+                transformPerspective: 800 });
+        });
+        card.addEventListener('mouseleave', function() {
+            gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.6, ease: 'expo.out' });
+        });
+    });
+
+    // ── 21. MAGNETIC BUTTONS ──
+    document.querySelectorAll('.btn-cta, .btn-service, .btn-white').forEach(function(btn) {
+        btn.addEventListener('mousemove', function(e) {
+            var rect = btn.getBoundingClientRect();
+            var x = e.clientX - rect.left - rect.width / 2;
+            var y = e.clientY - rect.top - rect.height / 2;
+            gsap.to(btn, { x: x * 0.2, y: y * 0.2, duration: 0.3, ease: 'power2.out' });
+        });
+        btn.addEventListener('mouseleave', function() {
+            gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.3)' });
+        });
+    });
+
+    // Refresh triggers after DOM settles
+    requestAnimationFrame(function() { ScrollTrigger.refresh(); });
 }
 
 // ==================== ABOUT VIEW ====================
@@ -520,6 +767,7 @@ function loadAboutView() {
 <section class="cta-section"><h2>READY TO <span>WORK</span> WITH US?</h2><p>Let's build something legendary together.</p><button class="btn-white" onclick="scrollToContact()">Book Your Strategy Call</button></section>
         ${getFooterHTML()}
     `;
+    requestAnimationFrame(function() { _nuiMotionEngine(); });
 }
 
 // ==================== SERVICES VIEW ====================
@@ -1713,6 +1961,7 @@ function loadServicesView() {
 <section class="cta-section"><h2>HAVE <span>QUESTIONS?</span></h2><p>Book a free strategy call and we'll help you figure out exactly what your business needs.</p><button class="btn-white" onclick="startServiceIntake('consultation')">Book Free Consultation</button></section>
         ${getFooterHTML()}
     `;
+    requestAnimationFrame(function() { _nuiMotionEngine(); });
 }
 
 // Custom Package Builder Functions
