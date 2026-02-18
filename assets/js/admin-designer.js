@@ -2152,148 +2152,294 @@ function sendBrandGuideToClient(id) {
     loadAdminBrandGuidePanel();
 }
 
-// ==================== MOODBOARD SYSTEM ====================
+// ==================== MOODBOARD PANEL (Merged from nui-system-patch.js) ====================
+// Enhanced: project linking, approval cascade, brand workflow, client filtering
+
+function _nuiRenderMbCard(mb) {
+    var clientName = mb.clientName || 'No Client';
+    var projName = '';
+    if (mb.project_id && typeof projects !== 'undefined') {
+        var proj = projects.find(function(p) { return p.id == mb.project_id; });
+        if (proj) projName = proj.name || proj.projectName || 'Project #' + proj.id;
+    }
+    var statusColor = mb.status === 'approved' ? '#22c55e' :
+                      (mb.status === 'sent' || mb.sentToClient) ? '#f59e0b' : '#666';
+    var statusLabel = mb.status === 'approved' ? 'Approved' :
+                      (mb.status === 'sent' || mb.sentToClient) ? 'Sent to Client' : 'Draft';
+    var thumbHtml = '';
+    if (mb.collageItems && mb.collageItems.length > 0) {
+        var firstImg = mb.collageItems.find(function(item) { return item.src || item.url; });
+        if (firstImg) thumbHtml = '<img src="' + (firstImg.src || firstImg.url) + '" style="width:100%;height:160px;object-fit:cover;border-radius:8px 8px 0 0;" onerror="this.style.display=\'none\'" />';
+    }
+    if (!thumbHtml) {
+        thumbHtml = '<div style="width:100%;height:160px;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></div>';
+    }
+    var editBtn = '<button onclick="window._nuiEditMoodboard(' + mb.id + ')" style="flex:1;padding:8px;background:#6366f1;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">Edit</button>';
+    var sendBtn = (mb.status !== 'approved' && !mb.sentToClient) ?
+        '<button onclick="window._nuiSendToClient(' + mb.id + ')" style="flex:1;padding:8px;background:#f59e0b;color:#000;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">Send</button>' : '';
+    var workflowBtn = (mb.status === 'approved') ?
+        '<button onclick="startBrandWorkflow(' + mb.id + ')" style="flex:1;padding:8px;background:#22c55e;color:#000;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">Start Brand</button>' : '';
+    var deleteBtn = '<button onclick="window._nuiDeleteMoodboard(' + mb.id + ')" style="padding:8px 10px;background:transparent;color:#666;border:1px solid #333;border-radius:6px;cursor:pointer;font-size:12px;" title="Delete">✕</button>';
+    return '<div class="nui-mb-card" data-client-id="' + (mb.clientId || '') + '" style="background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'rgba(99,102,241,0.4)\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,0.08)\'">' +
+        thumbHtml +
+        '<div style="padding:14px;">' +
+            '<h4 style="margin:0 0 6px;color:#fff;font-size:15px;">' + (mb.title || 'Untitled') + '</h4>' +
+            '<div style="font-size:12px;color:#888;margin-bottom:4px;">' + clientName + '</div>' +
+            (projName ? '<div style="display:inline-block;padding:2px 8px;background:rgba(99,102,241,0.12);color:#a5b4fc;border-radius:4px;font-size:11px;margin-bottom:8px;">' + projName + '</div>' : '') +
+            '<div style="display:flex;align-items:center;gap:6px;margin-bottom:12px;"><span style="width:8px;height:8px;border-radius:50%;background:' + statusColor + ';display:inline-block;"></span><span style="font-size:12px;color:' + statusColor + ';">' + statusLabel + '</span></div>' +
+            '<div style="display:flex;gap:6px;">' + editBtn + sendBtn + workflowBtn + deleteBtn + '</div>' +
+        '</div></div>';
+}
+
 function loadAdminMoodboardPanel() {
+    var panel = document.getElementById('adminMoodboardPanel');
+    if (!panel) return;
     // Run storage cleanup on panel load to prevent quota issues
-    cleanupProofStorage();
-    const moodboards = proofs.filter(p => p.type === 'moodboard');
-    const pending = moodboards.filter(m => m.status === 'pending').length;
-    const approved = moodboards.filter(m => m.status === 'approved').length;
-    const drafts = moodboards.filter(m => m.status === 'draft').length;
-
-    const boardCards = moodboards.length === 0 ?
-        '<div style="text-align: center; padding: 60px 20px; color: #666;"><div style="font-size: 48px; margin-bottom: 16px;">🎨</div><h3>No Moodboards Yet</h3><p style="margin-top: 8px;">Create your first moodboard to share creative direction with clients.</p></div>' :
-        moodboards.map(m => {
-            const client = clients.find(c => c.id == m.clientId);
-            const previewImages = (m.collageItems || []).filter(i => i.type === 'image').slice(0, 4);
-            const colorItems = (m.collageItems || []).filter(i => i.type === 'color').slice(0, 5);
-            const statusColors = { draft: '#888', pending: '#ffaa00', approved: '#44ff44', revision: '#ff4444', delivered: '#4488ff' };
-            return `
-<div style="background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: hidden; cursor: pointer;" onclick="openMoodboardEditor('${m.id}')">
-<div style="height: 200px; background: #0a0a0a; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2px; overflow: hidden;">
-                        ${previewImages.map(img => {
-                            const isIdb = img.src && img.src.startsWith('idb://');
-                            return `<div style="${isIdb ? '' : "background: url('" + img.src + "') center/cover;"} min-height: 98px; background-color: #1a1a1a;" ${isIdb ? 'data-idb-bg="' + img.src + '"' : ''}></div>`;
-                        }).join('')}
-                        ${previewImages.length === 0 ? '<div style="grid-column: 1/-1; grid-row: 1/-1; display: flex; align-items: center; justify-content: center; color: #444; font-size: 48px;">🎨</div>' : ''}
-</div>
-<div class="p-16">
-<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
-<h4 style="font-size: 15px; font-weight: 600;">${m.title || 'Untitled Moodboard'}</h4>
-<span style="padding: 3px 10px; border-radius: 20px; font-size: 11px; background: ${statusColors[m.status] || '#888'}20; color: ${statusColors[m.status] || '#888'};">${m.status}</span>
-</div>
-<div class="text-muted-sm">${client?.name || 'No Client'}</div>
-<div style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
-                            ${colorItems.map(c => `<div style="width: 20px; height: 20px; border-radius: 50%; background: ${c.color}; border: 2px solid rgba(255,255,255,0.1);"></div>`).join('')}
-</div>
-<div style="display: flex; gap: 8px; margin-top: 12px;">
-                            ${m.status === 'draft' ? `<button onclick="event.stopPropagation(); sendProofToClient('${m.id}')" style="padding: 6px 14px; background: #ff0000; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">Send to Client</button>` : ''}
-<button onclick="event.stopPropagation(); deleteMoodboard('${m.id}')" style="padding: 6px 14px; background: transparent; border: 1px solid #ff444440; color: #ff4444; border-radius: 6px; cursor: pointer; font-size: 12px;">Delete</button>
-</div>
-</div>
-</div>
-            `;
-        }).join('');
-
-    document.getElementById('adminMoodboardPanel').innerHTML = `
-<div class="flex-between mb-32">
-<h2 class="fs-28 fw-700">🎨 Moodboards</h2>
-<button onclick="showCreateMoodboardModal()" style="padding: 12px 24px; background: linear-gradient(135deg, #ff0000, #cc0000); color: #fff; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px;">+ New Moodboard</button>
-</div>
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px;">
-<div class="admin-card-dark-center">
-<div style="font-size: 28px; font-weight: 700; color: #888;">${drafts}</div>
-<div class="text-muted-sm">Drafts</div>
-</div>
-<div class="admin-card-dark-center">
-<div style="font-size: 28px; font-weight: 700; color: #ffaa00;">${pending}</div>
-<div class="text-muted-sm">Sent / Pending</div>
-</div>
-<div class="admin-card-dark-center">
-<div style="font-size: 28px; font-weight: 700; color: #44ff44;">${approved}</div>
-<div class="text-muted-sm">Approved</div>
-</div>
-</div>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
-            ${boardCards}
-</div>
-    `;
-    // Resolve any idb:// thumbnail backgrounds
-    setTimeout(resolveAllImages, 50);
+    if (typeof cleanupProofStorage === 'function') cleanupProofStorage();
+    var moodboards = (typeof proofs !== 'undefined') ? proofs.filter(function(p) { return p.type === 'moodboard'; }) : [];
+    var clientList = (typeof clients !== 'undefined') ? clients : [];
+    var drafts = moodboards.filter(function(m) { return m.status === 'draft' && !m.sentToClient; }).length;
+    var sent = moodboards.filter(function(m) { return m.status === 'sent' || m.sentToClient; }).length;
+    var approved = moodboards.filter(function(m) { return m.status === 'approved'; }).length;
+    var clientOpts = clientList.map(function(c) { return '<option value="' + c.id + '">' + (c.name || 'Client #' + c.id) + '</option>'; }).join('');
+    var cardsHtml = moodboards.length === 0 ?
+        '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#555;"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.5" style="margin-bottom:16px;display:block;margin-left:auto;margin-right:auto;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg><p style="font-size:16px;margin:0 0 8px;">No moodboards yet</p><p style="font-size:13px;margin:0;">Click <b>+ New Moodboard</b> to start a brand workflow</p></div>' :
+        moodboards.map(_nuiRenderMbCard).join('');
+    panel.innerHTML =
+        '<div style="padding:4px 0;">' +
+            '<div class="flex-between mb-32">' +
+                '<h2 class="fs-28 fw-700">Moodboards</h2>' +
+                '<button onclick="showCreateMoodboardModal()" style="padding:10px 24px;background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;">+ New Moodboard</button>' +
+            '</div>' +
+            '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;">' +
+                '<div class="admin-card-dark-center"><span style="font-size:28px;font-weight:700;color:#fff;">' + drafts + '</span><div class="text-muted-sm">Drafts</div></div>' +
+                '<div class="admin-card-dark-center"><span style="font-size:28px;font-weight:700;color:#f59e0b;">' + sent + '</span><div class="text-muted-sm">Sent / Pending</div></div>' +
+                '<div class="admin-card-dark-center"><span style="font-size:28px;font-weight:700;color:#22c55e;">' + approved + '</span><div class="text-muted-sm">Approved</div></div>' +
+            '</div>' +
+            '<div style="display:flex;gap:12px;margin-bottom:20px;">' +
+                '<select id="nuiMbFilter" onchange="window._nuiFilterMoodboards()" style="padding:8px 14px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:13px;min-width:180px;">' +
+                    '<option value="">All Clients</option>' + clientOpts +
+                '</select>' +
+            '</div>' +
+            '<div id="nuiMbGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">' + cardsHtml + '</div>' +
+        '</div>';
 }
 
 function deleteMoodboard(id) {
-    if (!confirm('Delete this moodboard?')) return;
-    const idx = proofs.findIndex(p => p.id == id);
-    if (idx !== -1) { proofs.splice(idx, 1); saveProofs(); }
+    if (!confirm('Delete this moodboard? This cannot be undone.')) return;
+    if (typeof proofs !== 'undefined') {
+        var idx = proofs.findIndex(function(p) { return p.id == id; });
+        if (idx > -1) { proofs.splice(idx, 1); if (typeof saveProofs === 'function') saveProofs(); }
+    }
     loadAdminMoodboardPanel();
 }
 
 function showCreateMoodboardModal() {
-    const clientOpts = clients.map(c => `<option value="${c.id}">${c.name} — ${c.email}</option>`).join('');
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
+    var existing = document.getElementById('createMoodboardModal');
+    if (existing) existing.remove();
+    var clientList = (typeof clients !== 'undefined') ? clients : [];
+    var clientOpts = clientList.map(function(c) { return '<option value="' + c.id + '">' + (c.name || 'Client #' + c.id) + '</option>'; }).join('');
+    var modal = document.createElement('div');
     modal.id = 'createMoodboardModal';
+    modal.className = 'modal-overlay';
     modal.style.display = 'flex';
-    modal.innerHTML = `
-<div class="modal" style="max-width: 500px;">
-<div class="modal-header">
-<h3 class="modal-title">Create Moodboard</h3>
-<button class="modal-close" onclick="document.getElementById('createMoodboardModal').remove()">×</button>
-</div>
-<div class="modal-body p-24">
-<div class="form-group mb-16">
-<label class="form-label">Client *</label>
-<select id="moodboardClient" class="form-input"><option value="">Select client...</option>${clientOpts}</select>
-</div>
-<div class="form-group mb-16">
-<label class="form-label">Moodboard Title *</label>
-<input type="text" id="moodboardTitle" class="form-input" placeholder="e.g. Brand Direction — Modern & Bold">
-</div>
-<div class="form-group mb-16">
-<label class="form-label">Creative Brief / Notes</label>
-<textarea id="moodboardNotes" class="form-input" rows="3" placeholder="Describe the creative direction..."></textarea>
-</div>
-</div>
-<div class="modal-footer">
-<button onclick="document.getElementById('createMoodboardModal').remove()" class="btn-outline">Cancel</button>
-<button onclick="createMoodboardAndOpenEditor()" class="btn-cta">Create & Open Builder</button>
-</div>
-</div>
-    `;
+    modal.innerHTML =
+        '<div class="modal" style="max-width:500px;">' +
+            '<div class="modal-header"><h3 class="modal-title">Create New Moodboard</h3><button class="modal-close" onclick="document.getElementById(\'createMoodboardModal\').remove()">×</button></div>' +
+            '<div class="modal-body p-24">' +
+                '<div class="form-group mb-16"><label class="form-label">Client *</label>' +
+                    '<select id="moodboardClient" class="form-input" onchange="_nuiPopulateProjects()"><option value="">Select a client...</option>' + clientOpts + '</select></div>' +
+                '<div class="form-group mb-16"><label class="form-label">Link to Project</label>' +
+                    '<select id="moodboardProject" class="form-input"><option value="">— Auto-create new project —</option></select></div>' +
+                '<div class="form-group mb-16"><label class="form-label">Moodboard Title *</label>' +
+                    '<input type="text" id="moodboardTitle" class="form-input" placeholder="e.g. Brand Direction — Modern & Bold"></div>' +
+                '<div class="form-group mb-16"><label class="form-label">Creative Brief / Notes</label>' +
+                    '<textarea id="moodboardNotes" class="form-input" rows="3" placeholder="Describe the creative direction..."></textarea></div>' +
+            '</div>' +
+            '<div class="modal-footer"><button onclick="document.getElementById(\'createMoodboardModal\').remove()" class="btn-outline">Cancel</button>' +
+                '<button onclick="createMoodboardAndOpenEditor()" class="btn-cta">Create & Open Builder</button></div>' +
+        '</div>';
     document.body.appendChild(modal);
+    modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
+}
+
+function _nuiPopulateProjects() {
+    var clientId = document.getElementById('moodboardClient').value;
+    var select = document.getElementById('moodboardProject');
+    if (!select) return;
+    select.innerHTML = '<option value="">— Auto-create new project —</option>';
+    if (clientId && typeof projects !== 'undefined') {
+        projects.filter(function(p) { return p.client_id == clientId || p.clientId == clientId; })
+            .forEach(function(p) {
+                var opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = p.name || p.projectName || ('Project #' + p.id);
+                select.appendChild(opt);
+            });
+    }
 }
 
 function createMoodboardAndOpenEditor() {
-    const clientId = document.getElementById('moodboardClient').value;
-    const title = document.getElementById('moodboardTitle').value.trim();
-    const notes = document.getElementById('moodboardNotes').value.trim();
-    if (!clientId || !title) { alert('Client and title are required.'); return; }
-
-    const client = clients.find(c => c.id == clientId);
-    const moodboard = {
-        id: Date.now(),
-        type: 'moodboard',
-        clientId: clientId,
-        clientName: client?.name || '',
-        title: title,
-        notes: notes,
-        collageItems: [],
-        canvasBackground: '#111111',
-        canvasWidth: 1200,
-        canvasHeight: 800,
-        comments: [],
-        revisionCount: 0,
-        status: 'draft',
-        sentToClient: false,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+    var clientId = document.getElementById('moodboardClient').value;
+    var projectId = document.getElementById('moodboardProject') ? document.getElementById('moodboardProject').value : null;
+    var title = document.getElementById('moodboardTitle').value.trim();
+    var notes = document.getElementById('moodboardNotes') ? document.getElementById('moodboardNotes').value.trim() : '';
+    if (!clientId) { alert('Please select a client.'); return; }
+    if (!title) { alert('Please enter a moodboard title.'); return; }
+    var client = (typeof clients !== 'undefined') ? clients.find(function(c) { return c.id == clientId; }) : null;
+    // Auto-create project if none selected
+    if (!projectId && typeof projects !== 'undefined') {
+        var newProj = {
+            id: Date.now(), client_id: clientId, clientId: clientId, name: title,
+            stage: 'Discovery', status: 'active', created_at: new Date().toISOString(),
+            activityLog: [{ action: 'Project created for moodboard: ' + title, timestamp: new Date().toISOString(), stage: 'Discovery' }]
+        };
+        projects.unshift(newProj);
+        if (typeof saveProjects === 'function') saveProjects();
+        projectId = newProj.id;
+    }
+    var moodboard = {
+        id: Date.now() + 1, type: 'moodboard', clientId: clientId,
+        clientName: client ? client.name : '', project_id: projectId ? parseInt(projectId) : null,
+        title: title, notes: notes, collageItems: [], canvasBackground: '#111111',
+        canvasWidth: 1200, canvasHeight: 800, comments: [], revisionCount: 0,
+        status: 'draft', sentToClient: false,
+        createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()
     };
-    proofs.push(moodboard);
-    saveProofs();
-    document.getElementById('createMoodboardModal').remove();
-    openMoodboardEditor(moodboard.id);
+    if (typeof proofs !== 'undefined') { proofs.push(moodboard); if (typeof saveProofs === 'function') saveProofs(); }
+    var modal = document.getElementById('createMoodboardModal');
+    if (modal) modal.remove();
+    if (typeof openMoodboardEditor === 'function') { openMoodboardEditor(moodboard.id); }
 }
+
+// --- Moodboard card actions ---
+window._nuiEditMoodboard = function(mbId) { if (typeof openMoodboardEditor === 'function') openMoodboardEditor(mbId); };
+
+window._nuiSendToClient = function(mbId) {
+    if (typeof proofs === 'undefined') return;
+    var mb = proofs.find(function(p) { return p.id == mbId; });
+    if (!mb) return;
+    mb.sentToClient = true; mb.status = 'sent'; mb.updatedAt = new Date().toISOString();
+    if (typeof saveProofs === 'function') saveProofs();
+    if (typeof showNotification === 'function') showNotification('Moodboard "' + mb.title + '" sent to client!', 'success');
+    if (typeof simulateEmailNotification === 'function') {
+        simulateEmailNotification('newurbaninfluence@gmail.com', 'Moodboard Sent: ' + mb.title,
+            '<h2>Moodboard Sent</h2><p>"' + mb.title + '" for ' + (mb.clientName || 'client') + ' has been sent for review.</p>');
+    }
+    loadAdminMoodboardPanel();
+};
+
+window._nuiDeleteMoodboard = function(mbId) { deleteMoodboard(mbId); };
+
+window._nuiFilterMoodboards = function() {
+    var filter = document.getElementById('nuiMbFilter');
+    if (!filter) return;
+    var clientId = filter.value;
+    var cards = document.querySelectorAll('.nui-mb-card');
+    cards.forEach(function(card) { card.style.display = (!clientId || card.getAttribute('data-client-id') == clientId) ? '' : 'none'; });
+};
+
+
+// ==================== BRAND WORKFLOW (Merged from nui-system-patch.js Step 5) ====================
+// When user clicks "Start Brand" on an approved moodboard:
+//   - Verify moodboard is approved and linked to a project
+//   - Advance project stage to 'Development' (brand identity build)
+//   - Create 7 default brand tasks in Supabase
+//   - Route admin to projects panel
+
+function startBrandWorkflow(moodboardId) {
+    if (typeof proofs === 'undefined' || typeof projects === 'undefined') {
+        alert('System data not loaded. Please refresh and try again.');
+        return;
+    }
+
+    var mb = proofs.find(function(p) { return p.id == moodboardId; });
+    if (!mb) {
+        alert('Moodboard not found.');
+        return;
+    }
+
+    if (mb.status !== 'approved') {
+        alert('Moodboard must be approved before starting brand workflow.\nCurrent status: ' + mb.status);
+        return;
+    }
+
+    if (!mb.project_id) {
+        alert('This moodboard is not linked to a project. Please link it first.');
+        return;
+    }
+
+    var project = projects.find(function(p) { return p.id == mb.project_id; });
+    if (!project) {
+        alert('Linked project not found.');
+        return;
+    }
+
+    // A) Update project stage to Development (brand identity build)
+    project.stage = 'Development';
+    project.activityLog = project.activityLog || [];
+    project.activityLog.push({
+        action: 'Brand workflow started — stage advanced to Development',
+        timestamp: new Date().toISOString(),
+        stage: 'Development',
+        trigger: 'brand_workflow',
+        moodboardId: mb.id
+    });
+    if (typeof saveProjects === 'function') saveProjects();
+
+    // B) Create default brand tasks (only if none exist for this stage)
+    var brandTasks = [
+        { title: 'Logo Concept Development', description: 'Create 3 logo concepts based on approved moodboard direction', sort_order: 1 },
+        { title: 'Color Palette Finalization', description: 'Define primary, secondary, and accent colors with hex codes', sort_order: 2 },
+        { title: 'Typography Selection', description: 'Select and pair headline + body fonts', sort_order: 3 },
+        { title: 'Brand Pattern/Texture', description: 'Create supporting visual pattern or texture', sort_order: 4 },
+        { title: 'Logo Variations', description: 'Create horizontal, stacked, icon-only, reversed versions', sort_order: 5 },
+        { title: 'Brand Guide Assembly', description: 'Compile all elements into brand guide document', sort_order: 6 },
+        { title: 'Mockup Presentation', description: 'Apply brand to real-world mockups for client review', sort_order: 7 }
+    ];
+
+    if (typeof supabaseClient !== 'undefined') {
+        supabaseClient.from('tasks')
+            .select('id')
+            .eq('project_id', project.id)
+            .eq('stage', 'Development')
+            .then(function(res) {
+                if (!res.error && (!res.data || res.data.length === 0)) {
+                    var taskInserts = brandTasks.map(function(t) {
+                        return {
+                            project_id: project.id,
+                            stage: 'Development',
+                            title: t.title,
+                            description: t.description,
+                            status: 'pending',
+                            sort_order: t.sort_order
+                        };
+                    });
+                    supabaseClient.from('tasks').insert(taskInserts).then(function(r) {
+                        if (r.error) console.error('Task creation error:', r.error);
+                        else console.log('✅ Brand workflow tasks created:', taskInserts.length);
+                    });
+                } else {
+                    console.log('Tasks already exist for this project stage.');
+                }
+            });
+    }
+
+    // C) Route user to projects panel
+    if (typeof showAdminPanel === 'function') {
+        alert('Brand workflow started! ' + brandTasks.length + ' tasks created.\nProject stage: Development');
+        showAdminPanel('projects');
+    }
+}
+
+// Listen for postMessage from moodboard-app.html iframe
+window.addEventListener('message', function(event) {
+    if (event.origin !== window.location.origin) return;
+    if (event.data && event.data.type === 'NUI_BRAND_WORKFLOW') {
+        startBrandWorkflow(event.data.moodboardId);
+    }
+});
+
 
 // ==================== MILANOTE-STYLE MOODBOARD EDITOR ====================
 
