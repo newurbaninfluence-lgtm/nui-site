@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>New Urban Influence | Detroit Branding Agency</title>
+
+ <!-- ONE-TIME CACHE BUST: v4 — kills old service workers on Safari/mobile -->
+ <!-- Does NOT clear portfolio or site image data (only SW caches) -->
+ <script>
+ (function(){
+   var BUST_VERSION = 'v4';
+   if (localStorage.getItem('nui_cache_bust') === BUST_VERSION) return;
+   if ('serviceWorker' in navigator) {
+     navigator.serviceWorker.getRegistrations().then(function(regs) {
+       var hadSW = regs.length > 0;
+       regs.forEach(function(r) { r.unregister(); });
+       if ('caches' in window) {
+         caches.keys().then(function(names) {
+           names.forEach(function(n) { caches.delete(n); });
+           localStorage.setItem('nui_cache_bust', BUST_VERSION);
+           if (hadSW || names.length > 0) {
+             window.location.reload(true);
+           }
+         });
+       } else {
+         localStorage.setItem('nui_cache_bust', BUST_VERSION);
+         if (hadSW) window.location.reload(true);
+       }
+     });
+   } else {
+     localStorage.setItem('nui_cache_bust', BUST_VERSION);
+   }
+ })();
+ </script>
+
+    <!-- PWA -->
+ <link rel="manifest" href="/manifest.json">
+ <meta name="theme-color" content="#dc2626">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="NUI">
+ <link rel="apple-touch-icon" href="/icons/icon-192.png">
+ <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48">
+ <link rel="icon" type="image/png" sizes="48x48" href="/icons/icon-48.png">
+ <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+
+    <!-- SEO Meta Tags -->
+ <meta name="description" content="Detroit branding agency for small businesses and startups. Brand identity packages from $1,500. Logo design, web, packaging, and print.">
+ <meta name="keywords" content="branding agency detroit, logo design detroit, brand identity detroit, graphic design agency detroit, detroit creative agency, michigan branding agency, affordable branding packages, small business branding detroit, packaging design detroit, logo design cost michigan, branding packages small business, print design detroit, banner design detroit, yard signs detroit, vinyl decals detroit, social media templates detroit, brand guidelines detroit, detroit graphic design, branding near me, logo designer near me, best branding agency detroit michigan, branding agency southfield, branding agency royal oak, branding agency ann arbor">
+ <meta name="author" content="New Urban Influence">
+ <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+ <meta name="googlebot" content="index, follow">
+ <link rel="canonical" href="https://newurbaninfluence.com">
+
+    <!-- Open Graph / Facebook -->
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://newurbaninfluence.com">
+ <meta property="og:title" content="New Urban Influence | Detroit Branding Agency — Packages from $1,500">
+ <meta property="og:description" content="Professional branding for small businesses. Logo design, brand identity, packaging, social media templates. 4.9★ rated. Free consultation. Payment plans available.">
+ <meta property="og:image" content="https://newurbaninfluence.com/og-image.jpg">
+ <meta property="og:image:width" content="1200">
+ <meta property="og:image:height" content="630">
+ <meta property="og:locale" content="en_US">
+ <meta property="og:site_name" content="New Urban Influence">
+
+    <!-- Twitter -->
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:site" content="@newurbaninfluence">
+ <meta name="twitter:creator" content="@newurbaninfluence">
+ <meta name="twitter:title" content="New Urban Influence | Detroit Branding Agency — Packages from $1,500">
+ <meta name="twitter:description" content="Professional branding for small businesses. Logo design, brand identity, packaging, social templates. 4.9★ rated. Free consultation.">
+ <meta name="twitter:image" content="https://newurbaninfluence.com/twitter-card.jpg">
+
+    <!-- Local Business Schema -->
+ <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "New Urban Influence",
+  "description": "Detroit branding agency for small businesses and startups. Professional brand identity packages from $1,500 including logo design, packaging design, social media templates, and brand guidelines. Serving Metro Detroit, Southfield, Royal Oak, Ann Arbor, and all of Michigan.",
+  "url": "https://newurbaninfluence.com",
+  "telephone": "(248) 487-8747",
+  "email": "info@newurbaninfluence.com",
+  "areaServed": {
+    "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+      "latitude": "42.3314",
+      "longitude": "-83.0458"
+    },
+    "geoRadius": "50 mi"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Detroit",
+    "addressRegion": "MI",
+    "addressCountry": "US"
+  },
+  "openingHours": "Mo-Fr 09:00-18:00",
+  "priceRange": "$$",
+  "image": "https://newurbaninfluence.com/logo.png",
+  "sameAs": [
+    "https://www.instagram.com/newurbaninfluence",
+    "https://twitter.com/newurbaninfluence",
+    "https://www.linkedin.com/company/newurbaninfluence",
+    "https://share.google/0zJCv7QH0SXk4sY7X",
+    "https://clutch.co/profile/new-urban-influence",
+    "https://www.yelp.com/biz/new-urban-influence-detroit",
+    "https://www.manta.com/c/m1x03t9/new-urban-influence",
+    "https://www.dnb.com/business-directory/company-profiles.new_urban_influence_ltd_llc.b30541265d2e1744184ea8a5ef31a4c8.html",
+    "https://scottmax.com/connect/media-buying-agencies-in-detroit/"
+  ],
+  "subjectOf": [
+    {
+      "@type": "Article",
+      "name": "Black Entrepreneurs Successful Opening Bravo Graphix Detroit",
+      "url": "https://rollingout.com/2013/10/18/black-entrepreneurs-successful-opening-bravo-graphix-detroit/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Rolling Out"
+      }
+    },
+    {
+      "@type": "Article",
+      "name": "Bravo Graphix Now Open on the Avenue of Fashion",
+      "url": "https://www.modeldmedia.com/companies/BravoGraphix.aspx",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Model D Media"
+      }
+    },
+    {
+      "@type": "Article",
+      "name": "Detroit Design Festival Schedule Revealed",
+      "url": "https://www.freep.com/story/entertainment/2014/09/09/detroit-design-festival-schedule-revealed/15364423/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Detroit Free Press"
+      }
+    }
+  ],
+  "knowsAbout": [
+    "Brand Identity Design",
+    "Logo Design",
+    "Packaging Design",
+    "Web Design",
+    "Social Media Marketing",
+    "Print Design",
+    "Brand Guidelines",
+    "Political Campaign Design",
+    "Event Branding",
+    "Restaurant Branding"
+  ],
+  "hasCredential": [
+    {
+      "@type": "EducationalOccupationalCredential",
+      "name": "Clutch Verified Agency",
+      "url": "https://clutch.co/profile/new-urban-influence"
+    }
+  ],
+  "brand": {
+    "@type": "Brand",
+    "name": "New Urban Influence",
+    "alternateName": "Bravo Graphix"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "reviewCount": "31"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Miss B"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "I would recommend working with New Urban Influence. My experience with Faren was great...even when I was being a difficult customer. The care and attention that was put into making sure they understood my vision for my brand was amazing.",
+      "datePublished": "2025-11-15"
+    },
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Chevelles Bar"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "Farren did a great job on a few flyers for me. Prices were reasonable and the quality was superb. My go to company for all my promotional needs. The best at what he does!",
+      "datePublished": "2025-10-20"
+    },
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Sierra Meriwether"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "The best graphic designing company in the world! I have been a customer for over 10 years and every time they exceed my expectations! Faren and his team has always been very professional and prompt with all my services! I highly recommend this company!",
+      "datePublished": "2025-12-01"
+    },
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Larry Castleberry"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "Great experience. Urban Influence gives you personal/detailed attention (making you feel like you are their most important customer). Love not only the services they offer but the personal touch they provide.",
+      "datePublished": "2025-12-10"
+    }
+  ]
+}</script>
+
+    <!-- FAQPage Schema for AI Answer Engines & Google Rich Results -->
+ <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is New Urban Influence?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "New Urban Influence (NUI) is a Detroit-based creative agency specializing in brand identity design, web design, and digital marketing. Founded to help small businesses and startups build professional, competitive brands, NUI offers full branding packages starting at $1,500 including logo design, color systems, typography, social media templates, and brand guidelines. They serve clients throughout Detroit, Southeast Michigan, and nationwide."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What services does New Urban Influence offer?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "New Urban Influence offers three main branding packages: Brand Kit ($1,500 flat rate) for startups and new businesses, Service Business Brand Identity ($4,500+) for consultants, agencies, and service providers, and Product Brand Identity ($5,500+) for businesses selling physical products. Additional services include logo design, business card design, social media templates, print design + printing (banners from $175, yard signs from $35/each, business cards from $195, vehicle magnets from $195, postcards from $225, acrylic signs from $275, Dibond from $325), packaging design, presentation templates, and brand guidelines documentation."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How much does branding cost in Detroit?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "In Detroit, professional branding packages at New Urban Influence range from $1,500 to $6,000+. The Brand Kit starts at $1,500 (logo, colors, typography, social templates), Service Business Brand Identity starts at $4,500, and Product Brand Identity starts at $5,500. Individual services like logo design start at $500. Payment plans are available including pay-in-full (5% discount), 50/25/25 split, or 3 monthly payments."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How much does a logo design cost?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "At New Urban Influence, standalone logo design starts at $500 and includes a primary logo, secondary logo variation, icon/mark version, and all file formats (PNG, SVG, PDF). For a complete brand identity that includes the logo plus color palette, typography, social media templates, and brand guidelines, packages start at $1,500."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is the best branding agency in Detroit?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "New Urban Influence is one of Detroit's top-rated creative agencies with a 4.9-star rating across 28+ reviews. They specialize in helping small businesses and startups build professional brand identities at accessible price points starting at $1,500. What sets them apart is their strategic approach to branding, transparent flat-rate pricing, payment plans, and a dedicated client portal for real-time project tracking."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How long does a branding project take?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "At New Urban Influence, most branding projects take 2 to 4 weeks depending on complexity. The Brand Kit (starter package) typically completes in 2 weeks, while comprehensive Service and Product Brand Identity packages take 3 to 4 weeks. Rush delivery is available for an additional fee."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Do you offer free consultations?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, New Urban Influence offers free strategy consultations for every potential client. During the call, they discuss your business goals, target audience, competitive landscape, and branding needs. You'll receive a custom pricing estimate after the consultation with no obligation to proceed. Book directly at newurbaninfluence.com."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I get professional branding on a small budget?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Absolutely. New Urban Influence offers professional branding packages starting at $1,500 flat rate with payment plans available. You can split payments 50/25/25 or into 3 monthly installments. A 5% discount is available for paying in full. The Brand Kit includes logo design, color palette, typography, social media templates, and brand guidelines."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Do you offer payment plans for branding?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, New Urban Influence offers three payment options: (1) Pay in Full with a 5% discount, (2) Standard Plan — 50% deposit, 25% at design approval, 25% at final delivery, (3) Monthly Plan — 3 equal monthly payments. No interest charges or hidden fees on any payment plan."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What makes New Urban Influence different from other branding agencies?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "New Urban Influence stands out with transparent flat-rate pricing, brand strategy included in every project, a dedicated client portal for real-time proof reviews and approvals, payment plans on every package, specialized packages for both product and service businesses, and a 4.9-star rating with 28+ reviews. Free strategy consultations are offered before any commitment."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Where is New Urban Influence located?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "New Urban Influence is located in Detroit, Michigan. They serve clients throughout Metro Detroit, Southeast Michigan, and nationwide."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What file formats will I receive for my logo?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "New Urban Influence delivers logos in PNG (transparent background), SVG (scalable vector), PDF (print-ready), and AI/EPS upon request. You receive primary logo, secondary logo variation, and icon/mark versions — each in every format."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How much does product packaging design cost?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "At New Urban Influence, standalone packaging design starts at $600 and label design starts at $300. For a complete Product Brand Identity including logo, color system, packaging, labels, and all supporting materials, packages start at $5,500."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Are there affordable branding agencies in Michigan?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes — New Urban Influence in Detroit offers professional branding packages starting at $1,500 with flexible payment plans. They serve clients throughout Michigan. Their Brand Kit includes logo design, color palette, typography, social media templates, and brand guidelines — all for a flat rate with no hidden fees."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Who does branding near me in Detroit?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "New Urban Influence is a branding agency in Detroit, Michigan serving all of Metro Detroit including Southfield, Royal Oak, Troy, Farmington Hills, Ann Arbor, Dearborn, and Birmingham. They offer brand identity packages starting at $1,500 with free consultations. Call (248) 487-8747 or visit newurbaninfluence.com."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Who is the best logo designer near me?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "New Urban Influence is a top-rated logo designer in Detroit, Michigan with a 4.9-star rating and 28 Google reviews. They create custom logos for small businesses starting at $1,500 which includes the logo, color palette, typography, social media templates, and brand guidelines. Free consultations available at (248) 487-8747."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How much does it cost to get a logo designed?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Professional logo design at New Urban Influence in Detroit costs $1,500 for a complete Brand Kit including primary logo, secondary logo, icon mark, color palette, typography, 15 social media templates, and brand guidelines. Payment plans available — two payments of $750. Call (248) 487-8747 for a free quote."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Where can I get a website designed in Detroit?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "New Urban Influence in Detroit designs custom websites for small businesses starting at $3,500. They build mobile-first, SEO-optimized websites including landing pages, multi-page business sites, and e-commerce stores. Call (248) 487-8747 or visit newurbaninfluence.com for a free consultation."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Who can design packaging for my product?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "New Urban Influence in Detroit designs product packaging, labels, and retail-ready materials for food, beverage, cannabis, beauty, and consumer products. Packaging design starts at $500 per SKU. Their Product Brand Identity package at $5,500 includes packaging plus complete brand identity. Call (248) 487-8747."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is a brand identity package?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "A brand identity package is a complete set of visual and strategic elements that define how your business looks and communicates. At New Urban Influence, packages include brand strategy, logo design, color palette, typography, social media templates, and brand guidelines. Packages start at $1,500 for the Brand Kit, $4,500 for Service Business, and $5,500 for Product Business identities."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can someone build me a sales funnel?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes — New Urban Influence in Detroit builds custom sales funnels and marketing automation systems starting at $1,500. This includes landing pages, email sequences, lead magnets, and CRM integration. They build funnels that generate leads automatically 24/7. Call (248) 487-8747 for a free consultation."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Who does print design in Detroit?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "New Urban Influence in Detroit offers turnkey design + print packages for over 30 products including banners, yard signs, business cards, vehicle magnets, postcards, acrylic signs, Dibond panels, foam core, and more. Prices start at $175 for vinyl banners, $195 for business cards (250), $195 for vehicle magnets, $275 for acrylic signs, and $325 for Dibond exterior signs. All prices include custom design and professional printing. Call (248) 487-8747."
+                }
+            }
+        ]
+    }
+ </script>
+
+    <!-- Speakable Schema — Tells voice assistants which content to read aloud -->
+ <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "New Urban Influence — Detroit Branding Agency",
+        "url": "https://newurbaninfluence.com",
+        "speakable": {
+            "@type": "SpeakableSpecification",
+            "cssSelector": [".aeo-section", ".faq-section", "meta[name='description']"]
+        }
+    }
+ </script>
+
+    <!-- HowTo Schema — Voice assistants love step-by-step processes -->
+ <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Get Your Business Branded by New Urban Influence",
+        "description": "Step-by-step process to get professional brand identity design from New Urban Influence in Detroit. From free consultation to final delivery in 2-4 weeks.",
+        "totalTime": "P21D",
+        "estimatedCost": {
+            "@type": "MonetaryAmount",
+            "currency": "USD",
+            "value": "1500"
+        },
+        "step": [
+            {
+                "@type": "HowToStep",
+                "name": "Book a Free Strategy Consultation",
+                "text": "Call (248) 487-8747 or visit newurbaninfluence.com to book a free strategy consultation. During the call, we discuss your business goals, target audience, and branding needs.",
+                "url": "https://newurbaninfluence.com/contact"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Choose Your Branding Package",
+                "text": "Select from three packages: Brand Kit at $1,500 for startups, Service Business Brand Identity at $4,500, or Product Brand Identity at $5,500. Payment plans available on all packages."
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Brand Strategy and Mood Board",
+                "text": "We conduct a deep strategy session, research your competitors, and present a mood board and brand direction for your approval before any design begins."
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Design and Revisions",
+                "text": "We create your complete brand identity including logo, colors, typography, and all deliverables. You review proofs through our client portal with 2-3 rounds of revisions included."
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Final Delivery",
+                "text": "Receive all brand files, social media templates, brand guidelines, and a walkthrough of how to use everything. Your complete brand identity is ready to launch."
+            }
+        ]
+    }
+ </script>
+
+    <!-- Service Offerings Schema — Helps Google & AI understand your services + pricing -->
+ <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "New Urban Influence",
+        "url": "https://newurbaninfluence.com",
+        "telephone": "(248) 487-8747",
+        "email": "info@newurbaninfluence.com",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Detroit",
+            "addressRegion": "MI",
+            "addressCountry": "US"
+        },
+        "areaServed": [
+            { "@type": "City", "name": "Detroit" },
+            { "@type": "State", "name": "Michigan" },
+            { "@type": "Country", "name": "United States" }
+        ],
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Branding & Design Services",
+            "itemListElement": [
+                {
+                    "@type": "OfferCatalog",
+                    "name": "Branding Packages",
+                    "itemListElement": [
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Brand Kit — Starter Package",
+                                "description": "Complete starter branding package including primary logo with secondary and icon variations, brand color palette, typography selection, social media templates, social media banners, email signature, and brand guidelines document. Perfect for startups and new businesses."
+                            },
+                            "price": "1500.00",
+                            "priceCurrency": "USD",
+                            "priceSpecification": {
+                                "@type": "UnitPriceSpecification",
+                                "price": "1500.00",
+                                "priceCurrency": "USD",
+                                "unitText": "flat rate"
+                            }
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Service Business Brand Identity",
+                                "description": "Comprehensive branding system for consultants, agencies, contractors, and service providers. Includes logo suite, color system, typography, business cards, letterhead, email signature, presentation template, social media kit, and brand guidelines. Builds trust and attracts premium clients."
+                            },
+                            "price": "3500.00",
+                            "priceCurrency": "USD",
+                            "priceSpecification": {
+                                "@type": "UnitPriceSpecification",
+                                "price": "3500.00",
+                                "priceCurrency": "USD",
+                                "unitText": "starting at"
+                            }
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Product Brand Identity",
+                                "description": "Complete branding system for businesses selling physical products. Includes logo suite, color system, typography, packaging design, label design, product photography guidelines, retail display concepts, social media kit, and comprehensive brand guidelines."
+                            },
+                            "price": "4500.00",
+                            "priceCurrency": "USD",
+                            "priceSpecification": {
+                                "@type": "UnitPriceSpecification",
+                                "price": "4500.00",
+                                "priceCurrency": "USD",
+                                "unitText": "starting at"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "@type": "OfferCatalog",
+                    "name": "Individual Design Services",
+                    "itemListElement": [
+                        {
+                            "@type": "Offer",
+                            "itemOffered": { "@type": "Service", "name": "Logo Design", "description": "Primary logo, secondary variation, icon/mark version in PNG, SVG, PDF formats" },
+                            "price": "500.00", "priceCurrency": "USD"
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": { "@type": "Service", "name": "Packaging Design", "description": "Product packaging design for retail and e-commerce" },
+                            "price": "600.00", "priceCurrency": "USD"
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": { "@type": "Service", "name": "Print Design + Printing", "description": "Turnkey design and printing — banners, yard signs, business cards, vehicle magnets, postcards, acrylic signs, Dibond, foam core, and 30+ products. Delivered to your door." },
+                            "price": "35.00", "priceCurrency": "USD"
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": { "@type": "Service", "name": "Brand Guidelines Document", "description": "Comprehensive brand standards guide with logo usage, colors, typography, and application rules" },
+                            "price": "400.00", "priceCurrency": "USD"
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": { "@type": "Service", "name": "Social Media Templates", "description": "Custom-branded social media post and story templates" },
+                            "price": "300.00", "priceCurrency": "USD"
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": { "@type": "Service", "name": "Business Card Design", "description": "Professional business card design front and back" },
+                            "price": "150.00", "priceCurrency": "USD"
+                        }
+                    ]
+                }
+            ]
+        },
+        "paymentAccepted": "Credit Card, Debit Card, Bank Transfer",
+        "priceRange": "$500 - $5000+",
+        "knowsAbout": ["Brand Identity Design", "Logo Design", "Graphic Design", "Packaging Design", "Social Media Design", "Print Design", "Banner Design", "Poster Design", "Yard Signs", "Vehicle Magnets", "Business Cards", "Postcards", "Acrylic Signs", "Dibond Signs", "Foam Core Signs", "Vinyl Decal Design", "Signage Design", "Brand Strategy", "Visual Identity Systems", "Digital Marketing"],
+        "slogan": "Build Your Empire. Unapologetically Detroit."
+    }
+ </script>
+    <!-- WebSite Schema with SearchAction — enables sitelinks search in Google -->
+ <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "New Urban Influence",
+        "url": "https://newurbaninfluence.com",
+        "description": "Detroit branding agency for small businesses and startups. Professional brand identity packages from $1,500.",
+        "publisher": {
+            "@type": "Organization",
+            "name": "New Urban Influence",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://newurbaninfluence.com/logo.png"
+            }
+        },
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://newurbaninfluence.com/?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        },
+        "inLanguage": "en-US"
+    }
+ </script>
+
+    <!-- SiteNavigationElement Schema — helps crawlers understand site structure -->
+ <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            { "@type": "SiteNavigationElement", "name": "Home", "url": "https://newurbaninfluence.com/" },
+            { "@type": "SiteNavigationElement", "name": "About", "url": "https://newurbaninfluence.com/about" },
+            { "@type": "SiteNavigationElement", "name": "Services", "url": "https://newurbaninfluence.com/services/brand-identity-packages-detroit" },
+            { "@type": "SiteNavigationElement", "name": "Portfolio", "url": "https://newurbaninfluence.com/portfolio" },
+            { "@type": "SiteNavigationElement", "name": "Blog", "url": "https://newurbaninfluence.com/blog" },
+            { "@type": "SiteNavigationElement", "name": "Logo Design", "url": "https://newurbaninfluence.com/services/logo-design-detroit" },
+            { "@type": "SiteNavigationElement", "name": "Branding Packages", "url": "https://newurbaninfluence.com/services/branding-agency-detroit" },
+            { "@type": "SiteNavigationElement", "name": "Brand Identity", "url": "https://newurbaninfluence.com/services/brand-identity-packages-detroit" },
+            { "@type": "SiteNavigationElement", "name": "Web Design", "url": "https://newurbaninfluence.com/services/web-design-detroit" },
+            { "@type": "SiteNavigationElement", "name": "Get Started", "url": "https://newurbaninfluence.com/contact" }
+        ]
+    }
+ </script>
+
+    <!-- BreadcrumbList Schema — signals site hierarchy to search engines -->
+ <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://newurbaninfluence.com/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Services",
+                "item": "https://newurbaninfluence.com/services/brand-identity-packages-detroit"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Portfolio",
+                "item": "https://newurbaninfluence.com/portfolio"
+            },
+            {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "Blog",
+                "item": "https://newurbaninfluence.com/blog"
+            }
+        ]
+    }
+ </script>
+
+    <!-- Individual Review Schemas — rich review snippets in search results -->
+ 
+
+    <!-- Google Analytics 4 -->
+ <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+ <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+ </script>
+
+    <!-- Favicon -->
+ <link rel="icon" type="image/x-icon" href="favicon.ico">
+ <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <!-- Preconnect for performance -->
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+ <link rel="preload" as="image" href="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1920&q=80" fetchpriority="high">
+ <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+ <link rel="dns-prefetch" href="https://js.stripe.com">
+ <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+ <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
+
+    <!-- Critical scripts only — env + supabase needed for data -->
+ <script src="/env.js" defer></script>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+ <script src="/supabase-client.js" defer></script>
+
+    <!-- Lazy-load non-critical scripts (Stripe, Google Identity) -->
+ <script>
+ function loadStripe(){if(window.Stripe)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://js.stripe.com/v3/';s.onload=r;document.head.appendChild(s);});}
+ function loadGoogleIdentity(){if(window.google&&window.google.accounts)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=r;document.head.appendChild(s);});}
+ </script>
+ <link rel="stylesheet" href="/assets/css/global.css">
+    <!-- Geo Meta Tags -->
+    <meta name="geo.region" content="US-MI">
+    <meta name="geo.placename" content="Detroit, Michigan">
+    <meta name="geo.position" content="42.3314;-83.0458">
+    <meta name="ICBM" content="42.3314, -83.0458">
+</head>
+<body>
+ <div class="scroll-progress" id="scrollProgress"></div>
+ <nav class="nav">
+<a class="logo" href="/" id="mainNavLogo" onclick="event.preventDefault(); showView('home');"><img src="icons/icon-192.png" alt="New Urban Influence – Detroit Branding Agency" width="36" height="36" style="height:36px;width:36px;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.position='static';this.nextElementSibling.style.clip='auto';this.nextElementSibling.style.width='auto';this.nextElementSibling.style.height='auto';this.nextElementSibling.style.overflow='visible';"><span style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">NUI | New Urban Influence</span></a>
+<div class="nav-links">
+<a href="/" class="active" data-view="home" onclick="event.preventDefault(); showView('home');">Home</a>
+<a href="/about" data-view="about" onclick="event.preventDefault(); showView('about');">About</a>
+<a href="/services/brand-identity-packages-detroit" data-view="services" onclick="event.preventDefault(); showView('services');">Services</a>
+<a href="/portfolio" data-view="portfolio" onclick="event.preventDefault(); showView('portfolio');">Portfolio</a>
+<a href="/blog" data-view="blog" onclick="event.preventDefault(); showView('blog');">Blog</a>
+<a href="/app/" data-view="portal">Client Portal</a>
+</div>
+<a href="/contact" class="btn-cta btn-cta-desktop" onclick="event.preventDefault(); showView('intake');">Book a Strategy Call</a>
+<div class="hamburger" onclick="toggleMobileMenu()">
+<span></span><span></span><span></span>
+</div>
+ </nav>
+ <div class="mobile-menu" id="mobileMenu">
+<a href="/" data-view="home" onclick="event.preventDefault(); showView('home'); toggleMobileMenu();">Home</a>
+<a href="/about" data-view="about" onclick="event.preventDefault(); showView('about'); toggleMobileMenu();">About</a>
+<a href="/services/brand-identity-packages-detroit" data-view="services" onclick="event.preventDefault(); showView('services'); toggleMobileMenu();">Services</a>
+<a href="/portfolio" data-view="portfolio" onclick="event.preventDefault(); showView('portfolio'); toggleMobileMenu();">Portfolio</a>
+<a href="/blog" data-view="blog" onclick="event.preventDefault(); showView('blog'); toggleMobileMenu();">Blog</a>
+<a href="/app/" data-view="portal" onclick="toggleMobileMenu();">Client Portal</a>
+<a href="/contact" class="btn-cta" style="margin-top: 24px;" onclick="event.preventDefault(); showView('intake'); toggleMobileMenu();">Book a Strategy Call</a>
+ </div>
+
+ <div class="view active" id="homeView"></div>
+ <div class="view" id="aboutView"></div>
+ <div class="view" id="servicesView"></div>
+ <div class="view" id="portfolioView"></div>
+ <div class="view" id="intakeView"></div>
+ <div class="view" id="blogView"></div>
+
+<!-- GSAP for premium animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+<!-- Marketing only — admin/portal/designer scripts live in /app/ -->
+<script src="/assets/js/core.js"></script>
+<script src="/assets/js/router.js"></script>
+<script src="/assets/js/marketing.js"></script>
+
+<!-- Supabase & Stripe already loaded in <head> with defer -->
+
+ <script>
+        // Scroll Progress Indicator
+        window.addEventListener('scroll', function() {
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var progress = (scrollTop / scrollHeight) * 100;
+            var bar = document.getElementById('scrollProgress');
+            if (bar) bar.style.width = progress + '%';
+        });
+ </script>
+
+    <!-- Service Worker: DO NOT register — we killed the SW permanently.
+         The cache-buster in <head> handles unregistration.
+         The self-destruct sw.js on the server handles browsers that auto-check. -->
+
+
+</body>
+</html>

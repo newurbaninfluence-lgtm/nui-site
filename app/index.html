@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NUI Portal | New Urban Influence</title>
+
+  <!-- No SEO schema needed for app pages — not indexed -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#dc2626">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="NUI Portal">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://js.stripe.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Critical scripts -->
+  <script src="/env.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="/supabase-client.js" defer></script>
+
+  <!-- Lazy-load Stripe + Google Identity -->
+  <script>
+  function loadStripe(){if(window.Stripe)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://js.stripe.com/v3/';s.onload=r;document.head.appendChild(s);});}
+  function loadGoogleIdentity(){if(window.google&&window.google.accounts)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=r;document.head.appendChild(s);});}
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/global.css">
+</head>
+<body>
+  <!-- Minimal nav — just logo + back to site -->
+  <nav class="nav">
+    <a class="logo" href="/" id="mainNavLogo">
+      <img src="/icons/icon-192.png" alt="New Urban Influence" width="36" height="36" style="height:36px;width:36px;display:block;">
+    </a>
+    <div class="nav-links">
+      <a href="/">← Back to Site</a>
+    </div>
+  </nav>
+
+  <!-- Portal view — login form + dashboards render here -->
+  <div class="view active" id="portalView"></div>
+
+  <!-- Hidden marketing view containers (admin CMS saves refresh these) -->
+  <div class="view" id="homeView" style="display:none;"></div>
+  <div class="view" id="aboutView" style="display:none;"></div>
+  <div class="view" id="servicesView" style="display:none;"></div>
+  <div class="view" id="portfolioView" style="display:none;"></div>
+  <div class="view" id="blogView" style="display:none;"></div>
+  <div class="view" id="intakeView" style="display:none;"></div>
+
+  <!-- App scripts — full stack for admin/client/designer -->
+  <script src="/assets/js/core.js"></script>
+  <script src="/assets/js/router.js"></script>
+  <script src="/assets/js/marketing.js"></script>
+  <script src="/assets/js/portal.js"></script>
+  <script src="/assets/js/admin-core.js"></script>
+
+  <!-- Client/CRM system (split from monolith) -->
+  <script src="/assets/js/admin-clients-core.js"></script>
+  <script src="/assets/js/admin-orders.js"></script>
+  <script src="/assets/js/admin-leads.js"></script>
+  <script src="/assets/js/admin-new-forms.js"></script>
+  <script src="/assets/js/admin-assets-mgr.js"></script>
+  <script src="/assets/js/admin-order-ops.js"></script>
+  <script src="/assets/js/admin-invoices.js"></script>
+  <script src="/assets/js/admin-payment-gate.js"></script>
+  <script src="/assets/js/admin-submissions.js"></script>
+  <script src="/assets/js/admin-crm.js"></script>
+
+  <!-- Client-facing portal -->
+  <script src="/assets/js/client-portal.js"></script>
+  <script src="/assets/js/client-proofs.js"></script>
+  <script src="/assets/js/client-messaging.js"></script>
+  <script src="/assets/js/client-booking.js"></script>
+  <script src="/assets/js/brand-portal.js"></script>
+  <script src="/assets/js/service-intake.js"></script>
+
+  <!-- Existing splits -->
+  <script src="/assets/js/admin-projects.js"></script>
+  <script src="/assets/js/admin-payments.js"></script>
+  <script src="/assets/js/admin-designer.js"></script>
+  <script src="/assets/js/admin-stats.js"></script>
+  <script src="/assets/js/designer.js"></script>
+  <script src="/assets/js/client.js"></script>
+  <script src="/assets/js/email-subs.js"></script>
+
+  <!-- Auto-load portal view on app entry -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    initializeTheme();
+    if (typeof updateSiteLogos === 'function') updateSiteLogos();
+    // Load portal (login/dashboard) immediately
+    if (typeof loadPortalView === 'function') {
+      loadPortalView();
+    }
+    // Hydrate data from backend (non-blocking)
+    if (typeof hydrateFromBackend === 'function') {
+      hydrateFromBackend().then(function(hydrated) {
+        if (hydrated) console.log('✅ App data hydrated from Supabase');
+      }).catch(function(e) {
+        console.log('Backend hydration skipped:', e.message);
+      });
+    }
+  });
+  </script>
+</body>
+</html>

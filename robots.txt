@@ -1,0 +1,10 @@
+# robots.txt for New Urban Influence
+# https://newurbaninfluence.com
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /netlify/
+
+# Sitemap
+Sitemap: https://newurbaninfluence.com/sitemap.xml

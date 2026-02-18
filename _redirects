@@ -1,0 +1,10 @@
+# NUI Redirects — Specific routes FIRST, SPA fallback LAST
+# Netlify processes _redirects top-to-bottom, first match wins
+
+# Portal → dedicated app shell (admin/client/designer)
+/portal    /app/index.html   200
+/portal/*  /app/index.html   200
+/app       /app/index.html   200
+
+# SPA catch-all ONLY for unmatched routes (must be last)
+# All other routes are handled by netlify.toml specific rules

@@ -1,0 +1,154 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Service pages — serve actual HTML files
+[[redirects]]
+  from = "/services/:service"
+  to = "/services/:service.html"
+  status = 200
+
+# Blog index
+[[redirects]]
+  from = "/blog"
+  to = "/blog/index.html"
+  status = 200
+
+# Blog posts
+[[redirects]]
+  from = "/blog/:post"
+  to = "/blog/:post.html"
+  status = 200
+
+# Case study pages
+[[redirects]]
+  from = "/work/:project"
+  to = "/work/:project.html"
+  status = 200
+
+# Geo landing pages — serve actual HTML files
+[[redirects]]
+  from = "/locations/:city"
+  to = "/locations/:city.html"
+  status = 200
+
+# About page
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 200
+
+# Portfolio page
+[[redirects]]
+  from = "/portfolio"
+  to = "/portfolio.html"
+  status = 200
+
+# Contact page
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+
+# Portal → App shell (dedicated admin/client/designer app)
+[[redirects]]
+  from = "/portal"
+  to = "/app/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/portal/*"
+  to = "/app/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/app"
+  to = "/app/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/app/*"
+  to = "/app/index.html"
+  status = 200
+
+# SPA fallback — Netlify auto-routes /.netlify/functions/* before this (MUST BE LAST)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Environment variables (set these in Netlify Dashboard)
+# ---- REQUIRED ----
+# SUPABASE_URL              ✅ already set
+# SUPABASE_ANON_KEY         ✅ already set
+# SUPABASE_SERVICE_KEY      ✅ already set
+# ---- EMAIL (Hostinger SMTP via nodemailer) ----
+# HOSTINGER_EMAIL           ✅ already set
+# HOSTINGER_PASSWORD        ✅ already set
+# MAIL_FROM                 ⬅ add this
+# ---- SMS ----
+# OPENPHONE_API_KEY         ✅ already set
+# OPENPHONE_PHONE_NUMBER    ✅ already set
+# ---- PAYMENTS ----
+# STRIPE_SECRET_KEY         ✅ already set
+# STRIPE_WEBHOOK_SECRET     ⬅ add this
+# ---- SOCIAL OAUTH ----
+# INSTAGRAM_APP_ID
+# INSTAGRAM_APP_SECRET
+# FACEBOOK_APP_ID
+# FACEBOOK_APP_SECRET
+# LINKEDIN_CLIENT_ID
+# LINKEDIN_CLIENT_SECRET
+# ---- OPTIONAL ----
+# GOOGLE_PLACES_API_KEY
+# PEXELS_API_KEY
+
+# Headers for security + performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-XSS-Protection = "1; mode=block"
+
+# Cache static assets aggressively
+[[headers]]
+  for = "/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+# Service worker must NEVER be cached — critical for updates on Safari/mobile
+# MUST come AFTER the generic /*.js rule — Netlify last-match wins for duplicate headers
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"
+    # Removed Clear-Site-Data — it was wiping IndexedDB image storage
+
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# HTML pages — always revalidate with server
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# index.html (SPA root) — never cache stale
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

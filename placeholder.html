@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NUI App - Setup Required</title>
+
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Stripe JS (for payments) -->
+  <script src="https://js.stripe.com/v3/"></script>
+
+  <!-- Environment Variables -->
+  <script src="/env.js"></script>
+
+  <!-- NUI Supabase Client -->
+  <script src="/supabase-client.js"></script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #e11d48, #ff6b6b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p {
+      color: #a0a0a0;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .steps {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: left;
+      margin-top: 24px;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .step-num {
+      background: #e11d48;
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+    .step-content {
+      flex: 1;
+    }
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .step-desc {
+      color: #888;
+      font-size: 0.9rem;
+    }
+    code {
+      background: rgba(225,29,72,0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #e11d48, #ff6b6b);
+      border-radius: 20px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">NUI</div>
+    <h1>Setup Required</h1>
+    <p>Your NUI App infrastructure is ready! Replace this file with your main application.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Copy Your App</div>
+          <div class="step-desc">Replace this file with your <code>NUI-Complete-App.html</code> content</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Add Script Tags</div>
+          <div class="step-desc">Add the Supabase, Stripe, and env.js script tags to your HTML head</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Set Environment Variables</div>
+          <div class="step-desc">Add your Supabase URL and keys in Netlify dashboard</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Deploy!</div>
+          <div class="step-desc">Push to GitHub and deploy on Netlify</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top: 24px; font-size: 0.9rem;">
+      See <code>INTEGRATION-GUIDE.md</code> and <code>README.md</code> for detailed instructions.
+    </p>
+  </div>
+
+  <script>
+    // Test Supabase connection
+    console.log('Supabase URL:', window.SUPABASE_URL);
+    if (window.NuiDB) {
+      console.log('NUI Database client loaded!');
+    }
+  </script>
+</body>
+</html>
