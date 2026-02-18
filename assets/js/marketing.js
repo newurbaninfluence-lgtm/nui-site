@@ -426,24 +426,28 @@ function loadHomeView() {
     const video = document.getElementById('heroVideo');
     if (video) { video.muted = true; video.play().catch(e => {}); }
 
-    // GSAP Empire Reveal — dramatic hero entrance sequence
-    if (typeof gsap !== 'undefined') {
+    // GSAP Empire Reveal — deferred to window.load so browser has calculated 3D space
+    function _nuiEmpireReveal() {
+        if (typeof gsap === 'undefined') return;
+        // Bail if hero isn't in DOM (user navigated away before load)
+        if (!document.querySelector('.empire-word')) return;
+
         var tl = gsap.timeline({ delay: 0.2 });
         // Badge drops in first with bounce
         tl.fromTo('.badge',
             { opacity: 0, y: -30, scale: 0.8 },
             { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: 'back.out(1.7)' }
         );
-        // BUILD and YOUR stagger up from deep below with scale punch
+        // BUILD and YOUR stagger up from deep below with scale punch + 3D tilt
         tl.fromTo('.empire-word:not(.red)',
             { opacity: 0, y: 80, scale: 0.85, rotationX: 15 },
             { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 1.0, ease: 'expo.out', stagger: 0.25 },
             '-=0.1'
         );
-        // EMPIRE lands heavy — bigger, slower, with crimson glow
+        // EMPIRE lands heavy — bigger, slower, with 3D depth
         tl.fromTo('.empire-word.red',
-            { opacity: 0, y: 100, scale: 0.7 },
-            { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: 'expo.out' },
+            { opacity: 0, y: 100, scale: 0.7, rotationX: 20 },
+            { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 1.4, ease: 'expo.out' },
             '-=0.3'
         );
         // Red word glow pulse — intense crimson bloom
@@ -463,6 +467,13 @@ function loadHomeView() {
         tl.fromTo('.scroll-indicator',
             { opacity: 0 },
             { opacity: 1, duration: 1, ease: 'power1.out' }, '-=0.2');
+    }
+
+    // Fire on window.load if page is still loading, otherwise fire on next frame
+    if (document.readyState === 'complete') {
+        requestAnimationFrame(_nuiEmpireReveal);
+    } else {
+        window.addEventListener('load', _nuiEmpireReveal, { once: true });
     }
 }
 
