@@ -11,7 +11,7 @@ function loadHomeView() {
 </div>
 <div class="hero-content">
 <div class="badge">Detroit's Premier Digital Agency</div>
-<h1 class="empire-headline"><span class="empire-word" style="display:inline-block;opacity:0;">BUILD</span> <span class="empire-word" style="display:inline-block;opacity:0;">YOUR</span><br><span class="empire-word" style="display:inline-block;opacity:0;color:var(--red);">EMPIRE</span></h1>
+<h1 class="empire-headline"><span class="empire-word">BUILD</span> <span class="empire-word">YOUR</span><br><span class="empire-word red">EMPIRE</span></h1>
 <p>Strategic branding & digital presence for business owners ready to dominate their market. <span>Your brand is your business. Make it unforgettable.</span></p>
 <div class="hero-buttons">
 <a href="/contact" class="btn-cta" onclick="event.preventDefault(); showView('intake');">Book Strategy Call</a>
