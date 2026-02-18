@@ -46,8 +46,8 @@ function loadAdminAssetsPanel() {
         <!-- Quick Access - Clients with Assets -->
 <div class="form-section">
 <div class="form-section-title">⭐ Quick Access - Clients with Assets</div>
-            ${clientsWithAssets.length === 0 ? '<p style="color: rgba(255,255,255,0.5);">No clients have assets yet. Select a client above to start uploading.</p>' : ''}
-<div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            ${clientsWithAssets.length === 0 ? '<p class="text-dim">No clients have assets yet. Select a client above to start uploading.</p>' : ''}
+<div class="flex-gap-12 flex-wrap">
                 ${clientsWithAssets.slice(0, 10).map(c => {
                     const assetCount = Object.values(c.assets || {}).reduce((s, arr) => s + (arr?.length || 0), 0);
                     const firstLogo = c.assets?.logos?.[0]?.data || '';
@@ -57,8 +57,8 @@ function loadAdminAssetsPanel() {
                             ${firstLogo ? '<img alt="Client brand logo" loading="lazy" src="' + firstLogo + '" style="width: 100%; height: 100%; object-fit: contain; padding: 4px;">' : '<span style="color: #fff; font-weight: 700;">' + c.name.charAt(0) + '</span>'}
 </div>
 <div>
-<div style="font-weight: 600; color: #fff;">${c.name}</div>
-<div style="font-size: 12px; color: rgba(255,255,255,0.5);">${assetCount} assets</div>
+<div class="text-bold-white">${c.name}</div>
+<div class="text-dim fs-12">${assetCount} assets</div>
 </div>
 </div>
                 `;}).join('')}
@@ -69,7 +69,7 @@ function loadAdminAssetsPanel() {
 <div id="assetUploadArea"></div>
 
         <!-- All Clients Assets Overview -->
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">📊 All Clients Asset Overview</div>
 <table class="data-table">
 <thead><tr><th>Client</th><th>Logos</th><th>Mockups</th><th>Social</th><th>Video</th><th>Fonts</th><th>Total</th><th>Actions</th></tr></thead>
@@ -79,13 +79,13 @@ function loadAdminAssetsPanel() {
                         const total = Object.values(a).reduce((s, arr) => s + (arr?.length || 0), 0);
                         return `
 <tr>
-<td style="font-weight: 600;">${c.name}</td>
+<td class="fw-600">${c.name}</td>
 <td>${a.logos?.length || 0}</td>
 <td>${a.mockups?.length || 0}</td>
 <td>${a.social?.length || 0}</td>
 <td>${a.video?.length || 0}</td>
 <td>${a.fonts?.length || 0}</td>
-<td style="font-weight: 600;">${total}</td>
+<td class="fw-600">${total}</td>
 <td>
 <button class="btn-admin small" onclick="selectAssetClient(${c.id})">View</button>
                                 ${total > 0 ? '<button class="btn-admin small primary" onclick="downloadClientAssets(' + c.id + ')">Download</button>' : ''}
@@ -134,9 +134,9 @@ function renderAssetUpload() {
 <div class="upload-zone" onclick="document.getElementById('assetFile').click();" ondragover="event.preventDefault(); this.style.borderColor='var(--red)';" ondragleave="this.style.borderColor='#ccc';" ondrop="handleAssetDrop(event);">
 <p>Drag & drop files here or <span>browse</span></p>
 <small>PNG, JPG, SVG, MP4, ZIP supported</small>
-<input type="file" id="assetFile" style="display: none;" multiple onchange="handleAssetUpload(event)">
+<input type="file" id="assetFile" class="hidden" multiple onchange="handleAssetUpload(event)">
 </div>
-<h3 style="margin-bottom: 16px;">Current ${categoryName} (${currentAssets.length})</h3>
+<h3 class="mb-16">Current ${categoryName} (${currentAssets.length})</h3>
 <div class="assets-grid">${currentAssets.map((a, i) => `
 <div class="asset-card">
 <div class="asset-preview">${a.data && a.data.startsWith('data:image') ? `<img alt="Brand asset preview" loading="lazy" src="${a.data}">` : a.type}</div>

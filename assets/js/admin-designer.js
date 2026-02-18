@@ -7,13 +7,13 @@ let portfolioAssetCategory = 'primaryLogo';
 
 function loadAdminPortfolioPanel() {
     document.getElementById('adminPortfolioPanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-<h2 style="font-size: 28px; font-weight: 700;">Portfolio Case Studies</h2>
+<div class="flex-between mb-32">
+<h2 class="fs-28 fw-700">Portfolio Case Studies</h2>
 <button onclick="addNewPortfolioCase()" class="btn-cta">+ Add Case Study</button>
 </div>
 <div class="card-grid">
             ${portfolioData.map(p => `
-<div class="client-card" style="cursor: pointer;" onclick="editPortfolioCase('${p.id}')">
+<div class="client-card pointer" onclick="editPortfolioCase('${p.id}')">
 <div class="client-card-header" style="background: linear-gradient(135deg, ${p.colors[0]}, ${p.colors[1]});">
 <img alt="Client project logo" loading="lazy" src="${(p.assets?.primaryLogo || p.img) && !(p.assets?.primaryLogo || p.img).startsWith('idb://') ? (p.assets?.primaryLogo || p.img) : ''}" data-idb-src="${p.assets?.primaryLogo || p.img || ''}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
 </div>
@@ -43,7 +43,7 @@ function renderPortfolioEditor() {
 <h2 style="font-size: 24px; font-weight: 700; color:#fff;">Edit: ${p.name}</h2>
 <button onclick="currentPortfolioCase = null; loadAdminPortfolioPanel();" style="background: none; border: none; font-size: 24px; cursor: pointer; color:rgba(255,255,255,0.5);">×</button>
 </div>
-<div style="padding: 24px;">
+<div class="p-24">
 <div class="form-section">
 <div class="form-section-title">Basic Info</div>
 <div class="form-row">
@@ -55,13 +55,13 @@ function renderPortfolioEditor() {
 <div class="form-group"><label class="form-label">Mission Statement</label><textarea class="form-input" rows="3" onchange="updatePortfolioField('${p.id}', 'mission', this.value)" placeholder="What is the brand's mission?">${p.mission || ''}</textarea></div>
 <div class="form-group"><label class="form-label">Website URL</label><input type="url" class="form-input" value="${p.websiteUrl || ''}" onchange="updatePortfolioField('${p.id}', 'websiteUrl', this.value)" placeholder="https://example.com"></div>
 </div>
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">Hero Banner Image (21:9 Full Width)</div>
 <div style="aspect-ratio: 21/9; border: 2px dashed #ddd; border-radius: 16px; overflow: hidden; background: linear-gradient(135deg, ${p.colors[0]} 0%, ${p.colors[1]} 100%); position: relative;">
                             ${p.img ? `<img alt="Portfolio project image" loading="lazy" src="${!p.img.startsWith('idb://') ? p.img : ''}" data-idb-src="${p.img}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;">` : ''}
 <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
 <div style="font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">${p.name}</div>
-<input type="file" id="heroImageUpload" style="display: none;" onchange="uploadPortfolioHero('${p.id}', this)">
+<input type="file" id="heroImageUpload" class="hidden" onchange="uploadPortfolioHero('${p.id}', this)">
 <button onclick="document.getElementById('heroImageUpload').click()" style="padding: 12px 24px; background: rgba(0,0,0,0.7); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; backdrop-filter: blur(10px);">Upload Hero Image</button>
 <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
 <input type="text" id="heroImageUrl" placeholder="Or paste image URL..." style="padding:8px 12px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:6px;font-size:12px;width:260px;backdrop-filter:blur(10px);" onkeydown="if(event.key==='Enter'){const p=portfolioData.find(x=>x.id==='${p.id}');if(p){p.img=this.value.trim();savePortfolio();loadAdminPortfolioPanel();}}">
@@ -70,7 +70,7 @@ function renderPortfolioEditor() {
 </div>
 </div>
 </div>
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">Logo System (1:1 Square)</div>
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
 <div style="aspect-ratio: 1/1; border: 2px dashed #ddd; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; background: #fafafa;">
@@ -79,7 +79,7 @@ function renderPortfolioEditor() {
                                     ${p.assets?.primaryLogo ? `<img alt="Client primary logo" loading="lazy" src="${!p.assets.primaryLogo.startsWith('idb://') ? p.assets.primaryLogo : ''}" data-idb-src="${p.assets.primaryLogo}" style="max-height: 100%; max-width: 100%; object-fit: contain;">` : '<div style="color: #ccc; font-size: 13px;">No logo</div>'}
 </div>
 <div style="padding: 16px; background: #f0f0f0; text-align: center;">
-<input type="file" id="primaryLogoUpload" style="display: none;" onchange="uploadPortfolioAsset('${p.id}', 'primaryLogo', this)">
+<input type="file" id="primaryLogoUpload" class="hidden" onchange="uploadPortfolioAsset('${p.id}', 'primaryLogo', this)">
 <button onclick="document.getElementById('primaryLogoUpload').click()" style="padding: 10px 20px; background: #000; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600;">Upload</button>
 </div>
 </div>
@@ -89,7 +89,7 @@ function renderPortfolioEditor() {
                                     ${p.assets?.secondaryLogo ? `<img alt="Client secondary logo" loading="lazy" src="${!p.assets.secondaryLogo.startsWith('idb://') ? p.assets.secondaryLogo : ''}" data-idb-src="${p.assets.secondaryLogo}" style="max-height: 100%; max-width: 100%; object-fit: contain;">` : '<div style="color: #ccc; font-size: 13px;">No logo</div>'}
 </div>
 <div style="padding: 16px; background: #f0f0f0; text-align: center;">
-<input type="file" id="secondaryLogoUpload" style="display: none;" onchange="uploadPortfolioAsset('${p.id}', 'secondaryLogo', this)">
+<input type="file" id="secondaryLogoUpload" class="hidden" onchange="uploadPortfolioAsset('${p.id}', 'secondaryLogo', this)">
 <button onclick="document.getElementById('secondaryLogoUpload').click()" style="padding: 10px 20px; background: #000; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600;">Upload</button>
 </div>
 </div>
@@ -99,17 +99,17 @@ function renderPortfolioEditor() {
                                     ${p.assets?.iconMark ? `<img alt="Client icon mark" loading="lazy" src="${!p.assets.iconMark.startsWith('idb://') ? p.assets.iconMark : ''}" data-idb-src="${p.assets.iconMark}" style="max-height: 100%; max-width: 100%; object-fit: contain;">` : '<div style="color: #ccc; font-size: 13px;">No icon</div>'}
 </div>
 <div style="padding: 16px; background: #f0f0f0; text-align: center;">
-<input type="file" id="iconMarkUpload" style="display: none;" onchange="uploadPortfolioAsset('${p.id}', 'iconMark', this)">
+<input type="file" id="iconMarkUpload" class="hidden" onchange="uploadPortfolioAsset('${p.id}', 'iconMark', this)">
 <button onclick="document.getElementById('iconMarkUpload').click()" style="padding: 10px 20px; background: #000; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600;">Upload</button>
 </div>
 </div>
 </div>
 </div>
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">Color Palette</div>
 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
                             ${p.colors.map((c, i) => `
-<div style="text-align: center;">
+<div class="text-center">
 <input type="color" value="${c}" onchange="updatePortfolioColor('${p.id}', ${i}, this.value)" style="width: 60px; height: 60px; border: none; border-radius: 8px; cursor: pointer;">
 <div style="font-size: 11px; color: #888; margin-top: 4px;">${c}</div>
 </div>
@@ -117,14 +117,14 @@ function renderPortfolioEditor() {
 <button onclick="addPortfolioColor('${p.id}')" style="width: 60px; height: 60px; border: 2px dashed #ddd; border-radius: 8px; background: none; cursor: pointer; font-size: 24px; color: #ccc;">+</button>
 </div>
 </div>
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">Font System</div>
 <div class="form-row">
 <div class="form-group"><label class="form-label">Heading Font</label><input type="text" class="form-input" value="${p.fonts?.heading || ''}" onchange="updatePortfolioFont('${p.id}', 'heading', this.value)"></div>
 <div class="form-group"><label class="form-label">Body Font</label><input type="text" class="form-input" value="${p.fonts?.body || ''}" onchange="updatePortfolioFont('${p.id}', 'body', this.value)"></div>
 </div>
 </div>
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">Brand Mockups (Image / Video)</div>
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
                             ${(p.assets?.mockups || []).map((m, i) => `
@@ -136,13 +136,13 @@ function renderPortfolioEditor() {
                             `).join('')}
 <div style="border: 2px dashed #ddd; border-radius: 16px; aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #fafafa;">
 <div style="width: 48px; height: 48px; border: 2px dashed #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #ccc;">▶</div>
-<input type="file" id="mockupUpload" accept="image/*,video/*" style="display: none;" onchange="uploadPortfolioMockup('${p.id}', this)">
+<input type="file" id="mockupUpload" accept="image/*,video/*" class="hidden" onchange="uploadPortfolioMockup('${p.id}', this)">
 <button onclick="document.getElementById('mockupUpload').click()" style="padding: 12px 24px; background: #000; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">+ Add Image / Video</button>
 <div style="font-size: 11px; color: #888;">Supports JPG, PNG, MP4, WebM</div>
 </div>
 </div>
 </div>
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">Results</div>
 <div class="form-row" style="grid-template-columns: repeat(3, 1fr);">
 <div class="form-group"><label class="form-label">Revenue Growth</label><input type="text" class="form-input" value="${p.results?.revenue || ''}" onchange="updatePortfolioResult('${p.id}', 'revenue', this.value)"></div>
@@ -314,14 +314,14 @@ function loadAdminAboutPanel() {
 </div>
 <div>
 <p style="color:rgba(255,255,255,0.5);margin-bottom:16px;">Upload an image for the "Our Story" section. Recommended: 800x1000px (4:5 ratio)</p>
-<input type="file" id="storyImageUpload" accept="image/*" style="display:none;" onchange="uploadAboutStoryImage(this)">
+<input type="file" id="storyImageUpload" accept="image/*" class="hidden" onchange="uploadAboutStoryImage(this)">
 <button onclick="document.getElementById('storyImageUpload').click()" style="padding:12px 24px;background:#e63946;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Upload Story Image</button>
                     ${aboutData.storyImage ? `<button onclick="removeAboutStoryImage()" style="padding:12px 24px;background:rgba(230,57,70,0.15);color:#e63946;border:none;border-radius:8px;cursor:pointer;margin-left:12px;">Remove</button>` : ''}
 </div>
 </div>
 </div>
 
-<div class="form-section" style="margin-top:32px;">
+<div class="form-section mt-32">
 <div class="form-section-title">Team Members (${aboutData.team.length})</div>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
                 ${aboutData.team.map((member, i) => `
@@ -330,7 +330,7 @@ function loadAdminAboutPanel() {
 <div style="aspect-ratio:3/4;background:rgba(255,255,255,0.03);border:2px dashed rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
                             ${member.photo ? `<img alt="Team member photo" loading="lazy" src="${!member.photo.startsWith('idb://') ? member.photo : ''}" data-idb-src="${member.photo}" style="width:100%;height:100%;object-fit:cover;">` : '<span style="color:rgba(255,255,255,0.25);font-size:12px;">No Photo</span>'}
 </div>
-<input type="file" id="teamPhoto${i}" accept="image/*" style="display:none;" onchange="uploadTeamPhoto(${i}, this)">
+<input type="file" id="teamPhoto${i}" accept="image/*" class="hidden" onchange="uploadTeamPhoto(${i}, this)">
 <button onclick="document.getElementById('teamPhoto${i}').click()" style="width:100%;padding:10px;background:rgba(255,255,255,0.1);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;margin-bottom:8px;">Upload Photo</button>
                         ${member.photo ? `<button onclick="removeTeamPhoto(${i})" style="width:100%;padding:10px;background:rgba(230,57,70,0.15);color:#e63946;border:none;border-radius:6px;cursor:pointer;font-size:12px;margin-bottom:12px;">Remove Photo</button>` : ''}
 <div class="form-group" style="margin-bottom:12px;">
@@ -348,7 +348,7 @@ function loadAdminAboutPanel() {
 </div>
                 `).join('')}
 </div>
-<div style="margin-top:20px;">
+<div class="mt-20">
 <button onclick="addTeamMember()" style="padding:12px 24px;background:#e63946;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;">+ Add Team Member</button>
 </div>
 </div>
@@ -479,7 +479,7 @@ function loadAdminSiteImagesPanel() {
 
         <!-- CMS LOGO MANAGEMENT SECTION -->
 <div class="form-section" style="background: linear-gradient(135deg, rgba(255,0,0,0.1), rgba(255,107,107,0.05)); border: 1px solid rgba(255,0,0,0.2); border-radius: 12px; padding: 24px; margin-bottom: 32px;">
-<div class="form-section-title" style="color: var(--red);">🎨 Brand Identity (CMS)</div>
+<div class="form-section-title text-red">🎨 Brand Identity (CMS)</div>
 <p style="color: var(--admin-text-muted); font-size: 13px; margin-bottom: 20px;">These logos and taglines appear across the entire website header and footer.</p>
 
 <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
@@ -492,8 +492,8 @@ function loadAdminSiteImagesPanel() {
                             ${siteImages.headerLogo?.url ? `<button class="btn-admin danger" onclick="clearSiteImage('headerLogo')">Remove</button>` : ''}
 </div>
 </div>
-<input type="file" id="headerLogoUpload" accept="image/*" style="display: none;" onchange="uploadSiteImage('headerLogo', this)">
-<div class="image-upload-info" style="padding: 16px;">
+<input type="file" id="headerLogoUpload" accept="image/*" class="hidden" onchange="uploadSiteImage('headerLogo', this)">
+<div class="image-upload-info p-16">
 <span class="image-upload-label" style="font-weight: 600; color: var(--admin-text);">Header Logo</span>
 <span class="image-upload-hint" style="color: var(--admin-text-muted);">300x80px recommended (PNG/SVG)</span>
 </div>
@@ -508,8 +508,8 @@ function loadAdminSiteImagesPanel() {
                             ${siteImages.footerLogo?.url ? `<button class="btn-admin danger" onclick="clearSiteImage('footerLogo')">Remove</button>` : ''}
 </div>
 </div>
-<input type="file" id="footerLogoUpload" accept="image/*" style="display: none;" onchange="uploadSiteImage('footerLogo', this)">
-<div class="image-upload-info" style="padding: 16px;">
+<input type="file" id="footerLogoUpload" accept="image/*" class="hidden" onchange="uploadSiteImage('footerLogo', this)">
+<div class="image-upload-info p-16">
 <span class="image-upload-label" style="font-weight: 600; color: var(--admin-text);">Footer Logo</span>
 <span class="image-upload-hint" style="color: var(--admin-text-muted);">300x80px recommended (PNG/SVG)</span>
 </div>
@@ -524,7 +524,7 @@ function loadAdminSiteImagesPanel() {
                         placeholder="e.g., BUILD YOUR EMPIRE"
                         style="width: 100%; padding: 12px 16px; border: 1px solid var(--admin-border); border-radius: 8px; font-size: 14px; background: var(--admin-input-bg); color: var(--admin-text);"
                         onchange="siteImages.tagline = this.value; saveSiteImages();">
-<span style="font-size: 12px; color: var(--admin-text-muted);">Appears in navigation and footer</span>
+<span class="admin-text-muted-xs">Appears in navigation and footer</span>
 </div>
 <div>
 <label style="display: block; font-weight: 600; color: var(--admin-text); margin-bottom: 8px;">Hero Tagline</label>
@@ -532,7 +532,7 @@ function loadAdminSiteImagesPanel() {
                         placeholder="e.g., UNAPOLOGETICALLY DETROIT"
                         style="width: 100%; padding: 12px 16px; border: 1px solid var(--admin-border); border-radius: 8px; font-size: 14px; background: var(--admin-input-bg); color: var(--admin-text);"
                         onchange="siteImages.heroTagline = this.value; saveSiteImages();">
-<span style="font-size: 12px; color: var(--admin-text-muted);">Appears on homepage hero section</span>
+<span class="admin-text-muted-xs">Appears on homepage hero section</span>
 </div>
 </div>
 </div>
@@ -548,7 +548,7 @@ function loadAdminSiteImagesPanel() {
                             ${siteImages.hero?.url ? `<button class="btn-admin danger" onclick="clearSiteImage('hero')">Remove</button>` : ''}
 </div>
 </div>
-<input type="file" id="heroImageUpload" accept="image/*" style="display: none;" onchange="uploadSiteImage('hero', this)">
+<input type="file" id="heroImageUpload" accept="image/*" class="hidden" onchange="uploadSiteImage('hero', this)">
 <div class="image-upload-info"><span class="image-upload-label">Hero Background</span><span class="image-upload-hint">1920x1080 recommended</span></div>
 </div>
 <div class="image-upload-card">
@@ -559,7 +559,7 @@ function loadAdminSiteImagesPanel() {
                             ${siteImages.about?.url ? `<button class="btn-admin danger" onclick="clearSiteImage('about')">Remove</button>` : ''}
 </div>
 </div>
-<input type="file" id="aboutImageUpload" accept="image/*" style="display: none;" onchange="uploadSiteImage('about', this)">
+<input type="file" id="aboutImageUpload" accept="image/*" class="hidden" onchange="uploadSiteImage('about', this)">
 <div class="image-upload-info"><span class="image-upload-label">About Section</span><span class="image-upload-hint">1200x800 recommended</span></div>
 </div>
 </div>
@@ -575,7 +575,7 @@ function loadAdminSiteImagesPanel() {
 <button class="btn-admin primary" onclick="document.getElementById('service_${service.id}').click()">Upload</button>
 </div>
 </div>
-<input type="file" id="service_${service.id}" accept="image/*" style="display: none;" onchange="uploadServiceImage('${service.id}', this)">
+<input type="file" id="service_${service.id}" accept="image/*" class="hidden" onchange="uploadServiceImage('${service.id}', this)">
 <div class="image-upload-info">
 <span class="image-upload-label">${service.alt}</span>
 <span class="image-upload-hint">1920x600 recommended</span>
@@ -677,7 +677,7 @@ function loadAdminDesignersPanel(searchTerm = '') {
                             ${(designer.permissions || []).map(p => '<span class="tag" style="margin: 2px;">' + p + '</span>').join('')}
 </div>
 <div class="client-card-btns">
-<button style="background: var(--red); color: #fff;" onclick="editDesigner(${designer.id})">Edit</button>
+<button class="bg-red text-white" onclick="editDesigner(${designer.id})">Edit</button>
 <button style="background: rgba(255,255,255,0.1); color: #fff;" onclick="deleteDesigner(${designer.id})">Delete</button>
 </div>
 </div>
@@ -685,13 +685,13 @@ function loadAdminDesignersPanel(searchTerm = '') {
             `).join('')}
 </div>
         ` : '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 40px;">No designers found.</p>'}
-<div class="form-section" style="margin-top: 32px;">
+<div class="form-section mt-32">
 <div class="form-section-title">🔐 Designer Login Credentials</div>
 <p style="color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 16px;">Designers can log in at the portal with these credentials:</p>
 <table class="data-table">
 <thead><tr><th>Name</th><th>Email</th><th>Password</th><th>Role</th></tr></thead>
 <tbody>
-                    ${filtered.length === 0 ? '<tr><td colspan="4" style="text-align: center;">No designers</td></tr>' : ''}
+                    ${filtered.length === 0 ? '<tr><td colspan="4" class="text-center">No designers</td></tr>' : ''}
                     ${filtered.map(d => '<tr><td>' + d.name + '</td><td>' + d.email + '</td><td>' + d.password + '</td><td>' + d.role + '</td></tr>').join('')}
 </tbody>
 </table>
@@ -735,10 +735,10 @@ function showAddDesignerModal() {
 <div class="form-group">
 <label class="form-label">Permissions</label>
 <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;"><input type="checkbox" id="permProjects" checked> Projects</label>
-<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;"><input type="checkbox" id="permProofs" checked> Proofs</label>
-<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;"><input type="checkbox" id="permAssets" checked> Assets</label>
-<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;"><input type="checkbox" id="permClients"> Clients</label>
+<label class="flex-center-gap-8 pointer"><input type="checkbox" id="permProjects" checked> Projects</label>
+<label class="flex-center-gap-8 pointer"><input type="checkbox" id="permProofs" checked> Proofs</label>
+<label class="flex-center-gap-8 pointer"><input type="checkbox" id="permAssets" checked> Assets</label>
+<label class="flex-center-gap-8 pointer"><input type="checkbox" id="permClients"> Clients</label>
 </div>
 </div>
 </div>
@@ -787,10 +787,10 @@ function editDesigner(id) {
 <div class="form-group">
 <label class="form-label">Permissions</label>
 <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;"><input type="checkbox" id="permProjects" ${designer.permissions.includes('projects') ? 'checked' : ''}> Projects</label>
-<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;"><input type="checkbox" id="permProofs" ${designer.permissions.includes('proofs') ? 'checked' : ''}> Proofs</label>
-<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;"><input type="checkbox" id="permAssets" ${designer.permissions.includes('assets') ? 'checked' : ''}> Assets</label>
-<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;"><input type="checkbox" id="permClients" ${designer.permissions.includes('clients') ? 'checked' : ''}> Clients</label>
+<label class="flex-center-gap-8 pointer"><input type="checkbox" id="permProjects" ${designer.permissions.includes('projects') ? 'checked' : ''}> Projects</label>
+<label class="flex-center-gap-8 pointer"><input type="checkbox" id="permProofs" ${designer.permissions.includes('proofs') ? 'checked' : ''}> Proofs</label>
+<label class="flex-center-gap-8 pointer"><input type="checkbox" id="permAssets" ${designer.permissions.includes('assets') ? 'checked' : ''}> Assets</label>
+<label class="flex-center-gap-8 pointer"><input type="checkbox" id="permClients" ${designer.permissions.includes('clients') ? 'checked' : ''}> Clients</label>
 </div>
 </div>
 </div>
@@ -857,7 +857,7 @@ function loadAdminBrandGuidePanel() {
         <!-- Brand Guides Grid (Portfolio Style) -->
 <div class="form-section">
 <div class="form-section-title">📁 Brand Guides</div>
-            ${clientProofs.length === 0 ? '<p style="color: rgba(255,255,255,0.5);">No brand guides created yet. Click "Create Brand Guide" to get started.</p>' : ''}
+            ${clientProofs.length === 0 ? '<p class="text-dim">No brand guides created yet. Click "Create Brand Guide" to get started.</p>' : ''}
 <div class="card-grid">
                 ${clientProofs.map(proof => {
                     const client = clients.find(c => c.id == proof.clientId);
@@ -878,8 +878,8 @@ function loadAdminBrandGuidePanel() {
 <div style="margin-top: 8px; font-size: 11px; color: rgba(255,255,255,0.5);">
                                 ${proof.revisionCount || 0} revisions • ${proof.comments?.length || 0} comments
 </div>
-<div class="client-card-btns" style="margin-top: 12px;">
-<button style="background: var(--red); color: #fff;" onclick="event.stopPropagation(); editBrandGuidePortfolio(${proof.id})">Edit</button>
+<div class="client-card-btns mt-12">
+<button class="bg-red text-white" onclick="event.stopPropagation(); editBrandGuidePortfolio(${proof.id})">Edit</button>
 <button style="background: rgba(255,255,255,0.1); color: #fff;" onclick="event.stopPropagation(); sendProofToClient(${proof.id})">Send</button>
 </div>
 </div>
@@ -894,13 +894,13 @@ function loadAdminBrandGuidePanel() {
 <table class="data-table">
 <thead><tr><th>Brand Guide</th><th>Client</th><th>Status</th><th>Payment</th><th>Last Update</th><th>Actions</th></tr></thead>
 <tbody>
-                    ${clientProofs.length === 0 ? '<tr><td colspan="6" style="text-align: center; opacity: 0.5;">No activity yet</td></tr>' : ''}
+                    ${clientProofs.length === 0 ? '<tr><td colspan="6" class="text-center opacity-50">No activity yet</td></tr>' : ''}
                     ${clientProofs.slice(-10).reverse().map(p => {
                         const client = clients.find(c => c.id == p.clientId);
                         const isPaid = checkClientPaymentStatus(p.clientId);
                         return `
 <tr>
-<td style="font-weight: 600;">${p.title}</td>
+<td class="fw-600">${p.title}</td>
 <td>${client?.name || 'N/A'}</td>
 <td><span class="status-badge ${p.status}">${p.status?.replace('_', ' ') || 'draft'}</span></td>
 <td>${isPaid ? '<span style="color: #2ecc71;">✓ Paid</span>' : '<span style="color: #f59e0b;">Pending</span>'}</td>
@@ -947,7 +947,7 @@ function renderBrandGuideEditor() {
 </div>
 </div>
 
-<div style="padding: 24px;">
+<div class="p-24">
                     <!-- Hero Banner (21:9) -->
 <div class="form-section">
 <div class="form-section-title">🖼️ Hero Banner Image (21:9 Full Width)</div>
@@ -956,14 +956,14 @@ function renderBrandGuideEditor() {
 <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
 <div style="font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">${p.title}</div>
                                 ${p.tagline ? '<div style="font-size: 16px; color: rgba(255,255,255,0.8);">' + p.tagline + '</div>' : ''}
-<input type="file" id="bgHeroUpload" style="display: none;" accept="image/*" onchange="uploadBrandGuideHero(${p.id}, this)">
+<input type="file" id="bgHeroUpload" class="hidden" accept="image/*" onchange="uploadBrandGuideHero(${p.id}, this)">
 <button onclick="document.getElementById('bgHeroUpload').click()" style="padding: 12px 24px; background: rgba(0,0,0,0.7); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Upload Hero Image</button>
 </div>
 </div>
 </div>
 
                     <!-- Basic Info -->
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">📝 Basic Info</div>
 <div class="form-row">
 <div class="form-group"><label class="form-label">Brand Name</label><input type="text" class="form-input" value="${p.title || ''}" onchange="updateBrandGuideField(${p.id}, 'title', this.value)"></div>
@@ -973,7 +973,7 @@ function renderBrandGuideEditor() {
 </div>
 
                     <!-- Logo System (1:1 Square) -->
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">🎨 Logo System (1:1 Square)</div>
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
                             ${['Primary Logo', 'Secondary Logo', 'Icon / Logo Mark'].map((label, i) => {
@@ -986,7 +986,7 @@ function renderBrandGuideEditor() {
                                         ${p[key] ? '<img alt="Brand asset image" loading="lazy" src="' + p[key] + '" style="max-height: 100%; max-width: 100%; object-fit: contain;">' : '<div style="color: #ccc; font-size: 13px;">No logo</div>'}
 </div>
 <div style="padding: 16px; background: rgba(255,255,255,0.05); text-align: center;">
-<input type="file" id="bgLogo${i}Upload" style="display: none;" accept="image/*" onchange="uploadBrandGuideAsset(${p.id}, '${key}', this)">
+<input type="file" id="bgLogo${i}Upload" class="hidden" accept="image/*" onchange="uploadBrandGuideAsset(${p.id}, '${key}', this)">
 <button onclick="document.getElementById('bgLogo${i}Upload').click()" style="padding: 10px 20px; background: var(--red); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600;">Upload</button>
 </div>
 </div>
@@ -995,11 +995,11 @@ function renderBrandGuideEditor() {
 </div>
 
                     <!-- Color Palette -->
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">🎨 Color Palette</div>
 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
                             ${(p.brandColors || ['#e63946', '#1d3557', '#f4a261']).map((c, i) => `
-<div style="text-align: center;">
+<div class="text-center">
 <input type="color" value="${c}" onchange="updateBrandGuideColor(${p.id}, ${i}, this.value)" style="width: 70px; height: 70px; border: none; border-radius: 12px; cursor: pointer;">
 <div style="font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; font-family: monospace;">${c}</div>
 </div>
@@ -1009,7 +1009,7 @@ function renderBrandGuideEditor() {
 </div>
 
                     <!-- Font System -->
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">🔤 Font System</div>
 <div class="form-row">
 <div class="form-group"><label class="form-label">Heading Font</label><input type="text" class="form-input" value="${p.fonts?.primary || ''}" onchange="updateBrandGuideFont(${p.id}, 'primary', this.value)"></div>
@@ -1018,7 +1018,7 @@ function renderBrandGuideEditor() {
 </div>
 
                     <!-- Brand Mockups -->
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">📸 Brand Mockups</div>
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
                             ${(p.mockups || []).map((m, i) => `
@@ -1028,7 +1028,7 @@ function renderBrandGuideEditor() {
 </div>
                             `).join('')}
 <div style="border: 2px dashed rgba(255,255,255,0.2); border-radius: 16px; aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;">
-<input type="file" id="bgMockupUpload" accept="image/*" style="display: none;" onchange="uploadBrandGuideMockup(${p.id}, this)">
+<input type="file" id="bgMockupUpload" accept="image/*" class="hidden" onchange="uploadBrandGuideMockup(${p.id}, this)">
 <button onclick="document.getElementById('bgMockupUpload').click()" style="padding: 12px 24px; background: var(--red); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">+ Add Mockup</button>
 </div>
 </div>
@@ -1066,8 +1066,8 @@ function renderBrandGuideEditor() {
 </div>
                                     `).join('')}
 </div>
-<div style="display: flex; gap: 8px;">
-<input type="text" id="bgNewComment" class="form-input" placeholder="Add a comment..." style="flex: 1;">
+<div class="flex-gap-8">
+<input type="text" id="bgNewComment" class="form-input" placeholder="Add a comment..." class="flex-1">
 <button class="btn-admin primary" onclick="addBrandGuideComment(${p.id})">Send</button>
 </div>
 </div>
@@ -1080,7 +1080,7 @@ function renderBrandGuideEditor() {
 <div class="form-section-title">${isPaid ? '✅ Ready for Download' : '🔒 Payment Required for Download'}</div>
                         ${isPaid ? `
 <p style="color: rgba(255,255,255,0.6); margin-bottom: 16px;">Client can now download their brand assets.</p>
-<div style="display: flex; gap: 12px; flex-wrap: wrap;">
+<div class="flex-gap-12 flex-wrap">
 <button class="btn-admin" style="background: #2ecc71; color: #fff;" onclick="downloadBrandGuidePackage(${p.id})">📥 Download Full Package</button>
 <button class="btn-admin secondary" onclick="emailBrandGuideToClient(${p.id})">📧 Email to Client</button>
 </div>
@@ -1250,11 +1250,11 @@ async function sendProofToClient(id) {
                     subject: `🎨 Your ${p.title || 'Brand Guide'} Proof is Ready for Review`,
                     html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #e63946, #ff6b6b); padding: 32px; text-align: center;">
-<h2 style="margin: 0; font-size: 24px; color: #fff;">Your Proof is Ready! 🎉</h2>
+<h2 class="m-0 fs-24 text-white">Your Proof is Ready! 🎉</h2>
 </div>
-<div style="padding: 32px;">
-<p style="color: #ccc; font-size: 16px;">Hey ${client?.name || 'there'},</p>
-<p style="color: #ccc; font-size: 16px;">Your <strong>${p.title || 'Brand Guide'}</strong> proof is ready for your review!</p>
+<div class="p-32">
+<p class="text-light">Hey ${client?.name || 'there'},</p>
+<p class="text-light">Your <strong>${p.title || 'Brand Guide'}</strong> proof is ready for your review!</p>
 <div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center;">
 <p style="color: #fff; font-weight: 600; margin-bottom: 16px;">What to do next:</p>
 <p style="color: #ccc; font-size: 14px; margin-bottom: 8px;">✅ <strong>Approve</strong> — if everything looks perfect</p>
@@ -1263,8 +1263,8 @@ async function sendProofToClient(id) {
 <p style="color: #ccc; font-size: 14px;">Log into your <a href="https://newurbaninfluence.com/#portal" style="color: #e63946; text-decoration: none; font-weight: 600;">Client Portal</a> to review and respond.</p>
 <p style="color: #888; font-size: 13px; margin-top: 24px;">Questions? Reply to this email or call (248) 487-8747.</p>
 </div>
-<div style="background: #050505; padding: 20px; text-align: center; border-top: 1px solid #222;">
-<p style="color: #666; font-size: 12px; margin: 0;">New Urban Influence • Detroit, MI</p>
+<div class="admin-footer-bar">
+<p class="text-muted fs-12 m-0">New Urban Influence • Detroit, MI</p>
 </div>
 </div>`,
                     text: `Hey ${client?.name || 'there'}, your ${p.title || 'Brand Guide'} proof is ready for review! Log into your client portal to approve or request revisions. — New Urban Influence`
@@ -1612,7 +1612,7 @@ function downloadBrandGuidePackage(id) {
         <!-- Footer -->
 <div class="footer">
 <p>Brand Guide for ${client?.name || 'Client'} • Generated on ${new Date().toLocaleDateString()}</p>
-<p style="margin-top: 12px;">© New Urban Influence • All Rights Reserved</p>
+<p class="mt-12">© New Urban Influence • All Rights Reserved</p>
 </div>
  </div>
 </body>
@@ -1720,24 +1720,24 @@ function showCreateBrandGuideModal() {
 <div class="form-group">
 <label class="form-label">Hero Image (Optional)</label>
 <input type="file" id="bgHeroImageUpload" accept="image/*" class="form-input" onchange="previewBrandGuideHeroImage(this)">
-<div id="bgHeroImagePreview" style="margin-top: 12px;"></div>
+<div id="bgHeroImagePreview" class="mt-12"></div>
 <p style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 8px;">Recommended: 21:9 aspect ratio for full width banner</p>
 </div>
 <div class="form-group">
 <label class="form-label">Primary Logo *</label>
 <input type="file" id="bgLogoUpload" accept="image/*" class="form-input" onchange="previewBrandGuideLogo(this)">
-<div id="bgLogoPreview" style="margin-top: 12px;"></div>
+<div id="bgLogoPreview" class="mt-12"></div>
 </div>
 <div class="form-row">
 <div class="form-group">
 <label class="form-label">Secondary Logo (Optional)</label>
 <input type="file" id="bgSecondaryLogoUpload" accept="image/*" class="form-input" onchange="previewBrandGuideSecondaryLogo(this)">
-<div id="bgSecondaryLogoPreview" style="margin-top: 12px;"></div>
+<div id="bgSecondaryLogoPreview" class="mt-12"></div>
 </div>
 <div class="form-group">
 <label class="form-label">Icon/Logo Mark (Optional)</label>
 <input type="file" id="bgIconMarkUpload" accept="image/*" class="form-input" onchange="previewBrandGuideIconMark(this)">
-<div id="bgIconMarkPreview" style="margin-top: 12px;"></div>
+<div id="bgIconMarkPreview" class="mt-12"></div>
 </div>
 </div>
 <div class="form-row">
@@ -1989,8 +1989,8 @@ function viewBrandGuide(id) {
     modal.innerHTML = `
 <div class="modal" style="max-width: 900px; max-height: 90vh; overflow: hidden;">
 <div class="modal-header" style="background: linear-gradient(135deg, ${guide.brandColors?.[0] || '#e63946'}, ${guide.brandColors?.[1] || '#1d3557'});">
-<h3 class="modal-title" style="color: #fff;">${guide.title} - Brand Guide</h3>
-<button class="modal-close" onclick="document.getElementById('viewBrandGuideModal').remove()" style="color: #fff;">×</button>
+<h3 class="modal-title text-white">${guide.title} - Brand Guide</h3>
+<button class="modal-close" onclick="document.getElementById('viewBrandGuideModal').remove()" class="text-white">×</button>
 </div>
 <div class="modal-body" style="max-height: 70vh; overflow-y: auto; background: #0a0a0a;">
                 <!-- Brand Header -->
@@ -2001,7 +2001,7 @@ function viewBrandGuide(id) {
 </div>
 
                 <!-- Color Palette -->
-<div style="margin-bottom: 32px;">
+<div class="mb-32">
 <h3 style="margin-bottom: 16px; font-size: 18px;">Color Palette</h3>
 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
                         ${guide.brandColors?.map((color, i) => `
@@ -2015,7 +2015,7 @@ function viewBrandGuide(id) {
 </div>
 
                 <!-- Typography -->
-<div style="margin-bottom: 32px;">
+<div class="mb-32">
 <h3 style="margin-bottom: 16px; font-size: 18px;">Typography</h3>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
 <div style="padding: 24px; background: rgba(255,255,255,0.05); border-radius: 12px;">
@@ -2033,7 +2033,7 @@ function viewBrandGuide(id) {
 
                 <!-- Brand Story -->
                 ${guide.description ? `
-<div style="margin-bottom: 32px;">
+<div class="mb-32">
 <h3 style="margin-bottom: 16px; font-size: 18px;">Brand Story</h3>
 <p style="line-height: 1.8; opacity: 0.9;">${guide.description}</p>
 </div>
@@ -2041,7 +2041,7 @@ function viewBrandGuide(id) {
 
                 <!-- Assets -->
                 ${guide.assets && guide.assets.length > 0 ? `
-<div style="margin-bottom: 32px;">
+<div class="mb-32">
 <h3 style="margin-bottom: 16px; font-size: 18px;">Brand Assets</h3>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">
                         ${guide.assets.map(asset => `
@@ -2177,12 +2177,12 @@ function loadAdminMoodboardPanel() {
                         }).join('')}
                         ${previewImages.length === 0 ? '<div style="grid-column: 1/-1; grid-row: 1/-1; display: flex; align-items: center; justify-content: center; color: #444; font-size: 48px;">🎨</div>' : ''}
 </div>
-<div style="padding: 16px;">
+<div class="p-16">
 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
 <h4 style="font-size: 15px; font-weight: 600;">${m.title || 'Untitled Moodboard'}</h4>
 <span style="padding: 3px 10px; border-radius: 20px; font-size: 11px; background: ${statusColors[m.status] || '#888'}20; color: ${statusColors[m.status] || '#888'};">${m.status}</span>
 </div>
-<div style="font-size: 13px; color: #888;">${client?.name || 'No Client'}</div>
+<div class="text-muted-sm">${client?.name || 'No Client'}</div>
 <div style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
                             ${colorItems.map(c => `<div style="width: 20px; height: 20px; border-radius: 50%; background: ${c.color}; border: 2px solid rgba(255,255,255,0.1);"></div>`).join('')}
 </div>
@@ -2196,22 +2196,22 @@ function loadAdminMoodboardPanel() {
         }).join('');
 
     document.getElementById('adminMoodboardPanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-<h2 style="font-size: 28px; font-weight: 700;">🎨 Moodboards</h2>
+<div class="flex-between mb-32">
+<h2 class="fs-28 fw-700">🎨 Moodboards</h2>
 <button onclick="showCreateMoodboardModal()" style="padding: 12px 24px; background: linear-gradient(135deg, #ff0000, #cc0000); color: #fff; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px;">+ New Moodboard</button>
 </div>
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px;">
-<div style="background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 20px; text-align: center;">
+<div class="admin-card-dark-center">
 <div style="font-size: 28px; font-weight: 700; color: #888;">${drafts}</div>
-<div style="font-size: 13px; color: #666;">Drafts</div>
+<div class="text-muted-sm">Drafts</div>
 </div>
-<div style="background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 20px; text-align: center;">
+<div class="admin-card-dark-center">
 <div style="font-size: 28px; font-weight: 700; color: #ffaa00;">${pending}</div>
-<div style="font-size: 13px; color: #666;">Sent / Pending</div>
+<div class="text-muted-sm">Sent / Pending</div>
 </div>
-<div style="background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 20px; text-align: center;">
+<div class="admin-card-dark-center">
 <div style="font-size: 28px; font-weight: 700; color: #44ff44;">${approved}</div>
-<div style="font-size: 13px; color: #666;">Approved</div>
+<div class="text-muted-sm">Approved</div>
 </div>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
@@ -2241,16 +2241,16 @@ function showCreateMoodboardModal() {
 <h3 class="modal-title">Create Moodboard</h3>
 <button class="modal-close" onclick="document.getElementById('createMoodboardModal').remove()">×</button>
 </div>
-<div class="modal-body" style="padding: 24px;">
-<div class="form-group" style="margin-bottom: 16px;">
+<div class="modal-body p-24">
+<div class="form-group mb-16">
 <label class="form-label">Client *</label>
 <select id="moodboardClient" class="form-input"><option value="">Select client...</option>${clientOpts}</select>
 </div>
-<div class="form-group" style="margin-bottom: 16px;">
+<div class="form-group mb-16">
 <label class="form-label">Moodboard Title *</label>
 <input type="text" id="moodboardTitle" class="form-input" placeholder="e.g. Brand Direction — Modern & Bold">
 </div>
-<div class="form-group" style="margin-bottom: 16px;">
+<div class="form-group mb-16">
 <label class="form-label">Creative Brief / Notes</label>
 <textarea id="moodboardNotes" class="form-input" rows="3" placeholder="Describe the creative direction..."></textarea>
 </div>
@@ -2430,7 +2430,7 @@ function openMoodboardEditor(id) {
 <div class="ml-head-sub">${client?.name || 'Client'} \u00b7 ${mb.collageItems.length} items</div>
 </div>
 </div>
-<div style="display:flex;gap:8px;">
+<div class="flex-gap-8">
 <button onclick="saveMoodboardState('${mb.id}')" class="ml-hbtn">\ud83d\udcbe Save</button>
 <button onclick="previewMoodboard('${mb.id}')" class="ml-hbtn">\ud83d\udc41 Preview</button>
                     ${mb.status === 'draft' ? `<button onclick="sendProofToClient('${mb.id}'); setTimeout(function(){ openMoodboardEditor('${mb.id}'); }, 500);" class="ml-hbtn ml-hbtn-red">\ud83d\udce4 Send to Client</button>` : `<span style="padding:6px 12px;background:#fff8e1;color:#f59e0b;border-radius:6px;font-size:11px;border:1px solid #fde68a;">Sent \u00b7 ${mb.status}</span>`}
@@ -2445,42 +2445,42 @@ function openMoodboardEditor(id) {
 
 <div class="ml-sb-item" draggable="true" onclick="addMoodboardNote('${mb.id}')" ondragstart="mlDragStart(event,'note','${mb.id}')" ondragend="mlDragEnd(event)">
 <div class="ml-sb-icon" style="background:#fff3cd;color:#d97706;">\ud83d\udcdd</div>
-<div><div style="font-weight:600;">Note</div><div style="font-size:10px;color:#999;">Drag onto board or click</div></div>
+<div><div class="fw-600">Note</div><div class="text-muted-xs">Drag onto board or click</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="document.getElementById('mbImageUpload').click()">
 <div class="ml-sb-icon" style="background:#dbeafe;color:#2563eb;">\ud83d\uddbc</div>
-<div><div style="font-weight:600;">Image</div><div style="font-size:10px;color:#999;">Upload from computer</div></div>
+<div><div class="fw-600">Image</div><div class="text-muted-xs">Upload from computer</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="mlShowPanel('imageUrl')">
 <div class="ml-sb-icon" style="background:#dbeafe;color:#2563eb;">\ud83c\udf10</div>
-<div><div style="font-weight:600;">Image URL</div><div style="font-size:10px;color:#999;">Paste a link</div></div>
+<div><div class="fw-600">Image URL</div><div class="text-muted-xs">Paste a link</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="mlShowPanel('imageSearch')">
 <div class="ml-sb-icon" style="background:#dbeafe;color:#2563eb;">\ud83d\udd0d</div>
-<div><div style="font-weight:600;">Search Photos</div><div style="font-size:10px;color:#999;">Free stock images</div></div>
+<div><div class="fw-600">Search Photos</div><div class="text-muted-xs">Free stock images</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="mlShowPanel('link')">
 <div class="ml-sb-icon" style="background:#e0e7ff;color:#4f46e5;">\ud83d\udd17</div>
-<div><div style="font-weight:600;">Link</div><div style="font-size:10px;color:#999;">Web page preview</div></div>
+<div><div class="fw-600">Link</div><div class="text-muted-xs">Web page preview</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="mlShowPanel('text')">
 <div class="ml-sb-icon" style="background:#f3e8ff;color:#7c3aed;">T</div>
-<div><div style="font-weight:600;">Text</div><div style="font-size:10px;color:#999;">Heading or label</div></div>
+<div><div class="fw-600">Text</div><div class="text-muted-xs">Heading or label</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="mlShowPanel('color')">
 <div class="ml-sb-icon" style="background:linear-gradient(135deg,#e63946,#f4a261,#2a9d8f);border-radius:50%;">&nbsp;</div>
-<div><div style="font-weight:600;">Color Swatch</div><div style="font-size:10px;color:#999;">Palette builder</div></div>
+<div><div class="fw-600">Color Swatch</div><div class="text-muted-xs">Palette builder</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="mlShowPanel('video')">
 <div class="ml-sb-icon" style="background:#fce7f3;color:#db2777;">\u25b6</div>
-<div><div style="font-weight:600;">Video</div><div style="font-size:10px;color:#999;">YouTube / Vimeo</div></div>
+<div><div class="fw-600">Video</div><div class="text-muted-xs">YouTube / Vimeo</div></div>
 </div>
 
 <div class="ml-sb-sep"></div>
@@ -2488,32 +2488,32 @@ function openMoodboardEditor(id) {
 
 <div class="ml-sb-item" onclick="loadMbTemplate('${mb.id}','brand')">
 <div class="ml-sb-icon" style="background:#fef2f2;color:#e63946;">\ud83c\udfa8</div>
-<div><div style="font-weight:600;">Brand Board</div><div style="font-size:10px;color:#999;">Logo, colors, fonts</div></div>
+<div><div class="fw-600">Brand Board</div><div class="text-muted-xs">Logo, colors, fonts</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="loadMbTemplate('${mb.id}','mood')">
 <div class="ml-sb-icon" style="background:#ecfdf5;color:#059669;">\u2728</div>
-<div><div style="font-weight:600;">Mood Board</div><div style="font-size:10px;color:#999;">Inspiration layout</div></div>
+<div><div class="fw-600">Mood Board</div><div class="text-muted-xs">Inspiration layout</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="loadMbTemplate('${mb.id}','ui')">
 <div class="ml-sb-icon" style="background:#eff6ff;color:#2563eb;">\ud83d\udcf1</div>
-<div><div style="font-weight:600;">UI Design</div><div style="font-size:10px;color:#999;">Screens + references</div></div>
+<div><div class="fw-600">UI Design</div><div class="text-muted-xs">Screens + references</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="loadMbTemplate('${mb.id}','photo')">
 <div class="ml-sb-icon" style="background:#fefce8;color:#ca8a04;">\ud83d\udcf7</div>
-<div><div style="font-weight:600;">Photography</div><div style="font-size:10px;color:#999;">Visual direction</div></div>
+<div><div class="fw-600">Photography</div><div class="text-muted-xs">Visual direction</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="loadMbTemplate('${mb.id}','interior')">
 <div class="ml-sb-icon" style="background:#f0fdf4;color:#16a34a;">\ud83c\udfe0</div>
-<div><div style="font-weight:600;">Interior Design</div><div style="font-size:10px;color:#999;">Space + materials</div></div>
+<div><div class="fw-600">Interior Design</div><div class="text-muted-xs">Space + materials</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="loadMbTemplate('${mb.id}','fashion')">
 <div class="ml-sb-icon" style="background:#fdf2f8;color:#db2777;">\ud83d\udc57</div>
-<div><div style="font-weight:600;">Fashion</div><div style="font-size:10px;color:#999;">Style + texture</div></div>
+<div><div class="fw-600">Fashion</div><div class="text-muted-xs">Style + texture</div></div>
 </div>
 
 <div class="ml-sb-sep"></div>
@@ -2521,11 +2521,11 @@ function openMoodboardEditor(id) {
 
 <div class="ml-sb-item" onclick="mlShowPanel('settings')">
 <div class="ml-sb-icon" style="background:#f5f5f5;color:#666;">\u2699</div>
-<div><div style="font-weight:600;">Settings</div><div style="font-size:10px;color:#999;">Background, grid, notes</div></div>
+<div><div class="fw-600">Settings</div><div class="text-muted-xs">Background, grid, notes</div></div>
 </div>
 
                     <!-- Hidden file input -->
-<input type="file" id="mbImageUpload" accept="image/*" multiple onchange="addMoodboardImages('${mb.id}')" style="display:none;">
+<input type="file" id="mbImageUpload" accept="image/*" multiple onchange="addMoodboardImages('${mb.id}')" class="hidden">
 </div>
 
                 <!-- CANVAS -->

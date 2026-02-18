@@ -10,9 +10,9 @@ function loadAdminSubmissionsPanel(searchTerm = '') {
         : formSubmissions;
 
     document.getElementById('adminSubmissionsPanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-<h2 style="font-size: 28px; font-weight: 700;">Form Submissions</h2>
-<span style="color: #888;">${filtered.length} of ${formSubmissions.length} submissions</span>
+<div class="flex-between mb-24">
+<h2 class="fs-28 fw-700">Form Submissions</h2>
+<span class="text-muted">${filtered.length} of ${formSubmissions.length} submissions</span>
 </div>
 <div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: center;">
 <input type="text" id="submissionSearch" placeholder="Search submissions..." value="${searchTerm}"
@@ -27,12 +27,12 @@ function loadAdminSubmissionsPanel(searchTerm = '') {
             ${filtered.slice().reverse().map(sub => `
 <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px;">
 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="flex-center-gap-12">
 <input type="checkbox" class="submission-checkbox" data-id="${sub.id}" style="width: 18px; height: 18px; cursor: pointer;">
 <strong style="font-size: 18px;">${sub.businessName || sub.contactName || 'Unknown'}</strong>
 <span style="background: ${sub.status === 'pending_payment' ? '#fef3c7' : '#d1fae5'}; color: ${sub.status === 'pending_payment' ? '#92400e' : '#065f46'}; padding: 4px 12px; border-radius: 12px; font-size: 12px;">${sub.status}</span>
 </div>
-<span style="color: #888; font-size: 13px;">${new Date(sub.submittedAt).toLocaleDateString()}</span>
+<span class="text-muted-sm">${new Date(sub.submittedAt).toLocaleDateString()}</span>
 </div>
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; color: #666; font-size: 14px; margin-left: 30px;">
 <div><strong>Service:</strong> ${sub.serviceName}</div>

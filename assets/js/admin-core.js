@@ -66,10 +66,10 @@ function loadAdminDashboardPanel() {
     const avgReview = siteAnalytics.googleReviews?.avgRating || 4.8;
 
     document.getElementById('adminDashboardPanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-<h2 style="font-size: 28px; font-weight: 700;">Dashboard</h2>
-<div style="display: flex; gap: 12px;">
-<button onclick="syncAllData()" class="btn-outline" style="display: flex; align-items: center; gap: 8px;">🔄 Sync All</button>
+<div class="flex-between mb-32">
+<h2 class="fs-28 fw-700">Dashboard</h2>
+<div class="flex-gap-12">
+<button onclick="syncAllData()" class="btn-outline flex-center-gap-8">🔄 Sync All</button>
 <span class="sync-status" style="display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: ${_backendAvailable ? '#10b981' : '#ef4444'}; color: #fff; border-radius: 8px; font-size: 13px;">
 <span style="width: 8px; height: 8px; background: #fff; border-radius: 50%; ${_backendAvailable ? '' : 'animation: pulse 1s infinite;'}"></span>
                     ${_backendAvailable ? (_lastSyncTime ? 'Backend Synced ' + new Date(_lastSyncTime).toLocaleTimeString() : 'Backend Connected') : 'Backend Offline (localStorage only)'}
@@ -78,38 +78,38 @@ function loadAdminDashboardPanel() {
 </div>
 
         <!-- Quick Stats Row -->
-<div class="stat-cards" style="margin-bottom: 32px;">
-<div class="stat-card" style="cursor: pointer;" onclick="showAdminPanel('clients')"><div class="num">${clients.length}</div><div class="lbl">Active Clients</div></div>
-<div class="stat-card" style="cursor: pointer;" onclick="showAdminPanel('orders')"><div class="num">${orders.length}</div><div class="lbl">Total Orders</div></div>
-<div class="stat-card" style="cursor: pointer;" onclick="showAdminPanel('projects')"><div class="num">${pendingOrders}</div><div class="lbl">In Progress</div></div>
-<div class="stat-card" style="cursor: pointer;" onclick="showAdminPanel('analytics')"><div class="num">${siteAnalytics.visitors?.total || 2847}</div><div class="lbl">Site Visitors</div></div>
+<div class="stat-cards mb-32">
+<div class="stat-card pointer" onclick="showAdminPanel('clients')"><div class="num">${clients.length}</div><div class="lbl">Active Clients</div></div>
+<div class="stat-card pointer" onclick="showAdminPanel('orders')"><div class="num">${orders.length}</div><div class="lbl">Total Orders</div></div>
+<div class="stat-card pointer" onclick="showAdminPanel('projects')"><div class="num">${pendingOrders}</div><div class="lbl">In Progress</div></div>
+<div class="stat-card pointer" onclick="showAdminPanel('analytics')"><div class="num">${siteAnalytics.visitors?.total || 2847}</div><div class="lbl">Site Visitors</div></div>
 </div>
 
         <!-- Revenue & Reviews Row -->
 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 32px;">
 <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 24px; border-radius: 16px; color: #fff;">
-<h3 style="font-size: 14px; color: #888; margin-bottom: 16px;">REVENUE OVERVIEW</h3>
+<h3 class="admin-heading-sm">REVENUE OVERVIEW</h3>
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
 <div>
 <div style="font-size: 32px; font-weight: 700; color: var(--accent);">$${totalRevenue.toLocaleString()}</div>
-<div style="font-size: 13px; color: #888;">Total Revenue</div>
+<div class="text-muted-sm">Total Revenue</div>
 </div>
 <div>
 <div style="font-size: 32px; font-weight: 700; color: #10b981;">$${paidRevenue.toLocaleString()}</div>
-<div style="font-size: 13px; color: #888;">Collected</div>
+<div class="text-muted-sm">Collected</div>
 </div>
 <div>
 <div style="font-size: 32px; font-weight: 700; color: #f59e0b;">$${(totalRevenue - paidRevenue).toLocaleString()}</div>
-<div style="font-size: 13px; color: #888;">Outstanding</div>
+<div class="text-muted-sm">Outstanding</div>
 </div>
 </div>
 <button onclick="showAdminPanel('payments')" class="btn-outline" style="margin-top: 20px; width: 100%;">View All Payments →</button>
 </div>
 <div style="background: #fff; padding: 24px; border-radius: 16px; border: 1px solid #e5e5e5;">
-<h3 style="font-size: 14px; color: #888; margin-bottom: 16px;">GOOGLE REVIEWS</h3>
-<div style="text-align: center;">
+<h3 class="admin-heading-sm">GOOGLE REVIEWS</h3>
+<div class="text-center">
 <div style="font-size: 48px; font-weight: 700; color: #f59e0b;">⭐ ${avgReview}</div>
-<div style="font-size: 13px; color: #888;">${siteAnalytics.googleReviews?.count || 28} reviews</div>
+<div class="text-muted-sm">${siteAnalytics.googleReviews?.count || 28} reviews</div>
 <button onclick="showAdminPanel('reviews')" class="btn-cta" style="margin-top: 16px; width: 100%;">Manage Reviews</button>
 </div>
 </div>
@@ -117,7 +117,7 @@ function loadAdminDashboardPanel() {
 
         <!-- Sync Status Grid -->
 <div style="background: #fff; padding: 24px; border-radius: 16px; border: 1px solid #e5e5e5; margin-bottom: 32px;">
-<h3 style="font-size: 14px; color: #888; margin-bottom: 16px;">INTEGRATION STATUS</h3>
+<h3 class="admin-heading-sm">INTEGRATION STATUS</h3>
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
                 ${renderSyncStatusCard('Stripe', siteAnalytics.stripeConnected, 'stripe')}
                 ${renderSyncStatusCard('Google Reviews', siteAnalytics.googleReviewsConnected, 'reviews')}
@@ -294,9 +294,9 @@ async function loadAdminCalendarPanel() {
     const upcomingEvents = events.filter(e => new Date(e.date) >= today).slice(0, 10);
 
     document.getElementById('adminCalendarPanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+<div class="flex-between mb-32">
 <h2 style="font-size: 28px; font-weight: 700; color: var(--admin-text);">📅 Calendar</h2>
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <button onclick="openMeetingModal()" class="btn-admin primary">+ Schedule Meeting</button>
 </div>
 </div>
@@ -306,7 +306,7 @@ async function loadAdminCalendarPanel() {
 <div style="background: var(--admin-card); border: 1px solid var(--admin-border); border-radius: 16px; padding: 24px;">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 <h2 style="font-size: 20px; font-weight: 600; color: var(--admin-text);">${monthNames[currentMonth]} ${currentYear}</h2>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
 <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--admin-text-muted);">
 <span style="width: 10px; height: 10px; background: #3b82f6; border-radius: 50%;"></span> Meetings
 </div>
@@ -336,7 +336,7 @@ async function loadAdminCalendarPanel() {
 <div style="display: flex; justify-content: space-between; align-items: start;">
 <div>
 <div style="font-weight: 600; color: var(--admin-text); margin-bottom: 4px;">${e.title}</div>
-<div style="font-size: 12px; color: var(--admin-text-muted);">${e.client}</div>
+<div class="admin-text-muted-xs">${e.client}</div>
 </div>
 <span style="background: ${e.color}20; color: ${e.color}; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; text-transform: uppercase;">${e.type}</span>
 </div>
@@ -413,13 +413,13 @@ function loadAdminUserManagementPanel() {
     // Build user tables for each type
     const clientRows = clients.map(c => `
 <tr>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">${c.name || 'N/A'}</td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">${c.email || 'N/A'}</td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">Client</td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+<td class="admin-list-item">${c.name || 'N/A'}</td>
+<td class="admin-list-item">${c.email || 'N/A'}</td>
+<td class="admin-list-item">Client</td>
+<td class="admin-list-item">
 <span style="padding: 4px 12px; border-radius: 20px; font-size: 12px; background: ${c.blocked ? '#ff000020' : '#00ff0020'}; color: ${c.blocked ? '#ff4444' : '#44ff44'};">${c.blocked ? 'Blocked' : 'Active'}</span>
 </td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+<td class="admin-list-item">
 <button onclick="resetUserPassword('client', '${c.id}')" style="padding: 6px 12px; background: #333; border: 1px solid #555; color: #fff; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 4px;">Reset PW</button>
 <button onclick="toggleBlockUser('client', '${c.id}')" style="padding: 6px 12px; background: ${c.blocked ? '#00440040' : '#44000040'}; border: 1px solid ${c.blocked ? '#00ff00' : '#ff0000'}; color: ${c.blocked ? '#44ff44' : '#ff4444'}; border-radius: 6px; cursor: pointer; font-size: 12px;">${c.blocked ? 'Unblock' : 'Block'}</button>
 </td>
@@ -428,13 +428,13 @@ function loadAdminUserManagementPanel() {
 
     const designerRows = designers.map(d => `
 <tr>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">${d.name || 'N/A'}</td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">${d.email || 'N/A'}</td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">Designer</td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+<td class="admin-list-item">${d.name || 'N/A'}</td>
+<td class="admin-list-item">${d.email || 'N/A'}</td>
+<td class="admin-list-item">Designer</td>
+<td class="admin-list-item">
 <span style="padding: 4px 12px; border-radius: 20px; font-size: 12px; background: ${d.blocked ? '#ff000020' : '#00ff0020'}; color: ${d.blocked ? '#ff4444' : '#44ff44'};">${d.blocked ? 'Blocked' : 'Active'}</span>
 </td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+<td class="admin-list-item">
 <button onclick="resetUserPassword('designer', '${d.id}')" style="padding: 6px 12px; background: #333; border: 1px solid #555; color: #fff; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 4px;">Reset PW</button>
 <button onclick="toggleBlockUser('designer', '${d.id}')" style="padding: 6px 12px; background: ${d.blocked ? '#00440040' : '#44000040'}; border: 1px solid ${d.blocked ? '#00ff00' : '#ff0000'}; color: ${d.blocked ? '#44ff44' : '#ff4444'}; border-radius: 6px; cursor: pointer; font-size: 12px;">${d.blocked ? 'Unblock' : 'Block'}</button>
 </td>
@@ -443,13 +443,13 @@ function loadAdminUserManagementPanel() {
 
     const managerRows = allManagers.map(m => `
 <tr>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">${m.name || 'N/A'}</td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">${m.email || 'N/A'}</td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">Manager</td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+<td class="admin-list-item">${m.name || 'N/A'}</td>
+<td class="admin-list-item">${m.email || 'N/A'}</td>
+<td class="admin-list-item">Manager</td>
+<td class="admin-list-item">
 <span style="padding: 4px 12px; border-radius: 20px; font-size: 12px; background: ${m.blocked ? '#ff000020' : '#00ff0020'}; color: ${m.blocked ? '#ff4444' : '#44ff44'};">${m.blocked ? 'Blocked' : 'Active'}</span>
 </td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+<td class="admin-list-item">
 <button onclick="resetUserPassword('manager', '${m.id}')" style="padding: 6px 12px; background: #333; border: 1px solid #555; color: #fff; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 4px;">Reset PW</button>
 <button onclick="toggleBlockUser('manager', '${m.id}')" style="padding: 6px 12px; background: ${m.blocked ? '#00440040' : '#44000040'}; border: 1px solid ${m.blocked ? '#00ff00' : '#ff0000'}; color: ${m.blocked ? '#44ff44' : '#ff4444'}; border-radius: 6px; cursor: pointer; font-size: 12px;">${m.blocked ? 'Unblock' : 'Block'}</button>
 </td>
@@ -458,13 +458,13 @@ function loadAdminUserManagementPanel() {
 
     const adminRows = adminAccounts.map(a => `
 <tr>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">${a.name || 'N/A'}</td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">${a.email || 'N/A'}</td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">Admin</td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+<td class="admin-list-item">${a.name || 'N/A'}</td>
+<td class="admin-list-item">${a.email || 'N/A'}</td>
+<td class="admin-list-item">Admin</td>
+<td class="admin-list-item">
 <span style="padding: 4px 12px; border-radius: 20px; font-size: 12px; background: ${a.blocked ? '#ff000020' : '#00ff0020'}; color: ${a.blocked ? '#ff4444' : '#44ff44'};">${a.blocked ? 'Blocked' : 'Active'}</span>
 </td>
-<td style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+<td class="admin-list-item">
 <button onclick="resetUserPassword('admin', '${a.id}')" style="padding: 6px 12px; background: #333; border: 1px solid #555; color: #fff; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 4px;">Reset PW</button>
 <button onclick="toggleBlockUser('admin', '${a.id}')" style="padding: 6px 12px; background: ${a.blocked ? '#00440040' : '#44000040'}; border: 1px solid ${a.blocked ? '#00ff00' : '#ff0000'}; color: ${a.blocked ? '#44ff44' : '#ff4444'}; border-radius: 6px; cursor: pointer; font-size: 12px;">${a.blocked ? 'Unblock' : 'Block'}</button>
 </td>
@@ -472,9 +472,9 @@ function loadAdminUserManagementPanel() {
     `).join('');
 
     document.getElementById('adminUsermanagementPanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-<h2 style="font-size: 28px; font-weight: 700;">🔐 User Management</h2>
-<div style="display: flex; gap: 12px;">
+<div class="flex-between mb-32">
+<h2 class="fs-28 fw-700">🔐 User Management</h2>
+<div class="flex-gap-12">
 <button onclick="showAddAdminModal()" style="padding: 10px 20px; background: linear-gradient(135deg, #ff0000, #cc0000); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">+ Add Admin User</button>
 </div>
 </div>
@@ -482,46 +482,46 @@ function loadAdminUserManagementPanel() {
         <!-- Master Admin Info -->
 <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #ff000040; border-radius: 16px; padding: 24px; margin-bottom: 32px;">
 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-<span style="font-size: 24px;">👑</span>
+<span class="fs-24">👑</span>
 <h3 style="font-size: 18px; font-weight: 700; color: #ff4444;">Master Admin Account</h3>
 </div>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
 <div>
-<div style="font-size: 12px; color: #888; margin-bottom: 4px;">Email</div>
+<div class="text-muted fs-12 mb-4">Email</div>
 <div style="font-size: 14px; color: #fff;">newurbaninfluence@gmail.com</div>
 </div>
 <div>
-<div style="font-size: 12px; color: #888; margin-bottom: 4px;">Status</div>
+<div class="text-muted fs-12 mb-4">Status</div>
 <div style="font-size: 14px; color: #44ff44;">Always Active (Cannot be blocked)</div>
 </div>
 </div>
-<div style="margin-top: 16px;">
+<div class="mt-16">
 <button onclick="showChangeMasterPasswordModal()" style="padding: 8px 16px; background: #333; border: 1px solid #ff0000; color: #ff4444; border-radius: 8px; cursor: pointer; font-size: 13px;">Change Master Password</button>
 </div>
 </div>
 
         <!-- Stats Row -->
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 32px;">
-<div style="background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 20px; text-align: center;">
+<div class="admin-card-dark-center">
 <div style="font-size: 28px; font-weight: 700; color: #ff4444;">${clients.length}</div>
-<div style="font-size: 13px; color: #888;">Clients</div>
+<div class="text-muted-sm">Clients</div>
 </div>
-<div style="background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 20px; text-align: center;">
+<div class="admin-card-dark-center">
 <div style="font-size: 28px; font-weight: 700; color: #4488ff;">${designers.length}</div>
-<div style="font-size: 13px; color: #888;">Designers</div>
+<div class="text-muted-sm">Designers</div>
 </div>
-<div style="background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 20px; text-align: center;">
+<div class="admin-card-dark-center">
 <div style="font-size: 28px; font-weight: 700; color: #44ff44;">${allManagers.length}</div>
-<div style="font-size: 13px; color: #888;">Managers</div>
+<div class="text-muted-sm">Managers</div>
 </div>
-<div style="background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 20px; text-align: center;">
+<div class="admin-card-dark-center">
 <div style="font-size: 28px; font-weight: 700; color: #ffaa44;">${adminAccounts.length}</div>
-<div style="font-size: 13px; color: #888;">Admin Accounts</div>
+<div class="text-muted-sm">Admin Accounts</div>
 </div>
 </div>
 
         <!-- User Search -->
-<div style="margin-bottom: 24px;">
+<div class="mb-24">
 <input type="text" id="userSearchInput" oninput="filterUserTable()" placeholder="Search users by name or email..." style="width: 100%; padding: 12px 16px; background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 14px;">
 </div>
 
@@ -607,16 +607,16 @@ function showAddAdminModal() {
 <h3 class="modal-title">Add Admin Account</h3>
 <button class="modal-close" onclick="document.getElementById('addAdminModal').remove()">×</button>
 </div>
-<div class="modal-body" style="padding: 24px;">
-<div class="form-group" style="margin-bottom: 16px;">
+<div class="modal-body p-24">
+<div class="form-group mb-16">
 <label class="form-label">Full Name</label>
 <input type="text" id="newAdminName" class="form-input" placeholder="Full Name" required>
 </div>
-<div class="form-group" style="margin-bottom: 16px;">
+<div class="form-group mb-16">
 <label class="form-label">Email</label>
 <input type="email" id="newAdminEmail" class="form-input" placeholder="email@example.com" required>
 </div>
-<div class="form-group" style="margin-bottom: 16px;">
+<div class="form-group mb-16">
 <label class="form-label">Password</label>
 <input type="text" id="newAdminPassword" class="form-input" placeholder="Set a password" required>
 </div>
@@ -659,16 +659,16 @@ function showChangeMasterPasswordModal() {
 <h3 class="modal-title">Change Master Password</h3>
 <button class="modal-close" onclick="document.getElementById('changeMasterPwModal').remove()">×</button>
 </div>
-<div class="modal-body" style="padding: 24px;">
-<div class="form-group" style="margin-bottom: 16px;">
+<div class="modal-body p-24">
+<div class="form-group mb-16">
 <label class="form-label">Current Password</label>
 <input type="password" id="currentMasterPw" class="form-input" placeholder="Enter current password">
 </div>
-<div class="form-group" style="margin-bottom: 16px;">
+<div class="form-group mb-16">
 <label class="form-label">New Password</label>
 <input type="password" id="newMasterPw" class="form-input" placeholder="Enter new password">
 </div>
-<div class="form-group" style="margin-bottom: 16px;">
+<div class="form-group mb-16">
 <label class="form-label">Confirm New Password</label>
 <input type="password" id="confirmMasterPw" class="form-input" placeholder="Confirm new password">
 </div>
@@ -775,8 +775,8 @@ function loadAdminStripePanel() {
     ];
 
     document.getElementById('adminStripePanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-<h2 style="font-size: 28px; font-weight: 700;">💎 Stripe Integration</h2>
+<div class="flex-between mb-32">
+<h2 class="fs-28 fw-700">💎 Stripe Integration</h2>
 <span style="padding: 8px 16px; background: ${stripeSettings.connected ? '#d1fae5' : '#fee2e2'}; color: ${stripeSettings.connected ? '#059669' : '#dc2626'}; border-radius: 8px; font-size: 14px;">
                 ${stripeSettings.connected ? '✓ Connected' : '✗ Not Connected'}
 </span>
@@ -822,7 +822,7 @@ function loadAdminStripePanel() {
 <h3 style="font-size: 16px; font-weight: 600; color: #fff;">🔑 API Configuration</h3>
 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #fff;">
 <input type="checkbox" ${stripeSettings.testMode ? 'checked' : ''} onchange="toggleStripeMode(this.checked)">
-<span style="font-size: 14px;">Test Mode</span>
+<span class="fs-14">Test Mode</span>
 </label>
 </div>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
@@ -835,7 +835,7 @@ function loadAdminStripePanel() {
 <input type="password" id="stripeSecretKey" value="${stripeSettings.secretKey}" placeholder="sk_test_..." style="width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-family: monospace; font-size: 13px; background: #252525; color: #fff;">
 </div>
 </div>
-<button onclick="saveStripeKeys()" class="btn-cta" style="margin-top: 20px;">Save API Keys</button>
+<button onclick="saveStripeKeys()" class="btn-cta mt-20">Save API Keys</button>
 </div>
 
         <!-- Payment Methods -->
@@ -843,23 +843,23 @@ function loadAdminStripePanel() {
 <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #fff;">💳 Accepted Payment Methods</h3>
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
 <div style="padding: 20px; background: #252525; border-radius: 12px; text-align: center; border: 2px solid #10b981;">
-<div style="font-size: 32px; margin-bottom: 8px;">💳</div>
-<div style="font-weight: 600; color: #fff;">Credit Cards</div>
+<div class="fs-32 mb-8">💳</div>
+<div class="text-bold-white">Credit Cards</div>
 <div style="font-size: 12px; color: #10b981; margin-top: 4px;">Active</div>
 </div>
 <div style="padding: 20px; background: #252525; border-radius: 12px; text-align: center; border: 2px solid #10b981;">
-<div style="font-size: 32px; margin-bottom: 8px;">🏦</div>
-<div style="font-weight: 600; color: #fff;">ACH Bank</div>
+<div class="fs-32 mb-8">🏦</div>
+<div class="text-bold-white">ACH Bank</div>
 <div style="font-size: 12px; color: #10b981; margin-top: 4px;">Active</div>
 </div>
 <div style="padding: 20px; background: #252525; border-radius: 12px; text-align: center; border: 2px solid rgba(255,255,255,0.2);">
-<div style="font-size: 32px; margin-bottom: 8px;">🍎</div>
-<div style="font-weight: 600; color: #fff;">Apple Pay</div>
+<div class="fs-32 mb-8">🍎</div>
+<div class="text-bold-white">Apple Pay</div>
 <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px;">Configure</div>
 </div>
 <div style="padding: 20px; background: #252525; border-radius: 12px; text-align: center; border: 2px solid rgba(255,255,255,0.2);">
-<div style="font-size: 32px; margin-bottom: 8px;">🔗</div>
-<div style="font-weight: 600; color: #fff;">Link</div>
+<div class="fs-32 mb-8">🔗</div>
+<div class="text-bold-white">Link</div>
 <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px;">Configure</div>
 </div>
 </div>
@@ -951,7 +951,7 @@ function loadAdminIntegrationsPanel() {
 </div>
 
         <!-- Integration Stats -->
-<div class="stat-cards" style="margin-bottom: 32px;">
+<div class="stat-cards mb-32">
 <div class="stat-card" style="background: #fff;"><div class="num" style="color: #000;">${Object.values(integrations).filter(i => i.connected).length}</div><div class="lbl" style="color: #333;">Connected</div></div>
 <div class="stat-card" style="background: #fff;"><div class="num" style="color: #000;">${Object.keys(integrations).length}</div><div class="lbl" style="color: #333;">Available</div></div>
 <div class="stat-card" style="background: #fff; border-color: #10b981;"><div class="num" style="color: #10b981;">Active</div><div class="lbl" style="color: #333;">API Status</div></div>
@@ -964,22 +964,22 @@ function loadAdminIntegrationsPanel() {
 
                 <!-- OpenPhone -->
 <div style="background: #1a1a1a; border: 1px solid ${integrations.openphone.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="admin-row-between">
+<div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #7c3aed, #4f46e5); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📞</div>
 <div>
-<div style="font-weight: 600; color: #fff;">OpenPhone</div>
-<div style="font-size: 12px; color: rgba(255,255,255,0.5);">SMS & Voice Calls</div>
+<div class="text-bold-white">OpenPhone</div>
+<div class="text-dim fs-12">SMS & Voice Calls</div>
 </div>
 </div>
 <span style="padding: 4px 12px; background: ${integrations.openphone.connected ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.1)'}; color: ${integrations.openphone.connected ? '#10b981' : 'rgba(255,255,255,0.5)'}; border-radius: 100px; font-size: 12px;">${integrations.openphone.connected ? 'Connected' : 'Not Connected'}</span>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: rgba(255,255,255,0.7);">API Key</label>
+<label class="form-label text-dim-70">API Key</label>
 <input type="password" id="openphoneApiKey" value="${integrations.openphone.apiKey}" placeholder="Enter OpenPhone API Key" style="width: 100%; padding: 10px; background: #252525; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff;">
 </div>
 <div class="form-group">
-<label class="form-label" style="color: rgba(255,255,255,0.7);">Phone Number</label>
+<label class="form-label text-dim-70">Phone Number</label>
 <input type="text" id="openphoneNumber" value="${integrations.openphone.phoneNumber}" placeholder="+1 (555) 123-4567" style="width: 100%; padding: 10px; background: #252525; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff;">
 </div>
 <button onclick="toggleOpenPhoneIntegration()" style="width: 100%; padding: 12px; background: ${integrations.openphone.connected ? '#dc2626' : '#7c3aed'}; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">${integrations.openphone.connected ? 'Disconnect' : 'Connect OpenPhone'}</button>
@@ -987,18 +987,18 @@ function loadAdminIntegrationsPanel() {
 
                 <!-- SendGrid -->
 <div style="background: #1a1a1a; border: 1px solid ${integrations.sendgrid.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="admin-row-between">
+<div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">✉️</div>
 <div>
-<div style="font-weight: 600; color: #fff;">SendGrid</div>
-<div style="font-size: 12px; color: rgba(255,255,255,0.5);">Email Delivery</div>
+<div class="text-bold-white">SendGrid</div>
+<div class="text-dim fs-12">Email Delivery</div>
 </div>
 </div>
 <span style="padding: 4px 12px; background: ${integrations.sendgrid.connected ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.1)'}; color: ${integrations.sendgrid.connected ? '#10b981' : 'rgba(255,255,255,0.5)'}; border-radius: 100px; font-size: 12px;">${integrations.sendgrid.connected ? 'Connected' : 'Not Connected'}</span>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: rgba(255,255,255,0.7);">API Key</label>
+<label class="form-label text-dim-70">API Key</label>
 <input type="password" id="sendgridApiKey" value="${integrations.sendgrid.apiKey}" placeholder="SG.xxxxxx..." style="width: 100%; padding: 10px; background: #252525; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff;">
 </div>
 <button onclick="connectSendGrid()" style="width: 100%; padding: 12px; background: ${integrations.sendgrid.connected ? '#dc2626' : '#3b82f6'}; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">${integrations.sendgrid.connected ? 'Disconnect' : 'Connect SendGrid'}</button>
@@ -1006,18 +1006,18 @@ function loadAdminIntegrationsPanel() {
 
                 <!-- Mailchimp -->
 <div style="background: #1a1a1a; border: 1px solid ${integrations.mailchimp.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="admin-row-between">
+<div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #ffe01b, #f59e0b); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🐵</div>
 <div>
-<div style="font-weight: 600; color: #fff;">Mailchimp</div>
-<div style="font-size: 12px; color: rgba(255,255,255,0.5);">Email Marketing</div>
+<div class="text-bold-white">Mailchimp</div>
+<div class="text-dim fs-12">Email Marketing</div>
 </div>
 </div>
 <span style="padding: 4px 12px; background: ${integrations.mailchimp.connected ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.1)'}; color: ${integrations.mailchimp.connected ? '#10b981' : 'rgba(255,255,255,0.5)'}; border-radius: 100px; font-size: 12px;">${integrations.mailchimp.connected ? 'Connected' : 'Not Connected'}</span>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: rgba(255,255,255,0.7);">API Key</label>
+<label class="form-label text-dim-70">API Key</label>
 <input type="password" id="mailchimpApiKey" value="${integrations.mailchimp.apiKey}" placeholder="Enter Mailchimp API Key" style="width: 100%; padding: 10px; background: #252525; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff;">
 </div>
 <button onclick="connectMailchimp()" style="width: 100%; padding: 12px; background: ${integrations.mailchimp.connected ? '#dc2626' : '#f59e0b'}; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">${integrations.mailchimp.connected ? 'Disconnect' : 'Connect Mailchimp'}</button>
@@ -1032,18 +1032,18 @@ function loadAdminIntegrationsPanel() {
 
                 <!-- Instagram -->
 <div style="background: #1a1a1a; border: 1px solid ${integrations.instagram.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="admin-row-between">
+<div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📸</div>
 <div>
-<div style="font-weight: 600; color: #fff;">Instagram</div>
-<div style="font-size: 12px; color: rgba(255,255,255,0.5);">DMs & Posts</div>
+<div class="text-bold-white">Instagram</div>
+<div class="text-dim fs-12">DMs & Posts</div>
 </div>
 </div>
 <span style="padding: 4px 12px; background: ${integrations.instagram.connected ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.1)'}; color: ${integrations.instagram.connected ? '#10b981' : 'rgba(255,255,255,0.5)'}; border-radius: 100px; font-size: 12px;">${integrations.instagram.connected ? 'Connected' : 'Not Connected'}</span>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: rgba(255,255,255,0.7);">Username</label>
+<label class="form-label text-dim-70">Username</label>
 <input type="text" id="instagramUsername" value="${integrations.instagram.username}" placeholder="@yourusername" style="width: 100%; padding: 10px; background: #252525; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff;">
 </div>
 <button onclick="connectInstagram()" style="width: 100%; padding: 12px; background: ${integrations.instagram.connected ? '#dc2626' : 'linear-gradient(135deg, #833ab4, #fd1d1d)'}; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">${integrations.instagram.connected ? 'Disconnect' : 'Connect Instagram'}</button>
@@ -1051,12 +1051,12 @@ function loadAdminIntegrationsPanel() {
 
                 <!-- Facebook -->
 <div style="background: #1a1a1a; border: 1px solid ${integrations.facebook.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="admin-row-between">
+<div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: #1877f2; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📘</div>
 <div>
-<div style="font-weight: 600; color: #fff;">Facebook</div>
-<div style="font-size: 12px; color: rgba(255,255,255,0.5);">Messenger & Pages</div>
+<div class="text-bold-white">Facebook</div>
+<div class="text-dim fs-12">Messenger & Pages</div>
 </div>
 </div>
 <span style="padding: 4px 12px; background: ${integrations.facebook.connected ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.1)'}; color: ${integrations.facebook.connected ? '#10b981' : 'rgba(255,255,255,0.5)'}; border-radius: 100px; font-size: 12px;">${integrations.facebook.connected ? 'Connected' : 'Not Connected'}</span>
@@ -1066,12 +1066,12 @@ function loadAdminIntegrationsPanel() {
 
                 <!-- LinkedIn -->
 <div style="background: #1a1a1a; border: 1px solid ${integrations.linkedin.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="admin-row-between">
+<div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: #0077b5; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">💼</div>
 <div>
-<div style="font-weight: 600; color: #fff;">LinkedIn</div>
-<div style="font-size: 12px; color: rgba(255,255,255,0.5);">Professional Network</div>
+<div class="text-bold-white">LinkedIn</div>
+<div class="text-dim fs-12">Professional Network</div>
 </div>
 </div>
 <span style="padding: 4px 12px; background: ${integrations.linkedin.connected ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.1)'}; color: ${integrations.linkedin.connected ? '#10b981' : 'rgba(255,255,255,0.5)'}; border-radius: 100px; font-size: 12px;">${integrations.linkedin.connected ? 'Connected' : 'Not Connected'}</span>
@@ -1088,18 +1088,18 @@ function loadAdminIntegrationsPanel() {
 
                 <!-- Zapier -->
 <div style="background: #1a1a1a; border: 1px solid ${integrations.zapier.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="admin-row-between">
+<div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: #ff4a00; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">⚡</div>
 <div>
-<div style="font-weight: 600; color: #fff;">Zapier</div>
-<div style="font-size: 12px; color: rgba(255,255,255,0.5);">Workflow Automation</div>
+<div class="text-bold-white">Zapier</div>
+<div class="text-dim fs-12">Workflow Automation</div>
 </div>
 </div>
 <span style="padding: 4px 12px; background: ${integrations.zapier.connected ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.1)'}; color: ${integrations.zapier.connected ? '#10b981' : 'rgba(255,255,255,0.5)'}; border-radius: 100px; font-size: 12px;">${integrations.zapier.connected ? 'Connected' : 'Not Connected'}</span>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: rgba(255,255,255,0.7);">Webhook URL</label>
+<label class="form-label text-dim-70">Webhook URL</label>
 <input type="text" id="zapierWebhook" value="${integrations.zapier.webhookUrl}" placeholder="https://hooks.zapier.com/..." style="width: 100%; padding: 10px; background: #252525; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff;">
 </div>
 <button onclick="connectZapier()" style="width: 100%; padding: 12px; background: ${integrations.zapier.connected ? '#dc2626' : '#ff4a00'}; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">${integrations.zapier.connected ? 'Disconnect' : 'Connect Zapier'}</button>
@@ -1107,18 +1107,18 @@ function loadAdminIntegrationsPanel() {
 
                 <!-- Slack -->
 <div style="background: #1a1a1a; border: 1px solid ${integrations.slack.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="admin-row-between">
+<div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: #4a154b; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">💬</div>
 <div>
-<div style="font-weight: 600; color: #fff;">Slack</div>
-<div style="font-size: 12px; color: rgba(255,255,255,0.5);">Team Notifications</div>
+<div class="text-bold-white">Slack</div>
+<div class="text-dim fs-12">Team Notifications</div>
 </div>
 </div>
 <span style="padding: 4px 12px; background: ${integrations.slack.connected ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.1)'}; color: ${integrations.slack.connected ? '#10b981' : 'rgba(255,255,255,0.5)'}; border-radius: 100px; font-size: 12px;">${integrations.slack.connected ? 'Connected' : 'Not Connected'}</span>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: rgba(255,255,255,0.7);">Webhook URL</label>
+<label class="form-label text-dim-70">Webhook URL</label>
 <input type="text" id="slackWebhook" value="${integrations.slack.webhookUrl}" placeholder="https://hooks.slack.com/..." style="width: 100%; padding: 10px; background: #252525; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff;">
 </div>
 <button onclick="connectSlack()" style="width: 100%; padding: 12px; background: ${integrations.slack.connected ? '#dc2626' : '#4a154b'}; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">${integrations.slack.connected ? 'Disconnect' : 'Connect Slack'}</button>
@@ -1126,12 +1126,12 @@ function loadAdminIntegrationsPanel() {
 
                 <!-- Google -->
 <div style="background: #1a1a1a; border: 1px solid ${integrations.google.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="admin-row-between">
+<div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🔵</div>
 <div>
-<div style="font-weight: 600; color: #fff;">Google</div>
-<div style="font-size: 12px; color: rgba(255,255,255,0.5);">Calendar & Drive</div>
+<div class="text-bold-white">Google</div>
+<div class="text-dim fs-12">Calendar & Drive</div>
 </div>
 </div>
 <span style="padding: 4px 12px; background: ${integrations.google.connected ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.1)'}; color: ${integrations.google.connected ? '#10b981' : 'rgba(255,255,255,0.5)'}; border-radius: 100px; font-size: 12px;">${integrations.google.connected ? 'Connected' : 'Not Connected'}</span>

@@ -102,7 +102,7 @@ function loadAdminCrmPanel() {
 </div>
 
         <!-- Stats Bar -->
-<div class="stat-cards" style="margin-bottom: 24px;">
+<div class="stat-cards mb-24">
 <div class="stat-card"><div class="num">${crmData.contacts.length}</div><div class="lbl">Total Contacts</div></div>
 <div class="stat-card"><div class="num" style="color: #3b82f6;">${(contactsByStage[1] || []).length + (contactsByStage[2] || []).length}</div><div class="lbl">Active Leads</div></div>
 <div class="stat-card highlight"><div class="num">$${totalValue.toLocaleString()}</div><div class="lbl">Pipeline Value</div></div>
@@ -111,7 +111,7 @@ function loadAdminCrmPanel() {
 
         <!-- PIPELINE TAB -->
 <div class="crm-content ${crmActiveTab === 'pipeline' ? 'active' : ''}" id="crmPipelineTab">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+<div class="admin-row-between">
 <p style="color: rgba(255,255,255,0.5); font-size: 13px;">Drag contacts between stages to update their status</p>
 <button class="btn-admin primary" onclick="showAddContactModal()">+ Add Contact</button>
 </div>
@@ -140,7 +140,7 @@ function loadAdminCrmPanel() {
 
         <!-- ALL CONTACTS TAB -->
 <div class="crm-content ${crmActiveTab === 'contacts' ? 'active' : ''}" id="crmContactsTab">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+<div class="admin-row-between">
 <input type="text" placeholder="Search contacts..." oninput="filterCrmContacts(this.value)" style="padding: 10px 16px; background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 300px;">
 <button class="btn-admin primary" onclick="showAddContactModal()">+ Add Contact</button>
 </div>
@@ -162,11 +162,11 @@ function loadAdminCrmPanel() {
 <tr>
 <td><input type="checkbox" class="contact-checkbox" data-id="${contact.id}"></td>
 <td>
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="flex-center-gap-12">
 <div class="contact-avatar" style="background: ${stage?.color || '#666'}; width: 36px; height: 36px; font-size: 14px;">${contact.name?.charAt(0) || '?'}</div>
 <div>
-<div style="font-weight: 600;">${contact.name}</div>
-<div style="font-size: 12px; color: rgba(255,255,255,0.5);">${contact.email || 'No email'}</div>
+<div class="fw-600">${contact.name}</div>
+<div class="text-dim fs-12">${contact.email || 'No email'}</div>
 </div>
 </div>
 </td>
@@ -174,7 +174,7 @@ function loadAdminCrmPanel() {
 <td><span style="background: ${stage?.color || '#666'}20; color: ${stage?.color || '#666'}; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 600;">${stage?.name || 'Unknown'}</span></td>
 <td style="font-weight: 600; color: #10b981;">$${(contact.value || 0).toLocaleString()}</td>
 <td>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
 <button onclick="quickSms(${contact.id})" style="padding: 6px 12px; background: #10b981; border: none; border-radius: 4px; cursor: pointer; color: #fff; font-size: 12px;">💬 SMS</button>
 <button onclick="quickEmail(${contact.id})" style="padding: 6px 12px; background: #3b82f6; border: none; border-radius: 4px; cursor: pointer; color: #fff; font-size: 12px;">📧 Email</button>
 <button onclick="quickCall(${contact.id})" style="padding: 6px 12px; background: #8b5cf6; border: none; border-radius: 4px; cursor: pointer; color: #fff; font-size: 12px;">📞 Call</button>
@@ -189,8 +189,8 @@ function loadAdminCrmPanel() {
 
         <!-- SMART GROUPS TAB -->
 <div class="crm-content ${crmActiveTab === 'smartgroups' ? 'active' : ''}" id="crmSmartGroupsTab">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-<p style="color: rgba(255,255,255,0.5);">Create smart groups to segment contacts for targeted messaging</p>
+<div class="flex-between mb-24">
+<p class="text-dim">Create smart groups to segment contacts for targeted messaging</p>
 <button class="btn-admin primary" onclick="showCreateSmartGroupModal()">+ Create Smart Group</button>
 </div>
 <div class="smart-group-list">
@@ -199,11 +199,11 @@ function loadAdminCrmPanel() {
                     return `
 <div class="smart-group-card" onclick="selectSmartGroup(${group.id})" data-group="${group.id}">
 <div class="smart-group-header">
-<div class="smart-group-name" style="display: flex; align-items: center; gap: 8px;"><span style="color: ${group.color};">●</span> ${group.name}</div>
+<div class="smart-group-name flex-center-gap-8"><span style="color: ${group.color};">●</span> ${group.name}</div>
 <div class="smart-group-count">${groupContacts.length}</div>
 </div>
 <p style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 12px;">${getSmartGroupDescription(group)}</p>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
 <button onclick="event.stopPropagation(); bulkSmsGroup(${group.id})" class="bulk-btn sms" style="flex: 1; padding: 8px; font-size: 12px;">💬 SMS All</button>
 <button onclick="event.stopPropagation(); bulkEmailGroup(${group.id})" class="bulk-btn email" style="flex: 1; padding: 8px; font-size: 12px;">📧 Email All</button>
 </div>
@@ -221,7 +221,7 @@ function loadAdminCrmPanel() {
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
                     <!-- SMS Blast -->
 <div style="background: #0a0a0a; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
-<h4 style="font-size: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;"><span style="font-size: 24px;">💬</span> SMS Blast</h4>
+<h4 style="font-size: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;"><span class="fs-24">💬</span> SMS Blast</h4>
 <div class="form-group">
 <label class="form-label">Select Recipients</label>
 <select id="bulkSmsGroup" class="form-select">
@@ -240,12 +240,12 @@ function loadAdminCrmPanel() {
 <textarea id="bulkSmsMessage" class="form-textarea" placeholder="Hi {name}, ..." rows="4"></textarea>
 <p style="font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px;">Use {name}, {company} for personalization</p>
 </div>
-<button onclick="sendBulkSms()" class="bulk-btn sms" style="width: 100%;">💬 Send SMS Blast</button>
+<button onclick="sendBulkSms()" class="bulk-btn sms w-full">💬 Send SMS Blast</button>
 </div>
 
                     <!-- Email Blast -->
 <div style="background: #0a0a0a; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
-<h4 style="font-size: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;"><span style="font-size: 24px;">📧</span> Email Blast</h4>
+<h4 style="font-size: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;"><span class="fs-24">📧</span> Email Blast</h4>
 <div class="form-group">
 <label class="form-label">Select Recipients</label>
 <select id="bulkEmailGroup" class="form-select">
@@ -267,7 +267,7 @@ function loadAdminCrmPanel() {
 <label class="form-label">Message</label>
 <textarea id="bulkEmailMessage" class="form-textarea" placeholder="Hi {name}, ..." rows="4"></textarea>
 </div>
-<button onclick="sendBulkEmail()" class="bulk-btn email" style="width: 100%;">📧 Send Email Blast</button>
+<button onclick="sendBulkEmail()" class="bulk-btn email w-full">📧 Send Email Blast</button>
 </div>
 </div>
 </div>
@@ -299,7 +299,7 @@ function renderContactCard(contact, stageColor) {
     return `
 <div class="contact-card" draggable="true" ondragstart="handleDragStart(event, ${contact.id})" ondragend="handleDragEnd(event)" data-contact="${contact.id}">
 <div class="contact-card-header">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="flex-center-gap-12">
 <div class="contact-avatar" style="background: ${stageColor};">${contact.name?.charAt(0) || '?'}</div>
 <div class="contact-info">
 <h4>${contact.name}</h4>
@@ -396,7 +396,7 @@ function renderConversationsHub() {
             .conv-input button { padding: 12px 24px; background: var(--red); border: none; color: #fff; border-radius: 24px; cursor: pointer; font-weight: 600; }
 </style>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+<div class="admin-row-between">
 <div>
 <h3 style="font-size: 18px; margin-bottom: 4px;">💬 All Conversations</h3>
 <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
@@ -404,7 +404,7 @@ function renderConversationsHub() {
                     ${supabaseCommsLastSync ? '<span style="font-size: 11px; color: rgba(255,255,255,0.3);">Synced: ' + new Date(supabaseCommsLastSync).toLocaleTimeString() + '</span>' : '<span style="font-size: 11px; color: rgba(245,158,11,0.8);">Not synced yet</span>'}
 </div>
 </div>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
 <button onclick="syncCommunications(true)" style="padding: 8px 16px; background: rgba(255,255,255,0.1); border: none; color: #fff; border-radius: 8px; cursor: pointer; font-weight: 600;">🔄 Sync</button>
 <span style="background: #ef4444; color: #fff; padding: 6px 12px; border-radius: 100px; font-size: 12px; font-weight: 600;">${unreadCount} Unread</span>
 <button onclick="composeNewMessage()" style="padding: 8px 16px; background: var(--red); border: none; color: #fff; border-radius: 8px; cursor: pointer; font-weight: 600;">✉️ Compose</button>
@@ -425,7 +425,7 @@ function renderConversationsHub() {
 <div class="conv-list">
                     ${sortedContacts.length === 0 ? `
 <div style="padding: 40px; text-align: center; color: rgba(255,255,255,0.3);">
-<div style="font-size: 32px; margin-bottom: 8px;">💬</div>
+<div class="fs-32 mb-8">💬</div>
 <div>No conversations yet</div>
 </div>
                     ` : sortedContacts.map(item => {
@@ -434,7 +434,7 @@ function renderConversationsHub() {
                         const isActive = selectedConversationContact === (item.contact?.id || item.contact?.clientId);
                         return `
 <div class="conv-item ${isActive ? 'active' : ''} ${unread ? 'unread' : ''}" onclick="selectConversation(${item.contact?.id || item.contact?.clientId || 0})">
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <div class="conv-avatar" style="background: ${getChannelColor(latestMsg?.channel)};">${(item.contact?.name || 'U').charAt(0)}</div>
 <div style="flex: 1; min-width: 0;">
 <div class="conv-item-header">
@@ -457,7 +457,7 @@ function renderConversationsHub() {
 <div class="conv-main">
                 ${selectedConversationContact ? renderConversationDetail(selectedConversationContact) : `
 <div class="conv-empty">
-<div style="text-align: center;">
+<div class="text-center">
 <div style="font-size: 64px; margin-bottom: 16px;">💬</div>
 <div style="font-size: 18px; margin-bottom: 8px;">Select a conversation</div>
 <div style="font-size: 14px; color: rgba(255,255,255,0.4);">Choose a contact from the list to view messages</div>
@@ -665,15 +665,15 @@ function renderConversationDetail(contactId) {
     const contactComms = allComms.filter(c => c.clientId === contactId || c.contactId === contactId);
 
     return `
-<div class="conv-header" style="display: flex; justify-content: space-between; align-items: center;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="conv-header flex-between">
+<div class="flex-center-gap-12">
 <div class="conv-avatar" style="background: var(--red);">${(contact.name || 'U').charAt(0)}</div>
 <div>
 <div style="font-weight: 600; font-size: 16px;">${contact.name || 'Unknown'}</div>
 <div style="font-size: 13px; color: rgba(255,255,255,0.5);">${contact.email || contact.phone || ''}</div>
 </div>
 </div>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
 <button onclick="quickSms(${contactId})" style="padding: 8px 12px; background: #10b981; border: none; color: #fff; border-radius: 6px; cursor: pointer;">📱 SMS</button>
 <button onclick="quickEmail(${contactId})" style="padding: 8px 12px; background: #3b82f6; border: none; color: #fff; border-radius: 6px; cursor: pointer;">✉️ Email</button>
 <button onclick="quickCall(${contactId})" style="padding: 8px 12px; background: #8b5cf6; border: none; color: #fff; border-radius: 6px; cursor: pointer;">📞 Call</button>
@@ -758,7 +758,7 @@ function composeNewMessage() {
 <div style="background: #1a1a1a; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%;">
 <h2 style="font-size: 20px; margin-bottom: 24px;">✉️ Compose Message</h2>
 
-<div style="margin-bottom: 16px;">
+<div class="mb-16">
 <label style="display: block; font-size: 14px; margin-bottom: 8px;">To</label>
 <select id="composeRecipient" style="width: 100%; padding: 12px; background: #252525; border: 1px solid #333; border-radius: 8px; color: #fff;">
 <option value="">Select contact...</option>
@@ -766,9 +766,9 @@ function composeNewMessage() {
 </select>
 </div>
 
-<div style="margin-bottom: 16px;">
+<div class="mb-16">
 <label style="display: block; font-size: 14px; margin-bottom: 8px;">Channel</label>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
 <button onclick="setComposeChannel('sms')" id="ch_sms" style="flex: 1; padding: 12px; background: #10b981; border: none; color: #fff; border-radius: 8px; cursor: pointer;">📱 SMS</button>
 <button onclick="setComposeChannel('email')" id="ch_email" style="flex: 1; padding: 12px; background: #333; border: none; color: #fff; border-radius: 8px; cursor: pointer;">✉️ Email</button>
 </div>
@@ -779,12 +779,12 @@ function composeNewMessage() {
 <input type="text" id="composeSubject" placeholder="Email subject..." style="width: 100%; padding: 12px; background: #252525; border: 1px solid #333; border-radius: 8px; color: #fff;">
 </div>
 
-<div style="margin-bottom: 24px;">
+<div class="mb-24">
 <label style="display: block; font-size: 14px; margin-bottom: 8px;">Message</label>
 <textarea id="composeMessage" rows="4" placeholder="Type your message..." style="width: 100%; padding: 12px; background: #252525; border: 1px solid #333; border-radius: 8px; color: #fff; resize: none;"></textarea>
 </div>
 
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <button onclick="document.getElementById('composeModal').remove()" style="flex: 1; padding: 12px; background: #333; border: none; color: #fff; border-radius: 8px; cursor: pointer;">Cancel</button>
 <button onclick="sendComposedMessage()" style="flex: 1; padding: 12px; background: var(--red); border: none; color: #fff; border-radius: 8px; cursor: pointer; font-weight: 600;">Send Message</button>
 </div>
@@ -1097,7 +1097,7 @@ function showCreateSmartGroupModal() {
 </div>
 <div id="sgFilterOptions"></div>
 <div class="form-group"><label class="form-label">Color</label>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
                         ${['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'].map(c => '<div onclick="document.getElementById(\'sgColor\').value=\'' + c + '\'; this.parentElement.querySelectorAll(\'div\').forEach(d=>d.style.border=\'2px solid transparent\'); this.style.border=\'2px solid #fff\';" style="width: 32px; height: 32px; background: ' + c + '; border-radius: 6px; cursor: pointer; border: 2px solid transparent;"></div>').join('')}
 </div>
 <input type="hidden" id="sgColor" value="#3b82f6">

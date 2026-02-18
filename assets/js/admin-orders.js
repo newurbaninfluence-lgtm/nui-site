@@ -24,9 +24,9 @@ function loadAdminOrdersPanel(searchTerm = '', statusFilter = 'all') {
     const completedOrders = orders.filter(o => o.status === 'delivered').length;
 
     document.getElementById('adminOrdersPanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-<h2 style="font-size: 28px; font-weight: 700;">📋 Order Tracking</h2>
-<span style="color: #888;">${filtered.length} of ${orders.length} orders</span>
+<div class="flex-between mb-24">
+<h2 class="fs-28 fw-700">📋 Order Tracking</h2>
+<span class="text-muted">${filtered.length} of ${orders.length} orders</span>
 </div>
 
         <!-- Search, Filter, and Actions -->
@@ -55,8 +55,8 @@ function loadAdminOrdersPanel(searchTerm = '', statusFilter = 'all') {
         <!-- Unassigned Alert -->
         ${unassignedOrders > 0 ? `
 <div style="background: #fef3c7; border: 1px solid #fcd34d; padding: 16px 24px; border-radius: 12px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between;">
-<div style="display: flex; align-items: center; gap: 12px;">
-<span style="font-size: 24px;">⚠️</span>
+<div class="flex-center-gap-12">
+<span class="fs-24">⚠️</span>
 <div>
 <strong style="color: #92400e;">${unassignedOrders} orders need designer assignment</strong>
 <p style="font-size: 13px; color: #b45309; margin: 0;">Assign designers to start tracking progress</p>
@@ -203,7 +203,7 @@ function renderStatusHistory(order) {
     return order.statusHistory.map(entry => `
 <div style="display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--admin-border, rgba(255,255,255,0.1));">
 <div style="width: 8px; height: 8px; background: var(--red); border-radius: 50%; margin-top: 6px;"></div>
-<div style="flex: 1;">
+<div class="flex-1">
 <div style="font-weight: 600; color: var(--admin-text, #fff); text-transform: capitalize;">${entry.status.replace('_', ' ')}</div>
 <div style="font-size: 13px; color: var(--admin-text-muted, #888);">${entry.note}</div>
 <div style="font-size: 11px; color: var(--admin-text-muted, #666); margin-top: 4px;">
@@ -235,22 +235,22 @@ function renderOrderCardEnhanced(o, designers) {
  <div class="order-card" style="margin-bottom: 16px; position: relative; overflow: hidden;">
         ${!designer ? '<div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: #f59e0b;"></div>' : ''}
 <div class="order-header" style="display: flex; justify-content: space-between; align-items: start;">
-<div style="flex: 1;">
+<div class="flex-1">
 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
 <div class="order-title" style="font-size: 18px;">${o.projectName}</div>
 <span class="order-status ${o.status}" style="text-transform: capitalize;">${o.status.replace('_', ' ')}</span>
 </div>
 <div class="order-client" style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
 <span>👤 ${client ? client.name : 'Unknown Client'}</span>
-<span style="color: #888;">|</span>
+<span class="text-muted">|</span>
 <span style="color: ${daysLeft < 0 ? 'var(--red)' : daysLeft < 3 ? '#f59e0b' : '#888'};">
                         📅 ${daysLeft < 0 ? 'Overdue by ' + Math.abs(daysLeft) + ' days' : daysLeft + ' days left'}
 </span>
-<span style="color: #888;">|</span>
+<span class="text-muted">|</span>
 <span style="color: var(--green); font-weight: 600;">💰 $${o.estimate?.toLocaleString() || 0}</span>
 </div>
 </div>
-<div style="text-align: right;">
+<div class="text-right">
                 ${designer ? `
 <div style="display: flex; align-items: center; gap: 8px; background: #f0fdf4; padding: 8px 12px; border-radius: 8px;">
 <span style="width: 32px; height: 32px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;">${String(designer).charAt(0)}</span>
@@ -270,8 +270,8 @@ function renderOrderCardEnhanced(o, designers) {
 
         <!-- Progress Section -->
 <div style="margin: 16px 0;">
-<div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-<span style="font-size: 13px; color: #666;">Progress</span>
+<div class="flex-between mb-8">
+<span class="text-muted-sm">Progress</span>
 <span style="font-size: 13px; font-weight: 600;">${progress}%</span>
 </div>
 <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%; background: ${o.status === 'delivered' ? 'var(--green)' : o.status === 'in_progress' ? 'var(--blue)' : '#f59e0b'}"></div></div>
@@ -332,21 +332,21 @@ async function assignDesignerToOrder(orderId, designerName) {
                         subject: `🎨 Your ${order.projectName} is Now In Progress!`,
                         html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #3b82f6, #60a5fa); padding: 32px; text-align: center;">
-<h2 style="margin: 0; font-size: 24px; color: #fff;">Work Has Begun! 🎨</h2>
+<h2 class="m-0 fs-24 text-white">Work Has Begun! 🎨</h2>
 </div>
-<div style="padding: 32px;">
-<p style="color: #ccc; font-size: 16px;">Hey ${client.name},</p>
-<p style="color: #ccc; font-size: 16px;">Great news — a designer has been assigned to your <strong>${order.projectName}</strong> project and work is officially underway!</p>
+<div class="p-32">
+<p class="text-light">Hey ${client.name},</p>
+<p class="text-light">Great news — a designer has been assigned to your <strong>${order.projectName}</strong> project and work is officially underway!</p>
 <div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
 <p style="color: #3b82f6; font-weight: 600; margin-bottom: 12px;">📋 Project Details:</p>
 <p style="color: #ccc;">Designer: <strong>${designerName}</strong></p>
 <p style="color: #ccc;">Turnaround: <strong>${order.turnaround}</strong></p>
 <p style="color: #ccc;">Due Date: <strong>${new Date(order.dueDate).toLocaleDateString()}</strong></p>
 </div>
-<p style="color: #888; font-size: 14px;">You'll receive updates as work progresses. Check your <a href="https://newurbaninfluence.com/#portal" style="color: #e63946;">Client Portal</a> anytime for the latest status.</p>
+<p class="text-muted fs-14">You'll receive updates as work progresses. Check your <a href="https://newurbaninfluence.com/#portal" style="color: #e63946;">Client Portal</a> anytime for the latest status.</p>
 </div>
-<div style="background: #050505; padding: 20px; text-align: center; border-top: 1px solid #222;">
-<p style="color: #666; font-size: 12px; margin: 0;">New Urban Influence • Detroit, MI</p>
+<div class="admin-footer-bar">
+<p class="text-muted fs-12 m-0">New Urban Influence • Detroit, MI</p>
 </div>
 </div>`,
                         text: `Your project "${order.projectName}" is now in progress! Designer ${designerName} has been assigned. Turnaround: ${order.turnaround}.`
@@ -379,8 +379,8 @@ function showQuickAssignModal() {
                 ${unassignedOrders.map(o => `
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 12px;">
 <div>
-<div style="font-weight: 600;">${o.projectName}</div>
-<div style="font-size: 13px; color: #888;">${clients.find(c => c.id === o.clientId)?.name || 'Unknown'}</div>
+<div class="fw-600">${o.projectName}</div>
+<div class="text-muted-sm">${clients.find(c => c.id === o.clientId)?.name || 'Unknown'}</div>
 </div>
 <select id="assign_${o.id}" style="padding: 8px 12px; border: 1px solid #e5e5e5; border-radius: 6px;">
 <option value="">Select Designer</option>
@@ -433,7 +433,7 @@ function viewOrderDetails(orderId) {
     modal.className = 'modal-overlay active';
     modal.id = 'orderDetailsModal';
     modal.innerHTML = `
-<div class="modal" style="max-width: 700px;">
+<div class="modal max-w-700">
 <div class="modal-header">
 <h3 class="modal-title">Order Details: ${order.projectName}</h3>
 <button class="modal-close" onclick="document.getElementById('orderDetailsModal').remove()">×</button>
@@ -442,50 +442,50 @@ function viewOrderDetails(orderId) {
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
 <div>
 <h4 style="font-size: 12px; color: #888; margin-bottom: 8px;">CLIENT</h4>
-<p style="font-weight: 600;">${client?.name || 'Unknown'}</p>
+<p class="fw-600">${client?.name || 'Unknown'}</p>
 <p style="font-size: 14px; color: #666;">${client?.email || ''}</p>
 </div>
 <div>
 <h4 style="font-size: 12px; color: #888; margin-bottom: 8px;">DESIGNER</h4>
-<p style="font-weight: 600;">${order.assignedDesigner || 'Not Assigned'}</p>
+<p class="fw-600">${order.assignedDesigner || 'Not Assigned'}</p>
                         ${order.assignedAt ? `<p style="font-size: 14px; color: #666;">Assigned: ${new Date(order.assignedAt).toLocaleDateString()}</p>` : ''}
 </div>
 </div>
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
 <div style="padding: 16px; background: #f8fafc; border-radius: 8px; text-align: center;">
-<div style="font-size: 24px; font-weight: 700;">$${order.estimate?.toLocaleString() || 0}</div>
-<div style="font-size: 12px; color: #888;">Estimate</div>
+<div class="fs-24 fw-700">$${order.estimate?.toLocaleString() || 0}</div>
+<div class="text-muted fs-12">Estimate</div>
 </div>
 <div style="padding: 16px; background: #f8fafc; border-radius: 8px; text-align: center;">
-<div style="font-size: 24px; font-weight: 700;">${order.turnaround || 'N/A'}</div>
-<div style="font-size: 12px; color: #888;">Turnaround</div>
+<div class="fs-24 fw-700">${order.turnaround || 'N/A'}</div>
+<div class="text-muted fs-12">Turnaround</div>
 </div>
 <div style="padding: 16px; background: #f8fafc; border-radius: 8px; text-align: center;">
-<div style="font-size: 24px; font-weight: 700;">${new Date(order.dueDate).toLocaleDateString()}</div>
-<div style="font-size: 12px; color: #888;">Due Date</div>
+<div class="fs-24 fw-700">${new Date(order.dueDate).toLocaleDateString()}</div>
+<div class="text-muted fs-12">Due Date</div>
 </div>
 <div style="padding: 16px; background: ${order.status === 'delivered' ? '#d1fae5' : '#fef3c7'}; border-radius: 8px; text-align: center;">
 <div style="font-size: 24px; font-weight: 700; text-transform: capitalize;">${order.status.replace('_', ' ')}</div>
-<div style="font-size: 12px; color: #888;">Status</div>
+<div class="text-muted fs-12">Status</div>
 </div>
 </div>
-                ${order.description ? `<div style="margin-bottom: 24px;"><h4 style="font-size: 12px; color: #888; margin-bottom: 8px;">DESCRIPTION</h4><p>${order.description}</p></div>` : ''}
+                ${order.description ? `<div class="mb-24"><h4 style="font-size: 12px; color: #888; margin-bottom: 8px;">DESCRIPTION</h4><p>${order.description}</p></div>` : ''}
 
                 <!-- Visual Timeline -->
-<div style="margin-bottom: 24px;">
+<div class="mb-24">
 <h4 style="font-size: 12px; color: #888; margin-bottom: 12px;">ORDER PROGRESS</h4>
                     ${renderOrderTimeline(order)}
 </div>
 
                 <!-- Status History -->
-<div style="margin-bottom: 24px;">
+<div class="mb-24">
 <h4 style="font-size: 12px; color: #888; margin-bottom: 12px;">STATUS HISTORY</h4>
 <div style="background: #f8fafc; border-radius: 12px; padding: 16px; max-height: 200px; overflow-y: auto;">
                         ${renderStatusHistory(order)}
 </div>
 </div>
 
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <button onclick="document.getElementById('orderDetailsModal').remove(); showInvoice(${order.id});" class="btn-cta">View Invoice</button>
 <button onclick="document.getElementById('orderDetailsModal').remove(); updateOrderStatus(${order.id});" class="btn-outline">Update Status</button>
 <button onclick="document.getElementById('orderDetailsModal').remove();" style="padding: 10px 20px; background: #f5f5f5; border: none; border-radius: 8px; cursor: pointer;">Close</button>

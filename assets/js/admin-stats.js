@@ -9,9 +9,9 @@ function loadAdminAnalyticsPanel() {
     const trafficSources = siteAnalytics.trafficSources || [];
 
     document.getElementById('adminAnalyticsPanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-<h2 style="font-size: 28px; font-weight: 700;">📈 Site Analytics</h2>
-<div style="display: flex; gap: 12px;">
+<div class="flex-between mb-32">
+<h2 class="fs-28 fw-700">📈 Site Analytics</h2>
+<div class="flex-gap-12">
 <select id="analyticsDateRange" onchange="updateAnalyticsRange(this.value)" style="padding: 10px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 14px;">
 <option value="7d">Last 7 Days</option>
 <option value="30d">Last 30 Days</option>
@@ -75,7 +75,7 @@ function loadAdminAnalyticsPanel() {
 <div>
 <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
 <span style="font-size: 14px; color: rgba(255,255,255,0.8);">${s.source}</span>
-<span style="font-weight: 600; color: #fff;">${s.percent}%</span>
+<span class="text-bold-white">${s.percent}%</span>
 </div>
 <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
 <div style="width: ${s.percent}%; height: 100%; background: ${s.color}; border-radius: 4px;"></div>
@@ -102,7 +102,7 @@ function loadAdminAnalyticsPanel() {
                     ${topPages.map((p, i) => `
 <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
 <td style="padding: 16px 0;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="flex-center-gap-12">
 <span style="width: 24px; height: 24px; background: rgba(255,255,255,0.1); color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">${i + 1}</span>
 <span style="font-weight: 500; color: #fff;">/${p.page.toLowerCase()}</span>
 </div>
@@ -129,20 +129,20 @@ function loadAdminAnalyticsPanel() {
 </div>
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
 <div>
-<div style="font-size: 24px; font-weight: 700;">${visitors.today}</div>
-<div style="font-size: 13px; color: #888;">Today</div>
+<div class="fs-24 fw-700">${visitors.today}</div>
+<div class="text-muted-sm">Today</div>
 </div>
 <div>
-<div style="font-size: 24px; font-weight: 700;">${visitors.week}</div>
-<div style="font-size: 13px; color: #888;">This Week</div>
+<div class="fs-24 fw-700">${visitors.week}</div>
+<div class="text-muted-sm">This Week</div>
 </div>
 <div>
-<div style="font-size: 24px; font-weight: 700;">${pageViews.today}</div>
-<div style="font-size: 13px; color: #888;">Page Views Today</div>
+<div class="fs-24 fw-700">${pageViews.today}</div>
+<div class="text-muted-sm">Page Views Today</div>
 </div>
 <div>
-<div style="font-size: 24px; font-weight: 700;">2.4</div>
-<div style="font-size: 13px; color: #888;">Pages/Session</div>
+<div class="fs-24 fw-700">2.4</div>
+<div class="text-muted-sm">Pages/Session</div>
 </div>
 </div>
 </div>
@@ -271,7 +271,7 @@ function loadAdminReviewsPanel() {
     const reviewLink = seoData.googleMyBusiness?.reviewLink || 'https://g.page/r/YOUR_PLACE_ID/review';
 
     document.getElementById('adminReviewsPanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+<div class="admin-row-between">
 <div>
 <h2 style="font-size: 28px; font-weight: 700; color: #fff;">⭐ Google Reviews</h2>
 <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
@@ -280,13 +280,13 @@ function loadAdminReviewsPanel() {
                     ${totalGoogleReviews > googleReviews.length ? '<span style="font-size: 11px; color: rgba(255,255,255,0.4);">Showing ' + googleReviews.length + ' of ' + totalGoogleReviews + ' total</span>' : ''}
 </div>
 </div>
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <button onclick="syncGoogleReviews(); setTimeout(loadAdminReviewsPanel, 3000);" class="btn-outline" style="border-color: rgba(255,255,255,0.2); color: #fff;">🔄 Sync Reviews</button>
 <button onclick="requestReview()" class="btn-outline" style="border-color: rgba(255,255,255,0.2); color: #fff;">📧 Request Review</button>
 <a href="${reviewLink}" target="_blank" class="btn-cta">View on Google →</a>
 </div>
 </div>
-        ${!isLiveData ? '<div style="padding: 16px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); border-radius: 12px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;"><span style="font-size: 24px;">💡</span><div><p style="font-size: 13px; color: #fbbf24; font-weight: 600;">These are demo reviews.</p><p style="font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px;">Go to 📍 Google Business → Google Integration → enter your Place ID and click Sync to pull real reviews.</p></div></div>' : ''}
+        ${!isLiveData ? '<div style="padding: 16px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); border-radius: 12px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;"><span class="fs-24">💡</span><div><p style="font-size: 13px; color: #fbbf24; font-weight: 600;">These are demo reviews.</p><p style="font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px;">Go to 📍 Google Business → Google Integration → enter your Place ID and click Sync to pull real reviews.</p></div></div>' : ''}
 
         <!-- Stats Overview -->
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 32px;">
@@ -311,12 +311,12 @@ function loadAdminReviewsPanel() {
         <!-- Rating Distribution -->
 <div style="background: #111; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 32px;">
 <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #fff;">Rating Distribution</h3>
-<div style="display: flex; flex-direction: column; gap: 12px;">
+<div class="flex-col-gap-12">
                 ${[5,4,3,2,1].map(rating => {
                     const count = googleReviews.filter(r => r.rating === rating).length;
                     const percent = Math.round((count / googleReviews.length) * 100);
                     return `
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="flex-center-gap-12">
 <span style="width: 60px; font-size: 14px; color: rgba(255,255,255,0.7);">${rating} star${rating > 1 ? 's' : ''}</span>
 <div style="flex: 1; height: 12px; background: rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden;">
 <div style="width: ${percent}%; height: 100%; background: linear-gradient(90deg, ${rating >= 4 ? '#10b981, #34d399' : rating === 3 ? '#f59e0b, #fbbf24' : '#ef4444, #f87171'}); border-radius: 6px;"></div>
@@ -350,10 +350,10 @@ function renderReviewCard(review) {
     return `
 <div style="padding: 20px; background: #1a1a1a; border-radius: 12px; border-left: 4px solid ${review.rating >= 4 ? '#10b981' : review.rating === 3 ? '#f59e0b' : '#ef4444'};">
 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="flex-center-gap-12">
 <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #fff;">${review.author.charAt(0)}</div>
 <div>
-<div style="font-weight: 600; color: #fff;">${review.author}</div>
+<div class="text-bold-white">${review.author}</div>
 <div style="font-size: 13px; color: rgba(255,255,255,0.4);">${new Date(review.date).toLocaleDateString()}</div>
 </div>
 </div>
@@ -403,14 +403,14 @@ function loadAdminSeoPanel() {
 <div class="seo-card-title">📊 SEO Score</div>
 <div class="seo-score">
 <div class="seo-score-circle good">85</div>
-<div><p style="font-weight: 600;">Good</p><p style="font-size: 13px; color: rgba(255,255,255,0.5);">Your site is well optimized</p></div>
+<div><p class="fw-600">Good</p><p style="font-size: 13px; color: rgba(255,255,255,0.5);">Your site is well optimized</p></div>
 </div>
 </div>
 <div class="seo-card">
 <div class="seo-card-title">🤖 AEO Readiness</div>
 <div class="seo-score">
 <div class="seo-score-circle medium">72</div>
-<div><p style="font-weight: 600;">Moderate</p><p style="font-size: 13px; color: rgba(255,255,255,0.5);">Add more FAQ content</p></div>
+<div><p class="fw-600">Moderate</p><p style="font-size: 13px; color: rgba(255,255,255,0.5);">Add more FAQ content</p></div>
 </div>
 </div>
 </div>
@@ -498,9 +498,9 @@ function loadAdminGmbPanel() {
 <h4 style="font-size: 14px; font-weight: 600; color: #fff;">⚡ Live Reviews Sync</h4>
 <span id="gmbSyncStatus" style="font-size: 12px; padding: 4px 12px; border-radius: 100px; background: ${seoData.googleMyBusiness.placeId ? 'rgba(16,185,129,0.15); color: #34d399;' : 'rgba(255,255,255,0.1); color: rgba(255,255,255,0.4);'}">${seoData.googleMyBusiness.placeId ? '● Place ID Set' : '○ Not Configured'}</span>
 </div>
-<p style="font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 16px;">Enter your Place ID above, then add <strong style="color: #fff;">GOOGLE_PLACES_API_KEY</strong> to your Netlify environment variables. Click Sync to pull real Google reviews.</p>
-<div style="display: flex; gap: 12px;">
-<button onclick="syncGoogleReviews()" class="btn-admin primary" style="flex: 1;">🔄 Sync Reviews Now</button>
+<p style="font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 16px;">Enter your Place ID above, then add <strong class="text-white">GOOGLE_PLACES_API_KEY</strong> to your Netlify environment variables. Click Sync to pull real Google reviews.</p>
+<div class="flex-gap-12">
+<button onclick="syncGoogleReviews()" class="btn-admin primary flex-1">🔄 Sync Reviews Now</button>
 <button onclick="window.open('https://developers.google.com/maps/documentation/places/web-service/place-id-lookup', '_blank')" class="btn-admin" style="flex: 1; background: rgba(255,255,255,0.1); color: #fff;">🔍 Find Place ID</button>
 </div>
 <div id="gmbSyncResult" style="margin-top: 12px; display: none;"></div>
@@ -583,9 +583,9 @@ function loadAdminEmailMarketingPanel() {
 
         <!-- Automated Newsletter Toggle -->
 <div class="form-section" style="background: ${em.settings.automatedSending ? 'rgba(46,204,113,0.1)' : 'rgba(255,59,48,0.1)'}; border: 1px solid ${em.settings.automatedSending ? '#2ecc71' : '#ff3b30'};">
-<div style="display: flex; justify-content: space-between; align-items: center;">
+<div class="flex-between">
 <div>
-<div class="form-section-title" style="margin: 0;">🤖 Automated Weekly Newsletter</div>
+<div class="form-section-title m-0">🤖 Automated Weekly Newsletter</div>
 <p style="color: rgba(255,255,255,0.5); font-size: 13px; margin: 8px 0 0;">Send newsletters automatically every ${em.settings.sendDay} at ${em.settings.sendTime}</p>
 </div>
 <label class="switch">
@@ -636,15 +636,15 @@ function loadAdminEmailMarketingPanel() {
 <div class="form-section-title">📋 Email Templates</div>
 <div class="card-grid">
                 ${em.templates.map(t => `
-<div class="client-card" style="cursor: pointer;" onclick="editEmailTemplate(${t.id})">
+<div class="client-card pointer" onclick="editEmailTemplate(${t.id})">
 <div class="client-card-header" style="background: linear-gradient(135deg, ${t.type === 'newsletter' ? '#3b82f6' : t.type === 'promo' ? '#f59e0b' : '#8b5cf6'}, #000); height: 80px;">
-<span style="font-size: 24px;">${t.type === 'newsletter' ? '📰' : t.type === 'promo' ? '🎁' : '📢'}</span>
+<span class="fs-24">${t.type === 'newsletter' ? '📰' : t.type === 'promo' ? '🎁' : '📢'}</span>
 </div>
 <div class="client-card-body">
 <div class="client-card-name">${t.name}</div>
 <div class="client-card-meta">${t.subject}</div>
 <div class="client-card-btns">
-<button onclick="event.stopPropagation(); useEmailTemplate(${t.id})" style="background: var(--red); color: #fff;">Use Template</button>
+<button onclick="event.stopPropagation(); useEmailTemplate(${t.id})" class="bg-red text-white">Use Template</button>
 </div>
 </div>
 </div>
@@ -658,7 +658,7 @@ function loadAdminEmailMarketingPanel() {
 <table class="data-table">
 <thead><tr><th>Campaign</th><th>Sent</th><th>Opens</th><th>Clicks</th><th>Date</th><th>Status</th></tr></thead>
 <tbody>
-                    ${em.campaigns.length === 0 ? '<tr><td colspan="6" style="text-align: center; opacity: 0.5;">No campaigns yet</td></tr>' : ''}
+                    ${em.campaigns.length === 0 ? '<tr><td colspan="6" class="text-center opacity-50">No campaigns yet</td></tr>' : ''}
                     ${em.campaigns.slice(-10).reverse().map(c => `
 <tr>
 <td>${c.subject}</td>
@@ -680,7 +680,7 @@ function loadAdminEmailMarketingPanel() {
 <table class="data-table">
 <thead><tr><th>Email</th><th>Name</th><th>Source</th><th>Subscribed</th><th>Actions</th></tr></thead>
 <tbody>
-                        ${em.subscribers.length === 0 ? '<tr><td colspan="5" style="text-align: center; opacity: 0.5;">No subscribers yet</td></tr>' : ''}
+                        ${em.subscribers.length === 0 ? '<tr><td colspan="5" class="text-center opacity-50">No subscribers yet</td></tr>' : ''}
                         ${em.subscribers.map(s => `
 <tr>
 <td>${s.email}</td>
@@ -713,7 +713,7 @@ function showCreateCampaignModal() {
     modal.className = 'modal-overlay active';
     modal.id = 'campaignModal';
     modal.innerHTML = `
-<div class="modal" style="max-width: 700px;">
+<div class="modal max-w-700">
 <div class="modal-header"><h3 class="modal-title">Create Email Campaign</h3><button class="modal-close" onclick="document.getElementById('campaignModal').remove()">×</button></div>
 <div class="modal-body">
 <div class="form-group"><label class="form-label">Subject Line *</label><input type="text" id="campaignSubject" class="form-input" placeholder="Your eye-catching subject line"></div>
@@ -833,35 +833,35 @@ function editEmailTemplate(templateId) {
     modal.innerHTML = `
 <div class="modal" style="max-width: 600px; background: #1a1a1a; color: #fff;">
 <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-<h3 class="modal-title" style="color: #fff;">✏️ Edit Template: ${template.name}</h3>
-<button class="modal-close" onclick="document.getElementById('editTemplateModal').remove()" style="color: #fff;">×</button>
+<h3 class="modal-title text-white">✏️ Edit Template: ${template.name}</h3>
+<button class="modal-close" onclick="document.getElementById('editTemplateModal').remove()" class="text-white">×</button>
 </div>
 <div class="modal-body">
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Template Name</label>
-<input type="text" id="editTemplateName" class="form-input" value="${template.name}" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Template Name</label>
+<input type="text" id="editTemplateName" class="form-input" value="${template.name}" class="admin-input">
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Subject Line</label>
-<input type="text" id="editTemplateSubject" class="form-input" value="${template.subject || ''}" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Subject Line</label>
+<input type="text" id="editTemplateSubject" class="form-input" value="${template.subject || ''}" class="admin-input">
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Type</label>
-<select id="editTemplateType" class="form-select" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Type</label>
+<select id="editTemplateType" class="form-select admin-input">
 <option value="newsletter" ${template.type === 'newsletter' ? 'selected' : ''}>📰 Newsletter</option>
 <option value="promo" ${template.type === 'promo' ? 'selected' : ''}>🎁 Promotional</option>
 <option value="announcement" ${template.type === 'announcement' ? 'selected' : ''}>📢 Announcement</option>
 </select>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Content</label>
-<textarea id="editTemplateContent" class="form-textarea" rows="8" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">${template.content || template.body || ''}</textarea>
+<label class="form-label text-white">Content</label>
+<textarea id="editTemplateContent" class="form-textarea" rows="8" class="admin-input">${template.content || template.body || ''}</textarea>
 </div>
 </div>
 <div class="modal-footer" style="border-top: 1px solid rgba(255,255,255,0.1);">
 <button class="btn-admin secondary" onclick="document.getElementById('editTemplateModal').remove()" style="background: #333; color: #fff;">Cancel</button>
 <button class="btn-admin danger" onclick="deleteEmailTemplate(${templateId})" style="background: #dc2626; color: #fff;">Delete</button>
-<button class="btn-admin primary" onclick="saveEmailTemplate(${templateId})" style="background: var(--red); color: #fff;">Save Changes</button>
+<button class="btn-admin primary" onclick="saveEmailTemplate(${templateId})" class="bg-red text-white">Save Changes</button>
 </div>
 </div>
     `;
@@ -899,36 +899,36 @@ function showCreateProductModal() {
     modal.innerHTML = `
 <div class="modal" style="background: #1a1a1a; color: #fff;">
 <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-<h3 class="modal-title" style="color: #fff;">➕ Create New Product/Service</h3>
-<button class="modal-close" onclick="document.getElementById('createProductModal').remove()" style="color: #fff;">×</button>
+<h3 class="modal-title text-white">➕ Create New Product/Service</h3>
+<button class="modal-close" onclick="document.getElementById('createProductModal').remove()" class="text-white">×</button>
 </div>
 <div class="modal-body">
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Product/Service Name *</label>
-<input type="text" id="newProductName" class="form-input" placeholder="e.g., Custom Logo Design" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Product/Service Name *</label>
+<input type="text" id="newProductName" class="form-input" placeholder="e.g., Custom Logo Design" class="admin-input">
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Type</label>
-<select id="newProductType" class="form-select" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Type</label>
+<select id="newProductType" class="form-select admin-input">
 <option value="service">Individual Service</option>
 <option value="package">Package</option>
 </select>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Price *</label>
-<input type="number" id="newProductPrice" class="form-input" placeholder="0.00" step="0.01" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Price *</label>
+<input type="number" id="newProductPrice" class="form-input" placeholder="0.00" step="0.01" class="admin-input">
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Turnaround Time</label>
-<input type="text" id="newProductTurnaround" class="form-input" placeholder="e.g., 3-5 days" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Turnaround Time</label>
+<input type="text" id="newProductTurnaround" class="form-input" placeholder="e.g., 3-5 days" class="admin-input">
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Description</label>
-<textarea id="newProductDescription" class="form-textarea" rows="3" placeholder="Service description..." style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);"></textarea>
+<label class="form-label text-white">Description</label>
+<textarea id="newProductDescription" class="form-textarea" rows="3" placeholder="Service description..." class="admin-input"></textarea>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Category</label>
-<select id="newProductCategory" class="form-select" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Category</label>
+<select id="newProductCategory" class="form-select admin-input">
 <option value="branding">Branding</option>
 <option value="web">Web Development</option>
 <option value="print">Print Design</option>
@@ -941,7 +941,7 @@ function showCreateProductModal() {
 </div>
 <div class="modal-footer" style="border-top: 1px solid rgba(255,255,255,0.1);">
 <button class="btn-admin secondary" onclick="document.getElementById('createProductModal').remove()" style="background: #333; color: #fff;">Cancel</button>
-<button class="btn-admin primary" onclick="saveNewProduct()" style="background: var(--red); color: #fff;">Create Product</button>
+<button class="btn-admin primary" onclick="saveNewProduct()" class="bg-red text-white">Create Product</button>
 </div>
 </div>
     `;
@@ -1009,9 +1009,9 @@ function loadAdminLoyaltyPanel() {
 
         <!-- Program Toggle -->
 <div class="form-section" style="background: ${lp.enabled ? 'rgba(46,204,113,0.1)' : 'rgba(255,59,48,0.1)'}; border: 1px solid ${lp.enabled ? '#2ecc71' : '#ff3b30'};">
-<div style="display: flex; justify-content: space-between; align-items: center;">
+<div class="flex-between">
 <div>
-<div class="form-section-title" style="margin: 0;">🎯 Loyalty Program Status</div>
+<div class="form-section-title m-0">🎯 Loyalty Program Status</div>
 <p style="color: rgba(255,255,255,0.5); font-size: 13px; margin: 8px 0 0;">Clients earn ${lp.pointsPerDollar} point(s) per $1 spent</p>
 </div>
 <label class="switch">
@@ -1047,7 +1047,7 @@ function loadAdminLoyaltyPanel() {
                 ${lp.rewardTiers.map((tier, i) => `
 <div class="client-card">
 <div class="client-card-header" style="background: linear-gradient(135deg, ${i === 0 ? '#cd7f32' : i === 1 ? '#c0c0c0' : i === 2 ? '#ffd700' : '#e5e4e2'}, #000);">
-<span style="font-size: 24px;">${i === 0 ? '🥉' : i === 1 ? '🥈' : i === 2 ? '🥇' : '💎'}</span>
+<span class="fs-24">${i === 0 ? '🥉' : i === 1 ? '🥈' : i === 2 ? '🥇' : '💎'}</span>
 </div>
 <div class="client-card-body">
 <div class="client-card-name">${tier.name}</div>
@@ -1055,8 +1055,8 @@ function loadAdminLoyaltyPanel() {
 <div style="margin-top: 8px;">
                                 ${tier.perks.map(p => '<span class="tag" style="font-size: 10px;">' + p + '</span>').join('')}
 </div>
-<div class="client-card-btns" style="margin-top: 12px;">
-<button onclick="editLoyaltyTier(${i})" style="background: var(--red); color: #fff;">Edit</button>
+<div class="client-card-btns mt-12">
+<button onclick="editLoyaltyTier(${i})" class="bg-red text-white">Edit</button>
 </div>
 </div>
 </div>
@@ -1074,14 +1074,14 @@ function loadAdminLoyaltyPanel() {
 <table class="data-table">
 <thead><tr><th>Client</th><th>Tier</th><th>Points</th><th>Lifetime Earned</th><th>Joined</th><th>Actions</th></tr></thead>
 <tbody>
-                    ${lp.members.length === 0 ? '<tr><td colspan="6" style="text-align: center; opacity: 0.5;">No members yet. Enroll clients to get started!</td></tr>' : ''}
+                    ${lp.members.length === 0 ? '<tr><td colspan="6" class="text-center opacity-50">No members yet. Enroll clients to get started!</td></tr>' : ''}
                     ${lp.members.map(m => {
                         const tier = lp.rewardTiers.slice().reverse().find(t => m.points >= t.minPoints) || lp.rewardTiers[0];
                         return `
 <tr>
 <td>${m.name}</td>
 <td><span class="status-badge" style="background: ${tier.name === 'Bronze' ? '#cd7f32' : tier.name === 'Silver' ? '#c0c0c0' : tier.name === 'Gold' ? '#ffd700' : '#e5e4e2'}; color: #000;">${tier.name}</span></td>
-<td style="font-weight: 600;">${(m.points || 0).toLocaleString()}</td>
+<td class="fw-600">${(m.points || 0).toLocaleString()}</td>
 <td>${(m.totalEarned || 0).toLocaleString()}</td>
 <td>${new Date(m.joinedAt).toLocaleDateString()}</td>
 <td>
@@ -1211,7 +1211,7 @@ function loadAdminCommunicationsPanel() {
 <div style="width: 40px; height: 40px; border-radius: 50%; background: ${msg.channel === 'facebook' ? '#1877f2' : msg.channel === 'instagram' ? '#e4405f' : msg.channel === 'sms' ? '#25d366' : '#3b82f6'}; display: flex; align-items: center; justify-content: center;">
                             ${msg.channel === 'facebook' ? '📱' : msg.channel === 'instagram' ? '📸' : msg.channel === 'sms' ? '📲' : '📧'}
 </div>
-<div style="flex: 1;">
+<div class="flex-1">
 <div style="display: flex; justify-content: space-between;">
 <strong>${msg.contactName || msg.name || msg.from || 'Unknown'}</strong>
 <span style="font-size: 12px; opacity: 0.5;">${msg.lastMessageAt ? new Date(msg.lastMessageAt).toLocaleString() : ''}</span>
@@ -1326,14 +1326,14 @@ function loadAdminSocialDmPanel() {
 <div class="form-section-title">✉️ Quick Send DM</div>
 
 <div class="form-row">
-<div class="form-group" style="flex: 1;">
+<div class="form-group flex-1">
 <label class="form-label">Select Client</label>
 <select id="dmClientSelect" class="form-select" onchange="selectDmClient(this.value)">
 <option value="">-- Choose a client --</option>
                         ${clients.map(c => '<option value="' + c.id + '">' + c.name + '</option>').join('')}
 </select>
 </div>
-<div class="form-group" style="flex: 1;">
+<div class="form-group flex-1">
 <label class="form-label">Platform</label>
 <div style="display: flex; gap: 8px; margin-top: 8px;">
 <button class="platform-btn" id="platformInstagram" onclick="setDmPlatform('instagram')" style="background: rgba(228, 64, 95, 0.2); color: #e4405f; border: 1px solid #e4405f;">📷 Instagram</button>
@@ -1344,7 +1344,7 @@ function loadAdminSocialDmPanel() {
 </div>
 
 <div class="form-row">
-<div class="form-group" style="flex: 1;">
+<div class="form-group flex-1">
 <label class="form-label">Handle (@username)</label>
 <input type="text" id="dmHandle" class="form-input" placeholder="e.g., @username or facebook_page_name" oninput="validateDmHandle()">
 </div>
@@ -1362,8 +1362,8 @@ function loadAdminSocialDmPanel() {
 <button class="btn-template" onclick="fillDmTemplate('thanks')" style="background: rgba(255,255,255,0.1); color: #fff; padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px;">🙏 Thank You</button>
 </div>
 
-<div style="display: flex; gap: 8px;">
-<button class="btn-admin primary" onclick="openSocialDm()" style="flex: 1;">🔗 Open DM in Browser</button>
+<div class="flex-gap-8">
+<button class="btn-admin primary" onclick="openSocialDm()" class="flex-1">🔗 Open DM in Browser</button>
 <button class="btn-admin" onclick="copyDmMessage()" style="flex: 1; background: rgba(255,255,255,0.1); color: #fff;">📋 Copy Message</button>
 <button class="btn-admin" onclick="logDmConversation()" style="flex: 1; background: rgba(46,204,113,0.2); color: #2ecc71;">💾 Log Conversation</button>
 </div>
@@ -1377,19 +1377,19 @@ function loadAdminSocialDmPanel() {
 <thead>
 <tr>
 <th>Client Name</th>
-<th style="text-align: center;">📷 Instagram</th>
-<th style="text-align: center;">f Facebook</th>
-<th style="text-align: center;">𝕏 Twitter</th>
+<th class="text-center">📷 Instagram</th>
+<th class="text-center">f Facebook</th>
+<th class="text-center">𝕏 Twitter</th>
 <th>Action</th>
 </tr>
 </thead>
 <tbody>
-                        ${clients.length === 0 ? '<tr><td colspan="5" style="text-align: center; opacity: 0.5;">No clients yet</td></tr>' : clients.map(c => `
+                        ${clients.length === 0 ? '<tr><td colspan="5" class="text-center opacity-50">No clients yet</td></tr>' : clients.map(c => `
 <tr>
 <td><strong>${c.name}</strong></td>
-<td style="text-align: center;">${c.socialHandles?.instagram ? '@' + c.socialHandles.instagram : '-'}</td>
-<td style="text-align: center;">${c.socialHandles?.facebook ? c.socialHandles.facebook : '-'}</td>
-<td style="text-align: center;">${c.socialHandles?.twitter ? '@' + c.socialHandles.twitter : '-'}</td>
+<td class="text-center">${c.socialHandles?.instagram ? '@' + c.socialHandles.instagram : '-'}</td>
+<td class="text-center">${c.socialHandles?.facebook ? c.socialHandles.facebook : '-'}</td>
+<td class="text-center">${c.socialHandles?.twitter ? '@' + c.socialHandles.twitter : '-'}</td>
 <td><button class="btn-admin small primary" onclick="editClientHandles('${c.id}')">Edit Handles</button></td>
 </tr>
                         `).join('')}
@@ -1400,8 +1400,8 @@ function loadAdminSocialDmPanel() {
 
         <!-- Conversation Log -->
 <div class="form-section">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<div class="form-section-title" style="margin: 0;">📥 Conversation Log (${sm.conversations.length})</div>
+<div class="admin-row-between">
+<div class="form-section-title m-0">📥 Conversation Log (${sm.conversations.length})</div>
 <button class="btn-admin small" onclick="exportDmLog()" style="background: rgba(255,255,255,0.1); color: #fff;">📊 Export CSV</button>
 </div>
 <div style="margin-bottom: 12px;">
@@ -1410,7 +1410,7 @@ function loadAdminSocialDmPanel() {
 <div id="dmLogContainer" style="max-height: 500px; overflow-y: auto;">
                 ${sm.conversations.length === 0 ? '<p style="text-align: center; opacity: 0.5; padding: 32px;">No conversations logged yet. Send and log messages to build history.</p>' : sm.conversations.map((conv, idx) => `
 <div style="display: flex; gap: 12px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 6px; margin-bottom: 8px; border-left: 3px solid ${conv.platform === 'facebook' ? '#1877f2' : conv.platform === 'instagram' ? '#e4405f' : '#1da1f2'};">
-<div style="flex: 1;">
+<div class="flex-1">
 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px;">
 <div>
 <span style="font-weight: bold;">${conv.clientName}</span>
@@ -1430,14 +1430,14 @@ function loadAdminSocialDmPanel() {
         <!-- Auto-Response Templates -->
 <div class="form-section">
 <div class="form-section-title">🤖 Auto-Response Settings</div>
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+<div class="admin-row-between">
 <p style="color: rgba(255,255,255,0.6); margin: 0;">Automatically respond to common inquiries across platforms</p>
 <label class="switch">
 <input type="checkbox" ${sm.settings.autoReplyEnabled ? 'checked' : ''} onchange="toggleSocialAutoReply(this.checked)">
 <span class="slider round"></span>
 </label>
 </div>
-<div style="margin-bottom: 16px;">
+<div class="mb-16">
 <button class="btn-admin primary" onclick="addSocialAutoResponse()">+ Add Auto-Response</button>
 </div>
 <table class="data-table">
@@ -1730,9 +1730,9 @@ function loadAdminSmsPanel() {
 
         <!-- OpenPhone Connection -->
 <div class="form-section" style="background: ${sms.openPhone.connected ? 'rgba(46,204,113,0.1)' : 'rgba(255,59,48,0.1)'}; border: 1px solid ${sms.openPhone.connected ? '#2ecc71' : '#ff3b30'};">
-<div style="display: flex; justify-content: space-between; align-items: center;">
+<div class="flex-between">
 <div>
-<div class="form-section-title" style="margin: 0;">📱 OpenPhone Connection</div>
+<div class="form-section-title m-0">📱 OpenPhone Connection</div>
 <p style="color: rgba(255,255,255,0.5); font-size: 13px; margin: 8px 0 0;">
                         ${sms.openPhone.connected ? 'Connected: ' + sms.openPhone.phoneNumber : 'Connect your OpenPhone account to send/receive SMS'}
 </p>
@@ -1757,15 +1757,15 @@ function loadAdminSmsPanel() {
 </div>
 <button class="btn-admin primary" onclick="saveOpenPhoneConfig()">Save & Connect</button>
 <p style="font-size: 12px; opacity: 0.5; margin-top: 12px;">
-                Get your API key from <a href="https://app.openphone.com/settings/api" target="_blank" style="color: var(--red);">OpenPhone Settings → API</a>
+                Get your API key from <a href="https://app.openphone.com/settings/api" target="_blank" class="text-red">OpenPhone Settings → API</a>
 </p>
 </div>
         ` : ''}
 
         <!-- Auto-Response Settings -->
 <div class="form-section">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<div class="form-section-title" style="margin: 0;">🤖 Auto-Response Settings</div>
+<div class="admin-row-between">
+<div class="form-section-title m-0">🤖 Auto-Response Settings</div>
 <label class="switch">
 <input type="checkbox" ${sms.settings.autoReplyEnabled ? 'checked' : ''} onchange="toggleSmsAutoReply(this.checked)">
 <span class="slider round"></span>
@@ -1793,7 +1793,7 @@ function loadAdminSmsPanel() {
         <!-- SMS Templates -->
 <div class="form-section">
 <div class="form-section-title">📝 SMS Templates</div>
-<div style="margin-bottom: 16px;">
+<div class="mb-16">
 <button class="btn-admin primary" onclick="addSmsTemplate()">+ Add Template</button>
 </div>
 <div class="card-grid">
@@ -1804,7 +1804,7 @@ function loadAdminSmsPanel() {
 <div class="client-card-name">${t.name}</div>
 <div class="client-card-meta" style="font-size: 12px; height: 40px; overflow: hidden;">${t.message}</div>
 <div class="client-card-btns">
-<button onclick="useSmsTemplate(${t.id})" style="background: var(--red); color: #fff;">Use</button>
+<button onclick="useSmsTemplate(${t.id})" class="bg-red text-white">Use</button>
 <button onclick="editSmsTemplate(${t.id})" style="background: rgba(255,255,255,0.1); color: #fff;">Edit</button>
 </div>
 </div>
@@ -1817,11 +1817,11 @@ function loadAdminSmsPanel() {
 <div class="form-section">
 <div class="form-section-title">✉️ Send SMS</div>
 <div class="form-row">
-<div class="form-group" style="flex: 1;">
+<div class="form-group flex-1">
 <label class="form-label">To (Phone Number)</label>
 <input type="tel" id="smsTo" class="form-input" placeholder="+1 (313) 555-0123">
 </div>
-<div class="form-group" style="flex: 1;">
+<div class="form-group flex-1">
 <label class="form-label">Select Client</label>
 <select id="smsClientSelect" class="form-select" onchange="populateSmsPhone(this.value)">
 <option value="">-- Or select client --</option>
@@ -1844,7 +1844,7 @@ function loadAdminSmsPanel() {
                 ${sms.conversations.map(conv => `
 <div style="display: flex; gap: 12px; padding: 16px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 8px;">
 <div style="width: 48px; height: 48px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; font-size: 20px;">📲</div>
-<div style="flex: 1;">
+<div class="flex-1">
 <div style="display: flex; justify-content: space-between;">
 <strong>${conv.contactName || conv.phone}</strong>
 <span style="font-size: 12px; opacity: 0.5;">${new Date(conv.lastMessageAt).toLocaleString()}</span>

@@ -23,62 +23,62 @@ function loadHomeView() {
 <section class="stats-ticker">
 <div class="ticker-text">50+ BRANDS ELEVATED &bull; $2M+ REVENUE GENERATED &bull; DETROIT BORN & RAISED &bull; 50+ BRANDS ELEVATED &bull; $2M+ REVENUE GENERATED &bull; DETROIT BORN & RAISED &bull;</div>
 </section>
-<section style="padding: 48px 0; background: #0a0a0a; border-bottom: 1px solid rgba(255,255,255,0.06); overflow: hidden;">
-<div style="text-align: center; margin-bottom: 32px;">
-<h3 style="font-size: 13px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.35); font-weight: 600;">TRUSTED BY LEADERS, ARTISTS & BUSINESSES ACROSS DETROIT</h3>
+<section class="ticker-section">
+<div style="text-align:center;margin-bottom:32px;">
+<h3 class="ticker-heading">TRUSTED BY LEADERS, ARTISTS & BUSINESSES ACROSS DETROIT</h3>
 </div>
-<div style="display: flex; animation: clientScroll 80s linear infinite; width: max-content; will-change: transform;">
-<div style="display: flex; align-items: center; gap: 20px; padding: 0 10px;">
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Gov. Rick Snyder</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Kash Doll</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Rep. Leslie Love</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Eric Sabree, Wayne Co. Treasurer</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Beacon Park</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Chambora Vodka</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Detroit Design Festival</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Light It Up Livernois</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Bouzouki (Bouki) Greektown</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Niki's Lounge</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Ask Jennyfer</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">National All Things Detroit Day</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Good Cakes & Bakes</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">I Rep Small Business Saturday</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Crab House Detroit</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">House of Morrison</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Detroit Possible</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Esteem We Inc.</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Fatboyz Detroit</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Deep Drama Designs</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Chevelles Bar</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Jo's Gallery</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Loco's Tex-Mex Grille</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">AJ VIP Photography</span><span style="color: #dc2626;">&bull;</span>
+<div class="ticker-strip">
+<div class="ticker-row">
+<span class="ticker-name">Gov. Rick Snyder</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Kash Doll</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Rep. Leslie Love</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Eric Sabree, Wayne Co. Treasurer</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Beacon Park</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Chambora Vodka</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Detroit Design Festival</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Light It Up Livernois</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Bouzouki (Bouki) Greektown</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Niki's Lounge</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Ask Jennyfer</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">National All Things Detroit Day</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Good Cakes & Bakes</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">I Rep Small Business Saturday</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Crab House Detroit</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">House of Morrison</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Detroit Possible</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Esteem We Inc.</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Fatboyz Detroit</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Deep Drama Designs</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Chevelles Bar</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Jo's Gallery</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Loco's Tex-Mex Grille</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">AJ VIP Photography</span><span class="ticker-bull">&bull;</span>
 </div>
-<div style="display: flex; align-items: center; gap: 20px; padding: 0 10px;">
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Gov. Rick Snyder</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Kash Doll</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Rep. Leslie Love</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Eric Sabree, Wayne Co. Treasurer</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Beacon Park</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Chambora Vodka</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Detroit Design Festival</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Light It Up Livernois</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Bouzouki (Bouki) Greektown</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Niki's Lounge</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Ask Jennyfer</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">National All Things Detroit Day</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Good Cakes & Bakes</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">I Rep Small Business Saturday</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Crab House Detroit</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">House of Morrison</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Detroit Possible</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Esteem We Inc.</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Fatboyz Detroit</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Deep Drama Designs</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Chevelles Bar</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Jo's Gallery</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">Loco's Tex-Mex Grille</span><span style="color: #dc2626;">&bull;</span>
-<span style="font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;">AJ VIP Photography</span><span style="color: #dc2626;">&bull;</span>
+<div class="ticker-row">
+<span class="ticker-name">Gov. Rick Snyder</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Kash Doll</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Rep. Leslie Love</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Eric Sabree, Wayne Co. Treasurer</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Beacon Park</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Chambora Vodka</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Detroit Design Festival</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Light It Up Livernois</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Bouzouki (Bouki) Greektown</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Niki's Lounge</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Ask Jennyfer</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">National All Things Detroit Day</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Good Cakes & Bakes</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">I Rep Small Business Saturday</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Crab House Detroit</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">House of Morrison</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Detroit Possible</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Esteem We Inc.</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Fatboyz Detroit</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Deep Drama Designs</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Chevelles Bar</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Jo's Gallery</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">Loco's Tex-Mex Grille</span><span class="ticker-bull">&bull;</span>
+<span class="ticker-name">AJ VIP Photography</span><span class="ticker-bull">&bull;</span>
 </div>
 </div>
 </section>
@@ -89,10 +89,10 @@ function loadHomeView() {
 <p>Most brands fade into the background noise. In a city that never sleeps and a digital world that never stops, being "good enough" is a death sentence.</p>
 </div>
 <div class="problem-cards">
-<div class="problem-card"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;"><div class="number">01</div><span style="color: var(--gray); font-size: 12px; text-transform: uppercase; letter-spacing: 2px;">Problem Detected</span></div><h3>Your brand looks generic and forgettable</h3></div>
-<div class="problem-card"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;"><div class="number">02</div><span style="color: var(--gray); font-size: 12px; text-transform: uppercase; letter-spacing: 2px;">Problem Detected</span></div><h3>Your website doesn't convert visitors into customers</h3></div>
-<div class="problem-card"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;"><div class="number">03</div><span style="color: var(--gray); font-size: 12px; text-transform: uppercase; letter-spacing: 2px;">Problem Detected</span></div><h3>Your social media feels disconnected from your brand</h3></div>
-<div class="problem-card"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;"><div class="number">04</div><span style="color: var(--gray); font-size: 12px; text-transform: uppercase; letter-spacing: 2px;">Problem Detected</span></div><h3>You're not standing out in a crowded market</h3></div>
+<div class="problem-card"><div class="problem-meta"><div class="number">01</div><span class="problem-detect">Problem Detected</span></div><h3>Your brand looks generic and forgettable</h3></div>
+<div class="problem-card"><div class="problem-meta"><div class="number">02</div><span class="problem-detect">Problem Detected</span></div><h3>Your website doesn't convert visitors into customers</h3></div>
+<div class="problem-card"><div class="problem-meta"><div class="number">03</div><span class="problem-detect">Problem Detected</span></div><h3>Your social media feels disconnected from your brand</h3></div>
+<div class="problem-card"><div class="problem-meta"><div class="number">04</div><span class="problem-detect">Problem Detected</span></div><h3>You're not standing out in a crowded market</h3></div>
 </div>
 </div>
 </section>
@@ -102,7 +102,7 @@ function loadHomeView() {
 <div class="label">Our Expertise</div>
 <h2 class="section-title">WHAT WE<br><span class="red">CREATE</span></h2>
 <p style="color: var(--gray); margin-top: 24px;">We don't just make things look pretty. We build systems, brands, and experiences that print money and build legacy.</p>
-<button class="btn-cta" style="margin-top: 32px;" onclick="showView('services')">Explore All Services</button>
+<button class="btn-cta mt-32" onclick="showView('services')">Explore All Services</button>
 </div>
 <div class="services-grid home-services">
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Brand Identity Design</h3><p>Forge Your Legacy. Define Your Empire.</p></div>
@@ -147,38 +147,38 @@ function loadHomeView() {
 <div class="label" style="justify-content: center; margin-bottom: 32px;">Industries We Serve</div>
 <div style="overflow: hidden; position: relative;">
 <div style="display: flex; gap: 48px; animation: industriesScroll 25s linear infinite; white-space: nowrap;">
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">RESTAURANTS</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">REAL ESTATE</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">FITNESS & WELLNESS</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">E-COMMERCE</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">PROFESSIONAL SERVICES</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">COACHES & CONSULTANTS</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">HEALTHCARE</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">BEAUTY & SALONS</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">RESTAURANTS</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">REAL ESTATE</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">FITNESS & WELLNESS</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">E-COMMERCE</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">PROFESSIONAL SERVICES</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">COACHES & CONSULTANTS</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">HEALTHCARE</span>
-<span style="color: var(--red);">◆</span>
-<span style="font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.5);">BEAUTY & SALONS</span>
-<span style="color: var(--red);">◆</span>
+<span class="pkg-section-title">RESTAURANTS</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">REAL ESTATE</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">FITNESS & WELLNESS</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">E-COMMERCE</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">PROFESSIONAL SERVICES</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">COACHES & CONSULTANTS</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">HEALTHCARE</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">BEAUTY & SALONS</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">RESTAURANTS</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">REAL ESTATE</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">FITNESS & WELLNESS</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">E-COMMERCE</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">PROFESSIONAL SERVICES</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">COACHES & CONSULTANTS</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">HEALTHCARE</span>
+<span class="text-red">◆</span>
+<span class="pkg-section-title">BEAUTY & SALONS</span>
+<span class="text-red">◆</span>
 </div>
 </div>
 </section>
@@ -211,10 +211,10 @@ function loadHomeView() {
 </div>
 </div>
 <div class="testimonials-grid" style="grid-template-columns: repeat(4, 1fr);">
-<div class="testimonial-card"><div class="stars">★★★★★</div><p>"I would recommend working with New Urban Influence. My experience with Faren was great...even when I was being a difficult customer. The care and attention that was put into making sure they understood my vision for my brand was amazing."</p><div class="author"><div class="avatar" style="background: linear-gradient(135deg, var(--red), #ff6b5b);"></div><div><div class="author-name">Miss B</div><div class="author-title">Local Guide • Google Review</div></div></div></div>
-<div class="testimonial-card"><div class="stars">★★★★★</div><p>"Farren did a great job on a few flyers for me. Prices were reasonable and the quality was superb. My go to company for all my promotional needs. The best at what he does!"</p><div class="author"><div class="avatar" style="background: linear-gradient(135deg, var(--red), #ff6b5b);"></div><div><div class="author-name">Chevelles Bar</div><div class="author-title">Local Guide • Google Review</div></div></div></div>
-<div class="testimonial-card"><div class="stars">★★★★★</div><p>"The best graphic designing company in the world! I've been a customer for over 10 years and every time they exceed my expectations! Faren and his team has always been very professional and prompt with all my services! I highly recommend this company!"</p><div class="author"><div class="avatar" style="background: linear-gradient(135deg, var(--red), #ff6b5b);"></div><div><div class="author-name">Sierra Meriwether</div><div class="author-title">10+ Year Client • Google Review</div></div></div></div>
-<div class="testimonial-card"><div class="stars">★★★★★</div><p>"Great experience. Urban Influence gives you personal/detailed attention (making you feel like you are their most important customer). Love not only the services they offer but the personal touch they provide."</p><div class="author"><div class="avatar" style="background: linear-gradient(135deg, var(--red), #ff6b5b);"></div><div><div class="author-name">Larry Castleberry</div><div class="author-title">Google Review</div></div></div></div>
+<div class="testimonial-card"><div class="stars">★★★★★</div><p>"I would recommend working with New Urban Influence. My experience with Faren was great...even when I was being a difficult customer. The care and attention that was put into making sure they understood my vision for my brand was amazing."</p><div class="author"><div class="avatar" class="blog-gradient-cta"></div><div><div class="author-name">Miss B</div><div class="author-title">Local Guide • Google Review</div></div></div></div>
+<div class="testimonial-card"><div class="stars">★★★★★</div><p>"Farren did a great job on a few flyers for me. Prices were reasonable and the quality was superb. My go to company for all my promotional needs. The best at what he does!"</p><div class="author"><div class="avatar" class="blog-gradient-cta"></div><div><div class="author-name">Chevelles Bar</div><div class="author-title">Local Guide • Google Review</div></div></div></div>
+<div class="testimonial-card"><div class="stars">★★★★★</div><p>"The best graphic designing company in the world! I've been a customer for over 10 years and every time they exceed my expectations! Faren and his team has always been very professional and prompt with all my services! I highly recommend this company!"</p><div class="author"><div class="avatar" class="blog-gradient-cta"></div><div><div class="author-name">Sierra Meriwether</div><div class="author-title">10+ Year Client • Google Review</div></div></div></div>
+<div class="testimonial-card"><div class="stars">★★★★★</div><p>"Great experience. Urban Influence gives you personal/detailed attention (making you feel like you are their most important customer). Love not only the services they offer but the personal touch they provide."</p><div class="author"><div class="avatar" class="blog-gradient-cta"></div><div><div class="author-name">Larry Castleberry</div><div class="author-title">Google Review</div></div></div></div>
 </div>
 </section>
 <section style="padding: 60px 0; background: #000; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); overflow: hidden;">
@@ -254,158 +254,158 @@ function loadHomeView() {
 <section class="section dark" id="faq"  style="padding: 80px 0; background: #0a0a0a; border-top: 1px solid rgba(255,255,255,0.06);">
 <div style="max-width: 800px; margin: 0 auto; padding: 0 24px;">
 <div style="text-align: center; margin-bottom: 48px;">
-<p style="font-size: 13px; text-transform: uppercase; letter-spacing: 3px; color: var(--red); font-weight: 600; margin-bottom: 12px;">GOT QUESTIONS?</p>
-<h2 style="font-size: clamp(32px, 5vw, 48px); font-weight: 800; color: #fff; margin: 0; line-height: 1.1;">FREQUENTLY <span style="color: var(--red);">ASKED</span></h2>
-<p style="color: rgba(255,255,255,0.5); margin-top: 16px; font-size: 15px;">Everything you need to know about working with Detroit's top-rated branding agency.</p>
+<p class="faq-label">GOT QUESTIONS?</p>
+<h2 class="faq-title">FREQUENTLY <span class="text-red">ASKED</span></h2>
+<p class="faq-subtitle">Everything you need to know about working with Detroit's top-rated branding agency.</p>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
 <span>What is New Urban Influence?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">New Urban Influence (NUI) is a Detroit-based creative agency specializing in brand identity design, web design, and digital marketing. Founded to help small businesses and startups build professional, competitive brands, NUI offers full branding packages starting at $1,500 including logo design, color systems, typography, social media templates, and brand guidelines. They serve clients throughout Detroit, Southeast Michigan, and nationwide.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">New Urban Influence (NUI) is a Detroit-based creative agency specializing in brand identity design, web design, and digital marketing. Founded to help small businesses and startups build professional, competitive brands, NUI offers full branding packages starting at $1,500 including logo design, color systems, typography, social media templates, and brand guidelines. They serve clients throughout Detroit, Southeast Michigan, and nationwide.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
 <span>What services does New Urban Influence offer?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">New Urban Influence offers three main branding packages: Brand Kit ($1,500 flat rate) for startups and new businesses, Service Business Brand Identity ($3,500+) for consultants, agencies, and service providers, and Product Brand Identity ($4,500+) for businesses selling physical products. Additional services include logo design ($500), business card design ($150), social media templates ($300), print design and printing (banners, yard signs, business cards, vehicle magnets, postcards, acrylic signs, Dibond panels), packaging design ($600/SKU), and brand guidelines documentation ($400).</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">New Urban Influence offers three main branding packages: Brand Kit ($1,500 flat rate) for startups and new businesses, Service Business Brand Identity ($3,500+) for consultants, agencies, and service providers, and Product Brand Identity ($4,500+) for businesses selling physical products. Additional services include logo design ($500), business card design ($150), social media templates ($300), print design and printing (banners, yard signs, business cards, vehicle magnets, postcards, acrylic signs, Dibond panels), packaging design ($600/SKU), and brand guidelines documentation ($400).</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
 <span>How much does branding cost in Detroit?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">In Detroit, professional branding packages at New Urban Influence range from $1,500 to $6,000+. The Brand Kit starts at $1,500 (logo, colors, typography, social templates), Service Business Brand Identity starts at $3,500, and Product Brand Identity starts at $4,500. Individual services like logo design start at $500. Payment plans are available including pay-in-full (5% discount), 50/25/25 split, or 3 monthly payments.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">In Detroit, professional branding packages at New Urban Influence range from $1,500 to $6,000+. The Brand Kit starts at $1,500 (logo, colors, typography, social templates), Service Business Brand Identity starts at $3,500, and Product Brand Identity starts at $4,500. Individual services like logo design start at $500. Payment plans are available including pay-in-full (5% discount), 50/25/25 split, or 3 monthly payments.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
 <span>How much does a logo design cost?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">At New Urban Influence, standalone logo design starts at $500 and includes a primary logo, secondary logo variation, icon/mark version, and all file formats (PNG, SVG, PDF). For a complete brand identity that includes the logo plus color palette, typography, social media templates, and brand guidelines, packages start at $1,500.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">At New Urban Influence, standalone logo design starts at $500 and includes a primary logo, secondary logo variation, icon/mark version, and all file formats (PNG, SVG, PDF). For a complete brand identity that includes the logo plus color palette, typography, social media templates, and brand guidelines, packages start at $1,500.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
 <span>How long does a branding project take?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">At New Urban Influence, most branding projects take 2 to 4 weeks depending on complexity. The Brand Kit (starter package) typically completes in 7-10 business days, while comprehensive Service and Product Brand Identity packages take 10-21 business days. Rush delivery is available for an additional fee. Every project follows a structured process: discovery call, strategy, initial concepts, revisions, and final delivery with all files and brand guidelines.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">At New Urban Influence, most branding projects take 2 to 4 weeks depending on complexity. The Brand Kit (starter package) typically completes in 7-10 business days, while comprehensive Service and Product Brand Identity packages take 10-21 business days. Rush delivery is available for an additional fee. Every project follows a structured process: discovery call, strategy, initial concepts, revisions, and final delivery with all files and brand guidelines.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
 <span>Do you offer free consultations?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">Yes, New Urban Influence offers free strategy consultations for every potential client. During the call, they discuss your business goals, target audience, competitive landscape, and branding needs. You'll receive a custom pricing estimate after the consultation with no obligation to proceed. You can book directly through the website at newurbaninfluence.com.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">Yes, New Urban Influence offers free strategy consultations for every potential client. During the call, they discuss your business goals, target audience, competitive landscape, and branding needs. You'll receive a custom pricing estimate after the consultation with no obligation to proceed. You can book directly through the website at newurbaninfluence.com.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
 <span>What is the best branding agency in Detroit?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">New Urban Influence is one of Detroit's top-rated creative agencies with a 4.9-star rating across 28+ reviews. They specialize in helping small businesses and startups build professional brand identities at accessible price points starting at $1,500. What sets them apart is their strategic approach to branding, transparent flat-rate pricing, payment plans, and a dedicated client portal for real-time project tracking.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">New Urban Influence is one of Detroit's top-rated creative agencies with a 4.9-star rating across 28+ reviews. They specialize in helping small businesses and startups build professional brand identities at accessible price points starting at $1,500. What sets them apart is their strategic approach to branding, transparent flat-rate pricing, payment plans, and a dedicated client portal for real-time project tracking.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
 <span>What payment options are available?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">New Urban Influence offers flexible payment options for all branding packages: pay in full and receive a 5% discount, split payments 50/25/25, or choose 3 monthly installments. They accept credit cards, debit cards, and bank transfers. No one should have to delay building their brand because of budget — payment plans make professional branding accessible.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">New Urban Influence offers flexible payment options for all branding packages: pay in full and receive a 5% discount, split payments 50/25/25, or choose 3 monthly installments. They accept credit cards, debit cards, and bank transfers. No one should have to delay building their brand because of budget — payment plans make professional branding accessible.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
 <span>Do you work with businesses outside Detroit?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">Yes! While New Urban Influence is based in Detroit, they serve clients nationwide. Most of the branding process is handled remotely through their online client portal, video consultations, and digital proof approvals. They work with businesses in Ann Arbor, Southfield, Troy, Royal Oak, and across Michigan, as well as clients in other states. Local clients can also meet in person for strategy sessions.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">Yes! While New Urban Influence is based in Detroit, they serve clients nationwide. Most of the branding process is handled remotely through their online client portal, video consultations, and digital proof approvals. They work with businesses in Ann Arbor, Southfield, Troy, Royal Oak, and across Michigan, as well as clients in other states. Local clients can also meet in person for strategy sessions.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
 <span>What file formats will I receive for my logo and branding?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">Every NUI branding package includes your logo and brand assets in all major file formats: PNG (transparent background), SVG (scalable vector), PDF (print-ready), and high-resolution JPG. You'll also receive a complete brand guidelines document, social media templates sized for Instagram, Facebook, TikTok, and LinkedIn, plus a brand asset folder organized for easy access.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">Every NUI branding package includes your logo and brand assets in all major file formats: PNG (transparent background), SVG (scalable vector), PDF (print-ready), and high-resolution JPG. You'll also receive a complete brand guidelines document, social media templates sized for Instagram, Facebook, TikTok, and LinkedIn, plus a brand asset folder organized for easy access.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
 <span>Can I see examples of your branding work?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">Absolutely. Visit the NUI portfolio page to see completed branding projects across restaurants, coaching businesses, art brands, and more. Featured case studies include Good Cakes and Bakes, Detroit Canvas Co., Motor City Bistro, and Ascend Coaching Group. Each case study shows the before-and-after transformation along with results achieved.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">Absolutely. Visit the NUI portfolio page to see completed branding projects across restaurants, coaching businesses, art brands, and more. Featured case studies include Good Cakes and Bakes, Detroit Canvas Co., Motor City Bistro, and Ascend Coaching Group. Each case study shows the before-and-after transformation along with results achieved.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
 <span>What industries does New Urban Influence specialize in?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">New Urban Influence works with businesses across many industries, with particular strength in restaurants and food service, beauty and wellness, professional services, coaching and consulting, retail and e-commerce, cannabis brands, and creative businesses. They understand the unique branding needs of each industry and tailor their approach accordingly.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">New Urban Influence works with businesses across many industries, with particular strength in restaurants and food service, beauty and wellness, professional services, coaching and consulting, retail and e-commerce, cannabis brands, and creative businesses. They understand the unique branding needs of each industry and tailor their approach accordingly.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
 <span>How many logo concepts will I receive?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">NUI provides 2-3 unique logo concepts during the initial design phase based on your brand strategy and discovery call insights. Each concept explores a different creative direction. After you select your preferred direction, they refine it through unlimited revisions until you're completely satisfied. The final logo includes primary, secondary, and icon variations.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">NUI provides 2-3 unique logo concepts during the initial design phase based on your brand strategy and discovery call insights. Each concept explores a different creative direction. After you select your preferred direction, they refine it through unlimited revisions until you're completely satisfied. The final logo includes primary, secondary, and icon variations.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
 <span>Do you offer web design services?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">Yes, New Urban Influence offers custom web design starting at $3,500. Websites are built mobile-first, SEO-optimized, and designed to convert visitors into customers. Services include custom design, development, hosting setup, domain configuration, SSL security, and Google Analytics integration. They also offer website maintenance packages for ongoing support.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">Yes, New Urban Influence offers custom web design starting at $3,500. Websites are built mobile-first, SEO-optimized, and designed to convert visitors into customers. Services include custom design, development, hosting setup, domain configuration, SSL security, and Google Analytics integration. They also offer website maintenance packages for ongoing support.</div>
 </div>
 </div>
 
-<div itemscope itemtype="https://schema.org/Question" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px; overflow: hidden;">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;">
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
 <span>How do I get started with New Urban Influence?</span>
-<span class="faq-icon" style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span>
+<span class="faq-icon">+</span>
 </button>
-<div itemscope itemtype="https://schema.org/Answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;">
-<div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">Getting started is simple: book a free strategy call through the website at newurbaninfluence.com or call (248) 487-8747. During the call, you'll discuss your business, goals, and branding needs. After the consultation, you'll receive a custom proposal with pricing. Once approved, NUI kicks off your project with a discovery questionnaire and brand strategy session within 48 hours.</div>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">Getting started is simple: book a free strategy call through the website at newurbaninfluence.com or call (248) 487-8747. During the call, you'll discuss your business, goals, and branding needs. After the consultation, you'll receive a custom proposal with pricing. Once approved, NUI kicks off your project with a discovery questionnaire and brand strategy session within 48 hours.</div>
 </div>
 </div>
 
@@ -426,19 +426,37 @@ function loadHomeView() {
     const video = document.getElementById('heroVideo');
     if (video) { video.muted = true; video.play().catch(e => {}); }
 
-    // GSAP Empire Reveal — staggered word entrance
+    // GSAP Empire Reveal — full hero entrance sequence
     if (typeof gsap !== 'undefined') {
-        gsap.timeline({ delay: 0.3 })
-            .fromTo('.empire-word',
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', stagger: 0.2 }
-            )
-            .fromTo('.hero-content p',
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out' }, '-=0.4')
-            .fromTo('.hero-buttons',
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out' }, '-=0.4');
+        var tl = gsap.timeline({ delay: 0.3 });
+        // Badge drops in first
+        tl.fromTo('.badge',
+            { opacity: 0, y: -20, scale: 0.9 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.4)' }
+        );
+        // Empire words stagger in with slight scale punch
+        tl.fromTo('.empire-word',
+            { opacity: 0, y: 40, scale: 0.95 },
+            { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'expo.out', stagger: 0.18 },
+            '-=0.2'
+        );
+        // Red word gets an extra glow pulse
+        tl.fromTo('.empire-word.red',
+            { textShadow: '0 0 0px rgba(255,0,0,0)' },
+            { textShadow: '0 0 40px rgba(255,0,0,0.6)', duration: 0.8, ease: 'power2.out' },
+            '-=0.4'
+        );
+        // Paragraph and buttons slide up
+        tl.fromTo('.hero-content p',
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out' }, '-=0.4');
+        tl.fromTo('.hero-buttons',
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out' }, '-=0.4');
+        // Scroll indicator fades in last
+        tl.fromTo('.scroll-indicator',
+            { opacity: 0 },
+            { opacity: 1, duration: 1, ease: 'power1.out' }, '-=0.2');
     }
 }
 
@@ -598,7 +616,7 @@ function loadServicesView() {
 <div class="package-image">
 <img loading="eager" fetchpriority="high" width="1920" height="1200" src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1920&q=80" alt="Brand Design" data-service-image="brand-kit">
 </div>
-<div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+<div class="container-lg">
 <div class="package-header">
 <div class="package-label">Starter Package</div>
 <h2 class="package-title">BRAND <span class="red">KIT</span></h2>
@@ -617,7 +635,7 @@ function loadServicesView() {
 <li>Icon/Mark Version</li>
 <li>All File Formats (PNG, SVG, PDF)</li>
 </ul>
-<p style="font-size: 11px; color: var(--red); margin-top: 16px; font-weight: 600;">USE FOR: Business cards, website, signage, social profiles</p>
+<p class="pkg-note">USE FOR: Business cards, website, signage, social profiles</p>
 </div>
 
 <div class="deliverable-card">
@@ -630,7 +648,7 @@ function loadServicesView() {
 <li>Heading & Body Fonts</li>
 <li>Font Pairing Guidelines</li>
 </ul>
-<p style="font-size: 11px; color: var(--red); margin-top: 16px; font-weight: 600;">USE FOR: All marketing materials, website, print</p>
+<p class="pkg-note">USE FOR: All marketing materials, website, print</p>
 </div>
 
 <div class="deliverable-card">
@@ -643,7 +661,7 @@ function loadServicesView() {
 <li>Pain Points & Desires</li>
 <li>Where to Find Them</li>
 </ul>
-<p style="font-size: 11px; color: var(--red); margin-top: 16px; font-weight: 600;">USE FOR: Marketing strategy, ad targeting, content</p>
+<p class="pkg-note">USE FOR: Marketing strategy, ad targeting, content</p>
 </div>
 
 <div class="deliverable-card">
@@ -656,7 +674,7 @@ function loadServicesView() {
 <li>Messaging Do's & Don'ts</li>
 <li>Sample Copy Examples</li>
 </ul>
-<p style="font-size: 11px; color: var(--red); margin-top: 16px; font-weight: 600;">USE FOR: Social posts, website copy, emails, ads</p>
+<p class="pkg-note">USE FOR: Social posts, website copy, emails, ads</p>
 </div>
 
 <div class="deliverable-card">
@@ -669,7 +687,7 @@ function loadServicesView() {
 <li>LinkedIn Banner</li>
 <li>YouTube Channel Art</li>
 </ul>
-<p style="font-size: 11px; color: var(--red); margin-top: 16px; font-weight: 600;">USE FOR: Social media profiles, channel branding</p>
+<p class="pkg-note">USE FOR: Social media profiles, channel branding</p>
 </div>
 
 <div class="deliverable-card">
@@ -682,7 +700,7 @@ function loadServicesView() {
 <li>Signage/Storefront Mockup</li>
 <li>Apparel/Merch Preview</li>
 </ul>
-<p style="font-size: 11px; color: var(--red); margin-top: 16px; font-weight: 600;">USE FOR: Visualizing your brand, presentations, pitches</p>
+<p class="pkg-note">USE FOR: Visualizing your brand, presentations, pitches</p>
 </div>
 </div>
 
@@ -697,7 +715,7 @@ function loadServicesView() {
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1920&q=80" alt="Product Branding" data-service-image="product-brand">
 </div>
-<div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+<div class="container-lg">
 <div class="package-header">
 <div class="package-label">For Product-Based Businesses</div>
 <h2 class="package-title">PRODUCT <span class="red">BRAND IDENTITY</span></h2>
@@ -859,15 +877,15 @@ function loadServicesView() {
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
                         <!-- Motion & Video Add-On -->
-<div style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 24px;">
-<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-<span style="font-size: 28px;">🎬</span>
+<div class="blog-overlay-dark">
+<div class="problem-meta">
+<span class="text-3xl">🎬</span>
 <div>
 <h4 style="margin: 0; font-size: 18px;">Video Production</h4>
-<p style="margin: 4px 0 0; color: var(--red); font-size: 13px; font-weight: 600;">Add-on from $500</p>
+<p class="pkg-addon-price">Add-on from $500</p>
 </div>
 </div>
-<ul style="color: #888; font-size: 13px; line-height: 1.8; margin: 0; padding-left: 20px;">
+<ul class="pkg-detail-list">
 <li>Logo Animation</li>
 <li>Brand Commercial (15-30 sec)</li>
 <li>Product Showcase Videos</li>
@@ -876,15 +894,15 @@ function loadServicesView() {
 </div>
 
                         <!-- Photography Add-On -->
-<div style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 24px;">
-<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-<span style="font-size: 28px;">📷</span>
+<div class="blog-overlay-dark">
+<div class="problem-meta">
+<span class="text-3xl">📷</span>
 <div>
 <h4 style="margin: 0; font-size: 18px;">Photography</h4>
-<p style="margin: 4px 0 0; color: var(--red); font-size: 13px; font-weight: 600;">Add-on from $400</p>
+<p class="pkg-addon-price">Add-on from $400</p>
 </div>
 </div>
-<ul style="color: #888; font-size: 13px; line-height: 1.8; margin: 0; padding-left: 20px;">
+<ul class="pkg-detail-list">
 <li>Product Photography</li>
 <li>Lifestyle Shoots</li>
 <li>Flat Lay Photography</li>
@@ -906,7 +924,7 @@ function loadServicesView() {
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&q=80" alt="Service Branding" data-service-image="service-brand">
 </div>
-<div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+<div class="container-lg">
 <div class="package-header">
 <div class="package-label">For Service-Based Businesses</div>
 <h2 class="package-title">SERVICE <span class="red">BRAND IDENTITY</span></h2>
@@ -1129,15 +1147,15 @@ function loadServicesView() {
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
                         <!-- Motion & Video Add-On -->
-<div style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 24px;">
-<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-<span style="font-size: 28px;">🎬</span>
+<div class="blog-overlay-dark">
+<div class="problem-meta">
+<span class="text-3xl">🎬</span>
 <div>
 <h4 style="margin: 0; font-size: 18px;">Video Production</h4>
-<p style="margin: 4px 0 0; color: var(--red); font-size: 13px; font-weight: 600;">Add-on from $500</p>
+<p class="pkg-addon-price">Add-on from $500</p>
 </div>
 </div>
-<ul style="color: #888; font-size: 13px; line-height: 1.8; margin: 0; padding-left: 20px;">
+<ul class="pkg-detail-list">
 <li>Logo Animation</li>
 <li>Brand Commercial (30-60 sec)</li>
 <li>Service Explainer Videos</li>
@@ -1146,15 +1164,15 @@ function loadServicesView() {
 </div>
 
                         <!-- Photography Add-On -->
-<div style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 24px;">
-<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-<span style="font-size: 28px;">📷</span>
+<div class="blog-overlay-dark">
+<div class="problem-meta">
+<span class="text-3xl">📷</span>
 <div>
 <h4 style="margin: 0; font-size: 18px;">Photography</h4>
-<p style="margin: 4px 0 0; color: var(--red); font-size: 13px; font-weight: 600;">Add-on from $400</p>
+<p class="pkg-addon-price">Add-on from $400</p>
 </div>
 </div>
-<ul style="color: #888; font-size: 13px; line-height: 1.8; margin: 0; padding-left: 20px;">
+<ul class="pkg-detail-list">
 <li>Team Headshots</li>
 <li>Office/Location Shots</li>
 <li>Project Photography</li>
@@ -1249,20 +1267,20 @@ function loadServicesView() {
 <div class="comparison-row">
 <div class="comparison-cell feature">Logo Animation <span style="font-size: 10px; color: var(--red);">📍 Add-on</span></div>
 <div class="comparison-cell empty">—</div>
-<div class="comparison-cell" style="color: #888; font-size: 11px;">+$400</div>
-<div class="comparison-cell" style="color: #888; font-size: 11px;">+$400</div>
+<div class="comparison-cell" class="text-muted-sm">+$400</div>
+<div class="comparison-cell" class="text-muted-sm">+$400</div>
 </div>
 <div class="comparison-row">
 <div class="comparison-cell feature">Video Production <span style="font-size: 10px; color: var(--red);">📍 Add-on</span></div>
 <div class="comparison-cell empty">—</div>
-<div class="comparison-cell" style="color: #888; font-size: 11px;">+$500</div>
-<div class="comparison-cell" style="color: #888; font-size: 11px;">+$500</div>
+<div class="comparison-cell" class="text-muted-sm">+$500</div>
+<div class="comparison-cell" class="text-muted-sm">+$500</div>
 </div>
 <div class="comparison-row">
 <div class="comparison-cell feature">Photography <span style="font-size: 10px; color: var(--red);">📍 Add-on</span></div>
 <div class="comparison-cell empty">—</div>
-<div class="comparison-cell" style="color: #888; font-size: 11px;">+$400</div>
-<div class="comparison-cell" style="color: #888; font-size: 11px;">+$400</div>
+<div class="comparison-cell" class="text-muted-sm">+$400</div>
+<div class="comparison-cell" class="text-muted-sm">+$400</div>
 </div>
 <div class="comparison-row">
 <div class="comparison-cell feature">Print Signage</div>
@@ -1279,7 +1297,7 @@ function loadServicesView() {
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&q=80" alt="Website Development" data-service-image="website">
 </div>
-<div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+<div class="container-lg">
 <div class="package-header">
 <div class="package-label">Digital Products</div>
 <h2 class="package-title">WEBSITE & <span class="red">WEB APPS</span></h2>
@@ -1289,9 +1307,9 @@ function loadServicesView() {
 <div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 60px;">
                     <!-- Basic Website -->
 <div class="deliverable-card" style="border-color: rgba(255,255,255,0.1);">
-<div style="font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">Starter</div>
-<h3 class="deliverable-title" style="font-size: 24px;">Landing Page</h3>
-<div style="font-size: 32px; font-weight: 900; color: var(--red); margin: 16px 0;">$1,200</div>
+<div class="pkg-badge">Starter</div>
+<h3 class="deliverable-title" class="text-2xl">Landing Page</h3>
+<div class="pkg-price">$1,200</div>
 <p class="deliverable-desc">Single page website perfect for capturing leads or launching a product.</p>
 <ul class="deliverable-list">
 <li>Custom Design</li>
@@ -1300,15 +1318,15 @@ function loadServicesView() {
 <li>SEO Basics</li>
 <li>1 Week Delivery</li>
 </ul>
-<button class="btn-package" style="width: 100%; margin-top: 24px; padding: 14px;" onclick="startServiceIntake('landing-page')">Get Started →</button>
+<button class="btn-package" class="pkg-cta" onclick="startServiceIntake('landing-page')">Get Started →</button>
 </div>
 
                     <!-- Business Website -->
 <div class="deliverable-card" style="border-color: var(--red); position: relative;">
 <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 16px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;">Most Popular</div>
-<div style="font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">Professional</div>
-<h3 class="deliverable-title" style="font-size: 24px;">Business Website</h3>
-<div style="font-size: 32px; font-weight: 900; color: var(--red); margin: 16px 0;">$3,500</div>
+<div class="pkg-badge">Professional</div>
+<h3 class="deliverable-title" class="text-2xl">Business Website</h3>
+<div class="pkg-price">$3,500</div>
 <p class="deliverable-desc">Full multi-page website for established businesses ready to dominate online.</p>
 <ul class="deliverable-list">
 <li>5-7 Custom Pages</li>
@@ -1319,14 +1337,14 @@ function loadServicesView() {
 <li>Speed Optimization</li>
 <li>2-3 Week Delivery</li>
 </ul>
-<button class="btn-package" style="width: 100%; margin-top: 24px; padding: 14px;" onclick="startServiceIntake('business-website')">Get Started →</button>
+<button class="btn-package" class="pkg-cta" onclick="startServiceIntake('business-website')">Get Started →</button>
 </div>
 
                     <!-- E-Commerce -->
 <div class="deliverable-card" style="border-color: rgba(255,255,255,0.1);">
-<div style="font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">E-Commerce</div>
-<h3 class="deliverable-title" style="font-size: 24px;">Online Store</h3>
-<div style="font-size: 32px; font-weight: 900; color: var(--red); margin: 16px 0;">$5,500</div>
+<div class="pkg-badge">E-Commerce</div>
+<h3 class="deliverable-title" class="text-2xl">Online Store</h3>
+<div class="pkg-price">$5,500</div>
 <p class="deliverable-desc">Full e-commerce solution to sell products online 24/7.</p>
 <ul class="deliverable-list">
 <li>Shopify / WooCommerce</li>
@@ -1337,7 +1355,7 @@ function loadServicesView() {
 <li>Inventory Management</li>
 <li>3-4 Week Delivery</li>
 </ul>
-<button class="btn-package" style="width: 100%; margin-top: 24px; padding: 14px;" onclick="startServiceIntake('ecommerce')">Get Started →</button>
+<button class="btn-package" class="pkg-cta" onclick="startServiceIntake('ecommerce')">Get Started →</button>
 </div>
 </div>
 
@@ -1378,7 +1396,7 @@ function loadServicesView() {
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1920&q=80" alt="Mobile App Development" data-service-image="mobile-app">
 </div>
-<div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+<div class="container-lg">
 <div class="package-header">
 <div class="package-label">Mobile Development</div>
 <h2 class="package-title">MOBILE <span class="red">APPS</span></h2>
@@ -1388,9 +1406,9 @@ function loadServicesView() {
 <div class="deliverables-grid" style="grid-template-columns: repeat(2, 1fr);">
                     <!-- MVP App -->
 <div class="deliverable-card">
-<div style="font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">Launch Fast</div>
-<h3 class="deliverable-title" style="font-size: 24px;">MVP App</h3>
-<div style="font-size: 32px; font-weight: 900; color: var(--red); margin: 16px 0;">$12,000 <span style="font-size: 14px; color: var(--gray); font-weight: 400;">starting at</span></div>
+<div class="pkg-badge">Launch Fast</div>
+<h3 class="deliverable-title" class="text-2xl">MVP App</h3>
+<div class="pkg-price">$12,000 <span style="font-size: 14px; color: var(--gray); font-weight: 400;">starting at</span></div>
 <p class="deliverable-desc">Minimum viable product to test your app idea and get to market fast.</p>
 <ul class="deliverable-list">
 <li>Cross-Platform (iOS + Android)</li>
@@ -1400,14 +1418,14 @@ function loadServicesView() {
 <li>App Store Submission</li>
 <li>6-8 Week Delivery</li>
 </ul>
-<button class="btn-package" style="width: 100%; margin-top: 24px; padding: 14px;" onclick="startServiceIntake('mvp-app')">Get Started →</button>
+<button class="btn-package" class="pkg-cta" onclick="startServiceIntake('mvp-app')">Get Started →</button>
 </div>
 
                     <!-- Full App -->
 <div class="deliverable-card">
-<div style="font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">Full Product</div>
-<h3 class="deliverable-title" style="font-size: 24px;">Custom Mobile App</h3>
-<div style="font-size: 32px; font-weight: 900; color: var(--red); margin: 16px 0;">$20,000+ <span style="font-size: 14px; color: var(--gray); font-weight: 400;">custom quote</span></div>
+<div class="pkg-badge">Full Product</div>
+<h3 class="deliverable-title" class="text-2xl">Custom Mobile App</h3>
+<div class="pkg-price">$20,000+ <span style="font-size: 14px; color: var(--gray); font-weight: 400;">custom quote</span></div>
 <p class="deliverable-desc">Full-featured mobile application with advanced functionality and integrations.</p>
 <ul class="deliverable-list">
 <li>Native or Cross-Platform</li>
@@ -1418,7 +1436,7 @@ function loadServicesView() {
 <li>Full Admin Dashboard</li>
 <li>Ongoing Support Options</li>
 </ul>
-<button class="btn-package" style="width: 100%; margin-top: 24px; padding: 14px;" onclick="startServiceIntake('custom-app')">Request Quote →</button>
+<button class="btn-package" class="pkg-cta" onclick="startServiceIntake('custom-app')">Request Quote →</button>
 </div>
 </div>
 
@@ -1454,7 +1472,7 @@ function loadServicesView() {
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=1920&q=80" alt="Sales Funnels Marketing" data-service-image="sales-funnel">
 </div>
-<div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+<div class="container-lg">
 <div class="package-header">
 <div class="package-label">Marketing Systems</div>
 <h2 class="package-title">SALES <span class="red">FUNNELS</span></h2>
@@ -1463,9 +1481,9 @@ function loadServicesView() {
 
 <div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="deliverable-card">
-<div style="font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">Lead Generation</div>
+<div class="pkg-badge">Lead Generation</div>
 <h3 class="deliverable-title">Lead Capture Funnel</h3>
-<div style="font-size: 32px; font-weight: 900; color: var(--red); margin: 16px 0;">$1,500</div>
+<div class="pkg-price">$1,500</div>
 <ul class="deliverable-list">
 <li>Landing Page Design</li>
 <li>Lead Magnet Creation</li>
@@ -1473,13 +1491,13 @@ function loadServicesView() {
 <li>5-Email Welcome Sequence</li>
 <li>CRM Integration</li>
 </ul>
-<button class="btn-package" style="width: 100%; margin-top: 24px; padding: 14px;" onclick="startServiceIntake('lead-funnel')">Get Started →</button>
+<button class="btn-package" class="pkg-cta" onclick="startServiceIntake('lead-funnel')">Get Started →</button>
 </div>
 
 <div class="deliverable-card" style="border-color: var(--red);">
-<div style="font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">Sales Machine</div>
+<div class="pkg-badge">Sales Machine</div>
 <h3 class="deliverable-title">Full Sales Funnel</h3>
-<div style="font-size: 32px; font-weight: 900; color: var(--red); margin: 16px 0;">$3,500</div>
+<div class="pkg-price">$3,500</div>
 <ul class="deliverable-list">
 <li>Multi-Step Funnel</li>
 <li>Sales Page Design</li>
@@ -1488,13 +1506,13 @@ function loadServicesView() {
 <li>Full Email Automation</li>
 <li>Payment Integration</li>
 </ul>
-<button class="btn-package" style="width: 100%; margin-top: 24px; padding: 14px;" onclick="startServiceIntake('sales-funnel')">Get Started →</button>
+<button class="btn-package" class="pkg-cta" onclick="startServiceIntake('sales-funnel')">Get Started →</button>
 </div>
 
 <div class="deliverable-card">
-<div style="font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 16px;">Webinar</div>
+<div class="pkg-badge">Webinar</div>
 <h3 class="deliverable-title">Webinar Funnel</h3>
-<div style="font-size: 32px; font-weight: 900; color: var(--red); margin: 16px 0;">$4,500</div>
+<div class="pkg-price">$4,500</div>
 <ul class="deliverable-list">
 <li>Registration Page</li>
 <li>Reminder Sequences</li>
@@ -1503,7 +1521,7 @@ function loadServicesView() {
 <li>Follow-Up Automation</li>
 <li>Sales Page Integration</li>
 </ul>
-<button class="btn-package" style="width: 100%; margin-top: 24px; padding: 14px;" onclick="startServiceIntake('webinar-funnel')">Get Started →</button>
+<button class="btn-package" class="pkg-cta" onclick="startServiceIntake('webinar-funnel')">Get Started →</button>
 </div>
 </div>
 </div>
@@ -1514,7 +1532,7 @@ function loadServicesView() {
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1920&q=80" alt="Custom Package" data-service-image="custom">
 </div>
-<div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+<div class="container-lg">
 <div class="package-header">
 <div class="package-label">Customize Your Solution</div>
 <h2 class="package-title">BUILD YOUR <span class="red">OWN PACKAGE</span></h2>
@@ -1524,12 +1542,12 @@ function loadServicesView() {
 <div id="customPackageBuilder" style="background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 40px; margin-bottom: 40px;">
 
                     <!-- Brand & Identity -->
-<div style="margin-bottom: 40px;">
-<h3 style="font-size: 16px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
-<span style="width: 32px; height: 32px; background: rgba(255,59,48,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center;">◆</span>
+<div class="mb-40">
+<h3 class="pkg-group-title">
+<span class="pkg-group-icon">◆</span>
                             Brand & Identity
 </h3>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+<div class="pkg-feature-grid">
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Logo Design" data-price="500"><span class="checkmark"></span><span class="service-name">Logo Design</span><span class="service-price">$500</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Color Palette" data-price="200"><span class="checkmark"></span><span class="service-name">Color Palette</span><span class="service-price">$200</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Typography System" data-price="200"><span class="checkmark"></span><span class="service-name">Typography System</span><span class="service-price">$200</span></label>
@@ -1540,12 +1558,12 @@ function loadServicesView() {
 </div>
 
                     <!-- Print & Physical -->
-<div style="margin-bottom: 40px;">
-<h3 style="font-size: 16px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
-<span style="width: 32px; height: 32px; background: rgba(255,59,48,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center;">📦</span>
+<div class="mb-40">
+<h3 class="pkg-group-title">
+<span class="pkg-group-icon">📦</span>
                             Print & Physical
 </h3>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+<div class="pkg-feature-grid">
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Product Labels" data-price="300"><span class="checkmark"></span><span class="service-name">Product Labels</span><span class="service-price">$300</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Packaging Design" data-price="500"><span class="checkmark"></span><span class="service-name">Packaging Design</span><span class="service-price">$500</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Posters & Signage" data-price="250"><span class="checkmark"></span><span class="service-name">Posters & Signage</span><span class="service-price">$250</span></label>
@@ -1565,12 +1583,12 @@ function loadServicesView() {
 </div>
 
                     <!-- Apparel & Merch -->
-<div style="margin-bottom: 40px;">
-<h3 style="font-size: 16px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
-<span style="width: 32px; height: 32px; background: rgba(255,59,48,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center;">👕</span>
+<div class="mb-40">
+<h3 class="pkg-group-title">
+<span class="pkg-group-icon">👕</span>
                             Apparel & Merchandise
 </h3>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+<div class="pkg-feature-grid">
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="T-Shirt Design" data-price="150"><span class="checkmark"></span><span class="service-name">T-Shirt Design</span><span class="service-price">$150</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Hoodie Design" data-price="150"><span class="checkmark"></span><span class="service-name">Hoodie Design</span><span class="service-price">$150</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Hat/Cap Design" data-price="100"><span class="checkmark"></span><span class="service-name">Hat/Cap Design</span><span class="service-price">$100</span></label>
@@ -1580,12 +1598,12 @@ function loadServicesView() {
 </div>
 
                     <!-- Digital Marketing -->
-<div style="margin-bottom: 40px;">
-<h3 style="font-size: 16px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
-<span style="width: 32px; height: 32px; background: rgba(255,59,48,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center;">📱</span>
+<div class="mb-40">
+<h3 class="pkg-group-title">
+<span class="pkg-group-icon">📱</span>
                             Digital Marketing
 </h3>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+<div class="pkg-feature-grid">
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Social Media Kit" data-price="350"><span class="checkmark"></span><span class="service-name">Social Media Kit</span><span class="service-price">$350</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Email Templates (5)" data-price="300"><span class="checkmark"></span><span class="service-name">Email Templates (5)</span><span class="service-price">$300</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Digital Mailers" data-price="150"><span class="checkmark"></span><span class="service-name">Digital Mailers</span><span class="service-price">$150</span></label>
@@ -1595,12 +1613,12 @@ function loadServicesView() {
 </div>
 
                     <!-- Motion & Video -->
-<div style="margin-bottom: 40px;">
-<h3 style="font-size: 16px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
-<span style="width: 32px; height: 32px; background: rgba(255,59,48,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center;">🎬</span>
+<div class="mb-40">
+<h3 class="pkg-group-title">
+<span class="pkg-group-icon">🎬</span>
                             Motion & Video
 </h3>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+<div class="pkg-feature-grid">
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Logo Animation" data-price="400"><span class="checkmark"></span><span class="service-name">Logo Animation</span><span class="service-price">$400</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Brand Commercial (30sec)" data-price="1200"><span class="checkmark"></span><span class="service-name">Brand Commercial</span><span class="service-price">$1,200</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Social Reels (5)" data-price="500"><span class="checkmark"></span><span class="service-name">Social Reels (5)</span><span class="service-price">$500</span></label>
@@ -1609,12 +1627,12 @@ function loadServicesView() {
 </div>
 
                     <!-- Photography -->
-<div style="margin-bottom: 40px;">
-<h3 style="font-size: 16px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
-<span style="width: 32px; height: 32px; background: rgba(255,59,48,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center;">📷</span>
+<div class="mb-40">
+<h3 class="pkg-group-title">
+<span class="pkg-group-icon">📷</span>
                             Photography & Production
 </h3>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+<div class="pkg-feature-grid">
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Product Photography (10)" data-price="400"><span class="checkmark"></span><span class="service-name">Product Photos (10)</span><span class="service-price">$400</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Headshots (5 people)" data-price="350"><span class="checkmark"></span><span class="service-name">Headshots (5 people)</span><span class="service-price">$350</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Lifestyle Photo Session" data-price="600"><span class="checkmark"></span><span class="service-name">Lifestyle Session</span><span class="service-price">$600</span></label>
@@ -1623,12 +1641,12 @@ function loadServicesView() {
 </div>
 
                     <!-- Web & Digital -->
-<div style="margin-bottom: 40px;">
-<h3 style="font-size: 16px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
-<span style="width: 32px; height: 32px; background: rgba(255,59,48,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center;">🌐</span>
+<div class="mb-40">
+<h3 class="pkg-group-title">
+<span class="pkg-group-icon">🌐</span>
                             Web & Digital Products
 </h3>
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+<div class="pkg-feature-grid">
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Landing Page" data-price="1200"><span class="checkmark"></span><span class="service-name">Landing Page</span><span class="service-price">$1,200</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="Business Website" data-price="3500"><span class="checkmark"></span><span class="service-name">Business Website</span><span class="service-price">$3,500</span></label>
 <label class="custom-service-item" onclick="toggleCustomService(event, this)"><input type="checkbox" data-service="E-Commerce Store" data-price="5500"><span class="checkmark"></span><span class="service-name">E-Commerce Store</span><span class="service-price">$5,500</span></label>
@@ -1644,7 +1662,7 @@ function loadServicesView() {
 <div style="font-size: 13px; color: var(--gray); margin-bottom: 8px;">Your Custom Package</div>
 <div style="font-size: 14px; color: rgba(255,255,255,0.6);" id="selectedServicesCount">0 services selected</div>
 </div>
-<div style="text-align: right;">
+<div class="text-right">
 <div style="font-size: 13px; color: var(--gray); margin-bottom: 8px;">Estimated Total</div>
 <div style="font-size: 36px; font-weight: 900; color: var(--red);" id="customPackageTotal">$0</div>
 </div>
@@ -1652,7 +1670,7 @@ function loadServicesView() {
 </div>
 <div id="selectedServicesList" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.06); display: none;">
 <div style="font-size: 12px; color: var(--gray); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Selected Services:</div>
-<div id="selectedServicesDisplay" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+<div id="selectedServicesDisplay" class="flex-wrap"></div>
 </div>
 </div>
 </div>
@@ -2077,12 +2095,12 @@ function loadPortfolioView() {
 <div class="brand-section-title" style="color: ${p.colors[0]};">Brand Voice</div>
 <div style="display: grid; grid-template-columns: ${p.slogan && p.mission ? '1fr 1fr' : '1fr'}; gap: 20px;">
                                             ${p.slogan ? `
-<div style="background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 32px;">
+<div class="blog-card-dark">
 <div style="font-size: 10px; color: ${p.colors[0]}; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">Slogan</div>
 <div style="font-size: 24px; font-weight: 700; line-height: 1.3; color: #fff;">"${p.slogan}"</div>
 </div>` : ''}
                                             ${p.mission ? `
-<div style="background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 32px;">
+<div class="blog-card-dark">
 <div style="font-size: 10px; color: ${p.colors[0]}; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">Mission Statement</div>
 <div style="font-size: 16px; line-height: 1.7; color: rgba(255,255,255,0.7);">${p.mission}</div>
 </div>` : ''}
@@ -2136,22 +2154,22 @@ function loadPortfolioView() {
                                             <!-- Top 16:9 -->
 <div class="mockup-row full">
 <div class="mockup-box wide" style="border-color: ${p.colors[0]}15;">
-                                                    ${p.assets?.mockups?.[0] ? (p.assets.mockups[0].includes('video') || p.assets.mockups[0].match(/\.(mp4|webm|mov|ogg)$/i) ? `<video src="${p.assets.mockups[0]}" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>` : `<img loading="lazy" src="${p.assets.mockups[0]}" alt="Mockup">`) : '<div class="mockup-placeholder">Image / Video</div>'}
+                                                    ${p.assets?.mockups?.[0] ? (p.assets.mockups[0].includes('video') || p.assets.mockups[0].match(/\.(mp4|webm|mov|ogg)$/i) ? `<video src="${p.assets.mockups[0]}" autoplay muted loop playsinline class="img-cover"></video>` : `<img loading="lazy" src="${p.assets.mockups[0]}" alt="Mockup">`) : '<div class="mockup-placeholder">Image / Video</div>'}
 </div>
 </div>
                                             <!-- Middle two 4:5 -->
 <div class="mockup-row split">
 <div class="mockup-box tall" style="border-color: ${p.colors[0]}15;">
-                                                    ${p.assets?.mockups?.[1] ? (p.assets.mockups[1].includes('video') || p.assets.mockups[1].match(/\.(mp4|webm|mov|ogg)$/i) ? `<video src="${p.assets.mockups[1]}" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>` : `<img loading="lazy" src="${p.assets.mockups[1]}" alt="Mockup">`) : '<div class="mockup-placeholder">Image / Video</div>'}
+                                                    ${p.assets?.mockups?.[1] ? (p.assets.mockups[1].includes('video') || p.assets.mockups[1].match(/\.(mp4|webm|mov|ogg)$/i) ? `<video src="${p.assets.mockups[1]}" autoplay muted loop playsinline class="img-cover"></video>` : `<img loading="lazy" src="${p.assets.mockups[1]}" alt="Mockup">`) : '<div class="mockup-placeholder">Image / Video</div>'}
 </div>
 <div class="mockup-box tall" style="border-color: ${p.colors[0]}15;">
-                                                    ${p.assets?.mockups?.[2] ? (p.assets.mockups[2].includes('video') || p.assets.mockups[2].match(/\.(mp4|webm|mov|ogg)$/i) ? `<video src="${p.assets.mockups[2]}" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>` : `<img loading="lazy" src="${p.assets.mockups[2]}" alt="Mockup">`) : '<div class="mockup-placeholder">Image / Video</div>'}
+                                                    ${p.assets?.mockups?.[2] ? (p.assets.mockups[2].includes('video') || p.assets.mockups[2].match(/\.(mp4|webm|mov|ogg)$/i) ? `<video src="${p.assets.mockups[2]}" autoplay muted loop playsinline class="img-cover"></video>` : `<img loading="lazy" src="${p.assets.mockups[2]}" alt="Mockup">`) : '<div class="mockup-placeholder">Image / Video</div>'}
 </div>
 </div>
                                             <!-- Bottom 16:9 -->
 <div class="mockup-row full">
 <div class="mockup-box wide" style="border-color: ${p.colors[0]}15;">
-                                                    ${p.assets?.mockups?.[3] ? (p.assets.mockups[3].includes('video') || p.assets.mockups[3].match(/\.(mp4|webm|mov|ogg)$/i) ? `<video src="${p.assets.mockups[3]}" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>` : `<img loading="lazy" src="${p.assets.mockups[3]}" alt="Mockup">`) : '<div class="mockup-placeholder">Image / Video</div>'}
+                                                    ${p.assets?.mockups?.[3] ? (p.assets.mockups[3].includes('video') || p.assets.mockups[3].match(/\.(mp4|webm|mov|ogg)$/i) ? `<video src="${p.assets.mockups[3]}" autoplay muted loop playsinline class="img-cover"></video>` : `<img loading="lazy" src="${p.assets.mockups[3]}" alt="Mockup">`) : '<div class="mockup-placeholder">Image / Video</div>'}
 </div>
 </div>
 </div>
@@ -2168,20 +2186,20 @@ function loadPortfolioView() {
 </div>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px;">
 <div style="aspect-ratio: 4/5; background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                                            ${p.assets?.webMockups?.[0] ? (p.assets.webMockups[0].includes('video') || p.assets.webMockups[0].match(/\\.(mp4|webm|mov|ogg)$/i) ? `<video src="${p.assets.webMockups[0]}" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>` : `<img loading="lazy" src="${p.assets.webMockups[0]}" alt="Web Mockup" style="width:100%;height:100%;object-fit:cover;">`) : `<div style="color: rgba(255,255,255,0.12); font-size: 14px;">Image / Video</div>`}
+                                            ${p.assets?.webMockups?.[0] ? (p.assets.webMockups[0].includes('video') || p.assets.webMockups[0].match(/\\.(mp4|webm|mov|ogg)$/i) ? `<video src="${p.assets.webMockups[0]}" autoplay muted loop playsinline class="img-cover"></video>` : `<img loading="lazy" src="${p.assets.webMockups[0]}" alt="Web Mockup" class="img-cover">`) : `<div style="color: rgba(255,255,255,0.12); font-size: 14px;">Image / Video</div>`}
 </div>
 <div style="aspect-ratio: 4/5; background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                                            ${p.assets?.webMockups?.[1] ? (p.assets.webMockups[1].includes('video') || p.assets.webMockups[1].match(/\\.(mp4|webm|mov|ogg)$/i) ? `<video src="${p.assets.webMockups[1]}" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>` : `<img loading="lazy" src="${p.assets.webMockups[1]}" alt="Web Mockup" style="width:100%;height:100%;object-fit:cover;">`) : `<div style="color: rgba(255,255,255,0.12); font-size: 14px;">Image / Video</div>`}
+                                            ${p.assets?.webMockups?.[1] ? (p.assets.webMockups[1].includes('video') || p.assets.webMockups[1].match(/\\.(mp4|webm|mov|ogg)$/i) ? `<video src="${p.assets.webMockups[1]}" autoplay muted loop playsinline class="img-cover"></video>` : `<img loading="lazy" src="${p.assets.webMockups[1]}" alt="Web Mockup" class="img-cover">`) : `<div style="color: rgba(255,255,255,0.12); font-size: 14px;">Image / Video</div>`}
 </div>
 </div>
 </div>
 <div class="case-panel" data-case="${p.id}" data-panel="2" style="padding: 48px; background: linear-gradient(180deg, transparent 0%, ${p.colors[1]}10 100%);">
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 48px;">
-<div style="background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 32px;">
+<div class="blog-card-dark">
 <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: ${p.colors[0]}; margin-bottom: 16px; font-weight: 600;">Problem</div>
 <p style="color: var(--gray); line-height: 1.8; font-size: 15px; margin: 0;">${p.problem || 'The client faced challenges with brand visibility, outdated digital presence, and difficulty reaching their target audience effectively.'}</p>
 </div>
-<div style="background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 32px;">
+<div class="blog-card-dark">
 <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: ${p.colors[0]}; margin-bottom: 16px; font-weight: 600;">Solution</div>
 <p style="color: var(--gray); line-height: 1.8; font-size: 15px; margin: 0;">${p.solution || 'We developed a comprehensive brand strategy with modern visual identity, responsive web platform, and targeted digital marketing campaigns.'}</p>
 </div>
@@ -4409,13 +4427,13 @@ function loadAdminBlogPanel() {
         <!-- Author / Blog Logo -->
 <div style="background: #111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px; margin-bottom: 24px; display: flex; align-items: center; gap: 20px;">
 <div id="blogAuthorPreview" style="width: 64px; height: 64px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; overflow: hidden; color: #fff; font-weight: 700; font-size: 24px; flex-shrink: 0; cursor: pointer;" onclick="document.getElementById('blogAuthorUpload').click()" title="Click to upload blog logo/icon">
-                ${blogAuthorImage ? '<img alt="Blog author photo" loading="lazy" src="' + blogAuthorImage + '" style="width:100%;height:100%;object-fit:cover;">' : 'F'}
+                ${blogAuthorImage ? '<img alt="Blog author photo" loading="lazy" src="' + blogAuthorImage + '" class="img-cover">' : 'F'}
 </div>
-<div style="flex: 1;">
+<div class="flex-1">
 <div style="font-weight: 600; color: #fff; margin-bottom: 4px;">Blog Author Image / Logo</div>
 <div style="font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 8px;">Click the circle to upload. Used on all blog posts as the author avatar.</div>
-<input type="file" id="blogAuthorUpload" accept="image/*" style="display: none;" onchange="handleBlogAuthorUpload(event)">
-<div style="display: flex; gap: 8px;">
+<input type="file" id="blogAuthorUpload" accept="image/*" class="hidden" onchange="handleBlogAuthorUpload(event)">
+<div class="flex-gap-8">
 <button onclick="document.getElementById('blogAuthorUpload').click()" class="btn-admin" style="background: rgba(255,255,255,0.1); color: #fff; padding: 8px 16px; font-size: 12px;">📷 Upload Image</button>
 <input type="text" id="blogAuthorUrlInput" placeholder="Or paste image URL..." value="${blogAuthorImage}" onchange="setBlogAuthorFromUrl(this.value)" style="flex: 1; padding: 8px 12px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; font-size: 12px;">
 </div>
@@ -4423,16 +4441,16 @@ function loadAdminBlogPanel() {
 </div>
 
         <!-- Blog Posts List -->
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<h3 style="color: #fff;">${blogPosts.length} Posts</h3>
+<div class="admin-row-between">
+<h3 class="text-white">${blogPosts.length} Posts</h3>
 <button onclick="showBlogEditor()" class="btn-admin primary">+ New Post</button>
 </div>
 
-<div style="display: flex; flex-direction: column; gap: 12px;">
+<div class="flex-col-gap-12">
             ${blogPosts.map((post, i) => `
 <div style="background: #111; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: center;">
 <div style="width: 80px; height: 50px; border-radius: 8px; overflow: hidden; background: #1a1a1a; flex-shrink: 0;">
-                        ${post.image ? '<img alt="Blog post featured image" loading="lazy" src="' + post.image + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'">' : ''}
+                        ${post.image ? '<img alt="Blog post featured image" loading="lazy" src="' + post.image + '" class="img-cover" onerror="this.style.display=\'none\'">' : ''}
 </div>
 <div style="flex: 1; min-width: 0;">
 <div style="font-weight: 600; color: #fff; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${post.title}</div>
@@ -4489,44 +4507,44 @@ function showBlogEditor(postId) {
 
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
 <div>
-<label style="display: block; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 6px;">Title</label>
+<label class="pkg-feature-label">Title</label>
 <input type="text" id="blogEditTitle" value="${post?.title || ''}" placeholder="Post title..." style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;">
 </div>
 <div>
-<label style="display: block; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 6px;">Category</label>
+<label class="pkg-feature-label">Category</label>
 <select id="blogEditCategory" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;">
                             ${['Branding', 'Business Strategy', 'Personal Branding', 'Sales Strategy', 'Brand Strategy', 'Web Design', 'Technology', 'Social Media', 'Marketing'].map(c => '<option value="' + c + '"' + (post?.category === c ? ' selected' : '') + '>' + c + '</option>').join('')}
 </select>
 </div>
 </div>
 
-<div style="margin-bottom: 16px;">
-<label style="display: block; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 6px;">Featured Image URL</label>
+<div class="mb-16">
+<label class="pkg-feature-label">Featured Image URL</label>
 <input type="text" id="blogEditImage" value="${post?.image || ''}" placeholder="https://images.unsplash.com/..." style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;">
 </div>
 
-<div style="margin-bottom: 16px;">
-<label style="display: block; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 6px;">Excerpt (short preview)</label>
+<div class="mb-16">
+<label class="pkg-feature-label">Excerpt (short preview)</label>
 <textarea id="blogEditExcerpt" rows="2" placeholder="Brief description..." style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; resize: none;">${post?.excerpt || ''}</textarea>
 </div>
 
-<div style="margin-bottom: 16px;">
-<label style="display: block; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 6px;">Content (HTML supported)</label>
+<div class="mb-16">
+<label class="pkg-feature-label">Content (HTML supported)</label>
 <textarea id="blogEditContent" rows="12" placeholder="<p>Write your blog post content here...</p>&#10;<h2>Section Header</h2>&#10;<p>More content...</p>" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; resize: vertical; font-family: monospace; font-size: 13px;">${post?.content?.replace(/</g, '&lt;').replace(/>/g, '&gt;') || ''}</textarea>
 </div>
 
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
 <div>
-<label style="display: block; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 6px;">Author</label>
+<label class="pkg-feature-label">Author</label>
 <input type="text" id="blogEditAuthor" value="${post?.author || 'Faren Young'}" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;">
 </div>
 <div>
-<label style="display: block; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 6px;">Read Time</label>
+<label class="pkg-feature-label">Read Time</label>
 <input type="text" id="blogEditReadTime" value="${post?.readTime || '5 min read'}" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;">
 </div>
 </div>
 
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <button onclick="document.getElementById('blogEditorModal').remove()" style="flex: 1; padding: 14px; background: #333; border: none; color: #fff; border-radius: 8px; cursor: pointer;">Cancel</button>
 <button onclick="saveBlogPost(${post?.id || 'null'})" style="flex: 1; padding: 14px; background: var(--red); border: none; color: #fff; border-radius: 8px; cursor: pointer; font-weight: 600;">${isNew ? 'Publish Post' : 'Save Changes'}</button>
 </div>
@@ -4730,7 +4748,7 @@ function loadBlogView() {
 </div>
 </div>
 
-<div id="blogSingle" style="display: none;"></div>
+<div id="blogSingle" class="hidden"></div>
 
         ${getFooterHTML()}
     `;

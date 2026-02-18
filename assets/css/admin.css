@@ -1,0 +1,75 @@
+/* ============================================
+   NUI Admin Panel Styles — Extracted from JS
+   ============================================
+   Source: CSS Audit Phase — inline style extraction
+   Scope: Loaded ONLY by /app/index.html
+   ============================================ */
+
+/* ── Layout: Grids ────────────────────────── */
+.admin-grid-2-1{display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:32px;}
+.admin-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.admin-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+.admin-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.admin-grid-auto{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+
+/* ── Layout: Flex ─────────────────────────── */
+.admin-row-between{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.flex-between{display:flex;justify-content:space-between;align-items:center;}
+.flex-center{display:flex;align-items:center;justify-content:center;}
+.flex-gap-4{display:flex;gap:4px;}
+.flex-gap-6{display:flex;gap:6px;}
+.flex-gap-8{display:flex;gap:8px;}
+.flex-gap-12{display:flex;gap:12px;}
+.flex-gap-16{display:flex;gap:16px;}
+.flex-gap-24{display:flex;gap:24px;}
+.flex-center-gap-8{display:flex;align-items:center;gap:8px;}
+.flex-center-gap-12{display:flex;align-items:center;gap:12px;}
+.flex-col{display:flex;flex-direction:column;}
+.flex-col-gap-8{display:flex;flex-direction:column;gap:8px;}
+.flex-col-gap-12{display:flex;flex-direction:column;gap:12px;}
+.flex-col-gap-16{display:flex;flex-direction:column;gap:16px;}
+.flex-wrap{display:flex;flex-wrap:wrap;gap:8px;}
+
+/* ── Cards ────────────────────────────────── */
+.admin-card-dark{background:var(--admin-card);padding:24px;border-radius:16px;border:1px solid var(--admin-border);}
+.admin-card-gradient{background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);padding:24px;border-radius:16px;color:#fff;}
+.admin-card-light{background:#fff;padding:24px;border-radius:16px;border:1px solid #e5e5e5;}
+.admin-card-glass{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(255,255,255,0.1);}
+.admin-card-sm{background:var(--admin-card);padding:16px;border-radius:12px;border:1px solid var(--admin-border);}
+.admin-list-item{padding:12px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.admin-list-item-lg{padding:16px;border-bottom:1px solid rgba(255,255,255,0.06);}
+
+/* ── Form inputs (admin-specific) ─────────── */
+.admin-input{background:#252525;color:#fff;border:1px solid rgba(255,255,255,0.2);padding:10px 14px;border-radius:8px;font-size:14px;width:100%;}
+.admin-input:focus{outline:none;border-color:var(--red);}
+.admin-select{background:#252525;color:#fff;border:1px solid rgba(255,255,255,0.2);padding:10px 14px;border-radius:8px;font-size:14px;}
+.admin-textarea{background:#252525;color:#fff;border:1px solid rgba(255,255,255,0.2);padding:12px;border-radius:8px;font-size:14px;width:100%;min-height:100px;resize:vertical;}
+
+/* ── Typography (admin) ──────────────────── */
+.admin-heading-sm{font-size:14px;color:#888;margin-bottom:16px;}
+.admin-heading-xs{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+
+/* ── Stat numbers ─────────────────────────── */
+.stat-num-lg{font-size:32px;font-weight:700;}
+.stat-num-xl{font-size:48px;font-weight:700;}
+.stat-num-accent{font-size:32px;font-weight:700;color:var(--red);}
+.stat-num-green{font-size:32px;font-weight:700;color:#10b981;}
+.stat-num-yellow{font-size:32px;font-weight:700;color:#f59e0b;}
+
+/* ── Status badges ────────────────────────── */
+.status-active{background:#10b981;color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;}
+.status-pending{background:#f59e0b;color:#000;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;}
+.status-overdue{background:#ef4444;color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;}
+.status-draft{background:#666;color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;}
+
+
+/* ── Pass 2: Additional extracted patterns ─── */
+.admin-card-dark-sm{background:#111;border:1px solid #222;border-radius:12px;padding:24px;}
+.admin-card-dark-center{background:#111;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;text-align:center;}
+.admin-footer-bar{background:#050505;padding:20px;text-align:center;border-top:1px solid #222;}
+.admin-input-dark{width:100%;padding:12px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;}
+.admin-field-label{display:block;margin-bottom:8px;color:#888;font-size:13px;}
+.admin-field-label-bold{display:block;font-size:14px;font-weight:600;color:#fff;margin-bottom:8px;}
+.admin-label-xs{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.admin-subheading-red{margin:16px 0 8px;color:var(--red);}
+.admin-text-muted-xs{font-size:12px;color:var(--admin-text-muted);}

@@ -1,8 +1,8 @@
 function loadAdminLeadsPanel() {
     const newLeads = leads.filter(l => l.status === 'new').length;
     document.getElementById('adminLeadsPanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-<h2 style="font-size: 28px; font-weight: 700;">Lead Management</h2>
+<div class="flex-between mb-32">
+<h2 class="fs-28 fw-700">Lead Management</h2>
 <button onclick="addManualLead()" class="btn-cta">+ Add Lead</button>
 </div>
 
@@ -29,8 +29,8 @@ function loadAdminLeadsPanel() {
 <tbody>
                     ${leads.map(lead => `
 <tr style="border-bottom: 1px solid #e5e5e5;">
-<td style="padding: 16px 8px;"><strong>${lead.name}</strong><br><span style="font-size: 12px; color: #888;">${lead.business || '-'}</span></td>
-<td style="padding: 16px 8px;"><a href="mailto:${lead.email}" style="color: var(--red);">${lead.email}</a><br><span style="font-size: 12px; color: #888;">${lead.phone || '-'}</span></td>
+<td style="padding: 16px 8px;"><strong>${lead.name}</strong><br><span class="text-muted fs-12">${lead.business || '-'}</span></td>
+<td style="padding: 16px 8px;"><a href="mailto:${lead.email}" class="text-red">${lead.email}</a><br><span class="text-muted fs-12">${lead.phone || '-'}</span></td>
 <td style="padding: 16px 8px; font-size: 14px;">${lead.service || '-'}</td>
 <td style="padding: 16px 8px; font-size: 14px;">${lead.budget || '-'}</td>
 <td style="padding: 16px 8px;">
@@ -53,7 +53,7 @@ function loadAdminLeadsPanel() {
             ` : '<p style="text-align: center; color: #888; padding: 40px;">No leads yet. Generate a lead form to start capturing leads!</p>'}
 </div>
 
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">🔗 Get Your Lead Form</div>
 <p style="color: #666; margin-bottom: 16px;">Go to <strong>New Order</strong> → Select a package → Click "Generate Lead Form" to get embeddable form code.</p>
 <button onclick="showAdminPanel('neworder')" class="btn-cta">Go to New Order →</button>

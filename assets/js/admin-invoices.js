@@ -13,9 +13,9 @@ function showInvoice(orderId) {
 <div class="invoice-party"><h4>Project Details</h4><p><strong>Due Date:</strong> ${new Date(order.dueDate).toLocaleDateString()}<br><strong>Turnaround:</strong> ${order.turnaround}<br><strong>Status:</strong> ${order.status.replace('_', ' ')}</p></div>
 </div>
 <table class="invoice-table">
-<thead><tr><th>Description</th><th style="text-align: right;">Amount</th></tr></thead>
+<thead><tr><th>Description</th><th class="text-right">Amount</th></tr></thead>
 <tbody>
-<tr><td><strong>${order.projectName}</strong><br><span style="font-size: 13px; color: #666;">${order.description || 'No description'}</span></td><td style="text-align: right;">$${(order.estimate || 0).toLocaleString()}</td></tr>
+<tr><td><strong>${order.projectName}</strong><br><span class="text-muted-sm">${order.description || 'No description'}</span></td><td class="text-right">$${(order.estimate || 0).toLocaleString()}</td></tr>
 </tbody>
 </table>
 <div class="invoice-total">Total: $${(order.estimate || 0).toLocaleString()}</div>

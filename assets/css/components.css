@@ -1,0 +1,87 @@
+/* ====== Marketing Page Components ====== */
+/* Extracted from inline styles in marketing.js — CSS Audit */
+
+/* Client Ticker */
+.ticker-name{font-size:15px;font-weight:800;color:white;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
+.ticker-bull{color:#dc2626;}
+
+/* Ticker container row */
+.ticker-row{display:flex;align-items:center;gap:20px;padding:0 10px;}
+.ticker-strip{display:flex;animation:clientScroll 80s linear infinite;width:max-content;will-change:transform;}
+.ticker-section{padding:48px 0;background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,0.06);overflow:hidden;}
+.ticker-heading{font-size:13px;text-transform:uppercase;letter-spacing:3px;color:rgba(255,255,255,0.35);font-weight:600;text-align:center;margin-bottom:32px;}
+
+/* FAQ Accordion */
+.faq-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;margin-bottom:8px;overflow:hidden;}
+.faq-toggle{width:100%;padding:20px 24px;background:none;border:none;color:#fff;font-size:15px;font-weight:600;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:inherit;}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height 0.3s ease;padding:0 24px;}
+.faq-answer-text{padding:0 0 20px 0;color:#aaa;font-size:14px;line-height:1.7;}
+.faq-icon{color:#e11d48;font-size:20px;margin-left:16px;}
+
+/* Package/Pricing Section */
+.pkg-section-title{font-size:18px;font-weight:600;color:rgba(255,255,255,0.5);}
+.pkg-price{font-size:32px;font-weight:900;color:var(--red);margin:16px 0;}
+.pkg-badge{font-size:11px;color:var(--red);text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:16px;}
+.pkg-cta{width:100%;margin-top:24px;padding:14px;}
+.pkg-feature-label{display:block;font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:6px;}
+.pkg-feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+.pkg-group-title{font-size:16px;font-weight:800;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.pkg-group-icon{width:32px;height:32px;background:rgba(255,59,48,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.pkg-note{font-size:11px;color:var(--red);margin-top:16px;font-weight:600;}
+.pkg-addon-price{margin:4px 0 0;color:var(--red);font-size:13px;font-weight:600;}
+.pkg-detail-list{color:#888;font-size:13px;line-height:1.8;margin:0;padding-left:20px;}
+
+/* Problem Cards */
+.problem-meta{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.problem-detect{color:var(--gray);font-size:12px;text-transform:uppercase;letter-spacing:2px;}
+
+/* Image Cover */
+.img-cover{width:100%;height:100%;object-fit:cover;}
+
+/* Layout Containers */
+.container-lg{max-width:1200px;margin:0 auto;padding:0 24px;}
+.container-xl{max-width:1400px;margin:0 auto;}
+
+/* Blog Card Styles */
+.blog-card-dark{background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:32px;}
+.blog-overlay-dark{background:rgba(0,0,0,0.4);border-radius:12px;padding:24px;}
+.blog-gradient-cta{background:linear-gradient(135deg,var(--red),#ff6b5b);}
+
+/* Text Utilities */
+.text-muted-sm{color:#888;font-size:11px;}
+.text-muted{color:#888;font-size:13px;}
+.text-muted-lg{color:#888;font-size:14px;}
+.text-white-bold{font-weight:600;color:#fff;}
+
+/* Admin Shared Utilities (used across admin panels) */
+.admin-card{background:#111;border:1px solid #222;border-radius:12px;padding:24px;}
+.admin-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.admin-row-lg{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;}
+.admin-list-item{padding:12px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.admin-tag{background:#252525;color:#fff;border:1px solid rgba(255,255,255,0.2);}
+.admin-input{width:100%;padding:12px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;}
+.admin-input-dark{width:100%;padding:12px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;}
+.admin-label{display:block;margin-bottom:8px;color:#888;font-size:13px;}
+.admin-stat-label{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.admin-meta{font-size:13px;color:#888;}
+.admin-meta-sm{font-size:12px;color:#888;}
+.admin-meta-light{font-size:12px;color:rgba(255,255,255,0.5);}
+.admin-title-lg{font-size:28px;font-weight:700;}
+.admin-title-md{font-size:24px;font-weight:700;}
+.admin-title-sm{font-size:20px;}
+
+/* Flex Utilities */
+.flex-row{display:flex;gap:12px;}
+.flex-row-sm{display:flex;gap:8px;}
+.flex-center{display:flex;align-items:center;gap:12px;}
+.flex-1{flex:1;}
+
+/* FAQ Section Header */
+.faq-label{font-size:13px;text-transform:uppercase;letter-spacing:3px;color:var(--red);font-weight:600;margin-bottom:12px;}
+.faq-title{font-size:clamp(32px,5vw,48px);font-weight:800;color:#fff;margin:0;line-height:1.1;}
+.faq-subtitle{color:rgba(255,255,255,0.5);margin-top:16px;font-size:15px;}
+
+/* Size Utilities */
+.text-2xl{font-size:24px;}
+.text-3xl{font-size:28px;}
+.mb-40{margin-bottom:40px;}

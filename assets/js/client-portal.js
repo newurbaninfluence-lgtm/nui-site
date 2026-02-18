@@ -21,9 +21,9 @@ function showClientPortal(client) {
         <!-- Back Navigation Bar -->
 <div class="portal-nav-bar" style="background: rgba(0,0,0,0.95); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100;">
 <button onclick="goBackFromPortal()" class="portal-back-btn" style="display: flex; align-items: center; gap: 8px; background: none; border: none; color: #fff; cursor: pointer; font-size: 16px; padding: 8px 16px; border-radius: 8px; transition: background 0.2s;">
-<span style="font-size: 20px;">←</span> Back
+<span class="fs-20">←</span> Back
 </button>
-<span style="color: #888; font-size: 14px;">${client.name} Portal</span>
+<span class="text-muted fs-14">${client.name} Portal</span>
             ${currentUser?.type === 'admin' ? '<button onclick="backToAdmin()" style="background: var(--accent); color: #000; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600;">Admin Dashboard</button>' : '<div></div>'}
 </div>
 
@@ -39,46 +39,46 @@ function showClientPortal(client) {
 </div>
 
 <!-- DASHBOARD SECTION -->
-<div id="portalSection-dashboard" class="portal-section" style="padding: 32px;">
+<div id="portalSection-dashboard" class="portal-section p-32">
 <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 24px;">Welcome back, ${client.contact || client.name}!</h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px;">
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
+<div class="admin-card-dark-sm">
 <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Service</div>
 <div style="font-size: 18px; font-weight: 600; color: #fff;">${client.servicePackageName || 'Not set'}</div>
 </div>
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
+<div class="admin-card-dark-sm">
 <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Active Orders</div>
 <div style="font-size: 28px; font-weight: 700; color: #3b82f6;">${activeOrders.length}</div>
 </div>
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
+<div class="admin-card-dark-sm">
 <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Completed</div>
 <div style="font-size: 28px; font-weight: 700; color: #10b981;">${deliveredOrders.length}</div>
 </div>
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
+<div class="admin-card-dark-sm">
 <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Brand Status</div>
 <div style="font-size: 18px; font-weight: 600; color: ${brandGuide.status === 'approved' ? '#10b981' : brandGuide.status === 'pending' ? '#f59e0b' : '#888'};">${brandGuide.status === 'approved' ? '✓ Approved' : brandGuide.status === 'pending' ? '⏳ Pending' : '📝 In Progress'}</div>
 </div>
 </div>
 ${(() => {
     const pendingProofs = proofs.filter(pr => pr.clientId == client.id && pr.sentToClient && pr.status === 'pending');
-    return pendingProofs.length > 0 ? '<div style="background: #f59e0b15; border: 1px solid #f59e0b40; border-radius: 12px; padding: 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;"><div><span style="font-size: 20px;">⏳</span> <strong style="color: #f59e0b;">' + pendingProofs.length + ' proof' + (pendingProofs.length > 1 ? 's' : '') + ' waiting for your review</strong><div style="color: #888; font-size: 13px; margin-top: 4px;">' + pendingProofs.map(p => p.title || p.name || 'Proof').join(', ') + '</div></div><button onclick="switchPortalSection(\'proofs\', ' + client.id + ')" style="padding: 12px 24px; background: #f59e0b; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit;">Review Now →</button></div>' : '';
+    return pendingProofs.length > 0 ? '<div style="background: #f59e0b15; border: 1px solid #f59e0b40; border-radius: 12px; padding: 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;"><div><span class="fs-20">⏳</span> <strong style="color: #f59e0b;">' + pendingProofs.length + ' proof' + (pendingProofs.length > 1 ? 's' : '') + ' waiting for your review</strong><div style="color: #888; font-size: 13px; margin-top: 4px;">' + pendingProofs.map(p => p.title || p.name || 'Proof').join(', ') + '</div></div><button onclick="switchPortalSection(\'proofs\', ' + client.id + ')" style="padding: 12px 24px; background: #f59e0b; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit;">Review Now →</button></div>' : '';
 })()}
 
 <!-- Quick Actions: Contact Designer & Book a Call -->
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px;">
 <button onclick="openClientMessageDesigner(${client.id})" style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; cursor: pointer; text-align: left; font-family: inherit; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#e11d48'" onmouseout="this.style.borderColor='#222'">
-<div style="font-size: 24px; margin-bottom: 8px;">💬</div>
+<div class="fs-24 mb-8">💬</div>
 <div style="font-size: 16px; font-weight: 600; color: #fff;">Contact Your Designer</div>
 <div style="font-size: 13px; color: #888; margin-top: 4px;">Send a message about your project</div>
 </button>
 <button onclick="openBookCallModal()" style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; cursor: pointer; text-align: left; font-family: inherit; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#e11d48'" onmouseout="this.style.borderColor='#222'">
-<div style="font-size: 24px; margin-bottom: 8px;">📞</div>
+<div class="fs-24 mb-8">📞</div>
 <div style="font-size: 16px; font-weight: 600; color: #fff;">Book a Call</div>
 <div style="font-size: 13px; color: #888; margin-top: 4px;">Mon–Thu 1:00–4:00 PM EST</div>
 </button>
 </div>
 
-${activeOrders.length > 0 ? '<h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #fff;">Active Projects</h3>' + activeOrders.map(o => '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;"><div><div style="font-weight: 600; color: #fff;">' + o.projectName + '</div><div style="font-size: 13px; color: #888; margin-top: 4px;">' + (o.packageName || '') + ' • ' + (o.status || 'pending') + '</div></div><div style="font-size: 13px; color: #888;">' + (o.dueDate ? 'Due: ' + new Date(o.dueDate).toLocaleDateString() : '') + '</div></div>').join('') : '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 32px; text-align: center; color: #888;">No active orders yet. Your projects will appear here once created.</div>'}
+${activeOrders.length > 0 ? '<h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #fff;">Active Projects</h3>' + activeOrders.map(o => '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;"><div><div class="text-bold-white">' + o.projectName + '</div><div style="font-size: 13px; color: #888; margin-top: 4px;">' + (o.packageName || '') + ' • ' + (o.status || 'pending') + '</div></div><div class="text-muted-sm">' + (o.dueDate ? 'Due: ' + new Date(o.dueDate).toLocaleDateString() : '') + '</div></div>').join('') : '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 32px; text-align: center; color: #888;">No active orders yet. Your projects will appear here once created.</div>'}
 </div>
 
 <!-- ORDERS & INVOICES SECTION -->
@@ -87,7 +87,7 @@ ${activeOrders.length > 0 ? '<h3 style="font-size: 16px; font-weight: 600; margi
 ${clientOrders.length > 0 ? clientOrders.map(o => {
     const inv = invoices.find(i => i.orderId === o.id);
     const statusColors = { pending: '#f59e0b', 'in-progress': '#3b82f6', review: '#8b5cf6', delivered: '#10b981', cancelled: '#ef4444' };
-    return '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 16px;"><div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;"><div><h3 style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px;">' + o.projectName + '</h3><div style="font-size: 13px; color: #888;">' + (o.packageName || 'Custom') + ' • Created ' + new Date(o.createdAt).toLocaleDateString() + '</div></div><div style="display: flex; gap: 12px; align-items: center;"><span style="display: inline-block; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: ' + (statusColors[o.status] || '#888') + '20; color: ' + (statusColors[o.status] || '#888') + ';">' + (o.status || 'pending') + '</span>' + (o.estimate ? '<span style="font-size: 18px; font-weight: 700; color: #e11d48;">$' + o.estimate.toLocaleString() + '</span>' : '') + '</div></div>' + (o.turnaround ? '<div style="margin-top: 12px; font-size: 13px; color: #888;">⏱ Turnaround: ' + o.turnaround + (o.dueDate ? ' • Due: ' + new Date(o.dueDate).toLocaleDateString() : '') + '</div>' : '') + (inv ? '<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #222; display: flex; justify-content: space-between; align-items: center;"><span style="font-size: 13px; color: #888;">Invoice #' + (inv.invoiceNumber || inv.id) + '</span><span style="font-size: 13px; font-weight: 600; color: ' + (inv.status === 'paid' ? '#10b981' : '#f59e0b') + ';">' + (inv.status === 'paid' ? '✅ Paid' : '⏳ Unpaid — $' + (inv.total || inv.amount || 0).toLocaleString()) + '</span></div>' : '') + '</div>';
+    return '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 16px;"><div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;"><div><h3 style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px;">' + o.projectName + '</h3><div class="text-muted-sm">' + (o.packageName || 'Custom') + ' • Created ' + new Date(o.createdAt).toLocaleDateString() + '</div></div><div style="display: flex; gap: 12px; align-items: center;"><span style="display: inline-block; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: ' + (statusColors[o.status] || '#888') + '20; color: ' + (statusColors[o.status] || '#888') + ';">' + (o.status || 'pending') + '</span>' + (o.estimate ? '<span style="font-size: 18px; font-weight: 700; color: #e11d48;">$' + o.estimate.toLocaleString() + '</span>' : '') + '</div></div>' + (o.turnaround ? '<div style="margin-top: 12px; font-size: 13px; color: #888;">⏱ Turnaround: ' + o.turnaround + (o.dueDate ? ' • Due: ' + new Date(o.dueDate).toLocaleDateString() : '') + '</div>' : '') + (inv ? '<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #222; display: flex; justify-content: space-between; align-items: center;"><span class="text-muted-sm">Invoice #' + (inv.invoiceNumber || inv.id) + '</span><span style="font-size: 13px; font-weight: 600; color: ' + (inv.status === 'paid' ? '#10b981' : '#f59e0b') + ';">' + (inv.status === 'paid' ? '✅ Paid' : '⏳ Unpaid — $' + (inv.total || inv.amount || 0).toLocaleString()) + '</span></div>' : '') + '</div>';
 }).join('') : '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 48px; text-align: center;"><div style="font-size: 48px; margin-bottom: 16px;">📦</div><div style="color: #888; font-size: 16px;">No orders yet</div><div style="color: #666; font-size: 14px; margin-top: 8px;">Your orders and invoices will appear here</div></div>'}
 </div>
 
@@ -96,42 +96,42 @@ ${clientOrders.length > 0 ? clientOrders.map(o => {
 <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 24px;">My Information</h2>
 <div style="max-width: 600px;">
 <div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 16px;">
-<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Business Name</div>
+<div class="admin-label-xs">Business Name</div>
 <div style="font-size: 16px; color: #fff; font-weight: 600;">${client.name}</div>
 </div>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
-<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Contact</div>
-<div style="font-size: 16px; color: #fff;">${client.contact || '—'}</div>
+<div class="admin-card-dark-sm">
+<div class="admin-label-xs">Contact</div>
+<div class="fs-16 text-white">${client.contact || '—'}</div>
 </div>
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
-<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Email</div>
-<div style="font-size: 16px; color: #fff;">${client.email}</div>
+<div class="admin-card-dark-sm">
+<div class="admin-label-xs">Email</div>
+<div class="fs-16 text-white">${client.email}</div>
 </div>
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
-<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Phone</div>
-<div style="font-size: 16px; color: #fff;">${client.phone || '—'}</div>
+<div class="admin-card-dark-sm">
+<div class="admin-label-xs">Phone</div>
+<div class="fs-16 text-white">${client.phone || '—'}</div>
 </div>
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
-<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Industry</div>
-<div style="font-size: 16px; color: #fff;">${client.industry || '—'}</div>
+<div class="admin-card-dark-sm">
+<div class="admin-label-xs">Industry</div>
+<div class="fs-16 text-white">${client.industry || '—'}</div>
 </div>
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
-<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Website</div>
-<div style="font-size: 16px; color: #fff;">${client.website ? '<a href="' + client.website + '" target="_blank" style="color: #e11d48;">' + client.website + '</a>' : '—'}</div>
+<div class="admin-card-dark-sm">
+<div class="admin-label-xs">Website</div>
+<div class="fs-16 text-white">${client.website ? '<a href="' + client.website + '" target="_blank" style="color: #e11d48;">' + client.website + '</a>' : '—'}</div>
 </div>
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
-<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Service</div>
-<div style="font-size: 16px; color: #fff;">${client.servicePackageName || '—'}</div>
+<div class="admin-card-dark-sm">
+<div class="admin-label-xs">Service</div>
+<div class="fs-16 text-white">${client.servicePackageName || '—'}</div>
 </div>
-</div>
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-top: 16px;">
-<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Address</div>
-<div style="font-size: 16px; color: #fff;">${client.address || '—'}</div>
 </div>
 <div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-top: 16px;">
-<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Member Since</div>
-<div style="font-size: 16px; color: #fff;">${client.createdAt ? new Date(client.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'}</div>
+<div class="admin-label-xs">Address</div>
+<div class="fs-16 text-white">${client.address || '—'}</div>
+</div>
+<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-top: 16px;">
+<div class="admin-label-xs">Member Since</div>
+<div class="fs-16 text-white">${client.createdAt ? new Date(client.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'}</div>
 </div>
 </div>
 </div>
@@ -139,14 +139,14 @@ ${clientOrders.length > 0 ? clientOrders.map(o => {
 <!-- QUESTIONNAIRE SECTION -->
 <div id="portalSection-questionnaire" class="portal-section" style="padding: 32px; display: none;">
 <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">Service Questionnaire</h2>
-<p style="color: #888; margin-bottom: 24px;">Help us understand your brand vision so we can deliver the best results.</p>
+<p class="text-muted mb-24">Help us understand your brand vision so we can deliver the best results.</p>
 <div style="max-width: 600px;">
 <form onsubmit="submitClientQuestionnaire(event, ${client.id})">
-<div style="margin-bottom: 20px;"><label style="display: block; font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 8px;">What does your business do? *</label><textarea id="q_businessDesc" class="form-input" rows="3" required placeholder="Describe your business, products, or services...">${client.questionnaire?.businessDesc || ''}</textarea></div>
-<div style="margin-bottom: 20px;"><label style="display: block; font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 8px;">Who is your target audience? *</label><textarea id="q_targetAudience" class="form-input" rows="2" required placeholder="Age range, interests, demographics...">${client.questionnaire?.targetAudience || ''}</textarea></div>
-<div style="margin-bottom: 20px;"><label style="display: block; font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 8px;">What sets you apart from competitors?</label><textarea id="q_uniqueValue" class="form-input" rows="2" placeholder="Your unique selling proposition...">${client.questionnaire?.uniqueValue || ''}</textarea></div>
-<div style="margin-bottom: 20px;"><label style="display: block; font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 8px;">Brand personality / vibe</label>
-<select id="q_brandVibe" class="form-input" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<div class="mb-20"><label class="admin-field-label-bold">What does your business do? *</label><textarea id="q_businessDesc" class="form-input" rows="3" required placeholder="Describe your business, products, or services...">${client.questionnaire?.businessDesc || ''}</textarea></div>
+<div class="mb-20"><label class="admin-field-label-bold">Who is your target audience? *</label><textarea id="q_targetAudience" class="form-input" rows="2" required placeholder="Age range, interests, demographics...">${client.questionnaire?.targetAudience || ''}</textarea></div>
+<div class="mb-20"><label class="admin-field-label-bold">What sets you apart from competitors?</label><textarea id="q_uniqueValue" class="form-input" rows="2" placeholder="Your unique selling proposition...">${client.questionnaire?.uniqueValue || ''}</textarea></div>
+<div class="mb-20"><label class="admin-field-label-bold">Brand personality / vibe</label>
+<select id="q_brandVibe" class="form-input admin-input">
 <option value="">Select a vibe...</option>
 <option value="bold" ${client.questionnaire?.brandVibe === 'bold' ? 'selected' : ''}>Bold & Edgy</option>
 <option value="elegant" ${client.questionnaire?.brandVibe === 'elegant' ? 'selected' : ''}>Elegant & Sophisticated</option>
@@ -157,10 +157,10 @@ ${clientOrders.length > 0 ? clientOrders.map(o => {
 <option value="organic" ${client.questionnaire?.brandVibe === 'organic' ? 'selected' : ''}>Natural & Organic</option>
 <option value="tech" ${client.questionnaire?.brandVibe === 'tech' ? 'selected' : ''}>Modern & Tech</option>
 </select></div>
-<div style="margin-bottom: 20px;"><label style="display: block; font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 8px;">Colors you like or want to avoid</label><input type="text" id="q_colorPrefs" class="form-input" placeholder="e.g., Love red and black, avoid pastels" value="${client.questionnaire?.colorPrefs || ''}"></div>
-<div style="margin-bottom: 20px;"><label style="display: block; font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 8px;">Brands you admire (inspiration)</label><input type="text" id="q_inspiration" class="form-input" placeholder="e.g., Nike, Apple, Supreme..." value="${client.questionnaire?.inspiration || ''}"></div>
-<div style="margin-bottom: 20px;"><label style="display: block; font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 8px;">Timeline / deadline</label><input type="text" id="q_timeline" class="form-input" placeholder="e.g., Need by March 1st, flexible, ASAP..." value="${client.questionnaire?.timeline || ''}"></div>
-<div style="margin-bottom: 20px;"><label style="display: block; font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 8px;">Anything else we should know?</label><textarea id="q_additional" class="form-input" rows="3" placeholder="Other details, preferences, existing assets...">${client.questionnaire?.additional || ''}</textarea></div>
+<div class="mb-20"><label class="admin-field-label-bold">Colors you like or want to avoid</label><input type="text" id="q_colorPrefs" class="form-input" placeholder="e.g., Love red and black, avoid pastels" value="${client.questionnaire?.colorPrefs || ''}"></div>
+<div class="mb-20"><label class="admin-field-label-bold">Brands you admire (inspiration)</label><input type="text" id="q_inspiration" class="form-input" placeholder="e.g., Nike, Apple, Supreme..." value="${client.questionnaire?.inspiration || ''}"></div>
+<div class="mb-20"><label class="admin-field-label-bold">Timeline / deadline</label><input type="text" id="q_timeline" class="form-input" placeholder="e.g., Need by March 1st, flexible, ASAP..." value="${client.questionnaire?.timeline || ''}"></div>
+<div class="mb-20"><label class="admin-field-label-bold">Anything else we should know?</label><textarea id="q_additional" class="form-input" rows="3" placeholder="Other details, preferences, existing assets...">${client.questionnaire?.additional || ''}</textarea></div>
 <button type="submit" style="width: 100%; padding: 16px; background: #e11d48; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: inherit;">${client.questionnaire ? '✅ Update Questionnaire' : '📋 Submit Questionnaire'}</button>
 ${client.questionnaire ? '<p style="color: #10b981; font-size: 13px; margin-top: 12px; text-align: center;">✅ Questionnaire submitted on ' + new Date(client.questionnaire.submittedAt).toLocaleDateString() + '</p>' : ''}
 </form>
@@ -170,7 +170,7 @@ ${client.questionnaire ? '<p style="color: #10b981; font-size: 13px; margin-top:
 <!-- PROOFS & APPROVALS SECTION -->
 <div id="portalSection-proofs" class="portal-section" style="padding: 32px; display: none;">
 <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">Proofs & Approvals</h2>
-<p style="color: #888; margin-bottom: 24px;">Review your design proofs. Approve when you're happy, or request changes.</p>
+<p class="text-muted mb-24">Review your design proofs. Approve when you're happy, or request changes.</p>
 ${(() => {
     const clientProofs = proofs.filter(pr => pr.clientId == client.id && pr.sentToClient);
     if (clientProofs.length === 0) return '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 48px; text-align: center;"><div style="font-size: 48px; margin-bottom: 16px;">✅</div><div style="color: #888; font-size: 16px;">No proofs yet</div><div style="color: #666; font-size: 14px; margin-top: 8px;">Design proofs will appear here when your designer sends them for review.</div></div>';
@@ -185,22 +185,22 @@ ${(() => {
         html += pending.map(p => '<div style="background: #111; border: 2px solid #f59e0b40; border-radius: 12px; padding: 24px; margin-bottom: 16px;">' +
             '<div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">' +
             '<div><h3 style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 4px;">' + (p.title || p.name || p.fileName || 'Design Proof') + '</h3>' +
-            '<div style="font-size: 13px; color: #888;">' + (p.category || p.proofType || 'Proof') + ' • v' + (p.version || 1) + ' • Sent ' + new Date(p.sentAt || p.uploadedAt).toLocaleDateString() + '</div></div>' +
+            '<div class="text-muted-sm">' + (p.category || p.proofType || 'Proof') + ' • v' + (p.version || 1) + ' • Sent ' + new Date(p.sentAt || p.uploadedAt).toLocaleDateString() + '</div></div>' +
             '<span style="padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: #f59e0b20; color: #f59e0b;">⏳ Pending Review</span></div>' +
             (p.image || p.fileData ? '<div style="background: #0a0a0a; border: 1px solid #222; border-radius: 8px; overflow: hidden; margin-bottom: 16px; max-height: 400px;"><img src="' + (p.image || p.fileData) + '" style="width: 100%; display: block; object-fit: contain; max-height: 400px;" alt="Proof"></div>' : '') +
-            (p.notes ? '<div style="background: #0a0a0a; border: 1px solid #222; border-radius: 8px; padding: 16px; margin-bottom: 16px;"><div style="font-size: 12px; color: #888; margin-bottom: 4px;">Designer Notes</div><div style="color: #ccc; font-size: 14px;">' + p.notes + '</div></div>' : '') +
-            '<div style="display: flex; gap: 12px;">' +
+            (p.notes ? '<div style="background: #0a0a0a; border: 1px solid #222; border-radius: 8px; padding: 16px; margin-bottom: 16px;"><div class="text-muted fs-12 mb-4">Designer Notes</div><div style="color: #ccc; font-size: 14px;">' + p.notes + '</div></div>' : '') +
+            '<div class="flex-gap-12">' +
             '<button onclick="clientRequestProofRevision(' + p.id + ', ' + client.id + ')" style="flex: 1; padding: 14px; background: transparent; border: 1px solid #ef4444; color: #ef4444; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit; font-size: 14px;">🔄 Request Changes</button>' +
             '<button onclick="clientApproveProof(' + p.id + ', ' + client.id + ')" style="flex: 1; padding: 14px; background: #10b981; border: none; color: #fff; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit; font-size: 14px;">✅ Approve</button>' +
             '</div></div>').join('');
     }
     if (approved.length > 0) {
         html += '<h3 style="font-size: 16px; font-weight: 600; margin: 24px 0 16px; color: #10b981;">✅ Approved (' + approved.length + ')</h3>';
-        html += approved.map(p => '<div style="background: #111; border: 1px solid #10b98130; border-radius: 12px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;"><div><div style="font-weight: 600; color: #fff;">' + (p.title || p.name || p.fileName || 'Design Proof') + '</div><div style="font-size: 13px; color: #888; margin-top: 4px;">' + (p.category || '') + ' • Approved ' + (p.approvedAt ? new Date(p.approvedAt).toLocaleDateString() : '') + '</div></div><span style="padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: #10b98120; color: #10b981;">✅ Approved</span></div>').join('');
+        html += approved.map(p => '<div style="background: #111; border: 1px solid #10b98130; border-radius: 12px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;"><div><div class="text-bold-white">' + (p.title || p.name || p.fileName || 'Design Proof') + '</div><div style="font-size: 13px; color: #888; margin-top: 4px;">' + (p.category || '') + ' • Approved ' + (p.approvedAt ? new Date(p.approvedAt).toLocaleDateString() : '') + '</div></div><span style="padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: #10b98120; color: #10b981;">✅ Approved</span></div>').join('');
     }
     if (revision.length > 0) {
         html += '<h3 style="font-size: 16px; font-weight: 600; margin: 24px 0 16px; color: #ef4444;">🔄 Revision In Progress (' + revision.length + ')</h3>';
-        html += revision.map(p => '<div style="background: #111; border: 1px solid #ef444430; border-radius: 12px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;"><div><div style="font-weight: 600; color: #fff;">' + (p.title || p.name || p.fileName || 'Design Proof') + '</div><div style="font-size: 13px; color: #888; margin-top: 4px;">Revision #' + (p.revisionCount || 1) + ' • Designer is working on changes</div></div><span style="padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: #ef444420; color: #ef4444;">🔄 Revising</span></div>').join('');
+        html += revision.map(p => '<div style="background: #111; border: 1px solid #ef444430; border-radius: 12px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;"><div><div class="text-bold-white">' + (p.title || p.name || p.fileName || 'Design Proof') + '</div><div style="font-size: 13px; color: #888; margin-top: 4px;">Revision #' + (p.revisionCount || 1) + ' • Designer is working on changes</div></div><span style="padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: #ef444420; color: #ef4444;">🔄 Revising</span></div>').join('');
     }
     return html;
 })()}
@@ -209,8 +209,8 @@ ${(() => {
 <!-- FAQ SECTION -->
 <div id="portalSection-faq" class="portal-section" style="padding: 32px; display: none;">
 <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">Frequently Asked Questions</h2>
-<p style="color: #888; margin-bottom: 24px;">Common questions about your project and working with NUI.</p>
-<div style="max-width: 700px;">
+<p class="text-muted mb-24">Common questions about your project and working with NUI.</p>
+<div class="max-w-700">
 ${[
     { q: "How long does my branding project take?", a: "Brand Kit projects typically take 7–10 business days. Service Brand Identity is 10–14 days, and Product Brand Identity is 14–21 days. Your specific timeline is in your order details." },
     { q: "How do I approve or request changes to my designs?", a: "Go to the <strong>Proofs</strong> tab in your portal. When a proof is ready, you will see Approve and Request Changes buttons. You will also get an email notification when new proofs are available." },
@@ -222,7 +222,7 @@ ${[
     { q: "Can I add more services to my project?", a: "Absolutely! Contact us through your portal or call (248) 487-8747 to discuss adding services like social media templates, business cards, packaging design, or web design." },
     { q: "What is included in my brand guidelines?", a: "Your brand guidelines document includes: logo usage rules, color palette with hex/RGB/CMYK codes, typography specifications, brand voice guidelines, and dos and donts for brand consistency." },
     { q: "How does payment work?", a: "We offer flexible payment options: pay in full (5% discount), 50/25/25 split, or 3 monthly payments. View your invoices and make payments in the <strong>Orders &amp; Invoices</strong> tab." }
-].map(function(faq, i) { return '<div style="background: #111; border: 1px solid #222; border-radius: 12px; margin-bottom: 8px; overflow: hidden;"><button onclick="this.parentElement.classList.toggle(\'faq-open\'); var sp=this.querySelectorAll(\'span\'); if(sp.length>1) sp[1].textContent=this.parentElement.classList.contains(\'faq-open\') ? String.fromCharCode(8722) : \'+\';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;"><span style="flex:1;">' + faq.q + '</span><span style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span></button><div style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;"><div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">' + faq.a + '</div></div></div>'; }).join("")}
+].map(function(faq, i) { return '<div style="background: #111; border: 1px solid #222; border-radius: 12px; margin-bottom: 8px; overflow: hidden;"><button onclick="this.parentElement.classList.toggle(\'faq-open\'); var sp=this.querySelectorAll(\'span\'); if(sp.length>1) sp[1].textContent=this.parentElement.classList.contains(\'faq-open\') ? String.fromCharCode(8722) : \'+\';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;"><span class="flex-1">' + faq.q + '</span><span style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span></button><div style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;"><div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">' + faq.a + '</div></div></div>'; }).join("")}
 </div>
 <style>.faq-open > div:last-child { max-height: 300px !important; }</style>
 <div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-top: 24px; max-width: 700px; text-align: center;">
@@ -235,7 +235,7 @@ ${[
 </div>
 
 <!-- BRAND PORTAL SECTION (existing content) -->
-<div id="portalSection-brand" class="portal-section" style="display: none;">
+<div id="portalSection-brand" class="portal-section hidden">
 
 <style>
             /* PORTFOLIO-STYLE BRAND GUIDE CSS */
@@ -338,7 +338,7 @@ ${[
             const statusInfo = statusColors[moodboard.status] || statusColors.draft;
             return `
 <div style="background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 24px; margin: 0 48px 32px 48px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+<div class="admin-row-between">
 <h3 style="font-size: 18px; font-weight: 600; color: #fff; margin: 0;">🎨 Creative Direction — Moodboard</h3>
 <div class="proof-status-badge" style="background: ${statusInfo.bg}; color: ${statusInfo.color}; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 100px; font-size: 12px; font-weight: 600;">
 <span>${statusInfo.icon}</span>
@@ -361,7 +361,7 @@ ${[
                 ${moodboard.comments && moodboard.comments.length > 0 ? `
 <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
 <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Feedback History</div>
-                    ${moodboard.comments.slice(-3).map(c => '<div style="background: #0a0a0a; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;"><div style="font-size: 12px; color: #888; margin-bottom: 4px;">' + new Date(c.timestamp).toLocaleDateString() + ' - ' + (c.author || 'Designer') + '</div><div style="font-size: 14px; color: rgba(255,255,255,0.7);">' + c.text + '</div></div>').join('')}
+                    ${moodboard.comments.slice(-3).map(c => '<div style="background: #0a0a0a; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;"><div class="text-muted fs-12 mb-4">' + new Date(c.timestamp).toLocaleDateString() + ' - ' + (c.author || 'Designer') + '</div><div style="font-size: 14px; color: rgba(255,255,255,0.7);">' + c.text + '</div></div>').join('')}
 </div>
                 ` : ''}
 </div>
@@ -393,7 +393,7 @@ ${[
             ${brandGuide.proofComments?.length > 0 ? `
 <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
 <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Revision History</div>
-                ${brandGuide.proofComments.slice(-3).map(c => '<div style="background: #0a0a0a; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;"><div style="font-size: 12px; color: #888; margin-bottom: 4px;">' + new Date(c.date).toLocaleDateString() + ' - ' + c.type + '</div><div style="font-size: 14px;">' + c.comment + '</div></div>').join('')}
+                ${brandGuide.proofComments.slice(-3).map(c => '<div style="background: #0a0a0a; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;"><div class="text-muted fs-12 mb-4">' + new Date(c.date).toLocaleDateString() + ' - ' + c.type + '</div><div class="fs-14">' + c.comment + '</div></div>').join('')}
 </div>
             ` : ''}
 </div>
@@ -557,7 +557,7 @@ ${[
 <div style="background: #1a0a0a; border: 1px solid #ef4444; border-radius: 12px; padding: 32px; text-align: center; margin-bottom: 32px;">
 <div style="font-size: 48px; margin-bottom: 16px;">🔒</div>
 <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Downloads Locked</h3>
-<p style="color: #888; margin-bottom: 24px;">Please approve your brand proofs and complete payment to unlock downloads.</p>
+<p class="text-muted mb-24">Please approve your brand proofs and complete payment to unlock downloads.</p>
 </div>
                 ` : ''}
 <div class="brand-section-title">Available Downloads</div>
@@ -633,7 +633,7 @@ function showRevisionModal(clientId) {
     modal.innerHTML = `
 <div style="background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 32px; max-width: 500px; width: 100%;">
 <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #fff;">Request Revision</h3>
-<p style="color: #888; margin-bottom: 24px;">Please describe what changes you'd like to see.</p>
+<p class="text-muted mb-24">Please describe what changes you'd like to see.</p>
 <textarea id="revisionComment" placeholder="Describe the changes needed..." style="width: 100%; min-height: 120px; padding: 16px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
 <div style="display: flex; gap: 12px; margin-top: 24px;">
 <button onclick="this.closest('div[style*=fixed]').remove()" style="flex: 1; padding: 14px; background: transparent; border: 1px solid #333; color: #fff; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit;">Cancel</button>

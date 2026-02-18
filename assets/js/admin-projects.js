@@ -30,7 +30,7 @@ function loadAdminProjectsPanel() {
 <div style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
 <button class="btn-admin primary" onclick="showAddProjectModal()">+ New Project</button>
 </div>
-        ${projects.length === 0 ? '<div class="form-section" style="text-align: center; padding: 60px;"><p style="color: rgba(255,255,255,0.5);">No projects yet. Create your first project!</p></div>' : projects.map(project => {
+        ${projects.length === 0 ? '<div class="form-section" style="text-align: center; padding: 60px;"><p class="text-dim">No projects yet. Create your first project!</p></div>' : projects.map(project => {
             const client = crmData.clients?.find(c => c.id === project.clientId) || clients.find(c => c.id === project.clientId) || { name: 'Unknown' };
             const stageIdx = projectStages.indexOf(project.stage || 'Discovery');
             const progress = Math.round(((stageIdx + 1) / projectStages.length) * 100);
@@ -66,8 +66,8 @@ function loadAdminProjectsPanel() {
 <div class="project-stages">
                         ${projectStages.map((stage, i) => `<div class="project-stage ${i <= stageIdx ? (i < stageIdx ? 'completed' : 'active') : ''}">${stage}</div>`).join('')}
 </div>
-<div style="margin-bottom: 16px;">
-<div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+<div class="mb-16">
+<div class="flex-between mb-8">
 <span style="font-size: 13px; color: rgba(255,255,255,0.5);">Progress</span>
 <span style="font-size: 13px; font-weight: 600;">${progress}%</span>
 </div>
@@ -77,7 +77,7 @@ function loadAdminProjectsPanel() {
                     <!-- Payment Progress -->
                     ${project.paymentPlan && project.paymentPlan !== 'full' ? `
 <div style="margin-bottom: 16px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
-<div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+<div class="flex-between mb-8">
 <span style="font-size: 12px; opacity: 0.7;">💳 Payment Progress</span>
 <span style="font-size: 12px;">${project.paidInstallments || 0}/${paymentPlans[project.paymentPlan]?.installments || 3} paid</span>
 </div>
@@ -89,7 +89,7 @@ function loadAdminProjectsPanel() {
 </div>
                     ` : ''}
 
-<div style="display: flex; gap: 12px; flex-wrap: wrap;">
+<div class="flex-gap-12 flex-wrap">
 <button class="btn-admin secondary" onclick="editProject(${project.id})">Edit</button>
 <button class="btn-admin secondary" onclick="viewProjectDetails(${project.id})">📊 Details</button>
 <button class="btn-admin primary" onclick="advanceProject(${project.id})">Advance Stage →</button>
@@ -111,7 +111,7 @@ function showAddProjectModal() {
     modal.className = 'modal-overlay active';
     modal.id = 'projectModal';
     modal.innerHTML = `
-<div class="modal" style="max-width: 700px;">
+<div class="modal max-w-700">
 <div class="modal-header"><h3 class="modal-title">New Project</h3><button class="modal-close" onclick="document.getElementById('projectModal').remove()">×</button></div>
 <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
 <div class="form-row">
@@ -129,7 +129,7 @@ function showAddProjectModal() {
 </div>
 
                 <!-- Package Selection -->
-<div class="form-section" style="margin-top: 16px;">
+<div class="form-section mt-16">
 <div class="form-section-title">📦 Select Package</div>
 <div class="form-group">
 <label class="form-label">Service Package</label>
@@ -144,12 +144,12 @@ function showAddProjectModal() {
 </select>
 </div>
 <div id="packageInfo" style="display: none; padding: 12px; background: rgba(42, 157, 143, 0.1); border-radius: 8px; margin-bottom: 16px;">
-<div style="display: flex; justify-content: space-between; align-items: center;">
+<div class="flex-between">
 <div>
 <strong id="selectedPackageName"></strong>
 <p id="selectedPackageDesc" style="font-size: 13px; opacity: 0.7; margin-top: 4px;"></p>
 </div>
-<div style="text-align: right;">
+<div class="text-right">
 <div style="font-size: 24px; font-weight: 600; color: #2a9d8f;">$<span id="selectedPackagePrice">0</span></div>
 <div style="font-size: 12px; opacity: 0.7;" id="selectedPackageTurnaround"></div>
 </div>
@@ -158,15 +158,15 @@ function showAddProjectModal() {
 </div>
 
                 <!-- Individual Services (shown when custom selected) -->
-<div id="individualServicesSection" style="display: none;" class="form-section">
+<div id="individualServicesSection" class="form-section hidden">
 <div class="form-section-title">🛠️ Individual Services</div>
 <p style="font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 16px;">Select individual services to add to this project:</p>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
                         ${individualServices.map(service => `
 <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
 <input type="checkbox" class="service-checkbox" data-id="${service.id}" data-price="${service.price}" data-name="${service.name}" onchange="updateProjectPrice()">
-<div style="flex: 1;">
-<div style="font-size: 14px;">${service.name}</div>
+<div class="flex-1">
+<div class="fs-14">${service.name}</div>
 <div style="font-size: 12px; opacity: 0.7;">${service.category}</div>
 </div>
 <span style="font-weight: 600; color: #2a9d8f;">$${service.price}</span>
@@ -176,18 +176,18 @@ function showAddProjectModal() {
 </div>
 
                 <!-- Custom Amount Override -->
-<div class="form-group" style="margin-top: 16px;">
+<div class="form-group mt-16">
 <label class="form-label">Custom Price Override (optional)</label>
 <input type="number" id="projectCustomPrice" class="form-input" placeholder="Leave blank to use package/service price" onchange="updateProjectPrice()">
 </div>
 
                 <!-- Payment Plan Selection -->
-<div class="form-section" style="margin-top: 16px;">
+<div class="form-section mt-16">
 <div class="form-section-title">💳 Payment Plan</div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
                         ${Object.entries(paymentPlans).map(([key, plan]) => `
 <label style="display: block; padding: 16px; background: rgba(255,255,255,0.05); border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;" id="plan-${key}" onclick="selectPaymentPlan('${key}')">
-<input type="radio" name="paymentPlan" value="${key}" style="display: none;" ${key === 'standard' ? 'checked' : ''}>
+<input type="radio" name="paymentPlan" value="${key}" class="hidden" ${key === 'standard' ? 'checked' : ''}>
 <div style="font-weight: 600; margin-bottom: 4px;">${plan.name}</div>
                                 ${plan.discount > 0 ? `<div style="font-size: 12px; color: #2a9d8f;">Save ${plan.discount}%</div>` : ''}
 <div style="font-size: 12px; opacity: 0.7; margin-top: 8px;">${plan.schedule.join('% → ')}%</div>
@@ -199,19 +199,19 @@ function showAddProjectModal() {
 
                 <!-- Total Summary -->
 <div style="margin-top: 24px; padding: 20px; background: linear-gradient(135deg, rgba(230, 57, 70, 0.1), rgba(29, 53, 87, 0.1)); border-radius: 12px; border: 1px solid rgba(230, 57, 70, 0.3);">
-<div style="display: flex; justify-content: space-between; align-items: center;">
+<div class="flex-between">
 <div>
 <div style="font-size: 14px; opacity: 0.7;">Project Total</div>
 <div style="font-size: 11px; opacity: 0.5;" id="paymentBreakdown">50% deposit → 25% on approval → 25% before download</div>
 </div>
-<div style="text-align: right;">
+<div class="text-right">
 <div style="font-size: 32px; font-weight: 700; color: var(--red);">$<span id="projectTotalAmount">0</span></div>
 <div style="font-size: 12px; opacity: 0.7;" id="discountNote"></div>
 </div>
 </div>
 </div>
 
-<div class="form-row" style="margin-top: 16px;">
+<div class="form-row mt-16">
 <div class="form-group">
 <label class="form-label">Start Date</label>
 <input type="date" id="projectStart" class="form-input" value="${new Date().toISOString().split('T')[0]}">
@@ -483,12 +483,12 @@ function viewProjectDetails(projectId) {
     modal.innerHTML = `
 <div class="modal" style="max-width: 800px;">
 <div class="modal-header" style="background: var(--red);">
-<h3 class="modal-title" style="color: #fff;">📊 ${project.name}</h3>
-<button class="modal-close" onclick="document.getElementById('projectDetailsModal').remove()" style="color: #fff;">×</button>
+<h3 class="modal-title text-white">📊 ${project.name}</h3>
+<button class="modal-close" onclick="document.getElementById('projectDetailsModal').remove()" class="text-white">×</button>
 </div>
 <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                 <!-- Overview Cards -->
-<div class="stats-grid" style="margin-bottom: 24px;">
+<div class="stats-grid mb-24">
 <div class="stat-card">
 <div class="stat-label">Client</div>
 <div class="stat-value" style="font-size: 18px;">${client.name}</div>
@@ -529,7 +529,7 @@ function viewProjectDetails(projectId) {
                 <!-- Payment Progress -->
 <div class="form-section">
 <div class="form-section-title">💳 Payment Schedule (${plan.name})</div>
-<div style="display: flex; gap: 12px; flex-wrap: wrap;">
+<div class="flex-gap-12 flex-wrap">
                         ${plan.schedule.map((pct, i) => {
                             const isPaid = i < (project.paidInstallments || 0);
                             const amount = Math.round((project.totalAmount || 0) * pct / 100);
@@ -546,7 +546,7 @@ function viewProjectDetails(projectId) {
                         }).join('')}
 </div>
                     ${project.paidInstallments < plan.schedule.length ? `
-<button class="btn-admin primary" style="margin-top: 16px;" onclick="recordProjectPayment(${project.id})">
+<button class="btn-admin primary mt-16" onclick="recordProjectPayment(${project.id})">
                             💳 Record Next Payment ($${Math.round((project.totalAmount || 0) * plan.schedule[project.paidInstallments || 0] / 100).toLocaleString()})
 </button>
                     ` : '<p style="color: #2a9d8f; margin-top: 16px;">✓ All payments received!</p>'}
@@ -556,7 +556,7 @@ function viewProjectDetails(projectId) {
                 ${project.services && project.services.length > 0 ? `
 <div class="form-section">
 <div class="form-section-title">🛠️ Services Included</div>
-<div style="display: flex; flex-wrap: wrap; gap: 8px;">
+<div class="flex-wrap">
                         ${project.services.map(s => `<span class="tag">${s.name} - $${s.price}</span>`).join('')}
 </div>
 </div>
@@ -1025,13 +1025,13 @@ function loadAdminProofsPanel() {
         <!-- Storage Indicator -->
 <div style="background: #252525; border-radius: 12px; padding: 12px 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
 <div style="display: flex; align-items: center; gap: 16px;">
-<span style="color: #888; font-size: 13px;">💾 Storage:</span>
+<span class="text-muted-sm">💾 Storage:</span>
 <span id="storageUsage" style="font-weight: 600; font-size: 13px;">${getStorageUsage().used} / ~5 MB</span>
 <div style="width: 100px; height: 6px; background: #333; border-radius: 3px; overflow: hidden;">
 <div style="width: ${Math.min((getStorageUsage().usedBytes / 5000000) * 100, 100)}%; height: 100%; background: ${(getStorageUsage().usedBytes / 5000000) > 0.8 ? '#ef4444' : '#10b981'}; border-radius: 3px;"></div>
 </div>
 </div>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
 <button onclick="showStorageManager()" style="padding: 6px 12px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-size: 12px;">
                     🗑️ Manage Storage
 </button>
@@ -1040,7 +1040,7 @@ function loadAdminProofsPanel() {
 
         <!-- Actions & Filters -->
 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
-<div style="display: flex; gap: 12px; flex-wrap: wrap;">
+<div class="flex-gap-12 flex-wrap">
 <select onchange="proofFilterCategory = this.value; loadAdminProofsPanel();" style="padding: 10px 16px; border: 1px solid #333; border-radius: 8px; background: #1a1a1a; color: #fff;">
 <option value="all" ${proofFilterCategory === 'all' ? 'selected' : ''}>All Categories</option>
                     ${Object.entries(PROOF_CATEGORIES).map(([key, cat]) => `<option value="${key}" ${proofFilterCategory === key ? 'selected' : ''}>${cat.icon} ${cat.name}</option>`).join('')}
@@ -1062,7 +1062,7 @@ function loadAdminProofsPanel() {
 <div style="background: #1a1a1a; border-radius: 16px; padding: 60px; text-align: center;">
 <div style="font-size: 64px; margin-bottom: 16px;">📋</div>
 <h3 style="font-size: 20px; margin-bottom: 8px;">No Proofs Found</h3>
-<p style="color: #888; margin-bottom: 24px;">Create your first proof to get started</p>
+<p class="text-muted mb-24">Create your first proof to get started</p>
 <button class="btn-cta" onclick="showCreateProofModal()">+ Create Proof</button>
 </div>
         ` : `
@@ -1189,14 +1189,14 @@ function showCreateProofModal() {
                 <!-- Header -->
 <div style="padding: 24px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #1a1a1a; z-index: 10;">
 <div>
-<h2 style="font-size: 24px; font-weight: 700;">Create New Proof</h2>
-<p style="color: #888; font-size: 14px;">Select proof type, upload files, and send to client</p>
+<h2 class="fs-24 fw-700">Create New Proof</h2>
+<p class="text-muted fs-14">Select proof type, upload files, and send to client</p>
 </div>
 <button onclick="document.getElementById('createProofModal').remove()" style="background: none; border: none; color: #888; font-size: 28px; cursor: pointer; line-height: 1;">&times;</button>
 </div>
 
                 <!-- Body -->
-<div style="padding: 24px;">
+<div class="p-24">
                     <!-- Step 1: Select Client & Project -->
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
 <div>
@@ -1216,7 +1216,7 @@ function showCreateProofModal() {
 </div>
 
                     <!-- Step 2: Select Proof Category -->
-<div style="margin-bottom: 24px;">
+<div class="mb-24">
 <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 12px;">Proof Category *</label>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px;">
                             ${Object.entries(PROOF_CATEGORIES).map(([key, cat]) => `
@@ -1250,7 +1250,7 @@ function showCreateProofModal() {
 </div>
 
                     <!-- Step 5: Upload Area (File Upload) -->
-<div id="proofUploadSection" style="margin-bottom: 24px;">
+<div id="proofUploadSection" class="mb-24">
 <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 12px;">Upload Proof File *</label>
 <div id="proofUploadZone" onclick="document.getElementById('proofFileInput').click()"
                             style="border: 2px dashed #444; border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; transition: all 0.2s;"
@@ -1259,17 +1259,17 @@ function showCreateProofModal() {
                             ondrop="handleProofFileDrop(event)">
 <div style="font-size: 48px; margin-bottom: 12px;">📁</div>
 <p style="color: #fff; font-size: 16px; margin-bottom: 8px;">Drop your file here</p>
-<p style="color: #888; font-size: 14px;">Images: PNG, JPG, PDF • Videos: MP4, MOV</p>
+<p class="text-muted fs-14">Images: PNG, JPG, PDF • Videos: MP4, MOV</p>
 </div>
-<input type="file" id="proofFileInput" accept="image/*,video/*,.pdf" style="display: none;" onchange="handleProofFileSelect(this)">
+<input type="file" id="proofFileInput" accept="image/*,video/*,.pdf" class="hidden" onchange="handleProofFileSelect(this)">
 
                         <!-- Preview Area -->
 <div id="proofPreviewArea" style="display: none; margin-top: 16px; background: #252525; border-radius: 12px; padding: 16px;">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-<span style="font-weight: 600;">Preview</span>
+<span class="fw-600">Preview</span>
 <button onclick="clearProofUpload()" style="background: #ef4444; border: none; color: #fff; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">Remove</button>
 </div>
-<div id="proofPreviewContent" style="text-align: center;"></div>
+<div id="proofPreviewContent" class="text-center"></div>
 </div>
 </div>
 
@@ -1282,7 +1282,7 @@ function showCreateProofModal() {
                                 oninput="validateProofUrl(this.value)">
 <div id="proofUrlPreview" style="display: none; margin-top: 12px;">
 <div style="background: #1a1a1a; border-radius: 8px; padding: 16px; text-align: center;">
-<div style="font-size: 32px; margin-bottom: 8px;">🌐</div>
+<div class="fs-32 mb-8">🌐</div>
 <div id="proofUrlDisplay" style="color: #3b82f6; word-break: break-all;"></div>
 <button onclick="window.open(document.getElementById('proofUrl').value, '_blank')"
                                         style="margin-top: 12px; padding: 8px 16px; background: #3b82f6; border: none; color: #fff; border-radius: 6px; cursor: pointer;">
@@ -1296,13 +1296,13 @@ function showCreateProofModal() {
 </div>
 
                         <!-- Optional Screenshot Upload -->
-<div style="margin-top: 16px;">
+<div class="mt-16">
 <label style="display: block; font-size: 13px; color: #888; margin-bottom: 8px;">Optional: Upload a screenshot for preview thumbnail</label>
 <div onclick="document.getElementById('proofScreenshotInput').click()"
                                 style="border: 1px dashed #444; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer;">
-<span style="color: #888; font-size: 13px;">📷 Click to add screenshot</span>
+<span class="text-muted-sm">📷 Click to add screenshot</span>
 </div>
-<input type="file" id="proofScreenshotInput" accept="image/*" style="display: none;" onchange="handleScreenshotUpload(this)">
+<input type="file" id="proofScreenshotInput" accept="image/*" class="hidden" onchange="handleScreenshotUpload(this)">
 <div id="screenshotPreview" style="display: none; margin-top: 8px; text-align: center;">
 <img alt="Screenshot preview" loading="lazy" id="screenshotImg" style="max-width: 100%; max-height: 150px; border-radius: 8px;">
 </div>
@@ -1310,7 +1310,7 @@ function showCreateProofModal() {
 </div>
 
                     <!-- Step 6: Notes -->
-<div style="margin-bottom: 24px;">
+<div class="mb-24">
 <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px;">Notes for Client</label>
 <textarea id="proofNotes" rows="3" placeholder="Add any notes or instructions for the client..."
                             style="width: 100%; padding: 12px; border: 1px solid #333; border-radius: 8px; background: #252525; color: #fff; font-size: 14px; resize: vertical;"></textarea>
@@ -1321,8 +1321,8 @@ function showCreateProofModal() {
 <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
 <input type="checkbox" id="notifyClient" checked style="width: 20px; height: 20px; accent-color: #e11d48;">
 <div>
-<div style="font-weight: 600;">Notify Client</div>
-<div style="font-size: 13px; color: #888;">Send email notification when proof is ready for review</div>
+<div class="fw-600">Notify Client</div>
+<div class="text-muted-sm">Send email notification when proof is ready for review</div>
 </div>
 </label>
 </div>
@@ -1369,7 +1369,7 @@ function selectProofCategory(categoryKey) {
 <div onclick="selectProofType('${type.id}')" id="type_${type.id}"
             style="background: #333; border: 2px solid #444; border-radius: 8px; padding: 12px; cursor: pointer; transition: all 0.2s;">
 <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">${type.name}</div>
-<div style="font-size: 12px; color: #888;">${type.size}</div>
+<div class="text-muted fs-12">${type.size}</div>
             ${type.isVideo ? '<div style="font-size: 11px; color: #e11d48; margin-top: 4px;">🎬 Video</div>' : ''}
             ${type.isLink ? '<div style="font-size: 11px; color: #3b82f6; margin-top: 4px;">🔗 Link</div>' : ''}
 </div>
@@ -1519,7 +1519,7 @@ function processProofFile(file) {
         previewContent.innerHTML = `
 <div style="background: #333; padding: 40px; border-radius: 8px;">
 <div style="font-size: 48px; margin-bottom: 12px;">📄</div>
-<div style="font-weight: 600;">${file.name}</div>
+<div class="fw-600">${file.name}</div>
 <div style="color: #888; font-size: 13px; margin-top: 4px;">PDF Document (${fileSizeMB.toFixed(1)}MB)</div>
 </div>
 <div style="margin-top: 8px; color: #f59e0b; font-size: 11px;">⚠️ PDF stored as reference only</div>
@@ -1819,15 +1819,15 @@ function requestRevisionModal(id) {
 <h2 style="font-size: 20px; margin-bottom: 8px;">🔄 Request Revision</h2>
 <p style="color: #888; font-size: 14px; margin-bottom: 24px;">Provide feedback for "${proof.name}"</p>
 
-<div style="margin-bottom: 20px;">
+<div class="mb-20">
 <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px;">Revision Feedback *</label>
 <textarea id="revisionFeedback" rows="4" placeholder="Describe what changes are needed..."
                         style="width: 100%; padding: 12px; border: 1px solid #333; border-radius: 8px; background: #252525; color: #fff; font-size: 14px; resize: vertical;"></textarea>
 </div>
 
-<div style="margin-bottom: 24px;">
+<div class="mb-24">
 <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 12px;">Quick Feedback Options</label>
-<div style="display: flex; flex-wrap: wrap; gap: 8px;">
+<div class="flex-wrap">
                         ${['Color adjustment needed', 'Font change required', 'Layout revision', 'Size/dimension issue', 'Text/copy change', 'Image quality issue'].map(opt => `
 <button onclick="document.getElementById('revisionFeedback').value += '${opt}. '"
                                 style="padding: 8px 12px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-size: 12px;">
@@ -1837,7 +1837,7 @@ function requestRevisionModal(id) {
 </div>
 </div>
 
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <button onclick="document.getElementById('revisionModal').remove()"
                         style="flex: 1; padding: 12px; background: #333; border: none; color: #fff; border-radius: 8px; cursor: pointer;">
                         Cancel
@@ -1893,14 +1893,14 @@ async function submitProofRevision(id) {
 <div style="background: linear-gradient(135deg, #f59e0b, #ef4444); padding: 24px; text-align: center;">
 <h2 style="margin: 0; font-size: 20px; color: #fff;">🔄 Revision Requested</h2>
 </div>
-<div style="padding: 32px;">
-<p style="color: #ccc; font-size: 16px;">Hey ${designer.name || 'Designer'},</p>
-<p style="color: #ccc; font-size: 16px;">A revision has been requested for <strong>"${proof.name}"</strong>.</p>
+<div class="p-32">
+<p class="text-light">Hey ${designer.name || 'Designer'},</p>
+<p class="text-light">A revision has been requested for <strong>"${proof.name}"</strong>.</p>
 <div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
 <p style="color: #f59e0b; font-weight: 600; margin-bottom: 8px;">Feedback:</p>
 <p style="color: #fff; font-size: 15px; line-height: 1.6;">${feedback}</p>
 </div>
-<p style="color: #888; font-size: 13px;">This is revision #${proof.revisionCount}. Log into the designer portal to upload the updated proof.</p>
+<p class="text-muted-sm">This is revision #${proof.revisionCount}. Log into the designer portal to upload the updated proof.</p>
 </div>
 </div>`,
                         text: `Revision requested for "${proof.name}": ${feedback}. This is revision #${proof.revisionCount}.`
@@ -1940,11 +1940,11 @@ function viewProofDetails(id) {
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
 <div style="background: #1a1a1a; border-radius: 20px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto;">
 <div style="padding: 24px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center;">
-<h2 style="font-size: 20px;">Proof Details</h2>
+<h2 class="fs-20">Proof Details</h2>
 <button onclick="document.getElementById('proofDetailsModal').remove()" style="background: none; border: none; color: #888; font-size: 28px; cursor: pointer;">&times;</button>
 </div>
 
-<div style="padding: 24px;">
+<div class="p-24">
                     <!-- Preview -->
 <div style="background: #111; border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: center;">
                         ${proof.isVideo && proof.videoUrl ? `
@@ -1959,27 +1959,27 @@ function viewProofDetails(id) {
                     <!-- Info Grid -->
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
 <div style="background: #252525; padding: 16px; border-radius: 8px;">
-<div style="font-size: 12px; color: #888; margin-bottom: 4px;">Proof Name</div>
-<div style="font-weight: 600;">${proof.name}</div>
+<div class="text-muted fs-12 mb-4">Proof Name</div>
+<div class="fw-600">${proof.name}</div>
 </div>
 <div style="background: #252525; padding: 16px; border-radius: 8px;">
-<div style="font-size: 12px; color: #888; margin-bottom: 4px;">Client</div>
-<div style="font-weight: 600;">${client.name}</div>
+<div class="text-muted fs-12 mb-4">Client</div>
+<div class="fw-600">${client.name}</div>
 </div>
 <div style="background: #252525; padding: 16px; border-radius: 8px;">
-<div style="font-size: 12px; color: #888; margin-bottom: 4px;">Type</div>
-<div style="font-weight: 600;">${proofType.name}</div>
+<div class="text-muted fs-12 mb-4">Type</div>
+<div class="fw-600">${proofType.name}</div>
 </div>
 <div style="background: #252525; padding: 16px; border-radius: 8px;">
-<div style="font-size: 12px; color: #888; margin-bottom: 4px;">Size</div>
-<div style="font-weight: 600;">${proofType.size || proof.proofSize || 'Custom'}</div>
+<div class="text-muted fs-12 mb-4">Size</div>
+<div class="fw-600">${proofType.size || proof.proofSize || 'Custom'}</div>
 </div>
 <div style="background: #252525; padding: 16px; border-radius: 8px;">
-<div style="font-size: 12px; color: #888; margin-bottom: 4px;">Version</div>
-<div style="font-weight: 600;">v${proof.version || 1}</div>
+<div class="text-muted fs-12 mb-4">Version</div>
+<div class="fw-600">v${proof.version || 1}</div>
 </div>
 <div style="background: #252525; padding: 16px; border-radius: 8px;">
-<div style="font-size: 12px; color: #888; margin-bottom: 4px;">Status</div>
+<div class="text-muted fs-12 mb-4">Status</div>
 <div style="font-weight: 600; text-transform: capitalize;">${proof.status}</div>
 </div>
 </div>
@@ -1996,7 +1996,7 @@ function viewProofDetails(id) {
 <div style="font-size: 12px; color: #888; margin-bottom: 12px;">Feedback History</div>
                             ${proof.comments.map(c => `
 <div style="border-left: 3px solid #e11d48; padding-left: 12px; margin-bottom: 12px;">
-<div style="font-size: 12px; color: #888;">${c.author} • ${new Date(c.createdAt).toLocaleString()}</div>
+<div class="text-muted fs-12">${c.author} • ${new Date(c.createdAt).toLocaleString()}</div>
 <div style="margin-top: 4px;">${c.text}</div>
 </div>
                             `).join('')}
@@ -2037,9 +2037,9 @@ function openProofPreview(proofId) {
 <div style="padding: 16px 20px; background: #1a1a1a; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center;">
 <div>
 <h2 style="font-size: 18px; margin-bottom: 4px;">${proof.name}</h2>
-<div style="font-size: 13px; color: #888;">${proofType.name} • ${client.name}</div>
+<div class="text-muted-sm">${proofType.name} • ${client.name}</div>
 </div>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
                         ${proof.previewUrl ? `<button onclick="window.open('${proof.previewUrl}', '_blank')" style="padding: 8px 16px; background: #3b82f6; border: none; color: #fff; border-radius: 6px; cursor: pointer;">🔗 Open in New Tab</button>` : ''}
 <button onclick="document.getElementById('proofPreviewModal').remove()" style="padding: 8px 16px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer;">✕ Close</button>
 </div>
@@ -2062,7 +2062,7 @@ function openProofPreview(proofId) {
 <div style="width: 380px; display: flex; flex-direction: column; background: #1a1a1a;">
 <div style="padding: 20px; border-bottom: 1px solid #333;">
 <h3 style="font-size: 16px; margin-bottom: 8px;">💬 Comments & Feedback</h3>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
 <span class="order-status ${proof.status}" style="text-transform: capitalize;">${proof.status}</span>
 <span style="color: #888; font-size: 12px;">v${proof.version || 1}</span>
 </div>
@@ -2072,13 +2072,13 @@ function openProofPreview(proofId) {
 <div id="proofCommentsList" style="flex: 1; overflow-y: auto; padding: 16px;">
                     ${(proof.comments || []).length === 0 ? `
 <div style="text-align: center; color: #666; padding: 40px 20px;">
-<div style="font-size: 32px; margin-bottom: 8px;">💬</div>
+<div class="fs-32 mb-8">💬</div>
 <div>No comments yet</div>
 <div style="font-size: 12px; margin-top: 4px;">Be the first to leave feedback</div>
 </div>
                     ` : (proof.comments || []).map(c => `
 <div style="background: #252525; border-radius: 12px; padding: 12px; margin-bottom: 12px;">
-<div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+<div class="flex-between mb-8">
 <span style="font-weight: 600; font-size: 13px;">${c.author}</span>
 <span style="font-size: 11px; color: #888;">${new Date(c.createdAt).toLocaleString()}</span>
 </div>
@@ -2091,7 +2091,7 @@ function openProofPreview(proofId) {
 <div style="padding: 16px; border-top: 1px solid #333; background: #252525;">
 <textarea id="newProofComment" rows="3" placeholder="Leave your feedback or request changes..."
                         style="width: 100%; padding: 12px; border: 1px solid #444; border-radius: 8px; background: #1a1a1a; color: #fff; font-size: 14px; resize: none; margin-bottom: 12px;"></textarea>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
 <button onclick="addProofComment(${proof.id}, 'revision')" style="flex: 1; padding: 10px; background: #ef4444; border: none; color: #fff; border-radius: 8px; cursor: pointer; font-weight: 600;">
                             🔄 Request Changes
 </button>
@@ -2184,8 +2184,8 @@ function showStorageManager() {
     modal.innerHTML = `
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
 <div style="background: #1a1a1a; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-<h2 style="font-size: 20px;">💾 Storage Manager</h2>
+<div class="flex-between mb-24">
+<h2 class="fs-20">💾 Storage Manager</h2>
 <button onclick="document.getElementById('storageManagerModal').remove()" style="background: none; border: none; color: #888; font-size: 24px; cursor: pointer;">&times;</button>
 </div>
 
@@ -2193,7 +2193,7 @@ function showStorageManager() {
 <div style="background: #252525; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
 <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
 <span>Used Storage</span>
-<span style="font-weight: 600;">${storage.used} / ~5 MB</span>
+<span class="fw-600">${storage.used} / ~5 MB</span>
 </div>
 <div style="width: 100%; height: 12px; background: #333; border-radius: 6px; overflow: hidden;">
 <div style="width: ${Math.min((storage.usedBytes / 5000000) * 100, 100)}%; height: 100%; background: ${(storage.usedBytes / 5000000) > 0.8 ? '#ef4444' : '#10b981'}; border-radius: 6px;"></div>
@@ -2203,17 +2203,17 @@ function showStorageManager() {
                 <!-- Stats -->
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
 <div style="background: #252525; padding: 16px; border-radius: 8px; text-align: center;">
-<div style="font-size: 24px; font-weight: 700;">${proofs.length}</div>
-<div style="font-size: 12px; color: #888;">Total Proofs</div>
+<div class="fs-24 fw-700">${proofs.length}</div>
+<div class="text-muted fs-12">Total Proofs</div>
 </div>
 <div style="background: #252525; padding: 16px; border-radius: 8px; text-align: center;">
-<div style="font-size: 24px; font-weight: 700;">${proofsWithImages.length}</div>
-<div style="font-size: 12px; color: #888;">With Images</div>
+<div class="fs-24 fw-700">${proofsWithImages.length}</div>
+<div class="text-muted fs-12">With Images</div>
 </div>
 </div>
 
                 <!-- Cleanup Options -->
-<div style="display: flex; flex-direction: column; gap: 12px;">
+<div class="flex-col-gap-12">
 <button onclick="archiveOldProofs()" style="padding: 14px; background: #f59e0b; border: none; color: #fff; border-radius: 8px; cursor: pointer; font-weight: 600;">
                         📦 Archive Old Approved Proofs (30+ days)
 <div style="font-size: 11px; font-weight: normal; margin-top: 4px;">Keeps metadata, removes images</div>
@@ -2318,29 +2318,29 @@ function loadAdminDeliveryPanel() {
 <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 32px;">
 <div style="background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
 <div style="font-size: 28px; font-weight: 700; color: #f59e0b;">${pendingProofs.length}</div>
-<div style="color: #888; font-size: 13px;">Proofs Pending</div>
+<div class="text-muted-sm">Proofs Pending</div>
 </div>
 <div style="background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
 <div style="font-size: 28px; font-weight: 700; color: #ef4444;">${revisionProofs.length}</div>
-<div style="color: #888; font-size: 13px;">In Revision</div>
+<div class="text-muted-sm">In Revision</div>
 </div>
 <div style="background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
 <div style="font-size: 28px; font-weight: 700; color: #10b981;">${approvedProofs.length}</div>
-<div style="color: #888; font-size: 13px;">Approved</div>
+<div class="text-muted-sm">Approved</div>
 </div>
 <div style="background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
 <div style="font-size: 28px; font-weight: 700; color: #3b82f6;">${pendingDelivery.length}</div>
-<div style="color: #888; font-size: 13px;">Awaiting Delivery</div>
+<div class="text-muted-sm">Awaiting Delivery</div>
 </div>
 <div style="background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
 <div style="font-size: 28px; font-weight: 700; color: #8b5cf6;">${deliveredOrders.length}</div>
-<div style="color: #888; font-size: 13px;">Delivered</div>
+<div class="text-muted-sm">Delivered</div>
 </div>
 </div>
 
         <!-- Pending Proofs from Designers -->
         ${pendingProofs.length > 0 ? `
-<div class="form-section" style="margin-bottom: 24px;">
+<div class="form-section mb-24">
 <div class="form-section-title">🔔 Proofs Awaiting Your Review</div>
             ${pendingProofs.map(p => {
                 const project = orders.find(o => o.id === p.projectId);
@@ -2348,11 +2348,11 @@ function loadAdminDeliveryPanel() {
                 return `
 <div style="background: #1a1a1a; padding: 16px 20px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #f59e0b;">
 <div>
-<div style="font-weight: 600;">${p.name || p.fileName || 'Proof'} ${p.version ? '(v' + p.version + ')' : ''}</div>
-<div style="color: #888; font-size: 13px;">${p.designerName || 'Designer'} • ${project?.projectName || ''} • ${client?.name || ''}</div>
+<div class="fw-600">${p.name || p.fileName || 'Proof'} ${p.version ? '(v' + p.version + ')' : ''}</div>
+<div class="text-muted-sm">${p.designerName || 'Designer'} • ${project?.projectName || ''} • ${client?.name || ''}</div>
 <div style="color: #666; font-size: 12px;">${p.uploadedAt ? new Date(p.uploadedAt).toLocaleString() : ''}</div>
 </div>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
 <button class="btn-admin small" onclick="viewProofDetails(${p.id})">👁 View</button>
 <button class="btn-admin small primary" onclick="approveProof(${p.id})">✅ Approve</button>
 <button class="btn-admin small" style="background: #ef444420; color: #ef4444;" onclick="requestRevisionModal(${p.id})">🔄 Revise</button>
@@ -2362,7 +2362,7 @@ function loadAdminDeliveryPanel() {
 </div>` : ''}
 
         <!-- Ready for Delivery -->
-<div class="form-section" style="margin-bottom: 24px;">
+<div class="form-section mb-24">
 <div class="form-section-title">📤 Ready for Delivery</div>
             ${pendingDelivery.length === 0 ? '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 24px;">No orders pending delivery</p>' : pendingDelivery.map(order => {
                 const client = clients.find(c => c.id === order.clientId) || { name: 'Unknown' };
@@ -2374,14 +2374,14 @@ function loadAdminDeliveryPanel() {
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
 <div>
 <div style="font-weight: 600; font-size: 16px;">${order.projectName || order.project}</div>
-<div style="color: #888; font-size: 13px;">${client.name} • ${orderProofs.length} proofs (${approvedCount} approved)</div>
+<div class="text-muted-sm">${client.name} • ${orderProofs.length} proofs (${approvedCount} approved)</div>
 </div>
 <div style="display: flex; gap: 8px; align-items: center;">
                             ${isPaid ? '<span style="background: #10b98120; color: #10b981; padding: 4px 10px; border-radius: 6px; font-size: 12px;">💰 Paid</span>' : '<span style="background: #f59e0b20; color: #f59e0b; padding: 4px 10px; border-radius: 6px; font-size: 12px;">⏳ Payment Pending</span>'}
 <span class="order-status in_progress" style="font-size: 12px;">In Progress</span>
 </div>
 </div>
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <button class="btn-admin primary" onclick="markDelivered(${order.id})">📦 Mark Delivered & Notify Client</button>
 <button class="btn-admin secondary" onclick="showAdminPanel('proofs')">✅ View Proofs</button>
 </div>
@@ -2398,12 +2398,12 @@ function loadAdminDeliveryPanel() {
                     const color = a.status === 'approved' ? '#10b981' : a.status === 'revision' ? '#ef4444' : a.status === 'delivered' ? '#8b5cf6' : a.status === 'pending_admin' ? '#f59e0b' : '#3b82f6';
                     return `
 <div style="display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
-<div style="font-size: 20px;">${icon}</div>
-<div style="flex: 1;">
+<div class="fs-20">${icon}</div>
+<div class="flex-1">
 <div style="font-weight: 500;">${a.name} ${a.version ? '(v' + a.version + ')' : ''}</div>
-<div style="color: #888; font-size: 13px;">${a.client}${a.designer ? ' • by ' + a.designer : ''}${a.project ? ' • ' + a.project : ''}</div>
+<div class="text-muted-sm">${a.client}${a.designer ? ' • by ' + a.designer : ''}${a.project ? ' • ' + a.project : ''}</div>
 </div>
-<div style="text-align: right;">
+<div class="text-right">
 <span style="color: ${color}; font-size: 12px; font-weight: 600;">${(a.status || '').replace('_', ' ')}</span>
 <div style="color: #666; font-size: 11px;">${a.date ? new Date(a.date).toLocaleDateString() : ''}</div>
 </div>
@@ -2413,17 +2413,17 @@ function loadAdminDeliveryPanel() {
 </div>
 
         <!-- Delivered History -->
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">✅ Delivered Projects</div>
             ${deliveredOrders.length === 0 ? '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 24px;">No deliveries yet</p>' : deliveredOrders.slice(0, 10).map(order => {
                 const client = clients.find(c => c.id === order.clientId) || { name: 'Unknown' };
                 return `
 <div style="background: #1a1a1a; padding: 16px 20px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #8b5cf6;">
 <div>
-<div style="font-weight: 600;">${order.projectName || order.project}</div>
-<div style="color: #888; font-size: 13px;">${client.name}</div>
+<div class="fw-600">${order.projectName || order.project}</div>
+<div class="text-muted-sm">${client.name}</div>
 </div>
-<div style="text-align: right;">
+<div class="text-right">
 <span style="color: #8b5cf6; font-size: 12px; font-weight: 600;">Delivered</span>
 <div style="color: #666; font-size: 11px;">${order.deliveredAt ? new Date(order.deliveredAt).toLocaleDateString() : ''}</div>
 </div>

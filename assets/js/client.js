@@ -15,10 +15,10 @@ function loadClientDashboard() {
     document.getElementById('clientPortal').style.display = 'block';
     document.getElementById('clientPortalContent').innerHTML = `
 <div style="max-width: 1200px; margin: 0 auto; padding: 24px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+<div class="flex-between mb-32">
 <div>
 <h2 style="font-size: 32px; font-weight: 700;">Welcome back, ${client.name}</h2>
-<p style="color: #888;">Manage your projects, invoices, and brand assets</p>
+<p class="text-muted">Manage your projects, invoices, and brand assets</p>
 </div>
 <button onclick="portalLogout()" style="padding: 10px 20px; background: #333; color: #fff; border: none; border-radius: 8px; cursor: pointer;">Sign Out</button>
 </div>
@@ -46,25 +46,25 @@ function loadClientDashboard() {
             <!-- Quick Actions -->
 <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 32px;">
 <button onclick="showClientNewOrder()" style="padding: 24px; background: linear-gradient(135deg, var(--red), #ff6b6b); color: #fff; border: none; border-radius: 12px; cursor: pointer; text-align: left;">
-<div style="font-size: 24px; margin-bottom: 8px;">➕</div>
-<div style="font-weight: 600;">New Order</div>
+<div class="fs-24 mb-8">➕</div>
+<div class="fw-600">New Order</div>
 </button>
 <button onclick="showClientInvoices()" style="padding: 24px; background: #111; border: 1px solid #333; color: #fff; border-radius: 12px; cursor: pointer; text-align: left;">
-<div style="font-size: 24px; margin-bottom: 8px;">📄</div>
-<div style="font-weight: 600;">Invoices ${unpaidInvoices.length > 0 ? '<span style="color: #ef4444;">(' + unpaidInvoices.length + ')</span>' : ''}</div>
+<div class="fs-24 mb-8">📄</div>
+<div class="fw-600">Invoices ${unpaidInvoices.length > 0 ? '<span style="color: #ef4444;">(' + unpaidInvoices.length + ')</span>' : ''}</div>
 </button>
 <button onclick="loadClientMessagesPanel()" style="padding: 24px; background: #111; border: 1px solid ${unreadMsgs.length > 0 ? '#f59e0b' : '#333'}; color: #fff; border-radius: 12px; cursor: pointer; text-align: left; position: relative;">
-<div style="font-size: 24px; margin-bottom: 8px;">💬</div>
-<div style="font-weight: 600;">Messages</div>
+<div class="fs-24 mb-8">💬</div>
+<div class="fw-600">Messages</div>
                     ${unreadMsgs.length > 0 ? '<div style="position: absolute; top: 12px; right: 12px; width: 22px; height: 22px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #000;">' + unreadMsgs.length + '</div>' : ''}
 </button>
 <button onclick="showClientPortal(client)" style="padding: 24px; background: #111; border: 1px solid #333; color: #fff; border-radius: 12px; cursor: pointer; text-align: left;">
-<div style="font-size: 24px; margin-bottom: 8px;">🎨</div>
-<div style="font-weight: 600;">Brand Portal</div>
+<div class="fs-24 mb-8">🎨</div>
+<div class="fw-600">Brand Portal</div>
 </button>
 <button onclick="openMeetingModal()" style="padding: 24px; background: #111; border: 1px solid #333; color: #fff; border-radius: 12px; cursor: pointer; text-align: left;">
-<div style="font-size: 24px; margin-bottom: 8px;">📅</div>
-<div style="font-weight: 600;">Book Meeting</div>
+<div class="fs-24 mb-8">📅</div>
+<div class="fw-600">Book Meeting</div>
 </button>
 </div>
 
@@ -85,14 +85,14 @@ function loadClientDashboard() {
 <h2 style="font-size: 20px; margin: 0; color: #fff;">Your Plan</h2>
 <p style="color: #888; font-size: 13px; margin-top: 4px;">Subscription Management</p>
 </div>
-<div style="text-align: right;">
+<div class="text-right">
 <div style="font-size: 28px; font-weight: 700; color: #e63946;">$${plan.price}</div>
 <div style="color: #888; font-size: 12px;">per month</div>
 </div>
 </div>
 <div style="background: #111; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-<span style="font-weight: 600; color: #fff;">${plan.name}</span>
+<span class="text-bold-white">${plan.name}</span>
 <span style="padding: 4px 12px; background: #10b981; color: #000; border-radius: 100px; font-size: 11px; font-weight: 600;">✓ Active</span>
 </div>
 <div style="font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6;">
@@ -120,7 +120,7 @@ function loadClientDashboard() {
 <div style="background: #111; border-radius: 16px; padding: 24px; margin-bottom: 24px;">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 <h2 style="font-size: 20px; margin: 0;">My Projects</h2>
-<span style="color: #888; font-size: 13px;">${activeOrders.length} active, ${myOrders.filter(o => o.status === 'delivered').length} completed</span>
+<span class="text-muted-sm">${activeOrders.length} active, ${myOrders.filter(o => o.status === 'delivered').length} completed</span>
 </div>
                 ${myOrders.length > 0 ? myOrders.slice().reverse().slice(0, 8).map(o => {
                     const daysElapsed = o.createdAt ? Math.floor((new Date() - new Date(o.createdAt)) / (1000*60*60*24)) : 0;
@@ -139,14 +139,14 @@ function loadClientDashboard() {
 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
 <div>
 <div style="font-weight: 700; font-size: 16px; margin-bottom: 4px;">${o.projectName}</div>
-<div style="color: #888; font-size: 13px;">${o.packageName || 'Custom'} • Created ${new Date(o.createdAt).toLocaleDateString()}</div>
+<div class="text-muted-sm">${o.packageName || 'Custom'} • Created ${new Date(o.createdAt).toLocaleDateString()}</div>
 </div>
 <span style="padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; background: ${(statusColors[o.status] || '#f59e0b')}20; color: ${statusColors[o.status] || '#f59e0b'};">${statusIcons[o.status] || '📥'} ${statusLabel}</span>
 </div>
                         <!-- Turnaround Progress -->
 <div style="margin-bottom: 12px;">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-<span style="font-size: 12px; color: #888;">Turnaround Progress</span>
+<span class="text-muted fs-12">Turnaround Progress</span>
 <span style="font-size: 12px; font-weight: 600; color: ${o.status === 'delivered' ? '#10b981' : isOverdue ? '#ef4444' : isNearDue ? '#f59e0b' : '#3b82f6'};">${o.status === 'delivered' ? 'Delivered!' : isOverdue ? 'Overdue (' + daysElapsed + ' days)' : 'Day ' + daysElapsed + ' of ' + turnaroundMin + '-' + turnaroundMax}</span>
 </div>
 <div style="height: 6px; background: #222; border-radius: 3px; overflow: hidden;">
@@ -156,7 +156,7 @@ function loadClientDashboard() {
                         <!-- Designer + Payment Row -->
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
 <div style="display: flex; gap: 16px; align-items: center;">
-                                ${designerName ? '<div style="display: flex; align-items: center; gap: 8px;"><div style="width: 28px; height: 28px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;">' + (designerName.charAt(0) || 'D').toUpperCase() + '</div><div><div style="font-size: 13px; font-weight: 500;">' + designerName + '</div><div style="font-size: 11px; color: #888;">Your Designer</div></div></div>' : '<div style="font-size: 13px; color: #666;">Awaiting designer assignment</div>'}
+                                ${designerName ? '<div class="flex-center-gap-8"><div style="width: 28px; height: 28px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;">' + (designerName.charAt(0) || 'D').toUpperCase() + '</div><div><div style="font-size: 13px; font-weight: 500;">' + designerName + '</div><div style="font-size: 11px; color: #888;">Your Designer</div></div></div>' : '<div class="text-muted-sm">Awaiting designer assignment</div>'}
                                 ${o.turnaround ? '<div style="font-size: 12px; color: #888; padding: 4px 10px; background: #1a1a1a; border-radius: 6px;">⏱️ ' + o.turnaround + '</div>' : ''}
 </div>
 <div style="display: flex; gap: 8px; align-items: center;">
@@ -171,7 +171,7 @@ function loadClientDashboard() {
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
                 <!-- Invoices -->
 <div style="background: #111; border-radius: 16px; padding: 24px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+<div class="admin-row-between">
 <h2 style="font-size: 18px; margin: 0;">Invoices</h2>
 <button onclick="showClientInvoices()" style="font-size: 13px; color: #dc2626; background: none; border: none; cursor: pointer;">View All →</button>
 </div>
@@ -191,7 +191,7 @@ function loadClientDashboard() {
 
                 <!-- Messages Preview -->
 <div style="background: #111; border-radius: 16px; padding: 24px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+<div class="admin-row-between">
 <h2 style="font-size: 18px; margin: 0;">Messages ${unreadMsgs.length > 0 ? '<span style="color: #f59e0b; font-size: 14px;">(' + unreadMsgs.length + ' new)</span>' : ''}</h2>
 <button onclick="loadClientMessagesPanel()" style="font-size: 13px; color: #dc2626; background: none; border: none; cursor: pointer;">Open Chat →</button>
 </div>
@@ -203,7 +203,7 @@ function loadClientDashboard() {
 </div>
 <p style="margin: 0; font-size: 13px; color: #bbb; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${m.message}</p>
 </div>
-                    `).join('') : '<div style="text-align: center; padding: 24px; color: #666;"><div style="font-size: 32px; margin-bottom: 8px;">💬</div><p style="font-size: 13px;">No messages yet</p><button onclick="loadClientMessagesPanel()" style="margin-top: 8px; padding: 8px 20px; background: #dc2626; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 13px;">Send a Message</button></div>'}
+                    `).join('') : '<div style="text-align: center; padding: 24px; color: #666;"><div class="fs-32 mb-8">💬</div><p style="font-size: 13px;">No messages yet</p><button onclick="loadClientMessagesPanel()" style="margin-top: 8px; padding: 8px 20px; background: #dc2626; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 13px;">Send a Message</button></div>'}
 </div>
 </div>
 
@@ -240,7 +240,7 @@ function showClientNewOrder() {
 <div style="font-weight: 600; font-size: 16px; margin-bottom: 8px;">${pkg.name}</div>
 <div style="font-size: 24px; font-weight: 700; color: var(--red); margin-bottom: 8px;">${pkg.price > 0 ? '$' + pkg.price.toLocaleString() : 'Custom'}</div>
 <div style="font-size: 13px; color: #888; margin-bottom: 4px;">⏱️ ${pkg.turnaround}</div>
-<div style="font-size: 13px; color: #666;">${pkg.desc}</div>
+<div class="text-muted-sm">${pkg.desc}</div>
 </div>
                 `).join('')}
 </div>
@@ -249,11 +249,11 @@ function showClientNewOrder() {
 <form onsubmit="submitClientOrder(event)" style="background: #111; padding: 32px; border-radius: 16px; border: 1px solid #333;">
 <h2 style="font-size: 20px; margin-bottom: 20px;">Project Details</h2>
 <input type="hidden" id="clientSelectedPackage" value="">
-<div style="margin-bottom: 16px;">
+<div class="mb-16">
 <label style="display: block; color: #888; font-size: 13px; margin-bottom: 6px;">Project Name *</label>
 <input type="text" id="clientProjectName" required style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: inherit;">
 </div>
-<div style="margin-bottom: 16px;">
+<div class="mb-16">
 <label style="display: block; color: #888; font-size: 13px; margin-bottom: 6px;">Description / Notes</label>
 <textarea id="clientProjectDesc" rows="3" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: inherit; resize: vertical;"></textarea>
 </div>
@@ -282,7 +282,7 @@ function selectClientPackage(pkgId) {
     const pkg = servicePackages.find(p => p.id === pkgId);
     document.getElementById('clientSelectedPackage').value = pkgId;
     if (pkg) {
-        document.getElementById('clientPackageDisplay').innerHTML = `<span style="color: #fff;">${pkg.name}</span> <span style="color: #888;">• ${pkg.turnaround}</span>`;
+        document.getElementById('clientPackageDisplay').innerHTML = `<span class="text-white">${pkg.name}</span> <span class="text-muted">• ${pkg.turnaround}</span>`;
         document.getElementById('clientPriceDisplay').textContent = pkg.price > 0 ? '$' + pkg.price.toLocaleString() : 'Custom Quote';
         if (!document.getElementById('clientProjectName').value) {
             document.getElementById('clientProjectName').value = pkg.name;
@@ -350,15 +350,15 @@ async function submitClientOrder(e) {
                 subject: `🆕 New Order from ${client.name}: ${order.projectName}`,
                 html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: var(--red, #e11d48); padding: 32px; text-align: center;"><h2 style="margin: 0; color: #fff;">New Client Order!</h2></div>
-<div style="padding: 32px;">
+<div class="p-32">
 <p style="color: #ccc;">Client <strong>${client.name}</strong> submitted a new order:</p>
 <div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 16px 0;">
-<p style="color: #fff;"><strong>${order.projectName}</strong></p>
-<p style="color: #888;">Package: ${order.packageName}</p>
-<p style="color: #888;">Amount: <strong style="color: var(--red, #e11d48);">$${order.estimate.toLocaleString()}</strong></p>
-                            ${order.description ? '<p style="color: #888;">Notes: ' + order.description + '</p>' : ''}
+<p class="text-white"><strong>${order.projectName}</strong></p>
+<p class="text-muted">Package: ${order.packageName}</p>
+<p class="text-muted">Amount: <strong style="color: var(--red, #e11d48);">$${order.estimate.toLocaleString()}</strong></p>
+                            ${order.description ? '<p class="text-muted">Notes: ' + order.description + '</p>' : ''}
 </div>
-<p style="color: #888; font-size: 13px;">Log in to the admin dashboard to assign a designer.</p>
+<p class="text-muted-sm">Log in to the admin dashboard to assign a designer.</p>
 </div>
 </div>`,
                 text: `New order from ${client.name}: ${order.projectName} — $${order.estimate.toLocaleString()}`
@@ -382,10 +382,10 @@ async function submitClientOrder(e) {
 <h2 style="font-size: 28px; margin-bottom: 12px;">Order Submitted!</h2>
 <p style="color: #888; font-size: 16px; margin-bottom: 32px;">Your <strong>${order.projectName}</strong> order has been received. We'll confirm details and send your invoice shortly.</p>
 <div style="background: #111; padding: 24px; border-radius: 12px; text-align: left; margin-bottom: 32px;">
-<div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span style="color: #888;">Order #</span><span>${order.id}</span></div>
-<div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span style="color: #888;">Package</span><span>${order.packageName}</span></div>
-<div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span style="color: #888;">Turnaround</span><span>${order.turnaround}</span></div>
-                ${order.estimate > 0 ? `<div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid #333;"><span style="color: #888;">Amount</span><span style="color: var(--red); font-weight: 700; font-size: 18px;">$${order.estimate.toLocaleString()}</span></div>` : `<div style="color: #f59e0b; padding-top: 8px; border-top: 1px solid #333;">Custom quote — we'll follow up within 24 hours</div>`}
+<div class="flex-between mb-8"><span class="text-muted">Order #</span><span>${order.id}</span></div>
+<div class="flex-between mb-8"><span class="text-muted">Package</span><span>${order.packageName}</span></div>
+<div class="flex-between mb-8"><span class="text-muted">Turnaround</span><span>${order.turnaround}</span></div>
+                ${order.estimate > 0 ? `<div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px solid #333;"><span class="text-muted">Amount</span><span style="color: var(--red); font-weight: 700; font-size: 18px;">$${order.estimate.toLocaleString()}</span></div>` : `<div style="color: #f59e0b; padding-top: 8px; border-top: 1px solid #333;">Custom quote — we'll follow up within 24 hours</div>`}
 </div>
 <button onclick="loadClientDashboard()" style="padding: 14px 32px; background: var(--red); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;">Back to Dashboard</button>
 </div>
@@ -402,13 +402,13 @@ function showClientInvoices() {
 <h2 style="font-size: 28px; margin-bottom: 24px;">My Invoices</h2>
             ${myInvoices.map(i => `
 <div style="background: #111; padding: 24px; border-radius: 12px; margin-bottom: 16px;">
-<div style="display: flex; justify-content: space-between; align-items: center;">
+<div class="flex-between">
 <div>
 <div style="font-weight: 600; font-size: 18px;">${i.invoiceNumber || 'INV-' + i.id}</div>
 <div style="color: #888; margin-top: 4px;">Due: ${i.dueDate ? new Date(i.dueDate).toLocaleDateString() : 'N/A'}</div>
 </div>
-<div style="text-align: right;">
-<div style="font-size: 24px; font-weight: 700;">$${(i.total || 0).toLocaleString()}</div>
+<div class="text-right">
+<div class="fs-24 fw-700">$${(i.total || 0).toLocaleString()}</div>
 <span style="padding: 6px 12px; border-radius: 20px; font-size: 12px; background: ${i.status === 'paid' ? '#10b98120' : '#ef444420'}; color: ${i.status === 'paid' ? '#10b981' : '#ef4444'};">${i.status}</span>
 </div>
 </div>

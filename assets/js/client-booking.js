@@ -43,17 +43,17 @@ function openBookCallModal() {
 <p style="color:#888;font-size:13px;margin:0;"><strong style="color:#e11d48;">Hours:</strong> Monday – Thursday, 1:00 – 4:00 PM EST</p>
 <p style="color:#666;font-size:12px;margin:4px 0 0;">Fridays reserved for design work • Weekends closed</p>
 </div>
-<div style="margin-bottom:20px;">
+<div class="mb-20">
 <label style="display:block;font-size:13px;font-weight:600;color:#aaa;margin-bottom:10px;">Select a time slot:</label>
 ${slotsHtml}
 </div>
 <input type="hidden" id="selectedCallDate" value="">
 <input type="hidden" id="selectedCallTime" value="">
-<div style="margin-bottom:16px;">
+<div class="mb-16">
 <label style="display:block;font-size:13px;font-weight:600;color:#aaa;margin-bottom:6px;">What would you like to discuss? (optional)</label>
 <textarea id="callTopic" placeholder="Brief description of what you'd like to cover..." style="width:100%;min-height:80px;padding:12px 16px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;font-family:inherit;font-size:14px;resize:vertical;box-sizing:border-box;"></textarea>
 </div>
-<div style="display:flex;gap:12px;">
+<div class="flex-gap-12">
 <button onclick="this.closest('div[style*=fixed]').remove()" style="flex:1;padding:14px;background:transparent;border:1px solid #333;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;">Cancel</button>
 <button id="bookCallConfirmBtn" onclick="confirmBookCall()" style="flex:1;padding:14px;background:#333;border:none;color:#666;border-radius:8px;cursor:not-allowed;font-weight:600;font-family:inherit;" disabled>Select a Time</button>
 </div>
@@ -119,7 +119,7 @@ async function confirmBookCall() {
             body: JSON.stringify({
                 to: 'newurbaninfluence@gmail.com',
                 subject: '📞 Call Booked: ' + (client.name || 'Client') + ' — ' + dateFormatted + ' at ' + time + ' EST',
-                html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;border-radius:12px;overflow:hidden;"><div style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);padding:32px;text-align:center;"><h2 style="margin:0;font-size:24px;color:#fff;">New Call Booked 📞</h2></div><div style="padding:32px;"><p style="color:#ccc;font-size:16px;"><strong>' + (client.name || 'Client') + '</strong> booked a call:</p><div style="background:#111;border:1px solid #333;border-radius:12px;padding:24px;margin:16px 0;"><div style="display:grid;grid-template-columns:auto 1fr;gap:8px 16px;"><span style="color:#888;font-size:13px;">📅 Date:</span><span style="color:#fff;font-weight:600;">' + dateFormatted + '</span><span style="color:#888;font-size:13px;">🕐 Time:</span><span style="color:#fff;font-weight:600;">' + time + ' EST</span><span style="color:#888;font-size:13px;">📧 Email:</span><span style="color:#fff;">' + (client.email || 'N/A') + '</span><span style="color:#888;font-size:13px;">📋 Topic:</span><span style="color:#fff;">' + topic.replace(/</g, '&lt;') + '</span></div></div></div></div>',
+                html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;border-radius:12px;overflow:hidden;"><div style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);padding:32px;text-align:center;"><h2 style="margin:0;font-size:24px;color:#fff;">New Call Booked 📞</h2></div><div class="p-32"><p class="text-light"><strong>' + (client.name || 'Client') + '</strong> booked a call:</p><div style="background:#111;border:1px solid #333;border-radius:12px;padding:24px;margin:16px 0;"><div style="display:grid;grid-template-columns:auto 1fr;gap:8px 16px;"><span class="text-muted-sm">📅 Date:</span><span style="color:#fff;font-weight:600;">' + dateFormatted + '</span><span class="text-muted-sm">🕐 Time:</span><span style="color:#fff;font-weight:600;">' + time + ' EST</span><span class="text-muted-sm">📧 Email:</span><span class="text-white">' + (client.email || 'N/A') + '</span><span class="text-muted-sm">📋 Topic:</span><span class="text-white">' + topic.replace(/</g, '&lt;') + '</span></div></div></div></div>',
                 text: 'Call booked by ' + (client.name || 'Client') + ' for ' + dateFormatted + ' at ' + time + ' EST. Topic: ' + topic
             })
         });
@@ -134,7 +134,7 @@ async function confirmBookCall() {
                 body: JSON.stringify({
                     to: client.email,
                     subject: '📞 Call Confirmed — ' + dateFormatted + ' at ' + time + ' EST',
-                    html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;border-radius:12px;overflow:hidden;"><div style="background:linear-gradient(135deg,#e11d48,#be185d);padding:32px;text-align:center;"><h2 style="margin:0;font-size:24px;color:#fff;">Your Call is Confirmed! 📞</h2></div><div style="padding:32px;"><p style="color:#ccc;font-size:16px;">Hey ' + (client.contact || client.name || 'there') + ',</p><p style="color:#ccc;font-size:16px;">Your call with New Urban Influence is confirmed:</p><div style="background:#111;border:1px solid #333;border-radius:12px;padding:24px;margin:20px 0;text-align:center;"><p style="color:#e11d48;font-size:24px;font-weight:700;margin:0 0 4px;">' + dateFormatted + '</p><p style="color:#fff;font-size:20px;font-weight:600;margin:0;">' + time + ' EST</p></div><p style="color:#888;font-size:14px;">We\'ll call you at the number on file. If you need to reschedule, contact us at <a href="tel:2484878747" style="color:#e11d48;text-decoration:none;">(248) 487-8747</a> or reply to this email.</p></div><div style="background:#050505;padding:20px;text-align:center;border-top:1px solid #222;"><p style="color:#666;font-size:12px;margin:0;">New Urban Influence • Detroit, MI</p></div></div>',
+                    html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;border-radius:12px;overflow:hidden;"><div style="background:linear-gradient(135deg,#e11d48,#be185d);padding:32px;text-align:center;"><h2 style="margin:0;font-size:24px;color:#fff;">Your Call is Confirmed! 📞</h2></div><div class="p-32"><p class="text-light">Hey ' + (client.contact || client.name || 'there') + ',</p><p class="text-light">Your call with New Urban Influence is confirmed:</p><div style="background:#111;border:1px solid #333;border-radius:12px;padding:24px;margin:20px 0;text-align:center;"><p style="color:#e11d48;font-size:24px;font-weight:700;margin:0 0 4px;">' + dateFormatted + '</p><p style="color:#fff;font-size:20px;font-weight:600;margin:0;">' + time + ' EST</p></div><p style="color:#888;font-size:14px;">We\'ll call you at the number on file. If you need to reschedule, contact us at <a href="tel:2484878747" style="color:#e11d48;text-decoration:none;">(248) 487-8747</a> or reply to this email.</p></div><div style="background:#050505;padding:20px;text-align:center;border-top:1px solid #222;"><p style="color:#666;font-size:12px;margin:0;">New Urban Influence • Detroit, MI</p></div></div>',
                     text: 'Your call is confirmed for ' + dateFormatted + ' at ' + time + ' EST. We\'ll call you at the number on file. To reschedule, call (248) 487-8747.'
                 })
             });

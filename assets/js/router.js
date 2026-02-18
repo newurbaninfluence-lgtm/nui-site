@@ -174,7 +174,7 @@ function updateSiteLogos() {
     // Update hero taglines from CMS
     const heroTitle = document.querySelector('.hero-content h1');
     if (heroTitle && siteImages.tagline) {
-        heroTitle.innerHTML = `BUILD YOUR<br><span style="color: var(--red);">${siteImages.tagline.split(' ').pop() || 'EMPIRE'}</span>`;
+        heroTitle.innerHTML = `BUILD YOUR<br><span class="text-red">${siteImages.tagline.split(' ').pop() || 'EMPIRE'}</span>`;
     }
 }
 

@@ -9,7 +9,7 @@ function openClientMessageDesigner(clientId) {
 <div style="background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:32px;max-width:520px;width:100%;">
 <h3 style="font-size:20px;font-weight:700;margin-bottom:8px;color:#fff;">💬 Contact Your Designer</h3>
 <p style="color:#888;margin-bottom:20px;">Send a message directly to your design team. We'll respond within 1 business day.</p>
-<div style="margin-bottom:16px;">
+<div class="mb-16">
 <label style="display:block;font-size:13px;font-weight:600;color:#aaa;margin-bottom:6px;">Subject</label>
 <select id="designerMsgSubject" style="width:100%;padding:12px 16px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;font-family:inherit;font-size:14px;box-sizing:border-box;">
 <option value="general">General Question</option>
@@ -21,11 +21,11 @@ function openClientMessageDesigner(clientId) {
 <option value="other">Other</option>
 </select>
 </div>
-<div style="margin-bottom:16px;">
+<div class="mb-16">
 <label style="display:block;font-size:13px;font-weight:600;color:#aaa;margin-bottom:6px;">Message</label>
 <textarea id="designerMsgBody" placeholder="Type your message here..." style="width:100%;min-height:140px;padding:16px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;font-family:inherit;font-size:14px;resize:vertical;box-sizing:border-box;"></textarea>
 </div>
-<div style="display:flex;gap:12px;">
+<div class="flex-gap-12">
 <button onclick="this.closest('div[style*=fixed]').remove()" style="flex:1;padding:14px;background:transparent;border:1px solid #333;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;">Cancel</button>
 <button onclick="sendClientDesignerMessage(${clientId})" style="flex:1;padding:14px;background:#e11d48;border:none;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;">📨 Send Message</button>
 </div>
@@ -66,7 +66,7 @@ async function sendClientDesignerMessage(clientId) {
             body: JSON.stringify({
                 to: 'newurbaninfluence@gmail.com',
                 subject: '💬 Client Message: ' + (client.name || 'Client') + ' — ' + (subjectLabels[subject] || subject),
-                html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;border-radius:12px;overflow:hidden;"><div style="background:linear-gradient(135deg,#e11d48,#be185d);padding:32px;text-align:center;"><h2 style="margin:0;font-size:24px;color:#fff;">New Client Message 💬</h2></div><div style="padding:32px;"><div style="display:flex;justify-content:space-between;margin-bottom:20px;"><div><p style="color:#888;font-size:12px;margin:0;">FROM</p><p style="color:#fff;font-size:16px;font-weight:600;margin:4px 0 0;">' + (client.name || 'Client') + '</p><p style="color:#888;font-size:13px;margin:2px 0 0;">' + (client.email || '') + '</p></div><div style="text-align:right;"><p style="color:#888;font-size:12px;margin:0;">SUBJECT</p><p style="color:#e11d48;font-size:14px;font-weight:600;margin:4px 0 0;">' + (subjectLabels[subject] || subject) + '</p></div></div><div style="background:#111;border:1px solid #333;border-radius:12px;padding:24px;"><p style="color:#fff;font-size:15px;line-height:1.7;margin:0;white-space:pre-wrap;">' + body.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') + '</p></div><p style="color:#888;font-size:13px;margin-top:20px;">Reply to this client from the admin panel or email them at ' + (client.email || 'N/A') + '</p></div></div>',
+                html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;border-radius:12px;overflow:hidden;"><div style="background:linear-gradient(135deg,#e11d48,#be185d);padding:32px;text-align:center;"><h2 style="margin:0;font-size:24px;color:#fff;">New Client Message 💬</h2></div><div class="p-32"><div style="display:flex;justify-content:space-between;margin-bottom:20px;"><div><p style="color:#888;font-size:12px;margin:0;">FROM</p><p style="color:#fff;font-size:16px;font-weight:600;margin:4px 0 0;">' + (client.name || 'Client') + '</p><p style="color:#888;font-size:13px;margin:2px 0 0;">' + (client.email || '') + '</p></div><div class="text-right"><p style="color:#888;font-size:12px;margin:0;">SUBJECT</p><p style="color:#e11d48;font-size:14px;font-weight:600;margin:4px 0 0;">' + (subjectLabels[subject] || subject) + '</p></div></div><div style="background:#111;border:1px solid #333;border-radius:12px;padding:24px;"><p style="color:#fff;font-size:15px;line-height:1.7;margin:0;white-space:pre-wrap;">' + body.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') + '</p></div><p style="color:#888;font-size:13px;margin-top:20px;">Reply to this client from the admin panel or email them at ' + (client.email || 'N/A') + '</p></div></div>',
                 text: 'New message from ' + (client.name || 'Client') + ' (' + (client.email || '') + ')\nSubject: ' + (subjectLabels[subject] || subject) + '\n\n' + body
             })
         });

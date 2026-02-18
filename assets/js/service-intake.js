@@ -950,9 +950,9 @@ function renderIntakeWizard(serviceId) {
 <h2 style="font-size: 24px; font-weight: 900; margin-bottom: 16px; line-height: 1.3;">${copy.hook}</h2>
 <p style="color: rgba(255,255,255,0.7); font-size: 15px; line-height: 1.7; margin-bottom: 16px;">${copy.problem}</p>
 <p style="color: rgba(255,255,255,0.9); font-size: 15px; line-height: 1.7; margin-bottom: 16px; font-weight: 500;">${copy.agitate}</p>
-<p style="color: #fff; font-size: 15px; line-height: 1.7; margin-bottom: 20px;"><strong style="color: var(--red);">The Solution:</strong> ${copy.solution}</p>
+<p style="color: #fff; font-size: 15px; line-height: 1.7; margin-bottom: 20px;"><strong class="text-red">The Solution:</strong> ${copy.solution}</p>
 <div style="display: flex; align-items: center; gap: 12px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
-<span style="font-size: 24px;">📈</span>
+<span class="fs-24">📈</span>
 <p style="color: var(--red); font-size: 14px; font-weight: 600; margin: 0;">${copy.proof}</p>
 </div>
 </div>
@@ -960,13 +960,13 @@ function renderIntakeWizard(serviceId) {
                 <!-- TRUST BADGES -->
 <div style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 24px;">
 <div style="display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6); font-size: 13px;">
-<span style="color: var(--red);">✓</span> 24-48hr Response
+<span class="text-red">✓</span> 24-48hr Response
 </div>
 <div style="display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6); font-size: 13px;">
-<span style="color: var(--red);">✓</span> Satisfaction Guaranteed
+<span class="text-red">✓</span> Satisfaction Guaranteed
 </div>
 <div style="display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6); font-size: 13px;">
-<span style="color: var(--red);">✓</span> Detroit-Based Team
+<span class="text-red">✓</span> Detroit-Based Team
 </div>
 </div>
 
@@ -1209,15 +1209,15 @@ function renderReviewStep(serviceId) {
     html += `<p style="color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.6; margin-bottom: 20px;">${serviceInfo.description}</p>`;
 
     // Deliverables list
-    html += `<div style="margin-bottom: 16px;">
+    html += `<div class="mb-16">
 <p style="color: rgba(255,255,255,0.5); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">What You'll Get:</p>
-<div style="display: flex; flex-wrap: wrap; gap: 8px;">
+<div class="flex-wrap">
             ${serviceInfo.deliverables.map(d => `<span style="background: rgba(255,255,255,0.1); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; border: 1px solid rgba(255,255,255,0.1);">${d}</span>`).join('')}
 </div>
  </div>`;
 
     html += `<div style="display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6); font-size: 13px;">
-<span>⏱️</span> Expected Timeline: <strong style="color: #fff;">${serviceInfo.timeline}</strong>
+<span>⏱️</span> Expected Timeline: <strong class="text-white">${serviceInfo.timeline}</strong>
  </div>`;
     html += `</div>`;
 
@@ -1226,8 +1226,8 @@ function renderReviewStep(serviceId) {
     html += `<p style="color: rgba(255,255,255,0.5); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Your Details</p>`;
 
     html += `<div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08);">
-<span style="color: rgba(255,255,255,0.5);">Service</span>
-<span style="font-weight: 600; color: #fff;">${config.name}</span>
+<span class="text-dim">Service</span>
+<span class="text-bold-white">${config.name}</span>
  </div>`;
 
     // Show custom services if this is a custom package
@@ -1241,7 +1241,7 @@ function renderReviewStep(serviceId) {
     }
 
     html += `<div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08);">
-<span style="color: rgba(255,255,255,0.5);">Investment</span>
+<span class="text-dim">Investment</span>
 <span style="font-weight: 700; color: var(--red); font-size: 18px;">${displayPrice > 0 ? '$' + displayPrice.toLocaleString() : 'Custom Quote'}</span>
  </div>`;
 
@@ -1251,7 +1251,7 @@ function renderReviewStep(serviceId) {
             let value = intakeData[key];
             if (Array.isArray(value)) return; // Skip arrays (shown separately)
             html += `<div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08);">
-<span style="color: rgba(255,255,255,0.5);">${label}</span>
+<span class="text-dim">${label}</span>
 <span style="font-weight: 500; color: #fff; max-width: 60%; text-align: right;">${value}</span>
 </div>`;
         }
@@ -1259,7 +1259,7 @@ function renderReviewStep(serviceId) {
 
     if (uploadedFiles.length > 0) {
         html += `<div style="padding: 14px 0;">
-<span style="color: rgba(255,255,255,0.5);">Files Attached</span>
+<span class="text-dim">Files Attached</span>
 <div style="margin-top: 10px;">${uploadedFiles.map(f => `<span style="display: inline-block; background: rgba(255,255,255,0.1); color: #fff; padding: 6px 14px; border-radius: 6px; margin: 4px; font-size: 13px;">📎 ${f.name}</span>`).join('')}</div>
 </div>`;
     }
@@ -1377,12 +1377,12 @@ function showPaymentPage(submission) {
 </div>
 <div class="success-detail">
 <span class="success-detail-label">Amount Due</span>
-<span class="success-detail-value" style="color: var(--red);">${config.price > 0 ? '$' + config.price.toLocaleString() : 'Quote Pending'}</span>
+<span class="success-detail-value text-red">${config.price > 0 ? '$' + config.price.toLocaleString() : 'Quote Pending'}</span>
 </div>
 </div>
 
                 ${config.price > 0 ? `
-<div style="margin-bottom: 32px;">
+<div class="mb-32">
 <p style="color: rgba(255,255,255,0.6); margin-bottom: 20px; font-size: 15px;">Complete your payment to start your project:</p>
 <a href="https://buy.stripe.com/test" target="_blank" class="btn-cta" style="padding: 20px 48px; font-size: 18px; display: inline-flex; background: linear-gradient(135deg, var(--green) 0%, #34d399 100%); box-shadow: 0 8px 30px rgba(16,185,129,0.4);">
                         Pay $${config.price.toLocaleString()} with Stripe →
@@ -1390,14 +1390,14 @@ function showPaymentPage(submission) {
 <p style="color: rgba(255,255,255,0.4); font-size: 13px; margin-top: 16px;">🔒 Secure payment powered by Stripe</p>
 </div>
                 ` : `
-<div style="margin-bottom: 32px;">
+<div class="mb-32">
 <p style="color: rgba(255,255,255,0.6); margin-bottom: 16px; font-size: 15px;">Our team will prepare a custom quote and contact you within 24 hours.</p>
 </div>
                 `}
 
 <div style="padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1);">
 <p style="color: rgba(255,255,255,0.5); font-size: 14px; margin-bottom: 20px; line-height: 1.8;">
-<strong style="color: #fff;">Next Steps:</strong><br>
+<strong class="text-white">Next Steps:</strong><br>
                         1. Complete payment (if applicable)<br>
                         2. Receive project kickoff email<br>
                         3. Schedule strategy call with your creative team

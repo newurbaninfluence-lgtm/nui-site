@@ -11,8 +11,8 @@ function loadDesignerDashboard() {
 <div class="admin-container">
 <aside class="admin-sidebar" style="background: #0a0a0a;">
 <div class="admin-header">
-<div class="admin-logo" style="color: var(--red);">NUI Designer</div>
-<div style="font-size: 12px; color: #888;">Welcome, ${currentUser.name}</div>
+<div class="admin-logo text-red">NUI Designer</div>
+<div class="text-muted fs-12">Welcome, ${currentUser.name}</div>
 </div>
 <nav class="admin-nav">
 <div class="admin-nav-group">
@@ -23,7 +23,7 @@ function loadDesignerDashboard() {
 <a onclick="showDesignerPanel('messages')" class="admin-nav-link" data-panel="messages">💬 Messages ${unreadMessages > 0 ? '<span style="background: var(--red); color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 8px;">' + unreadMessages + '</span>' : ''}</a>
 </div>
 <div class="admin-nav-group" style="margin-top: auto;">
-<a onclick="portalLogout()" class="admin-nav-link" style="color: #888;">🚪 Sign Out</a>
+<a onclick="portalLogout()" class="admin-nav-link text-muted">🚪 Sign Out</a>
 </div>
 </nav>
 </aside>
@@ -71,19 +71,19 @@ function loadDesignerDashboardPanel() {
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px;">
 <div style="background: #111; padding: 24px; border-radius: 12px; border: 1px solid #222;">
 <div style="font-size: 32px; font-weight: 700; color: var(--red);">${active.length}</div>
-<div style="color: #888; font-size: 14px;">Active Projects</div>
+<div class="text-muted fs-14">Active Projects</div>
 </div>
 <div style="background: #111; padding: 24px; border-radius: 12px; border: 1px solid #222;">
 <div style="font-size: 32px; font-weight: 700; color: #f59e0b;">${urgent.length}</div>
-<div style="color: #888; font-size: 14px;">Due in 24hrs</div>
+<div class="text-muted fs-14">Due in 24hrs</div>
 </div>
 <div style="background: #111; padding: 24px; border-radius: 12px; border: 1px solid #222;">
 <div style="font-size: 32px; font-weight: 700; color: #10b981;">${myProjects.filter(o => o.status === 'delivered').length}</div>
-<div style="color: #888; font-size: 14px;">Completed</div>
+<div class="text-muted fs-14">Completed</div>
 </div>
 <div style="background: #111; padding: 24px; border-radius: 12px; border: 1px solid #222;">
 <div style="font-size: 32px; font-weight: 700;">$${myProjects.reduce((sum, o) => sum + (o.estimate || 0), 0).toLocaleString()}</div>
-<div style="color: #888; font-size: 14px;">Total Earned</div>
+<div class="text-muted fs-14">Total Earned</div>
 </div>
 </div>
 <h2 style="font-size: 20px; margin-bottom: 16px;">⏰ Active Projects</h2>
@@ -94,12 +94,12 @@ function loadDesignerDashboardPanel() {
             const hoursLeft = Math.max(0, Math.floor((due - now) / (1000 * 60 * 60)));
             const isUrgent = hoursLeft < 24;
             return `<div style="background: #111; padding: 20px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid ${isUrgent ? '#ef4444' : '#10b981'};">
-<div style="display: flex; justify-content: space-between; align-items: center;">
+<div class="flex-between">
 <div>
 <div style="font-weight: 600; font-size: 16px;">${p.projectName}</div>
-<div style="color: #888; font-size: 13px;">Client: ${client?.name || 'Unknown'} · $${(p.estimate || 0).toLocaleString()}</div>
+<div class="text-muted-sm">Client: ${client?.name || 'Unknown'} · $${(p.estimate || 0).toLocaleString()}</div>
 </div>
-<div style="text-align: right;">
+<div class="text-right">
 <div style="font-size: 24px; font-weight: 700; color: ${isUrgent ? '#ef4444' : '#10b981'};">${hoursLeft}h</div>
 <div style="font-size: 11px; color: #888;">remaining</div>
 </div>
@@ -109,7 +109,7 @@ function loadDesignerDashboardPanel() {
 <button onclick="openDesignerChat(${p.id})" style="padding: 8px 16px; background: #333; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13px;">Message Admin</button>
 </div>
 </div>`;
-        }).join('') : '<p style="color: #888;">No active projects. Check available jobs!</p>'}
+        }).join('') : '<p class="text-muted">No active projects. Check available jobs!</p>'}
     `;
 }
 
@@ -120,15 +120,15 @@ function loadDesignerProjectsPanel() {
         ${myProjects.length > 0 ? myProjects.map(p => {
             const client = clients.find(c => c.id === p.clientId);
             return `<div style="background: #111; padding: 20px; border-radius: 12px; margin-bottom: 12px;">
-<div style="display: flex; justify-content: space-between; align-items: center;">
+<div class="flex-between">
 <div>
-<div style="font-weight: 600;">${p.projectName}</div>
-<div style="color: #888; font-size: 13px;">Client: ${client?.name || 'Unknown'}</div>
+<div class="fw-600">${p.projectName}</div>
+<div class="text-muted-sm">Client: ${client?.name || 'Unknown'}</div>
 </div>
 <span style="padding: 6px 12px; border-radius: 20px; font-size: 12px; background: ${p.status === 'delivered' ? '#10b98120' : p.status === 'in_progress' ? '#3b82f620' : '#f59e0b20'}; color: ${p.status === 'delivered' ? '#10b981' : p.status === 'in_progress' ? '#3b82f6' : '#f59e0b'};">${p.status}</span>
 </div>
 </div>`;
-        }).join('') : '<p style="color: #888;">No projects assigned yet.</p>'}
+        }).join('') : '<p class="text-muted">No projects assigned yet.</p>'}
     `;
 }
 
@@ -136,7 +136,7 @@ function loadDesignerAvailablePanel() {
     const available = orders.filter(o => !o.assignedDesigner && o.status !== 'delivered');
     document.getElementById('designerAvailablePanel').innerHTML = `
 <h2 style="font-size: 28px; margin-bottom: 24px;">Available Jobs</h2>
-<p style="color: #888; margin-bottom: 24px;">Accept a job to start the 72-hour timer</p>
+<p class="text-muted mb-24">Accept a job to start the 72-hour timer</p>
         ${available.length > 0 ? available.map(p => {
             const client = clients.find(c => c.id === p.clientId);
             return `<div style="background: #111; padding: 20px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #333;">
@@ -146,13 +146,13 @@ function loadDesignerAvailablePanel() {
 <div style="color: #888; font-size: 13px; margin-top: 4px;">${p.description || 'No description'}</div>
 <div style="margin-top: 12px; display: flex; gap: 16px; font-size: 13px;">
 <span style="color: #10b981; font-weight: 600;">💰 $${(p.estimate || 0).toLocaleString()}</span>
-<span style="color: #888;">⏱️ ${p.turnaround || '72 hours'}</span>
+<span class="text-muted">⏱️ ${p.turnaround || '72 hours'}</span>
 </div>
 </div>
 <button onclick="acceptDesignerJob(${p.id})" style="padding: 12px 24px; background: #10b981; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Accept Job</button>
 </div>
 </div>`;
-        }).join('') : '<p style="color: #888;">No available jobs right now. Check back soon!</p>'}
+        }).join('') : '<p class="text-muted">No available jobs right now. Check back soon!</p>'}
     `;
 }
 
@@ -188,13 +188,13 @@ async function acceptDesignerJob(orderId) {
                     subject: `🎨 Work Started on ${order.projectName}!`,
                     html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #3b82f6, #60a5fa); padding: 32px; text-align: center;">
-<h2 style="margin: 0; font-size: 24px; color: #fff;">Your Project is Underway!</h2>
+<h2 class="m-0 fs-24 text-white">Your Project is Underway!</h2>
 </div>
-<div style="padding: 32px;">
+<div class="p-32">
 <p style="color: #ccc;">Hey ${client.name}, a designer has started working on <strong>${order.projectName}</strong>. You'll receive proof files for review soon!</p>
 <p style="color: #888; font-size: 14px; margin-top: 24px;">Estimated turnaround: <strong>${order.turnaround || 'TBD'}</strong></p>
 </div>
-<div style="background: #050505; padding: 20px; text-align: center; border-top: 1px solid #222;"><p style="color: #666; font-size: 12px; margin: 0;">New Urban Influence • Detroit, MI</p></div>
+<div class="admin-footer-bar"><p class="text-muted fs-12 m-0">New Urban Influence • Detroit, MI</p></div>
 </div>`,
                     text: `Work has started on your project "${order.projectName}"! Estimated turnaround: ${order.turnaround || 'TBD'}.`
                 })
@@ -213,9 +213,9 @@ function loadDesignerProofsPanel() {
     const myProjects = orders.filter(o => (o.assignedDesigner === currentUser.id || o.assignedDesignerId === currentUser.id || o.assignedDesigner === currentUser.name) && o.status === 'in_progress');
     document.getElementById('designerProofsPanel').innerHTML = `
 <h2 style="font-size: 28px; margin-bottom: 24px;">Upload Proofs</h2>
-<div style="margin-bottom: 24px;">
+<div class="mb-24">
 <label style="display: block; margin-bottom: 8px; color: #888;">Select Project</label>
-<select id="proofProjectSelect" onchange="loadProofUploadArea()" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px;">
+<select id="proofProjectSelect" onchange="loadProofUploadArea()" class="admin-input-dark">
 <option value="">-- Select a project --</option>
                 ${myProjects.map(p => `<option value="${p.id}">${p.projectName}</option>`).join('')}
 </select>
@@ -236,9 +236,9 @@ function loadProofUploadArea() {
 
     document.getElementById('proofUploadArea').innerHTML = `
 <div style="background: #111; padding: 24px; border-radius: 12px; border: 2px dashed #333; text-align: center; margin-bottom: 24px;">
-<input type="file" id="proofFileInput" multiple accept="image/*,.pdf" style="display: none;" onchange="handleDesignerProofUpload(${projectId})">
+<input type="file" id="proofFileInput" multiple accept="image/*,.pdf" class="hidden" onchange="handleDesignerProofUpload(${projectId})">
 <div style="font-size: 48px; margin-bottom: 12px;">📤</div>
-<p style="margin-bottom: 16px;">Drag & drop proof files or click to browse</p>
+<p class="mb-16">Drag & drop proof files or click to browse</p>
 <button onclick="document.getElementById('proofFileInput').click()" style="padding: 12px 24px; background: var(--red); color: #fff; border: none; border-radius: 8px; cursor: pointer;">Select Files</button>
 </div>
 <div>
@@ -305,7 +305,7 @@ function handleDesignerProofUpload(projectId) {
 <div style="background: linear-gradient(135deg, #e63946, #ff6b6b); padding: 24px; text-align: center;">
 <h2 style="margin: 0; font-size: 20px; color: #fff;">📤 New Proof Ready for Review</h2>
 </div>
-<div style="padding: 32px;">
+<div class="p-32">
 <table style="width: 100%; border-collapse: collapse;">
 <tr><td style="padding: 8px 0; color: #888;">Project</td><td style="padding: 8px 0; color: #fff; text-align: right; font-weight: 600;">${project?.projectName || 'N/A'}</td></tr>
 <tr><td style="padding: 8px 0; color: #888;">Client</td><td style="padding: 8px 0; color: #fff; text-align: right;">${client?.name || 'N/A'}</td></tr>
@@ -392,7 +392,7 @@ function loadClientMessagesPanel() {
 
     document.getElementById('clientPortalContent').innerHTML = `
 <div style="max-width: 800px; margin: 0 auto; padding: 24px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+<div class="flex-between mb-24">
 <h2 style="font-size: 24px; margin: 0;">Messages</h2>
 <button onclick="loadClientDashboard()" style="padding: 8px 16px; background: #333; color: #fff; border: none; border-radius: 8px; cursor: pointer;">← Back</button>
 </div>
@@ -462,11 +462,11 @@ function loadDesignerMessagesPanel() {
 <div style="max-height: 500px; overflow-y: auto;">
             ${myMessages.length > 0 ? myMessages.map(m => `
 <div style="background: ${m.fromAdmin ? '#1a1a2e' : '#111'}; padding: 16px; border-radius: 12px; margin-bottom: 8px; border-left: 3px solid ${m.fromAdmin ? '#3b82f6' : 'var(--red)'};">
-<div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+<div class="flex-between mb-8">
 <span style="font-weight: 600; color: ${m.fromAdmin ? '#3b82f6' : 'var(--red)'};">${m.fromAdmin ? '👤 Admin' : '🎨 You'}</span>
 <span style="color: #666; font-size: 12px;">${new Date(m.createdAt).toLocaleString()}</span>
 </div>
-<p style="margin: 0;">${m.message}</p>
+<p class="m-0">${m.message}</p>
 </div>
             `).join('') : '<p style="color: #888; text-align: center;">No messages yet.</p>'}
 </div>

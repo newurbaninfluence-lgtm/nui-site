@@ -325,15 +325,15 @@ function loadAdminEmailTemplatesPanel() {
     const categories = ['onboarding', 'project', 'payment', 'delivery', 'newsletter', 'promo'];
 
     document.getElementById('adminEmailmarketingPanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-<h2 style="font-size: 28px; font-weight: 700;">📧 Email Templates</h2>
+<div class="flex-between mb-24">
+<h2 class="fs-28 fw-700">📧 Email Templates</h2>
 <button onclick="showCreateTemplateModal()" class="btn-cta">+ New Template</button>
 </div>
 
         <!-- Quick Send -->
 <div style="background: linear-gradient(135deg, #1a1a1a, #2d2d2d); padding: 24px; border-radius: 12px; margin-bottom: 24px;">
 <h3 style="margin: 0 0 16px 0; color: #fff;">⚡ Quick Send</h3>
-<div style="display: flex; gap: 12px; flex-wrap: wrap;">
+<div class="flex-gap-12 flex-wrap">
 <select id="quickSendTemplate" style="flex: 1; min-width: 200px; padding: 12px; background: #333; border: 1px solid #444; color: #fff; border-radius: 8px;">
 <option value="">Select Template</option>
                     ${emailTemplates.map(t => `<option value="${t.id}">${t.name}</option>`).join('')}
@@ -349,34 +349,34 @@ function loadAdminEmailTemplatesPanel() {
 
         <!-- Scheduled Campaigns -->
 <div style="background: #111; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-<h3 style="margin: 0;">🗓️ Scheduled Campaigns</h3>
+<div class="admin-row-between">
+<h3 class="m-0">🗓️ Scheduled Campaigns</h3>
 <button onclick="showScheduleCampaignModal()" style="padding: 8px 16px; background: #10b981; color: #fff; border: none; border-radius: 6px; cursor: pointer;">+ Schedule Campaign</button>
 </div>
             ${scheduledEmails.length > 0 ? scheduledEmails.map(s => `
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #222;">
 <div>
 <div style="font-weight: 500;">${emailTemplates.find(t => t.id === s.templateId)?.name || 'Unknown'}</div>
-<div style="font-size: 13px; color: #888;">${s.audience === 'all' ? 'All Clients' : s.audience} · ${new Date(s.sendAt).toLocaleString()}</div>
+<div class="text-muted-sm">${s.audience === 'all' ? 'All Clients' : s.audience} · ${new Date(s.sendAt).toLocaleString()}</div>
 </div>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
 <span style="padding: 4px 12px; border-radius: 12px; font-size: 12px; background: ${s.status === 'sent' ? '#10b98120' : '#f59e0b20'}; color: ${s.status === 'sent' ? '#10b981' : '#f59e0b'};">${s.status}</span>
 <button onclick="cancelScheduledEmail(${s.id})" style="padding: 4px 8px; background: #333; border: none; color: #888; border-radius: 4px; cursor: pointer;">×</button>
 </div>
 </div>
-            `).join('') : '<p style="color: #888;">No scheduled campaigns.</p>'}
+            `).join('') : '<p class="text-muted">No scheduled campaigns.</p>'}
 </div>
 
         <!-- Templates by Category -->
         ${categories.map(cat => `
-<div style="margin-bottom: 24px;">
+<div class="mb-24">
 <h3 style="font-size: 14px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">${cat}</h3>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
                     ${emailTemplates.filter(t => t.category === cat).map(t => `
 <div style="background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222;">
 <h4 style="margin: 0 0 8px 0; font-size: 16px;">${t.name}</h4>
 <p style="margin: 0 0 12px 0; font-size: 13px; color: #888; line-height: 1.5;">${t.subject}</p>
-<div style="display: flex; gap: 8px;">
+<div class="flex-gap-8">
 <button onclick="editTemplate(${t.id})" style="flex: 1; padding: 8px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-size: 12px;">Edit</button>
 <button onclick="previewTemplate(${t.id})" style="flex: 1; padding: 8px; background: #e63946; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-size: 12px;">Preview</button>
 </div>
@@ -435,18 +435,18 @@ function showCreateTemplateModal() {
 <h2 style="margin: 0; font-size: 20px;">Create Email Template</h2>
 <button onclick="document.getElementById('templateModal').remove()" style="background: none; border: none; color: #888; font-size: 24px; cursor: pointer;">&times;</button>
 </div>
-<div style="padding: 24px;">
-<div style="margin-bottom: 16px;">
-<label style="display: block; margin-bottom: 8px; color: #888; font-size: 13px;">Template Name</label>
-<input type="text" id="newTemplateName" placeholder="e.g., Follow Up Email" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px;">
+<div class="p-24">
+<div class="mb-16">
+<label class="admin-field-label">Template Name</label>
+<input type="text" id="newTemplateName" placeholder="e.g., Follow Up Email" class="admin-input-dark">
 </div>
-<div style="margin-bottom: 16px;">
-<label style="display: block; margin-bottom: 8px; color: #888; font-size: 13px;">Subject Line (use {{clientName}} for personalization)</label>
-<input type="text" id="newTemplateSubject" placeholder="e.g., Hey {{clientName}}, quick question..." style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px;">
+<div class="mb-16">
+<label class="admin-field-label">Subject Line (use {{clientName}} for personalization)</label>
+<input type="text" id="newTemplateSubject" placeholder="e.g., Hey {{clientName}}, quick question..." class="admin-input-dark">
 </div>
-<div style="margin-bottom: 16px;">
-<label style="display: block; margin-bottom: 8px; color: #888; font-size: 13px;">Category</label>
-<select id="newTemplateCategory" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px;">
+<div class="mb-16">
+<label class="admin-field-label">Category</label>
+<select id="newTemplateCategory" class="admin-input-dark">
 <option value="onboarding">Onboarding</option>
 <option value="project">Project Updates</option>
 <option value="payment">Payment</option>
@@ -455,8 +455,8 @@ function showCreateTemplateModal() {
 <option value="promo">Promotional</option>
 </select>
 </div>
-<div style="margin-bottom: 16px;">
-<label style="display: block; margin-bottom: 8px; color: #888; font-size: 13px;">Email Body</label>
+<div class="mb-16">
+<label class="admin-field-label">Email Body</label>
 <textarea id="newTemplateBody" rows="12" placeholder="Hey {{clientName}},
 
 Write your email here...
@@ -509,18 +509,18 @@ function editTemplate(templateId) {
 <h2 style="margin: 0; font-size: 20px;">Edit Template: ${template.name}</h2>
 <button onclick="document.getElementById('templateModal').remove()" style="background: none; border: none; color: #888; font-size: 24px; cursor: pointer;">&times;</button>
 </div>
-<div style="padding: 24px;">
-<div style="margin-bottom: 16px;">
-<label style="display: block; margin-bottom: 8px; color: #888; font-size: 13px;">Template Name</label>
-<input type="text" id="editTemplateName" value="${template.name}" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px;">
+<div class="p-24">
+<div class="mb-16">
+<label class="admin-field-label">Template Name</label>
+<input type="text" id="editTemplateName" value="${template.name}" class="admin-input-dark">
 </div>
-<div style="margin-bottom: 16px;">
-<label style="display: block; margin-bottom: 8px; color: #888; font-size: 13px;">Subject Line</label>
-<input type="text" id="editTemplateSubject" value="${template.subject}" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px;">
+<div class="mb-16">
+<label class="admin-field-label">Subject Line</label>
+<input type="text" id="editTemplateSubject" value="${template.subject}" class="admin-input-dark">
 </div>
-<div style="margin-bottom: 16px;">
-<label style="display: block; margin-bottom: 8px; color: #888; font-size: 13px;">Category</label>
-<select id="editTemplateCategory" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px;">
+<div class="mb-16">
+<label class="admin-field-label">Category</label>
+<select id="editTemplateCategory" class="admin-input-dark">
 <option value="onboarding" ${template.category === 'onboarding' ? 'selected' : ''}>Onboarding</option>
 <option value="project" ${template.category === 'project' ? 'selected' : ''}>Project Updates</option>
 <option value="payment" ${template.category === 'payment' ? 'selected' : ''}>Payment</option>
@@ -529,11 +529,11 @@ function editTemplate(templateId) {
 <option value="promo" ${template.category === 'promo' ? 'selected' : ''}>Promotional</option>
 </select>
 </div>
-<div style="margin-bottom: 16px;">
-<label style="display: block; margin-bottom: 8px; color: #888; font-size: 13px;">Email Body</label>
+<div class="mb-16">
+<label class="admin-field-label">Email Body</label>
 <textarea id="editTemplateBody" rows="12" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: inherit; line-height: 1.6;">${template.body}</textarea>
 </div>
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <button onclick="updateTemplate(${template.id})" style="flex: 1; padding: 14px; background: #e63946; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Save Changes</button>
 <button onclick="deleteTemplate(${template.id})" style="padding: 14px 24px; background: #333; color: #ef4444; border: 1px solid #ef4444; border-radius: 8px; cursor: pointer;">Delete</button>
 </div>
@@ -578,24 +578,24 @@ function showScheduleCampaignModal() {
 <h2 style="margin: 0; font-size: 20px;">Schedule Campaign</h2>
 <button onclick="document.getElementById('scheduleModal').remove()" style="background: none; border: none; color: #888; font-size: 24px; cursor: pointer;">&times;</button>
 </div>
-<div style="padding: 24px;">
-<div style="margin-bottom: 16px;">
-<label style="display: block; margin-bottom: 8px; color: #888; font-size: 13px;">Template</label>
-<select id="scheduleTemplate" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px;">
+<div class="p-24">
+<div class="mb-16">
+<label class="admin-field-label">Template</label>
+<select id="scheduleTemplate" class="admin-input-dark">
                             ${emailTemplates.map(t => `<option value="${t.id}">${t.name}</option>`).join('')}
 </select>
 </div>
-<div style="margin-bottom: 16px;">
-<label style="display: block; margin-bottom: 8px; color: #888; font-size: 13px;">Send To</label>
-<select id="scheduleAudience" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px;">
+<div class="mb-16">
+<label class="admin-field-label">Send To</label>
+<select id="scheduleAudience" class="admin-input-dark">
 <option value="all">All Clients</option>
 <option value="active">Active Clients (with projects)</option>
 <option value="leads">Leads Only</option>
 </select>
 </div>
-<div style="margin-bottom: 16px;">
-<label style="display: block; margin-bottom: 8px; color: #888; font-size: 13px;">Send Date & Time</label>
-<input type="datetime-local" id="scheduleDateTime" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px;">
+<div class="mb-16">
+<label class="admin-field-label">Send Date & Time</label>
+<input type="datetime-local" id="scheduleDateTime" class="admin-input-dark">
 </div>
 <button onclick="scheduleCampaign()" style="width: 100%; padding: 14px; background: #10b981; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Schedule Campaign</button>
 </div>
@@ -691,8 +691,8 @@ function loadAdminSubscriptionsPanel() {
     });
 
     let html = `
-<div style="padding: 32px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+<div class="p-32">
+<div class="flex-between mb-32">
 <div>
 <h2 style="font-size: 28px; font-weight: 700; color: #fff; margin: 0;">Subscription Management</h2>
 <p style="color: #888; margin-top: 8px;">Manage customer subscriptions and billing plans</p>
@@ -702,17 +702,17 @@ function loadAdminSubscriptionsPanel() {
 
             <!-- Stats Cards -->
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px;">
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
+<div class="admin-card-dark-sm">
 <div style="color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Total Subscribers</div>
 <div style="font-size: 36px; font-weight: 700; color: #e63946;">${totalSubscribers}</div>
 <div style="color: #666; font-size: 12px; margin-top: 8px;">Active subscriptions</div>
 </div>
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
+<div class="admin-card-dark-sm">
 <div style="color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Monthly Revenue</div>
 <div style="font-size: 36px; font-weight: 700; color: #10b981;">$${monthlyRevenue.toLocaleString()}</div>
 <div style="color: #666; font-size: 12px; margin-top: 8px;">Recurring monthly</div>
 </div>
-<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px;">
+<div class="admin-card-dark-sm">
 <div style="color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Active Plans</div>
 <div style="font-size: 36px; font-weight: 700; color: #3b82f6;">${Object.keys(planBreakdown).length}</div>
 <div style="color: #666; font-size: 12px; margin-top: 8px;">Of ${subscriptionPlans.length} plans</div>
@@ -720,7 +720,7 @@ function loadAdminSubscriptionsPanel() {
 </div>
 
             <!-- Plan Cards -->
-<div style="margin-bottom: 32px;">
+<div class="mb-32">
 <h2 style="font-size: 18px; font-weight: 600; color: #fff; margin: 0 0 16px 0;">Plans Overview</h2>
 <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;">
     `;
@@ -782,7 +782,7 @@ function loadAdminSubscriptionsPanel() {
 <td style="padding: 16px; color: #fff;">${sub.clientName}</td>
 <td style="padding: 16px; color: rgba(255,255,255,0.7);">${sub.plan}</td>
 <td style="padding: 16px; color: #e63946; font-weight: 600;">$${sub.price}/mo</td>
-<td style="padding: 16px;">
+<td class="p-16">
 <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: ${statusColors[sub.status]}20; color: ${statusColors[sub.status]}; border-radius: 100px; font-size: 12px; font-weight: 600;">
 <span>${statusIcons[sub.status]}</span>
                                     ${sub.status.charAt(0).toUpperCase() + sub.status.slice(1)}
@@ -822,7 +822,7 @@ function showAssignPlanModal(planId) {
 <div style="background: #111; border: 1px solid #333; border-radius: 16px; padding: 32px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;">
 <h2 style="font-size: 24px; font-weight: 700; color: #fff; margin: 0 0 24px 0;">Assign Subscription Plan</h2>
 
-<div style="margin-bottom: 20px;">
+<div class="mb-20">
 <label style="display: block; color: #fff; font-weight: 600; margin-bottom: 8px;">Select Client</label>
 <select id="assignPlanClient" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px;">
 <option value="">-- Choose a client --</option>
@@ -830,7 +830,7 @@ function showAssignPlanModal(planId) {
 </select>
 </div>
 
-<div style="margin-bottom: 20px;">
+<div class="mb-20">
 <label style="display: block; color: #fff; font-weight: 600; margin-bottom: 8px;">Select Plan</label>
 <select id="assignPlanSelect" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px;">
 <option value="">-- Choose a plan --</option>
@@ -843,31 +843,31 @@ function showAssignPlanModal(planId) {
 <div style="color: #888; font-size: 13px; line-height: 1.6;" id="planPreviewFeatures"></div>
 </div>
 
-<div style="margin-bottom: 20px;">
+<div class="mb-20">
 <label style="display: block; color: #fff; font-weight: 600; margin-bottom: 8px;">Start Date</label>
 <input type="date" id="assignPlanStartDate" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px;">
 </div>
 
-<div style="margin-bottom: 20px;">
+<div class="mb-20">
 <label style="display: block; color: #fff; font-weight: 600; margin-bottom: 8px;">Billing Method</label>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
 <label style="display: flex; align-items: center; gap: 8px; padding: 12px; background: #1a1a1a; border: 1px solid #e63946; border-radius: 8px; cursor: pointer;">
-<input type="radio" name="billingMethod" value="stripe" checked style="cursor: pointer;">
+<input type="radio" name="billingMethod" value="stripe" checked class="pointer">
 <span style="color: #fff; font-size: 14px;">Auto (Stripe)</span>
 </label>
 <label style="display: flex; align-items: center; gap: 8px; padding: 12px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; cursor: pointer;">
-<input type="radio" name="billingMethod" value="manual" style="cursor: pointer;">
+<input type="radio" name="billingMethod" value="manual" class="pointer">
 <span style="color: #fff; font-size: 14px;">Manual Invoice</span>
 </label>
 </div>
 </div>
 
-<div style="margin-bottom: 20px;">
+<div class="mb-20">
 <label style="display: block; color: #fff; font-weight: 600; margin-bottom: 8px;">Notes (optional)</label>
 <textarea id="assignPlanNotes" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; resize: vertical; min-height: 80px;" placeholder="Any special notes about this subscription..."></textarea>
 </div>
 
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <button onclick="document.getElementById('assignPlanModal').remove()" style="flex: 1; padding: 12px; background: #333; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Cancel</button>
 <button onclick="assignSubscription()" style="flex: 1; padding: 12px; background: #e63946; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Assign Plan</button>
 </div>
@@ -1008,7 +1008,7 @@ function showChangePlanModal(subId) {
 <div style="font-size: 18px; font-weight: 600; color: #fff;">${sub.plan} - $${sub.price}/mo</div>
 </div>
 
-<div style="margin-bottom: 20px;">
+<div class="mb-20">
 <label style="display: block; color: #fff; font-weight: 600; margin-bottom: 12px;">Select New Plan</label>
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
     `;
@@ -1028,7 +1028,7 @@ function showChangePlanModal(subId) {
 </div>
 </div>
 
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <button onclick="document.getElementById('changePlanModal').remove()" style="flex: 1; padding: 12px; background: #333; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Cancel</button>
 </div>
 </div>

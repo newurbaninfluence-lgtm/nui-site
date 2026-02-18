@@ -59,7 +59,7 @@ function loadAdminPaymentsPanel() {
 </tr>
 </thead>
 <tbody>
-                    ${payments.length === 0 ? '<tr><td colspan="7" style="text-align: center; opacity: 0.5;">No payments recorded yet</td></tr>' : ''}
+                    ${payments.length === 0 ? '<tr><td colspan="7" class="text-center opacity-50">No payments recorded yet</td></tr>' : ''}
                     ${payments.sort((a, b) => new Date(b.date) - new Date(a.date)).map(payment => `
 <tr>
 <td>${new Date(payment.date).toLocaleDateString()}</td>
@@ -84,7 +84,7 @@ function renderAutoPaySchedules() {
     const projectsWithAutoPay = projects.filter(p => p.paymentPlan && p.paymentPlan !== 'full');
 
     if (projectsWithAutoPay.length === 0) {
-        return '<p style="color: rgba(255,255,255,0.5);">No active auto-pay schedules. Create a project with a payment plan to see schedules here.</p>';
+        return '<p class="text-dim">No active auto-pay schedules. Create a project with a payment plan to see schedules here.</p>';
     }
 
     return `
@@ -103,7 +103,7 @@ function renderAutoPaySchedules() {
 <div class="client-card-name">${project.name}</div>
 <div class="client-card-meta">${project.clientName || 'Client'}<br>Plan: ${plan?.name || 'Standard'}</div>
 <div style="margin: 12px 0;">
-<div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+<div class="flex-between mb-8">
 <span style="font-size: 12px;">Progress</span>
 <span style="font-size: 12px;">${paidInstallments}/${plan?.installments || 3} payments</span>
 </div>
@@ -132,7 +132,7 @@ function showPaymentPlansInfo() {
     modal.className = 'modal-overlay active';
     modal.id = 'paymentPlansModal';
     modal.innerHTML = `
-<div class="modal" style="max-width: 700px;">
+<div class="modal max-w-700">
 <div class="modal-header">
 <h3 class="modal-title">Payment Plan Options</h3>
 <button class="modal-close" onclick="document.getElementById('paymentPlansModal').remove()">×</button>
@@ -143,7 +143,7 @@ function showPaymentPlansInfo() {
 <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border-left: 4px solid var(--red);">
 <h4 style="margin-bottom: 8px;">${plan.name} ${plan.discount > 0 ? `<span style="color: #2a9d8f;">(${plan.discount}% discount)</span>` : ''}</h4>
 <p style="font-size: 14px; opacity: 0.7; margin-bottom: 12px;">${plan.installments} installment(s)</p>
-<div style="display: flex; gap: 12px; flex-wrap: wrap;">
+<div class="flex-gap-12 flex-wrap">
                                 ${plan.schedule.map((pct, i) => `
 <div style="background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 8px; text-align: center;">
 <div style="font-size: 18px; font-weight: 600;">${pct}%</div>
@@ -172,31 +172,31 @@ function showRecordPaymentModal() {
     modal.innerHTML = `
 <div class="modal" style="background: #1a1a1a; color: #fff;">
 <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-<h3 class="modal-title" style="color: #fff;">💳 Record Payment</h3>
-<button class="modal-close" onclick="document.getElementById('recordPaymentModal').remove()" style="color: #fff;">×</button>
+<h3 class="modal-title text-white">💳 Record Payment</h3>
+<button class="modal-close" onclick="document.getElementById('recordPaymentModal').remove()" class="text-white">×</button>
 </div>
 <div class="modal-body">
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Client *</label>
-<select id="paymentClient" class="form-select" onchange="loadClientProjects(this.value)" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Client *</label>
+<select id="paymentClient" class="form-select" onchange="loadClientProjects(this.value)" class="admin-input">
 <option value="">-- Select Client --</option>
                         ${allClients.map(c => `<option value="${c.id}">${c.name}${c.company ? ' - ' + c.company : ''}</option>`).join('')}
 </select>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Project</label>
-<select id="paymentProject" class="form-select" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Project</label>
+<select id="paymentProject" class="form-select admin-input">
 <option value="">-- Select Project (select client first) --</option>
                         ${allProjects.map(p => `<option value="${p.id}">${p.name}</option>`).join('')}
 </select>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Amount *</label>
-<input type="number" id="paymentAmount" class="form-input" placeholder="0.00" step="0.01" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Amount *</label>
+<input type="number" id="paymentAmount" class="form-input" placeholder="0.00" step="0.01" class="admin-input">
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Payment Type</label>
-<select id="paymentType" class="form-select" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Payment Type</label>
+<select id="paymentType" class="form-select admin-input">
 <option value="deposit">Deposit (50%)</option>
 <option value="approval">Approval Payment (25%)</option>
 <option value="final">Final Payment (25%)</option>
@@ -206,17 +206,17 @@ function showRecordPaymentModal() {
 </select>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Date</label>
-<input type="date" id="paymentDate" class="form-input" value="${new Date().toISOString().split('T')[0]}" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Date</label>
+<input type="date" id="paymentDate" class="form-input" value="${new Date().toISOString().split('T')[0]}" class="admin-input">
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Notes</label>
-<textarea id="paymentNotes" class="form-textarea" rows="2" placeholder="Payment notes..." style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);"></textarea>
+<label class="form-label text-white">Notes</label>
+<textarea id="paymentNotes" class="form-textarea" rows="2" placeholder="Payment notes..." class="admin-input"></textarea>
 </div>
 </div>
 <div class="modal-footer" style="border-top: 1px solid rgba(255,255,255,0.1);">
 <button class="btn-admin secondary" onclick="document.getElementById('recordPaymentModal').remove()" style="background: #333; color: #fff;">Cancel</button>
-<button class="btn-admin primary" onclick="savePayment()" style="background: var(--red); color: #fff;">Record Payment</button>
+<button class="btn-admin primary" onclick="savePayment()" class="bg-red text-white">Record Payment</button>
 </div>
 </div>
     `;
@@ -371,14 +371,14 @@ function loadAdminInvoicesPanel(searchTerm = '', statusFilter = '') {
 </tr>
 </thead>
 <tbody>
-                    ${filtered.length === 0 ? '<tr><td colspan="9" style="text-align: center; opacity: 0.5;">No invoices found</td></tr>' : ''}
+                    ${filtered.length === 0 ? '<tr><td colspan="9" class="text-center opacity-50">No invoices found</td></tr>' : ''}
                     ${filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(invoice => `
 <tr>
 <td><input type="checkbox" class="invoice-checkbox" data-id="${invoice.id}"></td>
-<td style="font-weight: 600;">#${invoice.invoiceNumber || invoice.id}</td>
+<td class="fw-600">#${invoice.invoiceNumber || invoice.id}</td>
 <td>${invoice.clientName || 'N/A'}</td>
 <td>${invoice.projectName || 'N/A'}</td>
-<td style="font-weight: 600;">$${(invoice.total || 0).toLocaleString()}</td>
+<td class="fw-600">$${(invoice.total || 0).toLocaleString()}</td>
 <td>${new Date(invoice.createdAt).toLocaleDateString()}</td>
 <td>${invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : 'N/A'}</td>
 <td><span class="status-badge ${invoice.status}">${invoice.status}</span></td>
@@ -464,31 +464,31 @@ function showCreateInvoiceModal() {
     modal.innerHTML = `
 <div class="modal" style="max-width: 800px; background: #1a1a1a; color: #fff;">
 <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-<h3 class="modal-title" style="color: #fff;">📄 Create Invoice</h3>
-<button class="modal-close" onclick="document.getElementById('createInvoiceModal').remove()" style="color: #fff;">×</button>
+<h3 class="modal-title text-white">📄 Create Invoice</h3>
+<button class="modal-close" onclick="document.getElementById('createInvoiceModal').remove()" class="text-white">×</button>
 </div>
 <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
 <div class="form-row">
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Invoice Number</label>
-<input type="text" id="invoiceNumber" class="form-input" value="${invoiceNumber}" readonly style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Invoice Number</label>
+<input type="text" id="invoiceNumber" class="form-input" value="${invoiceNumber}" readonly class="admin-input">
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Due Date</label>
-<input type="date" id="invoiceDueDate" class="form-input" value="${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Due Date</label>
+<input type="date" id="invoiceDueDate" class="form-input" value="${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}" class="admin-input">
 </div>
 </div>
 <div class="form-row">
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Client *</label>
-<select id="invoiceClient" class="form-select" onchange="loadInvoiceClientProjects(this.value)" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Client *</label>
+<select id="invoiceClient" class="form-select" onchange="loadInvoiceClientProjects(this.value)" class="admin-input">
 <option value="">-- Select Client --</option>
                             ${allClients.map(c => `<option value="${c.id}">${c.name}${c.company ? ' - ' + c.company : ''}</option>`).join('')}
 </select>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Project</label>
-<select id="invoiceProject" class="form-select" onchange="populateInvoiceFromProject(this.value)" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Project</label>
+<select id="invoiceProject" class="form-select" onchange="populateInvoiceFromProject(this.value)" class="admin-input">
 <option value="">-- Select Project --</option>
                             ${allProjects.map(p => `<option value="${p.id}">${p.name}</option>`).join('')}
 </select>
@@ -500,15 +500,15 @@ function showCreateInvoiceModal() {
 <div class="form-section-title" style="color: var(--red); font-weight: 600;">⚡ Quick Add Service/Package</div>
 <div class="form-row">
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Packages</label>
-<select id="quickAddPackage" class="form-select" onchange="quickAddServiceToInvoice('package', this.value)" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Packages</label>
+<select id="quickAddPackage" class="form-select" onchange="quickAddServiceToInvoice('package', this.value)" class="admin-input">
 <option value="">-- Select Package --</option>
                                 ${servicePackages.map(p => '<option value="' + p.id + '">' + p.name + ' - $' + p.price + ' (' + p.turnaround + ')</option>').join('')}
 </select>
 </div>
 <div class="form-group">
-<label class="form-label" style="color: #fff;">Individual Services</label>
-<select id="quickAddService" class="form-select" onchange="quickAddServiceToInvoice('service', this.value)" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<label class="form-label text-white">Individual Services</label>
+<select id="quickAddService" class="form-select" onchange="quickAddServiceToInvoice('service', this.value)" class="admin-input">
 <option value="">-- Select Service --</option>
                                 ${individualServices.map(s => '<option value="' + s.id + '">' + s.name + ' - $' + s.price + '</option>').join('')}
 </select>
@@ -517,30 +517,30 @@ function showCreateInvoiceModal() {
 <button onclick="showCreateProductModal()" class="btn-admin" style="margin-top: 12px; background: #10b981; color: #fff; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer;">➕ Create New Product/Service</button>
 </div>
 
-<div class="form-section" style="margin-top: 24px;">
+<div class="form-section mt-24">
 <div class="form-section-title">Line Items</div>
 <div id="invoiceLineItems">
 <div class="invoice-line-item" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 12px; margin-bottom: 12px; align-items: end;">
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <label class="form-label">Description</label>
 <input type="text" class="form-input line-desc" placeholder="Service description">
 </div>
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <label class="form-label">Qty</label>
 <input type="number" class="form-input line-qty" value="1" min="1" onchange="calculateInvoiceTotal()">
 </div>
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <label class="form-label">Rate</label>
 <input type="number" class="form-input line-rate" placeholder="0.00" step="0.01" onchange="calculateInvoiceTotal()">
 </div>
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <label class="form-label">Amount</label>
 <input type="text" class="form-input line-amount" readonly value="$0.00">
 </div>
 <button class="btn-admin small" onclick="removeInvoiceLine(this)" style="margin-bottom: 4px;">×</button>
 </div>
 </div>
-<button class="btn-admin secondary" onclick="addInvoiceLine()" style="margin-top: 12px;">+ Add Line Item</button>
+<button class="btn-admin secondary" onclick="addInvoiceLine()" class="mt-12">+ Add Line Item</button>
 </div>
 
                 <!-- Discount Section -->
@@ -570,12 +570,12 @@ function showCreateInvoiceModal() {
 <div style="display: flex; justify-content: flex-end; margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
 <div style="text-align: right; min-width: 200px;">
 <div style="font-size: 14px; opacity: 0.7; margin-bottom: 8px;">Subtotal: <span id="invoiceSubtotal">$0.00</span></div>
-<div style="font-size: 14px; color: #2ecc71; margin-bottom: 8px;" id="discountLine" style="display: none;">Discount: -<span id="invoiceDiscount">$0.00</span></div>
-<div style="font-size: 24px; font-weight: 600;">Total: <span id="invoiceTotal" style="color: var(--red);">$0.00</span></div>
+<div style="font-size: 14px; color: #2ecc71; margin-bottom: 8px;" id="discountLine" class="hidden">Discount: -<span id="invoiceDiscount">$0.00</span></div>
+<div style="font-size: 24px; font-weight: 600;">Total: <span id="invoiceTotal" class="text-red">$0.00</span></div>
 </div>
 </div>
 
-<div class="form-group" style="margin-top: 24px;">
+<div class="form-group mt-24">
 <label class="form-label">Notes</label>
 <textarea id="invoiceNotes" class="form-textarea" rows="3" placeholder="Payment terms, additional notes...">Payment due within 30 days. Thank you for your business!</textarea>
 </div>
@@ -595,16 +595,16 @@ function addInvoiceLine() {
     lineItem.className = 'invoice-line-item';
     lineItem.style.cssText = 'display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 12px; margin-bottom: 12px; align-items: end;';
     lineItem.innerHTML = `
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <input type="text" class="form-input line-desc" placeholder="Service description">
 </div>
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <input type="number" class="form-input line-qty" value="1" min="1" onchange="calculateInvoiceTotal()">
 </div>
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <input type="number" class="form-input line-rate" placeholder="0.00" step="0.01" onchange="calculateInvoiceTotal()">
 </div>
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <input type="text" class="form-input line-amount" readonly value="$0.00">
 </div>
 <button class="btn-admin small" onclick="removeInvoiceLine(this)" style="margin-bottom: 4px;">×</button>
@@ -684,16 +684,16 @@ function quickAddServiceToInvoice(type, id) {
     lineItem.className = 'invoice-line-item';
     lineItem.style.cssText = 'display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 12px; margin-bottom: 12px; align-items: end;';
     lineItem.innerHTML = `
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <input type="text" class="form-input line-desc" value="${item.name}${item.turnaround ? ' (' + item.turnaround + ')' : ''}">
 </div>
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <input type="number" class="form-input line-qty" value="1" min="1" onchange="calculateInvoiceTotal()">
 </div>
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <input type="number" class="form-input line-rate" value="${item.price}" step="0.01" onchange="calculateInvoiceTotal()">
 </div>
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <input type="text" class="form-input line-amount" readonly value="$${item.price.toFixed(2)}">
 </div>
 <button class="btn-admin small" onclick="removeInvoiceLine(this)" style="margin-bottom: 4px;">×</button>
@@ -724,19 +724,19 @@ function populateInvoiceFromProject(projectId) {
     // Clear existing lines and add project line
     document.getElementById('invoiceLineItems').innerHTML = `
 <div class="invoice-line-item" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 12px; margin-bottom: 12px; align-items: end;">
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <label class="form-label">Description</label>
 <input type="text" class="form-input line-desc" value="${project.name} - ${pkg?.name || project.package || 'Custom Project'}">
 </div>
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <label class="form-label">Qty</label>
 <input type="number" class="form-input line-qty" value="1" min="1" onchange="calculateInvoiceTotal()">
 </div>
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <label class="form-label">Rate</label>
 <input type="number" class="form-input line-rate" value="${project.totalAmount || pkg?.price || 0}" step="0.01" onchange="calculateInvoiceTotal()">
 </div>
-<div class="form-group" style="margin: 0;">
+<div class="form-group m-0">
 <label class="form-label">Amount</label>
 <input type="text" class="form-input line-amount" readonly value="$${project.totalAmount || pkg?.price || 0}">
 </div>
@@ -797,10 +797,10 @@ function viewInvoice(id) {
     modal.className = 'modal-overlay active';
     modal.id = 'viewInvoiceModal';
     modal.innerHTML = `
-<div class="modal" style="max-width: 700px;">
+<div class="modal max-w-700">
 <div class="modal-header" style="background: var(--red);">
-<h3 class="modal-title" style="color: #fff;">Invoice ${invoice.invoiceNumber}</h3>
-<button class="modal-close" onclick="document.getElementById('viewInvoiceModal').remove()" style="color: #fff;">×</button>
+<h3 class="modal-title text-white">Invoice ${invoice.invoiceNumber}</h3>
+<button class="modal-close" onclick="document.getElementById('viewInvoiceModal').remove()" class="text-white">×</button>
 </div>
 <div class="modal-body" style="background: #fff; color: #1a1a1a;">
 <div style="display: flex; justify-content: space-between; margin-bottom: 32px;">
@@ -808,10 +808,10 @@ function viewInvoice(id) {
 <h2 style="color: var(--red); margin-bottom: 8px;">NEW URBAN INFLUENCE</h2>
 <p style="font-size: 14px; opacity: 0.7;">Detroit, MI<br>newurbaninfluence@gmail.com</p>
 </div>
-<div style="text-align: right;">
-<p style="font-size: 14px;"><strong>Invoice #:</strong> ${invoice.invoiceNumber}</p>
-<p style="font-size: 14px;"><strong>Date:</strong> ${new Date(invoice.createdAt).toLocaleDateString()}</p>
-<p style="font-size: 14px;"><strong>Due:</strong> ${invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : 'N/A'}</p>
+<div class="text-right">
+<p class="fs-14"><strong>Invoice #:</strong> ${invoice.invoiceNumber}</p>
+<p class="fs-14"><strong>Date:</strong> ${new Date(invoice.createdAt).toLocaleDateString()}</p>
+<p class="fs-14"><strong>Due:</strong> ${invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : 'N/A'}</p>
 </div>
 </div>
 
@@ -850,7 +850,7 @@ function viewInvoice(id) {
 </div>
 <div style="display: flex; justify-content: space-between; padding: 12px 0; font-size: 20px; font-weight: 600;">
 <span>Total:</span>
-<span style="color: var(--red);">$${invoice.total?.toFixed(2)}</span>
+<span class="text-red">$${invoice.total?.toFixed(2)}</span>
 </div>
 </div>
 </div>
@@ -952,7 +952,7 @@ function downloadInvoice(id) {
 <div class="company">NEW URBAN INFLUENCE</div>
 <p>Detroit, MI<br>newurbaninfluence@gmail.com</p>
 </div>
-<div style="text-align: right;">
+<div class="text-right">
 <p><strong>Invoice #:</strong> ${invoice.invoiceNumber}</p>
 <p><strong>Date:</strong> ${new Date(invoice.createdAt).toLocaleDateString()}</p>
 <p><strong>Due:</strong> ${invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : 'N/A'}</p>
@@ -962,12 +962,12 @@ function downloadInvoice(id) {
 <strong>Bill To:</strong><br>${invoice.clientName}<br>${invoice.clientEmail || ''}
 </div>
 <table>
-<thead><tr><th>Description</th><th>Qty</th><th style="text-align: right;">Rate</th><th style="text-align: right;">Amount</th></tr></thead>
+<thead><tr><th>Description</th><th>Qty</th><th class="text-right">Rate</th><th class="text-right">Amount</th></tr></thead>
 <tbody>
-                    ${invoice.lineItems?.map(item => `<tr><td>${item.description}</td><td>${item.qty}</td><td style="text-align: right;">$${item.rate?.toFixed(2)}</td><td style="text-align: right;">$${item.amount?.toFixed(2)}</td></tr>`).join('') || ''}
+                    ${invoice.lineItems?.map(item => `<tr><td>${item.description}</td><td>${item.qty}</td><td class="text-right">$${item.rate?.toFixed(2)}</td><td class="text-right">$${item.amount?.toFixed(2)}</td></tr>`).join('') || ''}
 </tbody>
 </table>
-<div style="text-align: right;">
+<div class="text-right">
 <p>Subtotal: $${invoice.subtotal?.toFixed(2)}</p>
 <p class="total-row">Total: $${invoice.total?.toFixed(2)}</p>
 </div>
@@ -1010,7 +1010,7 @@ async function sendInvoiceToClient(id) {
 <h2 style="color: #fff; margin: 0; font-size: 24px;">INVOICE</h2>
 <p style="color: rgba(255,255,255,0.8); margin: 8px 0 0; font-size: 14px;">${invoice.invoiceNumber || '#' + invoice.id}</p>
 </div>
-<div style="padding: 32px;">
+<div class="p-32">
 <p style="font-size: 16px; color: #333;">Hi ${invoice.clientName || client?.name || 'there'},</p>
 <p style="font-size: 14px; color: #666; line-height: 1.6;">Please find your invoice from New Urban Influence below. ${invoice.dueDate ? 'Payment is due by <strong>' + new Date(invoice.dueDate).toLocaleDateString() + '</strong>.' : ''}</p>
 
@@ -1107,7 +1107,7 @@ function loadAdminPayoutsPanel() {
     const totalIncome = totalRevenue + monthlyRecurring;
 
     document.getElementById('adminPayoutsPanel').innerHTML = `
-<div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;">
+<div class="panel-header flex-between">
 <div>
 <h2 class="panel-title">💰 Payouts & Profit</h2>
 <p class="panel-subtitle">Revenue breakdown, designer payouts, and profit tracking</p>
@@ -1185,9 +1185,9 @@ function loadAdminPayoutsPanel() {
                     ${Object.entries(designerEarnings).map(([name, data]) => `
 <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
 <td style="padding:14px 8px;">
-<div style="display:flex;align-items:center;gap:12px;">
+<div class="flex-center-gap-12">
 <div style="width:36px;height:36px;background:linear-gradient(135deg,#e63946,#d62839);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px;">${name.charAt(0)}</div>
-<span style="font-weight:600;color:#fff;">${name}</span>
+<span class="text-bold-white">${name}</span>
 </div>
 </td>
 <td style="text-align:center;padding:14px 8px;color:rgba(255,255,255,0.7);">${data.orders}</td>
@@ -1209,14 +1209,14 @@ function loadAdminPayoutsPanel() {
 <div style="display:flex;flex-direction:column;gap:10px;">
                 ${designerPayouts.slice(-10).reverse().map(p => `
 <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;">
-<div style="display:flex;align-items:center;gap:12px;">
+<div class="flex-center-gap-12">
 <div style="width:32px;height:32px;background:rgba(16,185,129,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;">💸</div>
 <div>
 <div style="font-weight:600;color:#fff;font-size:14px;">${p.designer}</div>
 <div style="font-size:12px;color:rgba(255,255,255,0.4);">${new Date(p.date).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}</div>
 </div>
 </div>
-<div style="text-align:right;">
+<div class="text-right">
 <div style="font-weight:700;color:#10b981;font-size:16px;">$${p.amount.toLocaleString()}</div>
 <div style="font-size:11px;color:rgba(255,255,255,0.35);">${p.method || 'Stripe'}</div>
 </div>

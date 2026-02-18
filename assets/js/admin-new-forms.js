@@ -11,25 +11,25 @@ function loadAdminNewOrderPanel() {
 <div style="font-weight: 600; font-size: 16px; margin-bottom: 8px;">${pkg.name}</div>
 <div style="font-size: 24px; font-weight: 700; color: var(--red); margin-bottom: 8px;">${pkg.price > 0 ? '$' + pkg.price.toLocaleString() : 'Custom'}</div>
 <div style="font-size: 12px; color: #888; margin-bottom: 8px;">${pkg.turnaround}</div>
-<div style="font-size: 13px; color: #666;">${pkg.desc}</div>
+<div class="text-muted-sm">${pkg.desc}</div>
 </div>
                 `).join('')}
 </div>
 </div>
 
         <!-- ORDER FORM -->
-<form onsubmit="createOrder(event)" class="form-section" style="max-width: 700px;">
+<form onsubmit="createOrder(event)" class="form-section max-w-700">
 <div class="form-section-title">📋 Order Details</div>
 <div class="form-row">
 <div class="form-group"><label class="form-label">Client *</label>
-<select id="orderClient" class="form-input" required style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<select id="orderClient" class="form-input" required class="admin-input">
 <option value="">-- Select or Add New --</option>
                         ${clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
 <option value="new">+ Add New Client</option>
 </select>
 </div>
 <div class="form-group"><label class="form-label">Package</label>
-<select id="orderPackage" class="form-input" onchange="fillPackageDetails()" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<select id="orderPackage" class="form-input" onchange="fillPackageDetails()" class="admin-input">
 <option value="">-- Select Package --</option>
 <optgroup label="📦 Service Packages">
                         ${servicePackages.map(p => `<option value="${p.id}">${p.name} - $${p.price}</option>`).join('')}
@@ -69,17 +69,17 @@ function loadAdminNewOrderPanel() {
 </div>
 </div>
 <div style="display: flex; gap: 12px; margin-top: 20px;">
-<button type="submit" class="btn-cta" style="flex: 1;">Create Order & Invoice</button>
+<button type="submit" class="btn-cta flex-1">Create Order & Invoice</button>
 <button type="button" onclick="generateLeadForm()" class="btn-cta" style="flex: 1; background: #000;">Generate Lead Form</button>
 </div>
 </form>
 
         <!-- LEAD FORM GENERATOR -->
-<div class="form-section" id="leadFormSection" style="display: none;">
+<div class="form-section" id="leadFormSection" class="hidden">
 <div class="form-section-title">🎯 Lead Capture Form Code</div>
 <p style="color: #666; margin-bottom: 16px;">Copy this code and paste it on your website to capture leads:</p>
 <textarea id="leadFormCode" class="form-input" rows="12" style="font-family: monospace; font-size: 12px;" readonly></textarea>
-<button onclick="copyLeadForm()" class="btn-cta" style="margin-top: 12px;">📋 Copy Form Code</button>
+<button onclick="copyLeadForm()" class="btn-cta mt-12">📋 Copy Form Code</button>
 </div>
     `;
 }
@@ -217,7 +217,7 @@ function loadAdminNewClientPanel() {
     document.getElementById('adminNewclientPanel').innerHTML = `
 <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">Create New Client</h2>
 <p style="color: #888; margin-bottom: 32px;">Fill in client details to set up their portal, then send a welcome email with questionnaire.</p>
-<form onsubmit="createClient(event)" class="form-section" style="max-width: 700px;">
+<form onsubmit="createClient(event)" class="form-section max-w-700">
 
             <!-- CONTACT INFO -->
 <div style="font-weight: 600; font-size: 16px; margin-bottom: 16px; color: var(--red); display: flex; align-items: center; gap: 8px;">👤 Contact Information</div>
@@ -242,14 +242,14 @@ function loadAdminNewClientPanel() {
 </div>
 <div class="form-row">
 <div class="form-group"><label class="form-label">Service Package *</label>
-<select id="newClientService" class="form-input" required style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<select id="newClientService" class="form-input" required class="admin-input">
 <option value="">What service are they getting?</option>
 ${servicePackages.map(p => '<option value="' + p.id + '">' + p.name + ' — $' + p.price.toLocaleString() + '</option>').join('')}
 <option value="custom">Custom / Multiple Services</option>
 </select>
 </div>
 <div class="form-group"><label class="form-label">Referral Source</label>
-<select id="newClientReferral" class="form-input" style="background: #252525; color: #fff; border: 1px solid rgba(255,255,255,0.2);">
+<select id="newClientReferral" class="form-input admin-input">
 <option value="">How did they find us?</option>
 <option value="google">Google Search</option>
 <option value="instagram">Instagram</option>
@@ -268,7 +268,7 @@ ${servicePackages.map(p => '<option value="' + p.id + '">' + p.name + ' — $' +
             <!-- BRANDING (Optional) -->
 <div style="font-weight: 600; font-size: 16px; margin: 24px 0 16px; color: var(--red); display: flex; align-items: center; gap: 8px;">🎨 Branding (Optional — can be set later)</div>
 <div class="form-group"><label class="form-label">Brand Colors</label>
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <input type="color" id="color1" value="#ff0000" style="width: 50px; height: 40px; border: none; cursor: pointer;">
 <input type="color" id="color2" value="#000000" style="width: 50px; height: 40px; border: none; cursor: pointer;">
 <input type="color" id="color3" value="#ffffff" style="width: 50px; height: 40px; border: none; cursor: pointer;">
@@ -283,13 +283,13 @@ ${servicePackages.map(p => '<option value="' + p.id + '">' + p.name + ' — $' +
 <div style="font-weight: 600; font-size: 16px; margin: 24px 0 16px; color: var(--red); display: flex; align-items: center; gap: 8px;">🚀 Onboarding Actions</div>
 <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
 <label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; cursor: pointer;">
-<input type="checkbox" id="sendWelcomeEmail" checked> <span style="font-size: 14px;">📧 Send Welcome Email</span>
+<input type="checkbox" id="sendWelcomeEmail" checked> <span class="fs-14">📧 Send Welcome Email</span>
 </label>
 <label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; cursor: pointer;">
-<input type="checkbox" id="sendQuestionnaire" checked> <span style="font-size: 14px;">📋 Send Service Questionnaire</span>
+<input type="checkbox" id="sendQuestionnaire" checked> <span class="fs-14">📋 Send Service Questionnaire</span>
 </label>
 <label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; cursor: pointer;">
-<input type="checkbox" id="addToPipeline" checked> <span style="font-size: 14px;">📊 Add to CRM Pipeline</span>
+<input type="checkbox" id="addToPipeline" checked> <span class="fs-14">📊 Add to CRM Pipeline</span>
 </label>
 </div>
 

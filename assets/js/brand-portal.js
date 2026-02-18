@@ -19,9 +19,9 @@ function loadEnhancedBrandPortal(client) {
         <!-- Back Navigation Bar -->
 <div class="portal-nav-bar" style="background: rgba(0,0,0,0.9); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100;">
 <button onclick="goBackFromPortal()" class="portal-back-btn" style="display: flex; align-items: center; gap: 8px; background: none; border: none; color: #fff; cursor: pointer; font-size: 16px; padding: 8px 16px; border-radius: 8px; transition: background 0.2s;">
-<span style="font-size: 20px;">←</span> Back
+<span class="fs-20">←</span> Back
 </button>
-<span style="color: #888; font-size: 14px;">${client.name} Brand Portal</span>
+<span class="text-muted fs-14">${client.name} Brand Portal</span>
             ${currentUser?.type === 'admin' ? `<button onclick="backToAdmin()" style="background: var(--accent); color: #000; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600;">Admin Dashboard</button>` : '<div></div>'}
 </div>
 
@@ -160,7 +160,7 @@ function renderTypography(data, useGuide) {
 <span>0123456789</span>
 </div>
 <div class="typography-download">
-<span style="flex: 1;">${headingFont} Font Family</span>
+<span class="flex-1">${headingFont} Font Family</span>
 <button class="typography-download-btn" onclick="alert('Download font files')">Download</button>
 </div>
 </div>
@@ -176,7 +176,7 @@ function renderTypography(data, useGuide) {
 <span>Bold 700</span>
 </div>
 <div class="typography-download">
-<span style="flex: 1;">${bodyFont} Font Family</span>
+<span class="flex-1">${bodyFont} Font Family</span>
 <button class="typography-download-btn" onclick="alert('Download font files')">Download</button>
 </div>
 </div>

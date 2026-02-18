@@ -4,7 +4,7 @@ function loadPortalView() {
 <div class="login-box">
 <div style="text-align: center; margin-bottom: 32px;">
 <img loading="lazy" src="icons/icon-192.png" alt="NUI" style="height: 60px; margin-bottom: 16px;">
-<h2 style="font-size: 24px; margin-bottom: 8px;">Brand Portal</h2>
+<h2 class="fs-24 mb-8">Brand Portal</h2>
 <p style="color: var(--gray); font-size: 14px;">Access your brand assets & orders</p>
 </div>
 <div class="login-tabs">
@@ -29,7 +29,7 @@ function loadPortalView() {
 </div>
 
                 <!-- Social Login Buttons -->
-<div style="display: flex; flex-direction: column; gap: 12px;">
+<div class="flex-col-gap-12">
 <button onclick="googleSignIn()" style="display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 12px 16px; background: #fff; color: #333; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;">
 <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                         Continue with Google
@@ -39,7 +39,7 @@ function loadPortalView() {
                 <!-- Staff Demo Credentials (hidden for clients) -->
 <div id="staffDemoSection" style="display: none; margin-top: 24px;">
 <p style="text-align: center; color: var(--gray); font-size: 11px; margin-bottom: 12px;">Staff Demo Credentials:<br>Designer: faren@nui.com / designer123<br>Admin: admin@nui.com / admin123</p>
-<div style="display: flex; flex-direction: column; gap: 8px;">
+<div class="flex-col-gap-8">
 <button onclick="quickAdminAccess()" style="padding: 12px 16px; background: linear-gradient(135deg, #e11d48, #be185d); border: none; color: #fff; cursor: pointer; border-radius: 8px; font-size: 14px; font-weight: 600; width: 100%;">⚡ Quick Admin Access (Demo)</button>
 <button onclick="quickDesignerAccess()" style="padding: 10px 12px; background: #3b82f6; border: none; color: #fff; cursor: pointer; border-radius: 6px; font-size: 12px; font-weight: 500;">👨‍🎨 Quick Designer Access</button>
 </div>
@@ -47,13 +47,13 @@ function loadPortalView() {
 </div>
 </div>
 </div>
-<div id="adminDashboard" style="display: none;">
+<div id="adminDashboard" class="hidden">
 <header class="admin-header" style="background: var(--admin-header); border-bottom: 1px solid var(--admin-border);">
 <div style="display: flex; align-items: center; gap: 16px;">
 <img loading="lazy" id="adminHeaderLogo" src="icons/icon-192.png" alt="NUI" style="height: 32px;">
 <span style="font-weight: 600; color: var(--admin-text);" id="adminHeaderTitle">Admin Dashboard</span>
 </div>
-<div style="display: flex; align-items: center; gap: 12px;">
+<div class="flex-center-gap-12">
 <span id="adminUserInfo" style="font-size: 13px; color: var(--admin-text-muted);"></span>
 <button class="theme-toggle-btn" onclick="toggleTheme()" style="padding: 8px 16px; background: var(--admin-card); border: 1px solid var(--admin-border); color: var(--admin-text); cursor: pointer; border-radius: 4px; font-family: inherit; font-weight: 500;">☀️ Light</button>
 <button onclick="portalLogout()" style="padding: 8px 16px; background: var(--red); border: none; color: #fff; cursor: pointer; border-radius: 4px; font-family: inherit; font-weight: 500;">Logout</button>
@@ -172,7 +172,7 @@ function loadPortalView() {
 </div>
 <div id="clientPortal" style="display: none; min-height: 100vh; background: #000; color: #fff;">
 <header style="background: #000; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 76px; left: 0; right: 0; z-index: 100;">
-<span id="clientPortalName" style="font-weight: 600;"></span>
+<span id="clientPortalName" class="fw-600"></span>
 <button onclick="portalLogout()" style="padding: 8px 16px; background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; cursor: pointer; border-radius: 4px;">Sign Out</button>
 </header>
 <div id="clientPortalContent" style="padding-top: 132px;"></div>
@@ -186,22 +186,22 @@ function loadPortalView() {
 </div>
 
         <!-- Designer NDA Modal -->
-<div id="ndaModal" class="modal-overlay" style="display: none;">
-<div class="modal" style="max-width: 700px;">
+<div id="ndaModal" class="modal-overlay hidden">
+<div class="modal max-w-700">
 <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
 <h3 class="modal-title">🔒 Non-Disclosure Agreement</h3>
 </div>
 <div class="modal-body" style="max-height: 60vh; overflow-y: auto; padding: 24px;">
 <div style="background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.3); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-<strong style="color: var(--red);">⚠️ IMPORTANT:</strong> You must read and agree to this NDA before accessing client projects.
+<strong class="text-red">⚠️ IMPORTANT:</strong> You must read and agree to this NDA before accessing client projects.
 </div>
 <h4 style="margin-bottom: 12px;">DESIGNER NON-DISCLOSURE & NON-SOLICITATION AGREEMENT</h4>
 <p style="color: #888; font-size: 13px; line-height: 1.7; margin-bottom: 16px;">This Agreement is entered into between New Urban Influence ("Company") and the undersigned Designer ("Contractor").</p>
 
-<h5 style="margin: 16px 0 8px; color: var(--red);">1. CONFIDENTIAL INFORMATION</h5>
+<h5 class="admin-subheading-red">1. CONFIDENTIAL INFORMATION</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;">Contractor agrees to hold in strict confidence all client information, project details, business strategies, pricing, and any other proprietary information disclosed during the course of work.</p>
 
-<h5 style="margin: 16px 0 8px; color: var(--red);">2. NON-SOLICITATION OF CLIENTS</h5>
+<h5 class="admin-subheading-red">2. NON-SOLICITATION OF CLIENTS</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;"><strong>Contractor agrees NOT to:</strong></p>
 <ul style="color: #888; font-size: 13px; line-height: 1.7; margin-left: 20px;">
 <li>Contact, solicit, or communicate with any Company client directly</li>
@@ -210,13 +210,13 @@ function loadPortalView() {
 <li>Share client contact information with any third party</li>
 </ul>
 
-<h5 style="margin: 16px 0 8px; color: var(--red);">3. NON-COMPETE</h5>
+<h5 class="admin-subheading-red">3. NON-COMPETE</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;">Contractor shall not offer services identical or substantially similar to those provided to Company clients for 12 months after the termination of this agreement.</p>
 
-<h5 style="margin: 16px 0 8px; color: var(--red);">4. WORK PRODUCT</h5>
+<h5 class="admin-subheading-red">4. WORK PRODUCT</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;">All work created for Company clients is the exclusive property of New Urban Influence and its clients. Contractor may not use, display, or claim ownership of work without written consent.</p>
 
-<h5 style="margin: 16px 0 8px; color: var(--red);">5. BREACH & PENALTIES</h5>
+<h5 class="admin-subheading-red">5. BREACH & PENALTIES</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;">Violation of this agreement will result in immediate termination, forfeiture of unpaid earnings, and may result in legal action including damages of no less than $25,000 per incident.</p>
 
 <div style="background: #111; border-radius: 8px; padding: 16px; margin-top: 24px;">
@@ -234,8 +234,8 @@ function loadPortalView() {
 </div>
 
         <!-- Client Terms & Conditions Modal -->
-<div id="termsModal" class="modal-overlay" style="display: none;">
-<div class="modal" style="max-width: 700px;">
+<div id="termsModal" class="modal-overlay hidden">
+<div class="modal max-w-700">
 <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
 <h3 class="modal-title">📋 Terms & Conditions</h3>
 </div>
@@ -246,27 +246,27 @@ function loadPortalView() {
 
 <h4 style="margin-bottom: 12px;">SERVICE AGREEMENT TERMS</h4>
 
-<h5 style="margin: 16px 0 8px; color: var(--red);">1. PROJECT TIMELINES</h5>
+<h5 class="admin-subheading-red">1. PROJECT TIMELINES</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;">All delivery dates and timelines provided are <strong>estimates only</strong> and not guaranteed. While we strive to meet all deadlines, project completion depends on timely client feedback, asset delivery, and approval responses. Delays caused by client response times will extend the project timeline accordingly.</p>
 
-<h5 style="margin: 16px 0 8px; color: var(--red);">2. REVISIONS & CHANGES</h5>
+<h5 class="admin-subheading-red">2. REVISIONS & CHANGES</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;">Each package includes a specified number of revision rounds. Additional revisions beyond the included amount will be billed at our standard hourly rate. Major scope changes after project start may require a new quote.</p>
 
-<h5 style="margin: 16px 0 8px; color: var(--red);">3. PAYMENT TERMS</h5>
+<h5 class="admin-subheading-red">3. PAYMENT TERMS</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;">A 50% deposit is required to begin work. The remaining balance is due upon project completion, prior to delivery of final files. Invoices not paid within 14 days may incur a 5% late fee.</p>
 
-<h5 style="margin: 16px 0 8px; color: var(--red);">4. REFUND POLICY</h5>
+<h5 class="admin-subheading-red">4. REFUND POLICY</h5>
 <div style="background: rgba(255,0,0,0.1); border-left: 4px solid var(--red); padding: 12px 16px; margin: 12px 0;">
 <p style="color: #fff; font-size: 13px; line-height: 1.7; margin: 0;"><strong>NO REFUNDS</strong> will be issued once work has commenced. By paying your invoice, you acknowledge that creative work has begun and the deposit is non-refundable. If you cancel before work begins, a full refund minus a 10% administrative fee will be issued.</p>
 </div>
 
-<h5 style="margin: 16px 0 8px; color: var(--red);">5. CLIENT RESPONSIBILITIES</h5>
+<h5 class="admin-subheading-red">5. CLIENT RESPONSIBILITIES</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;">Client agrees to provide all necessary materials (logos, images, content, feedback) in a timely manner. Failure to respond within 7 days may result in project delays or the need to reschedule.</p>
 
-<h5 style="margin: 16px 0 8px; color: var(--red);">6. INTELLECTUAL PROPERTY</h5>
+<h5 class="admin-subheading-red">6. INTELLECTUAL PROPERTY</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;">Upon full payment, client receives full ownership and rights to all final deliverables. New Urban Influence retains the right to display work in portfolios and marketing materials unless otherwise agreed in writing.</p>
 
-<h5 style="margin: 16px 0 8px; color: var(--red);">7. LIMITATION OF LIABILITY</h5>
+<h5 class="admin-subheading-red">7. LIMITATION OF LIABILITY</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;">New Urban Influence's liability is limited to the amount paid for services. We are not liable for any indirect, consequential, or incidental damages arising from the use of our services or deliverables.</p>
 
 <div style="background: #111; border-radius: 8px; padding: 16px; margin-top: 24px;">
@@ -284,46 +284,46 @@ function loadPortalView() {
 </div>
 
         <!-- Meeting Calendar Modal -->
-<div id="meetingModal" class="modal-overlay" style="display: none;">
+<div id="meetingModal" class="modal-overlay hidden">
 <div class="modal" style="max-width: 600px;">
 <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
 <h3 class="modal-title">📅 Schedule a Meeting</h3>
 <button class="modal-close" onclick="closeMeetingModal()">×</button>
 </div>
-<div class="modal-body" style="padding: 24px;">
-<p style="color: #888; margin-bottom: 24px;">Select your preferred meeting type, date, and time. Meetings are available Monday, Wednesday, and Friday from 10am to 4pm.</p>
+<div class="modal-body p-24">
+<p class="text-muted mb-24">Select your preferred meeting type, date, and time. Meetings are available Monday, Wednesday, and Friday from 10am to 4pm.</p>
 
-<div style="margin-bottom: 20px;">
+<div class="mb-20">
 <label style="font-weight: 600; display: block; margin-bottom: 8px;">Meeting Type</label>
-<div style="display: flex; gap: 12px;">
+<div class="flex-gap-12">
 <label style="flex: 1; background: #111; border: 2px solid #333; border-radius: 8px; padding: 16px; cursor: pointer; text-align: center; transition: all 0.2s;" onclick="selectMeetingType('zoom')">
-<input type="radio" name="meetingType" value="zoom" style="display: none;">
-<div style="font-size: 24px; margin-bottom: 8px;">💻</div>
-<div style="font-weight: 600;">Zoom Call</div>
-<div style="font-size: 12px; color: #888;">Video meeting</div>
+<input type="radio" name="meetingType" value="zoom" class="hidden">
+<div class="fs-24 mb-8">💻</div>
+<div class="fw-600">Zoom Call</div>
+<div class="text-muted fs-12">Video meeting</div>
 </label>
 <label style="flex: 1; background: #111; border: 2px solid #333; border-radius: 8px; padding: 16px; cursor: pointer; text-align: center; transition: all 0.2s;" onclick="selectMeetingType('phone')">
-<input type="radio" name="meetingType" value="phone" style="display: none;">
-<div style="font-size: 24px; margin-bottom: 8px;">📞</div>
-<div style="font-weight: 600;">Phone Call</div>
-<div style="font-size: 12px; color: #888;">Voice only</div>
+<input type="radio" name="meetingType" value="phone" class="hidden">
+<div class="fs-24 mb-8">📞</div>
+<div class="fw-600">Phone Call</div>
+<div class="text-muted fs-12">Voice only</div>
 </label>
 </div>
 </div>
 
-<div style="margin-bottom: 20px;">
+<div class="mb-20">
 <label style="font-weight: 600; display: block; margin-bottom: 8px;">Select Date</label>
 <div id="calendarGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; background: #111; border-radius: 8px; padding: 12px;"></div>
 </div>
 
-<div style="margin-bottom: 20px;">
+<div class="mb-20">
 <label style="font-weight: 600; display: block; margin-bottom: 8px;">Select Time</label>
 <div id="timeSlots" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;"></div>
 </div>
 
 <div id="selectedMeetingInfo" style="display: none; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 8px; padding: 16px; margin-top: 16px;">
 <div style="font-weight: 600; color: #10b981; margin-bottom: 8px;">✓ Meeting Selected</div>
-<div id="meetingDetails" style="color: #888; font-size: 14px;"></div>
+<div id="meetingDetails" class="text-muted fs-14"></div>
 </div>
 </div>
 <div class="modal-footer" style="border-top: 1px solid rgba(255,255,255,0.1);">
@@ -657,7 +657,7 @@ async function confirmMeeting() {
 <h2 style="margin: 0; font-size: 28px; color: #fff;">Welcome to NUI</h2>
 <p style="color: #fca5a5; margin-top: 8px;">Detroit's Premier Creative Agency</p>
 </div>
-<div style="padding: 32px;">
+<div class="p-32">
 <p>Hi ${meetingClientName},</p>
 <p>Thank you for booking a <strong>${meetingType}</strong> with us on <strong>${new Date(meetingData.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</strong> at <strong>${meetingData.time}</strong>!</p>
 <p>We're excited to learn about your brand vision and how we can bring it to life.</p>
@@ -672,7 +672,7 @@ async function confirmMeeting() {
 <p style="color: #888; margin-top: 24px;">— The NUI Team</p>
 </div>
 <div style="background: #111; padding: 20px; text-align: center; border-top: 1px solid #222;">
-<p style="color: #666; font-size: 12px; margin: 0;">New Urban Influence • Detroit, MI • newurbaninfluence.com</p>
+<p class="text-muted fs-12 m-0">New Urban Influence • Detroit, MI • newurbaninfluence.com</p>
 </div>
 </div>`
                     })
@@ -694,13 +694,13 @@ async function confirmMeeting() {
 <h2 style="margin: 0; color: #fff;">📋 Service Questionnaire</h2>
 <p style="color: #888; margin-top: 8px;">Help us prepare for your consultation</p>
 </div>
-<div style="padding: 32px;">
+<div class="p-32">
 <p>Hi ${meetingClientName},</p>
 <p>To make the most of our upcoming meeting, please take a moment to fill out our brief intake form. This helps us understand your brand needs and come prepared with ideas.</p>
 <div style="text-align: center; margin: 32px 0;">
 <a href="https://newurbaninfluence.com/#intake" style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #dc2626, #b91c1c); color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">Complete Questionnaire →</a>
 </div>
-<p style="color: #888; font-size: 14px;">This takes about 3-5 minutes and covers your brand goals, target audience, style preferences, and project timeline.</p>
+<p class="text-muted fs-14">This takes about 3-5 minutes and covers your brand goals, target audience, style preferences, and project timeline.</p>
 <p style="color: #888; margin-top: 24px;">— The NUI Team</p>
 </div>
 </div>`
@@ -742,7 +742,7 @@ async function confirmMeeting() {
 <div style="background: #111; padding: 32px; text-align: center; border-bottom: 1px solid #222;">
 <h2 style="margin: 0; color: #fff;">💰 Your Pricing Estimate</h2>
 </div>
-<div style="padding: 32px;">
+<div class="p-32">
 <p>Hi ${meetingClientName},</p>
 <p>Based on your upcoming consultation, here's an initial pricing estimate for our services:</p>
 <div style="background: #111; border: 2px solid #dc2626; border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center;">
@@ -750,7 +750,7 @@ async function confirmMeeting() {
 <div style="font-size: 36px; font-weight: 700; color: #dc2626;">$${pricingPackage.price.toLocaleString()}</div>
 <div style="font-size: 13px; color: #888; margin-top: 8px;">Turnaround: ${pricingPackage.turnaround}</div>
 </div>
-<p style="color: #888; font-size: 14px;">This is a preliminary estimate. We'll discuss your specific needs during our meeting and provide a finalized quote afterward.</p>
+<p class="text-muted fs-14">This is a preliminary estimate. We'll discuss your specific needs during our meeting and provide a finalized quote afterward.</p>
 <div style="text-align: center; margin: 24px 0;">
 <a href="https://newurbaninfluence.com/#portal" style="display: inline-block; padding: 14px 32px; background: #10b981; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600;">View in Client Portal →</a>
 </div>

@@ -1397,7 +1397,7 @@ async function sendEmailNotification(to, subject, body) {
 <div style="background: linear-gradient(135deg, #e63946, #ff6b6b); padding: 24px; text-align: center;">
 <h2 style="margin: 0; font-size: 20px; color: #fff;">${subject}</h2>
 </div>
-<div style="padding: 32px;">
+<div class="p-32">
 <p style="color: #ccc; font-size: 15px; line-height: 1.6;">${body}</p>
 <p style="color: #888; font-size: 13px; margin-top: 24px;">— New Urban Influence</p>
 </div>
@@ -1591,7 +1591,7 @@ function getFooterHTML() {
 <div class="footer-brand">
 <a class="footer-brand-logo" href="/">
                     ${footerLogoSrc ? '<img loading="lazy" src="' + footerLogoSrc + '" alt="' + footerLogoAlt + '" onerror="this.style.display=\'none\'">' : ''}
-<span style="color: var(--red);">NUI</span>
+<span class="text-red">NUI</span>
 </a>
 <p class="footer-brand-desc">Detroit-based creative agency specializing in brand identity, web design, and digital marketing. Unapologetically Detroit.</p>
 <div class="footer-socials">

@@ -11,9 +11,9 @@ function loadAdminClientsPanel(searchTerm = '') {
         : clients;
 
     document.getElementById('adminClientsPanel').innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-<h2 style="font-size: 28px; font-weight: 700;">All Clients</h2>
-<span style="color: #888;">${filtered.length} of ${clients.length} clients</span>
+<div class="flex-between mb-24">
+<h2 class="fs-28 fw-700">All Clients</h2>
+<span class="text-muted">${filtered.length} of ${clients.length} clients</span>
 </div>
 <div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: center;">
 <input type="text" id="clientSearch" placeholder="Search clients by name, email, or industry..." value="${searchTerm}"
@@ -23,7 +23,7 @@ function loadAdminClientsPanel(searchTerm = '') {
 <button onclick="exportClientsCSV()" style="padding: 10px 16px; background: #f3f4f6; border: 1px solid #e5e5e5; border-radius: 8px; cursor: pointer;">📤 Export CSV</button>
 <button onclick="showAdminPanel('newclient')" class="btn-cta">+ New Client</button>
 </div>
-<input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="handleCsvUpload(event)">
+<input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="handleCsvUpload(event)">
         ${filtered.length > 0 ? `
 <div class="card-grid">${filtered.map(c => renderClientCard(c)).join('')}</div>
         ` : '<p style="color: #888; text-align: center; padding: 40px;">No clients found.</p>'}
@@ -60,8 +60,8 @@ function showCsvImportModal() {
     modal.innerHTML = `
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 9999;">
 <div style="background: #1a1a1a; border-radius: 16px; padding: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-<h2 style="font-size: 24px; font-weight: 700;">📥 Import Clients from CSV</h2>
+<div class="flex-between mb-24">
+<h2 class="fs-24 fw-700">📥 Import Clients from CSV</h2>
 <button onclick="closeCsvImportModal()" style="background: none; border: none; color: #888; font-size: 24px; cursor: pointer;">&times;</button>
 </div>
 
@@ -92,7 +92,7 @@ Fitness Plus,contact@fitnessplus.com,555-0103,Health & Fitness,,,"Met at network
                     ondrop="handleCsvDrop(event)">
 <div style="font-size: 48px; margin-bottom: 12px;">📁</div>
 <p style="color: #fff; font-size: 16px; margin-bottom: 8px;">Drop your CSV file here</p>
-<p style="color: #888; font-size: 14px;">or click to browse</p>
+<p class="text-muted fs-14">or click to browse</p>
 </div>
 
 <div id="csvPreviewArea" style="display: none; margin-top: 20px;"></div>
