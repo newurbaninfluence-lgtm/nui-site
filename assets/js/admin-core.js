@@ -1,6 +1,73 @@
 // ==================== ADMIN CORE ====================
 // Panel router, Dashboard, Calendar, Sidebar, User Mgmt, Render Helpers, Stripe, Integrations
 
+// ZONE 6: Breadcrumb navigation system
+// Injects dynamic breadcrumb bar below admin header as user navigates panels
+var _nuiBreadcrumbMap = {
+    'moodboard': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Projects', action: "showAdminPanel('projects')" },
+        { label: 'Moodboards', action: '' }
+    ],
+    'brandguide': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Projects', action: "showAdminPanel('projects')" },
+        { label: 'Brand Guides', action: '' }
+    ],
+    'proofs': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Projects', action: "showAdminPanel('projects')" },
+        { label: 'Proofs & Deliverables', action: '' }
+    ],
+    'delivery': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Projects', action: "showAdminPanel('projects')" },
+        { label: 'Delivery', action: '' }
+    ],
+    'orders': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Orders', action: '' }
+    ],
+    'neworder': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Orders', action: "showAdminPanel('orders')" },
+        { label: 'New Order', action: '' }
+    ],
+    'invoices': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Payments', action: "showAdminPanel('payments')" },
+        { label: 'Invoices', action: '' }
+    ],
+    'clients': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Clients', action: '' }
+    ],
+    'newclient': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Clients', action: "showAdminPanel('clients')" },
+        { label: 'New Client', action: '' }
+    ]
+};
+
+function injectBreadcrumb(crumbs) {
+    var bar = document.getElementById('nuiBreadcrumb');
+    if (!bar) {
+        bar = document.createElement('div');
+        bar.id = 'nuiBreadcrumb';
+        bar.style.cssText = 'padding:8px 24px;background:rgba(0,0,0,0.3);font-size:13px;color:#888;border-bottom:1px solid rgba(255,255,255,0.05);';
+        var adminHeader = document.querySelector('.admin-header') || document.querySelector('#adminView > div:first-child');
+        if (adminHeader && adminHeader.parentElement) {
+            adminHeader.parentElement.insertBefore(bar, adminHeader.nextSibling);
+        }
+    }
+    bar.innerHTML = crumbs.map(function(c, i) {
+        if (i === crumbs.length - 1) {
+            return '<span style="color:#fff;">' + c.label + '</span>';
+        }
+        return '<a href="#" onclick="' + c.action + '; return false;" style="color:#888;text-decoration:none;">' + c.label + '</a>';
+    }).join(' <span style="color:#555;margin:0 8px;">›</span> ');
+}
+
 function showAdminPanel(panel) {
     document.querySelectorAll('.admin-nav-link').forEach(l => l.classList.remove('active'));
     const activeLink = document.querySelector(`[data-panel="${panel}"]`);
@@ -54,6 +121,20 @@ function showAdminPanel(panel) {
         'usermanagement': loadAdminUserManagementPanel
     };
     if (panelLoaders[panel]) panelLoaders[panel]();
+
+    // ZONE 6: Inject breadcrumbs after panel loads
+    if (_nuiBreadcrumbMap[panel]) {
+        injectBreadcrumb(_nuiBreadcrumbMap[panel]);
+    } else if (panel !== 'dashboard') {
+        injectBreadcrumb([
+            { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+            { label: panel.charAt(0).toUpperCase() + panel.slice(1), action: '' }
+        ]);
+    } else {
+        // Dashboard — remove breadcrumb bar
+        var bcBar = document.getElementById('nuiBreadcrumb');
+        if (bcBar) bcBar.innerHTML = '';
+    }
 }
 
 

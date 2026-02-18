@@ -151,6 +151,34 @@ async function createOrder(e) {
     });
     saveCommHub();
 
+    // ZONE 5c: Auto-create project when order is placed (if none exists)
+    if (typeof projects !== 'undefined') {
+        const existingProject = projects.find(p =>
+            p.order_id == order.id ||
+            (p.name === order.projectName && p.client_id == order.clientId)
+        );
+
+        if (!existingProject) {
+            const newProject = {
+                id: Date.now() + 3,
+                client_id: order.clientId,
+                order_id: order.id,
+                name: order.projectName || order.packageName || 'Project #' + order.id,
+                stage: 'Discovery',
+                status: 'active',
+                created_at: new Date().toISOString(),
+                activityLog: [{
+                    action: 'Project auto-created from order #' + order.id,
+                    timestamp: new Date().toISOString(),
+                    stage: 'Discovery'
+                }]
+            };
+            projects.unshift(newProject);
+            if (typeof saveProjects === 'function') saveProjects();
+            console.log('✅ Auto-created project for order:', order.id);
+        }
+    }
+
     showInvoice(order.id);
     showAdminPanel('orders');
     alert('✅ Order created!\n📄 Invoice #' + invoice.invoiceNumber + ' generated' + (client?.email ? '\n📧 Client notified via email' : ''));

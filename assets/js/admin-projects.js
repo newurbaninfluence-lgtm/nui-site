@@ -1709,7 +1709,43 @@ async function approveProof(id) {
     if (proof) {
         proof.status = 'approved';
         proof.approvedAt = new Date().toISOString();
+        proof.approved_by = proof.clientId || null;
         saveProofs();
+
+        // ZONE 5b: Create formal Supabase approval record
+        if (typeof supabaseClient !== 'undefined' && proof.project_id) {
+            supabaseClient.from('approvals').insert({
+                project_id: proof.project_id,
+                entity_type: proof.type || 'proof',
+                entity_id: proof.id,
+                status: 'approved',
+                client_id: proof.clientId,
+                approved_by: proof.clientId,
+                approved_at: new Date().toISOString(),
+                metadata: { name: proof.name, clientName: proof.clientName }
+            }).then(function(res) {
+                if (res.error) console.error('Approval record error:', res.error);
+                else console.log('✅ Approval record created for proof:', proof.name);
+            });
+        }
+
+        // ZONE 5b: Advance project stage (Proof approved → Delivery)
+        if (proof.project_id && typeof projects !== 'undefined') {
+            const linkedProject = projects.find(p => p.id == proof.project_id);
+            if (linkedProject) {
+                linkedProject.stage = 'Delivery';
+                linkedProject.activityLog = linkedProject.activityLog || [];
+                linkedProject.activityLog.push({
+                    action: 'Proof approved — stage advanced to Delivery',
+                    timestamp: new Date().toISOString(),
+                    stage: 'Delivery',
+                    entity: proof.type || 'proof',
+                    entityId: proof.id
+                });
+                if (typeof saveProjects === 'function') saveProjects();
+                console.log('✅ Project stage updated to Delivery');
+            }
+        }
 
         // Find matching order and update status
         if (proof.orderId || proof.order_id) {
