@@ -3,7 +3,7 @@
     <!-- Homepage -->
     <url>
         <loc>https://newurbaninfluence.com/</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
@@ -11,7 +11,7 @@
     <!-- About Page -->
     <url>
         <loc>https://newurbaninfluence.com/about</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -19,7 +19,7 @@
     <!-- Portfolio -->
     <url>
         <loc>https://newurbaninfluence.com/portfolio</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
@@ -27,15 +27,23 @@
     <!-- Contact -->
     <url>
         <loc>https://newurbaninfluence.com/contact</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
 
-    <!-- FAQ Section (anchor on homepage) -->
+    <!-- Services Main -->
+    <url>
+        <loc>https://newurbaninfluence.com/services</loc>
+        <lastmod>2026-02-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- FAQ Section -->
     <url>
         <loc>https://newurbaninfluence.com/#faq</loc>
-        <lastmod>2026-02-15</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -43,55 +51,61 @@
     <!-- ==================== SERVICE PAGES ==================== -->
     <url>
         <loc>https://newurbaninfluence.com/services/brand-identity-packages-detroit</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/services/logo-design-detroit</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/services/branding-agency-detroit</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/services/web-design-detroit</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://newurbaninfluence.com/services/ai-systems-automation-detroit</loc>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/services/packaging-design-detroit</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/services/social-media-templates-detroit</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/services/print-design-detroit</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/services/brand-guidelines-detroit</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/services/marketing-automation-detroit</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -99,25 +113,25 @@
     <!-- ==================== BLOG ==================== -->
     <url>
         <loc>https://newurbaninfluence.com/blog</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/blog/how-much-does-logo-design-cost-detroit</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/blog/branding-mistakes-small-businesses</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/blog/restaurant-branding-guide-detroit</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -125,25 +139,25 @@
     <!-- ==================== CASE STUDIES ==================== -->
     <url>
         <loc>https://newurbaninfluence.com/work/good-cakes-and-bakes</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://newurbaninfluence.com/work/motor-city-bistro</loc>
-        <lastmod>2026-02-10</lastmod>
+        <loc>https://newurbaninfluence.com/work/cloud-nine</loc>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://newurbaninfluence.com/work/detroit-canvas-co</loc>
-        <lastmod>2026-02-10</lastmod>
+        <loc>https://newurbaninfluence.com/work/jos-gallery-art-gallery</loc>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://newurbaninfluence.com/work/ascend-coaching-group</loc>
-        <lastmod>2026-02-10</lastmod>
+        <loc>https://newurbaninfluence.com/work/aj-vip</loc>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -151,79 +165,79 @@
     <!-- ==================== GEO LANDING PAGES ==================== -->
     <url>
         <loc>https://newurbaninfluence.com/locations/detroit</loc>
-        <lastmod>2026-02-12</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/locations/southfield</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/locations/farmington-hills</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/locations/royal-oak</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/locations/troy</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/locations/dearborn</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/locations/ann-arbor</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/locations/sterling-heights</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/locations/livonia</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/locations/warren</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/locations/birmingham</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/locations/novi</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://newurbaninfluence.com/locations/pontiac</loc>
-        <lastmod>2026-02-10</lastmod>
+        <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
