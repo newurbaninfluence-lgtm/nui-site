@@ -197,7 +197,7 @@ section[style*="background"]{contain:layout style paint;}
 .why-card h3{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:12px;transition:color 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
 .why-card p{color:var(--gray);font-size:14px;line-height:1.6;transition:color 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
 .detroit-roots-section{position:relative;overflow:hidden;min-height:100vh;display:flex;align-items:center;padding:140px 3% !important;}
-.detroit-roots-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1534430480872-3498386e7856?w=1600&q=80') center right/cover no-repeat;opacity:0.15;filter:brightness(0.6);pointer-events:none;}
+.detroit-roots-bg{position:absolute;top:0;right:0;bottom:0;width:70%;background:url('https://images.unsplash.com/photo-1534430480872-3498386e7856?w=1600&q=80') center/cover no-repeat;opacity:0.25;mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,0.6) 30%,rgba(0,0,0,1) 60%);-webkit-mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,0.6) 30%,rgba(0,0,0,1) 60%);pointer-events:none;}
 .detroit-roots-content{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;width:100%;}
 .detroit-roots-left .label{display:flex;align-items:center;gap:8px;color:var(--red);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;}
 .detroit-roots-left .label svg{flex-shrink:0;}
