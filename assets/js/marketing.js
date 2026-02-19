@@ -192,7 +192,7 @@ function loadHomeView() {
 </div>
 <div class="case-study-grid" id="homepageCaseStudies"></div>
 </section>
-<section class="section dark nui-glow-line">
+<section class="section dark nui-glow-line whyus-section">
 <div class="section-header nui-reveal">
 <h2 class="section-title">WHY <span class="red">US?</span></h2>
 <p class="section-subtitle">We're not for everyone. We're for the ones who want to win.</p>
