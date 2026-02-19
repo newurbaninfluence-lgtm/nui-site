@@ -10,7 +10,7 @@ function loadHomeView() {
 <div class="hero-media-overlay"></div>
 </div>
 <div class="hero-content">
-<div class="badge">Detroit's Premier Digital Agency</div>
+<div class="badge">10+ Years Elevating Detroit Brands</div>
 <h1 class="empire-headline"><span class="empire-word">BUILD</span> <span class="empire-word">YOUR</span><br><span class="empire-word red">INFLUENCE</span></h1>
 <p>You built something real. Now let the world see it. <span>Branding, websites & digital strategy for entrepreneurs, coaches, and creators ready to stand out.</span></p>
 <div class="hero-buttons">
@@ -21,7 +21,7 @@ function loadHomeView() {
 <div class="scroll-indicator">Scroll</div>
 </section>
 <section class="stats-ticker">
-<div class="ticker-text">50+ BRANDS ELEVATED &bull; <span class="ticker-outline">$2M+ REVENUE GENERATED</span> &bull; DETROIT BORN & RAISED &bull; 50+ BRANDS ELEVATED &bull; <span class="ticker-outline">$2M+ REVENUE GENERATED</span> &bull; DETROIT BORN & RAISED &bull;</div>
+<div class="ticker-text">50+ BRANDS ELEVATED &bull; <span class="ticker-outline">$2M+ REVENUE GENERATED</span> &bull; 10+ YEARS IN BUSINESS &bull; DETROIT BORN & RAISED &bull; 50+ BRANDS ELEVATED &bull; <span class="ticker-outline">$2M+ REVENUE GENERATED</span> &bull; 10+ YEARS IN BUSINESS &bull; DETROIT BORN & RAISED &bull;</div>
 </section>
 <section class="ticker-section">
 <div style="text-align:center;margin-bottom:32px;">
