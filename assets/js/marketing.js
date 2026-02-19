@@ -198,9 +198,9 @@ function loadHomeView() {
 <p class="section-subtitle">We're not for everyone. We're for the ones who want to win.</p>
 </div>
 <div class="why-grid nui-stagger">
-<div class="why-card"><div class="icon">★</div><h3>Detroit-Rooted Creativity</h3><p>We bring the bold, unapologetic energy of Detroit to every project.</p></div>
-<div class="why-card"><div class="icon">$</div><h3>Revenue-Focused Design</h3><p>Beautiful brands that actually drive business results and conversions.</p></div>
-<div class="why-card"><div class="icon">♥</div><h3>Elite but Approachable</h3><p>Premium quality without the corporate stuffiness or agency BS.</p></div>
+<div class="why-card"><div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h3>Detroit-Rooted Creativity</h3><p>We bring the bold, unapologetic energy of Detroit to every project.</p></div>
+<div class="why-card"><div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><h3>Revenue-Focused Design</h3><p>Beautiful brands that actually drive business results and conversions.</p></div>
+<div class="why-card"><div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>Elite but Approachable</h3><p>Premium quality without the corporate stuffiness or agency BS.</p></div>
 </div>
 </section>
 <section class="section dark">

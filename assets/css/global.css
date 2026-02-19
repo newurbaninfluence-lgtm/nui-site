@@ -185,11 +185,15 @@ section[style*="background"]{contain:layout style paint;}
 .team-title{color:var(--red);font-size:12px;text-transform:uppercase;letter-spacing:3px;font-weight:700;margin-bottom:16px;}
 .team-bio{color:var(--gray);font-size:14px;line-height:1.7;}
 .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;max-width:1200px;margin:0 auto;}
-.why-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);padding:40px;text-align:center;transition:all 0.3s;}
-.why-card:hover{border-color:var(--red);}
-.why-card .icon{width:64px;height:64px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:24px;}
-.why-card h3{font-size:20px;font-weight:700;margin-bottom:12px;}
-.why-card p{color:var(--gray);font-size:14px;line-height:1.6;}
+.why-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);padding:48px 40px;text-align:center;transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);cursor:pointer;}
+.why-card:hover{background:#ff0000;border-color:#ff0000;}
+.why-card:hover h3,.why-card:hover p{color:#0a0a0a;}
+.why-card:hover .why-icon{background:rgba(0,0,0,0.25);}
+.why-card:hover .why-icon svg{stroke:#0a0a0a;}
+.why-icon{width:64px;height:64px;background:rgba(255,255,255,0.06);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
+.why-icon svg{transition:stroke 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
+.why-card h3{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:12px;transition:color 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
+.why-card p{color:var(--gray);font-size:14px;line-height:1.6;transition:color 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
 .roots-section{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;max-width:1400px;margin:0 auto;}
 .roots-left h2{font-family:'Syne',sans-serif;font-size:clamp(64px,10vw,120px);font-weight:700;line-height:0.9;text-transform:uppercase;margin-bottom:24px;letter-spacing:2px;}
 .roots-left h2 .red{color:var(--red);}
