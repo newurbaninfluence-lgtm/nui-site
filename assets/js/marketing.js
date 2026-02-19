@@ -430,7 +430,6 @@ function loadHomeView() {
 </section>
 
 <section class="cta-section" id="contact" style="background:var(--red);position:relative;overflow:hidden;">
-<div style="position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80') center/cover no-repeat;opacity:0.08;"></div>
 <h2 style="position:relative;z-index:1;">READY TO<br>DOMINATE?</h2>
 <p style="position:relative;z-index:1;">Stop playing small. Let's build a brand that demands attention and drives real revenue.</p>
 <button class="btn-white" style="position:relative;z-index:1;" onclick="showView('intake')">Book Your Strategy Call</button>
