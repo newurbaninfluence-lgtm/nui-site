@@ -30,6 +30,7 @@ section[style*="background"]{contain:layout style paint;}
 .mobile-menu a:hover{color:var(--red);}
 .btn-cta{background:linear-gradient(135deg,#ff1a1a 0%,#dc2626 40%,#b91c1c 100%);color:var(--white);padding:18px 52px;border:none;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;letter-spacing:0.5px;border-radius:2px;box-shadow:0 4px 20px rgba(220,38,38,0.4);}
 .btn-cta:hover{background:linear-gradient(135deg,#ff3333 0%,#ef4444 40%,#dc2626 100%);box-shadow:0 6px 28px rgba(220,38,38,0.6);transform:translateY(-1px);}
+.btn-cta-desktop{padding:10px 28px;font-size:13px;letter-spacing:0.3px;border-radius:2px;}
 .btn-outline{background:transparent;color:var(--white);padding:14px 24px;border:2px solid var(--white);font-weight:500;font-size:14px;cursor:pointer;text-decoration:none;transition:all 0.2s;}
 .btn-outline:hover{background:var(--white);color:var(--black);}
 .btn-white{background:var(--white);color:var(--black);padding:18px 40px;border:none;font-weight:700;font-size:14px;cursor:pointer;transition:all 0.3s;text-decoration:none;}
