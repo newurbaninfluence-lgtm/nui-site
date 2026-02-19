@@ -48,7 +48,7 @@ section[style*="background"]{contain:layout style paint;}
 @keyframes pulse{0%,100%{opacity:1;}
 50%{opacity:0.5;}
 }
-.empire-word{display:inline-block;opacity:0;transform-style:preserve-3d;color:#ffffff;-webkit-text-fill-color:#ffffff;}.empire-word.red{color:#ff0000;-webkit-text-fill-color:#ff0000;position:relative;z-index:2;transform-style:preserve-3d;font-weight:900;font-size:0.55em;letter-spacing:8px;}
+.empire-word{display:inline-block;opacity:0;transform-style:preserve-3d;color:#ffffff;-webkit-text-fill-color:#ffffff;}.empire-word.red{color:#ff0000;-webkit-text-fill-color:#ff0000;position:relative;z-index:2;transform-style:preserve-3d;font-weight:900;font-size:0.66em;letter-spacing:8px;}
 
 /* Safety: if GSAP doesn't fire within 2.5s, fade words in via CSS */
 @keyframes nuiSafetyFadeIn{to{opacity:1;transform:none;}}
