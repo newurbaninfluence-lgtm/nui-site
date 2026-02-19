@@ -375,8 +375,9 @@ section[style*="background"]{contain:layout style paint;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none !important;color:#fff !important;font-family:'Syne',sans-serif !important;font-size:22px !important;font-weight:400 !important;letter-spacing:3px !important;text-transform:uppercase !important;}
 .hamburger{padding:8px;}
 .hero{padding:80px 16px 40px;}
-.hero h1{font-size:clamp(64px,18vw,140px);letter-spacing:6px;}
-.hero p{font-size:18px;}
+.hero h1{font-size:clamp(64px,22vw,140px);letter-spacing:6px;}
+.hero p{font-size:16px;}
+.empire-word.red{font-size:0.8em;}
 .hero-buttons{flex-direction:column;width:100%;max-width:280px;}
 .hero-buttons a{width:100%;text-align:center;padding:14px 20px;font-size:13px;}
 .section{padding:48px 16px;}
