@@ -13,9 +13,7 @@ function backToAdmin() {
 }
 
 // ==================== MULTI-STEP SERVICE INTAKE SYSTEM ====================
-// intakeData declared globally in core.js
-let currentIntakeStep = 1;
-let uploadedFiles = [];
+// intakeData, currentIntakeStep, uploadedFiles declared globally in core.js
 
 // Service-specific intake configurations
 // Client Background Questions (used across all intakes)

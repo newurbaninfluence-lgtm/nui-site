@@ -6,8 +6,8 @@ console.log('NUI App Loading...');
 // service-intake.js loads. service-intake.js will re-declare with `let`
 // which creates a proper lexical binding that shadows these.
 if (typeof window.intakeData === 'undefined') window.intakeData = {};
-if (typeof currentIntakeStep === 'undefined') var currentIntakeStep = 1;
-if (typeof uploadedFiles === 'undefined') var uploadedFiles = [];
+if (typeof window.currentIntakeStep === 'undefined') window.currentIntakeStep = 1;
+if (typeof window.uploadedFiles === 'undefined') window.uploadedFiles = [];
 
 // ==================== ROLE PERMISSIONS SYSTEM ====================
 const ROLE_PERMISSIONS = {
