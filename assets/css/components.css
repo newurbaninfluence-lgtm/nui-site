@@ -7,7 +7,7 @@
 
 /* Ticker container row */
 .ticker-row{display:flex;align-items:center;gap:20px;padding:0 10px;}
-.ticker-strip{display:flex;animation:clientScroll 80s linear infinite;width:max-content;will-change:transform;}
+.ticker-strip{display:flex;animation:clientScroll 120s linear infinite;width:max-content;will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden;}
 .ticker-section{padding:48px 0;background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,0.06);overflow:hidden;}
 .ticker-heading{font-size:13px;text-transform:uppercase;letter-spacing:3px;color:rgba(255,255,255,0.35);font-weight:600;text-align:center;margin-bottom:32px;}
 

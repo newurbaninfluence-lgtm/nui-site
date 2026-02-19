@@ -77,8 +77,8 @@ section[style*="background"]{contain:layout style paint;}
 @keyframes logoScroll{0%{transform:translateX(-50%);}
 100%{transform:translateX(0);}
 }
-@keyframes clientScroll{0%{transform:translate3d(-50%,0,0);}
-100%{transform:translate3d(0,0,0);}
+@keyframes clientScroll{0%{transform:translate3d(0,0,0);}
+100%{transform:translate3d(-50%,0,0);}
 }
 .section{padding:140px 48px;}
 .section.light{background:var(--white);color:var(--black);}
