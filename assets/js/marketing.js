@@ -185,7 +185,7 @@ function loadHomeView() {
 </div>
 </div>
 </section>
-<section class="section dark brands-elevated-section nui-glow-line">
+<section class="section dark brands-elevated-section nui-glow-line proven-section">
 <div class="proven-results-header">
 <h2 class="proven-title nui-reveal-left">PROVEN <span class="red">RESULTS</span></h2>
 <a class="view-portfolio-link nui-reveal-right" onclick="showView('portfolio')">VIEW FULL PORTFOLIO →</a>
