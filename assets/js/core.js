@@ -5,7 +5,7 @@ console.log('NUI App Loading...');
 // These are initialized here so router.js can reference them before
 // service-intake.js loads. service-intake.js will re-declare with `let`
 // which creates a proper lexical binding that shadows these.
-if (typeof intakeData === 'undefined') var intakeData = {};
+if (typeof window.intakeData === 'undefined') window.intakeData = {};
 if (typeof currentIntakeStep === 'undefined') var currentIntakeStep = 1;
 if (typeof uploadedFiles === 'undefined') var uploadedFiles = [];
 
