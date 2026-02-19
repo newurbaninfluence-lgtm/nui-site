@@ -115,14 +115,29 @@ function loadHomeView() {
 </div>
 </div>
 </section>
-<section class="section dark nui-glow-line" style="border-top: 1px solid rgba(255,255,255,0.1);">
-<div class="roots-section">
-<div class="roots-left nui-reveal-left">
-<div class="label">Our Roots</div>
-<h2>BUILT IN<br><span class="red">DETROIT.</span></h2>
+<section class="section dark detroit-roots-section">
+<div class="detroit-roots-bg"></div>
+<div class="detroit-roots-content">
+<div class="detroit-roots-left nui-reveal-left">
+<div class="label"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> OUR ROOTS</div>
+<h2>BUILT IN<br><span>DETROIT.</span></h2>
 <p>We don't just work here. We are part of the fabric of this city. The grit, the hustle, the innovation—it's in our DNA and in every pixel we push.</p>
+<a class="btn-outline" onclick="showView('about')" style="margin-top:32px;display:inline-block;cursor:pointer;">Explore Our Legacy</a>
 </div>
-<div class="roots-right nui-reveal-scale"><div class="area-code">313</div></div>
+<div class="detroit-roots-right nui-reveal-scale">
+<div class="rotating-circle-wrapper">
+<svg class="rotating-circle-svg" viewBox="0 0 400 400">
+<circle cx="200" cy="200" r="180" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<circle cx="200" cy="200" r="140" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<defs>
+<path id="circlePath" d="M200,200 m-160,0 a160,160 0 1,1 320,0 a160,160 0 1,1 -320,0"/>
+</defs>
+<text class="rotating-313-text">
+<textPath href="#circlePath" startOffset="0%">313 • DETROIT • 313 • MOTOR CITY • 313 • DETROIT • 313 • MOTOR CITY • </textPath>
+</text>
+</svg>
+</div>
+</div>
 </div>
 </section>
 <section class="section dark results-section nui-glow-line">

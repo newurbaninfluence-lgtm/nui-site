@@ -196,14 +196,21 @@ section[style*="background"]{contain:layout style paint;}
 .why-icon svg{transition:stroke 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
 .why-card h3{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:12px;transition:color 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
 .why-card p{color:var(--gray);font-size:14px;line-height:1.6;transition:color 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
-.roots-section{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;max-width:1400px;margin:0 auto;}
-.roots-left h2{font-family:'Syne',sans-serif;font-size:clamp(64px,10vw,120px);font-weight:700;line-height:0.9;text-transform:uppercase;margin-bottom:24px;letter-spacing:2px;}
-.roots-left h2 .red{color:var(--red);}
-.roots-left p{color:var(--gray);font-size:18px;line-height:1.7;}
-.roots-right{position:relative;border-radius:16px;overflow:hidden;min-height:350px;display:flex;align-items:center;justify-content:center;}
-.roots-right::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800') center/cover no-repeat;filter:brightness(0.4);}
-.roots-right::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,59,48,0.2) 0%,transparent 50%,rgba(0,0,0,0.8) 100%);}
-.area-code{font-size:clamp(120px,20vw,250px);font-weight:900;color:transparent;-webkit-text-stroke:3px var(--red);text-align:center;position:relative;z-index:1;text-shadow:0 0 60px rgba(255,59,48,0.5);}
+.detroit-roots-section{position:relative;overflow:hidden;min-height:100vh;display:flex;align-items:center;padding:140px 3% !important;}
+.detroit-roots-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1534430480872-3498386e7856?w=1600&q=80') center right/cover no-repeat;opacity:0.15;filter:brightness(0.6);pointer-events:none;}
+.detroit-roots-content{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;width:100%;}
+.detroit-roots-left .label{display:flex;align-items:center;gap:8px;color:var(--red);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;}
+.detroit-roots-left .label svg{flex-shrink:0;}
+.detroit-roots-left h2{font-family:'Syne',sans-serif;font-size:clamp(64px,10vw,120px);font-weight:700;line-height:0.85;text-transform:uppercase;margin-bottom:32px;letter-spacing:2px;color:#fff;}
+.detroit-roots-left h2 span{color:#fff;}
+.detroit-roots-left p{color:rgba(255,255,255,0.6);font-size:18px;line-height:1.8;max-width:480px;}
+.detroit-roots-left .btn-outline{color:#fff;border:2px solid #fff;padding:16px 36px;font-size:14px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:transparent;transition:all 0.3s;}
+.detroit-roots-left .btn-outline:hover{background:#fff;color:#000;}
+.detroit-roots-right{display:flex;align-items:center;justify-content:center;}
+.rotating-circle-wrapper{width:clamp(350px,35vw,550px);height:clamp(350px,35vw,550px);position:relative;}
+.rotating-circle-svg{width:100%;height:100%;animation:rotate313 30s linear infinite;}
+.rotating-313-text{fill:rgba(255,255,255,0.12);font-size:14px;font-weight:700;letter-spacing:6px;text-transform:uppercase;font-family:'Syne',sans-serif;}
+@keyframes rotate313{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1200px;margin:0 auto;padding:0 24px;}
 .testimonial-card{background:linear-gradient(145deg,#1a1a1a 0%,#0d0d0d 100%);border:1px solid rgba(255,255,255,0.08);padding:32px;border-radius:16px;transition:all 0.3s ease;}
 .testimonial-card:hover{transform:translateY(-4px);border-color:rgba(255,59,48,0.3);box-shadow:0 20px 40px rgba(0,0,0,0.4);}
@@ -307,7 +314,9 @@ section[style*="background"]{contain:layout style paint;}
 .service-item.image-right{direction:ltr;}
 .service-image{min-height:250px;}
 .service-content{padding:48px 24px;}
-.roots-section{grid-template-columns:1fr;text-align:center;}
+.detroit-roots-content{grid-template-columns:1fr;text-align:center;}
+.detroit-roots-left p{margin:0 auto;}
+.rotating-circle-wrapper{width:280px;height:280px;}
 .story-section{grid-template-columns:1fr;gap:48px;}
 .why-grid{grid-template-columns:1fr;}
 .values-grid{grid-template-columns:repeat(2,1fr);}
@@ -373,8 +382,7 @@ section[style*="background"]{contain:layout style paint;}
 .service-card .includes span{font-size:9px;padding:3px 8px;}
 .service-card-simple{padding:24px;min-height:200px;}
 .service-card-simple h3{font-size:18px;}
-.roots-right{min-height:200px !important;}
-.area-code{font-size:80px !important;}
+.rotating-circle-wrapper{width:220px !important;height:220px !important;}
 .why-card{padding:24px;}
 .testimonials-grid{grid-template-columns:1fr !important;gap:16px !important;padding:0 16px;}
 .streetcred-grid{grid-template-columns:1fr;}

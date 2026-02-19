@@ -1,6 +1,14 @@
 window.onerror = function(m,u,l,c,e){alert('JS Error at line '+l+': '+m);return false;};
 console.log('NUI App Loading...');
 
+// ==================== GLOBAL STATE SAFETY NET ====================
+// These are initialized here so router.js can reference them before
+// service-intake.js loads. service-intake.js will re-declare with `let`
+// which creates a proper lexical binding that shadows these.
+if (typeof intakeData === 'undefined') var intakeData = {};
+if (typeof currentIntakeStep === 'undefined') var currentIntakeStep = 1;
+if (typeof uploadedFiles === 'undefined') var uploadedFiles = [];
+
 // ==================== ROLE PERMISSIONS SYSTEM ====================
 const ROLE_PERMISSIONS = {
     admin: ['all'], // Admin has full access
