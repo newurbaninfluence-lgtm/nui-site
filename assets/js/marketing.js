@@ -4,7 +4,7 @@ function loadHomeView() {
 <div class="hero-media">
 <div class="hero-media-container">
 <video id="heroVideo" muted loop playsinline autoplay preload="auto">
-<source src="https://videos.pexels.com/video-files/32831945/13993752_1920_1080_30fps.mp4" type="video/mp4">
+<source src="assets/video/hero-bg.mp4" type="video/mp4">
 </video>
 </div>
 <div class="hero-media-overlay"></div>
@@ -12,7 +12,7 @@ function loadHomeView() {
 <div class="hero-content">
 <div class="badge">Detroit's Premier Digital Agency</div>
 <h1 class="empire-headline"><span class="empire-word">BUILD</span> <span class="empire-word">YOUR</span><br><span class="empire-word red">INFLUENCE</span></h1>
-<p>Strategic branding & digital presence for business owners ready to dominate their market. <span>Your brand is your business. Make it unforgettable.</span></p>
+<p>You built something real. Now let the world see it. <span>Branding, websites & digital strategy for entrepreneurs, coaches, and creators ready to stand out.</span></p>
 <div class="hero-buttons">
 <a href="/contact" class="btn-cta" onclick="event.preventDefault(); showView('intake');">Book Strategy Call</a>
 <a href="/portfolio" class="btn-outline" onclick="event.preventDefault(); showView('portfolio');">View Our Work</a>
