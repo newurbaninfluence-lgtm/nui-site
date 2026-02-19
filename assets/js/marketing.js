@@ -457,12 +457,6 @@ function loadHomeView() {
             { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 1.4, ease: 'expo.out' },
             '-=0.3'
         );
-        // Red word glow pulse — intense crimson bloom
-        tl.fromTo('.empire-word.red',
-            { textShadow: '0 0 0px rgba(153,0,0,0)' },
-            { textShadow: '0 0 60px rgba(153,0,0,0.8), 0 0 120px rgba(153,0,0,0.3)', duration: 1.2, ease: 'power2.out' },
-            '-=0.8'
-        );
         // Paragraph and buttons slide up
         tl.fromTo('.hero-content p',
             { opacity: 0, y: 30 },
