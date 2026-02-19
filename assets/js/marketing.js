@@ -96,19 +96,21 @@ function loadHomeView() {
 </div>
 </div>
 </section>
-<section class="section dark nui-glow-line">
+<section class="services-white nui-glow-line">
 <div class="services-layout">
 <div class="services-header nui-reveal-left">
 <div class="label">Our Expertise</div>
 <h2 class="section-title">WHAT WE<br><span class="red">CREATE</span></h2>
-<p style="color: var(--gray); margin-top: 24px;">We don't just make things look pretty. We build systems, brands, and experiences that print money and build legacy.</p>
+<p style="color: #555; margin-top: 24px;">We don't just make things look pretty. We build systems, brands, and experiences that print money and build legacy.</p>
 <button class="btn-cta mt-32" onclick="showView('services')">Explore All Services</button>
 </div>
 <div class="services-grid home-services nui-stagger">
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Brand Identity Design</h3><p>Forge Your Legacy. Define Your Empire.</p></div>
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Website Design & Dev</h3><p>Your Digital Headquarters. Built for Conversion.</p></div>
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Social Media & Ads</h3><p>Command Attention. Drive Engagement.</p></div>
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Motion & Video</h3><p>Bring Your Story to Life. Dynamically.</p></div>
+<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Brand Identity Design</h3><p>Forge Your Legacy. Define Your Empire.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Website Design & Dev</h3><p>Your Digital Headquarters. Built for Conversion.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Social Media & Ads</h3><p>Command Attention. Drive Engagement.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Motion & Video</h3><p>Bring Your Story to Life. Dynamically.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Print & Packaging</h3><p>Tangible Brand Power. From Cards to Wraps.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>SEO & Digital Strategy</h3><p>Get Found. Get Chosen. Get Paid.</p><div class="learn-more">LEARN MORE →</div></div>
 </div>
 </div>
 </section>
@@ -252,12 +254,14 @@ function loadHomeView() {
 </section>
 <!-- ==================== FAQ SECTION (Visible for Google Crawlers + Users) ==================== -->
 <section class="section dark" id="faq"  style="padding: 80px 0; background: #0a0a0a; border-top: 1px solid rgba(255,255,255,0.06);">
-<div style="max-width: 800px; margin: 0 auto; padding: 0 24px;">
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
 <div style="text-align: center; margin-bottom: 48px;">
 <p class="faq-label">GOT QUESTIONS?</p>
 <h2 class="faq-title">FREQUENTLY <span class="text-red">ASKED</span></h2>
 <p class="faq-subtitle">Everything you need to know about working with Detroit's top-rated branding agency.</p>
 </div>
+
+<div class="faq-grid">
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
 <button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
@@ -409,13 +413,15 @@ function loadHomeView() {
 </div>
 </div>
 
+</div><!-- end faq-grid -->
 </div>
 </section>
 
-<section class="cta-section" id="contact">
-<h2>READY TO<br>DOMINATE?</h2>
-<p>Stop playing small. Let's build a brand that demands attention and drives real revenue.</p>
-<button class="btn-white" onclick="showView('intake')">Book Your Strategy Call</button>
+<section class="cta-section" id="contact" style="background:var(--red);position:relative;overflow:hidden;">
+<div style="position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80') center/cover no-repeat;opacity:0.12;mix-blend-mode:multiply;"></div>
+<h2 style="position:relative;z-index:1;">READY TO<br>DOMINATE?</h2>
+<p style="position:relative;z-index:1;">Stop playing small. Let's build a brand that demands attention and drives real revenue.</p>
+<button class="btn-white" style="position:relative;z-index:1;" onclick="showView('intake')">Book Your Strategy Call</button>
 </section>
         ${getFooterHTML()}
     `;
