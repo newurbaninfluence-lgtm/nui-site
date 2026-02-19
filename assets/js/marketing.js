@@ -21,7 +21,7 @@ function loadHomeView() {
 <div class="scroll-indicator">Scroll</div>
 </section>
 <section class="stats-ticker">
-<div class="ticker-text">50+ BRANDS ELEVATED &bull; $2M+ REVENUE GENERATED &bull; DETROIT BORN & RAISED &bull; 50+ BRANDS ELEVATED &bull; $2M+ REVENUE GENERATED &bull; DETROIT BORN & RAISED &bull;</div>
+<div class="ticker-text">50+ BRANDS ELEVATED &bull; <span class="ticker-outline">$2M+ REVENUE GENERATED</span> &bull; DETROIT BORN & RAISED &bull; 50+ BRANDS ELEVATED &bull; <span class="ticker-outline">$2M+ REVENUE GENERATED</span> &bull; DETROIT BORN & RAISED &bull;</div>
 </section>
 <section class="ticker-section">
 <div style="text-align:center;margin-bottom:32px;">

@@ -67,6 +67,7 @@ section[style*="background"]{contain:layout style paint;}
 .stats-ticker::before{left:0;background:linear-gradient(to right,#000,transparent);}
 .stats-ticker::after{right:0;background:linear-gradient(to left,#000,transparent);}
 .ticker-text{font-family:'Syne',sans-serif;font-size:clamp(32px,7vw,64px);font-weight:700;white-space:nowrap;animation:ticker 40s linear infinite;color:var(--red);text-transform:uppercase;letter-spacing:6px;will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden;}
+.ticker-outline{color:transparent;-webkit-text-stroke:2px var(--red);text-stroke:2px var(--red);}
 @keyframes ticker{0%{transform:translate3d(0,0,0);}
 100%{transform:translate3d(-50%,0,0);}
 }
