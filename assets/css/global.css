@@ -157,7 +157,7 @@ section[style*="background"]{contain:layout style paint;}
 .white-break .story-content p{color:#444 !important;font-size:17px;line-height:1.9;}
 .white-break .story-image{background:linear-gradient(135deg,#e8e8e8 0%,#d0d0d0 50%,#e8e8e8 100%);}
 /* Global section headings — urban font */
-.section-title,.section-header h2,h2{font-family:'Syne',sans-serif;letter-spacing:3px;}
+.section-title,.section-header h2,h1,h2,h3,h4,h5,h6{font-family:'Syne',sans-serif;letter-spacing:3px;}
 .story-section{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1400px;margin:0 auto;}
 .story-content h2{font-family:'Syne',sans-serif;font-size:clamp(36px,5vw,56px);font-weight:700;line-height:1.1;text-transform:uppercase;margin-bottom:24px;letter-spacing:3px;}
 .story-content h2 .red{color:var(--red);}
