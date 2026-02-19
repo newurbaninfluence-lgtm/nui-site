@@ -381,7 +381,7 @@ function loadHomeView() {
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Absolutely. Visit the NUI portfolio page to see completed branding projects across restaurants, coaching businesses, art brands, and more. Featured case studies include Good Cakes and Bakes, Detroit Canvas Co., Motor City Bistro, and Ascend Coaching Group. Each case study shows the before-and-after transformation along with results achieved.</div>
+<div class="faq-answer-text">Absolutely. Visit the NUI portfolio page to see completed branding projects across bakeries, art galleries, coaching businesses, and more. Featured projects include Good Cakes and Bakes, Cloud Nine, Jos Gallery Art Gallery, and AJ VIP. Each case study showcases the full brand transformation along with the results achieved.</div>
 </div>
 </div>
 
