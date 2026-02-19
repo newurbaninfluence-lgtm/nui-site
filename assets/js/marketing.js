@@ -4,7 +4,7 @@ function loadHomeView() {
 <div class="hero-media">
 <div class="hero-media-container">
 <video id="heroVideo" muted loop playsinline autoplay preload="auto">
-<source src="assets/video/hero-bg.mp4" type="video/mp4">
+<source src="/assets/video/hero-bg.mp4" type="video/mp4">
 </video>
 </div>
 <div class="hero-media-overlay"></div>
