@@ -87,6 +87,7 @@ function loadHomeView() {
 <div class="struggle-left nui-reveal-left">
 <h2>THE<br><span class="red">STRUGGLE</span><br>IS REAL.</h2>
 <p>Most brands fade into the background noise. In a city that never sleeps and a digital world that never stops, being "good enough" is a death sentence.</p>
+<div class="lets-fix-it" style="margin-top:24px;display:flex;align-items:center;gap:12px;"><span style="color:#f5c518;font-family:'Syne',sans-serif;font-size:clamp(18px,2vw,24px);font-weight:700;text-transform:uppercase;letter-spacing:2px;">Let's fix it</span><svg width="48" height="24" viewBox="0 0 48 24" fill="none" style="flex-shrink:0;"><path d="M0 12h40m0 0l-8-8m8 8l-8 8" stroke="#f5c518" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 </div>
 <div class="problem-cards nui-stagger">
 <div class="problem-card"><div class="problem-meta"><div class="number">01</div><span class="problem-detect">Problem Detected</span></div><h3>Your brand looks generic and forgettable</h3></div>
