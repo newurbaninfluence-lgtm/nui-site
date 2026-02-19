@@ -217,7 +217,7 @@ section[style*="background"]{contain:layout style paint;}
 .stat-item .stat-label{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:1px;opacity:0.9;}
 .brands-elevated-section{padding:80px 48px;}
 .proven-results-header{display:flex;align-items:flex-end;justify-content:space-between;max-width:1400px;margin:0 auto 60px;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:32px;}
-.proven-title{font-family:'Syne',sans-serif;font-size:clamp(48px,8vw,96px);font-weight:800;line-height:0.95;letter-spacing:2px;text-transform:uppercase;margin:0;}
+.proven-title{font-family:'Syne',sans-serif;font-size:clamp(48px,8vw,120px);font-weight:700;line-height:0.95;letter-spacing:2px;text-transform:uppercase;margin:0;}
 .view-portfolio-link{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:#fff;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;transition:color 0.3s;}
 .view-portfolio-link:hover{color:var(--red);}
 .case-study-grid{display:flex;flex-direction:column;gap:64px;max-width:1400px;margin:0 auto;}
