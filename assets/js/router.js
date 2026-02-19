@@ -16,6 +16,14 @@ const pageSEO = {
         ogDescription: 'Detroit branding agency helping small businesses build professional brands. 4.9★ rated. 50+ brands elevated.',
         hash: 'about'
     },
+    founder: {
+        title: 'Faren Young — Founder & Creative Director | New Urban Influence Detroit',
+        description: 'Meet Faren Young (Martez Hand), founder of New Urban Influence and former owner of Bravo Graphix on Detroit\'s Avenue of Fashion. 20+ years building bold brands for businesses, unions, nonprofits, and government agencies across Michigan.',
+        keywords: 'faren young, martez hand, bravo graphix detroit, new urban influence founder, detroit creative director, avenue of fashion detroit, detroit brand designer, detroit graphic designer, michigan branding expert',
+        ogTitle: 'Faren Young — Founder of New Urban Influence',
+        ogDescription: 'Native Detroiter with 20+ years crafting bold brands. From Bravo Graphix on the Avenue of Fashion to New Urban Influence.',
+        hash: 'founder'
+    },
     services: {
         title: 'Branding Packages & Pricing | Detroit Logo Design & Brand Identity — New Urban Influence',
         description: 'Branding packages for small businesses: Brand Kit $1,500, Service Brand Identity $4,500+, Product Brand Identity $5,500+. Logo design from $500. Packaging design, print design, banners, posters, yard signs, vinyl decals, social media templates, business cards, brand guidelines. Payment plans. Detroit, MI.',
@@ -138,6 +146,7 @@ function loadViewContent(viewName) {
     if (!viewEl.innerHTML.trim()) {
         if (viewName === 'home') loadHomeView();
         if (viewName === 'about') loadAboutView();
+        if (viewName === 'founder') loadFounderView();
         if (viewName === 'services') loadServicesView();
         if (viewName === 'portfolio') loadPortfolioView();
         if (viewName === 'blog') loadBlogView();
@@ -195,7 +204,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Route to correct view based on URL path OR hash (supports direct links & bookmarks)
-    const validViews = ['home', 'about', 'services', 'portfolio', 'blog', 'intake'];
+    const validViews = ['home', 'about', 'founder', 'services', 'portfolio', 'blog', 'intake'];
     const hashView = window.location.hash.replace('#', '').split('?')[0];
     const pathView = window.location.pathname.replace(/^\//, '').split('/')[0].split('?')[0];
 

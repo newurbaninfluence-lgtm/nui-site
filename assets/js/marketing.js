@@ -774,34 +774,49 @@ function loadAboutView() {
 
     document.getElementById('aboutView').innerHTML = `
 <section class="about-hero"><div class="hero-content"><h2>About <span>Us</span></h2><p>We're a Detroit-rooted creative agency crafting bold brands and digital experiences for visionaries who refuse to blend in.</p></div></section>
-<section class="section white-break">
-<div class="story-section">
-<div class="story-content">
-<div class="label" style="color:#990000;">Our Story</div>
-<h2>BORN IN THE <span class="red">D.</span><br>BUILT TO <span class="red">DOMINATE.</span></h2>
-<p>New Urban Influence was founded by Martez Hand — widely known as the creative <strong>Faren Young</strong> — a native Detroiter with over two decades of experience guiding businesses to success through bold design and strategic branding.</p>
-<p>What started in 2007 as <strong>Bravo Graphix</strong>, a full-service multicultural advertising, creative marketing, design, and print agency on Detroit's upper West Side, quickly became a trusted name for entrepreneurs, nonprofits, unions, and government agencies across Michigan. In 2013, Bravo Graphix moved to a completely renovated 1,700-square-foot studio at <strong>19434 Livernois Avenue</strong> — right on the iconic <strong>Avenue of Fashion</strong> — adding a photography studio and five new positions to the team.</p>
-<p>The Avenue of Fashion studio became part of multiple Detroit economic and creative programs — including <strong>Revolve Detroit</strong>, <strong>TechTown's SWOT City</strong>, and the <strong>Detroit Design Festival</strong> — which brought festival visitors and clients directly to our door. That same energy, grit, and commitment to community evolved into what we are today: <strong>New Urban Influence</strong>, a full-spectrum creative agency that doesn't just design brands — we build empires.</p>
+
+<section class="section white-break" style="padding: 100px 0;">
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 48px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 80px; align-items: center;">
+<div>
+<div class="label" style="color:#990000;">Who We Are</div>
+<h2 style="font-size: clamp(32px, 5vw, 56px); letter-spacing: 2px; text-transform: uppercase; line-height: 0.95; margin-bottom: 32px;">WE DON'T<br>DESIGN <span class="red">BRANDS.</span><br>WE BUILD<br><span class="red">EMPIRES.</span></h2>
+<p style="color: #333; font-size: 17px; line-height: 1.9; margin-bottom: 20px;">New Urban Influence is a full-spectrum creative agency based in Detroit, Michigan. We build brand identity systems, packaging, websites, digital marketing strategies, and AI-powered automations that help businesses generate revenue — not just look good.</p>
+<p style="color: #333; font-size: 17px; line-height: 1.9; margin-bottom: 20px;">From startups to established enterprises, unions to nonprofits, government agencies to product brands — we've elevated 50+ brands and helped generate over $2M in client revenue. Every project gets the same treatment: Detroit grit, bold creativity, and a strategy-first approach.</p>
+<p style="color: #333; font-size: 17px; line-height: 1.9;">Founded by <strong>Faren Young</strong>, a native Detroiter with 20+ years in the game — from the Avenue of Fashion to the digital frontier.</p>
+<a href="/founder" onclick="event.preventDefault(); showView('founder'); window.scrollTo(0,0);" style="display: inline-block; margin-top: 24px; color: var(--red); font-weight: 700; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border-bottom: 2px solid var(--red); padding-bottom: 4px;">Read the Founder Story →</a>
 </div>
-<div class="story-image" style="background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.15); font-size: 14px;">
-                    ${aboutData.storyImage ? `<img loading="lazy" src="${aboutData.storyImage}" alt="Faren Young - Creative Director and Founder of New Urban Influence" style="width: 100%; height: 100%; object-fit: cover;">` : `<img loading="lazy" src="images/about-story.png" alt="Faren Young - Creative Director and Founder of New Urban Influence" style="width: 100%; height: 100%; object-fit: cover;">`}
+<div style="background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; overflow: hidden; aspect-ratio: 4/5;">
+<img loading="lazy" src="images/about-story.png" alt="Faren Young - Creative Director and Founder of New Urban Influence" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+</div>
+</div>
+</section>
+
+<section class="section dark" style="padding: 100px 0;">
+<div style="max-width: 1100px; margin: 0 auto; padding: 0 48px;">
+<div class="label" style="color: var(--red); text-align: center; margin-bottom: 16px;">What We Bring</div>
+<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 700; text-align: center; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 64px;">OUR <span style="color: var(--red);">APPROACH</span></h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px;">
+<div style="border-left: 3px solid var(--red); padding-left: 32px;">
+<h3 style="font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;">Strategy First</h3>
+<p style="color: rgba(255,255,255,0.7); font-size: 15px; line-height: 1.8;">Every brand starts with a strategy session. We study your market, competitors, and audience before a single pixel is placed. Design without direction is decoration.</p>
+</div>
+<div style="border-left: 3px solid var(--red); padding-left: 32px;">
+<h3 style="font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;">Full-Spectrum Delivery</h3>
+<p style="color: rgba(255,255,255,0.7); font-size: 15px; line-height: 1.8;">Brand identity, packaging, print, web, social, SEO, AI automation — all under one roof. No juggling five vendors. One team, one vision, one invoice.</p>
+</div>
+<div style="border-left: 3px solid var(--red); padding-left: 32px;">
+<h3 style="font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;">Built for Revenue</h3>
+<p style="color: rgba(255,255,255,0.7); font-size: 15px; line-height: 1.8;">We don't design for awards. We design for your bottom line. Every deliverable is built to convert — whether it's on a shelf, a screen, or a search result.</p>
+</div>
 </div>
 </div>
 </section>
-<section class="section dark" style="padding: 80px 0;">
-<div style="max-width: 1200px; margin: 0 auto; padding: 0 48px; text-align: center;">
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px;">Programs & Creative Events <span style="color: var(--red);">We've Been Part Of</span></h2>
-<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 48px; margin-top: 48px;">
-<a href="https://detroitdesignfestival.com" target="_blank" rel="noopener noreferrer" style="opacity: 0.6; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; border: 1px solid rgba(255,255,255,0.15); padding: 16px 28px; border-radius: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">Detroit Design Festival</a>
-<a href="https://techtowndetroit.org" target="_blank" rel="noopener noreferrer" style="opacity: 0.6; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 18px; font-weight: 800; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.15); padding: 16px 28px; border-radius: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">TechTown Detroit</a>
-<a href="https://www.avenueoffashion.com" target="_blank" rel="noopener noreferrer" style="opacity: 0.6; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 18px; font-weight: 800; font-style: italic; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.15); padding: 16px 28px; border-radius: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">Avenue of Fashion</a>
-<a href="https://autorama.com" target="_blank" rel="noopener noreferrer" style="opacity: 0.6; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; border: 1px solid rgba(255,255,255,0.15); padding: 16px 28px; border-radius: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">Detroit Autorama</a>
-</div>
-<p style="color: rgba(255,255,255,0.5); font-size: 15px; max-width: 700px; margin: 48px auto 0; line-height: 1.8; font-family: 'Montserrat', sans-serif;">Our previous studio (Bravo Graphix) on the Avenue of Fashion was part of multiple Detroit economic and creative programs — including Revolve Detroit, TechTown's SWOT City, and the Detroit Design Festival, which brought festival visitors and clients directly to our door.</p>
-</div>
-</section>
+
 <section class="section dark" style="padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.06);">
 <div style="max-width: 1200px; margin: 0 auto; padding: 0 48px;">
+<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4);">Clients & Sectors <span style="color: var(--red);">We Serve</span></h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px;">
 <div style="text-align: center;">
 <h3 style="font-family: 'Syne', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Unions & Workforce</h3>
@@ -811,7 +826,7 @@ function loadAboutView() {
 </div>
 </div>
 <div style="text-align: center;">
-<h3 style="font-family: 'Syne', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Political & Government</h3>
+<h3 style="font-family: 'Syne', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Government</h3>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 32px;">
 <span style="font-size: 16px; font-weight: 700; color: white; opacity: 0.6; letter-spacing: 1px;">State of Michigan — Office of the Governor</span>
 </div>
@@ -827,17 +842,7 @@ function loadAboutView() {
 </div>
 </div>
 </section>
-<section class="section dark" style="padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.06);">
-<div style="max-width: 900px; margin: 0 auto; padding: 0 48px; text-align: center;">
-<h3 style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-style: italic; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-bottom: 48px;">As Featured In</h3>
-<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 48px;">
-<a href="https://www.scottmax.com/company/new-urban-influence" target="_blank" rel="noopener noreferrer" style="opacity: 0.5; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 24px; font-weight: 800; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">ScottMax</a>
-<a href="https://modeldmedia.com/bravographixavenueoffashion" target="_blank" rel="noopener noreferrer" style="opacity: 0.5; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 24px; font-weight: 300; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">model <span style="font-size: 36px; font-weight: 800; color: rgba(255,255,255,0.6);">D</span></a>
-<span style="opacity: 0.5; font-size: 22px; font-weight: 800; color: white; font-family: Georgia, serif; letter-spacing: 0.5px;">Detroit Free Press</span>
-<span style="opacity: 0.5; font-size: 22px; font-weight: 800; color: white; font-style: italic; letter-spacing: 1px;">Rolling Out</span>
-</div>
-</div>
-</section>
+
 <section class="section dark"><div class="section-header"><h2 class="section-title">OUR <span class="red">VALUES</span></h2></div><div class="values-grid"><div class="value-card"><div class="number">01</div><h3>Bold Creativity</h3><p>We don't play it safe. Every project gets our full creative energy.</p></div><div class="value-card"><div class="number">02</div><h3>Results First</h3><p>Beautiful design that drives real business outcomes.</p></div><div class="value-card"><div class="number">03</div><h3>Detroit Grit</h3><p>The hustle and resilience of our city runs through everything.</p></div><div class="value-card"><div class="number">04</div><h3>Client Partners</h3><p>We're invested partners in your success and growth.</p></div></div></section>
 <section class="section dark" style="border-top: 1px solid rgba(255,255,255,0.06);">
 <div class="section-header">
@@ -851,6 +856,117 @@ function loadAboutView() {
 </section>
 <section class="section" style="background: var(--red);"><div class="stats-grid"><div class="stat-item"><div class="value">50+</div><div class="stat-label">Brands Elevated</div></div><div class="stat-item"><div class="value">$2M+</div><div class="stat-label">Revenue Generated</div></div><div class="stat-item"><div class="value">100%</div><div class="stat-label">Detroit Pride</div></div><div class="stat-item"><div class="value">313</div><div class="stat-label">Area Code Strong</div></div></div></section>
 <section class="cta-section"><h2>READY TO <span>WORK</span> WITH US?</h2><p>Let's build something legendary together.</p><button class="btn-white" onclick="scrollToContact()">Book Your Strategy Call</button></section>
+        ${getFooterHTML()}
+    `;
+    requestAnimationFrame(function() { _nuiMotionEngine(); });
+}
+
+// ==================== FOUNDER VIEW ====================
+function loadFounderView() {
+    document.getElementById('founderView').innerHTML = `
+<section class="about-hero" style="min-height: 80vh;">
+<div class="hero-content">
+<div class="label" style="color: var(--red); font-size: 11px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 24px; font-weight: 700;">Meet the Founder</div>
+<h2 style="font-size: clamp(60px, 14vw, 180px);">Faren <span>Young</span></h2>
+<p>Creative Director. Brand Strategist. Native Detroiter. Empire Builder.</p>
+</div>
+</section>
+
+<section class="section white-break" style="padding: 100px 0;">
+<div class="story-section" style="max-width: 1200px; margin: 0 auto; padding: 0 48px;">
+<div class="story-content" style="flex: 1.2;">
+<div class="label" style="color:#990000;">The Man Behind the Brand</div>
+<h2 style="font-size: clamp(36px, 6vw, 64px); letter-spacing: 3px; text-transform: uppercase; line-height: 0.9; margin-bottom: 32px;">MARTEZ HAND<br><span class="red" style="font-size: 0.6em;">a.k.a. The Creative Faren Young</span></h2>
+<p style="color: #333 !important; font-size: 17px; line-height: 1.9;">Before New Urban Influence became Detroit's go-to creative agency, there was a young designer from the city with a vision bigger than any canvas could hold. Martez Hand — widely known as the creative <strong>Faren Young</strong> — grew up on Detroit's West Side, where hustle wasn't a buzzword. It was survival. It was culture. It was the blueprint.</p>
+<p style="color: #333 !important; font-size: 17px; line-height: 1.9;">With more than two decades of experience guiding individuals in business development, Faren has gained insights into effective strategies to help entrepreneurs and established businesses alike excel. He's not only a designer — he's a business owner who has started and run multiple service and product businesses himself.</p>
+</div>
+<div class="story-image" style="background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+<img loading="lazy" src="images/about-story.png" alt="Faren Young - Creative Director and Founder of New Urban Influence" style="width: 100%; height: 100%; object-fit: cover;">
+</div>
+</div>
+</section>
+
+<section class="section dark" style="padding: 100px 0;">
+<div style="max-width: 900px; margin: 0 auto; padding: 0 48px;">
+<div class="label" style="color: var(--red); text-align: center; margin-bottom: 16px;">Chapter One</div>
+<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 2px; text-transform: uppercase;">The Bravo <span style="color: var(--red);">Graphix</span> Era</h2>
+<p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">In 2007, Faren co-founded <strong style="color: white;">Bravo Graphix</strong> — a full-service multicultural advertising, creative marketing, design, and print agency — alongside Priest Price and Donald Hand. What started on Detroit's upper West Side at Huntington and 7 Mile Rd. quickly earned a reputation for delivering everything a business needed to start, grow, and dominate.</p>
+<p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">By 2013, the buzz was undeniable. Bravo Graphix relocated to a completely renovated <strong style="color: white;">1,700-square-foot studio at 19434 Livernois Avenue</strong> — right on Detroit's iconic <strong style="color: white;">Avenue of Fashion</strong>. The new space featured an open floor plan, bright colors that captured the agency's energy, and a dedicated photography studio for fashion and beauty clients. The move brought five new positions: two designers, two photographers, and a secretary.</p>
+<p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">The Avenue of Fashion studio didn't just serve clients — it became part of the community. Bravo Graphix was embedded in multiple Detroit economic and creative programs, including <strong style="color: white;">Revolve Detroit</strong>, <strong style="color: white;">TechTown's SWOT City</strong>, and the <strong style="color: white;">Detroit Design Festival</strong>, which brought festival visitors, fellow creatives, and new clients directly to their door.</p>
+<div style="border-left: 3px solid var(--red); padding: 24px 32px; margin: 48px 0; background: rgba(255,255,255,0.02); border-radius: 0 8px 8px 0;">
+<p style="color: white; font-size: 19px; font-style: italic; line-height: 1.8; margin: 0;">From postcard design to billboards — Bravo Graphix offered everything it took to start, grow, and maintain a business. That same philosophy drives New Urban Influence today.</p>
+</div>
+</div>
+</section>
+
+<section class="section dark" style="padding: 100px 0; border-top: 1px solid rgba(255,255,255,0.06);">
+<div style="max-width: 900px; margin: 0 auto; padding: 0 48px;">
+<div class="label" style="color: var(--red); text-align: center; margin-bottom: 16px;">Chapter Two</div>
+<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 2px; text-transform: uppercase;">The Evolution to <span style="color: var(--red);">NUI</span></h2>
+<p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">The creative landscape was shifting. Print was meeting digital. Logos were becoming brand ecosystems. Businesses didn't just need a designer — they needed a strategist, a builder, a partner who understood that branding is a revenue system, not just a pretty face.</p>
+<p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">Faren saw the gap. And he filled it. <strong style="color: white;">New Urban Influence</strong> was born — a full-spectrum creative agency that doesn't just design brands but builds entire systems that generate revenue. From brand identity and packaging to websites, digital marketing, SEO, AI automation, and business strategy, NUI became the one-stop empire builder for businesses who refuse to blend in.</p>
+<p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">Over 50 brands elevated. Over $2M in revenue generated for clients. Unions, nonprofits, government agencies, restaurants, product brands, service businesses — all transformed by the same Detroit energy that started it all.</p>
+</div>
+</section>
+
+<section class="section dark" style="padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.06);">
+<div style="max-width: 1100px; margin: 0 auto; padding: 0 48px;">
+<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4);">Clients & Sectors Served</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; text-align: center;">
+<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 32px 20px;">
+<div style="font-size: 28px; margin-bottom: 12px;">🏭</div>
+<h4 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">Unions & Workforce</h4>
+<p style="font-size: 13px; color: var(--gray);">UAW, Chrysler</p>
+</div>
+<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 32px 20px;">
+<div style="font-size: 28px; margin-bottom: 12px;">🏛️</div>
+<h4 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">Government</h4>
+<p style="font-size: 13px; color: var(--gray);">State of Michigan — Office of the Governor</p>
+</div>
+<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 32px 20px;">
+<div style="font-size: 28px; margin-bottom: 12px;">🤝</div>
+<h4 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">Non-Profits</h4>
+<p style="font-size: 13px; color: var(--gray);">Kiwanis International, Beacon Park, Revolve Detroit</p>
+</div>
+<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 32px 20px;">
+<div style="font-size: 28px; margin-bottom: 12px;">🎨</div>
+<h4 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">Creative Programs</h4>
+<p style="font-size: 13px; color: var(--gray);">Detroit Design Festival, TechTown SWOT City, Detroit Autorama</p>
+</div>
+<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 32px 20px;">
+<div style="font-size: 28px; margin-bottom: 12px;">🍽️</div>
+<h4 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">Restaurants & Food</h4>
+<p style="font-size: 13px; color: var(--gray);">Good Cakes and Bakes, Eve's Restaurant, and more</p>
+</div>
+<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 32px 20px;">
+<div style="font-size: 28px; margin-bottom: 12px;">📦</div>
+<h4 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">Product & Service Brands</h4>
+<p style="font-size: 13px; color: var(--gray);">50+ brands elevated across Michigan and nationwide</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section dark" style="padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.06);">
+<div style="max-width: 900px; margin: 0 auto; padding: 0 48px; text-align: center;">
+<h3 style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-style: italic; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-bottom: 48px;">Press & Features</h3>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 48px; margin-bottom: 32px;">
+<a href="https://www.scottmax.com/company/new-urban-influence" target="_blank" rel="noopener noreferrer" style="opacity: 0.5; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 26px; font-weight: 800; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">ScottMax</a>
+<a href="https://modeldmedia.com/bravographixavenueoffashion" target="_blank" rel="noopener noreferrer" style="opacity: 0.5; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 26px; font-weight: 300; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">model <span style="font-size: 38px; font-weight: 800; color: rgba(255,255,255,0.6);">D</span></a>
+<span style="opacity: 0.5; font-size: 24px; font-weight: 800; color: white; font-family: Georgia, serif; letter-spacing: 0.5px;">Detroit Free Press</span>
+<span style="opacity: 0.5; font-size: 24px; font-weight: 800; color: white; font-style: italic; letter-spacing: 1px;">Rolling Out</span>
+</div>
+<p style="color: rgba(255,255,255,0.35); font-size: 13px; margin-top: 16px;">Bravo Graphix featured in Model D Media, October 2013 — by Nicole Rupersburg</p>
+</div>
+</section>
+
+<section class="section" style="background: var(--red); padding: 100px 0;">
+<div style="max-width: 800px; margin: 0 auto; padding: 0 48px; text-align: center;">
+<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px;">LET'S BUILD YOUR <span style="text-decoration: underline; text-underline-offset: 8px;">EMPIRE</span></h2>
+<p style="font-size: 18px; opacity: 0.9; max-width: 600px; margin: 0 auto 40px; line-height: 1.7;">20+ years of Detroit grit, creative fire, and business strategy — ready to work for your brand.</p>
+<button class="btn-white" onclick="scrollToContact()" style="font-size: 16px; padding: 20px 56px;">Book Your Strategy Call</button>
+</div>
+</section>
         ${getFooterHTML()}
     `;
     requestAnimationFrame(function() { _nuiMotionEngine(); });

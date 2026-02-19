@@ -41,6 +41,12 @@
   to = "/about.html"
   status = 200
 
+# Founder page
+[[redirects]]
+  from = "/founder"
+  to = "/founder.html"
+  status = 200
+
 # Portfolio page
 [[redirects]]
   from = "/portfolio"
