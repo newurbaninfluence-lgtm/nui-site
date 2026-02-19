@@ -215,7 +215,7 @@ section[style*="background"]{contain:layout style paint;}
 .streetcred-header{margin-bottom:56px;}
 .streetcred-title{font-family:'Syne',sans-serif;font-size:clamp(48px,8vw,120px);font-weight:700;line-height:0.95;text-transform:uppercase;color:#fff;}
 .streetcred-title .yellow{color:#f5c518;}
-.streetcred-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.streetcred-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;}
 .streetcred-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);padding:40px;display:flex;flex-direction:column;justify-content:space-between;transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
 .streetcred-card:hover{border-color:rgba(245,197,24,0.4);transform:translateY(-4px);}
 .streetcred-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;}
@@ -225,6 +225,7 @@ section[style*="background"]{contain:layout style paint;}
 .streetcred-author{display:flex;align-items:center;gap:14px;border-top:1px solid rgba(255,255,255,0.08);padding-top:24px;}
 .streetcred-avatar{width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;}
 .streetcred-avatar img{width:100%;height:100%;object-fit:cover;}
+.streetcred-avatar-initial{width:100%;height:100%;background:linear-gradient(135deg,var(--red),#ff6b5b);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:#fff;border-radius:50%;}
 .streetcred-name{font-weight:700;font-size:15px;color:#fff;margin-bottom:2px;}
 .streetcred-role{font-size:12px;color:rgba(255,255,255,0.45);}
 .cta-section{background:var(--red);padding:120px 48px;text-align:center;position:relative;overflow:hidden;}
@@ -314,8 +315,7 @@ section[style*="background"]{contain:layout style paint;}
 .team-bio{font-size:13px;padding:0 8px;}
 .testimonials-grid{grid-template-columns:repeat(2,1fr) !important;gap:20px !important;}
 .testimonial-card{padding:28px;}
-.streetcred-grid{grid-template-columns:1fr 1fr;}
-.portfolio-grid{grid-template-columns:1fr;}
+.streetcred-grid{grid-template-columns:1fr 1fr;}.portfolio-grid{grid-template-columns:1fr;}
 .portfolio-header{flex-direction:column;align-items:flex-start;gap:24px;}
 .stats-grid,.results-grid{grid-template-columns:repeat(2,1fr);}
 .results-section{padding:60px 24px;}
