@@ -696,6 +696,43 @@ html{scroll-behavior:smooth;}
 
 /* ── Scroll Progress Bar ─────────────────── */
 .nui-scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--red),#ff4444);z-index:9999;transform-origin:left;transform:scaleX(0);will-change:transform;}
+
+/* ═══ WHITE "What We Create" Section ═══ */
+.services-white{background:#ffffff !important;color:#0a0a0a !important;padding:100px 48px;}
+.services-white .label{color:#666;}
+.services-white .label::before{background:var(--red);}
+.services-white .section-title,.services-white h2{color:#0a0a0a !important;-webkit-text-fill-color:#0a0a0a !important;font-family:'Bebas Neue','Anton','Teko',sans-serif;}
+.services-white .section-title .red,.services-white h2 .red{color:var(--red) !important;-webkit-text-fill-color:var(--red) !important;}
+.services-white .services-header p{color:#555 !important;}
+.services-white .btn-cta{background:#0a0a0a;color:#fff;}
+.services-white .btn-cta:hover{background:var(--red);}
+.services-white .service-card-simple{background:#f8f8f8;border:1px solid #e0e0e0;color:#0a0a0a;padding:32px;}
+.services-white .service-card-simple:hover{background:#f0f0f0;border-color:#ccc;transform:translateY(-4px);}
+.services-white .service-card-simple .arrow{border-color:#ccc;color:#0a0a0a;}
+.services-white .service-card-simple:hover .arrow{border-color:var(--red);color:var(--red);}
+.services-white .service-card-simple h3{color:#0a0a0a;font-size:22px;}
+.services-white .service-card-simple p{color:#666;}
+.services-white .service-card-simple .learn-more{color:#888;font-size:12px;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-top:auto;padding-top:16px;border-top:1px solid #e0e0e0;}
+.services-white .services-grid{grid-template-columns:repeat(3,1fr);gap:20px;}
+
+/* ═══ FAQ 2-Column Grid ═══ */
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1200px;margin:0 auto;}
+.faq-grid .faq-card{margin-bottom:0 !important;}
+
+/* ═══ Red CTA Image Background ═══ */
+.cta-section::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,0,0,0.3) 0%,rgba(200,0,0,0.5) 50%,rgba(150,0,0,0.4) 100%);z-index:0;}
+.cta-section::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(255,255,255,0.1) 0%,transparent 60%),radial-gradient(ellipse at 80% 30%,rgba(255,255,255,0.08) 0%,transparent 50%);z-index:0;}
+.cta-section h2,.cta-section p,.cta-section .btn-white{position:relative;z-index:1;}
+
+@media(max-width:968px){
+.services-white{padding:60px 24px;}
+.services-white .services-grid{grid-template-columns:repeat(2,1fr) !important;}
+.faq-grid{grid-template-columns:1fr;}
+}
+@media(max-width:580px){
+.services-white{padding:48px 16px;}
+.services-white .services-grid{grid-template-columns:1fr !important;}
+}
 /* White "What We Create" section */
 .services-white{background:#ffffff !important;color:#0a0a0a !important;padding:100px 48px;}
 .services-white .label{color:#666;}
