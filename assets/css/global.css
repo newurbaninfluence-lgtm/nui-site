@@ -62,7 +62,10 @@ section[style*="background"]{contain:layout style paint;}
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}
 50%{transform:translateX(-50%) translateY(10px);}
 }
-.stats-ticker{background:#000;padding:28px 0;overflow:hidden;}
+.stats-ticker{background:#000;padding:28px 0;overflow:hidden;position:relative;}
+.stats-ticker::before,.stats-ticker::after{content:'';position:absolute;top:0;bottom:0;width:200px;z-index:2;pointer-events:none;}
+.stats-ticker::before{left:0;background:linear-gradient(to right,#000,transparent);}
+.stats-ticker::after{right:0;background:linear-gradient(to left,#000,transparent);}
 .ticker-text{font-family:'Syne',sans-serif;font-size:clamp(32px,7vw,64px);font-weight:700;white-space:nowrap;animation:ticker 40s linear infinite;color:var(--red);text-transform:uppercase;letter-spacing:6px;will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden;}
 @keyframes ticker{0%{transform:translate3d(0,0,0);}
 100%{transform:translate3d(-50%,0,0);}
