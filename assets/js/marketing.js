@@ -779,11 +779,62 @@ function loadAboutView() {
 <div class="story-content">
 <div class="label" style="color:#990000;">Our Story</div>
 <h2>BORN IN THE <span class="red">D.</span><br>BUILT TO <span class="red">DOMINATE.</span></h2>
-<p>New Urban Influence was founded with a simple mission: to bring the bold, unapologetic energy of Detroit to every brand we touch.</p>
-<p>We believe that great design isn't just about looking good - it's about creating systems that drive real business results. Every pixel we push, every strategy we craft, is designed to help our clients dominate their markets.</p>
+<p>New Urban Influence was founded by Martez Hand — widely known as the creative <strong>Faren Young</strong> — a native Detroiter with over two decades of experience guiding businesses to success through bold design and strategic branding.</p>
+<p>What started in 2007 as <strong>Bravo Graphix</strong>, a full-service multicultural advertising, creative marketing, design, and print agency on Detroit's upper West Side, quickly became a trusted name for entrepreneurs, nonprofits, unions, and government agencies across Michigan. In 2013, Bravo Graphix moved to a completely renovated 1,700-square-foot studio at <strong>19434 Livernois Avenue</strong> — right on the iconic <strong>Avenue of Fashion</strong> — adding a photography studio and five new positions to the team.</p>
+<p>The Avenue of Fashion studio became part of multiple Detroit economic and creative programs — including <strong>Revolve Detroit</strong>, <strong>TechTown's SWOT City</strong>, and the <strong>Detroit Design Festival</strong> — which brought festival visitors and clients directly to our door. That same energy, grit, and commitment to community evolved into what we are today: <strong>New Urban Influence</strong>, a full-spectrum creative agency that doesn't just design brands — we build empires.</p>
 </div>
 <div class="story-image" style="background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.15); font-size: 14px;">
-                    ${aboutData.storyImage ? `<img loading="lazy" src="${aboutData.storyImage}" alt="Our Story" style="width: 100%; height: 100%; object-fit: cover;">` : `<img loading="lazy" src="images/about-story.png" alt="Our Story" style="width: 100%; height: 100%; object-fit: cover;">`}
+                    ${aboutData.storyImage ? `<img loading="lazy" src="${aboutData.storyImage}" alt="Faren Young - Creative Director and Founder of New Urban Influence" style="width: 100%; height: 100%; object-fit: cover;">` : `<img loading="lazy" src="images/about-story.png" alt="Faren Young - Creative Director and Founder of New Urban Influence" style="width: 100%; height: 100%; object-fit: cover;">`}
+</div>
+</div>
+</section>
+<section class="section dark" style="padding: 80px 0;">
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 48px; text-align: center;">
+<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px;">Programs & Creative Events <span style="color: var(--red);">We've Been Part Of</span></h2>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 48px; margin-top: 48px;">
+<a href="https://detroitdesignfestival.com" target="_blank" rel="noopener noreferrer" style="opacity: 0.6; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; border: 1px solid rgba(255,255,255,0.15); padding: 16px 28px; border-radius: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">Detroit Design Festival</a>
+<a href="https://techtowndetroit.org" target="_blank" rel="noopener noreferrer" style="opacity: 0.6; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 18px; font-weight: 800; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.15); padding: 16px 28px; border-radius: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">TechTown Detroit</a>
+<a href="https://www.avenueoffashion.com" target="_blank" rel="noopener noreferrer" style="opacity: 0.6; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 18px; font-weight: 800; font-style: italic; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.15); padding: 16px 28px; border-radius: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">Avenue of Fashion</a>
+<a href="https://autorama.com" target="_blank" rel="noopener noreferrer" style="opacity: 0.6; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; border: 1px solid rgba(255,255,255,0.15); padding: 16px 28px; border-radius: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">Detroit Autorama</a>
+</div>
+<p style="color: rgba(255,255,255,0.5); font-size: 15px; max-width: 700px; margin: 48px auto 0; line-height: 1.8; font-family: 'Montserrat', sans-serif;">Our previous studio (Bravo Graphix) on the Avenue of Fashion was part of multiple Detroit economic and creative programs — including Revolve Detroit, TechTown's SWOT City, and the Detroit Design Festival, which brought festival visitors and clients directly to our door.</p>
+</div>
+</section>
+<section class="section dark" style="padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.06);">
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 48px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px;">
+<div style="text-align: center;">
+<h3 style="font-family: 'Syne', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Unions & Workforce</h3>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 32px;">
+<span style="font-size: 22px; font-weight: 900; color: white; opacity: 0.6; letter-spacing: 2px;">UAW</span>
+<span style="font-size: 20px; font-weight: 700; color: white; opacity: 0.6; letter-spacing: 3px; text-transform: uppercase;">Chrysler</span>
+</div>
+</div>
+<div style="text-align: center;">
+<h3 style="font-family: 'Syne', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Political & Government</h3>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 32px;">
+<span style="font-size: 16px; font-weight: 700; color: white; opacity: 0.6; letter-spacing: 1px;">State of Michigan — Office of the Governor</span>
+</div>
+</div>
+<div style="text-align: center;">
+<h3 style="font-family: 'Syne', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Non-Profits</h3>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 32px;">
+<span style="font-size: 18px; font-weight: 700; color: white; opacity: 0.6;">Kiwanis International</span>
+<span style="font-size: 18px; font-weight: 700; color: white; opacity: 0.6;">Beacon Park</span>
+<span style="font-size: 18px; font-weight: 800; color: white; opacity: 0.6; letter-spacing: 1px;">Revolve Detroit</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="section dark" style="padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.06);">
+<div style="max-width: 900px; margin: 0 auto; padding: 0 48px; text-align: center;">
+<h3 style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-style: italic; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-bottom: 48px;">As Featured In</h3>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 48px;">
+<a href="https://www.scottmax.com/company/new-urban-influence" target="_blank" rel="noopener noreferrer" style="opacity: 0.5; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 24px; font-weight: 800; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">ScottMax</a>
+<a href="https://modeldmedia.com/bravographixavenueoffashion" target="_blank" rel="noopener noreferrer" style="opacity: 0.5; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 24px; font-weight: 300; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">model <span style="font-size: 36px; font-weight: 800; color: rgba(255,255,255,0.6);">D</span></a>
+<span style="opacity: 0.5; font-size: 22px; font-weight: 800; color: white; font-family: Georgia, serif; letter-spacing: 0.5px;">Detroit Free Press</span>
+<span style="opacity: 0.5; font-size: 22px; font-weight: 800; color: white; font-style: italic; letter-spacing: 1px;">Rolling Out</span>
 </div>
 </div>
 </section>
@@ -2291,7 +2342,7 @@ function savePortfolio() {
 let aboutData = JSON.parse(localStorage.getItem('nui_about')) || {
     storyImage: 'images/about-story.png',
     team: [
-        { name: 'Faren Young', title: 'Creative Director & Founder', bio: 'Native Detroiter with 20+ years guiding businesses to success through bold design and strategic branding.', photo: '' },
+        { name: 'Faren Young', title: 'Creative Director & Founder', bio: 'Martez Hand — widely known as the creative Faren Young — is a native Detroiter with 20+ years guiding businesses to success through bold design and strategic branding. From Bravo Graphix on the Avenue of Fashion to New Urban Influence, he builds empires.', photo: '' },
         { name: 'Creative Team', title: 'Design & Development', bio: 'A network of skilled designers, developers, and strategists ready to bring your vision to life.', photo: '/images/creative-team.png' },
         { name: 'Matt', title: 'Mobile Developer', bio: 'Full-stack mobile developer crafting seamless iOS and Android experiences with pixel-perfect precision.', photo: '' },
         { name: 'Michelle', title: 'UI/UX Designer', bio: 'Bringing warmth and intuition to every interface. Michelle turns complex workflows into delightful user experiences.', photo: '' },
