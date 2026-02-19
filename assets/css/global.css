@@ -54,7 +54,7 @@ section[style*="background"]{contain:layout style paint;}
 @keyframes nuiSafetyFadeIn{to{opacity:1;transform:none;}}
 .empire-word{animation:nuiSafetyFadeIn 1s ease 2.5s forwards;}
 .hero.gsap-controlled .empire-word{animation:none;} /* GSAP takes over, cancel CSS fallback */
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(72px,16vw,220px);font-weight:600;line-height:0.85;letter-spacing:12px;margin-bottom:32px;text-transform:uppercase;}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(72px,16vw,220px);font-weight:600;line-height:0.75;letter-spacing:12px;margin-bottom:32px;text-transform:uppercase;}
 .hero p{font-size:clamp(20px,2.5vw,26px);color:rgba(255,255,255,0.85);max-width:700px;margin:0 auto 40px;line-height:1.7;text-align:center;text-shadow:0 2px 8px rgba(0,0,0,0.5);font-family:'Montserrat',sans-serif;font-weight:300;letter-spacing:0.5px;}
 .hero p span{color:var(--red);}
 .hero-buttons{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center;}
@@ -377,7 +377,7 @@ section[style*="background"]{contain:layout style paint;}
 .hero{padding:80px 16px 40px;}
 .hero h1{font-size:clamp(64px,22vw,140px);letter-spacing:6px;}
 .hero p{font-size:16px;}
-.empire-word.red{font-size:0.8em;}
+.empire-word.red{font-size:0.55em;}
 .hero-buttons{flex-direction:column;width:100%;max-width:280px;}
 .hero-buttons a{width:100%;text-align:center;padding:14px 20px;font-size:13px;}
 .section{padding:48px 16px;}
