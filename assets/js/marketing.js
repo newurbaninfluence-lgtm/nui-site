@@ -783,7 +783,7 @@ function loadAboutView() {
 <p>We believe that great design isn't just about looking good - it's about creating systems that drive real business results. Every pixel we push, every strategy we craft, is designed to help our clients dominate their markets.</p>
 </div>
 <div class="story-image" style="background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.15); font-size: 14px;">
-                    ${aboutData.storyImage ? `<img loading="lazy" src="${aboutData.storyImage}" alt="Our Story" style="width: 100%; height: 100%; object-fit: cover;">` : 'Image'}
+                    ${aboutData.storyImage ? `<img loading="lazy" src="${aboutData.storyImage}" alt="Our Story" style="width: 100%; height: 100%; object-fit: cover;">` : `<img loading="lazy" src="images/about-story.png" alt="Our Story" style="width: 100%; height: 100%; object-fit: cover;">`}
 </div>
 </div>
 </section>
