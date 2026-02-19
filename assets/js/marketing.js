@@ -143,7 +143,7 @@ function loadHomeView() {
 </section>
 <section class="section dark results-section nui-glow-line">
 <div class="label" style="text-align: center; justify-content: center; margin-bottom: 24px;">The Results Speak</div>
-<div style="text-align:center;margin-bottom:48px;"><img src="/logo-signature.png" alt="New Urban Influence" style="height:120px;width:auto;opacity:0.85;"></div>
+<div style="text-align:center;margin-bottom:48px;"><img src="/logo-signature.png" alt="New Urban Influence" style="height:156px;width:auto;opacity:0.85;"></div>
 <div class="stats-boxes nui-stagger">
 <div class="stat-box">
 <div class="stat-number">50+</div>
