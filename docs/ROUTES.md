@@ -1,128 +1,168 @@
-# NUI Routes — Complete Audit
-> Generated: Phase 0 | Pre-Refactor
+# ROUTES (LOCKED)
+# Last updated: 2026-02-19
+# Rule: Claude must NOT re-scan the repo if ROUTES is present. Only update routes when a page is added/removed or hrefs change.
+# Source: Full repo scan of /Users/farenyoung/nui-site
 
-## SPA Views (index.html internal router)
+---
 
-| View Name  | URL Hash    | Clean URL (netlify.toml)                    | File Exists? | System     |
-|-----------|-------------|---------------------------------------------|-------------|------------|
-| home      | #home       | /                                            | index.html  | Marketing  |
-| about     | #about      | /about → about.html                         | ✅ Yes       | Marketing  |
-| services  | #services   | /services/brand-identity-packages-detroit    | ✅ Yes       | Marketing  |
-| portfolio | #portfolio  | /portfolio → portfolio.html                  | ✅ Yes       | Marketing  |
-| blog      | #blog       | /blog → blog/index.html                      | ✅ Yes       | Marketing  |
-| portal    | #portal     | /portal (SPA catch-all → index.html)         | In monolith | App/Auth   |
-| intake    | #intake     | /contact → contact.html                      | ✅ Yes       | Marketing  |
+## Marketing SPA (index.html — hash-based views)
 
-## Admin Panels (37 panels — all inside monolith)
+| Route | File | System | Type | Notes |
+|-------|------|--------|------|-------|
+| `/` | `/index.html` | marketing | SPA view | Home |
+| `/#about` | `/index.html` | marketing | SPA view | About section |
+| `/#services` | `/index.html` | marketing | SPA view | Services section |
+| `/#portfolio` | `/index.html` | marketing | SPA view | Portfolio section |
+| `/#blog` | `/index.html` | marketing | SPA view | Blog section |
+| `/#intake` | `/index.html` | marketing | SPA view | Service intake form |
 
-| Panel ID          | Access Via                          | System        |
-|-------------------|-------------------------------------|---------------|
-| dashboard         | showAdminPanel('dashboard')          | Admin         |
-| analytics         | showAdminPanel('analytics')          | Admin         |
-| calendar          | showAdminPanel('calendar')           | Admin         |
-| usermanagement    | showAdminPanel('usermanagement')     | Admin         |
-| clients           | showAdminPanel('clients')            | Admin/CRM     |
-| newclient         | showAdminPanel('newclient')          | Admin/CRM     |
-| orders            | showAdminPanel('orders')             | Admin/Orders  |
-| neworder          | showAdminPanel('neworder')           | Admin/Orders  |
-| leads             | showAdminPanel('leads')              | Admin/CRM     |
-| projects          | showAdminPanel('projects')           | Admin/PM      |
-| proofs            | showAdminPanel('proofs')             | Admin/PM      |
-| delivery          | showAdminPanel('delivery')           | Admin/PM      |
-| submissions       | showAdminPanel('submissions')        | Admin/CRM     |
-| crm               | showAdminPanel('crm')                | Admin/CRM     |
-| payments          | showAdminPanel('payments')           | Admin/Finance |
-| invoices          | showAdminPanel('invoices')           | Admin/Finance |
-| payouts           | showAdminPanel('payouts')            | Admin/Finance |
-| stripe            | showAdminPanel('stripe')             | Admin/Finance |
-| subscriptions     | showAdminPanel('subscriptions')      | Admin/Finance |
-| portfolio         | showAdminPanel('portfolio')          | Admin/Content |
-| blog              | showAdminPanel('blog')               | Admin/Content |
-| about             | showAdminPanel('about')              | Admin/Content |
-| brandguide        | showAdminPanel('brandguide')         | Admin/Content |
-| moodboard         | showAdminPanel('moodboard')          | Admin/Content |
-| assets            | showAdminPanel('assets')             | Admin/Content |
-| siteimages        | showAdminPanel('siteimages')         | Admin/Content |
-| designers         | showAdminPanel('designers')          | Admin/Team    |
-| seo               | showAdminPanel('seo')                | Admin/SEO     |
-| gmb               | showAdminPanel('gmb')                | Admin/SEO     |
-| reviews           | showAdminPanel('reviews')            | Admin/SEO     |
-| emailmarketing    | showAdminPanel('emailmarketing')     | Admin/Comms   |
-| communications    | showAdminPanel('communications')     | Admin/Comms   |
-| socialdm          | showAdminPanel('socialdm')           | Admin/Comms   |
-| sms               | showAdminPanel('sms')                | Admin/Comms   |
-| loyalty           | showAdminPanel('loyalty')            | Admin/Comms   |
-| integrations      | showAdminPanel('integrations')       | Admin/Config  |
-| emailtemplates    | showAdminPanel('emailtemplates')     | Admin/Comms   |
+## Static Marketing Pages
 
-## Designer Portal Panels (5 panels — inside monolith)
+| Route | File | System | Type | Notes |
+|-------|------|--------|------|-------|
+| `/about` | `/about.html` | marketing | static | About page (also SPA view) |
+| `/portfolio` | `/portfolio.html` | marketing | static | Portfolio page (also SPA view) |
+| `/contact` | `/contact.html` | marketing | static | Contact page |
+| `/moodboard-app` | `/moodboard-app.html` | marketing | static | Moodboard tool |
 
-| Panel ID    | Access Via                          | System    |
-|-------------|-------------------------------------|-----------|
-| dashboard   | showDesignerPanel('dashboard')       | Designer  |
-| available   | showDesignerPanel('available')       | Designer  |
-| myprojects  | showDesignerPanel('myprojects')      | Designer  |
-| proofs      | showDesignerPanel('proofs')          | Designer  |
-| messages    | showDesignerPanel('messages')        | Designer  |
+## Location Pages (13 cities)
 
-## Static Pages (already split — separate HTML files)
+| Route | File | System | Type | Notes |
+|-------|------|--------|------|-------|
+| `/locations/ann-arbor` | `/locations/ann-arbor.html` | marketing | static | Geo-targeted |
+| `/locations/birmingham` | `/locations/birmingham.html` | marketing | static | Geo-targeted |
+| `/locations/dearborn` | `/locations/dearborn.html` | marketing | static | Geo-targeted |
+| `/locations/detroit` | `/locations/detroit.html` | marketing | static | Geo-targeted |
+| `/locations/farmington-hills` | `/locations/farmington-hills.html` | marketing | static | Geo-targeted |
+| `/locations/livonia` | `/locations/livonia.html` | marketing | static | Geo-targeted |
+| `/locations/novi` | `/locations/novi.html` | marketing | static | Geo-targeted |
+| `/locations/pontiac` | `/locations/pontiac.html` | marketing | static | Geo-targeted |
+| `/locations/royal-oak` | `/locations/royal-oak.html` | marketing | static | Geo-targeted |
+| `/locations/southfield` | `/locations/southfield.html` | marketing | static | Geo-targeted |
+| `/locations/sterling-heights` | `/locations/sterling-heights.html` | marketing | static | Geo-targeted |
+| `/locations/troy` | `/locations/troy.html` | marketing | static | Geo-targeted |
+| `/locations/warren` | `/locations/warren.html` | marketing | static | Geo-targeted |
 
-| Route                                         | File                                          | System     |
-|-----------------------------------------------|-----------------------------------------------|------------|
-| /about                                        | about.html                                     | Marketing  |
-| /contact                                      | contact.html                                   | Marketing  |
-| /portfolio                                    | portfolio.html                                 | Marketing  |
-| /blog                                         | blog/index.html                                | Marketing  |
-| /blog/branding-mistakes-small-businesses      | blog/branding-mistakes-small-businesses.html   | Marketing  |
-| /blog/how-much-does-logo-design-cost-detroit  | blog/how-much-does-logo-design-cost-detroit.html | Marketing |
-| /blog/restaurant-branding-guide-detroit       | blog/restaurant-branding-guide-detroit.html    | Marketing  |
-| /services/brand-identity-packages-detroit     | services/brand-identity-packages-detroit.html  | Marketing  |
-| /services/brand-guidelines-detroit            | services/brand-guidelines-detroit.html         | Marketing  |
-| /services/branding-agency-detroit             | services/branding-agency-detroit.html          | Marketing  |
-| /services/logo-design-detroit                 | services/logo-design-detroit.html              | Marketing  |
-| /services/marketing-automation-detroit        | services/marketing-automation-detroit.html     | Marketing  |
-| /services/packaging-design-detroit            | services/packaging-design-detroit.html         | Marketing  |
-| /services/print-design-detroit                | services/print-design-detroit.html             | Marketing  |
-| /services/social-media-templates-detroit      | services/social-media-templates-detroit.html   | Marketing  |
-| /services/web-design-detroit                  | services/web-design-detroit.html               | Marketing  |
-| /work/good-cakes-and-bakes                   | work/good-cakes-and-bakes.html                 | Marketing  |
-| /work/ascend-coaching-group                   | work/ascend-coaching-group.html                | Marketing  |
-| /work/detroit-canvas-co                       | work/detroit-canvas-co.html                    | Marketing  |
-| /work/motor-city-bistro                       | work/motor-city-bistro.html                    | Marketing  |
+## Service Pages (9 pages)
 
-## Geo Landing Pages (13 cities — already split)
+| Route | File | System | Type | Notes |
+|-------|------|--------|------|-------|
+| `/services/brand-guidelines-detroit` | `/services/brand-guidelines-detroit.html` | marketing | static | SEO landing |
+| `/services/brand-identity-packages-detroit` | `/services/brand-identity-packages-detroit.html` | marketing | static | SEO landing |
+| `/services/branding-agency-detroit` | `/services/branding-agency-detroit.html` | marketing | static | SEO landing |
+| `/services/logo-design-detroit` | `/services/logo-design-detroit.html` | marketing | static | SEO landing |
+| `/services/marketing-automation-detroit` | `/services/marketing-automation-detroit.html` | marketing | static | SEO landing |
+| `/services/packaging-design-detroit` | `/services/packaging-design-detroit.html` | marketing | static | SEO landing |
+| `/services/print-design-detroit` | `/services/print-design-detroit.html` | marketing | static | SEO landing |
+| `/services/social-media-templates-detroit` | `/services/social-media-templates-detroit.html` | marketing | static | SEO landing |
+| `/services/web-design-detroit` | `/services/web-design-detroit.html` | marketing | static | SEO landing |
 
-| Route                          | File                              |
-|-------------------------------|-----------------------------------|
-| /locations/ann-arbor          | locations/ann-arbor.html           |
-| /locations/birmingham         | locations/birmingham.html          |
-| /locations/dearborn           | locations/dearborn.html            |
-| /locations/detroit            | locations/detroit.html             |
-| /locations/farmington-hills   | locations/farmington-hills.html    |
-| /locations/livonia            | locations/livonia.html             |
-| /locations/novi               | locations/novi.html                |
-| /locations/pontiac            | locations/pontiac.html             |
-| /locations/royal-oak          | locations/royal-oak.html           |
-| /locations/southfield         | locations/southfield.html          |
-| /locations/sterling-heights   | locations/sterling-heights.html    |
-| /locations/troy               | locations/troy.html                |
-| /locations/warren             | locations/warren.html              |
+## Blog (1 index + 3 posts)
 
-## Netlify Serverless Functions (14 functions)
+| Route | File | System | Type | Notes |
+|-------|------|--------|------|-------|
+| `/blog` | `/blog/index.html` | marketing | static | Blog index |
+| `/blog/branding-mistakes-small-businesses` | `/blog/branding-mistakes-small-businesses.html` | marketing | static | Blog post |
+| `/blog/how-much-does-logo-design-cost-detroit` | `/blog/how-much-does-logo-design-cost-detroit.html` | marketing | static | Blog post |
+| `/blog/restaurant-branding-guide-detroit` | `/blog/restaurant-branding-guide-detroit.html` | marketing | static | Blog post |
 
-| Function              | Purpose                    |
-|-----------------------|----------------------------|
-| create-payment.js     | Stripe payment creation     |
-| get-communications.js | Fetch comms data            |
-| google-reviews.js     | Google reviews API          |
-| oauth-callback.js     | Social OAuth handler        |
-| openphone-webhook.js  | OpenPhone SMS webhook       |
-| pexels-search.js      | Pexels image search proxy   |
-| poll-email.js         | Email polling               |
-| save-booking.js       | Save booking submissions    |
-| save-submission.js    | Save form submissions       |
-| send-email.js         | Nodemailer SMTP send        |
-| send-sms.js           | OpenPhone SMS send          |
-| stripe-webhook.js     | Stripe event handler        |
-| sync-data.js          | Supabase data sync          |
-| upload-image.js       | Image upload handler        |
+## Work / Case Studies (4 projects)
+
+| Route | File | System | Type | Notes |
+|-------|------|--------|------|-------|
+| `/work/ascend-coaching-group` | `/work/ascend-coaching-group.html` | marketing | static | Case study |
+| `/work/detroit-canvas-co` | `/work/detroit-canvas-co.html` | marketing | static | Case study |
+| `/work/good-cakes-and-bakes` | `/work/good-cakes-and-bakes.html` | marketing | static | Case study |
+| `/work/motor-city-bistro` | `/work/motor-city-bistro.html` | marketing | static | Case study |
+
+## App Shell (Single SPA — portal.js)
+
+| Route | File | System | Type | Notes |
+|-------|------|--------|------|-------|
+| `/app` | `/app/index.html` | app | SPA shell | App entry point |
+| `/portal` | → `/app/index.html` | app | redirect | Legacy redirect (200) |
+| `/portal/*` | → `/app/index.html` | app | redirect | Legacy catch-all (200) |
+
+### Admin Panels (internal SPA views within /app)
+
+| Panel ID | System | Category | Notes |
+|----------|--------|----------|-------|
+| `dashboard` | admin | Overview | 📊 Main admin dashboard |
+| `calendar` | admin | Overview | 📅 Calendar |
+| `analytics` | admin | Overview | 📈 Site analytics |
+| `reviews` | admin | Overview | ⭐ Google Reviews |
+| `crm` | admin | Clients | 💼 CRM Pipeline |
+| `clients` | admin | Clients | 👥 Client management |
+| `leads` | admin | Clients | 🎯 Lead tracking |
+| `submissions` | admin | Clients | 📩 Form submissions |
+| `projects` | admin | Operations | 📂 Project tracker |
+| `orders` | admin | Operations | 📋 Order management |
+| `proofs` | admin | Operations | ✅ Proof approval |
+| `brandguide` | admin | Operations | 📘 Brand guide |
+| `delivery` | admin | Operations | 📦 Asset delivery |
+| `payments` | admin | Finance | 💳 Payment tracking |
+| `invoices` | admin | Finance | 📄 Invoice management |
+| `payouts` | admin | Finance | 💰 Payout tracking |
+| `stripe` | admin | Finance | 💎 Stripe integration |
+| `subscriptions` | admin | Finance | 🔄 Subscription management |
+| `seo` | admin | Marketing | 🔍 SEO/AEO/GEO |
+| `gmb` | admin | Marketing | 📍 Google Business |
+| `blog` | admin | Marketing | 📝 Blog manager |
+| `emailmarketing` | admin | Marketing | 📧 Email campaigns |
+| `loyalty` | admin | Marketing | 🎁 Loyalty program |
+| `communications` | admin | Comms | 💬 Inbox hub |
+| `socialdm` | admin | Comms | 📱 Social DMs |
+| `sms` | admin | Comms | 📲 SMS (OpenPhone) |
+| `siteimages` | admin | Assets | 🖼️ Site images |
+| `assets` | admin | Assets | 📁 Client assets |
+| `portfolio` | admin | Assets | 🎨 Portfolio manager |
+| `moodboard` | admin | Assets | 🎨 Moodboard tool |
+| `about` | admin | Assets | 📄 About page editor |
+| `designers` | admin | Admin | 🎨 Designer management |
+| `newclient` | admin | Admin | ➕ New client form |
+| `neworder` | admin | Admin | ➕ New order form |
+| `integrations` | admin | Admin | 🔗 All integrations |
+| `usermanagement` | admin | Admin | 🔐 User management |
+
+## Utility Pages
+
+| Route | File | System | Type | Notes |
+|-------|------|--------|------|-------|
+| `/404` | `/404.html` | utility | static | Not found page |
+| `/offline` | `/offline.html` | utility | static | PWA offline fallback |
+| `/placeholder` | `/placeholder.html` | utility | static | Placeholder |
+
+## Redirects
+
+| From | To | Status | Notes |
+|------|----|--------|-------|
+| `/work/good-cakes` | `/work/good-cakes-and-bakes` | 301 | Fix old portfolio link |
+| `/portal` | `/app/index.html` | 200 | Legacy portal redirect |
+| `/portal/*` | `/app/index.html` | 200 | Legacy portal catch-all |
+| `/*` | `/index.html` | 200 | SPA fallback (MUST BE LAST) |
+
+## Missing Pages (TODO)
+
+| Route | Status | Notes |
+|-------|--------|-------|
+| `/locations/highland-park` | ❌ Missing | Linked from Detroit page, no HTML file |
+| `/locations/hamtramck` | ❌ Missing | Linked from Detroit page, no HTML file |
+
+---
+
+## Summary
+
+| Category | Count |
+|----------|-------|
+| Marketing SPA views | 6 |
+| Static marketing pages | 4 |
+| Location pages | 13 (+2 missing) |
+| Service pages | 9 |
+| Blog pages | 4 |
+| Case studies | 4 |
+| App shell | 1 |
+| Admin panels (internal) | 35 |
+| Utility pages | 3 |
+| Redirects | 4 |
+| **Total external routes** | **44** |
+| **Total incl. admin panels** | **79** |
