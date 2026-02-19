@@ -654,6 +654,17 @@ function _nuiMotionEngine() {
               scrollTrigger: { trigger: cta, start: 'top 80%', toggleActions: 'play none none none' } });
     }
 
+    // ── 15b. Problem Cards — sequential red glow on scroll ──
+    document.querySelectorAll('.problem-card').forEach(function(card) {
+        ScrollTrigger.create({
+            trigger: card,
+            start: 'top 75%',
+            end: 'bottom 25%',
+            onEnter: function() { card.classList.add('glow-active'); },
+            onLeaveBack: function() { card.classList.remove('glow-active'); }
+        });
+    });
+
     // ── 16. Story Image — slide + reveal ──
     document.querySelectorAll('.story-image, .roots-right').forEach(function(el) {
         gsap.fromTo(el,
