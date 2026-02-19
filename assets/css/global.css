@@ -211,11 +211,11 @@ section[style*="background"]{contain:layout style paint;}
 .testimonial-card .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--red),#ff6b5b);}
 .testimonial-card .author-name{font-weight:700;margin-bottom:4px;color:#fff;}
 .testimonial-card .author-title{font-size:12px;color:rgba(255,255,255,0.5);}
-.streetcred-section{padding:100px 5% 120px;}
+.streetcred-section{padding:100px 3% 120px;}
 .streetcred-header{margin-bottom:56px;}
 .streetcred-title{font-family:'Syne',sans-serif;font-size:clamp(48px,8vw,120px);font-weight:700;line-height:0.95;text-transform:uppercase;color:#fff;}
 .streetcred-title .yellow{color:#f5c518;}
-.streetcred-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:1400px;}
+.streetcred-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
 .streetcred-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);padding:40px;display:flex;flex-direction:column;justify-content:space-between;transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
 .streetcred-card:hover{border-color:rgba(245,197,24,0.4);transform:translateY(-4px);}
 .streetcred-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;}
