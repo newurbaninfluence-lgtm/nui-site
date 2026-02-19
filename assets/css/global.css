@@ -235,7 +235,7 @@ section[style*="background"]{contain:layout style paint;}
 .cta-section h2{font-family:'Syne',sans-serif;font-size:clamp(64px,12vw,140px);font-weight:700;text-transform:uppercase;margin-bottom:24px;line-height:0.9;position:relative;z-index:1;letter-spacing:3px;}
 .cta-section p{font-size:18px;margin-bottom:40px;opacity:0.9;position:relative;z-index:1;}
 .cta-section .btn-white{position:relative;z-index:1;}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;max-width:1200px;margin:0 auto;text-align:center;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center;}
 .stat-item .value{font-size:clamp(48px,8vw,72px);font-weight:900;line-height:1;margin-bottom:8px;}
 .stat-item .stat-label{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:1px;opacity:0.9;}
 .brands-elevated-section{padding:80px 48px;}
@@ -258,10 +258,10 @@ section[style*="background"]{contain:layout style paint;}
 .proven-card-desc{color:rgba(255,255,255,0.65);font-size:15px;line-height:1.8;margin-bottom:32px;}
 .proven-card-btn{display:inline-block;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--red);border:1px solid var(--red);padding:12px 28px;text-decoration:none;transition:all 0.3s;cursor:pointer;}
 .proven-card-btn:hover{background:var(--red);color:#fff;}
-.results-section{padding:80px 48px;}
-.stats-boxes{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1200px;margin:0 auto;text-align:center;}
-.stat-box{padding:40px 24px;background:linear-gradient(145deg,rgba(255,59,48,0.08) 0%,rgba(255,59,48,0.02) 100%);border:1px solid rgba(255,59,48,0.2);border-radius:20px;transition:all 0.3s ease;}
-.stat-box:hover{transform:translateY(-6px);border-color:rgba(255,59,48,0.4);box-shadow:0 20px 40px rgba(255,59,48,0.15);}
+.results-section{padding:80px 3%;}
+.stats-boxes{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;}
+.stat-box{padding:40px 24px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:20px;transition:all 0.3s ease;}
+.stat-box:hover{transform:translateY(-6px);border-color:rgba(255,59,48,0.4);}
 .stat-number{font-size:clamp(40px,10vw,72px);font-weight:900;color:var(--red);line-height:1;}
 .stat-box .stat-label{font-size:13px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:2px;margin-top:12px;font-weight:600;}
 .footer{background:#050505;padding:0;border-top:1px solid rgba(255,255,255,0.08);}
@@ -689,7 +689,7 @@ to{opacity:1;transform:translateY(0);}
     transition:transform 0.5s cubic-bezier(0.22,1,0.36,1),box-shadow 0.5s cubic-bezier(0.22,1,0.36,1),border-color 0.5s ease;
 }
 .services-white .service-card-simple:hover{background:#0a0a0a;transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.3);border-color:#0a0a0a;}
-.stat-box:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(153,0,0,0.12);}
+.stat-box:hover{transform:translateY(-8px);}
 
 /* ── Floating Ambient Particles ──────────── */
 .nui-particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
