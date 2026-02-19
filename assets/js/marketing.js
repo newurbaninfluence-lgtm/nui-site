@@ -203,17 +203,14 @@ function loadHomeView() {
 <div class="why-card"><div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>Elite but Approachable</h3><p>Premium quality without the corporate stuffiness or agency BS.</p></div>
 </div>
 </section>
-<section class="section dark">
-<div class="section-header">
-<div style="display: inline-block; background: var(--red); padding: 16px 48px; border-radius: 4px; margin-bottom: 16px;">
-<h2 class="section-title" style="color: #fff; margin: 0; font-size: clamp(32px, 6vw, 56px);">STREET CRED</h2>
+<section class="section dark streetcred-section">
+<div class="streetcred-header nui-reveal">
+<h2 class="streetcred-title">STREET <span class="yellow">CRED</span></h2>
 </div>
-</div>
-<div class="testimonials-grid" style="grid-template-columns: repeat(4, 1fr);">
-<div class="testimonial-card"><div class="stars">★★★★★</div><p>"I would recommend working with New Urban Influence. My experience with Faren was great...even when I was being a difficult customer. The care and attention that was put into making sure they understood my vision for my brand was amazing."</p><div class="author"><div class="avatar" class="blog-gradient-cta"></div><div><div class="author-name">Miss B</div><div class="author-title">Local Guide • Google Review</div></div></div></div>
-<div class="testimonial-card"><div class="stars">★★★★★</div><p>"Farren did a great job on a few flyers for me. Prices were reasonable and the quality was superb. My go to company for all my promotional needs. The best at what he does!"</p><div class="author"><div class="avatar" class="blog-gradient-cta"></div><div><div class="author-name">Chevelles Bar</div><div class="author-title">Local Guide • Google Review</div></div></div></div>
-<div class="testimonial-card"><div class="stars">★★★★★</div><p>"The best graphic designing company in the world! I've been a customer for over 10 years and every time they exceed my expectations! Faren and his team has always been very professional and prompt with all my services! I highly recommend this company!"</p><div class="author"><div class="avatar" class="blog-gradient-cta"></div><div><div class="author-name">Sierra Meriwether</div><div class="author-title">10+ Year Client • Google Review</div></div></div></div>
-<div class="testimonial-card"><div class="stars">★★★★★</div><p>"Great experience. Urban Influence gives you personal/detailed attention (making you feel like you are their most important customer). Love not only the services they offer but the personal touch they provide."</p><div class="author"><div class="avatar" class="blog-gradient-cta"></div><div><div class="author-name">Larry Castleberry</div><div class="author-title">Google Review</div></div></div></div>
+<div class="streetcred-grid nui-stagger">
+<div class="streetcred-card"><div class="streetcred-card-top"><div class="streetcred-stars">★★★★★</div><div class="streetcred-quote">"</div></div><p>"New Urban Influence transformed our brand identity and website into a true masterpiece. The design is luxurious, modern, and perfectly captures our restaurant's essence. We've seen a significant increase in reservations and online engagement since the launch. Their team is simply exceptional!"</p><div class="streetcred-author"><div class="streetcred-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" alt="Maria Rodriguez"/></div><div><div class="streetcred-name">Maria Rodriguez</div><div class="streetcred-role">Owner, The Gilded Spoon</div></div></div></div>
+<div class="streetcred-card"><div class="streetcred-card-top"><div class="streetcred-stars">★★★★★</div><div class="streetcred-quote">"</div></div><p>"Our social media presence was stagnant until NUI stepped in. Their creative ad campaigns and motion graphics brought our art and apparel brand to life, resonating deeply with our target audience. The results speak for themselves — higher reach, more sales, and a stronger community."</p><div class="streetcred-author"><div class="streetcred-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Jamal Greene"/></div><div><div class="streetcred-name">Jamal Greene</div><div class="streetcred-role">Founder, Detroit Canvas Co.</div></div></div></div>
+<div class="streetcred-card"><div class="streetcred-card-top"><div class="streetcred-stars">★★★★</div><div class="streetcred-quote">"</div></div><p>"The funnel and automation systems designed by New Urban Influence have revolutionized our lead generation. We're now converting prospects at a much higher rate, allowing us to scale our coaching business efficiently. Their strategic approach is truly next-level."</p><div class="streetcred-author"><div class="streetcred-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" alt="Sarah Chen"/></div><div><div class="streetcred-name">Sarah Chen</div><div class="streetcred-role">CEO, Ascend Coaching Group</div></div></div></div>
 </div>
 </section>
 <section style="padding: 60px 0; background: #000; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); overflow: hidden;">
@@ -613,7 +610,7 @@ function _nuiMotionEngine() {
     });
 
     // ── 12. AUTO-DETECT: Cards with 3D tilt entrance ──
-    document.querySelectorAll('.testimonial-card, .value-card, .why-card, .problem-card').forEach(function(card, i) {
+    document.querySelectorAll('.testimonial-card, .value-card, .why-card, .problem-card, .streetcred-card').forEach(function(card, i) {
         gsap.fromTo(card,
             { opacity: 0, y: 60, rotateY: i % 2 === 0 ? -5 : 5, rotateX: 3 },
             { opacity: 1, y: 0, rotateY: 0, rotateX: 0, duration: 1, ease: 'expo.out',
@@ -715,7 +712,7 @@ function _nuiMotionEngine() {
     }
 
     // ── 20. 3D CARD TILT ON HOVER ──
-    document.querySelectorAll('.service-card, .testimonial-card, .value-card, .why-card, .stat-box').forEach(function(card) {
+    document.querySelectorAll('.service-card, .testimonial-card, .value-card, .why-card, .stat-box, .streetcred-card').forEach(function(card) {
         card.addEventListener('mousemove', function(e) {
             var rect = card.getBoundingClientRect();
             var x = (e.clientX - rect.left) / rect.width - 0.5;
