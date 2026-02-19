@@ -62,8 +62,8 @@ section[style*="background"]{contain:layout style paint;}
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}
 50%{transform:translateX(-50%) translateY(10px);}
 }
-.stats-ticker{background:#000;padding:28px 0;overflow:hidden;border-top:3px solid var(--red);border-bottom:3px solid var(--red);}
-.ticker-text{font-size:clamp(32px,7vw,64px);font-weight:900;white-space:nowrap;animation:ticker 15s linear infinite;color:var(--red);text-transform:uppercase;letter-spacing:6px;will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden;}
+.stats-ticker{background:#000;padding:28px 0;overflow:hidden;}
+.ticker-text{font-size:clamp(32px,7vw,64px);font-weight:900;white-space:nowrap;animation:ticker 40s linear infinite;color:var(--red);text-transform:uppercase;letter-spacing:6px;will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden;}
 @keyframes ticker{0%{transform:translate3d(0,0,0);}
 100%{transform:translate3d(-50%,0,0);}
 }
