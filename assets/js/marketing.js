@@ -429,7 +429,7 @@ function loadHomeView() {
 </div>
 </section>
 
-<section class="cta-section" id="contact" style="background:var(--red);position:relative;overflow:hidden;">
+<section class="cta-section" id="contact" style="background:rgba(220,38,38,0.3);position:relative;overflow:hidden;">
 <div style="position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80') center/cover no-repeat;opacity:0.12;mix-blend-mode:multiply;"></div>
 <h2 style="position:relative;z-index:1;">READY TO<br>DOMINATE?</h2>
 <p style="position:relative;z-index:1;">Stop playing small. Let's build a brand that demands attention and drives real revenue.</p>
