@@ -135,6 +135,7 @@ function loadHomeView() {
 <text class="rotating-313-text">
 <textPath href="#circlePath" startOffset="0%">313 • DETROIT • 313 • MOTOR CITY • 313 • DETROIT • 313 • MOTOR CITY • </textPath>
 </text>
+<image href="/icons/icon-192.png" x="110" y="110" width="180" height="180" opacity="1"/>
 </svg>
 </div>
 </div>
