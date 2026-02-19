@@ -82,7 +82,7 @@ function loadHomeView() {
 </div>
 </div>
 </section>
-<section class="section dark nui-glow-line">
+<section class="section dark struggle-wrapper">
 <div class="struggle-section">
 <div class="struggle-left nui-reveal-left">
 <h2>THE<br><span class="red">STRUGGLE</span><br>IS REAL.</h2>
