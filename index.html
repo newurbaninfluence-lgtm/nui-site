@@ -488,6 +488,135 @@
     }
  </script>
 
+    <!-- Organization Schema — Signals brand entity to Google Knowledge Panel -->
+ <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "New Urban Influence",
+        "alternateName": ["NUI", "New Urban Influence LLC", "Bravo Graphix"],
+        "url": "https://newurbaninfluence.com",
+        "logo": "https://newurbaninfluence.com/logo.png",
+        "image": "https://newurbaninfluence.com/og-image.jpg",
+        "description": "Detroit-based creative agency specializing in brand identity, web design, AI systems, and digital marketing for small businesses, entrepreneurs, coaches, and creators.",
+        "telephone": "(248) 487-8747",
+        "email": "info@newurbaninfluence.com",
+        "foundingDate": "2013",
+        "foundingLocation": {
+            "@type": "Place",
+            "name": "Detroit, Michigan"
+        },
+        "founder": {
+            "@type": "Person",
+            "name": "Faren Young",
+            "jobTitle": "Creative Director & Founder"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Detroit",
+            "addressRegion": "MI",
+            "addressCountry": "US"
+        },
+        "areaServed": [
+            { "@type": "City", "name": "Detroit" },
+            { "@type": "City", "name": "Southfield" },
+            { "@type": "City", "name": "Royal Oak" },
+            { "@type": "City", "name": "Ann Arbor" },
+            { "@type": "City", "name": "Troy" },
+            { "@type": "City", "name": "Birmingham" },
+            { "@type": "City", "name": "Dearborn" },
+            { "@type": "City", "name": "Farmington Hills" },
+            { "@type": "State", "name": "Michigan" }
+        ],
+        "sameAs": [
+            "https://www.instagram.com/newurbaninfluence",
+            "https://twitter.com/newurbaninfluence",
+            "https://www.linkedin.com/company/newurbaninfluence",
+            "https://share.google/0zJCv7QH0SXk4sY7X",
+            "https://clutch.co/profile/new-urban-influence",
+            "https://www.yelp.com/biz/new-urban-influence-detroit"
+        ],
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "NUI Services",
+            "itemListElement": [
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Brand Identity Design", "url": "https://newurbaninfluence.com/services" }},
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Website Design & Development", "url": "https://newurbaninfluence.com/services" }},
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Systems & Automation", "url": "https://newurbaninfluence.com/services" }},
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Social Media & Ads", "url": "https://newurbaninfluence.com/services" }},
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Print & Packaging Design", "url": "https://newurbaninfluence.com/services" }},
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SEO & Digital Strategy", "url": "https://newurbaninfluence.com/services" }},
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Motion & Video", "url": "https://newurbaninfluence.com/services" }}
+            ]
+        }
+    }
+ </script>
+
+    <!-- SiteNavigationElement — Tells Google which pages to show as sitelinks -->
+ <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "SiteNavigationElement",
+                "name": "Services",
+                "url": "https://newurbaninfluence.com/services"
+            },
+            {
+                "@type": "SiteNavigationElement",
+                "name": "Portfolio",
+                "url": "https://newurbaninfluence.com/portfolio"
+            },
+            {
+                "@type": "SiteNavigationElement",
+                "name": "About",
+                "url": "https://newurbaninfluence.com/about"
+            },
+            {
+                "@type": "SiteNavigationElement",
+                "name": "Contact",
+                "url": "https://newurbaninfluence.com/contact"
+            },
+            {
+                "@type": "SiteNavigationElement",
+                "name": "Blog",
+                "url": "https://newurbaninfluence.com/blog"
+            },
+            {
+                "@type": "SiteNavigationElement",
+                "name": "FAQ",
+                "url": "https://newurbaninfluence.com/#faq"
+            },
+            {
+                "@type": "SiteNavigationElement",
+                "name": "AI Systems & Automation",
+                "url": "https://newurbaninfluence.com/services/ai-systems-automation-detroit"
+            },
+            {
+                "@type": "SiteNavigationElement",
+                "name": "Detroit Branding",
+                "url": "https://newurbaninfluence.com/locations/detroit"
+            }
+        ]
+    }
+ </script>
+
+    <!-- WebSite Schema with SearchAction — Enables Google search box sitelink -->
+ <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "New Urban Influence",
+        "alternateName": "NUI",
+        "url": "https://newurbaninfluence.com",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://newurbaninfluence.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+ </script>
+
     <!-- HowTo Schema — Voice assistants love step-by-step processes -->
  <script type="application/ld+json">
     {
