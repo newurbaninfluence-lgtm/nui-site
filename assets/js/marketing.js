@@ -25,7 +25,7 @@ function loadHomeView() {
 </section>
 <section class="ticker-section">
 <div style="text-align:center;margin-bottom:32px;">
-<h3 class="ticker-heading">TRUSTED BY LEADERS, ARTISTS & BUSINESSES ACROSS DETROIT</h3>
+<h3 class="ticker-heading">TRUSTED BY ARTISTS & BUSINESSES ACROSS DETROIT</h3>
 </div>
 <div class="ticker-strip">
 <div class="ticker-row">
@@ -601,22 +601,11 @@ function _nuiMotionEngine() {
             scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
     }
 
-    // ── 9. About Hero Parallax + Dramatic Entrance ──
+    // ── 9. About Hero Parallax ──
     var aboutHero = document.querySelector('.about-hero');
     if (aboutHero) {
         gsap.to(aboutHero, { backgroundPositionY: '30%', ease: 'none',
             scrollTrigger: { trigger: aboutHero, start: 'top top', end: 'bottom top', scrub: true } });
-        // Dramatic entrance for About heading
-        var aboutH2 = aboutHero.querySelector('h2');
-        var aboutP = aboutHero.querySelector('p');
-        if (aboutH2) {
-            gsap.fromTo(aboutH2, { opacity: 0, y: 100, scale: 0.8, rotationX: 10 },
-                { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 1.6, ease: 'expo.out', delay: 0.3 });
-        }
-        if (aboutP) {
-            gsap.fromTo(aboutP, { opacity: 0, y: 40 },
-                { opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', delay: 0.8 });
-        }
     }
 
     // ── 10. AUTO-DETECT: Animate ALL section headings on scroll ──

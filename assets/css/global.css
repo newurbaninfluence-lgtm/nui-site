@@ -165,7 +165,7 @@ section[style*="background"]{contain:layout style paint;}
 .portfolio-card .tag{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--red);margin-bottom:12px;}
 .portfolio-card h3{font-size:24px;font-weight:700;margin-bottom:8px;}
 .portfolio-card p{color:var(--gray);font-size:14px;}
-.about-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 48px 80px;position:relative;background:url('https://images.unsplash.com/photo-1534430480872-3498386e7856?w=1920&q=80') center/cover no-repeat;overflow:hidden;perspective:1200px;}
+.about-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 48px 80px;position:relative;background:url('https://images.unsplash.com/photo-1504299383340-d771ffd4e625?w=1920&q=80') center/cover no-repeat;overflow:hidden;perspective:1200px;}
 .about-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.5) 40%,rgba(0,0,0,0.9) 100%);z-index:1;}
 .about-hero .hero-content{position:relative;z-index:2;}
 .about-hero h2{font-family:'Syne',sans-serif;font-size:clamp(80px,18vw,220px);font-weight:700;text-transform:uppercase;line-height:0.85;letter-spacing:6px;background:linear-gradient(180deg,#ffffff 0%,#990000 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
