@@ -1612,6 +1612,25 @@ function getFooterHTML() {
 <a href="https://linkedin.com/company/newurbaninfluence" target="_blank" class="footer-social-link" title="LinkedIn">in</a>
 <a href="https://facebook.com/newurbaninfluence" target="_blank" class="footer-social-link" title="Facebook">f</a>
 </div>
+<div class="footer-contact-block">
+<div class="footer-col-title" style="margin-top:24px;">Get In Touch</div>
+<div class="footer-contact-item">
+<span class="footer-contact-icon">📍</span>
+<span>By Appointment Only · Serving Metro Detroit</span>
+</div>
+<div class="footer-contact-item">
+<span class="footer-contact-icon">📞</span>
+<a href="tel:+12484878747">(248) 487-8747</a>
+</div>
+<div class="footer-contact-item">
+<span class="footer-contact-icon">✉️</span>
+<a href="mailto:info@newurbaninfluence.com">info@newurbaninfluence.com</a>
+</div>
+<div class="footer-contact-item">
+<span class="footer-contact-icon">🕐</span>
+<span>Mon – Fri: 9AM – 6PM</span>
+</div>
+</div>
 </div>
 
             <!-- Services -->
@@ -1651,37 +1670,25 @@ function getFooterHTML() {
 </div>
 
             <!-- Service Areas (Geo SEO) -->
-<div class="footer-col">
+<div class="footer-col footer-areas">
 <div class="footer-col-title">Service Areas</div>
-<a href="/locations/detroit" style="color:rgba(255,255,255,0.5);font-size:14px;display:block;padding:4px 0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Detroit</a>
-<a href="/locations/southfield" style="color:rgba(255,255,255,0.5);font-size:14px;display:block;padding:4px 0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Southfield</a>
-<a href="/locations/farmington-hills" style="color:rgba(255,255,255,0.5);font-size:14px;display:block;padding:4px 0;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Farmington Hills</a>
-<span style="font-size:14px;display:block;padding:4px 0;"><a href="/locations/royal-oak" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Royal Oak</a> · <a href="/locations/troy" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Troy</a></span>
-<span style="font-size:14px;display:block;padding:4px 0;"><a href="/locations/dearborn" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Dearborn</a> · <a href="/locations/ann-arbor" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Ann Arbor</a></span>
-<span style="font-size:14px;display:block;padding:4px 0;"><a href="/locations/birmingham" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Birmingham</a> · <a href="/locations/novi" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Novi</a></span>
-<span style="font-size:14px;display:block;padding:4px 0;"><a href="/locations/sterling-heights" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Sterling Heights</a> · <a href="/locations/livonia" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Livonia</a></span>
-<span style="font-size:14px;display:block;padding:4px 0;"><a href="/locations/warren" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Warren</a> · <a href="/locations/pontiac" style="color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Pontiac</a></span>
+<div class="footer-areas-grid">
+<a href="/locations/detroit">Detroit</a>
+<a href="/locations/southfield">Southfield</a>
+<a href="/locations/farmington-hills">Farmington Hills</a>
+<a href="/locations/royal-oak">Royal Oak</a>
+<a href="/locations/troy">Troy</a>
+<a href="/locations/dearborn">Dearborn</a>
+<a href="/locations/ann-arbor">Ann Arbor</a>
+<a href="/locations/birmingham">Birmingham</a>
+<a href="/locations/novi">Novi</a>
+<a href="/locations/sterling-heights">Sterling Heights</a>
+<a href="/locations/livonia">Livonia</a>
+<a href="/locations/warren">Warren</a>
+<a href="/locations/pontiac">Pontiac</a>
+</div>
 </div>
 
-            <!-- Contact -->
-<div class="footer-col">
-<div class="footer-col-title">Get In Touch</div>
-<div class="footer-contact-item">
-<span class="footer-contact-icon">📍</span>
-<span>By Appointment Only · Serving Metro Detroit</span>
-</div>
-<div class="footer-contact-item">
-<span class="footer-contact-icon">📞</span>
-<a href="tel:+12484878747">(248) 487-8747</a>
-</div>
-<div class="footer-contact-item">
-<span class="footer-contact-icon">✉️</span>
-<a href="mailto:info@newurbaninfluence.com">info@newurbaninfluence.com</a>
-</div>
-<div class="footer-contact-item">
-<span class="footer-contact-icon">🕐</span>
-<span>Mon – Fri: 9AM – 6PM</span>
-</div>
 </div>
 </div>
 

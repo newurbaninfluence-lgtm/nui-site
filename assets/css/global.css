@@ -277,7 +277,7 @@ section[style*="background"]{contain:layout style paint;}
 .stat-number{font-size:clamp(40px,10vw,72px);font-weight:900;color:var(--red);line-height:1;}
 .stat-box .stat-label{font-size:13px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:2px;margin-top:12px;font-weight:600;}
 .footer{background:#050505;padding:0;border-top:1px solid rgba(255,255,255,0.08);}
-.footer-main{max-width:1400px;margin:0 auto;padding:72px 48px 40px;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1.2fr;gap:48px;}
+.footer-main{max-width:1400px;margin:0 auto;padding:72px 48px 40px;display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr 1.2fr;gap:48px;}
 .footer-brand{}
 .footer-brand-logo{display:flex;align-items:center;gap:12px;margin-bottom:20px;cursor:pointer;text-decoration:none;}
 .footer-brand-logo img{height:40px;}
@@ -289,6 +289,12 @@ section[style*="background"]{contain:layout style paint;}
 .footer-col-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#fff;margin-bottom:20px;}
 .footer-col a{display:block;color:rgba(255,255,255,0.45);text-decoration:none;font-size:14px;padding:6px 0;cursor:pointer;transition:color 0.2s;}
 .footer-col a:hover{color:var(--red);}
+.footer-areas-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
+.footer-areas-grid a{display:block;color:rgba(255,255,255,0.45);text-decoration:none;font-size:13px;padding:3px 0;cursor:pointer;transition:color 0.2s;}
+.footer-areas-grid a:hover{color:var(--red);}
+.footer-contact-block .footer-contact-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:13px;color:rgba(255,255,255,0.5);}
+.footer-contact-block .footer-contact-item a{color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;}
+.footer-contact-block .footer-contact-item a:hover{color:var(--red);}
 .footer-contact-item{display:flex;align-items:start;gap:10px;margin-bottom:14px;font-size:14px;color:rgba(255,255,255,0.5);}
 .footer-contact-icon{color:var(--red);font-size:16px;flex-shrink:0;margin-top:1px;}
 .footer-contact-item a{color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s;display:inline;padding:0;}
