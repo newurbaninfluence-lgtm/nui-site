@@ -276,7 +276,7 @@ function loadHomeView() {
 <div class="faq-grid">
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>What is New Urban Influence?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -286,7 +286,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>What services does New Urban Influence offer?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -296,7 +296,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>How much does branding cost in Detroit?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -306,7 +306,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>How much does a logo design cost?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -316,7 +316,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>How long does a branding project take?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -326,7 +326,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>Do you offer free consultations?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -336,7 +336,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>What is the best branding agency in Detroit?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -346,7 +346,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '−' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>What payment options are available?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -356,7 +356,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>Do you work with businesses outside Detroit?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -366,7 +366,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>What file formats will I receive for my logo and branding?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -376,7 +376,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>Can I see examples of your branding work?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -386,7 +386,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>What industries does New Urban Influence specialize in?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -396,7 +396,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>How many logo concepts will I receive?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -406,7 +406,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>Do you offer web design services?</span>
 <span class="faq-icon">+</span>
 </button>
@@ -416,7 +416,7 @@ function loadHomeView() {
 </div>
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('.faq-icon').textContent = this.parentElement.classList.contains('faq-open') ? '\u2212' : '+';" class="faq-toggle">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
 <span>How do I get started with New Urban Influence?</span>
 <span class="faq-icon">+</span>
 </button>
