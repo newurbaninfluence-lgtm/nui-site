@@ -712,7 +712,7 @@
  function loadStripe(){if(window.Stripe)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://js.stripe.com/v3/';s.onload=r;document.head.appendChild(s);});}
  function loadGoogleIdentity(){if(window.google&&window.google.accounts)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=r;document.head.appendChild(s);});}
  </script>
- <link rel="stylesheet" href="/assets/css/global.css?v=10">
+ <link rel="stylesheet" href="/assets/css/global.css?v=11">
  <link rel="stylesheet" href="/assets/css/components.css?v=5">
     <!-- Geo Meta Tags -->
     <meta name="geo.region" content="US-MI">
@@ -723,7 +723,7 @@
 <body>
  <div class="scroll-progress" id="scrollProgress"></div>
  <nav class="nav">
-<a class="logo" href="/" id="mainNavLogo" onclick="event.preventDefault(); showView('home');"><img src="icons/icon-192.png" alt="NUI Icon" width="36" height="36" style="height:36px;width:36px;display:block;" onerror="this.style.display='none';"><span class="logo-text" style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;line-height:1;">New Urban <span style="color:#dc2626;">Influence</span><span style="display:block;font-family:'Montserrat',sans-serif;font-weight:400;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:3px;">We don't design. We influence.</span></span></a>
+<a class="logo" href="/" id="mainNavLogo" onclick="event.preventDefault(); showView('home');"><img src="icons/icon-192.png" alt="NUI Icon" width="36" height="36" style="height:36px;width:36px;display:block;" onerror="this.style.display='none';"><span class="logo-text" style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;line-height:1;">New Urban <span style="color:#dc2626;">Influence</span><span style="display:block;font-family:'Montserrat',sans-serif;font-weight:400;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:3px;" class="logo-slogan">We don't design. We influence.</span></span></a>
 <div class="nav-links">
 <a href="/" class="active" data-view="home" onclick="event.preventDefault(); showView('home');">Home</a>
 <a href="/about" data-view="about" onclick="event.preventDefault(); showView('about');">About</a>
