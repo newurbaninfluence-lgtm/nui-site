@@ -354,14 +354,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 function _refreshHomepageCaseStudies(csGrid) {
     if (!csGrid) csGrid = document.getElementById('homepageCaseStudies');
     if (!csGrid) return;
-    csGrid.innerHTML = portfolioData.slice(0, 4).map(function(p) {
+    csGrid.innerHTML = portfolioData.slice(0, 4).map(function(p, idx) {
         const imgIsIdb = p.img && p.img.startsWith('idb://');
         const imgSrc = (!imgIsIdb && p.img) ? p.img : '';
-        return '<a href="/work/' + (p.id || '') + '" style="cursor: pointer; position: relative; aspect-ratio: 16/9; border-radius: 16px; overflow: hidden; display: flex; align-items: flex-end; background-color: ' + (p.colors && p.colors[1] ? p.colors[1] : '#1a1a1a') + '; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; box-shadow: 0 20px 60px rgba(0,0,0,0.4); text-decoration: none; color: inherit;" ' + (imgIsIdb ? 'data-idb-bg="' + p.img + '"' : '') + ' onmouseover="this.style.transform=\'translateY(-8px)\'; this.style.borderColor=\'var(--red)\'" onmouseout="this.style.transform=\'none\'; this.style.borderColor=\'rgba(255,255,255,0.1)\'">' +
-            (imgSrc ? '<img src="' + imgSrc + '" alt="' + (p.name || '') + ' - ' + (p.tag || '') + ' by New Urban Influence Detroit" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">' : '') +
-            '<div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);"></div>' +
-            '<div style="position: relative; padding: 32px; width: 100%;"><span style="background: var(--red); color: #fff; font-size: 10px; padding: 4px 12px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">' + (p.tag || '') + '</span><h4 style="font-size: 28px; font-weight: 800; margin-top: 16px; line-height: 1.2;">' + (p.name || '') + '</h4><p style="color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 12px; line-height: 1.6;">' + (p.desc || '') + '</p></div>' +
-        '</a>';
+        const isEven = idx % 2 === 0;
+        const categories = (p.tag || '').toUpperCase().replace(/\+/g, ',').replace(/\s*,\s*/g, ', ');
+        const longDesc = p.mission ? p.desc + ' ' + p.mission : p.desc;
+        const testimonialText = p.testimonial ? p.testimonial.text : '';
+        const fullText = longDesc + (testimonialText ? ' ' + testimonialText : '');
+        return '<div class="proven-card ' + (isEven ? '' : 'proven-card-reverse') + '">' +
+            '<div class="proven-card-image" ' + (imgIsIdb ? 'data-idb-bg="' + p.img + '"' : '') + '>' +
+                (imgSrc ? '<img src="' + imgSrc + '" alt="' + (p.name || '') + ' case study by New Urban Influence Detroit" loading="lazy">' : '') +
+            '</div>' +
+            '<div class="proven-card-info">' +
+                '<div class="proven-card-categories">' + categories + '</div>' +
+                '<hr class="proven-card-divider">' +
+                '<h3 class="proven-card-title">' + (p.name || '') + '</h3>' +
+                '<p class="proven-card-desc">' + fullText + '</p>' +
+                '<a href="/work/' + (p.id || '') + '" class="proven-card-btn">View Case Study</a>' +
+            '</div>' +
+        '</div>';
     }).join('');
     setTimeout(function() { if (typeof resolveAllImages === 'function') resolveAllImages(); }, 100);
 }

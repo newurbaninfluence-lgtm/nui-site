@@ -216,8 +216,24 @@ section[style*="background"]{contain:layout style paint;}
 .stat-item .value{font-size:clamp(48px,8vw,72px);font-weight:900;line-height:1;margin-bottom:8px;}
 .stat-item .stat-label{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:1px;opacity:0.9;}
 .brands-elevated-section{padding:80px 48px;}
-.case-study-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;max-width:1400px;margin:0 auto;}
-.case-study-grid > a{cursor:pointer;position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;display:flex;align-items:flex-end;border:1px solid rgba(255,255,255,0.1);transition:all 0.3s;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
+.proven-results-header{display:flex;align-items:flex-end;justify-content:space-between;max-width:1400px;margin:0 auto 60px;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:32px;}
+.proven-title{font-family:'Syne',sans-serif;font-size:clamp(48px,8vw,96px);font-weight:800;line-height:0.95;letter-spacing:2px;text-transform:uppercase;margin:0;}
+.view-portfolio-link{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:#fff;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;transition:color 0.3s;}
+.view-portfolio-link:hover{color:var(--red);}
+.case-study-grid{display:flex;flex-direction:column;gap:64px;max-width:1400px;margin:0 auto;}
+.proven-card{display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;border-radius:0;min-height:480px;}
+.proven-card-reverse{direction:rtl;}
+.proven-card-reverse > *{direction:ltr;}
+.proven-card-image{position:relative;overflow:hidden;}
+.proven-card-image img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);}
+.proven-card:hover .proven-card-image img{transform:scale(1.05);}
+.proven-card-info{display:flex;flex-direction:column;justify-content:center;padding:60px 56px;background:#0a0a0a;}
+.proven-card-categories{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.5);padding:6px 0;display:inline-block;}
+.proven-card-divider{border:none;border-top:1px solid rgba(255,255,255,0.15);margin:20px 0 24px;width:100%;}
+.proven-card-title{font-family:'Syne',sans-serif;font-size:clamp(28px,3vw,40px);font-weight:800;line-height:1.15;margin-bottom:20px;letter-spacing:1px;}
+.proven-card-desc{color:rgba(255,255,255,0.65);font-size:15px;line-height:1.8;margin-bottom:32px;}
+.proven-card-btn{display:inline-block;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--red);border:1px solid var(--red);padding:12px 28px;text-decoration:none;transition:all 0.3s;cursor:pointer;}
+.proven-card-btn:hover{background:var(--red);color:#fff;}
 .results-section{padding:80px 48px;}
 .stats-boxes{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1200px;margin:0 auto;text-align:center;}
 .stat-box{padding:40px 24px;background:linear-gradient(145deg,rgba(255,59,48,0.08) 0%,rgba(255,59,48,0.02) 100%);border:1px solid rgba(255,59,48,0.2);border-radius:20px;transition:all 0.3s ease;}
@@ -286,7 +302,7 @@ section[style*="background"]{contain:layout style paint;}
 .stat-box{padding:32px 16px;border-radius:16px;}
 .stat-number{font-size:clamp(36px,8vw,56px);}
 .brands-elevated-section{padding:60px 24px;}
-.case-study-grid{gap:24px;}
+.case-study-grid{gap:48px;}
 .cta-section{padding:60px 24px;}
 .results-grid{gap:16px;}
 .footer-main{padding:48px 24px 32px;grid-template-columns:1fr 1fr;gap:32px;}
@@ -383,11 +399,11 @@ section[style*="background"]{contain:layout style paint;}
 .stat-box .stat-number{font-size:42px;color:#fff !important;}
 .stat-box .stat-label{font-size:14px;letter-spacing:1px;margin-top:0;text-align:right;max-width:140px;line-height:1.3;color:rgba(255,255,255,0.9) !important;font-weight:600;}
 .brands-elevated-section{padding:48px 16px;}
-.case-study-grid{grid-template-columns:1fr !important;gap:20px;}
-.case-study-grid > a{aspect-ratio:4/3;border-radius:12px;}
-.case-study-grid > a > div:last-child{padding:20px !important;}
-.case-study-grid > a h4{font-size:22px !important;}
-.case-study-grid > a p{font-size:13px !important;margin-top:8px !important;}
+.proven-card{grid-template-columns:1fr !important;min-height:auto;}
+.proven-card-reverse{direction:ltr;}
+.proven-card-image{aspect-ratio:16/10;}
+.proven-card-info{padding:32px 24px;}
+.proven-results-header{flex-direction:column;gap:16px;align-items:flex-start;}
 .portfolio-card-btn{opacity:1 !important;transform:translateY(0) !important;}
 .portfolio-card-overlay{background:linear-gradient(to top,rgba(0,0,0,0.95) 0%,rgba(0,0,0,0.7) 50%,rgba(0,0,0,0.4) 100%) !important;}
 .portfolio-card-image{min-height:220px;object-fit:cover;}

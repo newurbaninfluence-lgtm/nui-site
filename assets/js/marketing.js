@@ -186,15 +186,11 @@ function loadHomeView() {
 </div>
 </section>
 <section class="section dark brands-elevated-section nui-glow-line">
-<div class="section-header nui-reveal">
-<div class="label" style="justify-content: center;">Case Studies</div>
-<h2 class="section-title">BRANDS WE'VE <span class="red">ELEVATED</span></h2>
-<p class="section-subtitle">Real results for real businesses. Click to explore each success story.</p>
+<div class="proven-results-header">
+<h2 class="proven-title nui-reveal-left">PROVEN <span class="red">RESULTS</span></h2>
+<a class="view-portfolio-link nui-reveal-right" onclick="showView('portfolio')">VIEW FULL PORTFOLIO →</a>
 </div>
 <div class="case-study-grid" id="homepageCaseStudies"></div>
-<div style="text-align: center; margin-top: 48px;">
-<button class="btn-cta" onclick="showView('portfolio')">View All Case Studies →</button>
-</div>
 </section>
 <section class="section dark nui-glow-line">
 <div class="section-header nui-reveal">
@@ -638,12 +634,25 @@ function _nuiMotionEngine() {
               scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' } });
     });
 
-    // ── 14. Portfolio Cards — clip reveal ──
-    document.querySelectorAll('.portfolio-card, .case-study-grid > a').forEach(function(card) {
+    // ── 14. Proven Results Cards — slide reveal ──
+    document.querySelectorAll('.portfolio-card').forEach(function(card) {
         gsap.fromTo(card,
             { opacity: 0, y: 40, clipPath: 'inset(10% 10% 10% 10%)' },
             { opacity: 1, y: 0, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'expo.out',
               scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' } });
+    });
+    document.querySelectorAll('.proven-card').forEach(function(card, i) {
+        var isReverse = card.classList.contains('proven-card-reverse');
+        var img = card.querySelector('.proven-card-image');
+        var info = card.querySelector('.proven-card-info');
+        if (img) gsap.fromTo(img,
+            { opacity: 0, x: isReverse ? 80 : -80 },
+            { opacity: 1, x: 0, duration: 1.2, ease: 'expo.out',
+              scrollTrigger: { trigger: card, start: 'top 82%', toggleActions: 'play none none none' } });
+        if (info) gsap.fromTo(info,
+            { opacity: 0, x: isReverse ? -80 : 80 },
+            { opacity: 1, x: 0, duration: 1.2, ease: 'expo.out', delay: 0.15,
+              scrollTrigger: { trigger: card, start: 'top 82%', toggleActions: 'play none none none' } });
     });
 
     // ── 15. CTA Section — scale punch ──
