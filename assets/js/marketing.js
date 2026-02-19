@@ -112,6 +112,7 @@ function loadHomeView() {
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Motion & Video</h3><p>Bring Your Story to Life. Dynamically.</p><div class="learn-more">LEARN MORE →</div></div>
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Print & Packaging</h3><p>Tangible Brand Power. From Cards to Wraps.</p><div class="learn-more">LEARN MORE →</div></div>
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>SEO & Digital Strategy</h3><p>Get Found. Get Chosen. Get Paid.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>AI Systems & Automation</h3><p>Your Business. Always On. Always Working.</p><div class="learn-more">LEARN MORE →</div></div>
 </div>
 </div>
 </section>
@@ -422,6 +423,16 @@ function loadHomeView() {
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
 <div class="faq-answer-text">Getting started is simple: book a free strategy call through the website at newurbaninfluence.com or call (248) 487-8747. During the call, you'll discuss your business, goals, and branding needs. After the consultation, you'll receive a custom proposal with pricing. Once approved, NUI kicks off your project with a discovery questionnaire and brand strategy session within 48 hours.</div>
+</div>
+</div>
+
+<div itemscope itemtype="https://schema.org/Question" class="faq-card">
+<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
+<span>Do you build AI systems and automations for small businesses?</span>
+<span class="faq-icon">+</span>
+</button>
+<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
+<div class="faq-answer-text">Yes. New Urban Influence now offers AI-powered systems and automation for small businesses, coaches, and creators. Services include custom AI chatbots for your website, automated lead follow-up systems, AI content engines trained on your brand voice, workflow automation connecting your tools, and custom AI assistants trained on your specific business data. Packages start at $2,500 with monthly maintenance plans available. Book a free strategy call to find out which AI solutions would save you the most time and money.</div>
 </div>
 </div>
 
@@ -1992,6 +2003,111 @@ function loadServicesView() {
             .custom-service-item.selected .service-name { color: #fff; }
             .selected-service-tag { background: rgba(255,59,48,0.2); border: 1px solid rgba(255,59,48,0.4); color: #fff; font-size: 11px; padding: 8px 14px; border-radius: 6px; font-weight: 600; }
 </style>
+
+<!-- AI SYSTEMS & AUTOMATION -->
+<section class="package-section" style="background: linear-gradient(180deg, #050505 0%, #0a0a0a 100%);">
+<div class="package-image">
+<img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1920&q=80" alt="AI Automation Systems" data-service-image="ai-systems">
+</div>
+<div class="container-lg">
+<div class="package-header">
+<div class="package-label">New Service</div>
+<h2 class="package-title">AI SYSTEMS & <span class="red">AUTOMATION</span></h2>
+<p class="package-subtitle">Stop doing everything manually. We build custom AI-powered systems that handle leads, answer questions, create content, and run your operations — while you sleep.</p>
+<div class="package-price">$2,500+ <span>starting at</span></div>
+</div>
+
+<div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr);">
+<div class="deliverable-card">
+<div class="deliverable-icon">🤖</div>
+<h3 class="deliverable-title">AI Chatbot & Lead Capture</h3>
+<p class="deliverable-desc">A smart assistant on your website that answers questions, qualifies leads, and books calls — 24/7.</p>
+<ul class="deliverable-list">
+<li>Custom trained on your business</li>
+<li>Answers FAQs in your brand voice</li>
+<li>Captures leads & contact info</li>
+<li>Books calls directly to your calendar</li>
+<li>Works on website, Instagram & Facebook</li>
+</ul>
+<p class="pkg-note">BEST FOR: Coaches, consultants, service providers</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">⚡</div>
+<h3 class="deliverable-title">Automated Lead Follow-Up</h3>
+<p class="deliverable-desc">Someone fills out your form — AI writes and sends a personalized response in minutes, not hours.</p>
+<ul class="deliverable-list">
+<li>Instant personalized email responses</li>
+<li>SMS follow-up sequences</li>
+<li>Smart lead scoring & routing</li>
+<li>CRM integration (HubSpot, GoHighLevel)</li>
+<li>No lead falls through the cracks</li>
+</ul>
+<p class="pkg-note">BEST FOR: Anyone losing leads to slow response times</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">🧠</div>
+<h3 class="deliverable-title">Custom AI Assistant</h3>
+<p class="deliverable-desc">Your own AI trained on your pricing, services, processes, and brand — like hiring a team member that never sleeps.</p>
+<ul class="deliverable-list">
+<li>Trained on YOUR specific business data</li>
+<li>Handles customer service inquiries</li>
+<li>Internal team knowledge base</li>
+<li>Custom GPT or private AI deployment</li>
+<li>Ongoing training & updates</li>
+</ul>
+<p class="pkg-note">BEST FOR: Businesses drowning in repetitive questions</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">📝</div>
+<h3 class="deliverable-title">AI Content Engine</h3>
+<p class="deliverable-desc">Feed it your brand voice — it drafts social posts, emails, blogs, and ads you just review and approve.</p>
+<ul class="deliverable-list">
+<li>Brand voice & tone training</li>
+<li>Weekly social media content drafts</li>
+<li>Email marketing sequences</li>
+<li>Blog post outlines & drafts</li>
+<li>Ad copy variations for testing</li>
+</ul>
+<p class="pkg-note">BEST FOR: Creators & brands struggling with consistency</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">🔄</div>
+<h3 class="deliverable-title">Workflow Automation</h3>
+<p class="deliverable-desc">Connect your tools so things happen automatically — invoicing, onboarding, reminders, all hands-free.</p>
+<ul class="deliverable-list">
+<li>Zapier / Make.com integrations</li>
+<li>Automated invoicing & payment reminders</li>
+<li>Client onboarding sequences</li>
+<li>Appointment booking workflows</li>
+<li>Internal task automation</li>
+</ul>
+<p class="pkg-note">BEST FOR: Business owners doing everything manually</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">📊</div>
+<h3 class="deliverable-title">AI Analytics & Reporting</h3>
+<p class="deliverable-desc">Get plain-English weekly reports on what's working — no spreadsheets, no confusion.</p>
+<ul class="deliverable-list">
+<li>Automated performance dashboards</li>
+<li>Weekly AI-generated insight reports</li>
+<li>Revenue & lead tracking</li>
+<li>Social media analytics</li>
+<li>Actionable recommendations</li>
+</ul>
+<p class="pkg-note">BEST FOR: Owners who never check their analytics</p>
+</div>
+</div>
+
+<div class="package-cta">
+<button class="btn-package" onclick="startServiceIntake('ai-systems')">Build My AI System →</button>
+</div>
+</div>
+</section>
 
 <section class="cta-section"><h2>HAVE <span>QUESTIONS?</span></h2><p>Book a free strategy call and we'll help you figure out exactly what your business needs.</p><button class="btn-white" onclick="startServiceIntake('consultation')">Book Free Consultation</button></section>
         ${getFooterHTML()}
