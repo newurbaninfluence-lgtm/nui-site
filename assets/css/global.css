@@ -168,7 +168,7 @@ section[style*="background"]{contain:layout style paint;}
 .about-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 48px 80px;position:relative;background:url('https://images.unsplash.com/photo-1504299383340-d771ffd4e625?w=1920&q=80') center/cover no-repeat;overflow:hidden;perspective:1200px;}
 .about-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.5) 40%,rgba(0,0,0,0.9) 100%);z-index:1;}
 .about-hero .hero-content{position:relative;z-index:2;}
-.about-hero h2{font-family:'Syne',sans-serif;font-size:clamp(80px,18vw,220px);font-weight:700;text-transform:uppercase;line-height:0.85;letter-spacing:6px;background:linear-gradient(180deg,#ffffff 0%,#990000 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.about-hero h2{font-family:'Syne',sans-serif;font-size:clamp(80px,18vw,220px);font-weight:700;text-transform:uppercase;line-height:0.85;letter-spacing:6px;color:#ffffff;}
 .about-hero h2 span{-webkit-text-fill-color:var(--red);filter:drop-shadow(0 0 60px rgba(153,0,0,0.6));}
 .about-hero p{font-size:clamp(20px,3vw,28px);color:rgba(255,255,255,0.9);max-width:750px;margin-top:40px;line-height:1.6;text-shadow:0 2px 10px rgba(0,0,0,0.3);font-weight:300;letter-spacing:0.5px;font-family:'Montserrat',sans-serif;}
 /* White Break — magazine contrast section */

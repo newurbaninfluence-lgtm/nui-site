@@ -2289,7 +2289,7 @@ function savePortfolio() {
 
 // ==================== ABOUT PAGE DATA ====================
 let aboutData = JSON.parse(localStorage.getItem('nui_about')) || {
-    storyImage: '',
+    storyImage: 'images/about-story.png',
     team: [
         { name: 'Faren Young', title: 'Creative Director & Founder', bio: 'Native Detroiter with 20+ years guiding businesses to success through bold design and strategic branding.', photo: '' },
         { name: 'Creative Team', title: 'Design & Development', bio: 'A network of skilled designers, developers, and strategists ready to bring your vision to life.', photo: '/images/creative-team.png' },
