@@ -115,8 +115,8 @@ section[style*="background"]{contain:layout style paint;}
 .service-card p{color:rgba(255,255,255,0.7);font-size:14px;line-height:1.6;flex-grow:1;}
 .service-card .includes{margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);}
 .service-card .includes span{display:inline-block;background:rgba(255,59,48,0.15);color:var(--red);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;margin:3px 4px 3px 0;}
-.service-card-simple{background:#111;padding:40px;border:1px solid rgba(255,255,255,0.1);transition:all 0.3s;cursor:pointer;display:flex;flex-direction:column;min-height:280px;}
-.service-card-simple:hover{background:#1a1a1a;transform:translateY(-4px);}
+.service-card-simple{background:#111;padding:48px 40px;border:1px solid rgba(255,255,255,0.1);transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);cursor:pointer;display:flex;flex-direction:column;min-height:300px;}
+.service-card-simple:hover{background:#0a0a0a;transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.3);border-color:#0a0a0a;}
 .service-card-simple .arrow{width:48px;height:48px;border:1px solid rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:24px;transition:all 0.3s;}
 .service-card-simple:hover .arrow{border-color:var(--red);color:var(--red);}
 .service-card-simple h3{font-size:24px;font-weight:700;margin-bottom:12px;}
@@ -646,7 +646,7 @@ to{opacity:1;transform:translateY(0);}
 .problem-card,.service-card-simple,.value-card,.why-card,.testimonial-card,.stat-box{
     transition:transform 0.5s cubic-bezier(0.22,1,0.36,1),box-shadow 0.5s cubic-bezier(0.22,1,0.36,1),border-color 0.5s ease;
 }
-.service-card-simple:hover{transform:translateY(-12px);box-shadow:0 30px 60px rgba(153,0,0,0.15);border-color:rgba(153,0,0,0.4);}
+.services-white .service-card-simple:hover{background:#0a0a0a;transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.3);border-color:#0a0a0a;}
 .stat-box:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(153,0,0,0.12);}
 
 /* ── Floating Ambient Particles ──────────── */
@@ -713,14 +713,17 @@ html{scroll-behavior:smooth;}
 .services-white .services-header p{color:#555 !important;}
 .services-white .btn-cta{background:#0a0a0a;color:#fff;}
 .services-white .btn-cta:hover{background:var(--red);}
-.services-white .service-card-simple{background:#f8f8f8;border:1px solid #e0e0e0;color:#0a0a0a;padding:32px;}
-.services-white .service-card-simple:hover{background:#f0f0f0;border-color:#ccc;transform:translateY(-4px);}
-.services-white .service-card-simple .arrow{border-color:#ccc;color:#0a0a0a;}
+.services-white .service-card-simple{background:#f8f8f8;border:1px solid #e0e0e0;color:#0a0a0a;padding:48px 40px;transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
+.services-white .service-card-simple:hover{background:#0a0a0a;border-color:#0a0a0a;transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.3);}
+.services-white .service-card-simple .arrow{border-color:#ccc;color:#0a0a0a;transition:all 0.4s ease;}
 .services-white .service-card-simple:hover .arrow{border-color:var(--red);color:var(--red);}
-.services-white .service-card-simple h3{color:#0a0a0a;font-size:22px;}
-.services-white .service-card-simple p{color:#666;}
-.services-white .service-card-simple .learn-more{color:#888;font-size:12px;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-top:auto;padding-top:16px;border-top:1px solid #e0e0e0;}
-.services-white .services-grid{grid-template-columns:repeat(3,1fr);gap:20px;}
+.services-white .service-card-simple h3{color:#0a0a0a;font-size:26px;transition:color 0.4s ease;}
+.services-white .service-card-simple:hover h3{color:#ffffff;}
+.services-white .service-card-simple p{color:#666;transition:color 0.4s ease;}
+.services-white .service-card-simple:hover p{color:rgba(255,255,255,0.7);}
+.services-white .service-card-simple .learn-more{color:#888;font-size:12px;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-top:auto;padding-top:16px;border-top:1px solid #e0e0e0;transition:all 0.4s ease;}
+.services-white .service-card-simple:hover .learn-more{color:#ffffff;border-top-color:rgba(255,255,255,0.2);}
+.services-white .services-grid{grid-template-columns:repeat(2,1fr);gap:24px;}
 
 /* ═══ FAQ 2-Column Grid ═══ */
 .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1200px;margin:0 auto;}
@@ -749,14 +752,17 @@ html{scroll-behavior:smooth;}
 .services-white .services-header p{color:#555 !important;}
 .services-white .btn-cta{background:#0a0a0a;color:#fff;}
 .services-white .btn-cta:hover{background:var(--red);}
-.services-white .service-card-simple{background:#f8f8f8;border:1px solid #e0e0e0;color:#0a0a0a;}
-.services-white .service-card-simple:hover{background:#f0f0f0;border-color:#ccc;transform:translateY(-4px);}
-.services-white .service-card-simple .arrow{border-color:#ccc;color:#0a0a0a;}
+.services-white .service-card-simple{background:#f8f8f8;border:1px solid #e0e0e0;color:#0a0a0a;padding:48px 40px;transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);}
+.services-white .service-card-simple:hover{background:#0a0a0a;border-color:#0a0a0a;transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.3);}
+.services-white .service-card-simple .arrow{border-color:#ccc;color:#0a0a0a;transition:all 0.4s ease;}
 .services-white .service-card-simple:hover .arrow{border-color:var(--red);color:var(--red);}
-.services-white .service-card-simple h3{color:#0a0a0a;font-size:22px;}
-.services-white .service-card-simple p{color:#666;}
-.services-white .service-card-simple .learn-more{color:#888;font-size:12px;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-top:auto;padding-top:16px;border-top:1px solid #e0e0e0;}
-.services-white .services-grid{grid-template-columns:repeat(3,1fr);}
+.services-white .service-card-simple h3{color:#0a0a0a;font-size:26px;transition:color 0.4s ease;}
+.services-white .service-card-simple:hover h3{color:#ffffff;}
+.services-white .service-card-simple p{color:#666;transition:color 0.4s ease;}
+.services-white .service-card-simple:hover p{color:rgba(255,255,255,0.7);}
+.services-white .service-card-simple .learn-more{color:#888;font-size:12px;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-top:auto;padding-top:16px;border-top:1px solid #e0e0e0;transition:all 0.4s ease;}
+.services-white .service-card-simple:hover .learn-more{color:#ffffff;border-top-color:rgba(255,255,255,0.2);}
+.services-white .services-grid{grid-template-columns:repeat(2,1fr);gap:24px;}
 /* FAQ 2-column layout */
 .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .faq-grid .faq-card{margin-bottom:0 !important;}
