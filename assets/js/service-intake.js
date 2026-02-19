@@ -13,7 +13,7 @@ function backToAdmin() {
 }
 
 // ==================== MULTI-STEP SERVICE INTAKE SYSTEM ====================
-let intakeData = {};
+// intakeData declared globally in core.js
 let currentIntakeStep = 1;
 let uploadedFiles = [];
 
