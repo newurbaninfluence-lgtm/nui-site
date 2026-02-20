@@ -3,7 +3,7 @@ function loadPortalView() {
 <div id="portalLogin" class="portal-login">
 <div class="login-box">
 <div style="text-align: center; margin-bottom: 32px;">
-<img loading="lazy" src="icons/icon-192.png" alt="NUI" style="height: 60px; margin-bottom: 16px;">
+<img loading="lazy" src="/icons/icon-192.png" alt="NUI" style="height: 60px; margin-bottom: 16px;">
 <h2 class="fs-24 mb-8">Brand Portal</h2>
 <p style="color: var(--gray); font-size: 14px;">Access your brand assets & orders</p>
 </div>
