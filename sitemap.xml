@@ -224,6 +224,18 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://newurbaninfluence.com/locations/highland-park</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://newurbaninfluence.com/locations/hamtramck</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://newurbaninfluence.com/locations/birmingham</loc>
         <lastmod>2026-02-20</lastmod>
         <changefreq>monthly</changefreq>
