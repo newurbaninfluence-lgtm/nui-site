@@ -191,4 +191,63 @@ function deleteAsset(index) {
     }
 }
 
+function showBulkAssetUpload() {
+    const clientId = document.getElementById('assetClient')?.value;
+    if (!clientId) { alert('Please select a client first.'); return; }
+    const client = clients.find(c => c.id == clientId);
+    if (!client) { alert('Client not found.'); return; }
+
+    showModal('📤 Bulk Upload — ' + client.name, `
+<p class="text-dim mb-16">Select multiple files to upload at once. They will be categorized automatically by file type.</p>
+<div style="border: 2px dashed rgba(255,255,255,0.15); border-radius: 12px; padding: 40px; text-align: center; cursor: pointer;" onclick="document.getElementById('bulkFileInput').click()">
+<div style="font-size: 32px; margin-bottom: 8px;">📁</div>
+<div class="text-bold-white">Click to select files</div>
+<div class="text-dim fs-12 mt-8">Images, PDFs, videos — any brand assets</div>
+</div>
+<input type="file" id="bulkFileInput" multiple accept="image/*,video/*,.pdf,.ai,.eps,.svg" style="display:none" onchange="handleBulkUpload(this.files, ${client.id})">
+<div id="bulkUploadStatus" class="mt-16"></div>
+    `);
+}
+
+function handleBulkUpload(files, clientId) {
+    const client = clients.find(c => c.id == clientId);
+    if (!client || !files.length) return;
+    if (!client.assets) client.assets = {};
+
+    const status = document.getElementById('bulkUploadStatus');
+    let processed = 0;
+
+    Array.from(files).forEach(file => {
+        const ext = file.name.split('.').pop().toLowerCase();
+        let cat = 'other';
+        if (['png','jpg','jpeg','gif','webp','svg'].includes(ext)) cat = 'logos';
+        if (['mp4','mov','avi','webm'].includes(ext)) cat = 'video';
+        if (['pdf','ai','eps'].includes(ext)) cat = 'documents';
+        if (file.name.toLowerCase().includes('social') || file.name.toLowerCase().includes('post')) cat = 'social';
+        if (file.name.toLowerCase().includes('banner') || file.name.toLowerCase().includes('cover')) cat = 'banner';
+        if (file.name.toLowerCase().includes('mockup')) cat = 'mockups';
+
+        if (!client.assets[cat]) client.assets[cat] = [];
+
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            client.assets[cat].push({
+                name: file.name,
+                size: (file.size / 1024).toFixed(1) + ' KB',
+                type: ext.toUpperCase(),
+                data: ev.target.result,
+                uploadedAt: new Date().toISOString()
+            });
+            processed++;
+            if (status) status.innerHTML = '<div class="text-dim">Uploaded ' + processed + ' / ' + files.length + ' files...</div>';
+            if (processed === files.length) {
+                saveClients();
+                if (status) status.innerHTML = '<div style="color: #10b981;">✅ All ' + files.length + ' files uploaded successfully!</div>';
+                setTimeout(() => { closeModal(); selectAssetClient(clientId); }, 1200);
+            }
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
 
