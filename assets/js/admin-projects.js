@@ -698,6 +698,11 @@ function advanceProject(id) {
             }
         }
 
+        // === PRINT UPSELL EMAIL — fires when project hits Complete ===
+        if (newStage === 'Complete') {
+            sendPrintUpsellEmail(project);
+        }
+
         saveProjects();
         loadAdminProjectsPanel();
     } else {
@@ -826,6 +831,11 @@ function updateProject(id) {
             timestamp: new Date().toISOString(),
             stage: newStage
         });
+
+        // === PRINT UPSELL EMAIL — fires when project hits Complete ===
+        if (newStage === 'Complete') {
+            sendPrintUpsellEmail(project);
+        }
     }
 
     saveProjects();
@@ -2474,3 +2484,100 @@ function showUploadDeliveryModal(orderId) {
 }
 
 
+
+// ==================== PRINT UPSELL EMAIL ====================
+// Fires automatically when a project is marked "Complete"
+// Sends branded email to client with link to /print page filtered by their industry
+async function sendPrintUpsellEmail(project) {
+    try {
+        const client = crmData.clients?.find(c => c.id === project.clientId) 
+            || clients.find(c => c.id === project.clientId);
+        
+        if (!client || !client.email) {
+            console.warn('Print upsell: No client email found for project', project.id);
+            return;
+        }
+
+        const clientName = client.name || 'there';
+        const firstName = clientName.split(' ')[0];
+        const industry = client.industry || '';
+        const clientId = client.id || '';
+        const projectName = project.name || 'your branding project';
+        
+        // Build print page URL with industry filter + client ID
+        let printUrl = 'https://newurbaninfluence.com/print';
+        const urlParams = [];
+        if (industry) urlParams.push(`industry=${encodeURIComponent(industry)}`);
+        if (clientId) urlParams.push(`client=${encodeURIComponent(clientId)}`);
+        if (urlParams.length) printUrl += '?' + urlParams.join('&');
+
+        const emailHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #111; color: #fff; border-radius: 12px; overflow: hidden;">
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); padding: 40px 32px; text-align: center;">
+                <img src="https://newurbaninfluence.com/logo-nav-cropped.png" alt="NUI" style="height: 40px; margin-bottom: 16px;">
+                <h1 style="margin: 0; font-size: 28px; font-weight: 800;">Your Brand Is Ready.</h1>
+                <p style="margin: 8px 0 0; opacity: 0.9; font-size: 16px;">Now let's bring it to life.</p>
+            </div>
+            
+            <!-- Body -->
+            <div style="padding: 32px;">
+                <p style="font-size: 16px; line-height: 1.7; color: #ccc;">Hey ${firstName},</p>
+                <p style="font-size: 16px; line-height: 1.7; color: #ccc;">${projectName} is complete and your brand is looking sharp. The next step? Getting it in front of your customers — on signs, banners, business cards, and everywhere your business shows up.</p>
+                
+                <p style="font-size: 16px; line-height: 1.7; color: #ccc;">We handle everything: design, print, and overnight delivery anywhere in Michigan for just $10.</p>
+
+                <!-- Product Highlights -->
+                <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 24px; margin: 24px 0;">
+                    <p style="font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #dc2626; margin: 0 0 16px;">Popular With Businesses Like Yours</p>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr><td style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #fff;">Business Cards (250)</td><td style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #dc2626; font-weight: 700; text-align: right;">$195</td></tr>
+                        <tr><td style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #fff;">Retractable Banner + Stand</td><td style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #dc2626; font-weight: 700; text-align: right;">$275</td></tr>
+                        <tr><td style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #fff;">Yard Signs (10 pack)</td><td style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #dc2626; font-weight: 700; text-align: right;">$350</td></tr>
+                        <tr><td style="padding: 10px 0; color: #fff;">Vehicle Magnets (pair)</td><td style="padding: 10px 0; color: #dc2626; font-weight: 700; text-align: right;">$195</td></tr>
+                    </table>
+                </div>
+
+                <!-- CTA Button -->
+                <div style="text-align: center; margin: 32px 0;">
+                    <a href="${printUrl}" style="display: inline-block; background: #dc2626; color: #fff; padding: 18px 48px; font-size: 16px; font-weight: 700; text-decoration: none; border-radius: 8px;">See All Print Options</a>
+                </div>
+
+                <p style="font-size: 14px; color: #666; text-align: center;">24-hour production · $10 overnight shipping statewide · Design included</p>
+            </div>
+
+            <!-- Footer -->
+            <div style="padding: 24px 32px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center;">
+                <p style="margin: 0; color: #444; font-size: 12px;">New Urban Influence · Detroit, Michigan · (248) 487-8747</p>
+            </div>
+        </div>`;
+
+        const response = await fetch('/.netlify/functions/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                to: client.email,
+                subject: `Your brand is ready — let's print it | New Urban Influence`,
+                html: emailHtml,
+                clientId: clientId
+            })
+        });
+
+        if (response.ok) {
+            console.log('✅ Print upsell email sent to', client.email);
+            // Log it on the project
+            project.activityLog = project.activityLog || [];
+            project.activityLog.push({
+                action: 'Print upsell email sent to ' + client.email,
+                timestamp: new Date().toISOString(),
+                stage: 'Complete'
+            });
+            saveProjects();
+        } else {
+            console.error('Print upsell email failed:', await response.text());
+        }
+
+    } catch (err) {
+        console.error('Print upsell email error:', err);
+    }
+}

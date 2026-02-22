@@ -5,6 +5,10 @@
 [functions]
   node_bundler = "esbuild"
 
+# Holiday drip email — runs daily at 9am EST (14:00 UTC)
+[functions."holiday-drip"]
+  schedule = "0 14 * * *"
+
 # Service pages — serve actual HTML files
 [[redirects]]
   from = "/services/:service"
@@ -78,6 +82,12 @@
 [[redirects]]
   from = "/app/*"
   to = "/app/index.html"
+  status = 200
+
+# Print shop page
+[[redirects]]
+  from = "/print"
+  to = "/print.html"
   status = 200
 
 # SPA fallback — Netlify auto-routes /.netlify/functions/* before this (MUST BE LAST)
