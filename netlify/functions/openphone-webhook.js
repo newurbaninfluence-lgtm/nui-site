@@ -1,79 +1,331 @@
-// openphone-webhook.js — Netlify Function
-// Handles incoming SMS from OpenPhone webhook
+// openphone-webhook.js — NUI Contact Hub Webhook Receiver
+// Handles ALL Quo (OpenPhone) webhook events:
+//   message.received, message.delivered,
+//   call.ringing, call.completed,
+//   call.summary.completed, call.transcript.completed,
+//   call.recording.completed
+//
+// Flow: Quo event → find/create contact in crm_contacts → log to activity_log
 // Env vars: SUPABASE_URL, SUPABASE_SERVICE_KEY
 
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+
+const supaHeaders = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': `Bearer ${SUPABASE_KEY}`,
+  'Content-Type': 'application/json',
+};
+
+// ── Supabase helpers ──────────────────────────────────────────────
+
+async function findContactByPhone(phone) {
+  if (!phone) return null;
+  // Normalize: strip everything except digits, keep last 10
+  const digits = phone.replace(/\D/g, '').slice(-10);
+  if (digits.length < 10) return null;
+
+  // Try multiple phone formats since we don't know how it was stored
+  const e164 = `+1${digits}`;
+  const formats = [phone, e164, digits, `1${digits}`];
+  const orFilter = formats.map(f => `phone.eq.${encodeURIComponent(f)}`).join(',');
+
+  const resp = await fetch(
+    `${SUPABASE_URL}/rest/v1/crm_contacts?or=(${orFilter})&select=id,phone,first_name,last_name,status&limit=1`,
+    { headers: supaHeaders }
+  );
+  const rows = await resp.json();
+  return rows?.length > 0 ? rows[0] : null;
+}
+
+async function createContact(phone, source) {
+  const resp = await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts`, {
+    method: 'POST',
+    headers: { ...supaHeaders, 'Prefer': 'return=representation' },
+    body: JSON.stringify({
+      phone,
+      source: source || 'quo_unknown',
+      status: 'new_lead',
+      last_activity_at: new Date().toISOString(),
+    })
+  });
+  const rows = await resp.json();
+  return Array.isArray(rows) ? rows[0] : rows;
+}
+
+async function logActivity(contactId, type, direction, content, metadata) {
+  await fetch(`${SUPABASE_URL}/rest/v1/activity_log`, {
+    method: 'POST',
+    headers: { ...supaHeaders, 'Prefer': 'return=minimal' },
+    body: JSON.stringify({
+      contact_id: contactId,
+      type,
+      direction,
+      content: content || '',
+      metadata: metadata || {},
+      read: false,
+      created_at: new Date().toISOString(),
+    })
+  });
+}
+
+async function touchContact(contactId) {
+  await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contactId}`, {
+    method: 'PATCH',
+    headers: { ...supaHeaders, 'Prefer': 'return=minimal' },
+    body: JSON.stringify({ last_activity_at: new Date().toISOString() })
+  });
+}
+
+// ── Phone extraction ──────────────────────────────────────────────
+
+function extractPhone(obj, direction) {
+  // For inbound: the caller's number is "from"
+  // For outbound: the recipient's number is "to"
+  if (!obj) return null;
+  if (direction === 'incoming' || direction === 'inbound') return obj.from;
+  if (direction === 'outgoing' || direction === 'outbound') return obj.to;
+  // Fallback: use "from" for received, "to" for delivered
+  return obj.from || obj.to;
+}
+
+// ── Ensure contact exists ─────────────────────────────────────────
+
+async function ensureContact(phone, source) {
+  if (!phone) return null;
+  let contact = await findContactByPhone(phone);
+  if (!contact) {
+    contact = await createContact(phone, source);
+    console.log(`[NUI] New contact created: ${phone} → ${contact?.id}`);
+  }
+  return contact;
+}
+
+// ── Event Handlers ────────────────────────────────────────────────
+
+async function handleMessageReceived(obj) {
+  const phone = obj.from;
+  const contact = await ensureContact(phone, 'quo_text');
+  if (!contact) return { action: 'message_received_no_phone' };
+
+  await logActivity(contact.id, 'text', 'inbound', obj.body || '', {
+    quo_message_id: obj.id,
+    from: obj.from,
+    to: obj.to,
+    media: obj.media || [],
+    conversation_id: obj.conversationId,
+    phone_number_id: obj.phoneNumberId,
+  });
+  await touchContact(contact.id);
+  return { action: 'message_received', contactId: contact.id };
+}
+
+async function handleMessageDelivered(obj) {
+  const phone = obj.to;
+  const contact = await ensureContact(phone, 'quo_text');
+  if (!contact) return { action: 'message_delivered_no_phone' };
+
+  await logActivity(contact.id, 'text', 'outbound', obj.body || '', {
+    quo_message_id: obj.id,
+    from: obj.from,
+    to: obj.to,
+    status: obj.status,
+    conversation_id: obj.conversationId,
+  });
+  await touchContact(contact.id);
+  return { action: 'message_delivered', contactId: contact.id };
+}
+
+async function handleCallRinging(obj) {
+  const phone = extractPhone(obj, obj.direction);
+  const contact = await ensureContact(phone, 'quo_call');
+  if (!contact) return { action: 'call_ringing_no_phone' };
+
+  await logActivity(contact.id, 'call_ringing', obj.direction === 'incoming' ? 'inbound' : 'outbound', 
+    `Incoming call from ${obj.from}`, {
+    quo_call_id: obj.id,
+    from: obj.from,
+    to: obj.to,
+    direction: obj.direction,
+  });
+  return { action: 'call_ringing', contactId: contact.id };
+}
+
+async function handleCallCompleted(obj) {
+  const phone = extractPhone(obj, obj.direction);
+  const contact = await ensureContact(phone, 'quo_call');
+  if (!contact) return { action: 'call_completed_no_phone' };
+
+  // Calculate duration in seconds
+  let durationSec = null;
+  if (obj.answeredAt && obj.completedAt) {
+    durationSec = Math.round((new Date(obj.completedAt) - new Date(obj.answeredAt)) / 1000);
+  }
+  const wasAnswered = !!obj.answeredAt;
+  const durationDisplay = durationSec ? `${Math.floor(durationSec/60)}m ${durationSec%60}s` : 'missed';
+  const dirLabel = obj.direction === 'incoming' ? 'Inbound' : 'Outbound';
+  const content = wasAnswered
+    ? `${dirLabel} call — ${durationDisplay}`
+    : `${dirLabel} call — missed/unanswered`;
+
+  await logActivity(contact.id, 'call', obj.direction === 'incoming' ? 'inbound' : 'outbound', content, {
+    quo_call_id: obj.id,
+    from: obj.from,
+    to: obj.to,
+    direction: obj.direction,
+    status: obj.status,
+    answered: wasAnswered,
+    duration_seconds: durationSec,
+    created_at: obj.createdAt,
+    answered_at: obj.answeredAt,
+    completed_at: obj.completedAt,
+    voicemail: obj.voicemail,
+    conversation_id: obj.conversationId,
+  });
+  await touchContact(contact.id);
+  return { action: 'call_completed', contactId: contact.id, answered: wasAnswered, duration: durationSec };
+}
+
+async function handleCallSummary(obj) {
+  // call.summary.completed — Sona/AI-generated summary
+  // obj has: callId, summary (array), nextSteps (array)
+  // We need to find the contact by callId — look up the call activity we already logged
+  const callId = obj.callId;
+  
+  // Find existing call activity by quo_call_id in metadata
+  const resp = await fetch(
+    `${SUPABASE_URL}/rest/v1/activity_log?metadata->>quo_call_id=eq.${callId}&type=eq.call&select=contact_id&limit=1`,
+    { headers: supaHeaders }
+  );
+  const rows = await resp.json();
+  const contactId = rows?.[0]?.contact_id;
+  if (!contactId) {
+    console.log(`[NUI] call.summary: no matching call found for ${callId}`);
+    return { action: 'call_summary_orphaned', callId };
+  }
+
+  const summaryText = Array.isArray(obj.summary) ? obj.summary.join('\n') : (obj.summary || '');
+  const nextStepsText = Array.isArray(obj.nextSteps) ? obj.nextSteps.join('\n') : (obj.nextSteps || '');
+  const content = `Summary: ${summaryText}${nextStepsText ? '\n\nNext Steps: ' + nextStepsText : ''}`;
+
+  await logActivity(contactId, 'sona_summary', 'internal', content, {
+    call_id: callId,
+    summary: obj.summary,
+    next_steps: obj.nextSteps,
+    status: obj.status,
+  });
+
+  // Mark contact as Sona-qualified
+  await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contactId}`, {
+    method: 'PATCH',
+    headers: { ...supaHeaders, 'Prefer': 'return=minimal' },
+    body: JSON.stringify({ sona_qualified: true, last_activity_at: new Date().toISOString() })
+  });
+
+  return { action: 'call_summary_logged', contactId };
+}
+
+async function handleCallTranscript(obj) {
+  const callId = obj.callId;
+  const resp = await fetch(
+    `${SUPABASE_URL}/rest/v1/activity_log?metadata->>quo_call_id=eq.${callId}&type=eq.call&select=contact_id&limit=1`,
+    { headers: supaHeaders }
+  );
+  const rows = await resp.json();
+  const contactId = rows?.[0]?.contact_id;
+  if (!contactId) return { action: 'call_transcript_orphaned', callId };
+
+  // Transcript can be a string or array of dialogue objects
+  let transcriptText = '';
+  if (typeof obj.transcript === 'string') {
+    transcriptText = obj.transcript;
+  } else if (Array.isArray(obj.dialogue || obj.transcript)) {
+    const dialogue = obj.dialogue || obj.transcript;
+    transcriptText = dialogue.map(d => `${d.speaker || d.role || '?'}: ${d.content || d.text || ''}`).join('\n');
+  }
+
+  await logActivity(contactId, 'transcript', 'internal', transcriptText, {
+    call_id: callId,
+    raw_transcript: obj.transcript || obj.dialogue,
+  });
+  return { action: 'call_transcript_logged', contactId };
+}
+
+async function handleCallRecording(obj) {
+  const callId = obj.callId;
+  const resp = await fetch(
+    `${SUPABASE_URL}/rest/v1/activity_log?metadata->>quo_call_id=eq.${callId}&type=eq.call&select=contact_id&limit=1`,
+    { headers: supaHeaders }
+  );
+  const rows = await resp.json();
+  const contactId = rows?.[0]?.contact_id;
+  if (!contactId) return { action: 'call_recording_orphaned', callId };
+
+  await logActivity(contactId, 'recording', 'internal', 'Call recording available', {
+    call_id: callId,
+    recording_url: obj.url || obj.recordingUrl,
+    duration: obj.duration,
+  });
+  return { action: 'call_recording_logged', contactId };
+}
+
+// ── Main Handler ──────────────────────────────────────────────────
+
 exports.handler = async (event) => {
+  // Only accept POST
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
+  // Check Supabase config
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    console.error('[NUI] Missing SUPABASE_URL or SUPABASE_SERVICE_KEY');
+    return { statusCode: 500, body: JSON.stringify({ error: 'Server not configured' }) };
+  }
+
   try {
     const payload = JSON.parse(event.body || '{}');
+    const eventType = payload.type;
+    const obj = payload.data?.object || {};
 
-    // OpenPhone webhook events: message.received, message.sent, call.completed, etc.
-    const eventType = payload.type || payload.event;
+    console.log(`[NUI] Quo webhook: ${eventType} | id: ${payload.id}`);
 
-    if (eventType === 'message.received' || eventType === 'message_received') {
-      const msg = payload.data || payload;
-      const from = msg.from || msg.participants?.find(p => p.direction === 'incoming')?.phoneNumber;
-      const body = msg.content || msg.body || msg.text || '';
-      const receivedAt = msg.createdAt || msg.timestamp || new Date().toISOString();
+    let result;
 
-      // Store in Supabase
-      const SUPABASE_URL = process.env.SUPABASE_URL;
-      const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
-
-      if (SUPABASE_URL && SUPABASE_SERVICE_KEY) {
-        // Try to match sender to a client by phone number
-        let clientId = null;
-        try {
-          const clientResp = await fetch(
-            `${SUPABASE_URL}/rest/v1/clients?phone=eq.${encodeURIComponent(from)}&select=id&limit=1`,
-            {
-              headers: {
-                'apikey': SUPABASE_SERVICE_KEY,
-                'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`
-              }
-            }
-          );
-          const clients = await clientResp.json();
-          if (clients?.length > 0) clientId = clients[0].id;
-        } catch (e) { /* non-fatal */ }
-
-        // Insert communication record
-        await fetch(`${SUPABASE_URL}/rest/v1/communications`, {
-          method: 'POST',
-          headers: {
-            'apikey': SUPABASE_SERVICE_KEY,
-            'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({
-            channel: 'sms',
-            direction: 'inbound',
-            message: body,
-            client_id: clientId,
-            unread: true,
-            metadata: { from, openphone_event: eventType, raw_id: msg.id },
-            created_at: receivedAt
-          })
-        });
-      }
-
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ success: true, action: 'message_stored' })
-      };
+    switch (eventType) {
+      case 'message.received':
+        result = await handleMessageReceived(obj);
+        break;
+      case 'message.delivered':
+        result = await handleMessageDelivered(obj);
+        break;
+      case 'call.ringing':
+        result = await handleCallRinging(obj);
+        break;
+      case 'call.completed':
+        result = await handleCallCompleted(obj);
+        break;
+      case 'call.summary.completed':
+        result = await handleCallSummary(obj);
+        break;
+      case 'call.transcript.completed':
+        result = await handleCallTranscript(obj);
+        break;
+      case 'call.recording.completed':
+        result = await handleCallRecording(obj);
+        break;
+      default:
+        console.log(`[NUI] Unhandled event type: ${eventType}`);
+        result = { action: 'unhandled', type: eventType };
     }
 
-    // For other event types, acknowledge receipt
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true, action: 'event_acknowledged', type: eventType })
+      body: JSON.stringify({ success: true, ...result })
     };
+
   } catch (err) {
-    console.error('openphone-webhook error:', err);
+    console.error('[NUI] Webhook error:', err);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: err.message || 'Webhook processing failed' })
