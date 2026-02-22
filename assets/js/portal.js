@@ -66,67 +66,38 @@ function loadPortalView() {
 <span class="admin-nav-label" style="color: var(--admin-text-muted);">OVERVIEW</span>
 <a onclick="showAdminPanel('dashboard')" class="admin-nav-link active" data-panel="dashboard">📊 Dashboard</a>
 <a onclick="showAdminPanel('calendar')" class="admin-nav-link" data-panel="calendar">📅 Calendar</a>
-<a onclick="showAdminPanel('analytics')" class="admin-nav-link" data-panel="analytics">📈 Site Analytics</a>
-<a onclick="showAdminPanel('reviews')" class="admin-nav-link" data-panel="reviews">⭐ Google Reviews</a>
 </div>
 <div class="admin-nav-group">
-<span class="admin-nav-label">CRM & SALES</span>
-<a onclick="showAdminPanel('crm')" class="admin-nav-link" data-panel="crm">💼 CRM Pipeline</a>
+<span class="admin-nav-label">CLIENTS</span>
 <a onclick="showAdminPanel('clients')" class="admin-nav-link" data-panel="clients">👥 Clients</a>
 <a onclick="showAdminPanel('leads')" class="admin-nav-link" data-panel="leads">🎯 Leads</a>
-<a onclick="showAdminPanel('submissions')" class="admin-nav-link" data-panel="submissions">📩 Submissions</a>
 </div>
 <div class="admin-nav-group">
-<span class="admin-nav-label">PROJECTS</span>
-<a onclick="showAdminPanel('projects')" class="admin-nav-link" data-panel="projects">📂 Project Tracker</a>
-<a onclick="showAdminPanel('orders')" class="admin-nav-link" data-panel="orders">📋 Orders</a>
-<a onclick="showAdminPanel('proofs')" class="admin-nav-link" data-panel="proofs">✅ Proof Approval</a>
+<span class="admin-nav-label">JOBS</span>
+<a onclick="showAdminPanel('projects')" class="admin-nav-link" data-panel="projects">📂 Projects</a>
+<a onclick="showAdminPanel('proofs')" class="admin-nav-link" data-panel="proofs">✅ Proofs</a>
 <a onclick="showAdminPanel('brandguide')" class="admin-nav-link" data-panel="brandguide">📘 Brand Guide</a>
-<a onclick="showAdminPanel('delivery')" class="admin-nav-link" data-panel="delivery">📦 Delivery</a>
 </div>
 <div class="admin-nav-group">
 <span class="admin-nav-label">BILLING</span>
 <a onclick="showAdminPanel('payments')" class="admin-nav-link" data-panel="payments">💳 Payments</a>
 <a onclick="showAdminPanel('invoices')" class="admin-nav-link" data-panel="invoices">📄 Invoices</a>
-<a onclick="showAdminPanel('payouts')" class="admin-nav-link" data-panel="payouts">💰 Payouts</a>
-<a onclick="showAdminPanel('stripe')" class="admin-nav-link" data-panel="stripe">💎 Stripe</a>
-<a onclick="showAdminPanel('subscriptions')" class="admin-nav-link" data-panel="subscriptions">🔄 Subscriptions</a>
 </div>
 <div class="admin-nav-group">
-<span class="admin-nav-label">SEO & MARKETING</span>
-<a onclick="showAdminPanel('seo')" class="admin-nav-link" data-panel="seo">🔍 SEO/AEO/GEO</a>
-<a onclick="showAdminPanel('gmb')" class="admin-nav-link" data-panel="gmb">📍 Google Business</a>
-<a onclick="showAdminPanel('blog')" class="admin-nav-link" data-panel="blog">📝 Blog Manager</a>
-<a onclick="showAdminPanel('emailmarketing')" class="admin-nav-link" data-panel="emailmarketing">📧 Email Marketing</a>
-<a onclick="showAdminPanel('loyalty')" class="admin-nav-link" data-panel="loyalty">🎁 Loyalty Program</a>
-</div>
-<div class="admin-nav-group">
-<span class="admin-nav-label">COMMUNICATIONS</span>
-<a onclick="showAdminPanel('communications')" class="admin-nav-link" data-panel="communications">💬 Inbox Hub</a>
-<a onclick="showAdminPanel('socialdm')" class="admin-nav-link" data-panel="socialdm">📱 Social DMs</a>
-<a onclick="showAdminPanel('sms')" class="admin-nav-link" data-panel="sms">📲 SMS (OpenPhone)</a>
+<span class="admin-nav-label">MARKETING</span>
+<a onclick="showAdminPanel('seo')" class="admin-nav-link" data-panel="seo">🔍 SEO</a>
+<a onclick="showAdminPanel('blog')" class="admin-nav-link" data-panel="blog">📝 Blog</a>
+<a onclick="showAdminPanel('emailmarketing')" class="admin-nav-link" data-panel="emailmarketing">📧 Email</a>
 </div>
 <div class="admin-nav-group">
 <span class="admin-nav-label">CONTENT</span>
-<a onclick="showAdminPanel('siteimages')" class="admin-nav-link" data-panel="siteimages">🖼️ Site Images</a>
-<a onclick="showAdminPanel('assets')" class="admin-nav-link" data-panel="assets">📁 Client Assets</a>
-<a onclick="showAdminPanel('portfolio')" class="admin-nav-link" data-panel="portfolio">🎨 Portfolio</a>
+<a onclick="showAdminPanel('assets')" class="admin-nav-link" data-panel="assets">📁 Assets</a>
 <a onclick="showAdminPanel('moodboard')" class="admin-nav-link" data-panel="moodboard">🎨 Moodboards</a>
-<a onclick="showAdminPanel('about')" class="admin-nav-link" data-panel="about">📄 About Page</a>
 </div>
 <div class="admin-nav-group">
-<span class="admin-nav-label">TEAM</span>
-<a onclick="showAdminPanel('designers')" class="admin-nav-link" data-panel="designers">🎨 Designers</a>
-<a onclick="showAdminPanel('newclient')" class="admin-nav-link" data-panel="newclient">➕ New Client</a>
-<a onclick="showAdminPanel('neworder')" class="admin-nav-link" data-panel="neworder">➕ New Order</a>
-</div>
-<div class="admin-nav-group">
-<span class="admin-nav-label">INTEGRATIONS</span>
-<a onclick="showAdminPanel('integrations')" class="admin-nav-link" data-panel="integrations">🔗 All Integrations</a>
-</div>
-<div class="admin-nav-group">
-<span class="admin-nav-label">SETTINGS</span>
-<a onclick="showAdminPanel('usermanagement')" class="admin-nav-link" data-panel="usermanagement">🔐 User Management</a>
+<span class="admin-nav-label">SYSTEM</span>
+<a onclick="showAdminPanel('integrations')" class="admin-nav-link" data-panel="integrations">🔗 Integrations</a>
+<a onclick="showAdminPanel('usermanagement')" class="admin-nav-link" data-panel="usermanagement">🔐 Users</a>
 </div>
 </nav>
 </aside>
