@@ -1071,12 +1071,139 @@ function loadServicesView() {
                 .deliverable-title { font-size: 15px; }
                 .category-title { font-size: 18px; }
             }
+
+            /* ── Problem Filter System ── */
+            .svc-filter-bar { padding: 0; }
+            .svc-filter-lbl { font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: 5px; margin-bottom: 32px; font-family: 'Syne', sans-serif; font-weight: 700; text-align: center; padding-top: 56px; }
+            .font-type-strip { display: flex; align-items: center; justify-content: center; gap: 48px; padding: 0 24px 40px; flex-wrap: wrap; }
+            .font-specimen { text-align: center; }
+            .font-specimen-name { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 4px; font-family: 'Montserrat', sans-serif; }
+            .font-specimen-display { font-size: 22px; font-weight: 900; color: rgba(255,255,255,0.12); letter-spacing: -0.5px; }
+            .font-specimen-display.syne { font-family: 'Syne', sans-serif; }
+            .font-specimen-display.mont { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 600; }
+            .svc-problems { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+            @media(max-width:767px){ .svc-problems { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 20px 24px; } }
+            .svc-prob-card { background: #181818; border: 1px solid rgba(255,255,255,0.07); cursor: pointer; transition: border-color .25s, background .25s; text-align: left; padding: 0; display: flex; flex-direction: column; }
+            @media(max-width:767px){ .svc-prob-card { border-radius: 12px; overflow: hidden; } }
+            .svc-prob-card:hover { border-color: var(--red); background: #222; }
+            .svc-prob-card.active { border-color: var(--red); background: rgba(255,59,48,0.06); }
+            .prob-photo { width: 100%; aspect-ratio: 3/2; object-fit: cover; display: block; background: #222; }
+            .prob-photo-emoji { width: 100%; aspect-ratio: 3/2; display: flex; align-items: center; justify-content: center; font-size: 52px; background: #141414; }
+            .prob-card-body { padding: 20px 18px 22px; flex: 1; display: flex; flex-direction: column; }
+            .prob-q { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.35; margin-bottom: 7px; font-family: 'Syne', sans-serif; }
+            .prob-sol { font-size: 12px; color: var(--gray); line-height: 1.55; flex: 1; }
+            .prob-price { font-size: 12px; color: var(--red); margin-top: 10px; font-weight: 700; }
+            .prob-font-tag { font-size: 9px; color: rgba(255,255,255,0.18); letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; font-family: 'Montserrat', sans-serif; }
+            .svc-back-btn { display: none; width: 100%; padding: 16px 32px; background: transparent; border: none; border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); font-size: 13px; cursor: pointer; transition: all .2s; text-align: left; font-family: 'Montserrat', sans-serif; }
+            .svc-back-btn:hover { color: #fff; background: rgba(255,255,255,0.03); }
+            .svc-back-btn.visible { display: block; }
+            .pkg-filtered-out { display: none !important; }
 </style>
 
 <section class="section dark" style="padding-top: 160px; text-align: center;">
 <h2 class="section-title">SERVICE <span class="red">PACKAGES</span></h2>
 <p class="section-subtitle">Comprehensive branding solutions designed for product-based and service-based businesses. Every deliverable comes with clear direction on how to use it.</p>
 </section>
+
+<!-- ── PROBLEM FILTER BAR ── -->
+<div class="svc-filter-bar" id="svcFilterBar">
+  <p class="svc-filter-lbl">What&rsquo;s your situation right now?</p>
+  <div class="font-type-strip">
+    <div class="font-specimen">
+      <p class="font-specimen-name">Display Font</p>
+      <p class="font-specimen-display syne">Syne 900</p>
+    </div>
+    <div style="width:1px;height:32px;background:rgba(255,255,255,0.08);"></div>
+    <div class="font-specimen">
+      <p class="font-specimen-name">Body Font</p>
+      <p class="font-specimen-display mont">Montserrat 600</p>
+    </div>
+  </div>
+  <div class="svc-problems">
+
+    <button class="svc-prob-card" data-filter="new-business" onclick="filterServices('new-business')">
+      <img class="prob-photo" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" loading="lazy" onerror="this.style.display='none'" alt="">
+      <div class="prob-card-body">
+        <p class="prob-q">How do I get my business looking professional?</p>
+        <p class="prob-sol">Start with a logo or full brand kit — everything to look legit from day one.</p>
+        <p class="prob-price">From $750</p>
+        <p class="prob-font-tag">Syne &middot; Montserrat</p>
+      </div>
+    </button>
+
+    <button class="svc-prob-card" data-filter="established" onclick="filterServices('established')">
+      <img class="prob-photo" src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80" loading="lazy" onerror="this.style.display='none'" alt="">
+      <div class="prob-card-body">
+        <p class="prob-q">My brand looks outdated — how do I fix it?</p>
+        <p class="prob-sol">Full brand identity rebuild. New look, real positioning, everything consistent.</p>
+        <p class="prob-price">From $4,500</p>
+        <p class="prob-font-tag">Syne &middot; Montserrat</p>
+      </div>
+    </button>
+
+    <button class="svc-prob-card" data-filter="new-business,established" onclick="filterServices('new-business')">
+      <img class="prob-photo" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" loading="lazy" onerror="this.style.display='none'" alt="">
+      <div class="prob-card-body">
+        <p class="prob-q">How do I get more customers in Detroit?</p>
+        <p class="prob-sol">Brand + website together. Shows up on Google, converts visitors, builds trust.</p>
+        <p class="prob-price">From $3,500</p>
+        <p class="prob-font-tag">Syne &middot; Montserrat</p>
+      </div>
+    </button>
+
+    <button class="svc-prob-card" data-filter="established,digital" onclick="filterServices('established')">
+      <img class="prob-photo" src="https://images.unsplash.com/photo-1553484771-371a605b060b?w=600&q=80" loading="lazy" onerror="this.style.display='none'" alt="">
+      <div class="prob-card-body">
+        <p class="prob-q">I need more leads — my marketing isn&rsquo;t working.</p>
+        <p class="prob-sol">Sales funnel + email sequence + CRM. Built to capture and convert.</p>
+        <p class="prob-price">From $1,500</p>
+        <p class="prob-font-tag">Syne &middot; Montserrat</p>
+      </div>
+    </button>
+
+    <button class="svc-prob-card" data-filter="established" onclick="filterServices('established')">
+      <img class="prob-photo" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80" loading="lazy" onerror="this.style.display='none'" alt="">
+      <div class="prob-card-body">
+        <p class="prob-q">How do I get my product on shelves or online?</p>
+        <p class="prob-sol">Product brand identity with packaging, labels, and retail-ready materials.</p>
+        <p class="prob-price">From $5,500</p>
+        <p class="prob-font-tag">Syne &middot; Montserrat</p>
+      </div>
+    </button>
+
+    <button class="svc-prob-card" data-filter="digital" onclick="filterServices('digital')">
+      <img class="prob-photo" src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80" loading="lazy" onerror="this.style.display='none'" alt="">
+      <div class="prob-card-body">
+        <p class="prob-q">I have an app idea — where do I start?</p>
+        <p class="prob-sol">MVP to full app build. iOS + Android, auth, admin panel, 6&ndash;8 week delivery.</p>
+        <p class="prob-price">From $12,000</p>
+        <p class="prob-font-tag">Syne &middot; Montserrat</p>
+      </div>
+    </button>
+
+    <button class="svc-prob-card" data-filter="print" onclick="filterServices('print')">
+      <img class="prob-photo" src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&q=80" loading="lazy" onerror="this.style.display='none'" alt="">
+      <div class="prob-card-body">
+        <p class="prob-q">Where can I get banners, signs, or cards printed in Michigan?</p>
+        <p class="prob-sol">Design + print together. $10 overnight shipping anywhere in Michigan.</p>
+        <p class="prob-price">From $35</p>
+        <p class="prob-font-tag">Syne &middot; Montserrat</p>
+      </div>
+    </button>
+
+    <button class="svc-prob-card" data-filter="all" onclick="filterServices('all')" style="border-style:dashed;border-color:rgba(255,255,255,0.12);">
+      <div class="prob-photo-emoji">🔍</div>
+      <div class="prob-card-body">
+        <p class="prob-q">I&rsquo;m not sure — show me everything.</p>
+        <p class="prob-sol">Browse all packages across branding, web, apps, marketing, and print.</p>
+        <p class="prob-price">All packages</p>
+        <p class="prob-font-tag">Syne &middot; Montserrat</p>
+      </div>
+    </button>
+
+  </div>
+</div>
+<button class="svc-back-btn" id="svcBackBtn" onclick="filterServices('all')">&#8592; Show all packages</button>
 
         <!-- BRAND KIT - STARTER PACKAGE -->
 <section class="package-section" style="background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);">
@@ -2270,6 +2397,38 @@ function loadServicesView() {
     `;
     requestAnimationFrame(function() { _nuiMotionEngine(); });
 }
+
+// ── Filter Services by problem card ──
+function filterServices(tag) {
+    var sections = document.querySelectorAll('#servicesView .package-section[data-svc-filter]');
+    var backBtn = document.getElementById('svcBackBtn');
+    var cards = document.querySelectorAll('#svcFilterBar .svc-prob-card');
+
+    if (!sections.length) return;
+
+    cards.forEach(function(c) { c.classList.remove('active'); });
+
+    if (tag === 'all') {
+        sections.forEach(function(s) { s.classList.remove('pkg-filtered-out'); });
+        if (backBtn) backBtn.classList.remove('visible');
+        return;
+    }
+
+    sections.forEach(function(s) {
+        var filters = (s.getAttribute('data-svc-filter') || '').split(',');
+        var match = filters.some(function(f) { return f.trim() === tag || tag.split(',').indexOf(f.trim()) > -1; });
+        s.classList.toggle('pkg-filtered-out', !match);
+    });
+
+    var activeCard = document.querySelector('#svcFilterBar .svc-prob-card[data-filter="' + tag + '"]');
+    if (activeCard) activeCard.classList.add('active');
+    if (backBtn) backBtn.classList.add('visible');
+
+    // Scroll to first visible section
+    var first = document.querySelector('#servicesView .package-section:not(.pkg-filtered-out)');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+window.filterServices = filterServices;
 
 // Custom Package Builder Functions
 function toggleCustomService(event, el) {
