@@ -140,7 +140,12 @@
 [[headers]]
   for = "/*.js"
   [headers.values]
-    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+    Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
 
 # Service worker must NEVER be cached — critical for updates on Safari/mobile
 # MUST come AFTER the generic /*.js rule — Netlify last-match wins for duplicate headers
