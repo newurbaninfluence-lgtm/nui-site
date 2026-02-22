@@ -3059,28 +3059,12 @@ const portalStyles = `
 .stat-card.highlight { background: linear-gradient(135deg, rgba(255,0,0,0.12) 0%, rgba(255,0,0,0.03) 100%); border-color: rgba(255,0,0,0.15); }
 .stat-card.highlight::before { background: linear-gradient(90deg, transparent, rgba(255,0,0,0.3), transparent); }
 .stat-card.highlight .num { color: #ff4444; }
-.dash-card { background: #fff; padding: 24px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.08); transition: all 0.25s ease; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-.dash-card:hover { border-color: rgba(0,0,0,0.12); box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
-.dash-card-red { background: #fff; padding: 24px; border-radius: 14px; border: 1px solid rgba(220,38,38,0.2); border-left: 3px solid #dc2626; transition: all 0.25s ease; box-shadow: 0 2px 12px rgba(220,38,38,0.06); }
-.dash-card-red:hover { border-color: rgba(220,38,38,0.35); box-shadow: 0 8px 32px rgba(220,38,38,0.1); }
-.dash-card div, .dash-card span, .dash-card-red div, .dash-card-red span { color: #1a1a1a; }
-.dash-card [style*="color: rgba(255,255,255"], .dash-card-red [style*="color: rgba(255,255,255"] { color: #666 !important; }
-.dash-card [style*="color: #fff"], .dash-card-red [style*="color: #fff"] { color: #1a1a1a !important; }
-.dash-card [style*="background: rgba(255,255,255,0.0"], .dash-card-red [style*="background: rgba(255,255,255,0.0"] { background: rgba(0,0,0,0.03) !important; border-color: rgba(0,0,0,0.08) !important; }
-.dash-card [style*="background: rgba(255,255,255,0.1"], .dash-card-red [style*="background: rgba(255,255,255,0.1"] { background: rgba(0,0,0,0.04) !important; }
-.dash-card button, .dash-card-red button { color: #333 !important; background: rgba(0,0,0,0.04) !important; border-color: rgba(0,0,0,0.1) !important; }
-.dash-card button:hover, .dash-card-red button:hover { background: rgba(0,0,0,0.08) !important; }
-.dash-action-btn { background: rgba(0,0,0,0.03) !important; border: 1px solid rgba(0,0,0,0.08) !important; color: #333 !important; }
-.dash-action-btn:hover { background: #dc2626 !important; color: #fff !important; border-color: #dc2626 !important; }
-#adminDashboardPanel .dash-card div, #adminDashboardPanel .dash-card span,
-#adminDashboardPanel .dash-card-red div, #adminDashboardPanel .dash-card-red span { color: #1a1a1a; }
-#adminDashboardPanel .dash-card [style*="background: #dc2626"] span,
-#adminDashboardPanel .dash-card [style*="background: #dc2626"] { color: #fff !important; }
-#adminDashboardPanel .dash-card [style*="color: #10b981"], #adminDashboardPanel .dash-card-red [style*="color: #10b981"] { color: #10b981 !important; }
-#adminDashboardPanel .dash-card [style*="color: #f59e0b"], #adminDashboardPanel .dash-card-red [style*="color: #f59e0b"] { color: #f59e0b !important; }
-#adminDashboardPanel .dash-card [style*="color: #dc2626"], #adminDashboardPanel .dash-card-red [style*="color: #dc2626"] { color: #dc2626 !important; }
-#adminDashboardPanel .dash-card [style*="color: #ef4444"], #adminDashboardPanel .dash-card-red [style*="color: #ef4444"] { color: #ef4444 !important; }
-#adminDashboardPanel .status-badge { color: #fff !important; }
+.dash-card { background: rgba(255,255,255,0.04); padding: 24px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); transition: all 0.25s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.dash-card:hover { border-color: rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); }
+.dash-card-red { background: linear-gradient(135deg, rgba(220,38,38,0.25) 0%, rgba(160,20,20,0.15) 40%, rgba(80,10,10,0.1) 100%); padding: 24px; border-radius: 14px; border: 1px solid rgba(220,38,38,0.3); transition: all 0.25s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.dash-card-red:hover { border-color: rgba(220,38,38,0.45); background: linear-gradient(135deg, rgba(220,38,38,0.3) 0%, rgba(160,20,20,0.18) 40%, rgba(80,10,10,0.12) 100%); }
+.dash-action-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; }
+.dash-action-btn:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
 .dash-action-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
 .dash-action-btn:hover { background: rgba(255,68,68,0.08); border-color: rgba(255,68,68,0.15); color: #ff4444; }
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }

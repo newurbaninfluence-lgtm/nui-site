@@ -221,10 +221,10 @@ function loadAdminDashboardPanel() {
             <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(139,92,246,0.12); display: flex; align-items: center; justify-content: center;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
         </div>
-        <div style="font-size: 28px; font-weight: 700; color: #1a1a1a; letter-spacing: -1px;">${clients.length}</div>
-        <div style="color: #888; font-size: 12px; font-weight: 500; margin-top: 2px;">Active Clients</div>
+        <div style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -1px;">${clients.length}</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 12px; font-weight: 500; margin-top: 2px;">Active Clients</div>
     </div>
 
     <!-- Stat: Orders -->
@@ -233,10 +233,10 @@ function loadAdminDashboardPanel() {
             <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(59,130,246,0.12); display: flex; align-items: center; justify-content: center;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
             </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
         </div>
-        <div style="font-size: 28px; font-weight: 700; color: #1a1a1a; letter-spacing: -1px;">${orders.length}</div>
-        <div style="color: #888; font-size: 12px; font-weight: 500; margin-top: 2px;">Total Orders</div>
+        <div style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -1px;">${orders.length}</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 12px; font-weight: 500; margin-top: 2px;">Total Orders</div>
     </div>
 
     <!-- Stat: In Progress -->
@@ -247,8 +247,8 @@ function loadAdminDashboardPanel() {
             </div>
             <span style="padding: 4px 10px; background: rgba(245,158,11,0.12); border-radius: 20px; font-size: 11px; color: #f59e0b; font-weight: 600;">${pendingOrders > 0 ? pendingOrders + ' active' : 'None'}</span>
         </div>
-        <div style="font-size: 28px; font-weight: 700; color: #1a1a1a; letter-spacing: -1px;">${pendingOrders}</div>
-        <div style="color: #888; font-size: 12px; font-weight: 500; margin-top: 2px;">In Progress</div>
+        <div style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -1px;">${pendingOrders}</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 12px; font-weight: 500; margin-top: 2px;">In Progress</div>
     </div>
 
     <!-- Stat: Site Visitors -->
@@ -257,10 +257,10 @@ function loadAdminDashboardPanel() {
             <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(16,185,129,0.12); display: flex; align-items: center; justify-content: center;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
         </div>
-        <div style="font-size: 28px; font-weight: 700; color: #1a1a1a; letter-spacing: -1px;">${(siteAnalytics.visitors?.total || 2847).toLocaleString()}</div>
-        <div style="color: #888; font-size: 12px; font-weight: 500; margin-top: 2px;">Site Visitors</div>
+        <div style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -1px;">${(siteAnalytics.visitors?.total || 2847).toLocaleString()}</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 12px; font-weight: 500; margin-top: 2px;">Site Visitors</div>
     </div>
 
     <!-- Revenue Card (spans 2 cols) -->
@@ -270,14 +270,14 @@ function loadAdminDashboardPanel() {
                 <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(255,68,68,0.1); display: flex; align-items: center; justify-content: center;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff4444" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 </div>
-                <span style="font-size: 13px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 1px;">Revenue</span>
+                <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px;">Revenue</span>
             </div>
-            <button onclick="showAdminPanel('payments')" style="padding: 6px 14px; background: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.08); border-radius: 8px; color: #777; font-size: 12px; cursor: pointer;">View All</button>
+            <button onclick="showAdminPanel('payments')" style="padding: 6px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: rgba(255,255,255,0.5); font-size: 12px; cursor: pointer;">View All</button>
         </div>
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
-            <div style="background: rgba(0,0,0,0.03); border-radius: 12px; padding: 16px;">
-                <div style="font-size: 11px; color: #999; font-weight: 500; margin-bottom: 6px;">Total</div>
-                <div style="font-size: 24px; font-weight: 700; color: #1a1a1a;">$${totalRevenue.toLocaleString()}</div>
+            <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px;">
+                <div style="font-size: 11px; color: rgba(255,255,255,0.35); font-weight: 500; margin-bottom: 6px;">Total</div>
+                <div style="font-size: 24px; font-weight: 700; color: #fff;">$${totalRevenue.toLocaleString()}</div>
             </div>
             <div style="background: rgba(16,185,129,0.06); border-radius: 12px; padding: 16px;">
                 <div style="font-size: 11px; color: rgba(16,185,129,0.6); font-weight: 500; margin-bottom: 6px;">Collected</div>
@@ -288,7 +288,7 @@ function loadAdminDashboardPanel() {
                 <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">$${outstandingRev.toLocaleString()}</div>
             </div>
         </div>
-        ${totalRevenue > 0 ? `<div style="margin-top: 16px; height: 4px; background: rgba(0,0,0,0.06); border-radius: 4px; overflow: hidden;"><div style="height: 100%; width: ${Math.round(paidRevenue/totalRevenue*100)}%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 4px;"></div></div><div style="font-size: 11px; color: #999; margin-top: 6px;">${Math.round(paidRevenue/totalRevenue*100)}% collected</div>` : ''}
+        ${totalRevenue > 0 ? `<div style="margin-top: 16px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden;"><div style="height: 100%; width: ${Math.round(paidRevenue/totalRevenue*100)}%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 4px;"></div></div><div style="font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 6px;">${Math.round(paidRevenue/totalRevenue*100)}% collected</div>` : ''}
     </div>
 
     <!-- Reviews Card -->
@@ -297,18 +297,18 @@ function loadAdminDashboardPanel() {
             <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(245,158,11,0.1); display: flex; align-items: center; justify-content: center;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </div>
-            <span style="font-size: 13px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 1px;">Reviews</span>
+            <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px;">Reviews</span>
         </div>
         <div style="display: flex; align-items: baseline; gap: 8px;">
             <span style="font-size: 36px; font-weight: 800; color: #f59e0b;">${avgReview}</span>
             <div style="display: flex; gap: 2px;">${'★'.repeat(Math.floor(avgReview)).split('').map(() => '<svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>').join('')}</div>
         </div>
-        <div style="color: #999; font-size: 12px; margin-top: 4px;">${reviewCount} Google reviews</div>
+        <div style="color: rgba(255,255,255,0.35); font-size: 12px; margin-top: 4px;">${reviewCount} Google reviews</div>
     </div>
 
     <!-- Quick Actions Card -->
     <div class="dash-card">
-        <div style="font-size: 13px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Quick Actions</div>
+        <div style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Quick Actions</div>
         <div style="display: flex; flex-direction: column; gap: 8px;">
             <button onclick="showAdminPanel('orders')" class="dash-action-btn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -329,23 +329,23 @@ function loadAdminDashboardPanel() {
     <div class="dash-card-red" style="grid-column: span 2;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
             <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(0,0,0,0.04); display: flex; align-items: center; justify-content: center;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                 </div>
-                <span style="font-size: 13px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 1px;">Recent Activity</span>
+                <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px;">Recent Activity</span>
             </div>
         </div>
         <div style="display: flex; flex-direction: column; gap: 0;">
-            ${recentActivity.length === 0 ? '<div style="color: #bbb; font-size: 13px; padding: 20px 0; text-align: center;">No recent activity</div>' :
+            ${recentActivity.length === 0 ? '<div style="color: rgba(255,255,255,0.25); font-size: 13px; padding: 20px 0; text-align: center;">No recent activity</div>' :
             recentActivity.map((a, i) => `
-                <div style="display: flex; align-items: center; gap: 14px; padding: 12px 0; ${i < recentActivity.length - 1 ? 'border-bottom: 1px solid rgba(0,0,0,0.06);' : ''}">
-                    <div style="width: 34px; height: 34px; border-radius: 8px; background: rgba(0,0,0,0.04); display: flex; align-items: center; justify-content: center; color: #777; flex-shrink: 0;">${a.icon}</div>
+                <div style="display: flex; align-items: center; gap: 14px; padding: 12px 0; ${i < recentActivity.length - 1 ? 'border-bottom: 1px solid rgba(255,255,255,0.04);' : ''}">
+                    <div style="width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); flex-shrink: 0;">${a.icon}</div>
                     <div style="flex: 1; min-width: 0;">
-                        <div style="font-size: 13px; font-weight: 600; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${a.text}</div>
-                        <div style="font-size: 11px; color: #999;">${a.sub}</div>
+                        <div style="font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${a.text}</div>
+                        <div style="font-size: 11px; color: rgba(255,255,255,0.3);">${a.sub}</div>
                     </div>
                     <span style="padding: 3px 10px; background: ${a.badgeColor}18; border-radius: 20px; font-size: 10px; color: ${a.badgeColor}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;">${a.badge}</span>
-                    <span style="font-size: 11px; color: #bbb; flex-shrink: 0;">${a.time}</span>
+                    <span style="font-size: 11px; color: rgba(255,255,255,0.2); flex-shrink: 0;">${a.time}</span>
                 </div>
             `).join('')}
         </div>
@@ -358,16 +358,16 @@ function loadAdminDashboardPanel() {
                 <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(59,130,246,0.1); display: flex; align-items: center; justify-content: center;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 </div>
-                <span style="font-size: 13px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 1px;">Calendar</span>
+                <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px;">Calendar</span>
             </div>
-            <button onclick="showAdminPanel('calendar')" style="padding: 6px 14px; background: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.08); border-radius: 8px; color: #777; font-size: 12px; cursor: pointer;">Full View</button>
+            <button onclick="showAdminPanel('calendar')" style="padding: 6px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: rgba(255,255,255,0.5); font-size: 12px; cursor: pointer;">Full View</button>
         </div>
         ${renderDashCalendar()}
     </div>
 
     <!-- Integrations (spans 2 cols) -->
     <div class="dash-card-red" style="grid-column: span 2;">
-        <div style="font-size: 13px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Integrations</div>
+        <div style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Integrations</div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             ${renderDashIntegration('Stripe', siteAnalytics.stripeConnected, '#635bff', 'stripe')}
             ${renderDashIntegration('Google', siteAnalytics.googleReviewsConnected, '#4285f4', 'reviews')}
@@ -408,7 +408,7 @@ function renderDashCalendar() {
 
     // Day headers
     dayNames.forEach(d => {
-        cells += `<div style="font-size: 10px; color: #bbb; text-align: center; padding: 4px 0; font-weight: 600;">${d}</div>`;
+        cells += `<div style="font-size: 10px; color: rgba(255,255,255,0.25); text-align: center; padding: 4px 0; font-weight: 600;">${d}</div>`;
     });
 
     // Empty cells before first day
@@ -424,7 +424,7 @@ function renderDashCalendar() {
         const dotColor = hasDeadline ? '#f59e0b' : hasEvent ? '#3b82f6' : '';
 
         cells += `<div style="text-align: center; padding: 6px 0; position: relative; cursor: ${hasEvent || hasDeadline ? 'pointer' : 'default'};" ${hasEvent || hasDeadline ? 'onclick="showAdminPanel(\'calendar\')"' : ''}>
-            <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; font-size: 12px; font-weight: ${isToday ? '700' : '400'}; color: ${isToday ? '#fff' : '#555'}; background: ${isToday ? '#dc2626' : 'transparent'};">${d}</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; font-size: 12px; font-weight: ${isToday ? '700' : '400'}; color: ${isToday ? '#fff' : 'rgba(255,255,255,0.5)'}; background: ${isToday ? '#dc2626' : 'transparent'};">${d}</span>
             ${dotColor ? `<div style="position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: ${dotColor};"></div>` : ''}
         </div>`;
     }
@@ -445,19 +445,19 @@ function renderDashCalendar() {
 
     return `
         <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
-            <span style="font-size: 14px; font-weight: 600; color: #1a1a1a;">${monthName}</span>
+            <span style="font-size: 14px; font-weight: 600; color: #fff;">${monthName}</span>
         </div>
         <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px;">
             ${cells}
         </div>
         ${upcoming.length > 0 ? `
-        <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.06);">
-            <div style="font-size: 11px; color: #999; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Upcoming</div>
+        <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.05);">
+            <div style="font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Upcoming</div>
             ${upcoming.map(e => `
                 <div style="display: flex; align-items: center; gap: 10px; padding: 6px 0;">
                     <span style="width: 6px; height: 6px; border-radius: 50%; background: ${e.color}; flex-shrink: 0;"></span>
-                    <span style="font-size: 12px; color: #555; flex: 1;">${e.label}</span>
-                    <span style="font-size: 11px; color: #bbb;">${e.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                    <span style="font-size: 12px; color: rgba(255,255,255,0.6); flex: 1;">${e.label}</span>
+                    <span style="font-size: 11px; color: rgba(255,255,255,0.25);">${e.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                 </div>
             `).join('')}
         </div>` : ''}
@@ -465,9 +465,9 @@ function renderDashCalendar() {
 }
 
 function renderDashIntegration(name, connected, color, panel) {
-    return `<div onclick="showAdminPanel('${panel}')" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.06); border-radius: 10px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(0,0,0,0.12)'" onmouseout="this.style.borderColor='rgba(0,0,0,0.06)'">
+    return `<div onclick="showAdminPanel('${panel}')" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.1)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
         <span style="width: 8px; height: 8px; border-radius: 50%; background: ${connected ? '#10b981' : '#ef4444'};"></span>
-        <span style="font-size: 13px; font-weight: 500; color: #1a1a1a;">${name}</span>
+        <span style="font-size: 13px; font-weight: 500; color: #fff;">${name}</span>
         <span style="margin-left: auto; font-size: 10px; color: ${connected ? 'rgba(16,185,129,0.7)' : 'rgba(239,68,68,0.7)'};">${connected ? 'On' : 'Off'}</span>
     </div>`;
 }
