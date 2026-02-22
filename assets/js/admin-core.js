@@ -433,7 +433,7 @@ function renderDashCalendar() {
     const upcoming = [
         ...meetings.filter(m => new Date(m.date) >= new Date(year, month, today)).slice(0, 3).map(m => ({
             date: new Date(m.date),
-            label: (m.type === 'zoom' ? 'Zoom' : 'Phone') + ' — ' + (m.clientName || m.client_name || 'Client'),
+            label: (m.type === 'zoom' ? 'Zoom' : 'Phone') + ' — ' + (m.clientName || m.client_name || 'Client') + (m.service ? ' · ' + m.service : ''),
             color: '#3b82f6'
         })),
         ...orders.filter(o => o.dueDate && new Date(o.dueDate) >= new Date(year, month, today)).slice(0, 3).map(o => ({
@@ -545,6 +545,9 @@ async function loadAdminCalendarPanel() {
             time: m.time,
             type: 'meeting',
             client: m.clientName || m.clientEmail || m.client_name || m.client_email || 'Unknown',
+            phone: m.clientPhone || m.client_phone || '',
+            email: m.clientEmail || m.client_email || '',
+            service: m.service || 'Not specified',
             color: '#3b82f6'
         })),
         // Project deadlines from orders
@@ -657,12 +660,18 @@ async function loadAdminCalendarPanel() {
 <div>
 <div style="font-weight: 600; color: var(--admin-text); margin-bottom: 4px;">${e.title}</div>
 <div class="admin-text-muted-xs">${e.client}</div>
+${e.service && e.type === 'meeting' ? `<div style="margin-top: 4px; font-size: 11px; padding: 2px 8px; background: rgba(220,38,38,0.15); color: #f87171; border-radius: 4px; display: inline-block;">🎯 ${e.service}</div>` : ''}
 </div>
 <span style="background: ${e.color}20; color: ${e.color}; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; text-transform: uppercase;">${e.type}</span>
 </div>
 <div style="font-size: 12px; color: var(--admin-text-muted); margin-top: 8px;">
                             📅 ${new Date(e.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} ${e.time ? `at ${e.time}` : ''}
 </div>
+${e.type === 'meeting' && (e.phone || e.email) ? `<div style="font-size: 11px; color: var(--admin-text-muted); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--admin-border);">
+${e.phone ? `📞 <a href="tel:${e.phone}" style="color: #60a5fa; text-decoration: none;">${e.phone}</a>` : ''}
+${e.phone && e.email ? ' · ' : ''}
+${e.email ? `✉️ <a href="mailto:${e.email}" style="color: #60a5fa; text-decoration: none;">${e.email}</a>` : ''}
+</div>` : ''}
 </div>
                 `).join('')}
 </div>

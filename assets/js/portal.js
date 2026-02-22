@@ -280,8 +280,43 @@ function loadPortalView() {
 <div class="modal-body p-24">
 <p class="text-muted mb-24">Select your preferred meeting type, date, and time. Meetings are available Monday, Wednesday, and Friday from 10am to 4pm.</p>
 
+<!-- Contact Info (Mandatory) -->
 <div class="mb-20">
-<label style="font-weight: 600; display: block; margin-bottom: 8px;">Meeting Type</label>
+<label style="font-weight: 600; display: block; margin-bottom: 8px;">Your Name <span style="color: var(--red);">*</span></label>
+<input type="text" id="meetingName" placeholder="Full name" style="width: 100%; padding: 12px 16px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box;" oninput="updateMeetingBtn()">
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;" class="mb-20">
+<div>
+<label style="font-weight: 600; display: block; margin-bottom: 8px;">Phone Number <span style="color: var(--red);">*</span></label>
+<input type="tel" id="meetingPhone" placeholder="(313) 555-1234" style="width: 100%; padding: 12px 16px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box;" oninput="updateMeetingBtn()">
+</div>
+<div>
+<label style="font-weight: 600; display: block; margin-bottom: 8px;">Email <span style="color: var(--red);">*</span></label>
+<input type="email" id="meetingEmail" placeholder="you@email.com" style="width: 100%; padding: 12px 16px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box;" oninput="updateMeetingBtn()">
+</div>
+</div>
+
+<!-- Service Interest (Mandatory) -->
+<div class="mb-20">
+<label style="font-weight: 600; display: block; margin-bottom: 8px;">Service Interested In <span style="color: var(--red);">*</span></label>
+<select id="meetingService" style="width: 100%; padding: 12px 16px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box; appearance: none; -webkit-appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\\'%23999\\' xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 24 24\\'><path d=\\'M7 10l5 5 5-5z\\'/></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 20px;" onchange="updateMeetingBtn()">
+<option value="" disabled selected style="color: #666;">Select a service...</option>
+<option value="Brand Identity Package">Brand Identity Package</option>
+<option value="Logo Design">Logo Design</option>
+<option value="Brand Strategy & Positioning">Brand Strategy & Positioning</option>
+<option value="Website Design">Website Design</option>
+<option value="Social Media Design">Social Media Design</option>
+<option value="Signage & Storefront Design">Signage & Storefront Design</option>
+<option value="Print Design">Print Design (Business Cards, Flyers, Menus)</option>
+<option value="Brand Guidelines">Brand Guidelines</option>
+<option value="Full Rebrand">Full Rebrand</option>
+<option value="Other">Other / Not Sure Yet</option>
+</select>
+</div>
+
+<div class="mb-20">
+<label style="font-weight: 600; display: block; margin-bottom: 8px;">Meeting Type <span style="color: var(--red);">*</span></label>
 <div class="flex-gap-12">
 <label style="flex: 1; background: #111; border: 2px solid #333; border-radius: 8px; padding: 16px; cursor: pointer; text-align: center; transition: all 0.2s;" onclick="selectMeetingType('zoom')">
 <input type="radio" name="meetingType" value="zoom" class="hidden">
@@ -418,6 +453,15 @@ function acceptTerms() {
 function openMeetingModal() {
     selectedMeeting = { type: null, date: null, time: null };
     document.getElementById('meetingModal').style.display = 'flex';
+    // Pre-fill from logged-in user if available
+    const nameEl = document.getElementById('meetingName');
+    const phoneEl = document.getElementById('meetingPhone');
+    const emailEl = document.getElementById('meetingEmail');
+    const serviceEl = document.getElementById('meetingService');
+    if (nameEl) nameEl.value = currentUser?.name || '';
+    if (phoneEl) phoneEl.value = currentUser?.phone || '';
+    if (emailEl) emailEl.value = currentUser?.email || '';
+    if (serviceEl) serviceEl.selectedIndex = 0;
     renderCalendar();
     renderTimeSlots();
     updateMeetingBtn();
@@ -530,25 +574,73 @@ function updateMeetingBtn() {
     const infoDiv = document.getElementById('selectedMeetingInfo');
     const detailsDiv = document.getElementById('meetingDetails');
 
-    const isComplete = selectedMeeting.type && selectedMeeting.date && selectedMeeting.time;
+    const name = document.getElementById('meetingName')?.value?.trim();
+    const phone = document.getElementById('meetingPhone')?.value?.trim();
+    const email = document.getElementById('meetingEmail')?.value?.trim();
+    const service = document.getElementById('meetingService')?.value;
+    const emailValid = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const phoneValid = phone && phone.replace(/\D/g, '').length >= 10;
+
+    const isComplete = name && phoneValid && emailValid && service && selectedMeeting.type && selectedMeeting.date && selectedMeeting.time;
     btn.disabled = !isComplete;
     btn.style.opacity = isComplete ? '1' : '0.5';
 
+    // Show missing field hints
+    const hints = [];
+    if (!name) hints.push('name');
+    if (!phoneValid && phone) hints.push('valid phone (10+ digits)');
+    else if (!phone) hints.push('phone');
+    if (!emailValid && email) hints.push('valid email');
+    else if (!email) hints.push('email');
+    if (!service) hints.push('service');
+    if (!selectedMeeting.type) hints.push('meeting type');
+    if (!selectedMeeting.date) hints.push('date');
+    if (!selectedMeeting.time) hints.push('time');
+
     if (isComplete) {
         infoDiv.style.display = 'block';
+        infoDiv.style.background = 'rgba(16,185,129,0.1)';
+        infoDiv.style.borderColor = 'rgba(16,185,129,0.3)';
         const dateObj = new Date(selectedMeeting.date);
         const dateFormatted = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
         detailsDiv.innerHTML = `
 <strong>${selectedMeeting.type === 'zoom' ? '💻 Zoom Call' : '📞 Phone Call'}</strong><br>
-            ${dateFormatted} at ${selectedMeeting.time}
+            ${dateFormatted} at ${selectedMeeting.time}<br>
+            <span style="color: var(--red); font-weight: 600;">🎯 ${service}</span><br>
+            <span style="font-size: 12px; color: rgba(255,255,255,0.5);">${name} · ${phone} · ${email}</span>
         `;
     } else {
-        infoDiv.style.display = 'none';
+        infoDiv.style.display = hints.length < 8 && hints.length > 0 ? 'block' : 'none';
+        if (hints.length < 8 && hints.length > 0) {
+            infoDiv.style.background = 'rgba(220,38,38,0.1)';
+            infoDiv.style.borderColor = 'rgba(220,38,38,0.3)';
+            detailsDiv.innerHTML = `<span style="color: #f87171;">Still needed: ${hints.join(', ')}</span>`;
+        }
     }
 }
 
 async function confirmMeeting() {
-    if (!selectedMeeting.type || !selectedMeeting.date || !selectedMeeting.time) return;
+    const name = document.getElementById('meetingName')?.value?.trim();
+    const phone = document.getElementById('meetingPhone')?.value?.trim();
+    const email = document.getElementById('meetingEmail')?.value?.trim();
+    const service = document.getElementById('meetingService')?.value;
+
+    if (!name || !phone || !email || !service || !selectedMeeting.type || !selectedMeeting.date || !selectedMeeting.time) {
+        alert('Please fill in all required fields before booking.');
+        return;
+    }
+
+    // Validate email format
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    // Validate phone (at least 10 digits)
+    if (phone.replace(/\D/g, '').length < 10) {
+        alert('Please enter a valid phone number (at least 10 digits).');
+        return;
+    }
 
     const btn = document.getElementById('confirmMeetingBtn');
     btn.disabled = true;
@@ -556,9 +648,10 @@ async function confirmMeeting() {
 
     const meetingData = {
         clientId: currentUser?.id || null,
-        clientEmail: currentUser?.email || null,
-        clientName: currentUser?.name || currentUser?.email || null,
-        clientPhone: currentUser?.phone || null,
+        clientEmail: email,
+        clientName: name,
+        clientPhone: phone,
+        service: service,
         type: selectedMeeting.type,
         date: selectedMeeting.date,
         time: selectedMeeting.time,
