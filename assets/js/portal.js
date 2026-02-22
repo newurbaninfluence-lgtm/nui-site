@@ -4,7 +4,7 @@ function loadPortalView() {
 <div class="login-visual">
 <div class="login-visual-content">
 <img src="/logo-signature.png" alt="New Urban Influence" style="max-width: 280px; width: 100%; filter: brightness(1.1); margin-bottom: 20px; display: none;">
-<div style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 28px; letter-spacing: 3px; text-transform: uppercase; color: #fff; margin-bottom: 20px; line-height: 1.2;">New Urban <span style="color: #dc2626;">Influence</span></div>
+<div style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 42px; letter-spacing: 3px; text-transform: uppercase; color: #fff; margin-bottom: 20px; line-height: 1.1;">New Urban <span style="color: #dc2626;">Influence</span></div>
 <p>Premium branding solutions for businesses ready to elevate their identity</p>
 <div style="margin-top: 24px; font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase;">📍 Detroit, Michigan</div>
 </div>

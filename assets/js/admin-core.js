@@ -195,7 +195,7 @@ function loadAdminDashboardPanel() {
     <!-- Banner content -->
     <div style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 32px;">
         <div>
-            <div style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 10px;">New Urban <span style="color: #dc2626;">Influence</span></div>
+            <div style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 24px; letter-spacing: 3px; text-transform: uppercase; color: #fff; margin-bottom: 10px;">New Urban <span style="color: #dc2626;">Influence</span></div>
             <h2 style="font-size: 26px; font-weight: 700; color: #fff; margin: 0; letter-spacing: -0.5px;">Welcome back, ${currentUser?.name?.split(' ')[0] || 'Admin'}</h2>
             <p style="color: rgba(255,255,255,0.4); font-size: 13px; margin-top: 4px;">${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
         </div>
