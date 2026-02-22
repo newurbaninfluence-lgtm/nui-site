@@ -3004,12 +3004,12 @@ function switchCaseTab(caseId, panelIndex, tabEl) {
 const portalStyles = `
 <style>
 .portal-login { min-height: 100vh; display: flex; padding-top: 80px; background: #080808; }
-.login-visual { flex: 1; background: linear-gradient(135deg, #1a0505 0%, #0a0a0a 50%, #0a0505 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-.login-visual::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 50%, rgba(255,0,0,0.06) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(255,68,68,0.04) 0%, transparent 40%); animation: loginGlow 8s ease-in-out infinite alternate; }
+.login-visual { flex: 1; background: url('https://images.unsplash.com/photo-1568267938179-f50e67de5ffc?w=1200&q=80&fit=crop') center/cover no-repeat; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.login-visual::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(10,0,0,0.5) 50%, rgba(0,0,0,0.8) 100%); }
 @keyframes loginGlow { from { transform: rotate(0deg); } to { transform: rotate(5deg); } }
 .login-visual-content { position: relative; z-index: 1; text-align: center; padding: 60px; }
-.login-visual-content h2 { font-size: 42px; font-weight: 900; letter-spacing: -1px; margin-bottom: 12px; background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.login-visual-content p { color: rgba(255,255,255,0.4); font-size: 15px; max-width: 320px; margin: 0 auto; line-height: 1.6; }
+.login-visual-content h2 { font-size: 42px; font-weight: 900; letter-spacing: -1px; margin-bottom: 12px; color: #fff; -webkit-text-fill-color: #fff; text-shadow: 0 2px 20px rgba(0,0,0,0.5); }
+.login-visual-content p { color: rgba(255,255,255,0.7); font-size: 15px; max-width: 320px; margin: 0 auto; line-height: 1.6; text-shadow: 0 1px 8px rgba(0,0,0,0.5); }
 .login-form-side { width: 480px; min-width: 480px; display: flex; align-items: center; justify-content: center; padding: 40px; }
 .login-box { max-width: 380px; width: 100%; }
 .login-box-header { text-align: center; margin-bottom: 32px; }

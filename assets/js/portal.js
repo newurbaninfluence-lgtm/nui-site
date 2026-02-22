@@ -5,6 +5,7 @@ function loadPortalView() {
 <div class="login-visual-content">
 <h2>New Urban<br>Influence</h2>
 <p>Premium branding solutions for businesses ready to elevate their identity</p>
+<div style="margin-top: 24px; font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase;">📍 Detroit, Michigan</div>
 </div>
 </div>
 <div class="login-form-side">
