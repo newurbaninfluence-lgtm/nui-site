@@ -46,6 +46,10 @@ var _nuiBreadcrumbMap = {
         { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
         { label: 'Clients', action: "showAdminPanel('clients')" },
         { label: 'New Client', action: '' }
+    ],
+    'contacthub': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Contact Hub', action: '' }
     ]
 };
 
@@ -93,6 +97,7 @@ function showAdminPanel(panel) {
         'orders': loadAdminOrdersPanel,
         'neworder': loadAdminNewOrderPanel,
         'leads': loadAdminLeadsPanel,
+        'contacthub': loadAdminContactHubPanel,
         'submissions': loadAdminSubmissionsPanel,
         'projects': loadAdminProjectsPanel,
         'proofs': loadAdminProofsPanel,
