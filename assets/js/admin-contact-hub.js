@@ -4,6 +4,13 @@
 // Written by: Quo webhook + admin manual entry
 // ============================================
 
+// Helper: get display name from first_name + last_name
+function hubDisplayName(c) {
+  if (!c) return 'Unknown';
+  const parts = [c.first_name, c.last_name].filter(Boolean);
+  return parts.length > 0 ? parts.join(' ') : 'Unknown';
+}
+
 let contactHubData = { contacts: [], activities: [], emails: [], loading: true };
 let contactHubFilter = 'all';
 let contactHubSearch = '';
@@ -176,7 +183,7 @@ function getFilteredContacts() {
   if (contactHubSearch.trim()) {
     const q = contactHubSearch.toLowerCase();
     list = list.filter(c =>
-      (c.name || '').toLowerCase().includes(q) ||
+      (hubDisplayName(c) || '').toLowerCase().includes(q) ||
       (c.phone || '').includes(q) ||
       (c.email || '').toLowerCase().includes(q) ||
       (c.company || '').toLowerCase().includes(q)
@@ -187,7 +194,7 @@ function getFilteredContacts() {
   if (contactHubSort === 'newest') list.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   else if (contactHubSort === 'oldest') list.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
   else if (contactHubSort === 'recent_activity') list.sort((a, b) => new Date(b.last_activity_at || b.created_at) - new Date(a.last_activity_at || a.created_at));
-  else if (contactHubSort === 'name') list.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+  else if (contactHubSort === 'name') list.sort((a, b) => hubDisplayName(a).localeCompare(hubDisplayName(b)));
 
   return list;
 }
@@ -223,9 +230,9 @@ ${contacts.map(c => {
   return `<tr class="${contactHubSelected === c.id ? 'selected' : ''}" onclick="openContactDrawer('${c.id}')">
     <td>
       <div style="display:flex;align-items:center;gap:10px;">
-        <div class="ch-avatar" style="background:${st.color}20;color:${st.color};">${(c.name || '?').charAt(0).toUpperCase()}</div>
+        <div class="ch-avatar" style="background:${st.color}20;color:${st.color};">${hubDisplayName(c).charAt(0).toUpperCase()}</div>
         <div>
-          <div style="font-weight:600;font-size:14px;">${c.name || 'Unknown'}${hasUnread ? ' <span style="color:#ef4444;font-size:10px;">●</span>' : ''}</div>
+          <div style="font-weight:600;font-size:14px;">${hubDisplayName(c)}${hasUnread ? ' <span style="color:#ef4444;font-size:10px;">●</span>' : ''}</div>
           <div style="font-size:12px;color:rgba(255,255,255,0.4);">${c.email || c.company || '—'}</div>
         </div>
       </div>
@@ -285,9 +292,9 @@ function renderContactDrawer(contactId) {
   <!-- Header -->
   <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:24px;">
     <div style="display:flex;gap:14px;align-items:center;">
-      <div class="ch-avatar" style="width:52px;height:52px;font-size:22px;background:var(--red);color:#fff;">${(c.name || '?').charAt(0).toUpperCase()}</div>
+      <div class="ch-avatar" style="width:52px;height:52px;font-size:22px;background:var(--red);color:#fff;">${hubDisplayName(c).charAt(0).toUpperCase()}</div>
       <div>
-        <h3 style="font-size:20px;font-weight:700;margin-bottom:2px;">${c.name || 'Unknown'}</h3>
+        <h3 style="font-size:20px;font-weight:700;margin-bottom:2px;">${hubDisplayName(c)}</h3>
         <div style="font-size:13px;color:rgba(255,255,255,0.45);">${c.company || ''}</div>
       </div>
     </div>
@@ -412,7 +419,7 @@ function hubQuickCall(phone) {
 function hubQuickSms(contactId) {
   const c = contactHubData.contacts.find(x => x.id === contactId);
   if (!c || !c.phone) { alert('No phone number'); return; }
-  const msg = prompt('SMS to ' + (c.name || c.phone) + ':');
+  const msg = prompt('SMS to ' + (hubDisplayName(c)) + ':');
   if (!msg) return;
   // Send via API
   fetch('/.netlify/functions/send-sms', {
@@ -435,7 +442,7 @@ function hubQuickEmail(contactId) {
   modal.innerHTML = `
 <div class="modal" style="max-width:520px;">
   <div class="modal-header">
-    <h3 class="modal-title">📧 Send Email to ${c.name || c.email}</h3>
+    <h3 class="modal-title">📧 Send Email to ${hubDisplayName(c)}</h3>
     <button class="modal-close" onclick="document.getElementById('hubEmailModal').remove()">×</button>
   </div>
   <div class="modal-body">
@@ -501,7 +508,7 @@ async function sendHubEmail(contactId) {
 async function convertHubToClient(contactId) {
   const c = contactHubData.contacts.find(x => x.id === contactId);
   if (!c) return;
-  if (!confirm('Convert ' + (c.name || 'this contact') + ' to a full client?')) return;
+  if (!confirm('Convert ' + hubDisplayName(c) + ' to a full client?')) return;
 
   // Update status in Supabase
   await setHubContactStatus(contactId, 'client');
@@ -512,8 +519,8 @@ async function convertHubToClient(contactId) {
     if (!existing) {
       clients.push({
         id: Date.now(),
-        name: c.company || c.name || 'New Client',
-        contact: c.name,
+        name: c.company || hubDisplayName(c) || 'New Client',
+        contact: hubDisplayName(c),
         email: c.email || '',
         phone: c.phone || '',
         password: 'client' + Math.random().toString(36).substring(7),
@@ -523,7 +530,7 @@ async function convertHubToClient(contactId) {
       saveClients();
     }
   }
-  alert('✅ ' + (c.name || 'Contact') + ' is now a client!');
+  alert('✅ ' + hubDisplayName(c) + ' is now a client!');
   renderContactHub();
 }
 
@@ -554,7 +561,8 @@ function showAddHubContactModal() {
     <button class="modal-close" onclick="document.getElementById('hubContactModal').remove()">×</button>
   </div>
   <div class="modal-body">
-    <div class="form-group"><label class="form-label">Name *</label><input type="text" id="hubNewName" class="form-input" placeholder="John Smith"></div>
+    <div class="form-group"><label class="form-label">First Name *</label><input type="text" id="hubNewFirstName" class="form-input" placeholder="John"></div>
+    <div class="form-group"><label class="form-label">Last Name</label><input type="text" id="hubNewLastName" class="form-input" placeholder="Smith"></div>
     <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="hubNewPhone" class="form-input" placeholder="+13135551234"></div>
     <div class="form-group"><label class="form-label">Email</label><input type="email" id="hubNewEmail" class="form-input" placeholder="john@company.com"></div>
     <div class="form-group"><label class="form-label">Company</label><input type="text" id="hubNewCompany" class="form-input" placeholder="Company Name"></div>
@@ -585,18 +593,20 @@ function showAddHubContactModal() {
 }
 
 async function saveNewHubContact() {
-  const name = document.getElementById('hubNewName').value.trim();
-  if (!name) { alert('Name is required'); return; }
+  const firstName = document.getElementById('hubNewFirstName').value.trim();
+  if (!firstName) { alert('First name is required'); return; }
 
   const contact = {
-    name,
+    first_name: firstName,
+    last_name: document.getElementById('hubNewLastName').value.trim() || null,
     phone: document.getElementById('hubNewPhone').value.trim() || null,
     email: document.getElementById('hubNewEmail').value.trim() || null,
     company: document.getElementById('hubNewCompany').value.trim() || null,
     industry: document.getElementById('hubNewIndustry').value || null,
     notes: document.getElementById('hubNewNotes').value.trim() || null,
     source: 'manual',
-    status: 'new_lead'
+    status: 'new_lead',
+    last_activity_at: new Date().toISOString()
   };
 
   if (!db) { alert('Supabase not connected'); return; }
@@ -723,13 +733,15 @@ function parseCsvFromFile(file) {
     }
 
     // Auto-map columns
-    const targetFields = ['name', 'phone', 'email', 'company', 'industry', 'notes'];
+    const targetFields = ['first_name', 'last_name', 'phone', 'email', 'company', 'industry', 'notes'];
     csvColumnMap = {};
     targetFields.forEach(f => {
       const match = csvHeaders.find(h =>
         h === f ||
-        h.includes(f) ||
-        (f === 'name' && (h.includes('first') || h.includes('full') || h === 'contact')) ||
+        h.includes(f.replace('_', ' ')) ||
+        h.includes(f.replace('_', '')) ||
+        (f === 'first_name' && (h.includes('first') || h === 'name' || h === 'contact' || h.includes('full'))) ||
+        (f === 'last_name' && h.includes('last')) ||
         (f === 'phone' && (h.includes('tel') || h.includes('mobile') || h.includes('cell'))) ||
         (f === 'email' && h.includes('mail')) ||
         (f === 'company' && (h.includes('business') || h.includes('org'))) ||
@@ -797,13 +809,13 @@ async function executeCsvImport() {
   if (!csvParsedRows.length) { alert('No data to import'); return; }
 
   // Re-read column mappings from dropdowns
-  ['name', 'phone', 'email', 'company', 'industry', 'notes'].forEach(f => {
+  ['first_name', 'last_name', 'phone', 'email', 'company', 'industry', 'notes'].forEach(f => {
     const sel = document.getElementById('csvMap_' + f);
     if (sel) csvColumnMap[f] = sel.value;
   });
 
-  if (!csvColumnMap.name) {
-    alert('You must map the "name" column — it\'s required.');
+  if (!csvColumnMap.first_name) {
+    alert('You must map the "first_name" column — it\'s required.');
     return;
   }
 
@@ -819,23 +831,24 @@ async function executeCsvImport() {
   for (let i = 0; i < csvParsedRows.length; i += batchSize) {
     const batch = csvParsedRows.slice(i, i + batchSize).map(row => {
       const contact = {
-        name: row[csvColumnMap.name] || 'Unnamed',
+        first_name: row[csvColumnMap.first_name] || 'Unnamed',
+        last_name: csvColumnMap.last_name ? (row[csvColumnMap.last_name] || null) : null,
         phone: csvColumnMap.phone ? (row[csvColumnMap.phone] || null) : null,
         email: csvColumnMap.email ? (row[csvColumnMap.email] || null) : null,
         company: csvColumnMap.company ? (row[csvColumnMap.company] || null) : null,
         industry: csvColumnMap.industry ? (row[csvColumnMap.industry] || null) : null,
         notes: csvColumnMap.notes ? (row[csvColumnMap.notes] || null) : null,
         source: 'csv_import',
-        status: 'new_lead'
+        status: 'new_lead',
+        last_activity_at: new Date().toISOString()
       };
-      // Clean phone — ensure it has +1 prefix if US number
+      // Clean phone
       if (contact.phone) {
         contact.phone = contact.phone.replace(/[^\d+]/g, '');
         if (contact.phone.length === 10) contact.phone = '+1' + contact.phone;
         else if (contact.phone.length === 11 && contact.phone.startsWith('1')) contact.phone = '+' + contact.phone;
       }
-      // Skip if no name or completely empty
-      if (!contact.name || contact.name === 'Unnamed') return null;
+      if (!contact.first_name || contact.first_name === 'Unnamed') return null;
       return contact;
     }).filter(Boolean);
 
