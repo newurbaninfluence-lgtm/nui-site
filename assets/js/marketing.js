@@ -3005,7 +3005,7 @@ const portalStyles = `
 <style>
 .portal-login { min-height: 100vh; display: flex; padding-top: 80px; background: #080808; }
 .login-visual { flex: 1; background: url('https://images.unsplash.com/photo-1568267938179-f50e67de5ffc?w=1200&q=80&fit=crop') center/cover no-repeat; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-.login-visual::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(10,0,0,0.5) 50%, rgba(0,0,0,0.8) 100%); }
+.login-visual::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.9) 100%); }
 @keyframes loginGlow { from { transform: rotate(0deg); } to { transform: rotate(5deg); } }
 .login-visual-content { position: relative; z-index: 1; text-align: center; padding: 60px; }
 .login-visual-content h2 { font-size: 42px; font-weight: 900; letter-spacing: -1px; margin-bottom: 12px; color: #fff; -webkit-text-fill-color: #fff; text-shadow: 0 2px 20px rgba(0,0,0,0.5); }
