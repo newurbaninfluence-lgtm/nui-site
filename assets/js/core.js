@@ -609,6 +609,7 @@ function saveClients() { localStorage.setItem('nui_clients', JSON.stringify(clie
             createdAt: new Date().toISOString(),
             createdVia: 'seed',
             emailVerified: true,
+            colors: ['#e11d48', '#1a1a1a', '#ffffff'],
             brandAssets: { logo: '', colors: ['#e11d48', '#1a1a1a', '#ffffff'], fonts: ['Montserrat'] }
         };
         clients.push(testClient);

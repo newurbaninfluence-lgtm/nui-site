@@ -1,5 +1,9 @@
 // ==================== CLIENT PORTAL (PORTFOLIO-STYLE BRAND GUIDE) ====================
 function showClientPortal(client) {
+    // Ensure colors array exists (may be in brandAssets)
+    if (!client.colors || !client.colors.length) {
+        client.colors = client.brandAssets?.colors || ['#e11d48', '#1a1a1a', '#ffffff'];
+    }
     document.getElementById('clientPortalName').textContent = client.name + ' Brand Portal';
     const clientOrders = orders.filter(o => o.clientId === client.id);
     const deliveredOrders = clientOrders.filter(o => o.status === 'delivered');
