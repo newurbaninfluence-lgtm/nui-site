@@ -336,10 +336,24 @@ function loadAdminDashboardPanel() {
         </div>
     </div>
 
+    <!-- Calendar Widget (spans 2 cols) -->
+    <div class="dash-card" style="grid-column: span 2;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(59,130,246,0.1); display: flex; align-items: center; justify-content: center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px;">Calendar</span>
+            </div>
+            <button onclick="showAdminPanel('calendar')" style="padding: 6px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: rgba(255,255,255,0.5); font-size: 12px; cursor: pointer;">Full View</button>
+        </div>
+        ${renderDashCalendar()}
+    </div>
+
     <!-- Integrations (spans 2 cols) -->
     <div class="dash-card" style="grid-column: span 2;">
         <div style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Integrations</div>
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             ${renderDashIntegration('Stripe', siteAnalytics.stripeConnected, '#635bff', 'stripe')}
             ${renderDashIntegration('Google', siteAnalytics.googleReviewsConnected, '#4285f4', 'reviews')}
             ${renderDashIntegration('Analytics', true, '#10b981', 'analytics')}
@@ -348,6 +362,90 @@ function loadAdminDashboardPanel() {
     </div>
 
 </div>
+    `;
+}
+
+function renderDashCalendar() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const today = now.getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const monthName = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+    // Gather events for this month
+    const meetings = JSON.parse(localStorage.getItem('nui_meetings')) || [];
+    const eventDays = new Set();
+    const deadlineDays = new Set();
+
+    meetings.forEach(m => {
+        const d = new Date(m.date);
+        if (d.getMonth() === month && d.getFullYear() === year) eventDays.add(d.getDate());
+    });
+    orders.filter(o => o.dueDate).forEach(o => {
+        const d = new Date(o.dueDate);
+        if (d.getMonth() === month && d.getFullYear() === year) deadlineDays.add(d.getDate());
+    });
+
+    const dayNames = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+    let cells = '';
+
+    // Day headers
+    dayNames.forEach(d => {
+        cells += `<div style="font-size: 10px; color: rgba(255,255,255,0.25); text-align: center; padding: 4px 0; font-weight: 600;">${d}</div>`;
+    });
+
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) {
+        cells += '<div></div>';
+    }
+
+    // Day cells
+    for (let d = 1; d <= daysInMonth; d++) {
+        const isToday = d === today;
+        const hasEvent = eventDays.has(d);
+        const hasDeadline = deadlineDays.has(d);
+        const dotColor = hasDeadline ? '#f59e0b' : hasEvent ? '#3b82f6' : '';
+
+        cells += `<div style="text-align: center; padding: 6px 0; position: relative; cursor: ${hasEvent || hasDeadline ? 'pointer' : 'default'};" ${hasEvent || hasDeadline ? 'onclick="showAdminPanel(\'calendar\')"' : ''}>
+            <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; font-size: 12px; font-weight: ${isToday ? '700' : '400'}; color: ${isToday ? '#fff' : 'rgba(255,255,255,0.5)'}; background: ${isToday ? '#ff4444' : 'transparent'};">${d}</span>
+            ${dotColor ? `<div style="position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: ${dotColor};"></div>` : ''}
+        </div>`;
+    }
+
+    // Upcoming events list
+    const upcoming = [
+        ...meetings.filter(m => new Date(m.date) >= new Date(year, month, today)).slice(0, 3).map(m => ({
+            date: new Date(m.date),
+            label: (m.type === 'zoom' ? 'Zoom' : 'Phone') + ' — ' + (m.clientName || m.client_name || 'Client'),
+            color: '#3b82f6'
+        })),
+        ...orders.filter(o => o.dueDate && new Date(o.dueDate) >= new Date(year, month, today)).slice(0, 3).map(o => ({
+            date: new Date(o.dueDate),
+            label: o.projectName + ' due',
+            color: '#f59e0b'
+        }))
+    ].sort((a, b) => a.date - b.date).slice(0, 4);
+
+    return `
+        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <span style="font-size: 14px; font-weight: 600; color: #fff;">${monthName}</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px;">
+            ${cells}
+        </div>
+        ${upcoming.length > 0 ? `
+        <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.05);">
+            <div style="font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Upcoming</div>
+            ${upcoming.map(e => `
+                <div style="display: flex; align-items: center; gap: 10px; padding: 6px 0;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: ${e.color}; flex-shrink: 0;"></span>
+                    <span style="font-size: 12px; color: rgba(255,255,255,0.6); flex: 1;">${e.label}</span>
+                    <span style="font-size: 11px; color: rgba(255,255,255,0.25);">${e.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                </div>
+            `).join('')}
+        </div>` : ''}
     `;
 }
 
