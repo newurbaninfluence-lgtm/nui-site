@@ -181,23 +181,21 @@ function loadAdminDashboardPanel() {
     document.getElementById('adminDashboardPanel').innerHTML = `
 <!-- Dashboard Banner -->
 <div style="position: relative; border-radius: 16px; overflow: hidden; margin-bottom: 28px; height: 160px;">
-    <!-- Abstract gradient background -->
-    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 25%, #0d0d1a 50%, #1a0a12 75%, #0a0a0a 100%);">
-        <!-- Mesh gradient orbs -->
-        <div style="position: absolute; top: -40px; right: -20px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(255,40,40,0.15) 0%, transparent 70%); filter: blur(40px);"></div>
-        <div style="position: absolute; bottom: -60px; left: 10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(120,40,200,0.1) 0%, transparent 70%); filter: blur(50px);"></div>
-        <div style="position: absolute; top: 20px; left: 40%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,80,60,0.08) 0%, transparent 70%); filter: blur(35px);"></div>
-        <!-- Noise texture overlay -->
+    <!-- Red/black gradient background -->
+    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #0a0a0a 0%, #1a0508 30%, #2a0a0e 50%, #1a0508 70%, #0a0a0a 100%);">
+        <!-- Red mesh orbs -->
+        <div style="position: absolute; top: -40px; right: -20px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(220,38,38,0.2) 0%, transparent 70%); filter: blur(40px);"></div>
+        <div style="position: absolute; bottom: -60px; left: 10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(180,20,20,0.12) 0%, transparent 70%); filter: blur(50px);"></div>
+        <div style="position: absolute; top: 20px; left: 45%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,50,50,0.1) 0%, transparent 70%); filter: blur(35px);"></div>
+        <!-- Noise texture -->
         <div style="position: absolute; inset: 0; opacity: 0.4; background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22 opacity=%220.08%22/%3E%3C/svg%3E'); background-size: 200px;"></div>
-        <!-- Subtle grid lines -->
-        <div style="position: absolute; inset: 0; opacity: 0.04; background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
+        <!-- Grid lines -->
+        <div style="position: absolute; inset: 0; opacity: 0.03; background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
     </div>
     <!-- Banner content -->
     <div style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 32px;">
         <div>
-            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
-                <img src="/logo-signature.png" alt="NUI" style="height: 28px; filter: brightness(1.2);" onerror="this.style.display='none'">
-            </div>
+            <div style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 10px;">New Urban <span style="color: #dc2626;">Influence</span></div>
             <h2 style="font-size: 26px; font-weight: 700; color: #fff; margin: 0; letter-spacing: -0.5px;">Welcome back, ${currentUser?.name?.split(' ')[0] || 'Admin'}</h2>
             <p style="color: rgba(255,255,255,0.4); font-size: 13px; margin-top: 4px;">${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
         </div>
