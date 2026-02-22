@@ -142,95 +142,221 @@ function showAdminPanel(panel) {
 function loadAdminDashboardPanel() {
     const totalAssets = clients.reduce((sum, c) => sum + (c.assets ? Object.values(c.assets).flat().length : 0), 0);
     const pendingOrders = orders.filter(o => o.status !== 'delivered').length;
+    const deliveredOrders = orders.filter(o => o.status === 'delivered').length;
     const totalRevenue = orders.reduce((sum, o) => sum + (o.estimate || 0), 0);
     const paidRevenue = orders.filter(o => o.paymentStatus === 'paid').reduce((sum, o) => sum + (o.estimate || 0), 0);
     const avgReview = siteAnalytics.googleReviews?.avgRating || 4.8;
+    const reviewCount = siteAnalytics.googleReviews?.count || 47;
+    const outstandingRev = totalRevenue - paidRevenue;
+
+    // Recent activity feed
+    const recentActivity = [
+        ...orders.slice(-5).reverse().map(o => ({
+            icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+            text: o.projectName,
+            sub: clients.find(c => c.id === o.clientId)?.name || 'Client',
+            badge: o.status.replace('_',' '),
+            badgeColor: o.status === 'delivered' ? '#10b981' : o.status === 'in_progress' ? '#3b82f6' : '#f59e0b',
+            time: o.createdAt ? timeAgo(o.createdAt) : ''
+        })),
+        ...clients.slice(-3).reverse().map(c => ({
+            icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+            text: c.name,
+            sub: c.industry || 'New client',
+            badge: 'client',
+            badgeColor: '#8b5cf6',
+            time: c.createdAt ? timeAgo(c.createdAt) : ''
+        }))
+    ].slice(0, 6);
+
+    function timeAgo(d) {
+        const diff = Date.now() - new Date(d).getTime();
+        const mins = Math.floor(diff / 60000);
+        if (mins < 60) return mins + 'm ago';
+        const hrs = Math.floor(mins / 60);
+        if (hrs < 24) return hrs + 'h ago';
+        return Math.floor(hrs / 24) + 'd ago';
+    }
 
     document.getElementById('adminDashboardPanel').innerHTML = `
-<div class="flex-between mb-32">
-<h2 class="fs-28 fw-700">Dashboard</h2>
-<div class="flex-gap-12">
-<button onclick="syncAllData()" class="btn-outline flex-center-gap-8">🔄 Sync All</button>
-<span class="sync-status" style="display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: ${_backendAvailable ? '#10b981' : '#ef4444'}; color: #fff; border-radius: 8px; font-size: 13px;">
-<span style="width: 8px; height: 8px; background: #fff; border-radius: 50%; ${_backendAvailable ? '' : 'animation: pulse 1s infinite;'}"></span>
-                    ${_backendAvailable ? (_lastSyncTime ? 'Backend Synced ' + new Date(_lastSyncTime).toLocaleTimeString() : 'Backend Connected') : 'Backend Offline (localStorage only)'}
-</span>
-</div>
-</div>
-
-        <!-- Quick Stats Row -->
-<div class="stat-cards mb-32">
-<div class="stat-card pointer" onclick="showAdminPanel('clients')"><div class="num">${clients.length}</div><div class="lbl">Active Clients</div></div>
-<div class="stat-card pointer" onclick="showAdminPanel('orders')"><div class="num">${orders.length}</div><div class="lbl">Total Orders</div></div>
-<div class="stat-card pointer" onclick="showAdminPanel('projects')"><div class="num">${pendingOrders}</div><div class="lbl">In Progress</div></div>
-<div class="stat-card pointer" onclick="showAdminPanel('analytics')"><div class="num">${siteAnalytics.visitors?.total || 2847}</div><div class="lbl">Site Visitors</div></div>
-</div>
-
-        <!-- Revenue & Reviews Row -->
-<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 32px;">
-<div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 24px; border-radius: 16px; color: #fff;">
-<h3 class="admin-heading-sm">REVENUE OVERVIEW</h3>
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-<div>
-<div style="font-size: 32px; font-weight: 700; color: var(--accent);">$${totalRevenue.toLocaleString()}</div>
-<div class="text-muted-sm">Total Revenue</div>
-</div>
-<div>
-<div style="font-size: 32px; font-weight: 700; color: #10b981;">$${paidRevenue.toLocaleString()}</div>
-<div class="text-muted-sm">Collected</div>
-</div>
-<div>
-<div style="font-size: 32px; font-weight: 700; color: #f59e0b;">$${(totalRevenue - paidRevenue).toLocaleString()}</div>
-<div class="text-muted-sm">Outstanding</div>
-</div>
-</div>
-<button onclick="showAdminPanel('payments')" class="btn-outline" style="margin-top: 20px; width: 100%;">View All Payments →</button>
-</div>
-<div style="background: #fff; padding: 24px; border-radius: 16px; border: 1px solid #e5e5e5;">
-<h3 class="admin-heading-sm">GOOGLE REVIEWS</h3>
-<div class="text-center">
-<div style="font-size: 48px; font-weight: 700; color: #f59e0b;">⭐ ${avgReview}</div>
-<div class="text-muted-sm">${siteAnalytics.googleReviews?.count || 28} reviews</div>
-<button onclick="showAdminPanel('reviews')" class="btn-cta" style="margin-top: 16px; width: 100%;">Manage Reviews</button>
-</div>
-</div>
+<!-- Dashboard Header -->
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px;">
+    <div>
+        <h2 style="font-size: 24px; font-weight: 700; color: #fff; margin: 0;">Dashboard</h2>
+        <p style="color: rgba(255,255,255,0.35); font-size: 13px; margin-top: 4px;">Welcome back, ${currentUser?.name || 'Admin'}</p>
+    </div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <button onclick="syncAllData()" style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: #fff; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+            Sync
+        </button>
+        <div style="display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: ${_backendAvailable ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)'}; border: 1px solid ${_backendAvailable ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)'}; border-radius: 8px;">
+            <span style="width: 6px; height: 6px; background: ${_backendAvailable ? '#10b981' : '#ef4444'}; border-radius: 50%;"></span>
+            <span style="font-size: 12px; color: ${_backendAvailable ? '#10b981' : '#ef4444'}; font-weight: 500;">${_backendAvailable ? 'Synced' : 'Offline'}</span>
+        </div>
+    </div>
 </div>
 
-        <!-- Sync Status Grid -->
-<div style="background: #fff; padding: 24px; border-radius: 16px; border: 1px solid #e5e5e5; margin-bottom: 32px;">
-<h3 class="admin-heading-sm">INTEGRATION STATUS</h3>
-<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
-                ${renderSyncStatusCard('Stripe', siteAnalytics.stripeConnected, 'stripe')}
-                ${renderSyncStatusCard('Google Reviews', siteAnalytics.googleReviewsConnected, 'reviews')}
-                ${renderSyncStatusCard('Analytics', true, 'analytics')}
-                ${renderSyncStatusCard('CRM', true, 'crm')}
-</div>
-</div>
+<!-- Bento Grid -->
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: auto; gap: 16px;">
 
-        <!-- Recent Activity -->
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-<div>
-<h2 style="font-size: 18px; margin-bottom: 20px;">Recent Orders</h2>
-<div>${orders.slice(-3).reverse().map(o => renderOrderCard(o)).join('')}</div>
-</div>
-<div>
-<h2 style="font-size: 18px; margin-bottom: 20px;">Recent Clients</h2>
-<div class="card-grid" style="grid-template-columns: 1fr;">${clients.slice(-3).reverse().map(c => renderClientCard(c)).join('')}</div>
-</div>
+    <!-- Stat: Clients -->
+    <div onclick="showAdminPanel('clients')" class="dash-card" style="cursor: pointer;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(139,92,246,0.12); display: flex; align-items: center; justify-content: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+        </div>
+        <div style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -1px;">${clients.length}</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 12px; font-weight: 500; margin-top: 2px;">Active Clients</div>
+    </div>
+
+    <!-- Stat: Orders -->
+    <div onclick="showAdminPanel('orders')" class="dash-card" style="cursor: pointer;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(59,130,246,0.12); display: flex; align-items: center; justify-content: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+        </div>
+        <div style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -1px;">${orders.length}</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 12px; font-weight: 500; margin-top: 2px;">Total Orders</div>
+    </div>
+
+    <!-- Stat: In Progress -->
+    <div onclick="showAdminPanel('projects')" class="dash-card" style="cursor: pointer;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(245,158,11,0.12); display: flex; align-items: center; justify-content: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <span style="padding: 4px 10px; background: rgba(245,158,11,0.12); border-radius: 20px; font-size: 11px; color: #f59e0b; font-weight: 600;">${pendingOrders > 0 ? pendingOrders + ' active' : 'None'}</span>
+        </div>
+        <div style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -1px;">${pendingOrders}</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 12px; font-weight: 500; margin-top: 2px;">In Progress</div>
+    </div>
+
+    <!-- Stat: Site Visitors -->
+    <div onclick="showAdminPanel('analytics')" class="dash-card" style="cursor: pointer;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(16,185,129,0.12); display: flex; align-items: center; justify-content: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+        </div>
+        <div style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -1px;">${(siteAnalytics.visitors?.total || 2847).toLocaleString()}</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 12px; font-weight: 500; margin-top: 2px;">Site Visitors</div>
+    </div>
+
+    <!-- Revenue Card (spans 2 cols) -->
+    <div class="dash-card" style="grid-column: span 2;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(255,68,68,0.1); display: flex; align-items: center; justify-content: center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff4444" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px;">Revenue</span>
+            </div>
+            <button onclick="showAdminPanel('payments')" style="padding: 6px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: rgba(255,255,255,0.5); font-size: 12px; cursor: pointer;">View All</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+            <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px;">
+                <div style="font-size: 11px; color: rgba(255,255,255,0.35); font-weight: 500; margin-bottom: 6px;">Total</div>
+                <div style="font-size: 24px; font-weight: 700; color: #fff;">$${totalRevenue.toLocaleString()}</div>
+            </div>
+            <div style="background: rgba(16,185,129,0.06); border-radius: 12px; padding: 16px;">
+                <div style="font-size: 11px; color: rgba(16,185,129,0.6); font-weight: 500; margin-bottom: 6px;">Collected</div>
+                <div style="font-size: 24px; font-weight: 700; color: #10b981;">$${paidRevenue.toLocaleString()}</div>
+            </div>
+            <div style="background: rgba(245,158,11,0.06); border-radius: 12px; padding: 16px;">
+                <div style="font-size: 11px; color: rgba(245,158,11,0.6); font-weight: 500; margin-bottom: 6px;">Outstanding</div>
+                <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">$${outstandingRev.toLocaleString()}</div>
+            </div>
+        </div>
+        ${totalRevenue > 0 ? `<div style="margin-top: 16px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden;"><div style="height: 100%; width: ${Math.round(paidRevenue/totalRevenue*100)}%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 4px;"></div></div><div style="font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 6px;">${Math.round(paidRevenue/totalRevenue*100)}% collected</div>` : ''}
+    </div>
+
+    <!-- Reviews Card -->
+    <div class="dash-card" onclick="showAdminPanel('reviews')" style="cursor: pointer;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+            <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(245,158,11,0.1); display: flex; align-items: center; justify-content: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px;">Reviews</span>
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 8px;">
+            <span style="font-size: 36px; font-weight: 800; color: #f59e0b;">${avgReview}</span>
+            <div style="display: flex; gap: 2px;">${'★'.repeat(Math.floor(avgReview)).split('').map(() => '<svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>').join('')}</div>
+        </div>
+        <div style="color: rgba(255,255,255,0.35); font-size: 12px; margin-top: 4px;">${reviewCount} Google reviews</div>
+    </div>
+
+    <!-- Quick Actions Card -->
+    <div class="dash-card">
+        <div style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Quick Actions</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <button onclick="showAdminPanel('orders')" class="dash-action-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                New Order
+            </button>
+            <button onclick="showAdminPanel('clients')" class="dash-action-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                Add Client
+            </button>
+            <button onclick="showAdminPanel('invoicing')" class="dash-action-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Send Invoice
+            </button>
+        </div>
+    </div>
+
+    <!-- Activity Feed (spans 2 cols) -->
+    <div class="dash-card" style="grid-column: span 2;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                </div>
+                <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px;">Recent Activity</span>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0;">
+            ${recentActivity.length === 0 ? '<div style="color: rgba(255,255,255,0.25); font-size: 13px; padding: 20px 0; text-align: center;">No recent activity</div>' :
+            recentActivity.map((a, i) => `
+                <div style="display: flex; align-items: center; gap: 14px; padding: 12px 0; ${i < recentActivity.length - 1 ? 'border-bottom: 1px solid rgba(255,255,255,0.04);' : ''}">
+                    <div style="width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); flex-shrink: 0;">${a.icon}</div>
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${a.text}</div>
+                        <div style="font-size: 11px; color: rgba(255,255,255,0.3);">${a.sub}</div>
+                    </div>
+                    <span style="padding: 3px 10px; background: ${a.badgeColor}18; border-radius: 20px; font-size: 10px; color: ${a.badgeColor}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;">${a.badge}</span>
+                    <span style="font-size: 11px; color: rgba(255,255,255,0.2); flex-shrink: 0;">${a.time}</span>
+                </div>
+            `).join('')}
+        </div>
+    </div>
+
+    <!-- Integrations (spans 2 cols) -->
+    <div class="dash-card" style="grid-column: span 2;">
+        <div style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Integrations</div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+            ${renderDashIntegration('Stripe', siteAnalytics.stripeConnected, '#635bff', 'stripe')}
+            ${renderDashIntegration('Google', siteAnalytics.googleReviewsConnected, '#4285f4', 'reviews')}
+            ${renderDashIntegration('Analytics', true, '#10b981', 'analytics')}
+            ${renderDashIntegration('CRM', true, '#8b5cf6', 'crm')}
+        </div>
+    </div>
+
 </div>
     `;
 }
 
-function renderSyncStatusCard(name, connected, panel) {
-    return `
-<div onclick="showAdminPanel('${panel}')" style="padding: 16px; background: ${connected ? '#111' : '#fef2f2'}; border-radius: 12px; cursor: pointer; transition: transform 0.2s;">
-<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-<span style="width: 10px; height: 10px; background: ${connected ? '#10b981' : '#ef4444'}; border-radius: 50%;"></span>
-<span style="font-weight: 600; color: ${connected ? '#fff' : '#333'};">${name}</span>
-</div>
-<div style="font-size: 12px; color: ${connected ? '#10b981' : '#dc2626'};">${connected ? 'Connected' : 'Not Connected'}</div>
-</div>
-    `;
+function renderDashIntegration(name, connected, color, panel) {
+    return `<div onclick="showAdminPanel('${panel}')" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.1)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: ${connected ? '#10b981' : '#ef4444'};"></span>
+        <span style="font-size: 13px; font-weight: 500; color: #fff;">${name}</span>
+        <span style="margin-left: auto; font-size: 10px; color: ${connected ? 'rgba(16,185,129,0.7)' : 'rgba(239,68,68,0.7)'};">${connected ? 'On' : 'Off'}</span>
+    </div>`;
 }
 
 // Site Analytics Data

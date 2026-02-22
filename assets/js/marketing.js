@@ -3059,6 +3059,10 @@ const portalStyles = `
 .stat-card.highlight { background: linear-gradient(135deg, rgba(255,0,0,0.12) 0%, rgba(255,0,0,0.03) 100%); border-color: rgba(255,0,0,0.15); }
 .stat-card.highlight::before { background: linear-gradient(90deg, transparent, rgba(255,0,0,0.3), transparent); }
 .stat-card.highlight .num { color: #ff4444; }
+.dash-card { background: rgba(255,255,255,0.03); padding: 24px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.06); transition: all 0.25s ease; }
+.dash-card:hover { border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.045); }
+.dash-action-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+.dash-action-btn:hover { background: rgba(255,68,68,0.08); border-color: rgba(255,68,68,0.15); color: #ff4444; }
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 .client-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; overflow: hidden; transition: all 0.3s ease; }
 .client-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
@@ -3213,6 +3217,9 @@ input:checked + .slider:before { transform: translateX(24px); }
     .admin-sidebar { display: none; }
     .admin-main { margin-left: 0; padding: 20px; }
     .stat-cards { grid-template-columns: repeat(2, 1fr); }
+    #adminDashboardPanel > div > div[style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+    #adminDashboardPanel .dash-card[style*="grid-column: span 2"] { grid-column: span 2 !important; }
+    .dash-card div[style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
     .form-row { grid-template-columns: 1fr; }
     .order-details { grid-template-columns: repeat(2, 1fr); }
     .seo-grid { grid-template-columns: 1fr; }
