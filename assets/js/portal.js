@@ -1,11 +1,18 @@
 function loadPortalView() {
     document.getElementById('portalView').innerHTML = portalStyles + `
 <div id="portalLogin" class="portal-login">
+<div class="login-visual">
+<div class="login-visual-content">
+<h2>New Urban<br>Influence</h2>
+<p>Premium branding solutions for businesses ready to elevate their identity</p>
+</div>
+</div>
+<div class="login-form-side">
 <div class="login-box">
-<div style="text-align: center; margin-bottom: 32px;">
-<img loading="lazy" src="/icons/icon-192.png" alt="NUI" style="height: 60px; margin-bottom: 16px;">
-<h2 class="fs-24 mb-8">Brand Portal</h2>
-<p style="color: var(--gray); font-size: 14px;">Access your brand assets & orders</p>
+<div class="login-box-header">
+<img loading="lazy" src="/icons/icon-192.png" alt="NUI">
+<h2>Brand Portal</h2>
+<p>Access your brand assets & orders</p>
 </div>
 <div class="login-tabs">
 <button onclick="setLoginType('client')" id="clientTab" class="login-tab active">Client</button>
@@ -19,18 +26,18 @@ function loadPortalView() {
 <input type="password" id="portalPassword" class="form-input" placeholder="••••••••" required>
 <a onclick="forgotPassword()" style="display: block; text-align: right; margin-top: 8px; color: var(--red); font-size: 12px; cursor: pointer;">Forgot Password?</a>
 </div>
-<button type="submit" class="btn-cta" style="width: 100%; justify-content: center;">Sign In</button>
+<button type="submit" class="btn-cta" style="width: 100%; justify-content: center; border-radius: 10px; padding: 14px;">Sign In</button>
 </form>
 
-<div style="display: flex; align-items: center; margin: 24px 0; gap: 16px;">
-<div style="flex: 1; height: 1px; background: #333;"></div>
-<span style="color: #666; font-size: 12px;">or continue with</span>
-<div style="flex: 1; height: 1px; background: #333;"></div>
+<div style="display: flex; align-items: center; margin: 20px 0; gap: 16px;">
+<div style="flex: 1; height: 1px; background: rgba(255,255,255,0.06);"></div>
+<span style="color: rgba(255,255,255,0.25); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">or</span>
+<div style="flex: 1; height: 1px; background: rgba(255,255,255,0.06);"></div>
 </div>
 
                 <!-- Social Login Buttons -->
 <div class="flex-col-gap-12">
-<button onclick="googleSignIn()" style="display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 12px 16px; background: #fff; color: #333; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;">
+<button onclick="googleSignIn()" style="display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s;">
 <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                         Continue with Google
 </button>
@@ -47,8 +54,11 @@ function loadPortalView() {
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
 <div id="adminDashboard" class="hidden">
-<header class="admin-header" style="background: var(--admin-header); border-bottom: 1px solid var(--admin-border);">
+<header class="admin-header">
 <div style="display: flex; align-items: center; gap: 16px;">
 <img loading="lazy" id="adminHeaderLogo" src="icons/icon-192.png" alt="NUI" style="height: 32px;">
 <span style="font-weight: 600; color: var(--admin-text);" id="adminHeaderTitle">Admin Dashboard</span>
@@ -60,44 +70,48 @@ function loadPortalView() {
 </div>
 </header>
 <div class="admin-container">
-<aside class="admin-sidebar" id="adminSidebar" style="background: var(--admin-sidebar); border-color: var(--admin-border);">
+<aside class="admin-sidebar" id="adminSidebar">
+<div class="sidebar-brand">
+<img alt="NUI" src="/icons/icon-192.png" style="width:28px;height:28px;border-radius:6px;">
+<span style="font-weight:800;font-size:15px;letter-spacing:-0.3px;">NUI Admin</span>
+</div>
 <nav class="admin-nav" id="adminNav">
 <div class="admin-nav-group">
-<span class="admin-nav-label" style="color: var(--admin-text-muted);">OVERVIEW</span>
-<a onclick="showAdminPanel('dashboard')" class="admin-nav-link active" data-panel="dashboard">📊 Dashboard</a>
-<a onclick="showAdminPanel('calendar')" class="admin-nav-link" data-panel="calendar">📅 Calendar</a>
+<span class="admin-nav-label">OVERVIEW</span>
+<a onclick="showAdminPanel('dashboard')" class="admin-nav-link active" data-panel="dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
+<a onclick="showAdminPanel('calendar')" class="admin-nav-link" data-panel="calendar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Calendar</a>
 </div>
 <div class="admin-nav-group">
 <span class="admin-nav-label">CLIENTS</span>
-<a onclick="showAdminPanel('clients')" class="admin-nav-link" data-panel="clients">👥 Clients</a>
-<a onclick="showAdminPanel('leads')" class="admin-nav-link" data-panel="leads">🎯 Leads</a>
+<a onclick="showAdminPanel('clients')" class="admin-nav-link" data-panel="clients"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Clients</a>
+<a onclick="showAdminPanel('leads')" class="admin-nav-link" data-panel="leads"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>Leads</a>
 </div>
 <div class="admin-nav-group">
 <span class="admin-nav-label">JOBS</span>
-<a onclick="showAdminPanel('projects')" class="admin-nav-link" data-panel="projects">📂 Projects</a>
-<a onclick="showAdminPanel('proofs')" class="admin-nav-link" data-panel="proofs">✅ Proofs</a>
-<a onclick="showAdminPanel('brandguide')" class="admin-nav-link" data-panel="brandguide">📘 Brand Guide</a>
+<a onclick="showAdminPanel('projects')" class="admin-nav-link" data-panel="projects"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Projects</a>
+<a onclick="showAdminPanel('proofs')" class="admin-nav-link" data-panel="proofs"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Proofs</a>
+<a onclick="showAdminPanel('brandguide')" class="admin-nav-link" data-panel="brandguide"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Brand Guide</a>
 </div>
 <div class="admin-nav-group">
 <span class="admin-nav-label">BILLING</span>
-<a onclick="showAdminPanel('payments')" class="admin-nav-link" data-panel="payments">💳 Payments</a>
-<a onclick="showAdminPanel('invoices')" class="admin-nav-link" data-panel="invoices">📄 Invoices</a>
+<a onclick="showAdminPanel('payments')" class="admin-nav-link" data-panel="payments"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Payments</a>
+<a onclick="showAdminPanel('invoices')" class="admin-nav-link" data-panel="invoices"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Invoices</a>
 </div>
 <div class="admin-nav-group">
 <span class="admin-nav-label">MARKETING</span>
-<a onclick="showAdminPanel('seo')" class="admin-nav-link" data-panel="seo">🔍 SEO</a>
-<a onclick="showAdminPanel('blog')" class="admin-nav-link" data-panel="blog">📝 Blog</a>
-<a onclick="showAdminPanel('emailmarketing')" class="admin-nav-link" data-panel="emailmarketing">📧 Email</a>
+<a onclick="showAdminPanel('seo')" class="admin-nav-link" data-panel="seo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>SEO</a>
+<a onclick="showAdminPanel('blog')" class="admin-nav-link" data-panel="blog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Blog</a>
+<a onclick="showAdminPanel('emailmarketing')" class="admin-nav-link" data-panel="emailmarketing"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email</a>
 </div>
 <div class="admin-nav-group">
 <span class="admin-nav-label">CONTENT</span>
-<a onclick="showAdminPanel('assets')" class="admin-nav-link" data-panel="assets">📁 Assets</a>
-<a onclick="showAdminPanel('moodboard')" class="admin-nav-link" data-panel="moodboard">🎨 Moodboards</a>
+<a onclick="showAdminPanel('assets')" class="admin-nav-link" data-panel="assets"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Assets</a>
+<a onclick="showAdminPanel('moodboard')" class="admin-nav-link" data-panel="moodboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Moodboards</a>
 </div>
 <div class="admin-nav-group">
 <span class="admin-nav-label">SYSTEM</span>
-<a onclick="showAdminPanel('integrations')" class="admin-nav-link" data-panel="integrations">🔗 Integrations</a>
-<a onclick="showAdminPanel('usermanagement')" class="admin-nav-link" data-panel="usermanagement">🔐 Users</a>
+<a onclick="showAdminPanel('integrations')" class="admin-nav-link" data-panel="integrations"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Integrations</a>
+<a onclick="showAdminPanel('usermanagement')" class="admin-nav-link" data-panel="usermanagement"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</a>
 </div>
 </nav>
 </aside>

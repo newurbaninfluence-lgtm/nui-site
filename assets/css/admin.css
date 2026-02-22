@@ -31,19 +31,20 @@
 .flex-wrap{display:flex;flex-wrap:wrap;gap:8px;}
 
 /* ── Cards ────────────────────────────────── */
-.admin-card-dark{background:var(--admin-card);padding:24px;border-radius:16px;border:1px solid var(--admin-border);}
-.admin-card-gradient{background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);padding:24px;border-radius:16px;color:#fff;}
-.admin-card-light{background:#fff;padding:24px;border-radius:16px;border:1px solid #e5e5e5;}
-.admin-card-glass{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);padding:24px;border-radius:16px;border:1px solid rgba(255,255,255,0.1);}
-.admin-card-sm{background:var(--admin-card);padding:16px;border-radius:12px;border:1px solid var(--admin-border);}
-.admin-list-item{padding:12px;border-bottom:1px solid rgba(255,255,255,0.06);}
-.admin-list-item-lg{padding:16px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.admin-card-dark{background:rgba(255,255,255,0.03);padding:24px;border-radius:14px;border:1px solid rgba(255,255,255,0.06);transition:all 0.25s ease;}
+.admin-card-dark:hover{border-color:rgba(255,255,255,0.1);}
+.admin-card-gradient{background:linear-gradient(135deg,rgba(255,255,255,0.05) 0%,rgba(255,255,255,0.02) 100%);padding:24px;border-radius:14px;color:#fff;border:1px solid rgba(255,255,255,0.06);}
+.admin-card-light{background:#fff;padding:24px;border-radius:14px;border:1px solid #e5e5e5;}
+.admin-card-glass{background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:24px;border-radius:14px;border:1px solid rgba(255,255,255,0.08);}
+.admin-card-sm{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);}
+.admin-list-item{padding:12px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.admin-list-item-lg{padding:16px;border-bottom:1px solid rgba(255,255,255,0.04);}
 
 /* ── Form inputs (admin-specific) ─────────── */
-.admin-input{background:#252525;color:#fff;border:1px solid rgba(255,255,255,0.2);padding:10px 14px;border-radius:8px;font-size:14px;width:100%;}
-.admin-input:focus{outline:none;border-color:var(--red);}
-.admin-select{background:#252525;color:#fff;border:1px solid rgba(255,255,255,0.2);padding:10px 14px;border-radius:8px;font-size:14px;}
-.admin-textarea{background:#252525;color:#fff;border:1px solid rgba(255,255,255,0.2);padding:12px;border-radius:8px;font-size:14px;width:100%;min-height:100px;resize:vertical;}
+.admin-input{background:rgba(255,255,255,0.04);color:#fff;border:1px solid rgba(255,255,255,0.1);padding:10px 14px;border-radius:10px;font-size:14px;width:100%;transition:border-color 0.2s,box-shadow 0.2s;}
+.admin-input:focus{outline:none;border-color:rgba(255,68,68,0.5);box-shadow:0 0 0 3px rgba(255,68,68,0.08);}
+.admin-select{background:rgba(255,255,255,0.04);color:#fff;border:1px solid rgba(255,255,255,0.1);padding:10px 14px;border-radius:10px;font-size:14px;}
+.admin-textarea{background:rgba(255,255,255,0.04);color:#fff;border:1px solid rgba(255,255,255,0.1);padding:12px;border-radius:10px;font-size:14px;width:100%;min-height:100px;resize:vertical;transition:border-color 0.2s;}
 
 /* ── Typography (admin) ──────────────────── */
 .admin-heading-sm{font-size:14px;color:#888;margin-bottom:16px;}
@@ -64,10 +65,11 @@
 
 
 /* ── Pass 2: Additional extracted patterns ─── */
-.admin-card-dark-sm{background:#111;border:1px solid #222;border-radius:12px;padding:24px;}
-.admin-card-dark-center{background:#111;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;text-align:center;}
-.admin-footer-bar{background:#050505;padding:20px;text-align:center;border-top:1px solid #222;}
-.admin-input-dark{width:100%;padding:12px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;}
+.admin-card-dark-sm{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:24px;}
+.admin-card-dark-center{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;text-align:center;}
+.admin-footer-bar{background:rgba(5,5,5,0.8);backdrop-filter:blur(10px);padding:20px;text-align:center;border-top:1px solid rgba(255,255,255,0.06);}
+.admin-input-dark{width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:10px;transition:border-color 0.2s;}
+.admin-input-dark:focus{outline:none;border-color:rgba(255,68,68,0.5);}
 .admin-field-label{display:block;margin-bottom:8px;color:#888;font-size:13px;}
 .admin-field-label-bold{display:block;font-size:14px;font-weight:600;color:#fff;margin-bottom:8px;}
 .admin-label-xs{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
