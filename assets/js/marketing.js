@@ -3061,6 +3061,8 @@ const portalStyles = `
 .stat-card.highlight .num { color: #ff4444; }
 .dash-card { background: rgba(255,255,255,0.04); padding: 24px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); transition: all 0.25s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .dash-card:hover { border-color: rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); }
+.dash-card-red { background: linear-gradient(135deg, rgba(220,38,38,0.12) 0%, rgba(140,20,20,0.06) 50%, rgba(255,255,255,0.03) 100%); padding: 24px; border-radius: 14px; border: 1px solid rgba(220,38,38,0.15); transition: all 0.25s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.dash-card-red:hover { border-color: rgba(220,38,38,0.25); background: linear-gradient(135deg, rgba(220,38,38,0.16) 0%, rgba(140,20,20,0.08) 50%, rgba(255,255,255,0.04) 100%); }
 .dash-action-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
 .dash-action-btn:hover { background: rgba(255,68,68,0.08); border-color: rgba(255,68,68,0.15); color: #ff4444; }
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }

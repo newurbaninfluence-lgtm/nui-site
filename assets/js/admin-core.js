@@ -228,7 +228,7 @@ function loadAdminDashboardPanel() {
     </div>
 
     <!-- Stat: Orders -->
-    <div onclick="showAdminPanel('orders')" class="dash-card" style="cursor: pointer;">
+    <div onclick="showAdminPanel('orders')" class="dash-card-red" style="cursor: pointer;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
             <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(59,130,246,0.12); display: flex; align-items: center; justify-content: center;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
@@ -252,7 +252,7 @@ function loadAdminDashboardPanel() {
     </div>
 
     <!-- Stat: Site Visitors -->
-    <div onclick="showAdminPanel('analytics')" class="dash-card" style="cursor: pointer;">
+    <div onclick="showAdminPanel('analytics')" class="dash-card-red" style="cursor: pointer;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
             <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(16,185,129,0.12); display: flex; align-items: center; justify-content: center;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -292,7 +292,7 @@ function loadAdminDashboardPanel() {
     </div>
 
     <!-- Reviews Card -->
-    <div class="dash-card" onclick="showAdminPanel('reviews')" style="cursor: pointer;">
+    <div class="dash-card-red" onclick="showAdminPanel('reviews')" style="cursor: pointer;">
         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
             <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(245,158,11,0.1); display: flex; align-items: center; justify-content: center;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -326,7 +326,7 @@ function loadAdminDashboardPanel() {
     </div>
 
     <!-- Activity Feed (spans 2 cols) -->
-    <div class="dash-card" style="grid-column: span 2;">
+    <div class="dash-card-red" style="grid-column: span 2;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;">
@@ -366,7 +366,7 @@ function loadAdminDashboardPanel() {
     </div>
 
     <!-- Integrations (spans 2 cols) -->
-    <div class="dash-card" style="grid-column: span 2;">
+    <div class="dash-card-red" style="grid-column: span 2;">
         <div style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Integrations</div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             ${renderDashIntegration('Stripe', siteAnalytics.stripeConnected, '#635bff', 'stripe')}
