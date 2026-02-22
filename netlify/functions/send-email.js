@@ -19,7 +19,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { to, subject, html, text, clientId } = JSON.parse(event.body || '{}');
+    const { to, subject, html, text, clientId, contactId } = JSON.parse(event.body || '{}');
 
     if (!to || !subject) {
       return {
@@ -52,12 +52,23 @@ exports.handler = async (event) => {
       }
     });
 
+    // Build HTML with tracking pixel
+    const baseHtml = html || `<p>${text || ''}</p>`;
+    const siteUrl = process.env.URL || 'https://newurbaninfluence.com';
+    let trackedHtml = baseHtml;
+
+    // Embed open-tracking pixel if we have a contactId
+    if (contactId) {
+      const trackUrl = `${siteUrl}/.netlify/functions/email-track?cid=${contactId}&id=${Date.now()}`;
+      trackedHtml += `<img src="${trackUrl}" width="1" height="1" style="display:none" alt="" />`;
+    }
+
     // Send email
     const info = await transporter.sendMail({
       from: MAIL_FROM,
       to: to,
       subject: subject,
-      html: html || `<p>${text || ''}</p>`,
+      html: trackedHtml,
       text: text || ''
     });
 
@@ -67,6 +78,7 @@ exports.handler = async (event) => {
     const SUPABASE_URL = process.env.SUPABASE_URL;
     const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
     if (SUPABASE_URL && SUPABASE_SERVICE_KEY) {
+      // Log to communications table (existing behavior)
       await fetch(`${SUPABASE_URL}/rest/v1/communications`, {
         method: 'POST',
         headers: {
@@ -85,6 +97,29 @@ exports.handler = async (event) => {
           created_at: new Date().toISOString()
         })
       }).catch(err => console.warn('Email log to Supabase failed:', err.message));
+
+      // Also log to activity_log if we have a contactId (for Contact Hub timeline)
+      if (contactId) {
+        await fetch(`${SUPABASE_URL}/rest/v1/activity_log`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_SERVICE_KEY,
+            'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            contact_id: contactId,
+            event_type: 'email_sent',
+            direction: 'outbound',
+            metadata: {
+              to, subject,
+              messageId: info.messageId,
+              preview: (text || '').substring(0, 200)
+            }
+          })
+        }).catch(err => console.warn('Activity log failed:', err.message));
+      }
     }
 
     return {

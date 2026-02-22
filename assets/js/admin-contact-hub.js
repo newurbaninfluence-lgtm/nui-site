@@ -4,7 +4,7 @@
 // Written by: Quo webhook + admin manual entry
 // ============================================
 
-let contactHubData = { contacts: [], activities: [], loading: true };
+let contactHubData = { contacts: [], activities: [], emails: [], loading: true };
 let contactHubFilter = 'all';
 let contactHubSearch = '';
 let contactHubSelected = null;
@@ -16,9 +16,10 @@ async function fetchContactHubData() {
   try {
     if (!db) throw new Error('Supabase not connected');
 
-    const [contactsRes, activitiesRes] = await Promise.all([
+    const [contactsRes, activitiesRes, emailsRes] = await Promise.all([
       db.from('crm_contacts').select('*').order('last_activity_at', { ascending: false }),
-      db.from('activity_log').select('*').order('created_at', { ascending: false }).limit(200)
+      db.from('activity_log').select('*').order('created_at', { ascending: false }).limit(200),
+      db.from('communications').select('*').eq('channel', 'email').order('created_at', { ascending: false }).limit(200)
     ]);
 
     if (contactsRes.error) throw contactsRes.error;
@@ -26,13 +27,15 @@ async function fetchContactHubData() {
 
     contactHubData.contacts = contactsRes.data || [];
     contactHubData.activities = activitiesRes.data || [];
+    contactHubData.emails = emailsRes.data || [];
     contactHubData.loading = false;
-    console.log('✅ Contact Hub: ' + contactHubData.contacts.length + ' contacts, ' + contactHubData.activities.length + ' activities');
+    console.log('✅ Contact Hub: ' + contactHubData.contacts.length + ' contacts, ' + contactHubData.activities.length + ' activities, ' + contactHubData.emails.length + ' emails');
   } catch (err) {
     console.warn('Contact Hub fetch failed:', err.message);
     contactHubData.loading = false;
     contactHubData.contacts = [];
     contactHubData.activities = [];
+    contactHubData.emails = [];
   }
 }
 
@@ -103,6 +106,7 @@ function renderContactHub() {
     <h2 style="font-size:24px;font-weight:800;">📡 Contact Hub</h2>
     <div style="display:flex;gap:8px;">
       <button onclick="fetchContactHubData().then(renderContactHub)" class="ch-filter-btn" style="background:#111;">🔄 Refresh</button>
+      <button onclick="showCsvUploadModal()" class="ch-filter-btn" style="background:#1a5c2a;border-color:#1a5c2a;color:#fff;">📄 Import CSV</button>
       <button onclick="showAddHubContactModal()" class="ch-filter-btn" style="background:var(--red);border-color:var(--red);color:#fff;">+ Add Contact</button>
     </div>
   </div>
@@ -120,10 +124,16 @@ function renderContactHub() {
 <!-- Source pills -->
 <div class="ch-source-pills">
   ${Object.entries(sources).map(([src, count]) => {
-    const colors = { quo_call: '#8b5cf6', quo_text: '#10b981', website_form: '#3b82f6', manual: '#f59e0b', referral: '#ec4899' };
-    const labels = { quo_call: '📞 Calls', quo_text: '💬 Texts', website_form: '🌐 Forms', manual: '✏️ Manual', referral: '🤝 Referral' };
+    const colors = { quo_call: '#8b5cf6', quo_text: '#10b981', website_form: '#3b82f6', manual: '#f59e0b', referral: '#ec4899', csv_import: '#06b6d4' };
+    const labels = { quo_call: '📞 Calls', quo_text: '💬 Texts', website_form: '🌐 Forms', manual: '✏️ Manual', referral: '🤝 Referral', csv_import: '📄 CSV Import' };
     return '<span class="ch-source-pill" style="background:' + (colors[src] || '#666') + '20;color:' + (colors[src] || '#999') + ';">' + (labels[src] || src) + ': ' + count + '</span>';
   }).join('')}
+  ${contactHubData.emails.length > 0 ? (() => {
+    const sent = contactHubData.emails.filter(e => e.direction === 'outbound').length;
+    const opened = contactHubData.emails.filter(e => e.read).length;
+    return '<span class="ch-source-pill" style="background:#3b82f620;color:#3b82f6;">📧 Emails Sent: ' + sent + '</span>' +
+           (opened > 0 ? '<span class="ch-source-pill" style="background:#10b98120;color:#10b981;">👁️ Opened: ' + opened + '</span>' : '');
+  })() : ''}
 </div>
 
 <!-- Toolbar -->
@@ -245,7 +255,29 @@ function renderContactDrawer(contactId) {
   if (!c) return '<div style="padding:40px;text-align:center;color:rgba(255,255,255,0.3);">Contact not found</div>';
 
   const activities = contactHubData.activities.filter(a => a.contact_id === contactId).slice(0, 50);
-  const typeIcons = { text: '💬', call: '📞', email: '📧', voicemail: '📬', form: '📋' };
+  
+  // Merge email communications into timeline (match by contact email or phone via metadata.to)
+  const contactEmails = contactHubData.emails.filter(e => {
+    if (!c.email && !c.phone) return false;
+    const emailTo = e.metadata?.to || '';
+    return (c.email && emailTo.toLowerCase() === c.email.toLowerCase()) ||
+           (c.client_id && e.client_id === c.client_id);
+  }).map(e => ({
+    id: e.id,
+    contact_id: contactId,
+    type: 'email',
+    event_type: e.read ? 'email_opened' : 'email_sent',
+    direction: e.direction,
+    content: (e.direction === 'outbound' ? '📤 ' : '📥 ') + (e.subject || 'No subject') + (e.read ? ' · ✅ Opened' : ''),
+    created_at: e.created_at,
+    metadata: e.metadata,
+    _isEmail: true
+  }));
+
+  // Combine and sort by date
+  const allActivity = [...activities, ...contactEmails].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 50);
+
+  const typeIcons = { text: '💬', call: '📞', email: '📧', voicemail: '📬', form: '📋', email_sent: '📤', email_opened: '👁️' };
   const statusOptions = ['new_lead', 'contacted', 'qualified', 'client', 'lost'];
 
   return `
@@ -299,9 +331,9 @@ function renderContactDrawer(contactId) {
 
   <!-- Activity Timeline -->
   <div>
-    <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;">⏱️ Activity Timeline (${activities.length})</h4>
-    ${activities.length > 0 ? activities.map(a => {
-      const icon = typeIcons[a.type] || '📌';
+    <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;">⏱️ Activity Timeline (${allActivity.length})</h4>
+    ${allActivity.length > 0 ? allActivity.map(a => {
+      const icon = typeIcons[a.event_type] || typeIcons[a.type] || '📌';
       const dirColor = a.direction === 'inbound' ? '#10b981' : '#3b82f6';
       return '<div class="ch-timeline-item">' +
         '<div class="ch-timeline-icon" style="background:' + dirColor + '20;color:' + dirColor + ';">' + icon + '</div>' +
@@ -395,8 +427,75 @@ function hubQuickSms(contactId) {
 
 function hubQuickEmail(contactId) {
   const c = contactHubData.contacts.find(x => x.id === contactId);
-  if (!c || !c.email) { alert('No email'); return; }
-  window.open('mailto:' + c.email, '_blank');
+  if (!c || !c.email) { alert('No email for this contact'); return; }
+
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay active';
+  modal.id = 'hubEmailModal';
+  modal.innerHTML = `
+<div class="modal" style="max-width:520px;">
+  <div class="modal-header">
+    <h3 class="modal-title">📧 Send Email to ${c.name || c.email}</h3>
+    <button class="modal-close" onclick="document.getElementById('hubEmailModal').remove()">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group"><label class="form-label">To</label><input type="text" class="form-input" value="${c.email}" disabled style="opacity:0.6;"></div>
+    <div class="form-group"><label class="form-label">Subject *</label><input type="text" id="hubEmailSubject" class="form-input" placeholder="Subject line"></div>
+    <div class="form-group"><label class="form-label">Message *</label><textarea id="hubEmailBody" class="form-textarea" rows="6" placeholder="Type your message..."></textarea></div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:4px;">📊 Open tracking enabled — you'll see when they read it</div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn-admin secondary" onclick="document.getElementById('hubEmailModal').remove()">Cancel</button>
+    <button class="btn-admin primary" id="hubSendEmailBtn" onclick="sendHubEmail('${contactId}')">Send Email</button>
+  </div>
+</div>`;
+  document.body.appendChild(modal);
+  document.getElementById('hubEmailSubject').focus();
+}
+
+async function sendHubEmail(contactId) {
+  const c = contactHubData.contacts.find(x => x.id === contactId);
+  if (!c || !c.email) return;
+
+  const subject = document.getElementById('hubEmailSubject').value.trim();
+  const body = document.getElementById('hubEmailBody').value.trim();
+  if (!subject || !body) { alert('Subject and message are required'); return; }
+
+  const btn = document.getElementById('hubSendEmailBtn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  try {
+    const resp = await fetch('/.netlify/functions/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: c.email,
+        subject: subject,
+        html: '<div style="font-family:Arial,sans-serif;font-size:14px;color:#333;line-height:1.6;">' + body.replace(/\n/g, '<br>') + '</div>',
+        text: body,
+        contactId: contactId
+      })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Send failed');
+
+    // Update last_activity_at
+    if (db) {
+      await db.from('crm_contacts').update({ last_activity_at: new Date().toISOString() }).eq('id', contactId);
+    }
+
+    document.getElementById('hubEmailModal').remove();
+    alert('✅ Email sent to ' + c.email);
+
+    // Refresh to show in timeline
+    await fetchContactHubData();
+    renderContactHub();
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Send Email';
+    alert('❌ Failed: ' + err.message);
+  }
 }
 
 async function convertHubToClient(contactId) {
@@ -528,4 +627,247 @@ function formatHubTime(dateStr) {
   if (hrs < 24) return hrs + 'h ago';
   if (days < 7) return days + 'd ago';
   return d.toLocaleDateString();
+}
+
+// ============================================
+// CSV BULK IMPORT
+// ============================================
+
+function showCsvUploadModal() {
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay active';
+  modal.id = 'csvUploadModal';
+  modal.innerHTML = `
+<div class="modal" style="max-width:640px;">
+  <div class="modal-header">
+    <h3 class="modal-title">📄 Import Contacts from CSV</h3>
+    <button class="modal-close" onclick="document.getElementById('csvUploadModal').remove()">×</button>
+  </div>
+  <div class="modal-body">
+    <p style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:16px;">
+      Upload a CSV file with columns: <strong>name, phone, email, company, industry, notes</strong><br>
+      Only <code>name</code> is required. All contacts will be added as "new_lead" with source "csv_import".
+    </p>
+    <div style="border:2px dashed rgba(255,255,255,0.15);border-radius:12px;padding:40px;text-align:center;margin-bottom:16px;cursor:pointer;" id="csvDropZone" onclick="document.getElementById('csvFileInput').click()">
+      <div style="font-size:32px;margin-bottom:8px;">📂</div>
+      <div style="color:rgba(255,255,255,0.5);font-size:14px;">Click to select or drag & drop CSV file</div>
+      <input type="file" id="csvFileInput" accept=".csv,.txt" style="display:none;" onchange="previewCsvFile(event)">
+    </div>
+    <div id="csvPreviewArea" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <h4 style="font-size:14px;font-weight:600;">Preview</h4>
+        <span id="csvRowCount" style="font-size:12px;color:rgba(255,255,255,0.4);"></span>
+      </div>
+      <div id="csvPreviewTable" style="max-height:300px;overflow-y:auto;border:1px solid rgba(255,255,255,0.08);border-radius:8px;"></div>
+      <div id="csvColumnMapping" style="margin-top:12px;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px;">
+        <h4 style="font-size:13px;font-weight:600;margin-bottom:8px;">Column Mapping</h4>
+        <div id="csvMappingFields" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;"></div>
+      </div>
+    </div>
+    <div id="csvImportStatus" style="display:none;padding:16px;border-radius:8px;margin-top:12px;text-align:center;"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn-admin secondary" onclick="document.getElementById('csvUploadModal').remove()">Cancel</button>
+    <button class="btn-admin primary" id="csvImportBtn" onclick="executeCsvImport()" disabled style="opacity:0.5;">Import Contacts</button>
+  </div>
+</div>`;
+  document.body.appendChild(modal);
+
+  // Drag and drop handlers
+  const zone = document.getElementById('csvDropZone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.borderColor = 'var(--red)'; });
+  zone.addEventListener('dragleave', () => { zone.style.borderColor = 'rgba(255,255,255,0.15)'; });
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.style.borderColor = 'rgba(255,255,255,0.15)';
+    if (e.dataTransfer.files.length) {
+      const file = e.dataTransfer.files[0];
+      if (file.name.endsWith('.csv') || file.name.endsWith('.txt')) {
+        parseCsvFromFile(file);
+      } else {
+        alert('Please upload a .csv or .txt file');
+      }
+    }
+  });
+}
+
+let csvParsedRows = [];
+let csvHeaders = [];
+let csvColumnMap = {};
+
+function previewCsvFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  parseCsvFromFile(file);
+}
+
+function parseCsvFromFile(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const text = e.target.result;
+    const lines = text.split(/\r?\n/).filter(l => l.trim());
+    if (lines.length < 2) { alert('CSV must have a header row + at least 1 data row'); return; }
+
+    // Parse header
+    csvHeaders = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+    
+    // Parse rows
+    csvParsedRows = [];
+    for (let i = 1; i < lines.length; i++) {
+      const values = parseCSVLine(lines[i]);
+      if (values.some(v => v.trim())) {
+        const row = {};
+        csvHeaders.forEach((h, idx) => { row[h] = (values[idx] || '').trim(); });
+        csvParsedRows.push(row);
+      }
+    }
+
+    // Auto-map columns
+    const targetFields = ['name', 'phone', 'email', 'company', 'industry', 'notes'];
+    csvColumnMap = {};
+    targetFields.forEach(f => {
+      const match = csvHeaders.find(h =>
+        h === f ||
+        h.includes(f) ||
+        (f === 'name' && (h.includes('first') || h.includes('full') || h === 'contact')) ||
+        (f === 'phone' && (h.includes('tel') || h.includes('mobile') || h.includes('cell'))) ||
+        (f === 'email' && h.includes('mail')) ||
+        (f === 'company' && (h.includes('business') || h.includes('org'))) ||
+        (f === 'industry' && (h.includes('type') || h.includes('category') || h.includes('sector')))
+      );
+      if (match) csvColumnMap[f] = match;
+    });
+
+    // Show preview
+    document.getElementById('csvPreviewArea').style.display = 'block';
+    document.getElementById('csvRowCount').textContent = csvParsedRows.length + ' contacts found';
+    
+    // Preview table (first 5 rows)
+    const previewRows = csvParsedRows.slice(0, 5);
+    let tableHtml = '<table style="width:100%;font-size:11px;border-collapse:collapse;">';
+    tableHtml += '<tr>' + csvHeaders.map(h => '<th style="padding:6px 8px;background:#111;border-bottom:1px solid rgba(255,255,255,0.08);text-align:left;color:rgba(255,255,255,0.5);font-weight:600;">' + h + '</th>').join('') + '</tr>';
+    previewRows.forEach(row => {
+      tableHtml += '<tr>' + csvHeaders.map(h => '<td style="padding:5px 8px;border-bottom:1px solid rgba(255,255,255,0.04);color:rgba(255,255,255,0.7);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + (row[h] || '') + '</td>').join('') + '</tr>';
+    });
+    if (csvParsedRows.length > 5) tableHtml += '<tr><td colspan="' + csvHeaders.length + '" style="padding:6px;text-align:center;color:rgba(255,255,255,0.3);font-size:11px;">+ ' + (csvParsedRows.length - 5) + ' more rows</td></tr>';
+    tableHtml += '</table>';
+    document.getElementById('csvPreviewTable').innerHTML = tableHtml;
+
+    // Column mapping dropdowns
+    const mappingHtml = targetFields.map(f => {
+      return '<div style="display:flex;align-items:center;gap:6px;">' +
+        '<label style="color:rgba(255,255,255,0.5);min-width:60px;">' + f + ':</label>' +
+        '<select id="csvMap_' + f + '" style="flex:1;padding:4px 6px;background:#111;border:1px solid rgba(255,255,255,0.12);border-radius:4px;color:#fff;font-size:11px;" onchange="csvColumnMap[\'' + f + '\']=this.value">' +
+        '<option value="">— skip —</option>' +
+        csvHeaders.map(h => '<option value="' + h + '"' + (csvColumnMap[f] === h ? ' selected' : '') + '>' + h + '</option>').join('') +
+        '</select></div>';
+    }).join('');
+    document.getElementById('csvMappingFields').innerHTML = mappingHtml;
+
+    // Enable import button
+    document.getElementById('csvImportBtn').disabled = false;
+    document.getElementById('csvImportBtn').style.opacity = '1';
+  };
+  reader.readAsText(file);
+}
+
+// RFC 4180 CSV parser (handles quoted fields, commas in values)
+function parseCSVLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"' && line[i + 1] === '"') { current += '"'; i++; }
+      else if (ch === '"') { inQuotes = false; }
+      else { current += ch; }
+    } else {
+      if (ch === '"') { inQuotes = true; }
+      else if (ch === ',') { result.push(current); current = ''; }
+      else { current += ch; }
+    }
+  }
+  result.push(current);
+  return result;
+}
+
+async function executeCsvImport() {
+  if (!db) { alert('Supabase not connected'); return; }
+  if (!csvParsedRows.length) { alert('No data to import'); return; }
+
+  // Re-read column mappings from dropdowns
+  ['name', 'phone', 'email', 'company', 'industry', 'notes'].forEach(f => {
+    const sel = document.getElementById('csvMap_' + f);
+    if (sel) csvColumnMap[f] = sel.value;
+  });
+
+  if (!csvColumnMap.name) {
+    alert('You must map the "name" column — it\'s required.');
+    return;
+  }
+
+  const statusEl = document.getElementById('csvImportStatus');
+  statusEl.style.display = 'block';
+  statusEl.style.background = '#111';
+  statusEl.innerHTML = '<div style="color:#f59e0b;">⏳ Importing ' + csvParsedRows.length + ' contacts...</div>';
+
+  let imported = 0, skipped = 0, errors = 0;
+
+  // Batch in groups of 25
+  const batchSize = 25;
+  for (let i = 0; i < csvParsedRows.length; i += batchSize) {
+    const batch = csvParsedRows.slice(i, i + batchSize).map(row => {
+      const contact = {
+        name: row[csvColumnMap.name] || 'Unnamed',
+        phone: csvColumnMap.phone ? (row[csvColumnMap.phone] || null) : null,
+        email: csvColumnMap.email ? (row[csvColumnMap.email] || null) : null,
+        company: csvColumnMap.company ? (row[csvColumnMap.company] || null) : null,
+        industry: csvColumnMap.industry ? (row[csvColumnMap.industry] || null) : null,
+        notes: csvColumnMap.notes ? (row[csvColumnMap.notes] || null) : null,
+        source: 'csv_import',
+        status: 'new_lead'
+      };
+      // Clean phone — ensure it has +1 prefix if US number
+      if (contact.phone) {
+        contact.phone = contact.phone.replace(/[^\d+]/g, '');
+        if (contact.phone.length === 10) contact.phone = '+1' + contact.phone;
+        else if (contact.phone.length === 11 && contact.phone.startsWith('1')) contact.phone = '+' + contact.phone;
+      }
+      // Skip if no name or completely empty
+      if (!contact.name || contact.name === 'Unnamed') return null;
+      return contact;
+    }).filter(Boolean);
+
+    if (batch.length === 0) { skipped += batchSize; continue; }
+
+    try {
+      const { data, error } = await db.from('crm_contacts').insert(batch).select();
+      if (error) throw error;
+      imported += data.length;
+    } catch (err) {
+      console.warn('CSV batch error:', err.message);
+      errors += batch.length;
+    }
+
+    // Update progress
+    statusEl.innerHTML = '<div style="color:#f59e0b;">⏳ Imported ' + imported + ' of ' + csvParsedRows.length + '...</div>';
+  }
+
+  // Done
+  statusEl.style.background = imported > 0 ? '#0a2a0a' : '#2a0a0a';
+  statusEl.innerHTML = '<div style="color:' + (imported > 0 ? '#10b981' : '#ef4444') + ';">✅ Done: ' + imported + ' imported' +
+    (skipped > 0 ? ', ' + skipped + ' skipped' : '') +
+    (errors > 0 ? ', ' + errors + ' errors' : '') + '</div>';
+
+  if (imported > 0) {
+    // Refresh the hub
+    await fetchContactHubData();
+    renderContactHub();
+    // Re-show modal with status
+    setTimeout(() => {
+      const m = document.getElementById('csvUploadModal');
+      if (m) m.remove();
+    }, 2000);
+  }
 }
