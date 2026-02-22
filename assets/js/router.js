@@ -121,7 +121,9 @@ function showView(viewName, skipTracking = false) {
     }
     document.querySelectorAll('.nav-links a').forEach(link => link.classList.toggle('active', link.dataset.view === viewName));
     document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
-    document.getElementById(viewName + 'View').classList.add('active');
+    const targetView = document.getElementById(viewName + 'View');
+    if (!targetView) { console.warn('View not found:', viewName + 'View'); return; }
+    targetView.classList.add('active');
     window.scrollTo(0, 0);
     loadViewContent(viewName);
 
