@@ -179,20 +179,37 @@ function loadAdminDashboardPanel() {
     }
 
     document.getElementById('adminDashboardPanel').innerHTML = `
-<!-- Dashboard Header -->
-<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px;">
-    <div>
-        <h2 style="font-size: 24px; font-weight: 700; color: #fff; margin: 0;">Dashboard</h2>
-        <p style="color: rgba(255,255,255,0.35); font-size: 13px; margin-top: 4px;">Welcome back, ${currentUser?.name || 'Admin'}</p>
+<!-- Dashboard Banner -->
+<div style="position: relative; border-radius: 16px; overflow: hidden; margin-bottom: 28px; height: 160px;">
+    <!-- Abstract gradient background -->
+    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 25%, #0d0d1a 50%, #1a0a12 75%, #0a0a0a 100%);">
+        <!-- Mesh gradient orbs -->
+        <div style="position: absolute; top: -40px; right: -20px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(255,40,40,0.15) 0%, transparent 70%); filter: blur(40px);"></div>
+        <div style="position: absolute; bottom: -60px; left: 10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(120,40,200,0.1) 0%, transparent 70%); filter: blur(50px);"></div>
+        <div style="position: absolute; top: 20px; left: 40%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,80,60,0.08) 0%, transparent 70%); filter: blur(35px);"></div>
+        <!-- Noise texture overlay -->
+        <div style="position: absolute; inset: 0; opacity: 0.4; background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22 opacity=%220.08%22/%3E%3C/svg%3E'); background-size: 200px;"></div>
+        <!-- Subtle grid lines -->
+        <div style="position: absolute; inset: 0; opacity: 0.04; background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
     </div>
-    <div style="display: flex; gap: 10px; align-items: center;">
-        <button onclick="syncAllData()" style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: #fff; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-            Sync
-        </button>
-        <div style="display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: ${_backendAvailable ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)'}; border: 1px solid ${_backendAvailable ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)'}; border-radius: 8px;">
-            <span style="width: 6px; height: 6px; background: ${_backendAvailable ? '#10b981' : '#ef4444'}; border-radius: 50%;"></span>
-            <span style="font-size: 12px; color: ${_backendAvailable ? '#10b981' : '#ef4444'}; font-weight: 500;">${_backendAvailable ? 'Synced' : 'Offline'}</span>
+    <!-- Banner content -->
+    <div style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 32px;">
+        <div>
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+                <img src="/logo-signature.png" alt="NUI" style="height: 28px; filter: brightness(1.2);" onerror="this.style.display='none'">
+            </div>
+            <h2 style="font-size: 26px; font-weight: 700; color: #fff; margin: 0; letter-spacing: -0.5px;">Welcome back, ${currentUser?.name?.split(' ')[0] || 'Admin'}</h2>
+            <p style="color: rgba(255,255,255,0.4); font-size: 13px; margin-top: 4px;">${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button onclick="syncAllData()" style="display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; backdrop-filter: blur(10px);" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                Sync
+            </button>
+            <div style="display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: ${_backendAvailable ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)'}; border: 1px solid ${_backendAvailable ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)'}; border-radius: 8px; backdrop-filter: blur(10px);">
+                <span style="width: 6px; height: 6px; background: ${_backendAvailable ? '#10b981' : '#ef4444'}; border-radius: 50%;"></span>
+                <span style="font-size: 12px; color: ${_backendAvailable ? '#10b981' : '#ef4444'}; font-weight: 500;">${_backendAvailable ? 'Synced' : 'Offline'}</span>
+            </div>
         </div>
     </div>
 </div>
