@@ -593,6 +593,53 @@ NuiImageStore.init().catch(err => console.warn('IndexedDB init failed, falling b
 let clients = JSON.parse(localStorage.getItem('nui_clients')) || [];
 function saveClients() { localStorage.setItem('nui_clients', JSON.stringify(clients)); syncToBackend('clients', clients); }
 
+// Seed test account if not present
+(function seedTestAccount() {
+    if (!clients.find(c => c.email === 'newurbaninfluence@gmail.com')) {
+        const testClient = {
+            id: Date.now(),
+            name: 'Faren Young',
+            email: 'newurbaninfluence@gmail.com',
+            phone: '3137174541',
+            industry: 'Creative Agency',
+            website: 'https://newurbaninfluence.com',
+            address: 'Detroit, MI',
+            notes: 'Test account — NUI owner',
+            password: 'nui2024',
+            createdAt: new Date().toISOString(),
+            createdVia: 'seed',
+            emailVerified: true,
+            brandAssets: { logo: '', colors: ['#e11d48', '#1a1a1a', '#ffffff'], fonts: ['Montserrat'] }
+        };
+        clients.push(testClient);
+        saveClients();
+
+        // Seed a Logo Design order for this client
+        let orders = JSON.parse(localStorage.getItem('nui_orders')) || [];
+        orders.push({
+            id: Date.now() + 1,
+            clientId: testClient.id,
+            projectName: 'Logo Design',
+            description: 'Professional logo design package for New Urban Influence',
+            estimate: 750,
+            turnaround: '5-7 days',
+            turnaroundDaysMin: 5,
+            turnaroundDaysMax: 7,
+            packageId: 'custom',
+            packageName: 'Logo Design',
+            dueDate: '',
+            status: 'pending',
+            statusHistory: [{ status: 'pending', timestamp: new Date().toISOString(), note: 'Order created', user: 'System' }],
+            createdAt: new Date().toISOString(),
+            deliveredAt: null,
+            deliverables: [],
+            paymentStatus: 'unpaid'
+        });
+        localStorage.setItem('nui_orders', JSON.stringify(orders));
+        console.log('✅ Seeded test account: Faren Young (newurbaninfluence@gmail.com) + Logo Design $750');
+    }
+})();
+
 let orders = JSON.parse(localStorage.getItem('nui_orders')) || [];
 let leads = JSON.parse(localStorage.getItem('nui_leads')) || [];
 

@@ -945,7 +945,7 @@ async function handlePortalLogin(e) {
 // Quick Client Access (DEMO MODE)
 function quickClientAccess() {
     const clients = JSON.parse(localStorage.getItem('nui_clients')) || [];
-    const demoClient = clients.find(c => c.email === 'hello@detroitcoffee.com') || clients[0];
+    const demoClient = clients.find(c => c.email === 'newurbaninfluence@gmail.com') || clients[0];
     if (demoClient) {
         currentUser = { type: 'client', clientId: demoClient.id, email: demoClient.email, name: demoClient.name };
         document.getElementById('portalLogin').style.display = 'none';
