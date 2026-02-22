@@ -38,7 +38,7 @@ async function fetchContactHubData() {
 
 // ── Main Panel Loader ────────────────────────
 async function loadAdminContactHubPanel() {
-  const panel = document.getElementById('adminContactHubPanel');
+  const panel = document.getElementById('adminContacthubPanel');
   if (!panel) return;
 
   // Show loading state
@@ -49,7 +49,7 @@ async function loadAdminContactHubPanel() {
 }
 
 function renderContactHub() {
-  const panel = document.getElementById('adminContactHubPanel');
+  const panel = document.getElementById('adminContacthubPanel');
   if (!panel) return;
 
   const contacts = getFilteredContacts();

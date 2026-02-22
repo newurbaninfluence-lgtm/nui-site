@@ -128,7 +128,7 @@ function loadPortalView() {
 <div id="adminOrdersPanel" class="admin-panel"></div>
 <div id="adminNewOrderPanel" class="admin-panel"></div>
 <div id="adminLeadsPanel" class="admin-panel"></div>
-<div id="adminContactHubPanel" class="admin-panel"></div>
+<div id="adminContacthubPanel" class="admin-panel"></div>
 <div id="adminSubmissionsPanel" class="admin-panel"></div>
 <div id="adminProjectsPanel" class="admin-panel"></div>
 <div id="adminProofsPanel" class="admin-panel"></div>
