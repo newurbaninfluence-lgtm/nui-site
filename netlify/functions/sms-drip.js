@@ -30,18 +30,44 @@ exports.handler = async (event) => {
   try {
     // Get active campaign IDs first
     const campResp = await fetch(
-      `${SUPABASE_URL}/rest/v1/sms_campaigns?status=eq.active&select=id`,
+      `${SUPABASE_URL}/rest/v1/sms_campaigns?status=eq.active&select=id,campaign_type,contacts_sent,contacts_optout`,
       { headers }
     );
     const activeCampaigns = await campResp.json();
     if (!activeCampaigns || activeCampaigns.length === 0) {
       return { statusCode: 200, body: JSON.stringify({ sent: 0, reason: 'No active campaigns' }) };
     }
-    const activeIds = activeCampaigns.map(c => c.id);
 
-    // Fetch up to 3 queued messages from active campaigns, ready to send
+    // Compliance check: auto-pause campaigns exceeding opt-out threshold
+    for (const camp of activeCampaigns) {
+      const sent = camp.contacts_sent || 0;
+      const optouts = camp.contacts_optout || 0;
+      if (sent >= 10) {
+        const rate = (optouts / sent) * 100;
+        const threshold = camp.campaign_type === 'cold_outreach' ? 3 : 5;
+        if (rate > threshold) {
+          await fetch(`${SUPABASE_URL}/rest/v1/sms_campaigns?id=eq.${camp.id}`, {
+            method: 'PATCH',
+            headers: { ...headers, 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ status: 'paused', auto_paused: true, auto_pause_reason: `Opt-out rate ${rate.toFixed(1)}% > ${threshold}%` })
+          });
+          continue;
+        }
+      }
+    }
+
+    const activeIds = activeCampaigns.filter(c => !c.auto_paused).map(c => c.id);
+    if (activeIds.length === 0) {
+      return { statusCode: 200, body: JSON.stringify({ sent: 0, reason: 'All campaigns paused by compliance' }) };
+    }
+
+    // Check suppression list
+    const suppressResp = await fetch(`${SUPABASE_URL}/rest/v1/sms_suppression?select=phone`, { headers });
+    const suppressedPhones = new Set((await suppressResp.json() || []).map(s => s.phone));
+
+    // Fetch up to 3 approved+queued messages from active campaigns
     const queueResp = await fetch(
-      `${SUPABASE_URL}/rest/v1/sms_drip_queue?status=eq.queued&scheduled_at=lte.${now.toISOString()}&campaign_id=in.(${activeIds.join(',')})&order=scheduled_at.asc&limit=3`,
+      `${SUPABASE_URL}/rest/v1/sms_drip_queue?status=eq.queued&review_status=eq.approved&scheduled_at=lte.${now.toISOString()}&campaign_id=in.(${activeIds.join(',')})&order=scheduled_at.asc&limit=3`,
       { headers }
     );
     const queue = await queueResp.json();
@@ -54,6 +80,15 @@ exports.handler = async (event) => {
     let failCount = 0;
 
     for (const item of queue) {
+      // Skip suppressed numbers
+      if (suppressedPhones.has(item.contact_phone)) {
+        await fetch(`${SUPABASE_URL}/rest/v1/sms_drip_queue?id=eq.${item.id}`, {
+          method: 'PATCH',
+          headers: { ...headers, 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ status: 'skipped', error: 'Phone on suppression list' })
+        });
+        continue;
+      }
       try {
         // Send via OpenPhone
         const smsResp = await fetch('https://api.openphone.com/v1/messages', {
@@ -78,6 +113,7 @@ exports.handler = async (event) => {
             headers: { ...headers, 'Prefer': 'return=minimal' },
             body: JSON.stringify({
               status: 'sent',
+              review_status: 'sent',
               sent_at: now.toISOString(),
               openphone_msg_id: smsResult?.data?.id || null
             })
@@ -95,6 +131,20 @@ exports.handler = async (event) => {
                 direction: 'outbound',
                 content: item.message,
                 metadata: { campaign_id: item.campaign_id, openphone_id: smsResult?.data?.id },
+                created_at: now.toISOString()
+              })
+            }).catch(() => {});
+
+            // Log to communications for Contact Hub SMS thread
+            await fetch(`${SUPABASE_URL}/rest/v1/communications`, {
+              method: 'POST',
+              headers: { ...headers, 'Prefer': 'return=minimal' },
+              body: JSON.stringify({
+                channel: 'sms',
+                direction: 'outbound',
+                message: item.message,
+                client_id: item.contact_id,
+                metadata: { to: item.contact_phone, campaign_id: item.campaign_id, openphone_id: smsResult?.data?.id, from_number_id: FROM_NUMBER_ID },
                 created_at: now.toISOString()
               })
             }).catch(() => {});
