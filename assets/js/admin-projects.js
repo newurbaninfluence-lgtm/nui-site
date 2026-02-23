@@ -59,6 +59,7 @@ function loadAdminProjectsPanel() {
 <span class="tag">${pkg.name}</span>
                                 ${project.totalAmount ? `<span class="tag" style="background: rgba(42, 157, 143, 0.2); color: #2a9d8f;">$${project.totalAmount.toLocaleString()}</span>` : ''}
 <span class="tag" style="background: rgba(230, 57, 70, 0.2);">${plan.name}</span>
+                                ${(project.deliverables || []).length > 0 ? `<span class="tag" style="background: rgba(96, 165, 250, 0.2); color: #60a5fa;">📁 ${project.deliverables.length} files</span>` : ''}
 </div>
 </div>
 <span class="order-status ${project.stage === 'Complete' ? 'approved' : 'in_progress'}">${project.stage || 'Discovery'}</span>
@@ -561,6 +562,38 @@ function viewProjectDetails(projectId) {
 </div>
 </div>
                 ` : ''}
+
+                <!-- Deliverables -->
+<div class="form-section">
+<div class="form-section-title" style="display: flex; justify-content: space-between; align-items: center;">
+<span>📁 Deliverables (${(project.deliverables || []).length} files)</span>
+<div style="display: flex; gap: 8px;">
+<button class="btn-admin small primary" onclick="document.getElementById('projFileInput-${project.id}').click()">📤 Upload</button>
+<button class="btn-admin small" onclick="pushDeliverablesToAssets(${project.id})" title="Sync files to Client Assets panel">↗ Push to Assets</button>
+</div>
+</div>
+
+                    <!-- Category Tabs -->
+<div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 16px;">
+                        ${['all','logos','mockups','brand-guide','social','print-files','other'].map(cat => {
+                            const count = cat === 'all' ? (project.deliverables || []).length : (project.deliverables || []).filter(d => d.category === cat).length;
+                            return '<button class="category-tab ' + (cat === 'all' ? 'active' : '') + '" id="delCat-' + project.id + '-' + cat + '" onclick="filterDeliverables(' + project.id + ', \'' + cat + '\')" style="padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); background: ' + (cat === 'all' ? 'var(--red)' : 'rgba(255,255,255,0.05)') + '; color: #fff; cursor: pointer; font-size: 12px; font-family: inherit;">' + cat.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()) + (count > 0 ? ' (' + count + ')' : '') + '</button>';
+                        }).join('')}
+</div>
+
+                    <!-- Drop Zone -->
+<div id="projDropZone-${project.id}" onclick="document.getElementById('projFileInput-${project.id}').click();" ondragover="event.preventDefault(); this.style.borderColor='var(--red)'; this.style.background='rgba(230,57,70,0.1)';" ondragleave="this.style.borderColor='rgba(255,255,255,0.15)'; this.style.background='transparent';" ondrop="handleProjectFileDrop(${project.id}, event)" style="border: 2px dashed rgba(255,255,255,0.15); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 16px;">
+<div style="font-size: 24px; margin-bottom: 8px;">📂</div>
+<div style="font-size: 14px; opacity: 0.7;">Drop files here or click to upload</div>
+<div style="font-size: 12px; opacity: 0.4; margin-top: 4px;">PNG, JPG, PDF, AI, SVG, MP4, ZIP</div>
+<input type="file" id="projFileInput-${project.id}" class="hidden" multiple onchange="handleProjectFileUpload(${project.id}, event)" style="display: none;">
+</div>
+
+                    <!-- File Grid -->
+<div id="projFileGrid-${project.id}" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px;">
+                        ${(project.deliverables || []).map(file => renderDeliverableCard(file, project.id)).join('') || '<p style="opacity: 0.4; text-align: center; grid-column: 1/-1; padding: 20px;">No files yet — upload deliverables as you work</p>'}
+</div>
+</div>
 
                 <!-- Activity Log -->
 <div class="form-section">
@@ -2580,4 +2613,240 @@ async function sendPrintUpsellEmail(project) {
     } catch (err) {
         console.error('Print upsell email error:', err);
     }
+}
+
+
+// ==================== PROJECT DELIVERABLES ====================
+
+function getFileIcon(type) {
+    if (!type) return '📄';
+    if (type.startsWith('image/')) return '🖼️';
+    if (type === 'application/pdf') return '📕';
+    if (type.includes('svg')) return '🎨';
+    if (type.startsWith('video/')) return '🎬';
+    if (type.includes('zip') || type.includes('rar')) return '📦';
+    if (type.includes('font') || type.includes('otf') || type.includes('ttf') || type.includes('woff')) return '🔤';
+    if (type.includes('illustrator') || type.includes('ai')) return '✏️';
+    if (type.includes('photoshop') || type.includes('psd')) return '🎭';
+    return '📄';
+}
+
+function getFileColor(type) {
+    if (!type) return '#6b7280';
+    if (type.startsWith('image/png')) return '#4ade80';
+    if (type.startsWith('image/jpeg') || type.startsWith('image/jpg')) return '#60a5fa';
+    if (type === 'application/pdf') return '#f87171';
+    if (type.includes('svg')) return '#fbbf24';
+    if (type.startsWith('video/')) return '#a78bfa';
+    if (type.includes('zip')) return '#fb923c';
+    return '#94a3b8';
+}
+
+function getFileExtension(name) {
+    if (!name) return '?';
+    const ext = name.split('.').pop().toUpperCase();
+    return ext.length > 4 ? ext.substring(0, 4) : ext;
+}
+
+function renderDeliverableCard(file, projectId) {
+    const isImage = file.type && file.type.startsWith('image/');
+    const ext = getFileExtension(file.name);
+    const color = getFileColor(file.type);
+
+    return `
+<div style="background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; transition: all 0.2s; position: relative;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+    <!-- Preview / Icon -->
+    <div style="height: 100px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); position: relative;">
+        ${isImage && file.data ? '<img src="' + file.data + '" style="width: 100%; height: 100%; object-fit: cover;" alt="' + file.name + '">' : '<div style="text-align: center;"><div style="font-size: 28px; margin-bottom: 4px;">' + getFileIcon(file.type) + '</div><span style="background: ' + color + '; color: #000; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700;">' + ext + '</span></div>'}
+    </div>
+    <!-- Info -->
+    <div style="padding: 10px;">
+        <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${file.name}">${file.name}</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+            <span style="font-size: 10px; opacity: 0.5;">${file.size}</span>
+            <button onclick="deleteProjectDeliverable(${projectId}, ${file.id})" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 14px; padding: 2px;" title="Delete">🗑</button>
+        </div>
+    </div>
+</div>`;
+}
+
+function formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+}
+
+function guessCategory(fileName) {
+    const name = fileName.toLowerCase();
+    if (name.includes('logo')) return 'logos';
+    if (name.includes('mockup') || name.includes('mock-up')) return 'mockups';
+    if (name.includes('brand') || name.includes('guide') || name.includes('style')) return 'brand-guide';
+    if (name.includes('social') || name.includes('insta') || name.includes('facebook') || name.includes('post')) return 'social';
+    if (name.includes('print') || name.includes('banner') || name.includes('sign') || name.includes('flyer') || name.includes('card')) return 'print-files';
+    return 'other';
+}
+
+function handleProjectFileUpload(projectId, event) {
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+    if (!project.deliverables) project.deliverables = [];
+
+    const files = Array.from(event.target.files);
+    let processed = 0;
+
+    files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            project.deliverables.push({
+                id: Date.now() + processed,
+                name: file.name,
+                type: file.type,
+                size: formatFileSize(file.size),
+                category: guessCategory(file.name),
+                data: ev.target.result,
+                uploadedAt: new Date().toISOString()
+            });
+
+            // Log activity
+            project.activityLog = project.activityLog || [];
+            project.activityLog.push({
+                action: 'Uploaded file: ' + file.name,
+                timestamp: new Date().toISOString(),
+                stage: project.stage
+            });
+
+            processed++;
+            if (processed === files.length) {
+                saveProjects();
+                // Refresh the modal
+                document.getElementById('projectDetailsModal').remove();
+                viewProjectDetails(projectId);
+            }
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function handleProjectFileDrop(projectId, event) {
+    event.preventDefault();
+    const dropZone = document.getElementById('projDropZone-' + projectId);
+    if (dropZone) {
+        dropZone.style.borderColor = 'rgba(255,255,255,0.15)';
+        dropZone.style.background = 'transparent';
+    }
+    // Create a fake event with the dropped files
+    handleProjectFileUpload(projectId, { target: { files: event.dataTransfer.files } });
+}
+
+function filterDeliverables(projectId, category) {
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+
+    // Update active tab styling
+    const cats = ['all','logos','mockups','brand-guide','social','print-files','other'];
+    cats.forEach(cat => {
+        const btn = document.getElementById('delCat-' + projectId + '-' + cat);
+        if (btn) {
+            btn.style.background = cat === category ? 'var(--red)' : 'rgba(255,255,255,0.05)';
+        }
+    });
+
+    // Filter files
+    const files = category === 'all'
+        ? (project.deliverables || [])
+        : (project.deliverables || []).filter(d => d.category === category);
+
+    const grid = document.getElementById('projFileGrid-' + projectId);
+    if (grid) {
+        grid.innerHTML = files.length > 0
+            ? files.map(file => renderDeliverableCard(file, projectId)).join('')
+            : '<p style="opacity: 0.4; text-align: center; grid-column: 1/-1; padding: 20px;">No ' + category.replace('-', ' ') + ' files yet</p>';
+    }
+}
+
+function deleteProjectDeliverable(projectId, fileId) {
+    const project = projects.find(p => p.id === projectId);
+    if (!project || !project.deliverables) return;
+
+    const file = project.deliverables.find(d => d.id === fileId);
+    if (!file) return;
+    if (!confirm('Delete "' + file.name + '"?')) return;
+
+    project.deliverables = project.deliverables.filter(d => d.id !== fileId);
+    project.activityLog = project.activityLog || [];
+    project.activityLog.push({
+        action: 'Deleted file: ' + file.name,
+        timestamp: new Date().toISOString(),
+        stage: project.stage
+    });
+    saveProjects();
+
+    // Refresh modal
+    document.getElementById('projectDetailsModal').remove();
+    viewProjectDetails(projectId);
+}
+
+function pushDeliverablesToAssets(projectId) {
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+    if (!project.deliverables || project.deliverables.length === 0) {
+        alert('No deliverables to push. Upload files first.');
+        return;
+    }
+
+    // Find the client
+    const client = crmData.clients?.find(c => c.id === project.clientId) || clients.find(c => c.id == project.clientId);
+    if (!client) {
+        alert('No client linked to this project. Edit the project to assign a client first.');
+        return;
+    }
+
+    // Initialize client assets if needed
+    if (!client.assets) client.assets = {};
+
+    // Map deliverable categories to asset categories
+    const catMap = {
+        'logos': 'logos',
+        'mockups': 'mockups',
+        'brand-guide': 'package',
+        'social': 'social',
+        'print-files': 'banner',
+        'other': 'package'
+    };
+
+    let pushed = 0;
+    project.deliverables.forEach(file => {
+        const assetCat = catMap[file.category] || 'package';
+        if (!client.assets[assetCat]) client.assets[assetCat] = [];
+
+        // Check if already pushed (by name match)
+        const exists = client.assets[assetCat].some(a => a.name === file.name);
+        if (!exists) {
+            client.assets[assetCat].push({
+                name: file.name,
+                type: getFileExtension(file.name),
+                size: file.size,
+                data: file.data,
+                uploadedAt: file.uploadedAt,
+                fromProject: project.name
+            });
+            pushed++;
+        }
+    });
+
+    saveClients();
+
+    project.activityLog = project.activityLog || [];
+    project.activityLog.push({
+        action: 'Pushed ' + pushed + ' files to ' + client.name + ' assets',
+        timestamp: new Date().toISOString(),
+        stage: project.stage
+    });
+    saveProjects();
+
+    alert('✅ Pushed ' + pushed + ' new files to ' + client.name + "'s assets.\n" + (project.deliverables.length - pushed) + ' files already existed.');
+
+    // Refresh modal
+    document.getElementById('projectDetailsModal').remove();
+    viewProjectDetails(projectId);
 }
