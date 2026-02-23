@@ -918,7 +918,88 @@ function moveContactStage(contactId, newStage) {
         saveCrm();
         loadAdminCrmPanel();
         console.log('✅ Contact moved: ' + contact.name + ' → ' + newStageName);
+
+        // AUTO-PROJECT: When deal moves to Won, create project + client
+        if (newStage === 5) {
+            autoCreateProjectFromDeal(contact);
+        }
     }
+}
+
+// ==================== AUTO-PROJECT FROM WON DEAL ====================
+function autoCreateProjectFromDeal(contact) {
+    // Check if project already exists for this contact
+    const existingProject = projects.find(p => p.crmContactId === contact.id);
+    if (existingProject) {
+        console.log('⏭️ Project already exists for ' + contact.name);
+        return;
+    }
+
+    // Find or create client
+    let client = clients.find(c => c.email === contact.email) || clients.find(c => c.name === contact.name);
+    if (!client) {
+        client = {
+            id: Date.now(),
+            name: contact.name,
+            email: contact.email || '',
+            phone: contact.phone || '',
+            status: 'active',
+            colors: ['#ff3b30', '#000000'],
+            assets: {},
+            createdAt: new Date().toISOString()
+        };
+        clients.push(client);
+        saveClients();
+        console.log('✅ Auto-created client: ' + client.name);
+    }
+
+    // Find matching deal for extra context
+    const deal = (crmData.deals || []).find(d => d.name?.includes(contact.name));
+    const dealService = deal?.name?.split(' - ')[1] || contact.service || 'Branding';
+
+    // Create project
+    const project = {
+        id: Date.now() + 1,
+        name: contact.name + ' - ' + dealService,
+        clientId: client.id,
+        crmContactId: contact.id,
+        packageId: null,
+        package: dealService,
+        type: 'Custom',
+        services: [],
+        paymentPlan: 'standard',
+        totalAmount: contact.value || 0,
+        paidInstallments: 0,
+        stage: 'Discovery',
+        startDate: new Date().toISOString().split('T')[0],
+        dueDate: '',
+        notes: 'Auto-created from CRM pipeline (Deal Won)',
+        timeTracked: 0,
+        timerRunning: false,
+        timerStartedAt: null,
+        deliverables: [],
+        activityLog: [
+            { action: 'Project auto-created from CRM deal (Won)', timestamp: new Date().toISOString(), stage: 'Discovery' }
+        ],
+        createdAt: new Date().toISOString()
+    };
+
+    projects.push(project);
+    saveProjects();
+
+    // Log in CRM activity
+    if (!crmData.activityLog) crmData.activityLog = [];
+    crmData.activityLog.push({
+        id: Date.now() + 2,
+        contactId: contact.id,
+        type: 'project_created',
+        note: 'Auto-created project: ' + project.name + ' ($' + project.totalAmount.toLocaleString() + ')',
+        timestamp: new Date().toISOString()
+    });
+    saveCrm();
+
+    console.log('✅ Auto-created project: ' + project.name + ' ($' + project.totalAmount.toLocaleString() + ') for client ' + client.name);
+    alert('🎉 Deal Won! Auto-created:\n• Client: ' + client.name + '\n• Project: ' + project.name + '\n• Value: $' + project.totalAmount.toLocaleString() + '\n\nHead to Projects to start working.');
 }
 
 // Quick Actions
