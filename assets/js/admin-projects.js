@@ -1098,11 +1098,11 @@ function loadAdminProofsPanel() {
         <!-- Actions & Filters -->
 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
 <div class="flex-gap-12 flex-wrap">
-<select onchange="proofFilterCategory = this.value; loadAdminProofsPanel();" style="padding: 10px 16px; border: 1px solid #333; border-radius: 8px; background: #1a1a1a; color: #fff;">
+<select onchange="proofFilterCategory = this.value; loadAdminProofsPanel();" style="padding: 10px 16px; border: 1px solid #333; border-radius: 8px; background: #242424; color: #fff;">
 <option value="all" ${proofFilterCategory === 'all' ? 'selected' : ''}>All Categories</option>
                     ${Object.entries(PROOF_CATEGORIES).map(([key, cat]) => `<option value="${key}" ${proofFilterCategory === key ? 'selected' : ''}>${cat.icon} ${cat.name}</option>`).join('')}
 </select>
-<select onchange="proofFilterStatus = this.value; loadAdminProofsPanel();" style="padding: 10px 16px; border: 1px solid #333; border-radius: 8px; background: #1a1a1a; color: #fff;">
+<select onchange="proofFilterStatus = this.value; loadAdminProofsPanel();" style="padding: 10px 16px; border: 1px solid #333; border-radius: 8px; background: #242424; color: #fff;">
 <option value="all" ${proofFilterStatus === 'all' ? 'selected' : ''}>All Statuses</option>
 <option value="pending" ${proofFilterStatus === 'pending' ? 'selected' : ''}>⏳ Pending</option>
 <option value="approved" ${proofFilterStatus === 'approved' ? 'selected' : ''}>✅ Approved</option>
@@ -1116,7 +1116,7 @@ function loadAdminProofsPanel() {
 
         <!-- Proofs Grid -->
         ${filteredProofs.length === 0 ? `
-<div style="background: #1a1a1a; border-radius: 16px; padding: 60px; text-align: center;">
+<div style="background: #242424; border-radius: 16px; padding: 60px; text-align: center;">
 <div style="font-size: 64px; margin-bottom: 16px;">📋</div>
 <h3 style="font-size: 20px; margin-bottom: 8px;">No Proofs Found</h3>
 <p class="text-muted mb-24">Create your first proof to get started</p>
@@ -1164,9 +1164,9 @@ function renderEnhancedProofCard(proof) {
     }
 
     return `
-<div style="background: #1a1a1a; border-radius: 16px; overflow: hidden; border: 1px solid #333;">
+<div style="background: #242424; border-radius: 16px; overflow: hidden; border: 1px solid #333;">
             <!-- Preview Area -->
-<div style="position: relative; height: 200px; background: #111; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+<div style="position: relative; height: 200px; background: #1c1c1c; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                 ${previewContent}
                 ${isLink ? `
 <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);">
@@ -1242,9 +1242,9 @@ function showCreateProofModal() {
     modal.id = 'createProofModal';
     modal.innerHTML = `
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
-<div style="background: #1a1a1a; border-radius: 20px; width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto;">
+<div style="background: #242424; border-radius: 20px; width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto;">
                 <!-- Header -->
-<div style="padding: 24px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #1a1a1a; z-index: 10;">
+<div style="padding: 24px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #242424; z-index: 10;">
 <div>
 <h2 class="fs-24 fw-700">Create New Proof</h2>
 <p class="text-muted fs-14">Select proof type, upload files, and send to client</p>
@@ -1335,10 +1335,10 @@ function showCreateProofModal() {
 <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 12px;">🔗 Website/App Preview URL *</label>
 <div style="background: #252525; border-radius: 12px; padding: 20px;">
 <input type="url" id="proofUrl" placeholder="https://example.com or https://figma.com/proto/..."
-                                style="width: 100%; padding: 14px 16px; border: 2px solid #444; border-radius: 8px; background: #1a1a1a; color: #fff; font-size: 14px; margin-bottom: 12px;"
+                                style="width: 100%; padding: 14px 16px; border: 2px solid #444; border-radius: 8px; background: #242424; color: #fff; font-size: 14px; margin-bottom: 12px;"
                                 oninput="validateProofUrl(this.value)">
 <div id="proofUrlPreview" style="display: none; margin-top: 12px;">
-<div style="background: #1a1a1a; border-radius: 8px; padding: 16px; text-align: center;">
+<div style="background: #242424; border-radius: 8px; padding: 16px; text-align: center;">
 <div class="fs-32 mb-8">🌐</div>
 <div id="proofUrlDisplay" style="color: #3b82f6; word-break: break-all;"></div>
 <button onclick="window.open(document.getElementById('proofUrl').value, '_blank')"
@@ -1386,7 +1386,7 @@ function showCreateProofModal() {
 </div>
 
                 <!-- Footer -->
-<div style="padding: 24px; border-top: 1px solid #333; display: flex; justify-content: flex-end; gap: 12px; position: sticky; bottom: 0; background: #1a1a1a;">
+<div style="padding: 24px; border-top: 1px solid #333; display: flex; justify-content: flex-end; gap: 12px; position: sticky; bottom: 0; background: #242424;">
 <button onclick="document.getElementById('createProofModal').remove()" style="padding: 12px 24px; background: #333; border: none; color: #fff; border-radius: 8px; cursor: pointer; font-size: 14px;">
                         Cancel
 </button>
@@ -1908,7 +1908,7 @@ function requestRevisionModal(id) {
     modal.id = 'revisionModal';
     modal.innerHTML = `
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
-<div style="background: #1a1a1a; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%;">
+<div style="background: #242424; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%;">
 <h2 style="font-size: 20px; margin-bottom: 8px;">🔄 Request Revision</h2>
 <p style="color: #888; font-size: 14px; margin-bottom: 24px;">Provide feedback for "${proof.name}"</p>
 
@@ -1982,14 +1982,14 @@ async function submitProofRevision(id) {
                     body: JSON.stringify({
                         to: designer.email,
                         subject: `🔄 Revision Requested: ${proof.name}`,
-                        html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
+                        html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #202020; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #f59e0b, #ef4444); padding: 24px; text-align: center;">
 <h2 style="margin: 0; font-size: 20px; color: #fff;">🔄 Revision Requested</h2>
 </div>
 <div class="p-32">
 <p class="text-light">Hey ${designer.name || 'Designer'},</p>
 <p class="text-light">A revision has been requested for <strong>"${proof.name}"</strong>.</p>
-<div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
+<div style="background: #1c1c1c; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
 <p style="color: #f59e0b; font-weight: 600; margin-bottom: 8px;">Feedback:</p>
 <p style="color: #fff; font-size: 15px; line-height: 1.6;">${feedback}</p>
 </div>
@@ -2031,7 +2031,7 @@ function viewProofDetails(id) {
     modal.id = 'proofDetailsModal';
     modal.innerHTML = `
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
-<div style="background: #1a1a1a; border-radius: 20px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto;">
+<div style="background: #242424; border-radius: 20px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto;">
 <div style="padding: 24px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center;">
 <h2 class="fs-20">Proof Details</h2>
 <button onclick="document.getElementById('proofDetailsModal').remove()" style="background: none; border: none; color: #888; font-size: 28px; cursor: pointer;">&times;</button>
@@ -2039,7 +2039,7 @@ function viewProofDetails(id) {
 
 <div class="p-24">
                     <!-- Preview -->
-<div style="background: #111; border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: center;">
+<div style="background: #1c1c1c; border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: center;">
                         ${proof.isVideo && proof.videoUrl ? `
 <video src="${proof.videoUrl}" style="max-width: 100%; max-height: 400px; border-radius: 8px;" controls></video>
                         ` : proof.image ? `
@@ -2127,7 +2127,7 @@ function openProofPreview(proofId) {
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; z-index: 9999;">
             <!-- Left: Preview Area -->
 <div style="flex: 1; display: flex; flex-direction: column; border-right: 1px solid #333;">
-<div style="padding: 16px 20px; background: #1a1a1a; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center;">
+<div style="padding: 16px 20px; background: #242424; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center;">
 <div>
 <h2 style="font-size: 18px; margin-bottom: 4px;">${proof.name}</h2>
 <div class="text-muted-sm">${proofType.name} • ${client.name}</div>
@@ -2137,7 +2137,7 @@ function openProofPreview(proofId) {
 <button onclick="document.getElementById('proofPreviewModal').remove()" style="padding: 8px 16px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer;">✕ Close</button>
 </div>
 </div>
-<div style="flex: 1; background: #111; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+<div style="flex: 1; background: #1c1c1c; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                     ${proof.previewUrl ? `
 <iframe src="${proof.previewUrl}" style="width: 100%; height: 100%; border: none;" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
                     ` : proof.image ? `
@@ -2152,7 +2152,7 @@ function openProofPreview(proofId) {
 </div>
 
             <!-- Right: Comments Panel -->
-<div style="width: 380px; display: flex; flex-direction: column; background: #1a1a1a;">
+<div style="width: 380px; display: flex; flex-direction: column; background: #242424;">
 <div style="padding: 20px; border-bottom: 1px solid #333;">
 <h3 style="font-size: 16px; margin-bottom: 8px;">💬 Comments & Feedback</h3>
 <div class="flex-gap-8">
@@ -2183,7 +2183,7 @@ function openProofPreview(proofId) {
                 <!-- Add Comment -->
 <div style="padding: 16px; border-top: 1px solid #333; background: #252525;">
 <textarea id="newProofComment" rows="3" placeholder="Leave your feedback or request changes..."
-                        style="width: 100%; padding: 12px; border: 1px solid #444; border-radius: 8px; background: #1a1a1a; color: #fff; font-size: 14px; resize: none; margin-bottom: 12px;"></textarea>
+                        style="width: 100%; padding: 12px; border: 1px solid #444; border-radius: 8px; background: #242424; color: #fff; font-size: 14px; resize: none; margin-bottom: 12px;"></textarea>
 <div class="flex-gap-8">
 <button onclick="addProofComment(${proof.id}, 'revision')" style="flex: 1; padding: 10px; background: #ef4444; border: none; color: #fff; border-radius: 8px; cursor: pointer; font-weight: 600;">
                             🔄 Request Changes
@@ -2276,7 +2276,7 @@ function showStorageManager() {
     modal.id = 'storageManagerModal';
     modal.innerHTML = `
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
-<div style="background: #1a1a1a; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%;">
+<div style="background: #242424; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%;">
 <div class="flex-between mb-24">
 <h2 class="fs-20">💾 Storage Manager</h2>
 <button onclick="document.getElementById('storageManagerModal').remove()" style="background: none; border: none; color: #888; font-size: 24px; cursor: pointer;">&times;</button>
@@ -2409,23 +2409,23 @@ function loadAdminDeliveryPanel() {
 
         <!-- Stats -->
 <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 32px;">
-<div style="background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
+<div style="background: #1c1c1c; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
 <div style="font-size: 28px; font-weight: 700; color: #f59e0b;">${pendingProofs.length}</div>
 <div class="text-muted-sm">Proofs Pending</div>
 </div>
-<div style="background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
+<div style="background: #1c1c1c; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
 <div style="font-size: 28px; font-weight: 700; color: #ef4444;">${revisionProofs.length}</div>
 <div class="text-muted-sm">In Revision</div>
 </div>
-<div style="background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
+<div style="background: #1c1c1c; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
 <div style="font-size: 28px; font-weight: 700; color: #10b981;">${approvedProofs.length}</div>
 <div class="text-muted-sm">Approved</div>
 </div>
-<div style="background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
+<div style="background: #1c1c1c; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
 <div style="font-size: 28px; font-weight: 700; color: #3b82f6;">${pendingDelivery.length}</div>
 <div class="text-muted-sm">Awaiting Delivery</div>
 </div>
-<div style="background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
+<div style="background: #1c1c1c; padding: 20px; border-radius: 12px; border: 1px solid #222; text-align: center;">
 <div style="font-size: 28px; font-weight: 700; color: #8b5cf6;">${deliveredOrders.length}</div>
 <div class="text-muted-sm">Delivered</div>
 </div>
@@ -2439,7 +2439,7 @@ function loadAdminDeliveryPanel() {
                 const project = orders.find(o => o.id === p.projectId);
                 const client = clients.find(c => c.id == p.clientId);
                 return `
-<div style="background: #1a1a1a; padding: 16px 20px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #f59e0b;">
+<div style="background: #242424; padding: 16px 20px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #f59e0b;">
 <div>
 <div class="fw-600">${p.name || p.fileName || 'Proof'} ${p.version ? '(v' + p.version + ')' : ''}</div>
 <div class="text-muted-sm">${p.designerName || 'Designer'} • ${project?.projectName || ''} • ${client?.name || ''}</div>
@@ -2463,7 +2463,7 @@ function loadAdminDeliveryPanel() {
                 const approvedCount = orderProofs.filter(p => p.status === 'approved').length;
                 const isPaid = checkClientPaymentStatus(order.clientId);
                 return `
-<div style="background: #1a1a1a; padding: 20px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid #3b82f6;">
+<div style="background: #242424; padding: 20px; border-radius: 12px; margin-bottom: 12px; border-left: 4px solid #3b82f6;">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
 <div>
 <div style="font-weight: 600; font-size: 16px;">${order.projectName || order.project}</div>
@@ -2511,7 +2511,7 @@ function loadAdminDeliveryPanel() {
             ${deliveredOrders.length === 0 ? '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 24px;">No deliveries yet</p>' : deliveredOrders.slice(0, 10).map(order => {
                 const client = clients.find(c => c.id === order.clientId) || { name: 'Unknown' };
                 return `
-<div style="background: #1a1a1a; padding: 16px 20px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #8b5cf6;">
+<div style="background: #242424; padding: 16px 20px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #8b5cf6;">
 <div>
 <div class="fw-600">${order.projectName || order.project}</div>
 <div class="text-muted-sm">${client.name}</div>
@@ -2559,10 +2559,10 @@ async function sendPrintUpsellEmail(project) {
         if (urlParams.length) printUrl += '?' + urlParams.join('&');
 
         const emailHtml = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #111; color: #fff; border-radius: 12px; overflow: hidden;">
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #1c1c1c; color: #fff; border-radius: 12px; overflow: hidden;">
             <!-- Header -->
             <div style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); padding: 40px 32px; text-align: center;">
-                <img src="https://newurbaninfluence.com/logo-nav-cropped.png" alt="NUI" style="height: 40px; margin-bottom: 16px;">
+                <div style="margin-bottom: 16px;"><span style="font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 3px; text-transform: uppercase; color: #fff;">NEW URBAN </span><span style="font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 3px; text-transform: uppercase; color: #dc2626;">INFLUENCE</span><div style="font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 600; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 4px;">We don't design. We influence.</div></div>
                 <h1 style="margin: 0; font-size: 28px; font-weight: 800;">Your Brand Is Ready.</h1>
                 <p style="margin: 8px 0 0; opacity: 0.9; font-size: 16px;">Now let's bring it to life.</p>
             </div>
@@ -3014,14 +3014,14 @@ async function sendProofToClient(proofId, projectId) {
                     to: client.email,
                     clientId: client.id,
                     subject: '✅ Proof Ready for Review: ' + proof.name,
-                    html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;border-radius:12px;overflow:hidden;">' +
+                    html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#202020;color:#fff;border-radius:12px;overflow:hidden;">' +
                         '<div style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);padding:32px;text-align:center;">' +
                             '<h2 style="margin:0;font-size:24px;color:#fff;">Proof Ready for Review!</h2>' +
                         '</div>' +
                         '<div style="padding:32px;">' +
                             '<p style="color:#ccc;">Hey ' + (client.contact || client.name) + ',</p>' +
                             '<p style="color:#ccc;">Your proof for <strong style="color:#fff;">' + proof.name + '</strong> is ready for review.</p>' +
-                            '<div style="background:#111;border:1px solid #333;border-radius:12px;padding:20px;margin:24px 0;">' +
+                            '<div style="background:#1c1c1c;border:1px solid #333;border-radius:12px;padding:20px;margin:24px 0;">' +
                                 '<div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="color:#888;">Proof</span><strong style="color:#fff;">' + proof.name + '</strong></div>' +
                                 '<div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="color:#888;">Type</span><strong style="color:#fff;">' + (proof.proofTypeName || 'Design') + '</strong></div>' +
                                 '<div style="display:flex;justify-content:space-between;"><span style="color:#888;">Version</span><strong style="color:#fff;">v' + (proof.version || 1) + '</strong></div>' +
@@ -3031,7 +3031,7 @@ async function sendProofToClient(proofId, projectId) {
                             '</div>' +
                             '<p style="color:#888;font-size:13px;text-align:center;">Log in to your portal to approve or request revisions</p>' +
                         '</div>' +
-                        '<div style="background:#0a0a0a;border-top:1px solid #222;padding:16px;text-align:center;"><p style="color:#555;font-size:12px;margin:0;">New Urban Influence • Detroit, MI</p></div>' +
+                        '<div style="background:#202020;border-top:1px solid #222;padding:16px;text-align:center;"><p style="color:#555;font-size:12px;margin:0;">New Urban Influence • Detroit, MI</p></div>' +
                     '</div>',
                     text: 'Your proof "' + proof.name + '" is ready for review. Log into your client portal to approve or request revisions.'
                 })

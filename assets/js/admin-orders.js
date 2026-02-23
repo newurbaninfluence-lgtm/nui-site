@@ -330,14 +330,14 @@ async function assignDesignerToOrder(orderId, designerName) {
                         to: client.email,
                         clientId: client.id,
                         subject: `🎨 Your ${order.projectName} is Now In Progress!`,
-                        html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
+                        html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #202020; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #3b82f6, #60a5fa); padding: 32px; text-align: center;">
 <h2 class="m-0 fs-24 text-white">Work Has Begun! 🎨</h2>
 </div>
 <div class="p-32">
 <p class="text-light">Hey ${client.name},</p>
 <p class="text-light">Great news — a designer has been assigned to your <strong>${order.projectName}</strong> project and work is officially underway!</p>
-<div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
+<div style="background: #1c1c1c; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
 <p style="color: #3b82f6; font-weight: 600; margin-bottom: 12px;">📋 Project Details:</p>
 <p style="color: #ccc;">Designer: <strong>${designerName}</strong></p>
 <p style="color: #ccc;">Turnaround: <strong>${order.turnaround}</strong></p>

@@ -30,7 +30,7 @@ function loadAdminCrmPanel() {
 
     document.getElementById('adminCrmPanel').innerHTML = `
 <style>
-            .crm-tabs { display: flex; gap: 4px; background: #111; padding: 4px; border-radius: 8px; margin-bottom: 24px; }
+            .crm-tabs { display: flex; gap: 4px; background: #1c1c1c; padding: 4px; border-radius: 8px; margin-bottom: 24px; }
             .crm-tab { padding: 12px 24px; background: transparent; border: none; color: rgba(255,255,255,0.5); cursor: pointer; border-radius: 6px; font-weight: 600; font-family: inherit; transition: all 0.2s; }
             .crm-tab:hover { color: #fff; background: rgba(255,255,255,0.05); }
             .crm-tab.active { background: var(--red); color: #fff; }
@@ -38,16 +38,16 @@ function loadAdminCrmPanel() {
             .crm-content.active { display: block; }
             .pipeline-board-ghl { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px; min-height: 500px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
             .pipeline-board-ghl::-webkit-scrollbar { height: 10px; }
-            .pipeline-board-ghl::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 5px; }
+            .pipeline-board-ghl::-webkit-scrollbar-track { background: #242424; border-radius: 5px; }
             .pipeline-board-ghl::-webkit-scrollbar-thumb { background: linear-gradient(90deg, #e63946, #ff6b6b); border-radius: 5px; min-width: 60px; }
             .pipeline-board-ghl::-webkit-scrollbar-thumb:hover { background: linear-gradient(90deg, #ff6b6b, #e63946); }
-            .pipeline-col { min-width: 280px; max-width: 280px; background: #111; border-radius: 12px; display: flex; flex-direction: column; flex-shrink: 0; }
+            .pipeline-col { min-width: 280px; max-width: 280px; background: #1c1c1c; border-radius: 12px; display: flex; flex-direction: column; flex-shrink: 0; }
             .pipeline-col-header { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
             .pipeline-col-title { font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; }
             .pipeline-col-count { background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
             .pipeline-col-body { flex: 1; padding: 12px; overflow-y: auto; min-height: 200px; }
             .pipeline-col-body.drag-over { background: rgba(255,255,255,0.05); border: 2px dashed rgba(255,255,255,0.2); }
-            .contact-card { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; margin-bottom: 12px; cursor: grab; transition: all 0.2s; }
+            .contact-card { background: #242424; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; margin-bottom: 12px; cursor: grab; transition: all 0.2s; }
             .contact-card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
             .contact-card.dragging { opacity: 0.5; transform: rotate(3deg); }
             .contact-card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px; }
@@ -65,20 +65,20 @@ function loadAdminCrmPanel() {
             .contact-action-btn.more { background: rgba(255,255,255,0.1); color: #fff; }
             .contact-action-btn:hover { transform: scale(1.05); }
             .smart-group-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; margin-bottom: 32px; }
-            .smart-group-card { background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s; }
+            .smart-group-card { background: #1c1c1c; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s; }
             .smart-group-card:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-2px); }
             .smart-group-card.selected { border-color: var(--red); background: rgba(255,0,0,0.1); }
             .smart-group-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
             .smart-group-name { font-weight: 600; font-size: 16px; }
             .smart-group-count { background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 100px; font-size: 13px; }
-            .bulk-actions { background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+            .bulk-actions { background: #1c1c1c; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
             .bulk-actions h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
             .bulk-btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
             .bulk-btn.sms { background: #10b981; color: #fff; }
             .bulk-btn.email { background: #3b82f6; color: #fff; }
             .bulk-btn:hover { transform: translateY(-2px); }
             .contact-table { width: 100%; border-collapse: collapse; }
-            .contact-table th { text-align: left; padding: 12px 16px; background: #111; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); }
+            .contact-table th { text-align: left; padding: 12px 16px; background: #1c1c1c; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); }
             .contact-table td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
             .contact-table tr:hover td { background: rgba(255,255,255,0.02); }
             .contact-table input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
@@ -141,7 +141,7 @@ function loadAdminCrmPanel() {
         <!-- ALL CONTACTS TAB -->
 <div class="crm-content ${crmActiveTab === 'contacts' ? 'active' : ''}" id="crmContactsTab">
 <div class="admin-row-between">
-<input type="text" placeholder="Search contacts..." oninput="filterCrmContacts(this.value)" style="padding: 10px 16px; background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 300px;">
+<input type="text" placeholder="Search contacts..." oninput="filterCrmContacts(this.value)" style="padding: 10px 16px; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 300px;">
 <button class="btn-admin primary" onclick="showAddContactModal()">+ Add Contact</button>
 </div>
 <table class="contact-table">
@@ -220,7 +220,7 @@ function loadAdminCrmPanel() {
 
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
                     <!-- SMS Blast -->
-<div style="background: #0a0a0a; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
+<div style="background: #202020; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
 <h4 style="font-size: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;"><span class="fs-24">💬</span> SMS Blast</h4>
 <div class="form-group">
 <label class="form-label">Select Recipients</label>
@@ -244,7 +244,7 @@ function loadAdminCrmPanel() {
 </div>
 
                     <!-- Email Blast -->
-<div style="background: #0a0a0a; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
+<div style="background: #202020; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
 <h4 style="font-size: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;"><span class="fs-24">📧</span> Email Blast</h4>
 <div class="form-group">
 <label class="form-label">Select Recipients</label>
@@ -273,7 +273,7 @@ function loadAdminCrmPanel() {
 </div>
 
             <!-- Recent Bulk Messages -->
-<div style="background: #111; border-radius: 12px; padding: 24px;">
+<div style="background: #1c1c1c; border-radius: 12px; padding: 24px;">
 <h3 style="font-size: 16px; margin-bottom: 16px;">📊 Recent Campaigns</h3>
 <table class="contact-table">
 <thead><tr><th>Date</th><th>Type</th><th>Group</th><th>Recipients</th><th>Status</th></tr></thead>
@@ -363,7 +363,7 @@ function renderConversationsHub() {
 
     return `
 <style>
-            .conv-container { display: flex; gap: 0; height: 600px; background: #111; border-radius: 12px; overflow: hidden; }
+            .conv-container { display: flex; gap: 0; height: 600px; background: #1c1c1c; border-radius: 12px; overflow: hidden; }
             .conv-sidebar { width: 320px; border-right: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; }
             .conv-main { flex: 1; display: flex; flex-direction: column; }
             .conv-header { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -391,8 +391,8 @@ function renderConversationsHub() {
             .conv-message.outbound .conv-message-bubble { background: var(--red); border-bottom-right-radius: 4px; }
             .conv-message-meta { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; display: flex; align-items: center; gap: 8px; }
             .conv-input { padding: 16px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 12px; }
-            .conv-input input { flex: 1; padding: 12px 16px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; color: #fff; }
-            .conv-input select { padding: 12px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; }
+            .conv-input input { flex: 1; padding: 12px 16px; background: #242424; border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; color: #fff; }
+            .conv-input select { padding: 12px; background: #242424; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; }
             .conv-input button { padding: 12px 24px; background: var(--red); border: none; color: #fff; border-radius: 24px; cursor: pointer; font-weight: 600; }
 </style>
 
@@ -755,7 +755,7 @@ function composeNewMessage() {
     modal.id = 'composeModal';
     modal.innerHTML = `
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 9999;">
-<div style="background: #1a1a1a; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%;">
+<div style="background: #242424; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%;">
 <h2 style="font-size: 20px; margin-bottom: 24px;">✉️ Compose Message</h2>
 
 <div class="mb-16">

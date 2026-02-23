@@ -95,34 +95,117 @@ const weekTemplates = {
     }
 };
 
+// ==================== HOLIDAY THEMES ====================
+// Each holiday gets its own color palette and themed header image
+const holidayThemes = {
+    valentines: {
+        accent: '#e11d48',
+        gradient: 'linear-gradient(135deg, #e11d48 0%, #9f1239 100%)',
+        headerImg: 'https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif',
+        emoji: '💕'
+    },
+    stpatricks: {
+        accent: '#16a34a',
+        gradient: 'linear-gradient(135deg, #16a34a 0%, #166534 100%)',
+        headerImg: 'https://media.giphy.com/media/l0MYt5jPR6QX5APm0/giphy.gif',
+        emoji: '☘️'
+    },
+    memorial: {
+        accent: '#2563eb',
+        gradient: 'linear-gradient(135deg, #1e40af 0%, #1e3a5f 100%)',
+        headerImg: 'https://media.giphy.com/media/fYfCUkeriuMiRCJjNS/giphy.gif',
+        emoji: '🇺🇸'
+    },
+    july4th: {
+        accent: '#dc2626',
+        gradient: 'linear-gradient(135deg, #1e3a8a 0%, #991b1b 50%, #1e3a8a 100%)',
+        headerImg: 'https://media.giphy.com/media/l0MYDzAElHm3SHKWQ/giphy.gif',
+        emoji: '🎆'
+    },
+    laborday: {
+        accent: '#d97706',
+        gradient: 'linear-gradient(135deg, #92400e 0%, #78350f 100%)',
+        headerImg: 'https://media.giphy.com/media/26u4hHueRIOJBCmME/giphy.gif',
+        emoji: '⚒️'
+    },
+    halloween: {
+        accent: '#f97316',
+        gradient: 'linear-gradient(135deg, #f97316 0%, #7c2d12 50%, #1a1a2e 100%)',
+        headerImg: 'https://media.giphy.com/media/3o7TKSxTboDzOQiPCM/giphy.gif',
+        emoji: '🎃'
+    },
+    thanksgiving: {
+        accent: '#b45309',
+        gradient: 'linear-gradient(135deg, #b45309 0%, #78350f 100%)',
+        headerImg: 'https://media.giphy.com/media/l3fQezVIIjbUpjAis/giphy.gif',
+        emoji: '🦃'
+    },
+    blackfriday: {
+        accent: '#eab308',
+        gradient: 'linear-gradient(135deg, #1a1a1a 0%, #3f3f46 100%)',
+        headerImg: 'https://media.giphy.com/media/3o7TKVSE5isogWqnqo/giphy.gif',
+        emoji: '🏷️'
+    },
+    christmas: {
+        accent: '#dc2626',
+        gradient: 'linear-gradient(135deg, #166534 0%, #14532d 100%)',
+        headerImg: 'https://media.giphy.com/media/3otPoOxyDTXjzpMbIY/giphy.gif',
+        emoji: '🎄'
+    },
+    newyears: {
+        accent: '#eab308',
+        gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)',
+        headerImg: 'https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif',
+        emoji: '🎉'
+    }
+};
+
+const defaultTheme = {
+    accent: '#dc2626',
+    gradient: 'linear-gradient(135deg, #dc2626 0%, #991b1b 100%)',
+    headerImg: '',
+    emoji: '🎯'
+};
+
 // ==================== BUILD EMAIL HTML ====================
-function buildHolidayEmail(firstName, holiday, week, printUrl, resolved) {
+function buildHolidayEmail(firstName, holiday, week, printUrl, resolved, holidaySlug) {
     if (!resolved) return null;
+    const theme = holidayThemes[holidaySlug] || defaultTheme;
 
     return `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #111; color: #fff; border-radius: 12px; overflow: hidden;">
-        <div style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); padding: 40px 32px; text-align: center;">
-            <img src="https://newurbaninfluence.com/logo-nav-cropped.png" alt="NUI" style="height: 36px; margin-bottom: 16px;">
-            <h1 style="margin: 0; font-size: 26px; font-weight: 800;">${resolved.heading}</h1>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #1a1a1a; color: #fff; border-radius: 12px; overflow: hidden;">
+        <!-- HEADER with holiday theme -->
+        <div style="background: ${theme.gradient}; padding: 32px 32px 24px; text-align: center;">
+            <!-- Syne-style text logo -->
+            <div style="margin-bottom: 20px;">
+                <span style="font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 3px; text-transform: uppercase; color: #fff;">NEW URBAN </span><span style="font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 3px; text-transform: uppercase; color: ${theme.accent};">INFLUENCE</span>
+                <div style="font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 600; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 4px;">We don't design. We influence.</div>
+            </div>
+            <h1 style="margin: 0; font-size: 26px; font-weight: 800;">${theme.emoji} ${resolved.heading}</h1>
             <p style="margin: 8px 0 0; opacity: 0.85; font-size: 14px;">Week ${9 - week} of 8 countdown</p>
         </div>
+        ${theme.headerImg ? `
+        <!-- Holiday themed image -->
+        <div style="text-align: center; background: #111;">
+            <img src="${theme.headerImg}" alt="${holiday}" style="width: 100%; max-height: 200px; object-fit: cover; display: block;">
+        </div>` : ''}
         <div style="padding: 32px;">
             <p style="font-size: 16px; line-height: 1.7; color: #ccc;">${resolved.body}</p>
             <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; margin: 24px 0;">
-                <p style="font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #dc2626; margin: 0 0 12px;">Quick Picks</p>
+                <p style="font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: ${theme.accent}; margin: 0 0 12px;">Quick Picks</p>
                 <table style="width: 100%; border-collapse: collapse;">
-                    <tr><td style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #fff; font-size: 14px;">Social Media Graphics Kit</td><td style="text-align: right; color: #dc2626; font-weight: 700; font-size: 14px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">$195</td></tr>
-                    <tr><td style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #fff; font-size: 14px;">Storefront Banner</td><td style="text-align: right; color: #dc2626; font-weight: 700; font-size: 14px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">$175</td></tr>
-                    <tr><td style="padding: 8px 0; color: #fff; font-size: 14px;">Yard Signs (10 pack)</td><td style="text-align: right; color: #dc2626; font-weight: 700; font-size: 14px; padding: 8px 0;">$350</td></tr>
+                    <tr><td style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #fff; font-size: 14px;">Social Media Graphics Kit</td><td style="text-align: right; color: ${theme.accent}; font-weight: 700; font-size: 14px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">$195</td></tr>
+                    <tr><td style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #fff; font-size: 14px;">Storefront Banner</td><td style="text-align: right; color: ${theme.accent}; font-weight: 700; font-size: 14px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">$175</td></tr>
+                    <tr><td style="padding: 8px 0; color: #fff; font-size: 14px;">Yard Signs (10 pack)</td><td style="text-align: right; color: ${theme.accent}; font-weight: 700; font-size: 14px; padding: 8px 0;">$350</td></tr>
                 </table>
             </div>
             <div style="text-align: center; margin: 32px 0;">
-                <a href="${printUrl}" style="display: inline-block; background: #dc2626; color: #fff; padding: 16px 40px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 8px;">${resolved.cta}</a>
+                <a href="${printUrl}" style="display: inline-block; background: ${theme.accent}; color: #fff; padding: 16px 40px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 8px;">${resolved.cta}</a>
             </div>
             <p style="font-size: 13px; color: #555; text-align: center;">24hr production · $10 overnight shipping · Design included</p>
         </div>
         <div style="padding: 20px 32px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center;">
-            <p style="margin: 0; color: #444; font-size: 11px;">New Urban Influence · Detroit, Michigan · (248) 487-8747</p>
+            <p style="margin: 0; color: #555; font-size: 11px;">New Urban Influence · Detroit, Michigan · (248) 487-8747</p>
         </div>
     </div>`;
 }
@@ -305,7 +388,7 @@ exports.handler = async (event) => {
                 const resolved = resolveTemplate(holiday.week, holiday.name, firstName);
                 if (!resolved) continue;
 
-                const html = buildHolidayEmail(firstName, holiday.name, holiday.week, printUrl, resolved);
+                const html = buildHolidayEmail(firstName, holiday.name, holiday.week, printUrl, resolved, holiday.slug);
                 if (!html) continue;
 
                 await transporter.sendMail({

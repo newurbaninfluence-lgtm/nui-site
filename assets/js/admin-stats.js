@@ -57,7 +57,7 @@ function loadAdminAnalyticsPanel() {
         <!-- Charts Row -->
 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 32px;">
             <!-- Traffic Chart -->
-<div style="background: #111; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);">
+<div style="background: #1c1c1c; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);">
 <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #fff;">Traffic Overview</h3>
 <div style="height: 200px; display: flex; align-items: flex-end; gap: 8px; padding: 20px 0;">
                     ${generateTrafficBars()}
@@ -68,7 +68,7 @@ function loadAdminAnalyticsPanel() {
 </div>
 
             <!-- Traffic Sources -->
-<div style="background: #111; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);">
+<div style="background: #1c1c1c; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);">
 <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #fff;">Traffic Sources</h3>
 <div style="display: flex; flex-direction: column; gap: 16px;">
                     ${trafficSources.map(s => `
@@ -87,7 +87,7 @@ function loadAdminAnalyticsPanel() {
 </div>
 
         <!-- Top Pages Table -->
-<div style="background: #111; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 32px;">
+<div style="background: #1c1c1c; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 32px;">
 <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #fff;">Top Pages</h3>
 <table style="width: 100%; border-collapse: collapse;">
 <thead>
@@ -294,22 +294,22 @@ function loadAdminReviewsPanel() {
 <div style="font-size: 48px; font-weight: 700;">⭐ ${avgRating}</div>
 <div style="font-size: 14px; margin-top: 8px; opacity: 0.9;">Average Rating</div>
 </div>
-<div style="background: #111; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); text-align: center;">
+<div style="background: #1c1c1c; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); text-align: center;">
 <div style="font-size: 48px; font-weight: 700; background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${googleReviews.length}</div>
 <div style="font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 8px;">Total Reviews</div>
 </div>
-<div style="background: #111; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); text-align: center;">
+<div style="background: #1c1c1c; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); text-align: center;">
 <div style="font-size: 48px; font-weight: 700; background: linear-gradient(135deg, #10b981 0%, #34d399 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${fiveStarCount}</div>
 <div style="font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 8px;">5-Star Reviews</div>
 </div>
-<div style="background: #111; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); text-align: center;">
+<div style="background: #1c1c1c; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); text-align: center;">
 <div style="font-size: 48px; font-weight: 700; background: linear-gradient(135deg, ${unrepliedCount > 0 ? '#f59e0b, #fbbf24' : '#10b981, #34d399'}); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${unrepliedCount}</div>
 <div style="font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 8px;">Needs Reply</div>
 </div>
 </div>
 
         <!-- Rating Distribution -->
-<div style="background: #111; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 32px;">
+<div style="background: #1c1c1c; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 32px;">
 <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #fff;">Rating Distribution</h3>
 <div class="flex-col-gap-12">
                 ${[5,4,3,2,1].map(rating => {
@@ -329,10 +329,10 @@ function loadAdminReviewsPanel() {
 </div>
 
         <!-- Reviews List -->
-<div style="background: #111; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);">
+<div style="background: #1c1c1c; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 <h3 style="font-size: 16px; font-weight: 600; color: #fff;">All Reviews</h3>
-<select style="padding: 8px 16px; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; background: #1a1a1a; color: #fff;">
+<select style="padding: 8px 16px; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; background: #242424; color: #fff;">
 <option>Most Recent</option>
 <option>Highest Rated</option>
 <option>Lowest Rated</option>
@@ -348,7 +348,7 @@ function loadAdminReviewsPanel() {
 
 function renderReviewCard(review) {
     return `
-<div style="padding: 20px; background: #1a1a1a; border-radius: 12px; border-left: 4px solid ${review.rating >= 4 ? '#10b981' : review.rating === 3 ? '#f59e0b' : '#ef4444'};">
+<div style="padding: 20px; background: #242424; border-radius: 12px; border-left: 4px solid ${review.rating >= 4 ? '#10b981' : review.rating === 3 ? '#f59e0b' : '#ef4444'};">
 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
 <div class="flex-center-gap-12">
 <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #fff;">${review.author.charAt(0)}</div>
@@ -831,7 +831,7 @@ function editEmailTemplate(templateId) {
     modal.className = 'modal-overlay active';
     modal.id = 'editTemplateModal';
     modal.innerHTML = `
-<div class="modal" style="max-width: 600px; background: #1a1a1a; color: #fff;">
+<div class="modal" style="max-width: 600px; background: #242424; color: #fff;">
 <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
 <h3 class="modal-title text-white">✏️ Edit Template: ${template.name}</h3>
 <button class="modal-close" onclick="document.getElementById('editTemplateModal').remove()" class="text-white">×</button>
@@ -897,7 +897,7 @@ function showCreateProductModal() {
     modal.className = 'modal-overlay active';
     modal.id = 'createProductModal';
     modal.innerHTML = `
-<div class="modal" style="background: #1a1a1a; color: #fff;">
+<div class="modal" style="background: #242424; color: #fff;">
 <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
 <h3 class="modal-title text-white">➕ Create New Product/Service</h3>
 <button class="modal-close" onclick="document.getElementById('createProductModal').remove()" class="text-white">×</button>

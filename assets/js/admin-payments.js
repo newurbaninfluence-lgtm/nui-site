@@ -176,7 +176,7 @@ function showRecordPaymentModal() {
     modal.className = 'modal-overlay active';
     modal.id = 'recordPaymentModal';
     modal.innerHTML = `
-<div class="modal" style="background: #1a1a1a; color: #fff;">
+<div class="modal" style="background: #242424; color: #fff;">
 <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
 <h3 class="modal-title text-white">💳 Record Payment</h3>
 <button class="modal-close" onclick="document.getElementById('recordPaymentModal').remove()" class="text-white">×</button>
@@ -468,7 +468,7 @@ function showCreateInvoiceModal() {
     modal.className = 'modal-overlay active';
     modal.id = 'createInvoiceModal';
     modal.innerHTML = `
-<div class="modal" style="max-width: 800px; background: #1a1a1a; color: #fff;">
+<div class="modal" style="max-width: 800px; background: #242424; color: #fff;">
 <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
 <h3 class="modal-title text-white">📄 Create Invoice</h3>
 <button class="modal-close" onclick="document.getElementById('createInvoiceModal').remove()" class="text-white">×</button>
@@ -1295,7 +1295,7 @@ function openPayoutSettingsModal() {
     modal.id = 'payoutSettingsModal';
     modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10000;display:flex;align-items:center;justify-content:center;';
     modal.innerHTML = `
-<div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:16px;max-width:480px;width:90%;padding:32px;position:relative;">
+<div style="background:#242424;border:1px solid rgba(255,255,255,0.1);border-radius:16px;max-width:480px;width:90%;padding:32px;position:relative;">
 <button onclick="document.getElementById('payoutSettingsModal').remove()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:24px;cursor:pointer;color:rgba(255,255,255,0.5);">&times;</button>
 <h2 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:24px;">⚙️ Payout Settings</h2>
 <div style="display:flex;flex-direction:column;gap:16px;">
@@ -1306,9 +1306,9 @@ function openPayoutSettingsModal() {
 <div>
 <label style="display:block;font-size:12px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Payout Schedule</label>
 <select id="psSchedule" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:14px;">
-<option value="weekly" ${payoutSettings.payoutSchedule === 'weekly' ? 'selected' : ''} style="background:#1a1a1a;">Weekly</option>
-<option value="biweekly" ${payoutSettings.payoutSchedule === 'biweekly' ? 'selected' : ''} style="background:#1a1a1a;">Bi-Weekly</option>
-<option value="monthly" ${payoutSettings.payoutSchedule === 'monthly' ? 'selected' : ''} style="background:#1a1a1a;">Monthly</option>
+<option value="weekly" ${payoutSettings.payoutSchedule === 'weekly' ? 'selected' : ''} style="background:#242424;">Weekly</option>
+<option value="biweekly" ${payoutSettings.payoutSchedule === 'biweekly' ? 'selected' : ''} style="background:#242424;">Bi-Weekly</option>
+<option value="monthly" ${payoutSettings.payoutSchedule === 'monthly' ? 'selected' : ''} style="background:#242424;">Monthly</option>
 </select>
 </div>
 <div>

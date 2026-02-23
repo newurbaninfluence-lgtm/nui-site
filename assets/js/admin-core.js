@@ -991,18 +991,18 @@ function loadAdminUserManagementPanel() {
 
         <!-- User Search -->
 <div class="mb-24">
-<input type="text" id="userSearchInput" oninput="filterUserTable()" placeholder="Search users by name or email..." style="width: 100%; padding: 12px 16px; background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 14px;">
+<input type="text" id="userSearchInput" oninput="filterUserTable()" placeholder="Search users by name or email..." style="width: 100%; padding: 12px 16px; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 14px;">
 </div>
 
         <!-- All Users Table -->
-<div style="background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: hidden;">
+<div style="background: #1c1c1c; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: hidden;">
 <div style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.06);">
 <h3 style="font-size: 16px; font-weight: 600;">All Users</h3>
 </div>
 <div style="overflow-x: auto;">
 <table id="userManagementTable" style="width: 100%; border-collapse: collapse;">
 <thead>
-<tr style="background: #0a0a0a;">
+<tr style="background: #202020;">
 <th style="padding: 12px; text-align: left; font-size: 12px; text-transform: uppercase; color: #888; border-bottom: 1px solid rgba(255,255,255,0.06);">Name</th>
 <th style="padding: 12px; text-align: left; font-size: 12px; text-transform: uppercase; color: #888; border-bottom: 1px solid rgba(255,255,255,0.06);">Email</th>
 <th style="padding: 12px; text-align: left; font-size: 12px; text-transform: uppercase; color: #888; border-bottom: 1px solid rgba(255,255,255,0.06);">Role</th>
@@ -1263,22 +1263,22 @@ function loadAdminStripePanel() {
         ` : `
         <!-- Stripe Dashboard -->
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 32px;">
-<div style="background: #1a1a1a; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+<div style="background: #242424; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
 <div style="font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 8px;">Balance</div>
 <div style="font-size: 32px; font-weight: 700; color: #fff;">$4,850</div>
 <div style="font-size: 13px; color: #10b981; margin-top: 8px;">Available for payout</div>
 </div>
-<div style="background: #1a1a1a; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+<div style="background: #242424; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
 <div style="font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 8px;">This Month</div>
 <div style="font-size: 32px; font-weight: 700; color: #fff;">$12,450</div>
 <div style="font-size: 13px; color: #10b981; margin-top: 8px;">↑ 18% vs last month</div>
 </div>
-<div style="background: #1a1a1a; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+<div style="background: #242424; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
 <div style="font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 8px;">Pending</div>
 <div style="font-size: 32px; font-weight: 700; color: #fff;">$2,300</div>
 <div style="font-size: 13px; color: #f59e0b; margin-top: 8px;">3 payments processing</div>
 </div>
-<div style="background: #1a1a1a; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+<div style="background: #242424; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
 <div style="font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 8px;">Success Rate</div>
 <div style="font-size: 32px; font-weight: 700; color: #fff;">98.5%</div>
 <div style="font-size: 13px; color: #10b981; margin-top: 8px;">Excellent</div>
@@ -1287,7 +1287,7 @@ function loadAdminStripePanel() {
         `}
 
         <!-- API Keys -->
-<div style="background: #1a1a1a; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 32px;">
+<div style="background: #242424; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 32px;">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 <h3 style="font-size: 16px; font-weight: 600; color: #fff;">🔑 API Configuration</h3>
 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #fff;">
@@ -1309,7 +1309,7 @@ function loadAdminStripePanel() {
 </div>
 
         <!-- Payment Methods -->
-<div style="background: #1a1a1a; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 32px;">
+<div style="background: #242424; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 32px;">
 <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #fff;">💳 Accepted Payment Methods</h3>
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
 <div style="padding: 20px; background: #252525; border-radius: 12px; text-align: center; border: 2px solid #10b981;">
@@ -1336,7 +1336,7 @@ function loadAdminStripePanel() {
 </div>
 
         <!-- Recent Transactions -->
-<div style="background: #1a1a1a; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+<div style="background: #242424; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 <h3 style="font-size: 16px; font-weight: 600; color: #fff;">📋 Recent Transactions</h3>
 <a href="https://dashboard.stripe.com" target="_blank" class="btn-outline" style="color: #fff; border-color: rgba(255,255,255,0.3);">Open Stripe Dashboard →</a>
@@ -1428,12 +1428,12 @@ function loadAdminIntegrationsPanel() {
 </div>
 
         <!-- Communications Integrations -->
-<div class="form-section" style="background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
+<div class="form-section" style="background: #1c1c1c; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
 <div class="form-section-title" style="color: #fff; margin-bottom: 20px;">📱 Communications</div>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
 
                 <!-- OpenPhone -->
-<div style="background: #1a1a1a; border: 1px solid ${integrations.openphone.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
+<div style="background: #242424; border: 1px solid ${integrations.openphone.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
 <div class="admin-row-between">
 <div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #7c3aed, #4f46e5); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📞</div>
@@ -1456,7 +1456,7 @@ function loadAdminIntegrationsPanel() {
 </div>
 
                 <!-- SendGrid -->
-<div style="background: #1a1a1a; border: 1px solid ${integrations.sendgrid.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
+<div style="background: #242424; border: 1px solid ${integrations.sendgrid.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
 <div class="admin-row-between">
 <div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">✉️</div>
@@ -1475,7 +1475,7 @@ function loadAdminIntegrationsPanel() {
 </div>
 
                 <!-- Mailchimp -->
-<div style="background: #1a1a1a; border: 1px solid ${integrations.mailchimp.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
+<div style="background: #242424; border: 1px solid ${integrations.mailchimp.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
 <div class="admin-row-between">
 <div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #ffe01b, #f59e0b); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🐵</div>
@@ -1496,12 +1496,12 @@ function loadAdminIntegrationsPanel() {
 </div>
 
         <!-- Social Media Integrations -->
-<div class="form-section" style="background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
+<div class="form-section" style="background: #1c1c1c; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
 <div class="form-section-title" style="color: #fff; margin-bottom: 20px;">📱 Social Media</div>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
 
                 <!-- Instagram -->
-<div style="background: #1a1a1a; border: 1px solid ${integrations.instagram.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
+<div style="background: #242424; border: 1px solid ${integrations.instagram.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
 <div class="admin-row-between">
 <div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📸</div>
@@ -1520,7 +1520,7 @@ function loadAdminIntegrationsPanel() {
 </div>
 
                 <!-- Facebook -->
-<div style="background: #1a1a1a; border: 1px solid ${integrations.facebook.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
+<div style="background: #242424; border: 1px solid ${integrations.facebook.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
 <div class="admin-row-between">
 <div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: #1877f2; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📘</div>
@@ -1535,7 +1535,7 @@ function loadAdminIntegrationsPanel() {
 </div>
 
                 <!-- LinkedIn -->
-<div style="background: #1a1a1a; border: 1px solid ${integrations.linkedin.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
+<div style="background: #242424; border: 1px solid ${integrations.linkedin.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
 <div class="admin-row-between">
 <div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: #0077b5; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">💼</div>
@@ -1552,12 +1552,12 @@ function loadAdminIntegrationsPanel() {
 </div>
 
         <!-- Automation Integrations -->
-<div class="form-section" style="background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px;">
+<div class="form-section" style="background: #1c1c1c; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px;">
 <div class="form-section-title" style="color: #fff; margin-bottom: 20px;">⚡ Automation & Tools</div>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
 
                 <!-- Zapier -->
-<div style="background: #1a1a1a; border: 1px solid ${integrations.zapier.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
+<div style="background: #242424; border: 1px solid ${integrations.zapier.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
 <div class="admin-row-between">
 <div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: #ff4a00; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">⚡</div>
@@ -1576,7 +1576,7 @@ function loadAdminIntegrationsPanel() {
 </div>
 
                 <!-- Slack -->
-<div style="background: #1a1a1a; border: 1px solid ${integrations.slack.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
+<div style="background: #242424; border: 1px solid ${integrations.slack.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
 <div class="admin-row-between">
 <div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: #4a154b; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">💬</div>
@@ -1595,7 +1595,7 @@ function loadAdminIntegrationsPanel() {
 </div>
 
                 <!-- Google -->
-<div style="background: #1a1a1a; border: 1px solid ${integrations.google.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
+<div style="background: #242424; border: 1px solid ${integrations.google.connected ? '#10b981' : 'rgba(255,255,255,0.1)'}; border-radius: 12px; padding: 20px;">
 <div class="admin-row-between">
 <div class="flex-center-gap-12">
 <div style="width: 48px; height: 48px; background: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🔵</div>

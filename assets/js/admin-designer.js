@@ -38,7 +38,7 @@ function renderPortfolioEditor() {
     if (!p) return '';
     return `
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 40px;">
-<div style="background: #111; width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto; border-radius: 16px; border:1px solid rgba(255,255,255,0.1);">
+<div style="background: #1c1c1c; width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto; border-radius: 16px; border:1px solid rgba(255,255,255,0.1);">
 <div style="padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
 <h2 style="font-size: 24px; font-weight: 700; color:#fff;">Edit: ${p.name}</h2>
 <button onclick="currentPortfolioCase = null; loadAdminPortfolioPanel();" style="background: none; border: none; font-size: 24px; cursor: pointer; color:rgba(255,255,255,0.5);">×</button>
@@ -934,9 +934,9 @@ function renderBrandGuideEditor() {
 
     return `
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px;">
-<div style="background: #1a1a1a; width: 100%; max-width: 1100px; max-height: 95vh; overflow-y: auto; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+<div style="background: #242424; width: 100%; max-width: 1100px; max-height: 95vh; overflow-y: auto; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
                 <!-- Header -->
-<div style="padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #1a1a1a; z-index: 10;">
+<div style="padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #242424; z-index: 10;">
 <div>
 <h2 style="font-size: 24px; font-weight: 700; color: #fff;">${p.title}</h2>
 <p style="color: rgba(255,255,255,0.5); font-size: 13px; margin-top: 4px;">Client: ${client?.name || 'Unknown'} • Status: <span class="status-badge ${p.status}">${p.status?.replace('_', ' ')}</span></p>
@@ -1248,14 +1248,14 @@ async function sendProofToClient(id) {
                     to: clientEmail,
                     clientId: client?.id,
                     subject: `🎨 Your ${p.title || 'Brand Guide'} Proof is Ready for Review`,
-                    html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
+                    html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #202020; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #e63946, #ff6b6b); padding: 32px; text-align: center;">
 <h2 class="m-0 fs-24 text-white">Your Proof is Ready! 🎉</h2>
 </div>
 <div class="p-32">
 <p class="text-light">Hey ${client?.name || 'there'},</p>
 <p class="text-light">Your <strong>${p.title || 'Brand Guide'}</strong> proof is ready for your review!</p>
-<div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center;">
+<div style="background: #1c1c1c; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center;">
 <p style="color: #fff; font-weight: 600; margin-bottom: 16px;">What to do next:</p>
 <p style="color: #ccc; font-size: 14px; margin-bottom: 8px;">✅ <strong>Approve</strong> — if everything looks perfect</p>
 <p style="color: #ccc; font-size: 14px;">🔄 <strong>Request Revisions</strong> — if you need changes</p>
@@ -1992,7 +1992,7 @@ function viewBrandGuide(id) {
 <h3 class="modal-title text-white">${guide.title} - Brand Guide</h3>
 <button class="modal-close" onclick="document.getElementById('viewBrandGuideModal').remove()" class="text-white">×</button>
 </div>
-<div class="modal-body" style="max-height: 70vh; overflow-y: auto; background: #0a0a0a;">
+<div class="modal-body" style="max-height: 70vh; overflow-y: auto; background: #202020;">
                 <!-- Brand Header -->
 <div style="text-align: center; padding: 40px 20px; background: linear-gradient(135deg, ${guide.brandColors?.[0]}22, ${guide.brandColors?.[1]}22); border-radius: 12px; margin-bottom: 24px;">
                     ${guide.logo ? `<img alt="Brand guide logo" loading="lazy" src="${guide.logo}" style="max-width: 200px; max-height: 100px; object-fit: contain; margin-bottom: 16px;">` : ''}
@@ -2180,7 +2180,7 @@ function _nuiRenderMbCard(mb) {
     var workflowBtn = (mb.status === 'approved') ?
         '<button onclick="startBrandWorkflow(' + mb.id + ')" style="flex:1;padding:8px;background:#22c55e;color:#000;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">Start Brand</button>' : '';
     var deleteBtn = '<button onclick="window._nuiDeleteMoodboard(' + mb.id + ')" style="padding:8px 10px;background:transparent;color:#666;border:1px solid #333;border-radius:6px;cursor:pointer;font-size:12px;" title="Delete">✕</button>';
-    return '<div class="nui-mb-card" data-client-id="' + (mb.clientId || '') + '" style="background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'rgba(99,102,241,0.4)\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,0.08)\'">' +
+    return '<div class="nui-mb-card" data-client-id="' + (mb.clientId || '') + '" style="background:#1c1c1c;border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'rgba(99,102,241,0.4)\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,0.08)\'">' +
         thumbHtml +
         '<div style="padding:14px;">' +
             '<h4 style="margin:0 0 6px;color:#fff;font-size:15px;">' + (mb.title || 'Untitled') + '</h4>' +
@@ -2217,7 +2217,7 @@ function loadAdminMoodboardPanel() {
                 '<div class="admin-card-dark-center"><span style="font-size:28px;font-weight:700;color:#22c55e;">' + approved + '</span><div class="text-muted-sm">Approved</div></div>' +
             '</div>' +
             '<div style="display:flex;gap:12px;margin-bottom:20px;">' +
-                '<select id="nuiMbFilter" onchange="window._nuiFilterMoodboards()" style="padding:8px 14px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:13px;min-width:180px;">' +
+                '<select id="nuiMbFilter" onchange="window._nuiFilterMoodboards()" style="padding:8px 14px;background:#242424;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:13px;min-width:180px;">' +
                     '<option value="">All Clients</option>' + clientOpts +
                 '</select>' +
             '</div>' +
@@ -3583,7 +3583,7 @@ function previewMoodboard(mbId) {
                 '<p style="color:#888;margin-top:4px;">Prepared for '+(client?.name||'Client')+' by New Urban Influence</p></div>'+
                 '<button onclick="this.closest(\'div[style*=fixed]\').remove()" style="padding:10px 20px;background:#333;border:1px solid #555;color:#fff;border-radius:8px;cursor:pointer;">Close</button>'+
             '</div>'+
-            (mb.notes?'<div style="background:#111;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;margin-bottom:24px;"><p style="color:#ccc;line-height:1.6;">'+mb.notes+'</p></div>':'')+
+            (mb.notes?'<div style="background:#1c1c1c;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;margin-bottom:24px;"><p style="color:#ccc;line-height:1.6;">'+mb.notes+'</p></div>':'')+
             '<div style="background:'+bgColor+';border-radius:12px;position:relative;width:100%;height:700px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);">'+
                 renderMoodboardItems(mb, true)+
             '</div>'+

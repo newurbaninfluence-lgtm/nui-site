@@ -82,23 +82,23 @@ function renderContactHub() {
 <style>
   .ch-header { margin-bottom: 24px; }
   .ch-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
-  .ch-stat { background: #111; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; }
+  .ch-stat { background: #1c1c1c; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; }
   .ch-stat .num { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
   .ch-stat .lbl { font-size: 12px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.5px; }
   .ch-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; }
-  .ch-search { padding: 10px 16px; background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 260px; font-family: inherit; font-size: 14px; }
+  .ch-search { padding: 10px 16px; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 260px; font-family: inherit; font-size: 14px; }
   .ch-filter-btn { padding: 8px 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit; transition: all 0.15s; }
   .ch-filter-btn:hover { border-color: rgba(255,255,255,0.25); color: #fff; }
   .ch-filter-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
   .ch-table { width: 100%; border-collapse: collapse; }
-  .ch-table th { text-align: left; padding: 10px 12px; background: #0a0a0a; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.4); position: sticky; top: 0; }
+  .ch-table th { text-align: left; padding: 10px 12px; background: #202020; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.4); position: sticky; top: 0; }
   .ch-table td { padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
   .ch-table tr { cursor: pointer; transition: background 0.15s; }
   .ch-table tr:hover td { background: rgba(255,255,255,0.025); }
   .ch-table tr.selected td { background: rgba(220,38,38,0.08); }
   .ch-badge { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; }
   .ch-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
-  .ch-drawer { position: fixed; top: 0; right: 0; width: 480px; height: 100vh; background: #111; border-left: 1px solid rgba(255,255,255,0.1); z-index: 9000; overflow-y: auto; transform: translateX(100%); transition: transform 0.25s ease; }
+  .ch-drawer { position: fixed; top: 0; right: 0; width: 480px; height: 100vh; background: #1c1c1c; border-left: 1px solid rgba(255,255,255,0.1); z-index: 9000; overflow-y: auto; transform: translateX(100%); transition: transform 0.25s ease; }
   .ch-drawer.open { transform: translateX(0); }
   .ch-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 8999; display: none; }
   .ch-drawer-overlay.open { display: block; }
@@ -115,7 +115,7 @@ function renderContactHub() {
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
     <h2 style="font-size:24px;font-weight:800;">📡 Contact Hub</h2>
     <div style="display:flex;gap:8px;">
-      <button onclick="fetchContactHubData().then(renderContactHub)" class="ch-filter-btn" style="background:#111;">🔄 Refresh</button>
+      <button onclick="fetchContactHubData().then(renderContactHub)" class="ch-filter-btn" style="background:#1c1c1c;">🔄 Refresh</button>
       <button onclick="showCsvUploadModal()" class="ch-filter-btn" style="background:#1a5c2a;border-color:#1a5c2a;color:#fff;">📄 Import CSV</button>
       <button onclick="showAddHubContactModal()" class="ch-filter-btn" style="background:var(--red);border-color:var(--red);color:#fff;">+ Add Contact</button>
     </div>
@@ -154,7 +154,7 @@ function renderContactHub() {
   <button class="ch-filter-btn ${contactHubFilter === 'contacted' ? 'active' : ''}" onclick="contactHubFilter='contacted';renderContactHub();">📞 Contacted</button>
   <button class="ch-filter-btn ${contactHubFilter === 'qualified' ? 'active' : ''}" onclick="contactHubFilter='qualified';renderContactHub();">✅ Qualified</button>
   <button class="ch-filter-btn ${contactHubFilter === 'client' ? 'active' : ''}" onclick="contactHubFilter='client';renderContactHub();">⭐ Client</button>
-  <select onchange="contactHubSort=this.value;renderContactHub();" style="padding:8px 12px;background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-size:12px;">
+  <select onchange="contactHubSort=this.value;renderContactHub();" style="padding:8px 12px;background:#1c1c1c;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-size:12px;">
     <option value="newest" ${contactHubSort === 'newest' ? 'selected' : ''}>Newest First</option>
     <option value="oldest" ${contactHubSort === 'oldest' ? 'selected' : ''}>Oldest First</option>
     <option value="recent_activity" ${contactHubSort === 'recent_activity' ? 'selected' : ''}>Recent Activity</option>
@@ -395,7 +395,7 @@ function renderContactDrawer(contactId) {
 
   <!-- Status Bar -->
   <div style="display:flex;gap:6px;margin-bottom:16px;align-items:center;">
-    <select onchange="setHubContactStatus('${c.id}', this.value)" style="padding:6px 10px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:#fff;font-size:12px;font-weight:600;">
+    <select onchange="setHubContactStatus('${c.id}', this.value)" style="padding:6px 10px;background:#242424;border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:#fff;font-size:12px;font-weight:600;">
       ${statusOptions.map(s => '<option value="' + s + '"' + (c.status === s ? ' selected' : '') + '>' + s.replace(/_/g, ' ').toUpperCase() + '</option>').join('')}
     </select>
     <span style="font-size:12px;color:rgba(255,255,255,0.3);">Source: ${c.source || '—'}</span>
@@ -404,9 +404,9 @@ function renderContactDrawer(contactId) {
 
   <!-- Tab Nav -->
   <div style="display:flex;gap:0;margin-bottom:16px;border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;">
-    <button onclick="contactHubDrawerTab='timeline';renderContactHub();" style="flex:1;padding:10px;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'timeline' ? 'background:var(--red);color:#fff;' : 'background:#111;color:rgba(255,255,255,0.5);'}">⏱ Timeline</button>
-    <button onclick="contactHubDrawerTab='sms';renderContactHub();setTimeout(()=>{const i=document.getElementById('hubSmsInput');if(i)i.focus();},100);" style="flex:1;padding:10px;border:none;border-left:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'sms' ? 'background:var(--red);color:#fff;' : 'background:#111;color:rgba(255,255,255,0.5);'}">${c.phone ? '💬 SMS' : '💬 SMS'} ${allSms.length > 0 ? '(' + allSms.length + ')' : ''}</button>
-    <button onclick="contactHubDrawerTab='email';renderContactHub();" style="flex:1;padding:10px;border:none;border-left:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'email' ? 'background:var(--red);color:#fff;' : 'background:#111;color:rgba(255,255,255,0.5);'}">${c.email ? '📧 Email' : '📧 Email'} ${allEmails.length > 0 ? '(' + allEmails.length + ')' : ''}</button>
+    <button onclick="contactHubDrawerTab='timeline';renderContactHub();" style="flex:1;padding:10px;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'timeline' ? 'background:var(--red);color:#fff;' : 'background:#1c1c1c;color:rgba(255,255,255,0.5);'}">⏱ Timeline</button>
+    <button onclick="contactHubDrawerTab='sms';renderContactHub();setTimeout(()=>{const i=document.getElementById('hubSmsInput');if(i)i.focus();},100);" style="flex:1;padding:10px;border:none;border-left:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'sms' ? 'background:var(--red);color:#fff;' : 'background:#1c1c1c;color:rgba(255,255,255,0.5);'}">${c.phone ? '💬 SMS' : '💬 SMS'} ${allSms.length > 0 ? '(' + allSms.length + ')' : ''}</button>
+    <button onclick="contactHubDrawerTab='email';renderContactHub();" style="flex:1;padding:10px;border:none;border-left:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'email' ? 'background:var(--red);color:#fff;' : 'background:#1c1c1c;color:rgba(255,255,255,0.5);'}">${c.email ? '📧 Email' : '📧 Email'} ${allEmails.length > 0 ? '(' + allEmails.length + ')' : ''}</button>
   </div>
 
   <!-- Tab Content -->
@@ -417,7 +417,7 @@ function renderContactDrawer(contactId) {
   <!-- Notes (always visible) -->
   <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">
     <h4 style="font-size:13px;font-weight:600;margin-bottom:6px;">📝 Notes</h4>
-    <textarea id="hubContactNotes" rows="2" placeholder="Add notes..." style="width:100%;padding:8px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:inherit;font-size:12px;resize:vertical;">${c.notes || ''}</textarea>
+    <textarea id="hubContactNotes" rows="2" placeholder="Add notes..." style="width:100%;padding:8px;background:#202020;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:inherit;font-size:12px;resize:vertical;">${c.notes || ''}</textarea>
     <button onclick="saveHubContactNotes('${c.id}')" style="margin-top:4px;padding:5px 12px;background:rgba(255,255,255,0.08);border:none;color:#fff;border-radius:4px;cursor:pointer;font-size:11px;font-weight:600;">Save</button>
   </div>
 
@@ -453,7 +453,7 @@ function renderDrawerSms(c, allSms) {
     return '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:13px;">No phone number on file.<br>Add a phone number to send SMS.</div>';
   }
 
-  let thread = '<div id="hubSmsThread" style="max-height:320px;overflow-y:auto;padding:8px;margin-bottom:12px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);border-radius:10px;">';
+  let thread = '<div id="hubSmsThread" style="max-height:320px;overflow-y:auto;padding:8px;margin-bottom:12px;background:#202020;border:1px solid rgba(255,255,255,0.06);border-radius:10px;">';
 
   if (allSms.length === 0) {
     thread += '<div style="text-align:center;padding:40px 10px;color:rgba(255,255,255,0.2);font-size:12px;">No messages yet. Send the first one below.</div>';
@@ -475,7 +475,7 @@ function renderDrawerSms(c, allSms) {
   // Compose bar
   thread += `
 <div style="display:flex;gap:8px;align-items:flex-end;">
-  <textarea id="hubSmsInput" rows="2" placeholder="Type a message..." style="flex:1;padding:10px 14px;background:#111;border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;font-family:inherit;font-size:13px;resize:none;outline:none;" autocomplete="off" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendHubSmsInline('${c.id}');}"></textarea>
+  <textarea id="hubSmsInput" rows="2" placeholder="Type a message..." style="flex:1;padding:10px 14px;background:#1c1c1c;border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;font-family:inherit;font-size:13px;resize:none;outline:none;" autocomplete="off" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendHubSmsInline('${c.id}');}"></textarea>
   <button id="hubSmsSendBtn" onclick="sendHubSmsInline('${c.id}')" style="padding:10px 18px;background:var(--red);border:none;color:#fff;border-radius:10px;cursor:pointer;font-weight:700;font-size:14px;white-space:nowrap;font-family:inherit;">Send</button>
 </div>
 <div style="font-size:10px;color:rgba(255,255,255,0.2);margin-top:4px;">Via OpenPhone · Enter to send, Shift+Enter for new line</div>`;
@@ -502,7 +502,7 @@ function renderDrawerEmail(c, allEmails) {
       const preview = e.metadata?.preview || e.content || '';
       const opened = e.read || e.event_type === 'email_opened';
       const time = formatHubTime(e.created_at);
-      content += '<div style="padding:12px;margin-bottom:8px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);border-radius:8px;">' +
+      content += '<div style="padding:12px;margin-bottom:8px;background:#202020;border:1px solid rgba(255,255,255,0.06);border-radius:8px;">' +
         '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px;">' +
           '<div style="font-size:13px;font-weight:600;">' + (isOutbound ? '📤' : '📥') + ' ' + subject + '</div>' +
           (opened ? '<span style="font-size:10px;color:#10b981;white-space:nowrap;">✅ Read</span>' : '<span style="font-size:10px;color:rgba(255,255,255,0.3);white-space:nowrap;">Unread</span>') +
@@ -516,11 +516,11 @@ function renderDrawerEmail(c, allEmails) {
 
   // Compose form
   content += `
-<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px;">
+<div style="background:#202020;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px;">
   <div style="font-size:13px;font-weight:600;margin-bottom:10px;">✉️ New Email</div>
   <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px;">To: ${c.email}</div>
-  <input type="text" id="hubEmailSubject" placeholder="Subject" autocomplete="off" autocorrect="off" spellcheck="false" style="width:100%;padding:9px 12px;background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:inherit;font-size:13px;margin-bottom:8px;outline:none;">
-  <textarea id="hubEmailBody" rows="4" placeholder="Write your message..." autocomplete="off" style="width:100%;padding:9px 12px;background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:inherit;font-size:13px;resize:vertical;outline:none;margin-bottom:8px;"></textarea>
+  <input type="text" id="hubEmailSubject" placeholder="Subject" autocomplete="off" autocorrect="off" spellcheck="false" style="width:100%;padding:9px 12px;background:#1c1c1c;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:inherit;font-size:13px;margin-bottom:8px;outline:none;">
+  <textarea id="hubEmailBody" rows="4" placeholder="Write your message..." autocomplete="off" style="width:100%;padding:9px 12px;background:#1c1c1c;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:inherit;font-size:13px;resize:vertical;outline:none;margin-bottom:8px;"></textarea>
   <div style="display:flex;justify-content:space-between;align-items:center;">
     <span style="font-size:10px;color:rgba(255,255,255,0.25);">📊 Open tracking enabled</span>
     <button id="hubEmailSendBtn" onclick="sendHubEmail('${c.id}')" style="padding:8px 20px;background:var(--red);border:none;color:#fff;border-radius:6px;cursor:pointer;font-weight:700;font-family:inherit;font-size:13px;">Send Email</button>
@@ -876,7 +876,7 @@ function parseCsvFromFile(file) {
     // Preview table (first 5 rows)
     const previewRows = csvParsedRows.slice(0, 5);
     let tableHtml = '<table style="width:100%;font-size:11px;border-collapse:collapse;">';
-    tableHtml += '<tr>' + csvHeaders.map(h => '<th style="padding:6px 8px;background:#111;border-bottom:1px solid rgba(255,255,255,0.08);text-align:left;color:rgba(255,255,255,0.5);font-weight:600;">' + h + '</th>').join('') + '</tr>';
+    tableHtml += '<tr>' + csvHeaders.map(h => '<th style="padding:6px 8px;background:#1c1c1c;border-bottom:1px solid rgba(255,255,255,0.08);text-align:left;color:rgba(255,255,255,0.5);font-weight:600;">' + h + '</th>').join('') + '</tr>';
     previewRows.forEach(row => {
       tableHtml += '<tr>' + csvHeaders.map(h => '<td style="padding:5px 8px;border-bottom:1px solid rgba(255,255,255,0.04);color:rgba(255,255,255,0.7);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + (row[h] || '') + '</td>').join('') + '</tr>';
     });
@@ -888,7 +888,7 @@ function parseCsvFromFile(file) {
     const mappingHtml = targetFields.map(f => {
       return '<div style="display:flex;align-items:center;gap:6px;">' +
         '<label style="color:rgba(255,255,255,0.5);min-width:60px;">' + f + ':</label>' +
-        '<select id="csvMap_' + f + '" style="flex:1;padding:4px 6px;background:#111;border:1px solid rgba(255,255,255,0.12);border-radius:4px;color:#fff;font-size:11px;" onchange="csvColumnMap[\'' + f + '\']=this.value">' +
+        '<select id="csvMap_' + f + '" style="flex:1;padding:4px 6px;background:#1c1c1c;border:1px solid rgba(255,255,255,0.12);border-radius:4px;color:#fff;font-size:11px;" onchange="csvColumnMap[\'' + f + '\']=this.value">' +
         '<option value="">— skip —</option>' +
         csvHeaders.map(h => '<option value="' + h + '"' + (csvColumnMap[f] === h ? ' selected' : '') + '>' + h + '</option>').join('') +
         '</select></div>';

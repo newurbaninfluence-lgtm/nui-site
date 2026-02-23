@@ -177,7 +177,7 @@ function generateLeadForm() {
 .nui-form{font-family:'Inter',sans-serif;max-width:500px;margin:0 auto;padding:40px;background:#000;color:#fff;border-radius:12px}
 .nui-form h3{font-size:24px;margin-bottom:8px}
 .nui-form p{color:#888;margin-bottom:24px;font-size:14px}
-.nui-form input,.nui-form select,.nui-form textarea{width:100%;padding:14px;margin-bottom:16px;border:1px solid #333;background:#111;color:#fff;border-radius:8px;font-size:14px}
+.nui-form input,.nui-form select,.nui-form textarea{width:100%;padding:14px;margin-bottom:16px;border:1px solid #333;background:#1c1c1c;color:#fff;border-radius:8px;font-size:14px}
 .nui-form input:focus,.nui-form select:focus,.nui-form textarea:focus{outline:none;border-color:#ff0000}
 .nui-form button{width:100%;padding:16px;background:#ff0000;color:#fff;border:none;font-weight:600;font-size:16px;cursor:pointer;border-radius:8px}
 .nui-form button:hover{background:#cc0000}
@@ -282,13 +282,13 @@ ${servicePackages.map(p => '<option value="' + p.id + '">' + p.name + ' — $' +
             <!-- ONBOARDING OPTIONS -->
 <div style="font-weight: 600; font-size: 16px; margin: 24px 0 16px; color: var(--red); display: flex; align-items: center; gap: 8px;">🚀 Onboarding Actions</div>
 <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
-<label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; cursor: pointer;">
+<label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #242424; border: 1px solid #333; border-radius: 8px; cursor: pointer;">
 <input type="checkbox" id="sendWelcomeEmail" checked> <span class="fs-14">📧 Send Welcome Email</span>
 </label>
-<label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; cursor: pointer;">
+<label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #242424; border: 1px solid #333; border-radius: 8px; cursor: pointer;">
 <input type="checkbox" id="sendQuestionnaire" checked> <span class="fs-14">📋 Send Service Questionnaire</span>
 </label>
-<label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; cursor: pointer;">
+<label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #242424; border: 1px solid #333; border-radius: 8px; cursor: pointer;">
 <input type="checkbox" id="addToPipeline" checked> <span class="fs-14">📊 Add to CRM Pipeline</span>
 </label>
 </div>

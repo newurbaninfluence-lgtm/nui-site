@@ -81,14 +81,14 @@ async function createOrder(e) {
                     to: client.email,
                     clientId: clientId,
                     subject: `📋 New Project: ${order.projectName} — Invoice Ready`,
-                    html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
+                    html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #202020; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #e11d48, #ff6b6b); padding: 32px; text-align: center;">
 <h2 class="m-0 fs-24 text-white">New Project Started!</h2>
 </div>
 <div class="p-32">
 <p class="text-light">Hey ${client.name},</p>
 <p class="text-light">Your project <strong>${order.projectName}</strong> has been created and is ready to go!</p>
-<div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
+<div style="background: #1c1c1c; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
 <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
 <span class="text-muted">Project</span>
 <strong class="text-white">${order.projectName}</strong>
@@ -275,7 +275,7 @@ async function createClient(e) {
                     to: client.email,
                     clientId: client.id,
                     subject: `Welcome to New Urban Influence! 🎉`,
-                    html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
+                    html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #202020; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #e11d48, #ff6b6b); padding: 40px; text-align: center;">
 <h2 style="margin: 0; font-size: 28px; color: #fff;">Welcome to the Family!</h2>
 <p style="color: rgba(255,255,255,0.8); margin-top: 8px;">New Urban Influence</p>
@@ -283,7 +283,7 @@ async function createClient(e) {
 <div class="p-32">
 <p class="text-light">Hey ${client.contact || client.name},</p>
 <p class="text-light">We're thrilled to have you on board! Your client portal has been set up and is ready to go.</p>
-<div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
+<div style="background: #1c1c1c; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
 <p style="color: #e11d48; font-weight: 600; margin-bottom: 16px;">🔐 Your Login Credentials:</p>
 <p style="color: #ccc; margin: 8px 0;">Email: <strong>${client.email}</strong></p>
 <p style="color: #ccc; margin: 8px 0;">Password: <strong>${client.password}</strong></p>
@@ -292,7 +292,7 @@ async function createClient(e) {
 <div style="text-align: center; margin: 24px 0;">
 <a href="https://newurbaninfluence.com/#portal" style="display: inline-block; background: #e11d48; color: #fff; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">Log In to Your Portal →</a>
 </div>
-<div style="background: #111; border-left: 3px solid #e11d48; padding: 20px; border-radius: 0 8px 8px 0; margin: 24px 0;">
+<div style="background: #1c1c1c; border-left: 3px solid #e11d48; padding: 20px; border-radius: 0 8px 8px 0; margin: 24px 0;">
 <p style="color: #fff; font-weight: 600; margin-bottom: 8px;">What's Next?</p>
 <p style="color: #ccc; font-size: 14px; line-height: 1.8;">1. Log in and explore your portal<br>2. Complete the service questionnaire (check your inbox!)<br>3. Book a strategy call with our team<br>4. We start bringing your vision to life!</p>
 </div>
@@ -319,7 +319,7 @@ async function createClient(e) {
                     to: client.email,
                     clientId: client.id,
                     subject: `📋 Quick Questionnaire — Help Us Serve You Better`,
-                    html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
+                    html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #202020; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #3b82f6, #60a5fa); padding: 32px; text-align: center;">
 <h2 class="m-0 fs-24 text-white">Tell Us About Your Project</h2>
 </div>
@@ -329,7 +329,7 @@ async function createClient(e) {
 <div style="text-align: center; margin: 32px 0;">
 <a href="https://newurbaninfluence.com/#services" style="display: inline-block; background: #3b82f6; color: #fff; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">Start Questionnaire →</a>
 </div>
-<div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
+<div style="background: #1c1c1c; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
 <p style="color: #fff; font-weight: 600; margin-bottom: 12px;">The questionnaire covers:</p>
 <p style="color: #ccc; font-size: 14px; line-height: 1.8;">• Your business goals and target audience<br>• Design preferences and inspiration<br>• Budget and timeline expectations<br>• Any existing brand assets</p>
 </div>
@@ -531,14 +531,14 @@ async function applyStatusUpdate(id) {
                         to: client.email,
                         clientId: client.id,
                         subject: `${info.icon} ${order.projectName} — Status: ${info.label}`,
-                        html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
+                        html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #202020; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: ${info.color}; padding: 32px; text-align: center;">
 <h2 class="m-0 fs-24 text-white">${info.icon} Project Update</h2>
 </div>
 <div class="p-32">
 <p class="text-light">Hey ${client.name},</p>
 <p class="text-light">Your project <strong>${order.projectName}</strong> status has been updated:</p>
-<div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center;">
+<div style="background: #1c1c1c; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center;">
 <div style="font-size: 32px; margin-bottom: 12px;">${info.icon}</div>
 <div style="font-size: 24px; font-weight: 700; color: ${info.color}; margin-bottom: 8px;">${info.label}</div>
 <p style="color: #888; font-size: 14px; margin: 0;">${info.msg}</p>
@@ -591,14 +591,14 @@ async function markDelivered(id) {
                     to: client.email,
                     clientId: client.id,
                     subject: `🎉 Your ${order.projectName || order.project || 'Project'} Has Been Delivered!`,
-                    html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
+                    html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #202020; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #10b981, #059669); padding: 32px; text-align: center;">
 <h2 class="m-0 fs-24 text-white">Your Project is Complete! 🎉</h2>
 </div>
 <div class="p-32">
 <p class="text-light">Hey ${client.name || 'there'},</p>
 <p class="text-light">Great news — your <strong>${order.projectName || order.project}</strong> project has been completed and delivered!</p>
-<div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
+<div style="background: #1c1c1c; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
 <p style="color: #10b981; font-weight: 600; margin-bottom: 12px;">📦 What's included:</p>
 <p style="color: #ccc; font-size: 14px;">All final files and assets are available in your <a href="https://newurbaninfluence.com/#portal" style="color: #e63946;">Client Portal</a>.</p>
 </div>
@@ -649,7 +649,7 @@ function quickOrder(clientId) {
     modal.id = 'quickOrderModal';
     modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:99999;padding:20px;';
     modal.innerHTML = `
-<div style="background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:32px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;">
+<div style="background:#1c1c1c;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:32px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
         <h3 style="font-size:20px;font-weight:700;color:#fff;margin:0;">⚡ Quick Order</h3>
         <button onclick="document.getElementById('quickOrderModal').remove()" style="background:none;border:none;color:#888;font-size:24px;cursor:pointer;padding:4px 8px;">×</button>
@@ -801,14 +801,14 @@ async function submitQuickOrder(e, clientId) {
                     to: client.email,
                     clientId: clientId,
                     subject: '📋 New Order: ' + projectName + ' — Invoice #' + invoice.invoiceNumber,
-                    html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;border-radius:12px;overflow:hidden;">' +
+                    html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#202020;color:#fff;border-radius:12px;overflow:hidden;">' +
                         '<div style="background:linear-gradient(135deg,#e11d48,#ff6b6b);padding:32px;text-align:center;">' +
                             '<h2 style="margin:0;font-size:24px;color:#fff;">New Order Ready!</h2>' +
                         '</div>' +
                         '<div style="padding:32px;">' +
                             '<p style="color:#ccc;">Hey ' + (client.contact || client.name) + ',</p>' +
                             '<p style="color:#ccc;">Here\'s your invoice for <strong style="color:#fff;">' + projectName + '</strong>.</p>' +
-                            '<div style="background:#111;border:1px solid #333;border-radius:12px;padding:24px;margin:24px 0;">' +
+                            '<div style="background:#1c1c1c;border:1px solid #333;border-radius:12px;padding:24px;margin:24px 0;">' +
                                 '<div style="display:flex;justify-content:space-between;margin-bottom:12px;"><span style="color:#888;">Project</span><strong style="color:#fff;">' + projectName + '</strong></div>' +
                                 (description ? '<div style="display:flex;justify-content:space-between;margin-bottom:12px;"><span style="color:#888;">Details</span><span style="color:#ccc;">' + description + '</span></div>' : '') +
                                 '<div style="display:flex;justify-content:space-between;margin-bottom:12px;"><span style="color:#888;">Turnaround</span><strong style="color:#fff;">' + turnaround + '</strong></div>' +
@@ -820,7 +820,7 @@ async function submitQuickOrder(e, clientId) {
                             '</div>' +
                             '<p style="color:#888;font-size:13px;text-align:center;">Invoice #' + invoice.invoiceNumber + '</p>' +
                         '</div>' +
-                        '<div style="background:#0a0a0a;border-top:1px solid #222;padding:16px;text-align:center;"><p style="color:#555;font-size:12px;margin:0;">New Urban Influence • Detroit, MI</p></div>' +
+                        '<div style="background:#202020;border-top:1px solid #222;padding:16px;text-align:center;"><p style="color:#555;font-size:12px;margin:0;">New Urban Influence • Detroit, MI</p></div>' +
                     '</div>',
                     text: 'New order "' + projectName + '" created. Amount: $' + price.toLocaleString() + '. Turnaround: ' + turnaround + '. Log in to your client portal to view invoice and pay.'
                 })

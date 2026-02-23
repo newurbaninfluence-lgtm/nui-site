@@ -208,7 +208,7 @@ function loadPortalView() {
 <h5 class="admin-subheading-red">5. BREACH & PENALTIES</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;">Violation of this agreement will result in immediate termination, forfeiture of unpaid earnings, and may result in legal action including damages of no less than $25,000 per incident.</p>
 
-<div style="background: #111; border-radius: 8px; padding: 16px; margin-top: 24px;">
+<div style="background: #1c1c1c; border-radius: 8px; padding: 16px; margin-top: 24px;">
 <label style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer;">
 <input type="checkbox" id="ndaAgree" style="margin-top: 4px; width: 20px; height: 20px; accent-color: var(--red);">
 <span style="font-size: 13px; line-height: 1.6;">I have read, understand, and agree to all terms of this Non-Disclosure Agreement. I understand that violation of these terms will result in immediate termination and potential legal action.</span>
@@ -258,7 +258,7 @@ function loadPortalView() {
 <h5 class="admin-subheading-red">7. LIMITATION OF LIABILITY</h5>
 <p style="color: #888; font-size: 13px; line-height: 1.7;">New Urban Influence's liability is limited to the amount paid for services. We are not liable for any indirect, consequential, or incidental damages arising from the use of our services or deliverables.</p>
 
-<div style="background: #111; border-radius: 8px; padding: 16px; margin-top: 24px;">
+<div style="background: #1c1c1c; border-radius: 8px; padding: 16px; margin-top: 24px;">
 <label style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer;">
 <input type="checkbox" id="termsAgree" style="margin-top: 4px; width: 20px; height: 20px; accent-color: var(--red);">
 <span style="font-size: 13px; line-height: 1.6;">I have read, understand, and agree to these Terms & Conditions. I understand that timelines are estimates and that <strong>no refunds</strong> are available once work has started.</span>
@@ -285,24 +285,24 @@ function loadPortalView() {
 <!-- Contact Info (Mandatory) -->
 <div class="mb-20">
 <label style="font-weight: 600; display: block; margin-bottom: 8px;">Your Name <span style="color: var(--red);">*</span></label>
-<input type="text" id="meetingName" placeholder="Full name" style="width: 100%; padding: 12px 16px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box;" oninput="updateMeetingBtn()">
+<input type="text" id="meetingName" placeholder="Full name" style="width: 100%; padding: 12px 16px; background: #1c1c1c; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box;" oninput="updateMeetingBtn()">
 </div>
 
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;" class="mb-20">
 <div>
 <label style="font-weight: 600; display: block; margin-bottom: 8px;">Phone Number <span style="color: var(--red);">*</span></label>
-<input type="tel" id="meetingPhone" placeholder="(313) 555-1234" style="width: 100%; padding: 12px 16px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box;" oninput="updateMeetingBtn()">
+<input type="tel" id="meetingPhone" placeholder="(313) 555-1234" style="width: 100%; padding: 12px 16px; background: #1c1c1c; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box;" oninput="updateMeetingBtn()">
 </div>
 <div>
 <label style="font-weight: 600; display: block; margin-bottom: 8px;">Email <span style="color: var(--red);">*</span></label>
-<input type="email" id="meetingEmail" placeholder="you@email.com" style="width: 100%; padding: 12px 16px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box;" oninput="updateMeetingBtn()">
+<input type="email" id="meetingEmail" placeholder="you@email.com" style="width: 100%; padding: 12px 16px; background: #1c1c1c; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box;" oninput="updateMeetingBtn()">
 </div>
 </div>
 
 <!-- Service Interest (Mandatory) -->
 <div class="mb-20">
 <label style="font-weight: 600; display: block; margin-bottom: 8px;">Service Interested In <span style="color: var(--red);">*</span></label>
-<select id="meetingService" style="width: 100%; padding: 12px 16px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box; appearance: none; -webkit-appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\\'%23999\\' xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 24 24\\'><path d=\\'M7 10l5 5 5-5z\\'/></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 20px;" onchange="updateMeetingBtn()">
+<select id="meetingService" style="width: 100%; padding: 12px 16px; background: #1c1c1c; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; box-sizing: border-box; appearance: none; -webkit-appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\\'%23999\\' xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 24 24\\'><path d=\\'M7 10l5 5 5-5z\\'/></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 20px;" onchange="updateMeetingBtn()">
 <option value="" disabled selected style="color: #666;">Select a service...</option>
 <option value="Brand Identity Package">Brand Identity Package</option>
 <option value="Logo Design">Logo Design</option>
@@ -320,13 +320,13 @@ function loadPortalView() {
 <div class="mb-20">
 <label style="font-weight: 600; display: block; margin-bottom: 8px;">Meeting Type <span style="color: var(--red);">*</span></label>
 <div class="flex-gap-12">
-<label style="flex: 1; background: #111; border: 2px solid #333; border-radius: 8px; padding: 16px; cursor: pointer; text-align: center; transition: all 0.2s;" onclick="selectMeetingType('zoom')">
+<label style="flex: 1; background: #1c1c1c; border: 2px solid #333; border-radius: 8px; padding: 16px; cursor: pointer; text-align: center; transition: all 0.2s;" onclick="selectMeetingType('zoom')">
 <input type="radio" name="meetingType" value="zoom" class="hidden">
 <div class="fs-24 mb-8">💻</div>
 <div class="fw-600">Zoom Call</div>
 <div class="text-muted fs-12">Video meeting</div>
 </label>
-<label style="flex: 1; background: #111; border: 2px solid #333; border-radius: 8px; padding: 16px; cursor: pointer; text-align: center; transition: all 0.2s;" onclick="selectMeetingType('phone')">
+<label style="flex: 1; background: #1c1c1c; border: 2px solid #333; border-radius: 8px; padding: 16px; cursor: pointer; text-align: center; transition: all 0.2s;" onclick="selectMeetingType('phone')">
 <input type="radio" name="meetingType" value="phone" class="hidden">
 <div class="fs-24 mb-8">📞</div>
 <div class="fw-600">Phone Call</div>
@@ -337,7 +337,7 @@ function loadPortalView() {
 
 <div class="mb-20">
 <label style="font-weight: 600; display: block; margin-bottom: 8px;">Select Date</label>
-<div id="calendarGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; background: #111; border-radius: 8px; padding: 12px;"></div>
+<div id="calendarGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; background: #1c1c1c; border-radius: 8px; padding: 12px;"></div>
 </div>
 
 <div class="mb-20">
@@ -734,7 +734,7 @@ async function confirmMeeting() {
                         to: meetingClientEmail,
                         subject: `Welcome to New Urban Influence, ${meetingClientName}! 🎨`,
                         html: `
-<div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; border-radius: 16px; overflow: hidden;">
+<div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #181818; color: #ffffff; border-radius: 16px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #dc2626, #991b1b); padding: 40px; text-align: center;">
 <h2 style="margin: 0; font-size: 28px; color: #fff;">Welcome to NUI</h2>
 <p style="color: #fca5a5; margin-top: 8px;">Detroit's Premier Creative Agency</p>
@@ -743,7 +743,7 @@ async function confirmMeeting() {
 <p>Hi ${meetingClientName},</p>
 <p>Thank you for booking a <strong>${meetingType}</strong> with us on <strong>${new Date(meetingData.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</strong> at <strong>${meetingData.time}</strong>!</p>
 <p>We're excited to learn about your brand vision and how we can bring it to life.</p>
-<div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 20px; margin: 24px 0;">
+<div style="background: #1c1c1c; border: 1px solid #333; border-radius: 12px; padding: 20px; margin: 24px 0;">
 <h3 style="color: #dc2626; margin-top: 0;">What's Next:</h3>
 <p>✅ Meeting confirmed</p>
 <p>📋 Complete our quick service questionnaire (sent separately)</p>
@@ -753,7 +753,7 @@ async function confirmMeeting() {
 <p>If you have any questions before our meeting, reply to this email or visit our website.</p>
 <p style="color: #888; margin-top: 24px;">— The NUI Team</p>
 </div>
-<div style="background: #111; padding: 20px; text-align: center; border-top: 1px solid #222;">
+<div style="background: #1c1c1c; padding: 20px; text-align: center; border-top: 1px solid #222;">
 <p class="text-muted fs-12 m-0">New Urban Influence • Detroit, MI • newurbaninfluence.com</p>
 </div>
 </div>`
@@ -771,8 +771,8 @@ async function confirmMeeting() {
                     to: meetingClientEmail,
                     subject: `Quick Questionnaire Before Our Meeting — NUI`,
                     html: `
-<div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; border-radius: 16px; overflow: hidden;">
-<div style="background: #111; padding: 32px; text-align: center; border-bottom: 1px solid #222;">
+<div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #181818; color: #ffffff; border-radius: 16px; overflow: hidden;">
+<div style="background: #1c1c1c; padding: 32px; text-align: center; border-bottom: 1px solid #222;">
 <h2 style="margin: 0; color: #fff;">📋 Service Questionnaire</h2>
 <p style="color: #888; margin-top: 8px;">Help us prepare for your consultation</p>
 </div>
@@ -820,14 +820,14 @@ async function confirmMeeting() {
                         to: meetingClientEmail,
                         subject: `Your Custom Pricing Package — New Urban Influence`,
                         html: `
-<div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ffffff; border-radius: 16px; overflow: hidden;">
-<div style="background: #111; padding: 32px; text-align: center; border-bottom: 1px solid #222;">
+<div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #181818; color: #ffffff; border-radius: 16px; overflow: hidden;">
+<div style="background: #1c1c1c; padding: 32px; text-align: center; border-bottom: 1px solid #222;">
 <h2 style="margin: 0; color: #fff;">💰 Your Pricing Estimate</h2>
 </div>
 <div class="p-32">
 <p>Hi ${meetingClientName},</p>
 <p>Based on your upcoming consultation, here's an initial pricing estimate for our services:</p>
-<div style="background: #111; border: 2px solid #dc2626; border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center;">
+<div style="background: #1c1c1c; border: 2px solid #dc2626; border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center;">
 <div style="font-size: 14px; color: #888; margin-bottom: 8px;">${pricingPackage.name}</div>
 <div style="font-size: 36px; font-weight: 700; color: #dc2626;">$${pricingPackage.price.toLocaleString()}</div>
 <div style="font-size: 13px; color: #888; margin-top: 8px;">Turnaround: ${pricingPackage.turnaround}</div>
