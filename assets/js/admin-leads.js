@@ -10,16 +10,16 @@ function loadAdminLeadsPanel() {
 
     document.getElementById('adminLeadsPanel').innerHTML = `
 <div class="flex-between mb-32">
-    <h2 class="fs-28 fw-700">Lead Management</h2>
+    <h2 class="fs-28 fw-700">Submissions</h2>
     <div style="display: flex; gap: 8px;">
-        <button onclick="addManualLead()" class="btn-cta">+ Add Lead</button>
+        <button onclick="addManualLead()" class="btn-cta">+ Add Submission</button>
         <button onclick="syncMeetingsToLeads(); loadAdminLeadsPanel();" style="padding: 10px 16px; background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); border-radius: 8px; cursor: pointer; font-size: 13px;">🔄 Sync Meetings</button>
     </div>
 </div>
 
 <!-- Stat Cards -->
 <div class="stat-cards" style="grid-template-columns: repeat(6, 1fr); margin-bottom: 32px;">
-    <div class="stat-card"><div class="num">${leads.length}</div><div class="lbl">Total Leads</div></div>
+    <div class="stat-card"><div class="num">${leads.length}</div><div class="lbl">Total</div></div>
     <div class="stat-card" style="border-color: var(--green);"><div class="num" style="color: var(--green);">${newLeads}</div><div class="lbl">New</div></div>
     <div class="stat-card"><div class="num">${leads.filter(l => l.status === 'qualified').length}</div><div class="lbl">Qualified</div></div>
     <div class="stat-card"><div class="num">${leads.filter(l => l.status === 'converted').length}</div><div class="lbl">Converted</div></div>
@@ -44,7 +44,7 @@ function loadAdminLeadsPanel() {
 </div>
 
 <div class="form-section">
-    <div class="form-section-title">🎯 All Leads</div>
+    <div class="form-section-title">📩 All Submissions</div>
     ${leads.length > 0 ? `
     <table style="width: 100%; border-collapse: collapse;">
         <thead>
@@ -114,7 +114,7 @@ function loadAdminLeadsPanel() {
                 `;}).join('')}
         </tbody>
     </table>
-    ` : '<p style="text-align: center; color: var(--admin-text-muted); padding: 40px;">No leads yet. Calendly bookings will auto-appear here, or add leads manually.</p>'}
+    ` : '<p style="text-align: center; color: var(--admin-text-muted); padding: 40px;">No submissions yet. Form fills and Calendly bookings will auto-appear here.</p>'}
 </div>
 
 <div class="form-section mt-24">
