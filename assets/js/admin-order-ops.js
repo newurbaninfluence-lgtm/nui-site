@@ -154,19 +154,31 @@ async function createOrder(e) {
     // ZONE 5c: Auto-create project when order is placed (if none exists)
     if (typeof projects !== 'undefined') {
         const existingProject = projects.find(p =>
-            p.order_id == order.id ||
-            (p.name === order.projectName && p.client_id == order.clientId)
+            p.orderId == order.id || p.order_id == order.id ||
+            (p.name === order.projectName && (p.clientId == order.clientId || p.client_id == order.clientId))
         );
 
         if (!existingProject) {
             const newProject = {
                 id: Date.now() + 3,
+                clientId: order.clientId,
                 client_id: order.clientId,
+                orderId: order.id,
                 order_id: order.id,
+                invoiceId: invoice.id,
                 name: order.projectName || order.packageName || 'Project #' + order.id,
+                package: order.packageName || 'Custom',
+                totalAmount: order.estimate || 0,
+                paymentPlan: 'standard',
+                paidInstallments: 0,
                 stage: 'Discovery',
                 status: 'active',
+                startDate: new Date().toISOString().split('T')[0],
+                dueDate: order.dueDate || '',
+                deliverables: [],
+                timeTracked: 0,
                 created_at: new Date().toISOString(),
+                createdAt: new Date().toISOString(),
                 activityLog: [{
                     action: 'Project auto-created from order #' + order.id,
                     timestamp: new Date().toISOString(),
@@ -175,6 +187,9 @@ async function createOrder(e) {
             };
             projects.unshift(newProject);
             if (typeof saveProjects === 'function') saveProjects();
+            // Link invoice back to project
+            invoice.projectId = newProject.id;
+            saveInvoices();
             console.log('✅ Auto-created project for order:', order.id);
         }
     }

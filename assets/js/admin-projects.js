@@ -662,6 +662,20 @@ function recordProjectPayment(projectId) {
     });
     saveProjects();
 
+    // === SYNC: Find and mark linked invoice as paid ===
+    const linkedInvoice = invoices.find(i =>
+        i.status !== 'paid' && i.clientId === project.clientId &&
+        (i.projectId === project.id || i.projectName === project.name ||
+         (i.orderId && orders.find(o => o.id === i.orderId && o.clientId === project.clientId)))
+    );
+    if (linkedInvoice) {
+        linkedInvoice.status = 'paid';
+        linkedInvoice.paidAt = new Date().toISOString();
+        linkedInvoice.paidVia = 'project_record';
+        saveInvoices();
+        console.log('✅ Linked invoice #' + (linkedInvoice.invoiceNumber || linkedInvoice.id) + ' marked as paid');
+    }
+
     // Close modal and refresh
     if (document.getElementById('projectDetailsModal')) {
         document.getElementById('projectDetailsModal').remove();

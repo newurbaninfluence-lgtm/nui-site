@@ -1361,6 +1361,48 @@ function triggerInvoicePaid(invoiceId) {
             console.log('✅ Trigger: Order status updated to in_progress');
         }
     }
+
+    // === SYNC: Update linked project payment tracking ===
+    if (typeof projects !== 'undefined') {
+        // Find project by projectId on invoice, or by orderId match, or by clientId + name match
+        let linkedProject = null;
+        if (invoice.projectId) {
+            linkedProject = projects.find(p => p.id === invoice.projectId);
+        }
+        if (!linkedProject && invoice.orderId) {
+            linkedProject = projects.find(p => p.orderId === invoice.orderId || p.id === invoice.orderId);
+        }
+        if (!linkedProject && invoice.clientId) {
+            // Match by client + project name
+            linkedProject = projects.find(p => p.clientId === invoice.clientId &&
+                (p.name === invoice.projectName || (invoice.projectName && p.name && p.name.includes(invoice.projectName))));
+        }
+
+        if (linkedProject) {
+            linkedProject.paidInstallments = (linkedProject.paidInstallments || 0) + 1;
+            linkedProject.activityLog = linkedProject.activityLog || [];
+            linkedProject.activityLog.push({
+                action: 'Payment received: $' + (invoice.total || 0).toLocaleString() + ' (Invoice #' + (invoice.invoiceNumber || invoice.id) + ')',
+                timestamp: new Date().toISOString(),
+                stage: linkedProject.stage
+            });
+
+            // Auto-advance stage based on payment plan triggers
+            if (typeof paymentPlans !== 'undefined' && linkedProject.paymentPlan) {
+                const plan = paymentPlans[linkedProject.paymentPlan];
+                if (plan && plan.triggers) {
+                    const installIdx = linkedProject.paidInstallments - 1;
+                    if (installIdx === 0 && linkedProject.stage === 'Discovery') {
+                        linkedProject.stage = 'Design';
+                        linkedProject.activityLog.push({ action: 'Stage auto-advanced to Design (deposit paid)', timestamp: new Date().toISOString(), stage: 'Design' });
+                    }
+                }
+            }
+
+            if (typeof saveProjects === 'function') saveProjects();
+            console.log('✅ Trigger: Project "' + linkedProject.name + '" payment updated — ' + linkedProject.paidInstallments + ' installments paid');
+        }
+    }
 }
 
 // Trigger: When order is delivered, send notification
