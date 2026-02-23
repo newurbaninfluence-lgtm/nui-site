@@ -5184,58 +5184,39 @@ let blogAuthorImage = localStorage.getItem('nui_blog_author_image') || '';
 
 function saveBlogPosts() { localStorage.setItem('nui_blog_posts', JSON.stringify(blogPosts)); }
 
-// ==================== SUPABASE BLOG SYNC ====================
-function getSupabaseClient() {
-    if (window._supabaseStorage) return window._supabaseStorage;
-    if (window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
-        window._supabaseStorage = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-        return window._supabaseStorage;
-    }
-    return null;
-}
+// ==================== BLOG SYNC (via Netlify function → service_role) ====================
 
 async function syncBlogPostToSupabase(post) {
-    const db = getSupabaseClient();
-    if (!db) { console.warn('⚠️ Supabase not available — blog post saved locally only'); return; }
     try {
-        const row = {
-            id: post.id,
-            slug: post.slug,
-            title: post.title,
-            excerpt: post.excerpt || '',
-            category: post.category || 'Branding',
-            image: post.image || '',
-            author: post.author || 'Faren Young',
-            author_image: post.authorImage || '',
-            date: post.date || '',
-            read_time: post.readTime || '5 min read',
-            content: post.content || '',
-            published: true,
-            updated_at: new Date().toISOString()
-        };
-        const { error } = await db.from('blog_posts').upsert(row, { onConflict: 'id' });
-        if (error) throw error;
-        console.log('✅ Blog post synced to Supabase:', post.title);
+        const res = await fetch('/.netlify/functions/blog-manage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'upsert', post })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Sync failed');
+        console.log('✅ Blog post synced to live blog:', post.title);
     } catch (err) {
-        console.error('❌ Blog Supabase sync failed:', err.message);
+        console.error('❌ Blog sync failed:', err.message);
     }
 }
 
 async function deleteBlogPostFromSupabase(postId) {
-    const db = getSupabaseClient();
-    if (!db) return;
     try {
-        const { error } = await db.from('blog_posts').delete().eq('id', postId);
-        if (error) throw error;
-        console.log('✅ Blog post deleted from Supabase:', postId);
+        const res = await fetch('/.netlify/functions/blog-manage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete', postId })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Delete failed');
+        console.log('✅ Blog post deleted from live blog:', postId);
     } catch (err) {
-        console.error('❌ Blog Supabase delete failed:', err.message);
+        console.error('❌ Blog delete failed:', err.message);
     }
 }
 
 async function syncAllBlogPostsToSupabase() {
-    const db = getSupabaseClient();
-    if (!db) { alert('⚠️ Supabase not connected'); return; }
     const btn = document.getElementById('blogSyncAllBtn');
     if (btn) { btn.textContent = '⏳ Syncing...'; btn.disabled = true; }
     let synced = 0;
