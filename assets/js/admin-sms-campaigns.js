@@ -120,6 +120,11 @@ async function renderCampaignDetail(container) {
   const optouts = _campaignReplies.filter(r => r.is_optout);
   const positiveReplies = _campaignReplies.filter(r => r.is_positive);
 
+  // Sent today count
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const sentToday = _campaignQueue.filter(q => q.status === 'sent' && q.sent_at && new Date(q.sent_at) >= todayStart).length;
+
   const optoutRate = sent.length > 0 ? ((optouts.length / sent.length) * 100).toFixed(1) : '0.0';
   const replyRate = sent.length > 0 ? ((_campaignReplies.length / sent.length) * 100).toFixed(1) : '0.0';
   const threshold = c.campaign_type === 'cold_outreach' ? 3 : 5;
@@ -145,7 +150,12 @@ async function renderCampaignDetail(container) {
 </div>
 
 <!-- Stats Grid -->
-<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px;">
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:20px;">
+  <div style="background:rgba(155,89,182,0.1);border:1px solid rgba(155,89,182,0.3);border-radius:10px;padding:14px;">
+    <div style="font-size:24px;font-weight:700;color:#9b59b6;">${sentToday}</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.4);">TODAY</div>
+    <div style="font-size:10px;color:rgba(255,255,255,0.3);">cap: ${c.per_day_limit || 20}</div>
+  </div>
   <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;">
     <div style="font-size:24px;font-weight:700;">${_campaignQueue.length}</div>
     <div style="font-size:11px;color:rgba(255,255,255,0.4);">TOTAL</div>

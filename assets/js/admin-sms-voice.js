@@ -130,6 +130,12 @@ function assembleMessage(type, vars, tier = 1) {
     message = message.substring(0, 297) + '...';
   }
 
+  // SAFETY: Block links in tier 1 messages
+  if (tier === 1 && /https?:\/\/|www\.|\.com|\.net|\.org|bit\.ly/i.test(message)) {
+    console.warn('SMS Voice: Link detected in tier 1 message, stripping');
+    message = message.replace(/https?:\/\/\S+/gi, '[link removed]').replace(/www\.\S+/gi, '[link removed]');
+  }
+
   return message;
 }
 

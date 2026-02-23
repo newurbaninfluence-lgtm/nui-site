@@ -1,6 +1,7 @@
 // netlify/functions/sms-drip.js
-// Scheduled: runs every 30 min, sends queued SMS via OpenPhone
-// Picks 3 messages per run = ~18/day across 9am-6pm (6 runs × 3)
+// Scheduled: runs every 5 min, sends 1 queued SMS via OpenPhone
+// Natural 5-min spacing between sends, ~108 possible slots per day (9am-6pm)
+// Only sends approved messages from active campaigns
 
 exports.handler = async (event) => {
   const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -30,7 +31,7 @@ exports.handler = async (event) => {
   try {
     // Get active campaign IDs first
     const campResp = await fetch(
-      `${SUPABASE_URL}/rest/v1/sms_campaigns?status=eq.active&select=id,campaign_type,contacts_sent,contacts_optout`,
+      `${SUPABASE_URL}/rest/v1/sms_campaigns?status=eq.active&select=id,campaign_type,contacts_sent,contacts_optout,per_day_limit`,
       { headers }
     );
     const activeCampaigns = await campResp.json();
@@ -65,9 +66,29 @@ exports.handler = async (event) => {
     const suppressResp = await fetch(`${SUPABASE_URL}/rest/v1/sms_suppression?select=phone`, { headers });
     const suppressedPhones = new Set((await suppressResp.json() || []).map(s => s.phone));
 
-    // Fetch up to 3 approved+queued messages from active campaigns
+    // Daily cap enforcement: check how many sent today per campaign
+    const todayStart = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+    const capCheckedIds = [];
+    for (const camp of activeCampaigns.filter(c => !c.auto_paused)) {
+      const todayResp = await fetch(
+        `${SUPABASE_URL}/rest/v1/sms_drip_queue?campaign_id=eq.${camp.id}&status=eq.sent&sent_at=gte.${todayStart.toISOString()}&select=id`,
+        { headers }
+      );
+      const todaySent = (await todayResp.json() || []).length;
+      const dailyLimit = camp.per_day_limit || 20;
+      if (todaySent < dailyLimit) {
+        capCheckedIds.push(camp.id);
+      }
+    }
+
+    if (capCheckedIds.length === 0) {
+      return { statusCode: 200, body: JSON.stringify({ sent: 0, reason: 'All campaigns at daily cap' }) };
+    }
+
+    // Fetch 1 approved+queued message from cap-safe campaigns (1 per run = 5 min spacing)
     const queueResp = await fetch(
-      `${SUPABASE_URL}/rest/v1/sms_drip_queue?status=eq.queued&review_status=eq.approved&scheduled_at=lte.${now.toISOString()}&campaign_id=in.(${activeIds.join(',')})&order=scheduled_at.asc&limit=3`,
+      `${SUPABASE_URL}/rest/v1/sms_drip_queue?status=eq.queued&review_status=eq.approved&scheduled_at=lte.${now.toISOString()}&campaign_id=in.(${capCheckedIds.join(',')})&order=scheduled_at.asc&limit=1`,
       { headers }
     );
     const queue = await queueResp.json();

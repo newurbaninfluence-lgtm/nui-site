@@ -11,7 +11,7 @@
 
 # SMS drip campaign — runs every 30 min during business hours
 [functions."sms-drip"]
-  schedule = "*/30 * * * *"
+  schedule = "*/5 * * * *"
 
 # Service pages — serve actual HTML files
 [[redirects]]
