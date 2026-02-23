@@ -9,6 +9,10 @@
 [functions."holiday-drip"]
   schedule = "0 14 * * *"
 
+# SMS drip campaign — runs every 30 min during business hours
+[functions."sms-drip"]
+  schedule = "*/30 * * * *"
+
 # Service pages — serve actual HTML files
 [[redirects]]
   from = "/services/:service"

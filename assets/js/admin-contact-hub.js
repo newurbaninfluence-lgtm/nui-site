@@ -13,6 +13,7 @@ function hubDisplayName(c) {
 
 let contactHubData = { contacts: [], activities: [], emails: [], smsMessages: [], loading: true };
 let contactHubFilter = 'all';
+let contactHubView = 'contacts'; // 'contacts' or 'campaigns'
 let contactHubSearch = '';
 let contactHubSelected = null;
 let contactHubSort = 'newest';
@@ -115,6 +116,7 @@ function renderContactHub() {
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
     <h2 style="font-size:24px;font-weight:800;">📡 Contact Hub</h2>
     <div style="display:flex;gap:8px;">
+      <button onclick="contactHubView = contactHubView === 'campaigns' ? 'contacts' : 'campaigns'; renderContactHub();" class="ch-filter-btn" style="${contactHubView === 'campaigns' ? 'background:#7c3aed;border-color:#7c3aed;color:#fff;' : 'background:#1c1c1c;'}">📲 Campaigns</button>
       <button onclick="fetchContactHubData().then(renderContactHub)" class="ch-filter-btn" style="background:#1c1c1c;">🔄 Refresh</button>
       <button onclick="showCsvUploadModal()" class="ch-filter-btn" style="background:#1a5c2a;border-color:#1a5c2a;color:#fff;">📄 Import CSV</button>
       <button onclick="showAddHubContactModal()" class="ch-filter-btn" style="background:var(--red);border-color:var(--red);color:#fff;">+ Add Contact</button>
@@ -131,6 +133,10 @@ function renderContactHub() {
   <div class="ch-stat"><div class="num" style="color:#3b82f6;">${unreadActivities}</div><div class="lbl">Unread</div></div>
 </div>
 
+${contactHubView === 'campaigns' ? `
+<!-- Campaigns View -->
+<div id="smsCampaignsTab"></div>
+` : `
 <!-- Source pills -->
 <div class="ch-source-pills">
   ${Object.entries(sources).map(([src, count]) => {
@@ -170,7 +176,16 @@ ${contacts.length > 0 ? renderContactTable(contacts) : '<div class="ch-empty"><d
 <div class="ch-drawer ${contactHubSelected ? 'open' : ''}" id="contactDrawer">
   ${contactHubSelected ? renderContactDrawer(contactHubSelected) : ''}
 </div>
+`}
   `;
+
+  // If campaigns view, trigger campaign render
+  if (contactHubView === 'campaigns' && typeof renderSmsCampaignsTab === 'function') {
+    window._contactHubContacts = contactHubData.contacts.map(c => ({
+      id: c.id, name: hubDisplayName(c), phone: c.phone, email: c.email, status: c.status
+    }));
+    setTimeout(() => renderSmsCampaignsTab(), 50);
+  }
 }
 
 // ── Filter + Sort helpers ────────────────────
