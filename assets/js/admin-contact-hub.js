@@ -11,7 +11,7 @@ function hubDisplayName(c) {
   return parts.length > 0 ? parts.join(' ') : 'Unknown';
 }
 
-let contactHubData = { contacts: [], activities: [], emails: [], loading: true };
+let contactHubData = { contacts: [], activities: [], emails: [], smsMessages: [], loading: true };
 let contactHubFilter = 'all';
 let contactHubSearch = '';
 let contactHubSelected = null;
@@ -23,10 +23,11 @@ async function fetchContactHubData() {
   try {
     if (!db) throw new Error('Supabase not connected');
 
-    const [contactsRes, activitiesRes, emailsRes] = await Promise.all([
+    const [contactsRes, activitiesRes, emailsRes, smsRes] = await Promise.all([
       db.from('crm_contacts').select('*').order('last_activity_at', { ascending: false }),
       db.from('activity_log').select('*').order('created_at', { ascending: false }).limit(200),
-      db.from('communications').select('*').eq('channel', 'email').order('created_at', { ascending: false }).limit(200)
+      db.from('communications').select('*').eq('channel', 'email').order('created_at', { ascending: false }).limit(200),
+      db.from('communications').select('*').eq('channel', 'sms').order('created_at', { ascending: false }).limit(200)
     ]);
 
     if (contactsRes.error) throw contactsRes.error;
@@ -35,14 +36,16 @@ async function fetchContactHubData() {
     contactHubData.contacts = contactsRes.data || [];
     contactHubData.activities = activitiesRes.data || [];
     contactHubData.emails = emailsRes.data || [];
+    contactHubData.smsMessages = smsRes.data || [];
     contactHubData.loading = false;
-    console.log('✅ Contact Hub: ' + contactHubData.contacts.length + ' contacts, ' + contactHubData.activities.length + ' activities, ' + contactHubData.emails.length + ' emails');
+    console.log('✅ Contact Hub: ' + contactHubData.contacts.length + ' contacts, ' + contactHubData.activities.length + ' activities, ' + contactHubData.emails.length + ' emails, ' + contactHubData.smsMessages.length + ' sms');
   } catch (err) {
     console.warn('Contact Hub fetch failed:', err.message);
     contactHubData.loading = false;
     contactHubData.contacts = [];
     contactHubData.activities = [];
     contactHubData.emails = [];
+    contactHubData.smsMessages = [];
   }
 }
 
@@ -95,7 +98,7 @@ function renderContactHub() {
   .ch-table tr.selected td { background: rgba(220,38,38,0.08); }
   .ch-badge { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; }
   .ch-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
-  .ch-drawer { position: fixed; top: 0; right: 0; width: 420px; height: 100vh; background: #111; border-left: 1px solid rgba(255,255,255,0.1); z-index: 9000; overflow-y: auto; transform: translateX(100%); transition: transform 0.25s ease; }
+  .ch-drawer { position: fixed; top: 0; right: 0; width: 480px; height: 100vh; background: #111; border-left: 1px solid rgba(255,255,255,0.1); z-index: 9000; overflow-y: auto; transform: translateX(100%); transition: transform 0.25s ease; }
   .ch-drawer.open { transform: translateX(0); }
   .ch-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 8999; display: none; }
   .ch-drawer-overlay.open { display: block; }
@@ -256,116 +259,19 @@ ${contacts.map(c => {
 </table></div>`;
 }
 
-// ── Contact Detail Drawer ────────────────────
-function renderContactDrawer(contactId) {
-  const c = contactHubData.contacts.find(x => x.id === contactId);
-  if (!c) return '<div style="padding:40px;text-align:center;color:rgba(255,255,255,0.3);">Contact not found</div>';
-
-  const activities = contactHubData.activities.filter(a => a.contact_id === contactId).slice(0, 50);
-  
-  // Merge email communications into timeline (match by contact email or phone via metadata.to)
-  const contactEmails = contactHubData.emails.filter(e => {
-    if (!c.email && !c.phone) return false;
-    const emailTo = e.metadata?.to || '';
-    return (c.email && emailTo.toLowerCase() === c.email.toLowerCase()) ||
-           (c.client_id && e.client_id === c.client_id);
-  }).map(e => ({
-    id: e.id,
-    contact_id: contactId,
-    type: 'email',
-    event_type: e.read ? 'email_opened' : 'email_sent',
-    direction: e.direction,
-    content: (e.direction === 'outbound' ? '📤 ' : '📥 ') + (e.subject || 'No subject') + (e.read ? ' · ✅ Opened' : ''),
-    created_at: e.created_at,
-    metadata: e.metadata,
-    _isEmail: true
-  }));
-
-  // Combine and sort by date
-  const allActivity = [...activities, ...contactEmails].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 50);
-
-  const typeIcons = { text: '💬', call: '📞', email: '📧', voicemail: '📬', form: '📋', email_sent: '📤', email_opened: '👁️' };
-  const statusOptions = ['new_lead', 'contacted', 'qualified', 'client', 'lost'];
-
-  return `
-<div style="padding:24px;">
-  <!-- Header -->
-  <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:24px;">
-    <div style="display:flex;gap:14px;align-items:center;">
-      <div class="ch-avatar" style="width:52px;height:52px;font-size:22px;background:var(--red);color:#fff;">${hubDisplayName(c).charAt(0).toUpperCase()}</div>
-      <div>
-        <h3 style="font-size:20px;font-weight:700;margin-bottom:2px;">${hubDisplayName(c)}</h3>
-        <div style="font-size:13px;color:rgba(255,255,255,0.45);">${c.company || ''}</div>
-      </div>
-    </div>
-    <button onclick="closeContactDrawer()" style="background:none;border:none;color:#fff;font-size:24px;cursor:pointer;padding:4px;">✕</button>
-  </div>
-
-  <!-- Contact Info -->
-  <div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px;margin-bottom:20px;">
-    ${c.phone ? '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:rgba(255,255,255,0.45);font-size:13px;">Phone</span><a href="tel:' + c.phone + '" style="color:#fff;font-family:monospace;">' + c.phone + '</a></div>' : ''}
-    ${c.email ? '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:rgba(255,255,255,0.45);font-size:13px;">Email</span><a href="mailto:' + c.email + '" style="color:#3b82f6;">' + c.email + '</a></div>' : ''}
-    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-      <span style="color:rgba(255,255,255,0.45);font-size:13px;">Source</span><span>${c.source || '—'}</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-      <span style="color:rgba(255,255,255,0.45);font-size:13px;">Status</span>
-      <select onchange="setHubContactStatus('${c.id}', this.value)" style="padding:4px 8px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.15);border-radius:4px;color:#fff;font-size:12px;">
-        ${statusOptions.map(s => '<option value="' + s + '"' + (c.status === s ? ' selected' : '') + '>' + s.replace('_', ' ') + '</option>').join('')}
-      </select>
-    </div>
-    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-      <span style="color:rgba(255,255,255,0.45);font-size:13px;">Sona Qualified</span><span>${c.sona_qualified ? '✅ Yes' : '❌ No'}</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;padding:8px 0;">
-      <span style="color:rgba(255,255,255,0.45);font-size:13px;">Created</span><span style="font-size:13px;">${new Date(c.created_at).toLocaleDateString()} ${new Date(c.created_at).toLocaleTimeString()}</span>
-    </div>
-  </div>
-
-  <!-- Quick Actions -->
-  <div style="display:flex;gap:8px;margin-bottom:24px;">
-    ${c.phone ? '<button onclick="hubQuickCall(\'' + c.phone + '\')" style="flex:1;padding:10px;background:#8b5cf6;border:none;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;">📞 Call</button>' : ''}
-    ${c.phone ? '<button onclick="hubQuickSms(\'' + c.id + '\')" style="flex:1;padding:10px;background:#10b981;border:none;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;">💬 SMS</button>' : ''}
-    ${c.email ? '<button onclick="hubQuickEmail(\'' + c.id + '\')" style="flex:1;padding:10px;background:#3b82f6;border:none;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;">📧 Email</button>' : ''}
-  </div>
-
-  <!-- Notes -->
-  <div style="margin-bottom:24px;">
-    <h4 style="font-size:14px;font-weight:600;margin-bottom:8px;">📝 Notes</h4>
-    <textarea id="hubContactNotes" rows="3" placeholder="Add notes about this contact..." style="width:100%;padding:10px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-family:inherit;font-size:13px;resize:vertical;">${c.notes || ''}</textarea>
-    <button onclick="saveHubContactNotes('${c.id}')" style="margin-top:6px;padding:6px 14px;background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">Save Notes</button>
-  </div>
-
-  <!-- Activity Timeline -->
-  <div>
-    <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;">⏱️ Activity Timeline (${allActivity.length})</h4>
-    ${allActivity.length > 0 ? allActivity.map(a => {
-      const icon = typeIcons[a.event_type] || typeIcons[a.type] || '📌';
-      const dirColor = a.direction === 'inbound' ? '#10b981' : '#3b82f6';
-      return '<div class="ch-timeline-item">' +
-        '<div class="ch-timeline-icon" style="background:' + dirColor + '20;color:' + dirColor + ';">' + icon + '</div>' +
-        '<div class="ch-timeline-content">' +
-          '<div style="font-size:13px;margin-bottom:2px;">' + (a.content || a.type) + '</div>' +
-          '<div class="ch-timeline-time">' + (a.direction === 'inbound' ? '← Inbound' : '→ Outbound') + ' · ' + formatHubTime(a.created_at) + '</div>' +
-        '</div>' +
-      '</div>';
-    }).join('') : '<div style="color:rgba(255,255,255,0.3);font-size:13px;padding:20px 0;text-align:center;">No activity yet</div>'}
-  </div>
-
-  <!-- Danger Zone -->
-  <div style="margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);">
-    <button onclick="convertHubToClient('${c.id}')" style="width:100%;padding:10px;background:#8b5cf620;border:1px solid #8b5cf640;color:#8b5cf6;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;margin-bottom:8px;">⭐ Convert to Client</button>
-    <button onclick="deleteHubContact('${c.id}')" style="width:100%;padding:10px;background:#ef444420;border:1px solid #ef444440;color:#ef4444;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;">🗑 Delete Contact</button>
-  </div>
-</div>`;
-}
-
 // ── Actions ──────────────────────────────────
-function openContactDrawer(contactId) {
+let contactHubDrawerTab = 'timeline';
+
+function openContactDrawer(contactId, tab) {
   contactHubSelected = contactId;
+  contactHubDrawerTab = tab || 'timeline';
   // Mark activities as read
   markHubActivitiesRead(contactId);
   renderContactHub();
+  // Focus SMS input if on SMS tab
+  if (contactHubDrawerTab === 'sms') {
+    setTimeout(() => { const inp = document.getElementById('hubSmsInput'); if (inp) inp.focus(); }, 100);
+  }
 }
 
 function closeContactDrawer() {
@@ -417,58 +323,269 @@ function hubQuickCall(phone) {
 }
 
 function hubQuickSms(contactId) {
-  const c = contactHubData.contacts.find(x => x.id === contactId);
-  if (!c || !c.phone) { alert('No phone number'); return; }
-  const msg = prompt('SMS to ' + (hubDisplayName(c)) + ':');
-  if (!msg) return;
-  // Send via API
-  fetch('/.netlify/functions/send-sms', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ to: c.phone, message: msg })
-  }).then(r => {
-    if (r.ok) alert('✅ SMS sent!');
-    else alert('❌ SMS failed');
-  }).catch(() => alert('❌ SMS failed'));
+  openContactDrawer(contactId, 'sms');
 }
 
 function hubQuickEmail(contactId) {
-  const c = contactHubData.contacts.find(x => x.id === contactId);
-  if (!c || !c.email) { alert('No email for this contact'); return; }
-
-  const modal = document.createElement('div');
-  modal.className = 'modal-overlay active';
-  modal.id = 'hubEmailModal';
-  modal.innerHTML = `
-<div class="modal" style="max-width:520px;">
-  <div class="modal-header">
-    <h3 class="modal-title">📧 Send Email to ${hubDisplayName(c)}</h3>
-    <button class="modal-close" onclick="document.getElementById('hubEmailModal').remove()">×</button>
-  </div>
-  <div class="modal-body">
-    <div class="form-group"><label class="form-label">To</label><input type="text" class="form-input" value="${c.email}" disabled style="opacity:0.6;"></div>
-    <div class="form-group"><label class="form-label">Subject *</label><input type="text" id="hubEmailSubject" class="form-input" placeholder="Subject line"></div>
-    <div class="form-group"><label class="form-label">Message *</label><textarea id="hubEmailBody" class="form-textarea" rows="6" placeholder="Type your message..."></textarea></div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:4px;">📊 Open tracking enabled — you'll see when they read it</div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn-admin secondary" onclick="document.getElementById('hubEmailModal').remove()">Cancel</button>
-    <button class="btn-admin primary" id="hubSendEmailBtn" onclick="sendHubEmail('${contactId}')">Send Email</button>
-  </div>
-</div>`;
-  document.body.appendChild(modal);
-  document.getElementById('hubEmailSubject').focus();
+  openContactDrawer(contactId, 'email');
 }
 
+// ── Contact Detail Drawer (Tabbed) ───────────
+function renderContactDrawer(contactId) {
+  const c = contactHubData.contacts.find(x => x.id === contactId);
+  if (!c) return '<div style="padding:40px;text-align:center;color:rgba(255,255,255,0.3);">Contact not found</div>';
+
+  const activities = contactHubData.activities.filter(a => a.contact_id === contactId).slice(0, 50);
+  
+  // Get SMS messages (from activity_log + communications)
+  const smsFromActivity = activities.filter(a => a.type === 'sms' || a.type === 'text' || a.event_type === 'sms_sent' || a.event_type === 'text');
+  const smsFromComms = contactHubData.emails.length > 0 ? [] : []; // communications table SMS
+  // Also fetch SMS from communications by phone
+  const smsComms = (contactHubData.smsMessages || []).filter(s => {
+    if (!c.phone) return false;
+    const msgPhone = s.metadata?.to || s.metadata?.from || '';
+    return msgPhone.replace(/[^\d]/g, '').includes(c.phone.replace(/[^\d]/g, '').slice(-10));
+  });
+  const allSms = [...smsFromActivity, ...smsComms].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+  // Get email messages
+  const contactEmails = contactHubData.emails.filter(e => {
+    if (!c.email && !c.phone) return false;
+    const emailTo = e.metadata?.to || '';
+    return (c.email && emailTo.toLowerCase() === c.email.toLowerCase()) ||
+           (c.client_id && e.client_id === c.client_id);
+  }).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+  
+  // Also get email activities from activity_log
+  const emailActivities = activities.filter(a => a.type === 'email' || a.event_type === 'email_sent' || a.event_type === 'email_opened');
+  const allEmails = [...contactEmails.map(e => ({
+    ...e,
+    _isComm: true,
+    content: (e.direction === 'outbound' ? '📤 ' : '📥 ') + (e.subject || e.metadata?.subject || 'No subject'),
+    event_type: e.read ? 'email_opened' : 'email_sent'
+  })), ...emailActivities].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+  // Combined timeline
+  const allActivity = [...activities, ...contactEmails.map(e => ({
+    id: e.id, contact_id: contactId, type: 'email',
+    event_type: e.read ? 'email_opened' : 'email_sent',
+    direction: e.direction,
+    content: (e.direction === 'outbound' ? '📤 ' : '📥 ') + (e.subject || e.metadata?.subject || 'No subject') + (e.read ? ' · ✅ Read' : ''),
+    created_at: e.created_at, metadata: e.metadata, _isEmail: true
+  }))].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 50);
+
+  const typeIcons = { text: '💬', call: '📞', email: '📧', sms: '💬', voicemail: '📬', form: '📋', email_sent: '📤', email_opened: '👁️', sms_sent: '💬' };
+  const statusOptions = ['new_lead', 'contacted', 'qualified', 'client', 'lost'];
+  const tab = contactHubDrawerTab;
+
+  return `
+<div style="padding:24px;">
+  <!-- Header -->
+  <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:20px;">
+    <div style="display:flex;gap:14px;align-items:center;">
+      <div class="ch-avatar" style="width:52px;height:52px;font-size:22px;background:var(--red);color:#fff;">${hubDisplayName(c).charAt(0).toUpperCase()}</div>
+      <div>
+        <h3 style="font-size:20px;font-weight:700;margin-bottom:2px;">${hubDisplayName(c)}</h3>
+        <div style="font-size:13px;color:rgba(255,255,255,0.45);">${c.company || ''}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px;">${c.phone || ''} ${c.phone && c.email ? '·' : ''} ${c.email || ''}</div>
+      </div>
+    </div>
+    <button onclick="closeContactDrawer()" style="background:none;border:none;color:#fff;font-size:24px;cursor:pointer;padding:4px;">✕</button>
+  </div>
+
+  <!-- Status Bar -->
+  <div style="display:flex;gap:6px;margin-bottom:16px;align-items:center;">
+    <select onchange="setHubContactStatus('${c.id}', this.value)" style="padding:6px 10px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:#fff;font-size:12px;font-weight:600;">
+      ${statusOptions.map(s => '<option value="' + s + '"' + (c.status === s ? ' selected' : '') + '>' + s.replace(/_/g, ' ').toUpperCase() + '</option>').join('')}
+    </select>
+    <span style="font-size:12px;color:rgba(255,255,255,0.3);">Source: ${c.source || '—'}</span>
+    ${c.sona_qualified ? '<span style="font-size:12px;color:#10b981;">✅ Sona</span>' : ''}
+  </div>
+
+  <!-- Tab Nav -->
+  <div style="display:flex;gap:0;margin-bottom:16px;border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;">
+    <button onclick="contactHubDrawerTab='timeline';renderContactHub();" style="flex:1;padding:10px;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'timeline' ? 'background:var(--red);color:#fff;' : 'background:#111;color:rgba(255,255,255,0.5);'}">⏱ Timeline</button>
+    <button onclick="contactHubDrawerTab='sms';renderContactHub();setTimeout(()=>{const i=document.getElementById('hubSmsInput');if(i)i.focus();},100);" style="flex:1;padding:10px;border:none;border-left:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'sms' ? 'background:var(--red);color:#fff;' : 'background:#111;color:rgba(255,255,255,0.5);'}">${c.phone ? '💬 SMS' : '💬 SMS'} ${allSms.length > 0 ? '(' + allSms.length + ')' : ''}</button>
+    <button onclick="contactHubDrawerTab='email';renderContactHub();" style="flex:1;padding:10px;border:none;border-left:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'email' ? 'background:var(--red);color:#fff;' : 'background:#111;color:rgba(255,255,255,0.5);'}">${c.email ? '📧 Email' : '📧 Email'} ${allEmails.length > 0 ? '(' + allEmails.length + ')' : ''}</button>
+  </div>
+
+  <!-- Tab Content -->
+  ${tab === 'timeline' ? renderDrawerTimeline(c, allActivity, typeIcons) : ''}
+  ${tab === 'sms' ? renderDrawerSms(c, allSms) : ''}
+  ${tab === 'email' ? renderDrawerEmail(c, allEmails) : ''}
+
+  <!-- Notes (always visible) -->
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">
+    <h4 style="font-size:13px;font-weight:600;margin-bottom:6px;">📝 Notes</h4>
+    <textarea id="hubContactNotes" rows="2" placeholder="Add notes..." style="width:100%;padding:8px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:inherit;font-size:12px;resize:vertical;">${c.notes || ''}</textarea>
+    <button onclick="saveHubContactNotes('${c.id}')" style="margin-top:4px;padding:5px 12px;background:rgba(255,255,255,0.08);border:none;color:#fff;border-radius:4px;cursor:pointer;font-size:11px;font-weight:600;">Save</button>
+  </div>
+
+  <!-- Actions -->
+  <div style="margin-top:16px;display:flex;gap:6px;">
+    <button onclick="convertHubToClient('${c.id}')" style="flex:1;padding:8px;background:#8b5cf620;border:1px solid #8b5cf640;color:#8b5cf6;border-radius:6px;cursor:pointer;font-weight:600;font-family:inherit;font-size:11px;">⭐ Convert to Client</button>
+    <button onclick="deleteHubContact('${c.id}')" style="flex:1;padding:8px;background:#ef444420;border:1px solid #ef444440;color:#ef4444;border-radius:6px;cursor:pointer;font-weight:600;font-family:inherit;font-size:11px;">🗑 Delete</button>
+  </div>
+</div>`;
+}
+
+// ── Drawer Tab: Timeline ─────────────────────
+function renderDrawerTimeline(c, allActivity, typeIcons) {
+  if (allActivity.length === 0) {
+    return '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:13px;">No activity yet</div>';
+  }
+  return '<div style="max-height:360px;overflow-y:auto;">' + allActivity.map(a => {
+    const icon = typeIcons[a.event_type] || typeIcons[a.type] || '📌';
+    const dirColor = a.direction === 'inbound' ? '#10b981' : '#3b82f6';
+    return '<div class="ch-timeline-item">' +
+      '<div class="ch-timeline-icon" style="background:' + dirColor + '20;color:' + dirColor + ';">' + icon + '</div>' +
+      '<div class="ch-timeline-content">' +
+        '<div style="font-size:13px;margin-bottom:2px;">' + (a.content || a.type || 'Activity') + '</div>' +
+        '<div class="ch-timeline-time">' + (a.direction === 'inbound' ? '← Inbound' : '→ Outbound') + ' · ' + formatHubTime(a.created_at) + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('') + '</div>';
+}
+
+// ── Drawer Tab: SMS Thread ───────────────────
+function renderDrawerSms(c, allSms) {
+  if (!c.phone) {
+    return '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:13px;">No phone number on file.<br>Add a phone number to send SMS.</div>';
+  }
+
+  let thread = '<div id="hubSmsThread" style="max-height:320px;overflow-y:auto;padding:8px;margin-bottom:12px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);border-radius:10px;">';
+
+  if (allSms.length === 0) {
+    thread += '<div style="text-align:center;padding:40px 10px;color:rgba(255,255,255,0.2);font-size:12px;">No messages yet. Send the first one below.</div>';
+  } else {
+    allSms.forEach(msg => {
+      const isOutbound = msg.direction === 'outbound';
+      const text = msg.content || msg.message || msg.metadata?.content || '(message)';
+      const time = formatHubTime(msg.created_at);
+      thread += '<div style="display:flex;justify-content:' + (isOutbound ? 'flex-end' : 'flex-start') + ';margin-bottom:8px;">' +
+        '<div style="max-width:80%;padding:10px 14px;border-radius:' + (isOutbound ? '14px 14px 4px 14px' : '14px 14px 14px 4px') + ';background:' + (isOutbound ? 'var(--red)' : '#1a1a1a') + ';color:#fff;font-size:13px;line-height:1.4;">' +
+          '<div>' + text + '</div>' +
+          '<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;text-align:' + (isOutbound ? 'right' : 'left') + ';">' + (isOutbound ? 'You' : hubDisplayName(c)) + ' · ' + time + '</div>' +
+        '</div>' +
+      '</div>';
+    });
+  }
+  thread += '</div>';
+
+  // Compose bar
+  thread += `
+<div style="display:flex;gap:8px;align-items:flex-end;">
+  <textarea id="hubSmsInput" rows="2" placeholder="Type a message..." style="flex:1;padding:10px 14px;background:#111;border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;font-family:inherit;font-size:13px;resize:none;outline:none;" autocomplete="off" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendHubSmsInline('${c.id}');}"></textarea>
+  <button id="hubSmsSendBtn" onclick="sendHubSmsInline('${c.id}')" style="padding:10px 18px;background:var(--red);border:none;color:#fff;border-radius:10px;cursor:pointer;font-weight:700;font-size:14px;white-space:nowrap;font-family:inherit;">Send</button>
+</div>
+<div style="font-size:10px;color:rgba(255,255,255,0.2);margin-top:4px;">Via OpenPhone · Enter to send, Shift+Enter for new line</div>`;
+
+  return thread;
+}
+
+// ── Drawer Tab: Email Thread ─────────────────
+function renderDrawerEmail(c, allEmails) {
+  if (!c.email) {
+    return '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:13px;">No email on file.<br>Add an email address to send messages.</div>';
+  }
+
+  let content = '';
+
+  // Email thread
+  content += '<div style="max-height:260px;overflow-y:auto;margin-bottom:12px;">';
+  if (allEmails.length === 0) {
+    content += '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.2);font-size:12px;">No emails yet</div>';
+  } else {
+    allEmails.forEach(e => {
+      const isOutbound = e.direction === 'outbound';
+      const subject = e.subject || e.metadata?.subject || 'No subject';
+      const preview = e.metadata?.preview || e.content || '';
+      const opened = e.read || e.event_type === 'email_opened';
+      const time = formatHubTime(e.created_at);
+      content += '<div style="padding:12px;margin-bottom:8px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);border-radius:8px;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px;">' +
+          '<div style="font-size:13px;font-weight:600;">' + (isOutbound ? '📤' : '📥') + ' ' + subject + '</div>' +
+          (opened ? '<span style="font-size:10px;color:#10b981;white-space:nowrap;">✅ Read</span>' : '<span style="font-size:10px;color:rgba(255,255,255,0.3);white-space:nowrap;">Unread</span>') +
+        '</div>' +
+        (preview ? '<div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;max-height:40px;overflow:hidden;">' + preview + '</div>' : '') +
+        '<div style="font-size:10px;color:rgba(255,255,255,0.3);">' + (isOutbound ? 'Sent' : 'Received') + ' · ' + time + '</div>' +
+      '</div>';
+    });
+  }
+  content += '</div>';
+
+  // Compose form
+  content += `
+<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px;">
+  <div style="font-size:13px;font-weight:600;margin-bottom:10px;">✉️ New Email</div>
+  <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px;">To: ${c.email}</div>
+  <input type="text" id="hubEmailSubject" placeholder="Subject" autocomplete="off" autocorrect="off" spellcheck="false" style="width:100%;padding:9px 12px;background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:inherit;font-size:13px;margin-bottom:8px;outline:none;">
+  <textarea id="hubEmailBody" rows="4" placeholder="Write your message..." autocomplete="off" style="width:100%;padding:9px 12px;background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:inherit;font-size:13px;resize:vertical;outline:none;margin-bottom:8px;"></textarea>
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-size:10px;color:rgba(255,255,255,0.25);">📊 Open tracking enabled</span>
+    <button id="hubEmailSendBtn" onclick="sendHubEmail('${c.id}')" style="padding:8px 20px;background:var(--red);border:none;color:#fff;border-radius:6px;cursor:pointer;font-weight:700;font-family:inherit;font-size:13px;">Send Email</button>
+  </div>
+</div>`;
+
+  return content;
+}
+
+// ── Send SMS Inline ──────────────────────────
+async function sendHubSmsInline(contactId) {
+  const c = contactHubData.contacts.find(x => x.id === contactId);
+  if (!c || !c.phone) return;
+
+  const input = document.getElementById('hubSmsInput');
+  const msg = input?.value?.trim();
+  if (!msg) return;
+
+  const btn = document.getElementById('hubSmsSendBtn');
+  btn.disabled = true;
+  btn.textContent = '...';
+  input.disabled = true;
+
+  try {
+    const resp = await fetch('/.netlify/functions/send-sms', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to: c.phone, message: msg, contactId: contactId })
+    });
+    if (!resp.ok) throw new Error('Send failed');
+
+    // Update last_activity_at
+    if (db) {
+      await db.from('crm_contacts').update({ last_activity_at: new Date().toISOString(), status: c.status === 'new_lead' ? 'contacted' : c.status }).eq('id', contactId);
+    }
+
+    // Clear input + refresh
+    input.value = '';
+    await fetchContactHubData();
+    contactHubDrawerTab = 'sms';
+    renderContactHub();
+
+    // Scroll to bottom of thread
+    setTimeout(() => {
+      const thread = document.getElementById('hubSmsThread');
+      if (thread) thread.scrollTop = thread.scrollHeight;
+    }, 100);
+  } catch (err) {
+    alert('❌ SMS failed: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = 'Send';
+    input.disabled = false;
+  }
+}
+
+// ── Send Email Inline ────────────────────────
 async function sendHubEmail(contactId) {
   const c = contactHubData.contacts.find(x => x.id === contactId);
   if (!c || !c.email) return;
 
-  const subject = document.getElementById('hubEmailSubject').value.trim();
-  const body = document.getElementById('hubEmailBody').value.trim();
+  const subject = document.getElementById('hubEmailSubject')?.value?.trim();
+  const body = document.getElementById('hubEmailBody')?.value?.trim();
   if (!subject || !body) { alert('Subject and message are required'); return; }
 
-  const btn = document.getElementById('hubSendEmailBtn');
+  const btn = document.getElementById('hubEmailSendBtn');
   btn.disabled = true;
   btn.textContent = 'Sending...';
 
@@ -487,16 +604,17 @@ async function sendHubEmail(contactId) {
     const data = await resp.json();
     if (!resp.ok) throw new Error(data.error || 'Send failed');
 
-    // Update last_activity_at
+    // Update last_activity_at + auto-mark contacted
     if (db) {
-      await db.from('crm_contacts').update({ last_activity_at: new Date().toISOString() }).eq('id', contactId);
+      await db.from('crm_contacts').update({
+        last_activity_at: new Date().toISOString(),
+        status: c.status === 'new_lead' ? 'contacted' : c.status
+      }).eq('id', contactId);
     }
 
-    document.getElementById('hubEmailModal').remove();
-    alert('✅ Email sent to ' + c.email);
-
-    // Refresh to show in timeline
+    // Refresh and stay on email tab
     await fetchContactHubData();
+    contactHubDrawerTab = 'email';
     renderContactHub();
   } catch (err) {
     btn.disabled = false;

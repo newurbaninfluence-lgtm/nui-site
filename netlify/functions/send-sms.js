@@ -17,7 +17,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { to, message, clientId } = JSON.parse(event.body || '{}');
+    const { to, message, clientId, contactId } = JSON.parse(event.body || '{}');
 
     if (!to || !message) {
       return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Missing required fields: to, message' }) };
@@ -53,6 +53,8 @@ exports.handler = async (event) => {
     const SUPABASE_URL = process.env.SUPABASE_URL;
     const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
     if (SUPABASE_URL && SUPABASE_SERVICE_KEY) {
+      const now = new Date().toISOString();
+      // Log to communications table
       await fetch(`${SUPABASE_URL}/rest/v1/communications`, {
         method: 'POST',
         headers: {
@@ -65,11 +67,35 @@ exports.handler = async (event) => {
           channel: 'sms',
           direction: 'outbound',
           message,
-          client_id: clientId || null,
+          subject: null,
+          client_id: contactId || clientId || null,
           metadata: { to, openphone_id: result?.data?.id, from_number_id: FROM_NUMBER_ID },
-          created_at: new Date().toISOString()
+          created_at: now
         })
       }).catch(err => console.warn('SMS log to Supabase failed:', err.message));
+
+      // Also log to activity_log for Contact Hub timeline
+      const cId = contactId || clientId;
+      if (cId) {
+        await fetch(`${SUPABASE_URL}/rest/v1/activity_log`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_SERVICE_KEY,
+            'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            contact_id: cId,
+            type: 'sms',
+            event_type: 'sms_sent',
+            direction: 'outbound',
+            content: message,
+            metadata: { to, openphone_id: result?.data?.id },
+            created_at: now
+          })
+        }).catch(err => console.warn('Activity log failed:', err.message));
+      }
     }
 
     return {

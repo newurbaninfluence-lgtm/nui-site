@@ -7,7 +7,7 @@
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+  'Access-Control-Allow-Methods': 'GET, POST, PATCH, OPTIONS'
 };
 
 exports.handler = async (event) => {
@@ -77,6 +77,8 @@ exports.handler = async (event) => {
         body: JSON.stringify({
           ...meetingData,
           status: meetingData.status || 'scheduled',
+          source: meetingData.source || 'manual',
+          outcome: null,
           created_at: new Date().toISOString()
         })
       });
@@ -91,6 +93,41 @@ exports.handler = async (event) => {
         statusCode: 200,
         headers: CORS_HEADERS,
         body: JSON.stringify({ success: true, meeting })
+      };
+    }
+
+    // --- PATCH: Update meeting (outcome, status) ---
+    if (event.httpMethod === 'PATCH') {
+      const updateData = JSON.parse(event.body || '{}');
+      const meetingId = updateData.id;
+      if (!meetingId) {
+        return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Meeting ID required' }) };
+      }
+
+      // Only allow updating specific fields
+      const allowedFields = ['outcome', 'status', 'notes'];
+      const patch = {};
+      for (const key of allowedFields) {
+        if (updateData[key] !== undefined) patch[key] = updateData[key];
+      }
+      patch.updated_at = new Date().toISOString();
+
+      const resp = await fetch(`${SUPABASE_URL}/rest/v1/meetings?id=eq.${meetingId}`, {
+        method: 'PATCH',
+        headers: { ...headers, 'Prefer': 'return=representation' },
+        body: JSON.stringify(patch)
+      });
+
+      if (!resp.ok) {
+        const errBody = await resp.text();
+        throw new Error(`Meeting update failed: ${resp.status} - ${errBody}`);
+      }
+
+      const updated = await resp.json();
+      return {
+        statusCode: 200,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({ success: true, meeting: updated[0] })
       };
     }
 

@@ -537,14 +537,24 @@ async function loadAdminCalendarPanel() {
 
     try {
         const resp = await fetch('/.netlify/functions/save-booking?date=all');
-        // The GET endpoint only supports single date, so we merge local + any server-synced data
+        if (resp.ok) {
+            const data = await resp.json();
+            if (data.meetings) {
+                meetings = data.meetings;
+                localStorage.setItem('nui_meetings', JSON.stringify(meetings));
+            }
+        }
     } catch(e) { /* use local data */ }
+
+    // Auto-sync Calendly bookings to leads
+    syncMeetingsToLeads();
 
     // Aggregate calendar events from multiple sources
     const events = [
         // Scheduled meetings/appointments
         ...meetings.map(m => ({
             id: `meeting-${m.id || m.serverId}`,
+            meetingId: m.id || m.serverId,
             title: `${m.type === 'zoom' ? '💻 Zoom' : '📞 Phone'} Call`,
             date: m.date,
             time: m.time,
@@ -553,7 +563,10 @@ async function loadAdminCalendarPanel() {
             phone: m.clientPhone || m.client_phone || '',
             email: m.clientEmail || m.client_email || '',
             service: m.service || 'Not specified',
-            color: '#3b82f6'
+            source: m.source || 'manual',
+            outcome: m.outcome || null,
+            status: m.status || 'scheduled',
+            color: m.outcome === 'completed' ? '#10b981' : m.outcome === 'missed' ? '#ef4444' : m.outcome === 'rebook' ? '#f59e0b' : '#3b82f6'
         })),
         // Project deadlines from orders
         ...orders.filter(o => o.dueDate).map(o => ({
@@ -666,8 +679,9 @@ async function loadAdminCalendarPanel() {
 <div style="font-weight: 600; color: var(--admin-text); margin-bottom: 4px;">${e.title}</div>
 <div class="admin-text-muted-xs">${e.client}</div>
 ${e.service && e.type === 'meeting' ? `<div style="margin-top: 4px; font-size: 11px; padding: 2px 8px; background: rgba(220,38,38,0.15); color: #f87171; border-radius: 4px; display: inline-block;">🎯 ${e.service}</div>` : ''}
+${e.source && e.type === 'meeting' ? `<span style="margin-left: 4px; font-size: 10px; padding: 2px 6px; background: ${e.source === 'calendly' ? 'rgba(59,130,246,0.15)' : 'rgba(255,255,255,0.08)'}; color: ${e.source === 'calendly' ? '#60a5fa' : 'var(--admin-text-muted)'}; border-radius: 4px;">${e.source === 'calendly' ? '📅 Calendly' : '✏️ Manual'}</span>` : ''}
 </div>
-<span style="background: ${e.color}20; color: ${e.color}; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; text-transform: uppercase;">${e.type}</span>
+<span style="background: ${e.color}20; color: ${e.color}; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; text-transform: uppercase;">${e.outcome ? e.outcome : e.type}</span>
 </div>
 <div style="font-size: 12px; color: var(--admin-text-muted); margin-top: 8px;">
                             📅 ${new Date(e.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} ${e.time ? `at ${e.time}` : ''}
@@ -677,24 +691,33 @@ ${e.phone ? `📞 <a href="tel:${e.phone}" style="color: #60a5fa; text-decoratio
 ${e.phone && e.email ? ' · ' : ''}
 ${e.email ? `✉️ <a href="mailto:${e.email}" style="color: #60a5fa; text-decoration: none;">${e.email}</a>` : ''}
 </div>` : ''}
+${e.type === 'meeting' && e.meetingId ? `<div style="display: flex; gap: 6px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--admin-border);">
+<button onclick="setMeetingOutcome('${e.meetingId}', 'completed')" style="flex: 1; padding: 6px; font-size: 11px; border: 1px solid ${e.outcome === 'completed' ? '#10b981' : 'var(--admin-border)'}; background: ${e.outcome === 'completed' ? 'rgba(16,185,129,0.2)' : 'transparent'}; color: ${e.outcome === 'completed' ? '#10b981' : 'var(--admin-text-muted)'}; border-radius: 6px; cursor: pointer;">✅ Good</button>
+<button onclick="setMeetingOutcome('${e.meetingId}', 'missed')" style="flex: 1; padding: 6px; font-size: 11px; border: 1px solid ${e.outcome === 'missed' ? '#ef4444' : 'var(--admin-border)'}; background: ${e.outcome === 'missed' ? 'rgba(239,68,68,0.2)' : 'transparent'}; color: ${e.outcome === 'missed' ? '#ef4444' : 'var(--admin-text-muted)'}; border-radius: 6px; cursor: pointer;">❌ Missed</button>
+<button onclick="setMeetingOutcome('${e.meetingId}', 'rebook')" style="flex: 1; padding: 6px; font-size: 11px; border: 1px solid ${e.outcome === 'rebook' ? '#f59e0b' : 'var(--admin-border)'}; background: ${e.outcome === 'rebook' ? 'rgba(245,158,11,0.2)' : 'transparent'}; color: ${e.outcome === 'rebook' ? '#f59e0b' : 'var(--admin-text-muted)'}; border-radius: 6px; cursor: pointer;">🔄 Rebook</button>
+</div>` : ''}
 </div>
                 `).join('')}
 </div>
 </div>
 
         <!-- Stats -->
-<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px;">
+<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 24px;">
 <div style="background: var(--admin-card); border: 1px solid var(--admin-border); padding: 20px; border-radius: 12px; text-align: center;">
-<div style="font-size: 32px; font-weight: 700; color: #3b82f6;">${meetings.length}</div>
-<div style="font-size: 13px; color: var(--admin-text-muted);">Scheduled Meetings</div>
+<div style="font-size: 32px; font-weight: 700; color: #3b82f6;">${meetings.filter(m => !m.outcome).length}</div>
+<div style="font-size: 13px; color: var(--admin-text-muted);">Scheduled</div>
 </div>
 <div style="background: var(--admin-card); border: 1px solid var(--admin-border); padding: 20px; border-radius: 12px; text-align: center;">
-<div style="font-size: 32px; font-weight: 700; color: #f59e0b;">${orders.filter(o => o.dueDate && o.status !== 'delivered').length}</div>
-<div style="font-size: 13px; color: var(--admin-text-muted);">Pending Deadlines</div>
+<div style="font-size: 32px; font-weight: 700; color: #10b981;">${meetings.filter(m => m.outcome === 'completed').length}</div>
+<div style="font-size: 13px; color: var(--admin-text-muted);">Completed</div>
 </div>
 <div style="background: var(--admin-card); border: 1px solid var(--admin-border); padding: 20px; border-radius: 12px; text-align: center;">
-<div style="font-size: 32px; font-weight: 700; color: #10b981;">${invoices.filter(i => i.status !== 'paid').length}</div>
-<div style="font-size: 13px; color: var(--admin-text-muted);">Unpaid Invoices</div>
+<div style="font-size: 32px; font-weight: 700; color: #ef4444;">${meetings.filter(m => m.outcome === 'missed').length}</div>
+<div style="font-size: 13px; color: var(--admin-text-muted);">Missed</div>
+</div>
+<div style="background: var(--admin-card); border: 1px solid var(--admin-border); padding: 20px; border-radius: 12px; text-align: center;">
+<div style="font-size: 32px; font-weight: 700; color: #f59e0b;">${meetings.filter(m => m.outcome === 'rebook').length}</div>
+<div style="font-size: 13px; color: var(--admin-text-muted);">Rebook</div>
 </div>
 <div style="background: var(--admin-card); border: 1px solid var(--admin-border); padding: 20px; border-radius: 12px; text-align: center;">
 <div style="font-size: 32px; font-weight: 700; color: var(--red);">${events.length}</div>
@@ -702,6 +725,117 @@ ${e.email ? `✉️ <a href="mailto:${e.email}" style="color: #60a5fa; text-deco
 </div>
 </div>
     `;
+}
+
+// --- Set meeting outcome (completed/missed/rebook) ---
+async function setMeetingOutcome(meetingId, outcome) {
+    try {
+        const resp = await fetch('/.netlify/functions/save-booking', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: meetingId, outcome: outcome })
+        });
+        const data = await resp.json();
+        if (data.success) {
+            // Update local meetings array
+            const m = meetings.find(m => (m.id || m.serverId) == meetingId);
+            if (m) m.outcome = outcome;
+            localStorage.setItem('nui_meetings', JSON.stringify(meetings));
+
+            // Update lead status based on outcome
+            syncMeetingOutcomeToLead(meetingId, outcome);
+
+            // Reload calendar
+            loadAdminCalendarPanel();
+        } else {
+            alert('Failed to update meeting: ' + (data.error || 'Unknown error'));
+        }
+    } catch (err) {
+        console.error('setMeetingOutcome error:', err);
+        alert('Error updating meeting outcome');
+    }
+}
+
+// --- Sync Calendly meetings to leads ---
+function syncMeetingsToLeads() {
+    const calendlyMeetings = meetings.filter(m => m.source === 'calendly');
+    let added = 0;
+
+    calendlyMeetings.forEach(m => {
+        const email = m.clientEmail || m.client_email || '';
+        if (!email) return;
+
+        // Check if lead already exists
+        const exists = leads.find(l => l.email === email);
+        if (!exists) {
+            leads.push({
+                id: Date.now() + Math.random(),
+                name: m.clientName || m.client_name || 'Unknown',
+                email: email,
+                phone: m.clientPhone || m.client_phone || '',
+                business: '',
+                service: m.service || '',
+                budget: '',
+                message: 'Auto-created from Calendly booking',
+                status: 'new',
+                source: 'calendly',
+                meetingId: m.id || m.serverId,
+                createdAt: m.created_at || new Date().toISOString()
+            });
+            added++;
+        }
+    });
+
+    if (added > 0) {
+        saveLeads();
+        console.log(`Synced ${added} Calendly bookings to leads`);
+    }
+}
+
+// --- Update lead when meeting outcome changes ---
+function syncMeetingOutcomeToLead(meetingId, outcome) {
+    // Find the meeting
+    const meeting = meetings.find(m => (m.id || m.serverId) == meetingId);
+    if (!meeting) return;
+
+    const email = meeting.clientEmail || meeting.client_email || '';
+    if (!email) return;
+
+    // Find or create the lead
+    let lead = leads.find(l => l.email === email);
+    if (!lead) {
+        lead = {
+            id: Date.now() + Math.random(),
+            name: meeting.clientName || meeting.client_name || 'Unknown',
+            email: email,
+            phone: meeting.clientPhone || meeting.client_phone || '',
+            business: '',
+            service: meeting.service || '',
+            budget: '',
+            message: '',
+            status: 'new',
+            source: meeting.source || 'manual',
+            meetingId: meetingId,
+            createdAt: new Date().toISOString()
+        };
+        leads.push(lead);
+    }
+
+    // Update lead status based on meeting outcome
+    if (outcome === 'completed') {
+        lead.status = 'qualified';
+        lead.lastOutcome = 'completed';
+    } else if (outcome === 'missed') {
+        lead.status = 'contacted';
+        lead.lastOutcome = 'missed';
+    } else if (outcome === 'rebook') {
+        lead.status = 'contacted';
+        lead.lastOutcome = 'rebook';
+    }
+
+    lead.lastMeetingDate = meeting.date;
+    lead.lastMeetingOutcome = outcome;
+    saveLeads();
 }
 
 

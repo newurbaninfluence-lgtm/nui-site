@@ -987,38 +987,86 @@ function quickEmail(contactId) {
 <div class="modal" style="max-width: 600px;">
 <div class="modal-header"><h3 class="modal-title">📧 Send Email to ${contact.name}</h3><button class="modal-close" onclick="document.getElementById('quickEmailModal').remove()">×</button></div>
 <div class="modal-body">
-<p style="color: rgba(255,255,255,0.5); margin-bottom: 16px;">To: ${contact.email}</p>
+<p style="color: rgba(255,255,255,0.5); margin-bottom: 8px;"><strong>To</strong></p>
+<p style="color: rgba(255,255,255,0.7); margin-bottom: 16px; padding: 8px 12px; background: rgba(255,255,255,0.05); border-radius: 6px;">${contact.email}</p>
 <div class="form-group">
-<label class="form-label">Subject</label>
-<input type="text" id="quickEmailSubject" class="form-input" placeholder="Email subject...">
+<label class="form-label">Subject *</label>
+<input type="text" id="quickEmailSubject" class="form-input" placeholder="Subject line">
 </div>
 <div class="form-group">
-<label class="form-label">Message</label>
-<textarea id="quickEmailText" class="form-textarea" rows="6" placeholder="Hi ${contact.name},\n\n"></textarea>
+<label class="form-label">Message *</label>
+<textarea id="quickEmailText" class="form-textarea" rows="6" placeholder="Type your message..."></textarea>
 </div>
+<p style="color: rgba(255,255,255,0.35); font-size: 12px; margin-top: 8px;">📧 Open tracking enabled — you'll see when they read it</p>
 </div>
 <div class="modal-footer">
 <button class="btn-admin secondary" onclick="document.getElementById('quickEmailModal').remove()">Cancel</button>
-<button class="btn-admin primary" onclick="sendQuickEmail(${contactId})" style="background: #3b82f6;">Send Email</button>
+<button class="btn-admin primary" id="sendEmailBtn" onclick="sendQuickEmail(${contactId})" style="background: #e63946;">Send Email</button>
 </div>
 </div>`;
     document.body.appendChild(modal);
 }
 
-function sendQuickEmail(contactId) {
+async function sendQuickEmail(contactId) {
     const contact = crmData.contacts.find(c => c.id === contactId);
-    const subject = document.getElementById('quickEmailSubject').value;
-    const message = document.getElementById('quickEmailText').value;
+    const subject = document.getElementById('quickEmailSubject').value.trim();
+    const message = document.getElementById('quickEmailText').value.trim();
     if (!subject || !message) { alert('Please enter subject and message'); return; }
 
-    // Log activity
-    logContactActivity(contactId, 'email', subject + ': ' + message.substring(0, 100));
+    // Disable button while sending
+    const btn = document.getElementById('sendEmailBtn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
 
-    // Simulate sending
-    simulateEmailNotification(contact.email, subject, message);
+    try {
+        // Build HTML body with tracking pixel
+        const trackId = Date.now() + '_' + contactId;
+        const trackPixel = `<img src="/.netlify/functions/email-track?id=${trackId}&cid=${contactId}" width="1" height="1" style="display:none;" />`;
+        const htmlBody = `<div style="font-family: Arial, sans-serif; color: #333;">
+            <p>${message.replace(/\n/g, '<br>')}</p>
+            <br><p style="color: #999; font-size: 12px;">— New Urban Influence</p>
+            ${trackPixel}
+        </div>`;
 
-    document.getElementById('quickEmailModal').remove();
-    alert('Email sent to ' + contact.name + '!');
+        const res = await fetch('/.netlify/functions/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                to: contact.email,
+                subject: subject,
+                html: htmlBody,
+                text: message,
+                clientId: contact.id?.toString()
+            })
+        });
+
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error || 'Send failed');
+
+        // Log to local activity
+        logContactActivity(contactId, 'email_sent', subject + ': ' + message.substring(0, 100));
+
+        // Log to Supabase activity_log for timeline
+        if (typeof supabase !== 'undefined' && supabase) {
+            await supabase.from('activity_log').insert({
+                contact_id: contactId,
+                type: 'email_sent',
+                details: JSON.stringify({ subject, to: contact.email, trackId, messageId: result.messageId }),
+                created_at: new Date().toISOString()
+            }).catch(e => console.warn('Activity log failed:', e));
+        }
+
+        document.getElementById('quickEmailModal')?.remove();
+        alert('✅ Email sent to ' + contact.name + '!');
+
+        // Refresh contact detail if open
+        if (document.querySelector('.contact-detail-sidebar')) {
+            showContactDetail(contactId);
+        }
+    } catch (err) {
+        console.error('Email send error:', err);
+        alert('❌ Failed to send: ' + err.message);
+        if (btn) { btn.disabled = false; btn.textContent = 'Send Email'; }
+    }
 }
 
 function quickCall(contactId) {
