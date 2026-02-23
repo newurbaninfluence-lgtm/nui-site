@@ -511,6 +511,7 @@ ${[
 </div>
 
                 <!-- DYNAMIC ASSET GALLERIES -->
+                ${buildAssetGallery(client.assets?.moodboard, 'Moodboard Imagery', client.colors[0], 3)}
                 ${buildAssetGallery(client.assets?.mockups, 'Brand Mockups', client.colors[0], 2)}
                 ${buildAssetGallery(client.assets?.social, 'Social Media', client.colors[0], 3)}
                 ${buildAssetGallery(client.assets?.print, 'Print & Signage', client.colors[0], 3)}
@@ -794,6 +795,11 @@ function approveMoodboard(clientId, moodboardId) {
     mb.approvedAt = new Date().toISOString();
     mb.approved_by = clientId;
     if (typeof saveProofs === 'function') saveProofs();
+
+    // 1.5) SYNC: Extract colors, images, notes → client record + brand guide
+    if (typeof syncMoodboardToClient === 'function') {
+        syncMoodboardToClient(moodboardId);
+    }
 
     // 2) CREATE FORMAL APPROVAL RECORD in Supabase
     if (typeof supabaseClient !== 'undefined' && mb.project_id) {

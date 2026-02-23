@@ -295,3 +295,104 @@ function syncBrandGuideToClient(guideId) {
     console.log(`✅ Synced ${Object.keys(g.deliverables).length} deliverables → client.assets for ${client.name}`);
     return true;
 }
+
+
+// ==================== MOODBOARD → CLIENT DATA BRIDGE ====================
+// Extracts colors, images, notes, and brand voice from approved moodboard
+// and pushes them into client record + brand guide (if exists)
+
+function syncMoodboardToClient(moodboardId) {
+    if (typeof proofs === 'undefined') return false;
+    const mb = proofs.find(p => p.id == moodboardId);
+    if (!mb || !mb.collageItems || !mb.collageItems.length) return false;
+
+    const client = clients.find(c => c.id == mb.clientId);
+    if (!client) return false;
+
+    if (!client.assets) client.assets = {};
+
+    // ── Extract Colors ──
+    const mbColors = mb.collageItems
+        .filter(item => item.type === 'color' && item.color)
+        .map(item => item.color);
+
+    if (mbColors.length) {
+        // Set client colors from moodboard (replaces defaults)
+        client.colors = mbColors;
+        console.log(`🎨 Extracted ${mbColors.length} colors from moodboard`);
+    }
+
+    // ── Extract Images → client.assets.moodboard ──
+    const mbImages = mb.collageItems
+        .filter(item => item.type === 'image' && item.src && !item.src.startsWith('[cleared') && !item.src.startsWith('idb://'))
+        .map(item => ({
+            name: item.caption || 'Moodboard Image',
+            data: item.src,
+            type: 'image',
+            category: 'moodboard',
+            uploadedAt: mb.approvedAt || new Date().toISOString(),
+            _fromMoodboard: moodboardId
+        }));
+
+    if (mbImages.length) {
+        if (!client.assets.moodboard) client.assets.moodboard = [];
+        // Clear old moodboard-synced images to avoid duplicates
+        client.assets.moodboard = client.assets.moodboard.filter(a => a._fromMoodboard !== moodboardId);
+        client.assets.moodboard.push(...mbImages);
+        console.log(`🖼️ Extracted ${mbImages.length} images from moodboard`);
+    }
+
+    // ── Extract Notes → client brand voice / strategy ──
+    const mbNotes = mb.collageItems
+        .filter(item => item.type === 'note' && (item.title || item.body));
+
+    mbNotes.forEach(note => {
+        const title = (note.title || '').toLowerCase();
+        const body = note.body || '';
+        if (title.includes('voice') || title.includes('tone') || title.includes('personality')) {
+            client.brandVoice = body;
+        } else if (title.includes('target') || title.includes('audience') || title.includes('market')) {
+            client.targetMarket = body;
+        } else if (title.includes('slogan') || title.includes('tagline')) {
+            client.slogan = body;
+        } else if (title.includes('mission')) {
+            client.mission = body;
+        }
+    });
+
+    // ── Extract Fonts from text items ──
+    const mbTexts = mb.collageItems
+        .filter(item => item.type === 'text' && item.font);
+    if (mbTexts.length) {
+        if (!client.fonts) client.fonts = {};
+        // First text item → heading font, second → body font
+        if (mbTexts[0]) client.fonts.heading = mbTexts[0].font.split(',')[0].replace(/['"]/g, '').trim();
+        if (mbTexts[1]) client.fonts.body = mbTexts[1].font.split(',')[0].replace(/['"]/g, '').trim();
+    }
+
+    // ── Store canvas background for portal theming ──
+    if (mb.canvasBackground) {
+        client.moodboardBackground = mb.canvasBackground;
+    }
+
+    // ── Push colors into brand guide if one exists ──
+    if (typeof getBrandGuides === 'function') {
+        const guides = getBrandGuides();
+        const clientGuide = guides.find(g => g.clientId == client.id);
+        if (clientGuide && mbColors.length) {
+            clientGuide.brandColors = mbColors;
+            if (client.fonts) clientGuide.fonts = client.fonts;
+            if (client.brandVoice) clientGuide.brandVoice = client.brandVoice;
+            if (client.targetMarket) clientGuide.targetMarket = client.targetMarket;
+            clientGuide.updatedAt = new Date().toISOString();
+            saveBrandGuides(guides);
+            // Re-sync brand guide → portal
+            syncBrandGuideToClient(clientGuide.id);
+            console.log(`📋 Pushed moodboard data → brand guide "${clientGuide.packageName}"`);
+        }
+    }
+
+    saveClients();
+    console.log(`✅ Moodboard "${mb.title}" synced to client "${client.name}"`);
+    return true;
+}
