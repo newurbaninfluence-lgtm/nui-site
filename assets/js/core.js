@@ -1194,7 +1194,7 @@ let crmData = JSON.parse(localStorage.getItem('nui_crm')) || {
         { id: 2, name: 'Qualified', color: '#8b5cf6' },
         { id: 3, name: 'Proposal Sent', color: '#f59e0b' },
         { id: 4, name: 'Negotiation', color: '#ef4444' },
-        { id: 5, name: 'Won', color: '#10b981' },
+        { id: 5, name: 'Paid', color: '#10b981' },
         { id: 6, name: 'Lost', color: '#6b7280' }
     ]
 };

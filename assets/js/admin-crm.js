@@ -26,7 +26,7 @@ function loadAdminCrmPanel() {
     const contactsByStage = {};
     crmData.pipelines.forEach(p => { contactsByStage[p.id] = crmData.contacts.filter(c => c.stage === p.id); });
     const totalValue = crmData.contacts.reduce((sum, c) => sum + (c.value || 0), 0);
-    const wonValue = (contactsByStage[5] || []).reduce((sum, c) => sum + (c.value || 0), 0);
+    const paidValue = (contactsByStage[5] || []).reduce((sum, c) => sum + (c.value || 0), 0);
 
     document.getElementById('adminCrmPanel').innerHTML = `
 <style>
@@ -106,7 +106,7 @@ function loadAdminCrmPanel() {
 <div class="stat-card"><div class="num">${crmData.contacts.length}</div><div class="lbl">Total Contacts</div></div>
 <div class="stat-card"><div class="num" style="color: #3b82f6;">${(contactsByStage[1] || []).length + (contactsByStage[2] || []).length}</div><div class="lbl">Active Leads</div></div>
 <div class="stat-card highlight"><div class="num">$${totalValue.toLocaleString()}</div><div class="lbl">Pipeline Value</div></div>
-<div class="stat-card"><div class="num" style="color: #10b981;">$${wonValue.toLocaleString()}</div><div class="lbl">Won Deals</div></div>
+<div class="stat-card"><div class="num" style="color: #10b981;">$${paidValue.toLocaleString()}</div><div class="lbl">Paid Deals</div></div>
 </div>
 
         <!-- PIPELINE TAB -->
@@ -919,14 +919,14 @@ function moveContactStage(contactId, newStage) {
         loadAdminCrmPanel();
         console.log('✅ Contact moved: ' + contact.name + ' → ' + newStageName);
 
-        // AUTO-PROJECT: When deal moves to Won, create project + client
+        // AUTO-PROJECT: When deal moves to Paid, create project + client
         if (newStage === 5) {
             autoCreateProjectFromDeal(contact);
         }
     }
 }
 
-// ==================== AUTO-PROJECT FROM WON DEAL ====================
+// ==================== AUTO-PROJECT FROM PAID DEAL ====================
 function autoCreateProjectFromDeal(contact) {
     // Check if project already exists for this contact
     const existingProject = projects.find(p => p.crmContactId === contact.id);
@@ -969,23 +969,42 @@ function autoCreateProjectFromDeal(contact) {
         services: [],
         paymentPlan: 'standard',
         totalAmount: contact.value || 0,
-        paidInstallments: 0,
+        paidInstallments: 1,
         stage: 'Discovery',
         startDate: new Date().toISOString().split('T')[0],
         dueDate: '',
-        notes: 'Auto-created from CRM pipeline (Deal Won)',
+        notes: 'Auto-created from CRM pipeline (Paid — deposit received)',
         timeTracked: 0,
         timerRunning: false,
         timerStartedAt: null,
         deliverables: [],
         activityLog: [
-            { action: 'Project auto-created from CRM deal (Won)', timestamp: new Date().toISOString(), stage: 'Discovery' }
+            { action: 'Project auto-created from CRM (Paid — deposit received)', timestamp: new Date().toISOString(), stage: 'Discovery' }
         ],
         createdAt: new Date().toISOString()
     };
 
     projects.push(project);
     saveProjects();
+
+    // Record the deposit payment
+    const depositAmount = Math.round((project.totalAmount || 0) * 0.5);
+    if (depositAmount > 0 && typeof payments !== 'undefined') {
+        payments.push({
+            id: Date.now() + 3,
+            clientId: client.id,
+            clientName: client.name,
+            projectId: project.id,
+            projectName: project.name,
+            amount: depositAmount,
+            type: 'deposit',
+            date: new Date().toISOString().split('T')[0],
+            notes: 'Deposit (auto-recorded from CRM pipeline)',
+            status: 'completed',
+            createdAt: new Date().toISOString()
+        });
+        if (typeof savePayments === 'function') savePayments();
+    }
 
     // Log in CRM activity
     if (!crmData.activityLog) crmData.activityLog = [];
@@ -999,7 +1018,7 @@ function autoCreateProjectFromDeal(contact) {
     saveCrm();
 
     console.log('✅ Auto-created project: ' + project.name + ' ($' + project.totalAmount.toLocaleString() + ') for client ' + client.name);
-    alert('🎉 Deal Won! Auto-created:\n• Client: ' + client.name + '\n• Project: ' + project.name + '\n• Value: $' + project.totalAmount.toLocaleString() + '\n\nHead to Projects to start working.');
+    alert('💰 Paid! Auto-created:\n• Client: ' + client.name + '\n• Project: ' + project.name + '\n• Value: $' + project.totalAmount.toLocaleString() + '\n• Deposit: $' + Math.round(project.totalAmount * 0.5).toLocaleString() + ' recorded\n\nHead to Projects to start working.');
 }
 
 // Quick Actions
