@@ -96,118 +96,233 @@ const weekTemplates = {
 };
 
 // ==================== HOLIDAY THEMES ====================
-// Each holiday gets its own color palette and themed header image
 const holidayThemes = {
     valentines: {
-        accent: '#e11d48',
+        accent: '#e11d48', accentLight: '#fda4af', accentDark: '#9f1239',
         gradient: 'linear-gradient(135deg, #e11d48 0%, #9f1239 100%)',
-        headerImg: 'https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif',
+        heroBg: 'linear-gradient(135deg, #881337 0%, #4c0519 100%)',
+        heroImg: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=1200&h=500&fit=crop',
+        tagline: 'LOVE IS IN THE AIR — YOUR BRAND SHOULD BE TOO',
         emoji: '💕'
     },
     stpatricks: {
-        accent: '#16a34a',
+        accent: '#16a34a', accentLight: '#86efac', accentDark: '#166534',
         gradient: 'linear-gradient(135deg, #16a34a 0%, #166534 100%)',
-        headerImg: 'https://media.giphy.com/media/l0MYt5jPR6QX5APm0/giphy.gif',
+        heroBg: 'linear-gradient(135deg, #14532d 0%, #052e16 100%)',
+        heroImg: 'https://images.unsplash.com/photo-1521618755572-156ae0cdd74d?w=1200&h=500&fit=crop',
+        tagline: 'GO GREEN WITH YOUR BRAND THIS ST. PATRICK\'S',
         emoji: '☘️'
     },
     memorial: {
-        accent: '#2563eb',
+        accent: '#2563eb', accentLight: '#93c5fd', accentDark: '#1e40af',
         gradient: 'linear-gradient(135deg, #1e40af 0%, #1e3a5f 100%)',
-        headerImg: 'https://media.giphy.com/media/fYfCUkeriuMiRCJjNS/giphy.gif',
+        heroBg: 'linear-gradient(135deg, #1e3a5f 0%, #0c1929 100%)',
+        heroImg: 'https://images.unsplash.com/photo-1569982175971-d92b01cf8694?w=1200&h=500&fit=crop',
+        tagline: 'HONOR THE WEEKEND — OWN THE FOOT TRAFFIC',
         emoji: '🇺🇸'
     },
     july4th: {
-        accent: '#dc2626',
-        gradient: 'linear-gradient(135deg, #1e3a8a 0%, #991b1b 50%, #1e3a8a 100%)',
-        headerImg: 'https://media.giphy.com/media/l0MYDzAElHm3SHKWQ/giphy.gif',
+        accent: '#dc2626', accentLight: '#fca5a5', accentDark: '#991b1b',
+        gradient: 'linear-gradient(135deg, #1e3a8a 0%, #991b1b 100%)',
+        heroBg: 'linear-gradient(135deg, #0c1929 0%, #450a0a 100%)',
+        heroImg: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=1200&h=500&fit=crop',
+        tagline: 'MAKE YOUR BUSINESS THE MAIN EVENT THIS 4TH',
         emoji: '🎆'
     },
     laborday: {
-        accent: '#d97706',
+        accent: '#d97706', accentLight: '#fcd34d', accentDark: '#92400e',
         gradient: 'linear-gradient(135deg, #92400e 0%, #78350f 100%)',
-        headerImg: 'https://media.giphy.com/media/26u4hHueRIOJBCmME/giphy.gif',
+        heroBg: 'linear-gradient(135deg, #78350f 0%, #451a03 100%)',
+        heroImg: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&h=500&fit=crop',
+        tagline: 'END OF SUMMER SALES START WITH THE RIGHT SIGNAGE',
         emoji: '⚒️'
     },
     halloween: {
-        accent: '#f97316',
-        gradient: 'linear-gradient(135deg, #f97316 0%, #7c2d12 50%, #1a1a2e 100%)',
-        headerImg: 'https://media.giphy.com/media/3o7TKSxTboDzOQiPCM/giphy.gif',
+        accent: '#f97316', accentLight: '#fdba74', accentDark: '#c2410c',
+        gradient: 'linear-gradient(135deg, #f97316 0%, #7c2d12 100%)',
+        heroBg: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+        heroImg: 'https://images.unsplash.com/photo-1509557965875-b88c97052f0e?w=1200&h=500&fit=crop',
+        tagline: 'SPOOKY SEASON SELLS — IS YOUR STOREFRONT READY?',
         emoji: '🎃'
     },
     thanksgiving: {
-        accent: '#b45309',
+        accent: '#b45309', accentLight: '#fbbf24', accentDark: '#78350f',
         gradient: 'linear-gradient(135deg, #b45309 0%, #78350f 100%)',
-        headerImg: 'https://media.giphy.com/media/l3fQezVIIjbUpjAis/giphy.gif',
+        heroBg: 'linear-gradient(135deg, #451a03 0%, #292524 100%)',
+        heroImg: 'https://images.unsplash.com/photo-1574672280600-4accfa5b6f98?w=1200&h=500&fit=crop',
+        tagline: 'GRATEFUL CUSTOMERS START WITH GREAT BRANDING',
         emoji: '🦃'
     },
     blackfriday: {
-        accent: '#eab308',
+        accent: '#eab308', accentLight: '#fef08a', accentDark: '#a16207',
         gradient: 'linear-gradient(135deg, #1a1a1a 0%, #3f3f46 100%)',
-        headerImg: 'https://media.giphy.com/media/3o7TKVSE5isogWqnqo/giphy.gif',
+        heroBg: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
+        heroImg: 'https://images.unsplash.com/photo-1607083206968-13611e3d76db?w=1200&h=500&fit=crop',
+        tagline: 'BIGGEST SHOPPING DAY = BIGGEST BRANDING OPPORTUNITY',
         emoji: '🏷️'
     },
     christmas: {
-        accent: '#dc2626',
+        accent: '#dc2626', accentLight: '#fca5a5', accentDark: '#991b1b',
         gradient: 'linear-gradient(135deg, #166534 0%, #14532d 100%)',
-        headerImg: 'https://media.giphy.com/media/3otPoOxyDTXjzpMbIY/giphy.gif',
+        heroBg: 'linear-gradient(135deg, #14532d 0%, #052e16 100%)',
+        heroImg: 'https://images.unsplash.com/photo-1512389142860-9c449e58a814?w=1200&h=500&fit=crop',
+        tagline: 'TIS THE SEASON TO STAND OUT',
         emoji: '🎄'
     },
     newyears: {
-        accent: '#eab308',
+        accent: '#eab308', accentLight: '#fef08a', accentDark: '#a16207',
         gradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)',
-        headerImg: 'https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif',
+        heroBg: 'linear-gradient(135deg, #0f0a3c 0%, #1e1b4b 100%)',
+        heroImg: 'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?w=1200&h=500&fit=crop',
+        tagline: 'NEW YEAR. NEW LOOK. NEW CUSTOMERS.',
         emoji: '🎉'
     }
 };
 
 const defaultTheme = {
-    accent: '#dc2626',
+    accent: '#dc2626', accentLight: '#fca5a5', accentDark: '#991b1b',
     gradient: 'linear-gradient(135deg, #dc2626 0%, #991b1b 100%)',
-    headerImg: '',
+    heroBg: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)',
+    heroImg: '',
+    tagline: 'YOUR BRAND DESERVES TO BE SEEN',
     emoji: '🎯'
+};
+
+// Product images — real print products
+const productImages = {
+    social: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=300&fit=crop',
+    banner: 'https://images.unsplash.com/photo-1588412079929-790b9f593d8e?w=400&h=300&fit=crop',
+    yardsigns: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=300&fit=crop',
+    businesscards: 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&h=300&fit=crop'
 };
 
 // ==================== BUILD EMAIL HTML ====================
 function buildHolidayEmail(firstName, holiday, week, printUrl, resolved, holidaySlug) {
     if (!resolved) return null;
     const theme = holidayThemes[holidaySlug] || defaultTheme;
+    const daysLeft = week * 7;
+    const weekNum = 9 - week;
 
-    return `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #1a1a1a; color: #fff; border-radius: 12px; overflow: hidden;">
-        <!-- HEADER with holiday theme -->
-        <div style="background: ${theme.gradient}; padding: 32px 32px 24px; text-align: center;">
-            <!-- Syne-style text logo -->
-            <div style="margin-bottom: 20px;">
-                <span style="font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 3px; text-transform: uppercase; color: #fff;">NEW URBAN </span><span style="font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 3px; text-transform: uppercase; color: ${theme.accent};">INFLUENCE</span>
-                <div style="font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 600; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 4px;">We don't design. We influence.</div>
+    return `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet">
+</head><body style="margin:0;padding:0;background:#111;">
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #1a1a1a;">
+
+    <!-- ============ TOP BAR ============ -->
+    <div style="background: #0a0a0a; padding: 12px 24px; text-align: center;">
+        <span style="font-size: 12px; color: ${theme.accent}; font-weight: 700; letter-spacing: 1px;">${theme.emoji} ${daysLeft} DAYS UNTIL ${holiday.toUpperCase()} — DON'T WAIT ${theme.emoji}</span>
+    </div>
+
+    <!-- ============ HERO IMAGE + OVERLAY ============ -->
+    <div style="position: relative; background: ${theme.heroBg};">
+        <img src="${theme.heroImg}" alt="${holiday}" style="width: 100%; height: 280px; object-fit: cover; display: block; opacity: 0.4;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center;">
+            <!-- LOGO -->
+            <div style="margin-bottom: 16px;">
+                <span style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 14px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.7);">NEW URBAN</span>
+                <span style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 14px; letter-spacing: 4px; text-transform: uppercase; color: ${theme.accent};"> INFLUENCE</span>
             </div>
-            <h1 style="margin: 0; font-size: 26px; font-weight: 800;">${theme.emoji} ${resolved.heading}</h1>
-            <p style="margin: 8px 0 0; opacity: 0.85; font-size: 14px;">Week ${9 - week} of 8 countdown</p>
-        </div>
-        ${theme.headerImg ? `
-        <!-- Holiday themed image -->
-        <div style="text-align: center; background: #111;">
-            <img src="${theme.headerImg}" alt="${holiday}" style="width: 100%; max-height: 200px; object-fit: cover; display: block;">
-        </div>` : ''}
-        <div style="padding: 32px;">
-            <p style="font-size: 16px; line-height: 1.7; color: #ccc;">${resolved.body}</p>
-            <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; margin: 24px 0;">
-                <p style="font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: ${theme.accent}; margin: 0 0 12px;">Quick Picks</p>
-                <table style="width: 100%; border-collapse: collapse;">
-                    <tr><td style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #fff; font-size: 14px;">Social Media Graphics Kit</td><td style="text-align: right; color: ${theme.accent}; font-weight: 700; font-size: 14px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">$195</td></tr>
-                    <tr><td style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #fff; font-size: 14px;">Storefront Banner</td><td style="text-align: right; color: ${theme.accent}; font-weight: 700; font-size: 14px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">$175</td></tr>
-                    <tr><td style="padding: 8px 0; color: #fff; font-size: 14px;">Yard Signs (10 pack)</td><td style="text-align: right; color: ${theme.accent}; font-weight: 700; font-size: 14px; padding: 8px 0;">$350</td></tr>
-                </table>
+            <!-- COUNTDOWN -->
+            <div style="background: rgba(0,0,0,0.5); border: 1px solid ${theme.accent}; border-radius: 8px; padding: 8px 24px; margin-bottom: 16px; display: inline-block;">
+                <span style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 36px; color: ${theme.accent};">${daysLeft}</span>
+                <span style="font-size: 13px; color: rgba(255,255,255,0.8); display: block; margin-top: -4px; letter-spacing: 2px; text-transform: uppercase;">DAYS LEFT</span>
             </div>
-            <div style="text-align: center; margin: 32px 0;">
-                <a href="${printUrl}" style="display: inline-block; background: ${theme.accent}; color: #fff; padding: 16px 40px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 8px;">${resolved.cta}</a>
+            <!-- HEADLINE -->
+            <h1 style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 28px; color: #fff; margin: 0; text-transform: uppercase; letter-spacing: 1px; line-height: 1.2;">${resolved.heading}</h1>
+        </div>
+    </div>
+
+    <!-- ============ TAGLINE BAR ============ -->
+    <div style="background: ${theme.accent}; padding: 14px 24px; text-align: center;">
+        <span style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #fff;">${theme.tagline}</span>
+    </div>
+
+    <!-- ============ BODY COPY ============ -->
+    <div style="padding: 32px 28px 16px;">
+        <p style="font-size: 17px; line-height: 1.8; color: #d4d4d4; margin: 0 0 24px;">Hey ${firstName},</p>
+        <p style="font-size: 16px; line-height: 1.8; color: #a3a3a3; margin: 0 0 24px;">${resolved.body}</p>
+    </div>
+
+    <!-- ============ PRODUCT CARDS ============ -->
+    <div style="padding: 0 28px 24px;">
+        <p style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: ${theme.accent}; margin: 0 0 16px;">🔥 HOLIDAY-READY PRODUCTS</p>
+
+        <!-- Row 1: Two products -->
+        <div style="margin-bottom: 12px;">
+        <!--[if mso]><table role="presentation" width="100%"><tr><td width="50%" valign="top"><![endif]-->
+        <div style="display: inline-block; width: 48%; vertical-align: top; margin-right: 2%;">
+            <div style="background: #242424; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden;">
+                <img src="${productImages.social}" alt="Social Media Kit" style="width: 100%; height: 120px; object-fit: cover; display: block;">
+                <div style="padding: 14px;">
+                    <p style="font-weight: 700; font-size: 14px; color: #fff; margin: 0 0 4px;">Social Media Kit</p>
+                    <p style="font-size: 12px; color: #888; margin: 0 0 8px;">10 branded holiday templates</p>
+                    <span style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 22px; color: ${theme.accent};">$195</span>
+                </div>
             </div>
-            <p style="font-size: 13px; color: #555; text-align: center;">24hr production · $10 overnight shipping · Design included</p>
         </div>
-        <div style="padding: 20px 32px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center;">
-            <p style="margin: 0; color: #555; font-size: 11px;">New Urban Influence · Detroit, Michigan · (248) 487-8747</p>
+        <!--[if mso]></td><td width="50%" valign="top"><![endif]-->
+        <div style="display: inline-block; width: 48%; vertical-align: top;">
+            <div style="background: #242424; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden;">
+                <img src="${productImages.banner}" alt="Storefront Banner" style="width: 100%; height: 120px; object-fit: cover; display: block;">
+                <div style="padding: 14px;">
+                    <p style="font-weight: 700; font-size: 14px; color: #fff; margin: 0 0 4px;">Storefront Banner</p>
+                    <p style="font-size: 12px; color: #888; margin: 0 0 8px;">Full-color vinyl, any size</p>
+                    <span style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 22px; color: ${theme.accent};">$175</span>
+                </div>
+            </div>
         </div>
-    </div>`;
+        <!--[if mso]></td></tr></table><![endif]-->
+        </div>
+
+        <!-- Row 2: Two products -->
+        <div style="margin-bottom: 12px;">
+        <div style="display: inline-block; width: 48%; vertical-align: top; margin-right: 2%;">
+            <div style="background: #242424; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden;">
+                <img src="${productImages.yardsigns}" alt="Yard Signs" style="width: 100%; height: 120px; object-fit: cover; display: block;">
+                <div style="padding: 14px;">
+                    <p style="font-weight: 700; font-size: 14px; color: #fff; margin: 0 0 4px;">Yard Signs (10pk)</p>
+                    <p style="font-size: 12px; color: #888; margin: 0 0 8px;">Double-sided + stakes</p>
+                    <span style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 22px; color: ${theme.accent};">$350</span>
+                </div>
+            </div>
+        </div>
+        <div style="display: inline-block; width: 48%; vertical-align: top;">
+            <div style="background: #242424; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden;">
+                <img src="${productImages.businesscards}" alt="Business Cards" style="width: 100%; height: 120px; object-fit: cover; display: block;">
+                <div style="padding: 14px;">
+                    <p style="font-weight: 700; font-size: 14px; color: #fff; margin: 0 0 4px;">Business Cards</p>
+                    <p style="font-size: 12px; color: #888; margin: 0 0 8px;">250ct premium stock</p>
+                    <span style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 22px; color: ${theme.accent};">$195</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- ============ CTA BUTTON ============ -->
+    <div style="padding: 0 28px 32px; text-align: center;">
+        <a href="${printUrl}" style="display: block; background: ${theme.accent}; color: #fff; padding: 18px 40px; font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 16px; text-decoration: none; border-radius: 8px; text-transform: uppercase; letter-spacing: 2px;">${resolved.cta} →</a>
+        <p style="font-size: 12px; color: #555; margin: 12px 0 0;">⚡ 24hr production · $10 overnight shipping anywhere in Michigan</p>
+    </div>
+
+    <!-- ============ SOCIAL PROOF BAR ============ -->
+    <div style="background: #111; padding: 20px 28px; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <p style="margin: 0; font-size: 13px; color: #888;">⭐⭐⭐⭐⭐ <span style="color: #fff; font-weight: 600;">4.9/5</span> from 50+ Michigan businesses · <span style="color: ${theme.accent}; font-weight: 600;">10+ years in business</span></p>
+    </div>
+
+    <!-- ============ FOOTER ============ -->
+    <div style="padding: 24px 28px; text-align: center;">
+        <div style="margin-bottom: 12px;">
+            <span style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.3);">NEW URBAN </span><span style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.2);">INFLUENCE</span>
+            <div style="font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.15); margin-top: 3px;">We don't design. We influence.</div>
+        </div>
+        <p style="margin: 0 0 8px; color: #444; font-size: 11px;">Detroit, Michigan · (248) 487-8747 · newurbaninfluence.com</p>
+        <p style="margin: 0; color: #333; font-size: 10px;">You're receiving this because you're a valued NUI client.</p>
+    </div>
+
+</div>
+</body></html>`;
 }
 
 // ==================== MAIN HANDLER ====================
