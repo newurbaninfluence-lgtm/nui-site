@@ -441,46 +441,46 @@ function viewOrderDetails(orderId) {
 <div class="modal-body">
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
 <div>
-<h4 style="font-size: 12px; color: #888; margin-bottom: 8px;">CLIENT</h4>
+<h4 style="font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 8px;">CLIENT</h4>
 <p class="fw-600">${client?.name || 'Unknown'}</p>
-<p style="font-size: 14px; color: #666;">${client?.email || ''}</p>
+<p style="font-size: 14px; color: rgba(255,255,255,0.5);">${client?.email || ''}</p>
 </div>
 <div>
-<h4 style="font-size: 12px; color: #888; margin-bottom: 8px;">DESIGNER</h4>
+<h4 style="font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 8px;">DESIGNER</h4>
 <p class="fw-600">${order.assignedDesigner || 'Not Assigned'}</p>
-                        ${order.assignedAt ? `<p style="font-size: 14px; color: #666;">Assigned: ${new Date(order.assignedAt).toLocaleDateString()}</p>` : ''}
+                        ${order.assignedAt ? `<p style="font-size: 14px; color: rgba(255,255,255,0.5);">Assigned: ${new Date(order.assignedAt).toLocaleDateString()}</p>` : ''}
 </div>
 </div>
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
-<div style="padding: 16px; background: #f8fafc; border-radius: 8px; text-align: center;">
-<div class="fs-24 fw-700">$${order.estimate?.toLocaleString() || 0}</div>
-<div class="text-muted fs-12">Estimate</div>
+<div style="padding: 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">
+<div style="font-size: 20px; font-weight: 700; color: #fff;">$${order.estimate?.toLocaleString() || 0}</div>
+<div style="font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px;">Estimate</div>
 </div>
-<div style="padding: 16px; background: #f8fafc; border-radius: 8px; text-align: center;">
-<div class="fs-24 fw-700">${order.turnaround || 'N/A'}</div>
-<div class="text-muted fs-12">Turnaround</div>
+<div style="padding: 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">
+<div style="font-size: 20px; font-weight: 700; color: #fff;">${order.turnaround || 'N/A'}</div>
+<div style="font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px;">Turnaround</div>
 </div>
-<div style="padding: 16px; background: #f8fafc; border-radius: 8px; text-align: center;">
-<div class="fs-24 fw-700">${new Date(order.dueDate).toLocaleDateString()}</div>
-<div class="text-muted fs-12">Due Date</div>
+<div style="padding: 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">
+<div style="font-size: 20px; font-weight: 700; color: #fff;">${order.dueDate ? new Date(order.dueDate).toLocaleDateString() : 'Not Set'}</div>
+<div style="font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px;">Due Date</div>
 </div>
-<div style="padding: 16px; background: ${order.status === 'delivered' ? '#d1fae5' : '#fef3c7'}; border-radius: 8px; text-align: center;">
-<div style="font-size: 24px; font-weight: 700; text-transform: capitalize;">${order.status.replace('_', ' ')}</div>
-<div class="text-muted fs-12">Status</div>
+<div style="padding: 16px; background: ${order.status === 'delivered' ? 'rgba(46,204,113,0.15)' : 'rgba(245,158,11,0.15)'}; border: 1px solid ${order.status === 'delivered' ? 'rgba(46,204,113,0.3)' : 'rgba(245,158,11,0.3)'}; border-radius: 8px; text-align: center;">
+<div style="font-size: 18px; font-weight: 700; color: ${order.status === 'delivered' ? '#2ecc71' : '#f59e0b'}; text-transform: capitalize;">${order.status.replace('_', ' ')}</div>
+<div style="font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px;">Status</div>
 </div>
 </div>
-                ${order.description ? `<div class="mb-24"><h4 style="font-size: 12px; color: #888; margin-bottom: 8px;">DESCRIPTION</h4><p>${order.description}</p></div>` : ''}
+                ${order.description ? `<div class="mb-24"><h4 style="font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">DESCRIPTION</h4><p>${order.description}</p></div>` : ''}
 
                 <!-- Visual Timeline -->
 <div class="mb-24">
-<h4 style="font-size: 12px; color: #888; margin-bottom: 12px;">ORDER PROGRESS</h4>
+<h4 style="font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">ORDER PROGRESS</h4>
                     ${renderOrderTimeline(order)}
 </div>
 
                 <!-- Status History -->
 <div class="mb-24">
-<h4 style="font-size: 12px; color: #888; margin-bottom: 12px;">STATUS HISTORY</h4>
-<div style="background: #f8fafc; border-radius: 12px; padding: 16px; max-height: 200px; overflow-y: auto;">
+<h4 style="font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">STATUS HISTORY</h4>
+<div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; max-height: 200px; overflow-y: auto;">
                         ${renderStatusHistory(order)}
 </div>
 </div>
@@ -488,7 +488,7 @@ function viewOrderDetails(orderId) {
 <div class="flex-gap-12">
 <button onclick="document.getElementById('orderDetailsModal').remove(); showInvoice(${order.id});" class="btn-cta">View Invoice</button>
 <button onclick="document.getElementById('orderDetailsModal').remove(); updateOrderStatus(${order.id});" class="btn-outline">Update Status</button>
-<button onclick="document.getElementById('orderDetailsModal').remove();" style="padding: 10px 20px; background: #f5f5f5; border: none; border-radius: 8px; cursor: pointer;">Close</button>
+<button onclick="document.getElementById('orderDetailsModal').remove();" style="padding: 10px 20px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; color: #fff;">Close</button>
 </div>
 </div>
 </div>
