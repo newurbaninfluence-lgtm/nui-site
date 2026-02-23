@@ -2808,14 +2808,14 @@ function guessProofType(fileName, delivCat) {
         return { id: 'logo_primary', name: 'Logo - Primary', size: 'Vector/High-res' };
     }
     // Social
-    if (delivCat === 'social' || lower.includes('social') || lower.includes('ig') || lower.includes('fb')) {
+    if (delivCat === 'social' || lower.includes('social') || lower.includes('instagram') || lower.includes('facebook') || lower.includes('ig-') || lower.includes('ig_') || lower.includes('fb-') || lower.includes('fb_')) {
         if (lower.includes('story') || lower.includes('1920')) return { id: 'social_ig_story', name: 'Instagram Story', size: '1080 x 1920 px' };
         if (lower.includes('post')) return { id: 'social_ig_post', name: 'Instagram Post', size: '1080 x 1080 px' };
         if (lower.includes('cover') || lower.includes('banner')) return { id: 'social_fb_cover', name: 'Facebook Cover', size: '820 x 312 px' };
         return { id: 'social_ig_post', name: 'Instagram Post', size: '1080 x 1080 px' };
     }
     // Print
-    if (delivCat === 'print-files' || lower.includes('card')) {
+    if (delivCat === 'print-files' || lower.includes('card') || lower.includes('flyer') || lower.includes('banner') || lower.includes('sign') || lower.includes('poster')) {
         if (lower.includes('card')) return { id: 'business_card_front', name: 'Business Card - Front', size: '3.5" x 2"' };
         if (lower.includes('flyer')) return { id: 'flyer_letter', name: 'Flyer - Letter', size: '8.5" x 11"' };
         if (lower.includes('banner')) return { id: 'vinyl_banner_custom', name: 'Vinyl Banner - Custom', size: 'Custom size' };
@@ -3007,7 +3007,6 @@ async function sendProofToClient(proofId, projectId) {
                         '<div style="padding:32px;">' +
                             '<p style="color:#ccc;">Hey ' + (client.contact || client.name) + ',</p>' +
                             '<p style="color:#ccc;">Your proof for <strong style="color:#fff;">' + proof.name + '</strong> is ready for review.</p>' +
-                            (proof.image ? '<div style="margin:24px 0;border-radius:12px;overflow:hidden;border:1px solid #333;"><img src="' + proof.image + '" style="width:100%;display:block;" alt="' + proof.name + '"></div>' : '') +
                             '<div style="background:#111;border:1px solid #333;border-radius:12px;padding:20px;margin:24px 0;">' +
                                 '<div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="color:#888;">Proof</span><strong style="color:#fff;">' + proof.name + '</strong></div>' +
                                 '<div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="color:#888;">Type</span><strong style="color:#fff;">' + (proof.proofTypeName || 'Design') + '</strong></div>' +
