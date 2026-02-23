@@ -759,6 +759,38 @@ async function submitQuickOrder(e, clientId) {
     order.invoiceId = invoice.id;
     saveOrders();
 
+    // === AUTO-CREATE PROJECT ===
+    if (typeof projects !== 'undefined') {
+        const newProject = {
+            id: Date.now() + 3,
+            clientId: clientId,
+            orderId: order.id,
+            invoiceId: invoice.id,
+            name: projectName,
+            package: 'Custom Order',
+            totalAmount: price,
+            paymentPlan: 'full',
+            paidInstallments: 0,
+            stage: 'Discovery',
+            status: 'active',
+            startDate: new Date().toISOString().split('T')[0],
+            dueDate: dueDate || '',
+            deliverables: [],
+            timeTracked: 0,
+            createdAt: new Date().toISOString(),
+            activityLog: [{
+                action: 'Project auto-created from Quick Order #' + order.id,
+                timestamp: new Date().toISOString(),
+                stage: 'Discovery'
+            }]
+        };
+        projects.unshift(newProject);
+        invoice.projectId = newProject.id;
+        saveInvoices();
+        if (typeof saveProjects === 'function') saveProjects();
+        console.log('✅ Auto-created project for quick order:', order.id);
+    }
+
     // === SEND INVOICE EMAIL ===
     if (client.email) {
         try {
