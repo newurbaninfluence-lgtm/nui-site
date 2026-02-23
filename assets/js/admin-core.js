@@ -758,6 +758,7 @@ async function setMeetingOutcome(meetingId, outcome) {
 
 // --- Sync Calendly meetings to leads ---
 function syncMeetingsToLeads() {
+    if (typeof meetings === 'undefined') return;
     const calendlyMeetings = meetings.filter(m => m.source === 'calendly');
     let added = 0;
 
