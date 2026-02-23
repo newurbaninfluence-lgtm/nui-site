@@ -15,10 +15,10 @@
   to = "/services/:service.html"
   status = 200
 
-# Blog index
+# Blog index — serve SPA (real blog with all posts lives in marketing.js)
 [[redirects]]
   from = "/blog"
-  to = "/blog/index.html"
+  to = "/index.html"
   status = 200
 
 # Blog posts
