@@ -2058,15 +2058,4 @@ function openSmsConversation(phone) {
 }
 
 
-// ==================== BLOG PANEL (STUB - was never defined in monolith) ====================
-function loadAdminBlogPanel() {
-    const panel = document.getElementById('adminBlogPanel');
-    if (panel) {
-        panel.innerHTML = `
-<div style="padding: 40px; text-align: center;">
-    <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 16px;">Blog Management</h2>
-    <p style="color: rgba(255,255,255,0.6); margin-bottom: 24px;">Blog management panel coming soon. Posts are currently managed via static HTML files in /blog/.</p>
-    <a href="/blog/" target="_blank" class="btn-cta">View Blog →</a>
-</div>`;
-    }
-}
+// Blog panel lives in marketing.js — loadAdminBlogPanel() defined there

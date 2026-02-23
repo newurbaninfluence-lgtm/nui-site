@@ -5184,6 +5184,69 @@ let blogAuthorImage = localStorage.getItem('nui_blog_author_image') || '';
 
 function saveBlogPosts() { localStorage.setItem('nui_blog_posts', JSON.stringify(blogPosts)); }
 
+// ==================== SUPABASE BLOG SYNC ====================
+function getSupabaseClient() {
+    if (window._supabaseStorage) return window._supabaseStorage;
+    if (window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
+        window._supabaseStorage = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+        return window._supabaseStorage;
+    }
+    return null;
+}
+
+async function syncBlogPostToSupabase(post) {
+    const db = getSupabaseClient();
+    if (!db) { console.warn('⚠️ Supabase not available — blog post saved locally only'); return; }
+    try {
+        const row = {
+            id: post.id,
+            slug: post.slug,
+            title: post.title,
+            excerpt: post.excerpt || '',
+            category: post.category || 'Branding',
+            image: post.image || '',
+            author: post.author || 'Faren Young',
+            author_image: post.authorImage || '',
+            date: post.date || '',
+            read_time: post.readTime || '5 min read',
+            content: post.content || '',
+            published: true,
+            updated_at: new Date().toISOString()
+        };
+        const { error } = await db.from('blog_posts').upsert(row, { onConflict: 'id' });
+        if (error) throw error;
+        console.log('✅ Blog post synced to Supabase:', post.title);
+    } catch (err) {
+        console.error('❌ Blog Supabase sync failed:', err.message);
+    }
+}
+
+async function deleteBlogPostFromSupabase(postId) {
+    const db = getSupabaseClient();
+    if (!db) return;
+    try {
+        const { error } = await db.from('blog_posts').delete().eq('id', postId);
+        if (error) throw error;
+        console.log('✅ Blog post deleted from Supabase:', postId);
+    } catch (err) {
+        console.error('❌ Blog Supabase delete failed:', err.message);
+    }
+}
+
+async function syncAllBlogPostsToSupabase() {
+    const db = getSupabaseClient();
+    if (!db) { alert('⚠️ Supabase not connected'); return; }
+    const btn = document.getElementById('blogSyncAllBtn');
+    if (btn) { btn.textContent = '⏳ Syncing...'; btn.disabled = true; }
+    let synced = 0;
+    for (const post of blogPosts) {
+        await syncBlogPostToSupabase(post);
+        synced++;
+    }
+    if (btn) { btn.textContent = '☁️ Sync All to Live Blog'; btn.disabled = false; }
+    alert(`✅ ${synced} posts synced to live blog!`);
+}
+
 function loadAdminBlogPanel() {
     document.getElementById('adminBlogPanel').innerHTML = `
 <div class="panel-header">
@@ -5210,7 +5273,10 @@ function loadAdminBlogPanel() {
         <!-- Blog Posts List -->
 <div class="admin-row-between">
 <h3 class="text-white">${blogPosts.length} Posts</h3>
+<div style="display:flex;gap:8px;">
+<button id="blogSyncAllBtn" onclick="syncAllBlogPostsToSupabase()" class="btn-admin" style="background:rgba(59,130,246,0.2);color:#3b82f6;font-size:12px;">☁️ Sync All to Live Blog</button>
 <button onclick="showBlogEditor()" class="btn-admin primary">+ New Post</button>
+</div>
 </div>
 
 <div class="flex-col-gap-12">
@@ -5368,6 +5434,9 @@ function saveBlogPost(existingId) {
     }
 
     saveBlogPosts();
+    // Sync to Supabase for live blog
+    const savedPost = existingId ? blogPosts.find(p => p.id === existingId) : blogPosts[0];
+    if (savedPost) syncBlogPostToSupabase(savedPost);
     document.getElementById('blogEditorModal').remove();
     loadAdminBlogPanel();
     alert(existingId ? '✅ Post updated!' : '✅ Post published!');
@@ -5377,6 +5446,7 @@ function deleteBlogPost(postId) {
     if (!confirm('Delete this blog post? This cannot be undone.')) return;
     blogPosts = blogPosts.filter(p => p.id !== postId);
     saveBlogPosts();
+    deleteBlogPostFromSupabase(postId);
     loadAdminBlogPanel();
 }
 
