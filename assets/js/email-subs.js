@@ -426,7 +426,7 @@ async function loadHolidayDripTemplates() {
 <h4 style="margin: 0 0 4px 0; font-size: 15px;">${t.subject}</h4>
 <p style="margin: 0; font-size: 12px; color: #888; max-width: 500px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${t.body}</p>
 </div>
-<button onclick="editHolidayDripTemplate(${t.week_number})" style="padding: 8px 16px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-size: 12px;">Edit</button>
+<button onclick="editHolidayDripTemplate(${t.week_number})" style="padding: 8px 16px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-size: 12px;">Edit & Preview</button>
 </div>
         `).join('');
     } catch (err) {
@@ -443,28 +443,89 @@ function editHolidayDripTemplate(weekNum) {
     const modal = document.createElement('div');
     modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
     modal.innerHTML = `
-<div style="background:#1a1a1a;border-radius:16px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;padding:32px;">
+<div style="background:#1a1a1a;border-radius:16px;width:100%;max-width:1100px;max-height:90vh;overflow-y:auto;padding:32px;">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+<div>
 <h3 style="margin:0 0 4px 0;">🎄 Edit Holiday Drip — ${weekLabel}</h3>
-<p style="margin:0 0 20px 0;font-size:12px;color:#888;">Use <code style="background:#333;padding:2px 6px;border-radius:4px;">{{holiday}}</code> and <code style="background:#333;padding:2px 6px;border-radius:4px;">{{firstName}}</code> as placeholders</p>
+<p style="margin:0;font-size:12px;color:#888;">Use <code style="background:#333;padding:2px 6px;border-radius:4px;">{{holiday}}</code> and <code style="background:#333;padding:2px 6px;border-radius:4px;">{{firstName}}</code> placeholders · Preview updates live</p>
+</div>
+<button onclick="this.closest('div[style*=fixed]').remove()" style="background:none;border:none;color:#666;font-size:24px;cursor:pointer;padding:0 4px;">✕</button>
+</div>
 
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+<!-- LEFT: Editor -->
+<div>
 <label style="display:block;margin-bottom:4px;font-size:13px;color:#aaa;">Subject Line</label>
-<input id="hdtSubject" value="${t.subject.replace(/"/g, '&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:16px;box-sizing:border-box;">
+<input id="hdtSubject" value="${t.subject.replace(/"/g, '&quot;')}" oninput="updateHolidayPreview(${weekNum})" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:14px;box-sizing:border-box;">
 
 <label style="display:block;margin-bottom:4px;font-size:13px;color:#aaa;">Email Heading</label>
-<input id="hdtHeading" value="${t.heading.replace(/"/g, '&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:16px;box-sizing:border-box;">
+<input id="hdtHeading" value="${t.heading.replace(/"/g, '&quot;')}" oninput="updateHolidayPreview(${weekNum})" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:14px;box-sizing:border-box;">
 
 <label style="display:block;margin-bottom:4px;font-size:13px;color:#aaa;">Body Copy</label>
-<textarea id="hdtBody" rows="5" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:16px;resize:vertical;box-sizing:border-box;">${t.body}</textarea>
+<textarea id="hdtBody" rows="6" oninput="updateHolidayPreview(${weekNum})" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:14px;resize:vertical;box-sizing:border-box;">${t.body}</textarea>
 
 <label style="display:block;margin-bottom:4px;font-size:13px;color:#aaa;">CTA Button Text</label>
-<input id="hdtCta" value="${t.cta.replace(/"/g, '&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:24px;box-sizing:border-box;">
+<input id="hdtCta" value="${t.cta.replace(/"/g, '&quot;')}" oninput="updateHolidayPreview(${weekNum})" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:20px;box-sizing:border-box;">
 
 <div style="display:flex;gap:12px;">
 <button id="hdtSaveBtn" onclick="saveHolidayDripTemplate(${weekNum})" style="flex:1;padding:12px;background:#e63946;border:none;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;">Save Changes</button>
 <button onclick="this.closest('div[style*=fixed]').remove()" style="flex:1;padding:12px;background:#333;border:none;color:#fff;border-radius:8px;cursor:pointer;">Cancel</button>
 </div>
+</div>
+
+<!-- RIGHT: Live Preview -->
+<div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+<span style="font-size:13px;color:#aaa;">📧 Email Preview</span>
+<span style="font-size:11px;color:#555;">Subject: <span id="hdtPreviewSubject" style="color:#aaa;">${t.subject.replace(/\{\{holiday\}\}/g, 'Christmas').replace(/\{\{firstName\}\}/g, 'Mike')}</span></span>
+</div>
+<div id="hdtPreviewContainer" style="background:#222;border-radius:12px;padding:12px;max-height:65vh;overflow-y:auto;border:1px solid #333;">
+</div>
+</div>
+</div>
 </div>`;
     document.body.appendChild(modal);
+    updateHolidayPreview(weekNum);
+}
+
+function updateHolidayPreview(weekNum) {
+    const subject = (document.getElementById('hdtSubject')?.value || '').replace(/\{\{holiday\}\}/g, 'Christmas').replace(/\{\{firstName\}\}/g, 'Mike');
+    const heading = (document.getElementById('hdtHeading')?.value || '').replace(/\{\{holiday\}\}/g, 'Christmas').replace(/\{\{firstName\}\}/g, 'Mike');
+    const body = (document.getElementById('hdtBody')?.value || '').replace(/\{\{holiday\}\}/g, 'Christmas').replace(/\{\{firstName\}\}/g, 'Mike');
+    const cta = (document.getElementById('hdtCta')?.value || '').replace(/\{\{holiday\}\}/g, 'Christmas').replace(/\{\{firstName\}\}/g, 'Mike');
+
+    const subjectEl = document.getElementById('hdtPreviewSubject');
+    if (subjectEl) subjectEl.textContent = subject;
+
+    const container = document.getElementById('hdtPreviewContainer');
+    if (!container) return;
+
+    container.innerHTML = `
+    <div style="font-family: Arial, sans-serif; max-width: 100%; margin: 0 auto; background: #111; color: #fff; border-radius: 12px; overflow: hidden;">
+        <div style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); padding: 32px 24px; text-align: center;">
+            <img src="https://newurbaninfluence.com/logo-nav-cropped.png" alt="NUI" style="height: 30px; margin-bottom: 12px;">
+            <h1 style="margin: 0; font-size: 22px; font-weight: 800; color: #fff;">${heading}</h1>
+            <p style="margin: 6px 0 0; opacity: 0.85; font-size: 13px; color: #fff;">Week ${9 - weekNum} of 8 countdown</p>
+        </div>
+        <div style="padding: 24px;">
+            <p style="font-size: 14px; line-height: 1.7; color: #ccc;">${body}</p>
+            <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 16px; margin: 20px 0;">
+                <p style="font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #dc2626; margin: 0 0 10px;">Quick Picks</p>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr><td style="padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #fff; font-size: 13px;">Social Media Graphics Kit</td><td style="text-align: right; color: #dc2626; font-weight: 700; font-size: 13px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">$195</td></tr>
+                    <tr><td style="padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #fff; font-size: 13px;">Storefront Banner</td><td style="text-align: right; color: #dc2626; font-weight: 700; font-size: 13px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">$175</td></tr>
+                    <tr><td style="padding: 6px 0; color: #fff; font-size: 13px;">Yard Signs (10 pack)</td><td style="text-align: right; color: #dc2626; font-weight: 700; font-size: 13px; padding: 6px 0;">$350</td></tr>
+                </table>
+            </div>
+            <div style="text-align: center; margin: 24px 0;">
+                <a href="#" style="display: inline-block; background: #dc2626; color: #fff; padding: 14px 36px; font-size: 14px; font-weight: 700; text-decoration: none; border-radius: 8px;">${cta}</a>
+            </div>
+            <p style="font-size: 12px; color: #555; text-align: center;">24hr production · $10 overnight shipping · Design included</p>
+        </div>
+        <div style="padding: 16px 24px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center;">
+            <p style="margin: 0; color: #444; font-size: 10px;">New Urban Influence · Detroit, Michigan · (248) 487-8747</p>
+        </div>
+    </div>`;
 }
 
 async function saveHolidayDripTemplate(weekNum) {
