@@ -625,3 +625,192 @@ function viewClientAsAdmin(id) {
     }
 }
 
+// ==================== QUICK ORDER (1-OFF FROM CLIENT CARD) ====================
+function quickOrder(clientId) {
+    const client = clients.find(c => c.id === clientId);
+    if (!client) return alert('Client not found');
+
+    const modal = document.createElement('div');
+    modal.id = 'quickOrderModal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:99999;padding:20px;';
+    modal.innerHTML = `
+<div style="background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:32px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+        <h3 style="font-size:20px;font-weight:700;color:#fff;margin:0;">⚡ Quick Order</h3>
+        <button onclick="document.getElementById('quickOrderModal').remove()" style="background:none;border:none;color:#888;font-size:24px;cursor:pointer;padding:4px 8px;">×</button>
+    </div>
+    <div style="background:rgba(225,29,72,0.1);border:1px solid rgba(225,29,72,0.3);border-radius:8px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:#e11d48;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;">${(client.name || '?').charAt(0)}</div>
+        <div>
+            <div style="font-weight:600;color:#fff;">${client.name}</div>
+            <div style="font-size:12px;color:#888;">${client.contact ? client.contact + ' · ' : ''}${client.email || 'No email'}</div>
+        </div>
+    </div>
+    <form onsubmit="submitQuickOrder(event, ${clientId})">
+        <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:13px;font-weight:600;color:#ccc;margin-bottom:6px;">Project Name *</label>
+            <input type="text" id="qo_name" class="form-input" required placeholder="e.g. T-Shirt Design - Crew Shirts">
+        </div>
+        <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:13px;font-weight:600;color:#ccc;margin-bottom:6px;">Description</label>
+            <textarea id="qo_desc" class="form-input" rows="2" placeholder="Brief details about the order..."></textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+            <div>
+                <label style="display:block;font-size:13px;font-weight:600;color:#ccc;margin-bottom:6px;">Price ($) *</label>
+                <input type="number" id="qo_price" class="form-input" required placeholder="150" min="1">
+            </div>
+            <div>
+                <label style="display:block;font-size:13px;font-weight:600;color:#ccc;margin-bottom:6px;">Turnaround *</label>
+                <input type="text" id="qo_turnaround" class="form-input" required placeholder="3-5 days" value="3-5 days">
+            </div>
+        </div>
+        <div style="margin-bottom:20px;">
+            <label style="display:block;font-size:13px;font-weight:600;color:#ccc;margin-bottom:6px;">Due Date *</label>
+            <input type="date" id="qo_due" class="form-input" required value="${new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0]}">
+        </div>
+        <button type="submit" id="qo_submit_btn" style="width:100%;padding:16px;background:#e11d48;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;">Create Order & Send Invoice →</button>
+        <p style="text-align:center;color:#888;font-size:12px;margin-top:12px;">Client will receive an email with invoice & payment link</p>
+    </form>
+</div>`;
+    document.body.appendChild(modal);
+    document.getElementById('qo_name').focus();
+}
+
+async function submitQuickOrder(e, clientId) {
+    e.preventDefault();
+    const client = clients.find(c => c.id === clientId);
+    if (!client) return;
+
+    const btn = document.getElementById('qo_submit_btn');
+    btn.disabled = true;
+    btn.textContent = 'Creating...';
+
+    const projectName = document.getElementById('qo_name').value.trim();
+    const description = document.getElementById('qo_desc').value.trim();
+    const price = parseFloat(document.getElementById('qo_price').value);
+    const turnaround = document.getElementById('qo_turnaround').value.trim();
+    const dueDate = document.getElementById('qo_due').value;
+
+    // Parse turnaround days
+    const tMatch = turnaround.match(/(\d+)/);
+    const tMin = tMatch ? parseInt(tMatch[1]) : 7;
+    const tMatchMax = turnaround.match(/(\d+)\s*[-–]\s*(\d+)/);
+    const tMax = tMatchMax ? parseInt(tMatchMax[2]) : tMin;
+
+    // === CREATE ORDER ===
+    const order = {
+        id: Date.now(),
+        clientId: clientId,
+        projectName: projectName,
+        description: description,
+        estimate: price,
+        turnaround: turnaround,
+        turnaroundDaysMin: tMin,
+        turnaroundDaysMax: tMax,
+        packageId: 'custom',
+        packageName: 'Custom Order',
+        dueDate: dueDate,
+        status: 'pending',
+        statusHistory: [{ status: 'pending', timestamp: new Date().toISOString(), note: 'Quick order created', user: currentUser?.name || 'Admin' }],
+        createdAt: new Date().toISOString(),
+        deliveredAt: null,
+        deliverables: [],
+        paymentStatus: 'unpaid'
+    };
+    orders.push(order);
+    saveOrders();
+
+    // === CREATE INVOICE ===
+    const invoice = {
+        id: Date.now() + 1,
+        invoiceNumber: 'INV-' + order.id,
+        clientId: clientId,
+        clientName: client.name || 'Unknown',
+        clientEmail: client.email || '',
+        orderId: order.id,
+        projectName: projectName,
+        lineItems: [{ description: projectName + (description ? ' — ' + description : ''), amount: price }],
+        subtotal: price,
+        total: price,
+        dueDate: dueDate,
+        notes: 'Turnaround: ' + turnaround,
+        status: 'pending',
+        termsAccepted: false,
+        createdAt: new Date().toISOString()
+    };
+    invoices.push(invoice);
+    saveInvoices();
+    order.invoiceId = invoice.id;
+    saveOrders();
+
+    // === SEND INVOICE EMAIL ===
+    if (client.email) {
+        try {
+            await fetch('/.netlify/functions/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    to: client.email,
+                    clientId: clientId,
+                    subject: '📋 New Order: ' + projectName + ' — Invoice #' + invoice.invoiceNumber,
+                    html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;border-radius:12px;overflow:hidden;">' +
+                        '<div style="background:linear-gradient(135deg,#e11d48,#ff6b6b);padding:32px;text-align:center;">' +
+                            '<h2 style="margin:0;font-size:24px;color:#fff;">New Order Ready!</h2>' +
+                        '</div>' +
+                        '<div style="padding:32px;">' +
+                            '<p style="color:#ccc;">Hey ' + (client.contact || client.name) + ',</p>' +
+                            '<p style="color:#ccc;">Here\'s your invoice for <strong style="color:#fff;">' + projectName + '</strong>.</p>' +
+                            '<div style="background:#111;border:1px solid #333;border-radius:12px;padding:24px;margin:24px 0;">' +
+                                '<div style="display:flex;justify-content:space-between;margin-bottom:12px;"><span style="color:#888;">Project</span><strong style="color:#fff;">' + projectName + '</strong></div>' +
+                                (description ? '<div style="display:flex;justify-content:space-between;margin-bottom:12px;"><span style="color:#888;">Details</span><span style="color:#ccc;">' + description + '</span></div>' : '') +
+                                '<div style="display:flex;justify-content:space-between;margin-bottom:12px;"><span style="color:#888;">Turnaround</span><strong style="color:#fff;">' + turnaround + '</strong></div>' +
+                                '<div style="display:flex;justify-content:space-between;margin-bottom:12px;"><span style="color:#888;">Due Date</span><strong style="color:#fff;">' + new Date(dueDate).toLocaleDateString() + '</strong></div>' +
+                                '<div style="display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid #333;"><span style="color:#888;">Amount Due</span><strong style="color:#e11d48;font-size:20px;">$' + price.toLocaleString() + '</strong></div>' +
+                            '</div>' +
+                            '<div style="text-align:center;margin:24px 0;">' +
+                                '<a href="https://newurbaninfluence.com/#portal" style="display:inline-block;background:#e11d48;color:#fff;padding:16px 40px;border-radius:8px;text-decoration:none;font-weight:600;font-size:16px;">View Invoice & Pay →</a>' +
+                            '</div>' +
+                            '<p style="color:#888;font-size:13px;text-align:center;">Invoice #' + invoice.invoiceNumber + '</p>' +
+                        '</div>' +
+                        '<div style="background:#0a0a0a;border-top:1px solid #222;padding:16px;text-align:center;"><p style="color:#555;font-size:12px;margin:0;">New Urban Influence • Detroit, MI</p></div>' +
+                    '</div>',
+                    text: 'New order "' + projectName + '" created. Amount: $' + price.toLocaleString() + '. Turnaround: ' + turnaround + '. Log in to your client portal to view invoice and pay.'
+                })
+            });
+            console.log('📧 Quick order email sent to ' + client.email);
+        } catch (err) {
+            console.log('Quick order email failed:', err.message);
+        }
+    }
+
+    // === LOG TO COMMS HUB ===
+    if (typeof communicationsHub !== 'undefined') {
+        communicationsHub.inbox.unshift({
+            id: Date.now() + 2,
+            platform: 'system',
+            clientId: clientId,
+            clientName: client.name || '',
+            preview: 'Quick order created: ' + projectName + ' — $' + price.toLocaleString(),
+            timestamp: new Date().toISOString(),
+            unread: true,
+            metadata: { type: 'order_created', orderId: order.id, invoiceId: invoice.id }
+        });
+        if (typeof saveCommHub === 'function') saveCommHub();
+    }
+
+    // Close modal and confirm
+    document.getElementById('quickOrderModal').remove();
+
+    const noEmail = !client.email;
+    alert('✅ Order Created!' +
+        '\n\n📋 ' + projectName +
+        '\n💰 $' + price.toLocaleString() +
+        '\n📅 Due: ' + new Date(dueDate).toLocaleDateString() +
+        '\n🧾 Invoice #' + invoice.invoiceNumber +
+        (noEmail ? '\n\n⚠️ No email on file — invoice NOT sent. Add an email to this client to send invoices.' : '\n\n📧 Invoice emailed to ' + client.email));
+
+    // Refresh if on clients or orders panel
+    if (typeof loadDashboard === 'function') loadDashboard();
+}
+
