@@ -60,11 +60,17 @@ function loadAdminPaymentsPanel() {
 </thead>
 <tbody>
                     ${payments.length === 0 ? '<tr><td colspan="7" class="text-center opacity-50">No payments recorded yet</td></tr>' : ''}
-                    ${payments.sort((a, b) => new Date(b.date) - new Date(a.date)).map(payment => `
+                    ${payments.sort((a, b) => new Date(b.date) - new Date(a.date)).map(payment => {
+                        const client = clients.find(c => c.id === payment.clientId);
+                        const project = projects.find(p => p.id === payment.projectId);
+                        const displayClient = payment.clientName || client?.name || client?.company || 'N/A';
+                        const displayProject = payment.projectName || project?.name || 'N/A';
+                        const displayDate = payment.date && !isNaN(new Date(payment.date)) ? new Date(payment.date).toLocaleDateString() : (payment.createdAt ? new Date(payment.createdAt).toLocaleDateString() : 'N/A');
+                        return `
 <tr>
-<td>${new Date(payment.date).toLocaleDateString()}</td>
-<td>${payment.clientName || 'N/A'}</td>
-<td>${payment.projectName || 'N/A'}</td>
+<td>${displayDate}</td>
+<td>${displayClient}</td>
+<td>${displayProject}</td>
 <td style="font-weight: 600; color: #2a9d8f;">$${payment.amount?.toLocaleString() || 0}</td>
 <td><span class="tag">${payment.type || 'One-time'}</span></td>
 <td><span class="status-badge ${payment.status}">${payment.status}</span></td>
@@ -73,7 +79,7 @@ function loadAdminPaymentsPanel() {
                                 ${payment.status === 'pending' ? `<button class="btn-admin small primary" onclick="markPaymentComplete(${payment.id})">Mark Paid</button>` : ''}
 </td>
 </tr>
-                    `).join('')}
+                    `}).join('')}
 </tbody>
 </table>
 </div>
