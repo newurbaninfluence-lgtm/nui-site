@@ -2650,13 +2650,22 @@ function getFileExtension(name) {
 
 function renderDeliverableCard(file, projectId) {
     const isImage = file.type && file.type.startsWith('image/');
+    const isVideo = file.type && file.type.startsWith('video/');
     const ext = getFileExtension(file.name);
     const color = getFileColor(file.type);
+    const linkedProof = proofs.find(p => p.deliverableId === file.id);
+    const proofStatus = linkedProof ? linkedProof.status : null;
+    const proofBadge = proofStatus === 'approved' ? '<span style="position:absolute;top:6px;right:6px;background:#10b981;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;z-index:2;">✅ Approved</span>'
+        : proofStatus === 'revision' ? '<span style="position:absolute;top:6px;right:6px;background:#f59e0b;color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;z-index:2;">🔄 Revision</span>'
+        : proofStatus === 'pending' && linkedProof.sentToClient ? '<span style="position:absolute;top:6px;right:6px;background:#3b82f6;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;z-index:2;">👁 Sent</span>'
+        : proofStatus === 'pending' ? '<span style="position:absolute;top:6px;right:6px;background:#888;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;z-index:2;">📋 Proof</span>'
+        : '';
 
     return `
 <div style="background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; transition: all 0.2s; position: relative;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
     <!-- Preview / Icon -->
     <div style="height: 100px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); position: relative;">
+        ${proofBadge}
         ${isImage && file.data ? '<img src="' + file.data + '" style="width: 100%; height: 100%; object-fit: cover;" alt="' + file.name + '">' : '<div style="text-align: center;"><div style="font-size: 28px; margin-bottom: 4px;">' + getFileIcon(file.type) + '</div><span style="background: ' + color + '; color: #000; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700;">' + ext + '</span></div>'}
     </div>
     <!-- Info -->
@@ -2664,7 +2673,10 @@ function renderDeliverableCard(file, projectId) {
         <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${file.name}">${file.name}</div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
             <span style="font-size: 10px; opacity: 0.5;">${file.size}</span>
-            <button onclick="deleteProjectDeliverable(${projectId}, ${file.id})" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 14px; padding: 2px;" title="Delete">🗑</button>
+            <div style="display:flex;gap:4px;align-items:center;">
+                ${linkedProof && !linkedProof.sentToClient ? '<button onclick="sendProofToClient(' + linkedProof.id + ', ' + projectId + ')" style="background:none;border:none;color:#3b82f6;cursor:pointer;font-size:13px;padding:2px;" title="Send to Client for Approval">📤</button>' : ''}
+                <button onclick="deleteProjectDeliverable(${projectId}, ${file.id})" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 14px; padding: 2px;" title="Delete">🗑</button>
+            </div>
         </div>
     </div>
 </div>`;
@@ -2693,11 +2705,12 @@ function handleProjectFileUpload(projectId, event) {
 
     const files = Array.from(event.target.files);
     let processed = 0;
+    const newProofs = [];
 
     files.forEach(file => {
         const reader = new FileReader();
         reader.onload = (ev) => {
-            project.deliverables.push({
+            const deliverable = {
                 id: Date.now() + processed,
                 name: file.name,
                 type: file.type,
@@ -2705,7 +2718,8 @@ function handleProjectFileUpload(projectId, event) {
                 category: guessCategory(file.name),
                 data: ev.target.result,
                 uploadedAt: new Date().toISOString()
-            });
+            };
+            project.deliverables.push(deliverable);
 
             // Log activity
             project.activityLog = project.activityLog || [];
@@ -2715,16 +2729,106 @@ function handleProjectFileUpload(projectId, event) {
                 stage: project.stage
             });
 
+            // === AUTO-CREATE PROOF for image/video files ===
+            const isImage = file.type.startsWith('image/');
+            const isVideo = file.type.startsWith('video/');
+            if (isImage || isVideo) {
+                const proofCategory = mapDeliverableCategoryToProof(deliverable.category);
+                const proofType = guessProofType(file.name, deliverable.category);
+                const proof = {
+                    id: Date.now() + processed + 500,
+                    name: file.name.replace(/\.[^.]+$/, ''),
+                    clientId: project.clientId,
+                    projectId: project.id,
+                    orderId: project.id,
+                    category: proofCategory,
+                    proofType: proofType.id,
+                    proofTypeName: proofType.name,
+                    proofSize: proofType.size || '',
+                    isLink: false,
+                    isVideo: isVideo,
+                    image: isImage ? ev.target.result : null,
+                    videoUrl: isVideo ? ev.target.result : null,
+                    fileName: file.name,
+                    fileType: file.type,
+                    version: 1,
+                    status: 'pending',
+                    sentToClient: false,
+                    notes: 'Auto-created from project deliverable upload',
+                    comments: [],
+                    createdAt: new Date().toISOString(),
+                    deliverableId: deliverable.id
+                };
+                proofs.push(proof);
+                newProofs.push(proof);
+                saveProofs();
+            }
+
             processed++;
             if (processed === files.length) {
                 saveProjects();
                 // Refresh the modal
                 document.getElementById('projectDetailsModal').remove();
                 viewProjectDetails(projectId);
+
+                // Notify about auto-created proofs
+                if (newProofs.length > 0) {
+                    const client = clients.find(c => c.id === project.clientId);
+                    const proofNames = newProofs.map(p => p.name).join(', ');
+                    console.log('✅ Auto-created ' + newProofs.length + ' proof(s): ' + proofNames);
+                }
             }
         };
         reader.readAsDataURL(file);
     });
+}
+
+// Map deliverable categories to proof categories
+function mapDeliverableCategoryToProof(delivCat) {
+    const map = {
+        'logos': 'branding',
+        'mockups': 'branding',
+        'brand-guide': 'branding',
+        'social': 'digital',
+        'print-files': 'print',
+        'other': 'print'
+    };
+    return map[delivCat] || 'branding';
+}
+
+// Guess proof type from filename and category
+function guessProofType(fileName, delivCat) {
+    const lower = fileName.toLowerCase();
+    // Logo files
+    if (lower.includes('logo') || lower.includes('mark') || lower.includes('icon') && delivCat === 'logos') {
+        if (lower.includes('secondary') || lower.includes('alt')) return { id: 'logo_secondary', name: 'Logo - Secondary', size: 'Vector/High-res' };
+        if (lower.includes('icon') || lower.includes('mark')) return { id: 'logo_icon', name: 'Logo Icon/Mark', size: 'Vector/High-res' };
+        if (lower.includes('wordmark') || lower.includes('word')) return { id: 'logo_wordmark', name: 'Logo Wordmark', size: 'Vector/High-res' };
+        if (lower.includes('variation') || lower.includes('color')) return { id: 'logo_variations', name: 'Logo Color Variations', size: 'Multiple' };
+        return { id: 'logo_primary', name: 'Logo - Primary', size: 'Vector/High-res' };
+    }
+    // Social
+    if (delivCat === 'social' || lower.includes('social') || lower.includes('ig') || lower.includes('fb')) {
+        if (lower.includes('story') || lower.includes('1920')) return { id: 'social_ig_story', name: 'Instagram Story', size: '1080 x 1920 px' };
+        if (lower.includes('post')) return { id: 'social_ig_post', name: 'Instagram Post', size: '1080 x 1080 px' };
+        if (lower.includes('cover') || lower.includes('banner')) return { id: 'social_fb_cover', name: 'Facebook Cover', size: '820 x 312 px' };
+        return { id: 'social_ig_post', name: 'Instagram Post', size: '1080 x 1080 px' };
+    }
+    // Print
+    if (delivCat === 'print-files' || lower.includes('card')) {
+        if (lower.includes('card')) return { id: 'business_card_front', name: 'Business Card - Front', size: '3.5" x 2"' };
+        if (lower.includes('flyer')) return { id: 'flyer_letter', name: 'Flyer - Letter', size: '8.5" x 11"' };
+        if (lower.includes('banner')) return { id: 'vinyl_banner_custom', name: 'Vinyl Banner - Custom', size: 'Custom size' };
+        if (lower.includes('yard') || lower.includes('sign')) return { id: 'yard_sign_18x24', name: 'Yard Sign', size: '18" x 24"' };
+        if (lower.includes('poster')) return { id: 'poster_18x24', name: 'Poster - Small', size: '18" x 24"' };
+        return { id: 'flyer_letter', name: 'Flyer - Letter', size: '8.5" x 11"' };
+    }
+    // Mockups / branding default
+    if (lower.includes('mockup') || lower.includes('mock')) return { id: 'logo_primary', name: 'Logo - Primary', size: 'Vector/High-res' };
+    if (lower.includes('letterhead')) return { id: 'letterhead', name: 'Letterhead Design', size: '8.5" x 11"' };
+    if (lower.includes('pattern')) return { id: 'brand_pattern', name: 'Brand Pattern', size: 'Seamless tile' };
+    // Default
+    return { id: 'logo_primary', name: 'Logo - Primary', size: 'Vector/High-res' };
 }
 
 function handleProjectFileDrop(projectId, event) {
@@ -2773,6 +2877,14 @@ function deleteProjectDeliverable(projectId, fileId) {
     if (!confirm('Delete "' + file.name + '"?')) return;
 
     project.deliverables = project.deliverables.filter(d => d.id !== fileId);
+
+    // Also remove linked proof
+    const linkedProof = proofs.findIndex(p => p.deliverableId === fileId);
+    if (linkedProof !== -1) {
+        proofs.splice(linkedProof, 1);
+        saveProofs();
+    }
+
     project.activityLog = project.activityLog || [];
     project.activityLog.push({
         action: 'Deleted file: ' + file.name,
@@ -2849,4 +2961,81 @@ function pushDeliverablesToAssets(projectId) {
     // Refresh modal
     document.getElementById('projectDetailsModal').remove();
     viewProjectDetails(projectId);
+}
+
+// ==================== SEND PROOF TO CLIENT FROM DELIVERABLES ====================
+async function sendProofToClient(proofId, projectId) {
+    const proof = proofs.find(p => p.id === proofId);
+    if (!proof) return alert('Proof not found');
+
+    const client = clients.find(c => c.id === proof.clientId);
+    if (!client) return alert('No client linked to this proof');
+
+    if (!confirm('Send "' + proof.name + '" to ' + (client.contact || client.name) + ' for approval?')) return;
+
+    // Mark as sent
+    proof.sentToClient = true;
+    proof.sentAt = new Date().toISOString();
+    saveProofs();
+
+    // Log in project activity
+    const project = projects.find(p => p.id === projectId);
+    if (project) {
+        project.activityLog = project.activityLog || [];
+        project.activityLog.push({
+            action: 'Sent proof to client: ' + proof.name,
+            timestamp: new Date().toISOString(),
+            stage: project.stage
+        });
+        saveProjects();
+    }
+
+    // Email client
+    if (client.email) {
+        try {
+            await fetch('/.netlify/functions/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    to: client.email,
+                    clientId: client.id,
+                    subject: '✅ Proof Ready for Review: ' + proof.name,
+                    html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;border-radius:12px;overflow:hidden;">' +
+                        '<div style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);padding:32px;text-align:center;">' +
+                            '<h2 style="margin:0;font-size:24px;color:#fff;">Proof Ready for Review!</h2>' +
+                        '</div>' +
+                        '<div style="padding:32px;">' +
+                            '<p style="color:#ccc;">Hey ' + (client.contact || client.name) + ',</p>' +
+                            '<p style="color:#ccc;">Your proof for <strong style="color:#fff;">' + proof.name + '</strong> is ready for review.</p>' +
+                            (proof.image ? '<div style="margin:24px 0;border-radius:12px;overflow:hidden;border:1px solid #333;"><img src="' + proof.image + '" style="width:100%;display:block;" alt="' + proof.name + '"></div>' : '') +
+                            '<div style="background:#111;border:1px solid #333;border-radius:12px;padding:20px;margin:24px 0;">' +
+                                '<div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="color:#888;">Proof</span><strong style="color:#fff;">' + proof.name + '</strong></div>' +
+                                '<div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="color:#888;">Type</span><strong style="color:#fff;">' + (proof.proofTypeName || 'Design') + '</strong></div>' +
+                                '<div style="display:flex;justify-content:space-between;"><span style="color:#888;">Version</span><strong style="color:#fff;">v' + (proof.version || 1) + '</strong></div>' +
+                            '</div>' +
+                            '<div style="text-align:center;margin:24px 0;">' +
+                                '<a href="https://newurbaninfluence.com/#portal" style="display:inline-block;background:#3b82f6;color:#fff;padding:16px 40px;border-radius:8px;text-decoration:none;font-weight:600;font-size:16px;">Review & Approve →</a>' +
+                            '</div>' +
+                            '<p style="color:#888;font-size:13px;text-align:center;">Log in to your portal to approve or request revisions</p>' +
+                        '</div>' +
+                        '<div style="background:#0a0a0a;border-top:1px solid #222;padding:16px;text-align:center;"><p style="color:#555;font-size:12px;margin:0;">New Urban Influence • Detroit, MI</p></div>' +
+                    '</div>',
+                    text: 'Your proof "' + proof.name + '" is ready for review. Log into your client portal to approve or request revisions.'
+                })
+            });
+            console.log('📧 Proof notification sent to ' + client.email);
+        } catch (err) {
+            console.log('Proof email failed:', err.message);
+        }
+    }
+
+    alert('✅ Proof sent to ' + (client.contact || client.name) + '!' +
+        (client.email ? '\n📧 Email sent to ' + client.email : '\n⚠️ No email on file — proof marked as sent but not emailed.') +
+        '\n\nClient can approve or request revisions from their portal.');
+
+    // Refresh
+    if (document.getElementById('projectDetailsModal')) {
+        document.getElementById('projectDetailsModal').remove();
+        viewProjectDetails(projectId);
+    }
 }
