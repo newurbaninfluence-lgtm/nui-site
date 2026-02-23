@@ -385,7 +385,114 @@ function loadAdminEmailTemplatesPanel() {
 </div>
 </div>
         `).join('')}
+
+        <!-- Holiday Drip Campaign Templates -->
+<div style="margin-top: 32px; border-top: 1px solid #333; padding-top: 24px;">
+<div class="flex-between mb-16">
+<h3 style="margin: 0; font-size: 18px;">🎄 Holiday Drip Campaign</h3>
+<span style="font-size: 12px; color: #666;">8-week countdown · Runs automatically before each US holiday</span>
+</div>
+<div id="holidayDripTemplates" style="display: grid; gap: 12px;">
+<p style="color: #666;">Loading holiday templates...</p>
+</div>
+</div>
     `;
+
+    // Load holiday drip templates from Supabase
+    loadHolidayDripTemplates();
+}
+
+// ==================== HOLIDAY DRIP TEMPLATE MANAGEMENT ====================
+let holidayDripTemplates = [];
+
+async function loadHolidayDripTemplates() {
+    const container = document.getElementById('holidayDripTemplates');
+    if (!container) return;
+    try {
+        const res = await fetch('/.netlify/functions/holiday-templates');
+        holidayDripTemplates = await res.json();
+        if (!Array.isArray(holidayDripTemplates) || holidayDripTemplates.length === 0) {
+            container.innerHTML = '<p style="color: #666;">No holiday templates found. Run the seed SQL in Supabase.</p>';
+            return;
+        }
+        const weekLabels = { 8: '60 days out', 7: '53 days', 6: '46 days', 5: '39 days', 4: '30 days', 3: '21 days', 2: '14 days', 1: '7 days — final week' };
+        container.innerHTML = holidayDripTemplates.map(t => `
+<div style="background: #111; padding: 16px 20px; border-radius: 10px; border: 1px solid #222; display: flex; align-items: center; justify-content: space-between;">
+<div style="flex: 1;">
+<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
+<span style="background: #e63946; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px;">Week ${9 - t.week_number}</span>
+<span style="font-size: 12px; color: #666;">${weekLabels[t.week_number] || ''}</span>
+</div>
+<h4 style="margin: 0 0 4px 0; font-size: 15px;">${t.subject}</h4>
+<p style="margin: 0; font-size: 12px; color: #888; max-width: 500px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${t.body}</p>
+</div>
+<button onclick="editHolidayDripTemplate(${t.week_number})" style="padding: 8px 16px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-size: 12px;">Edit</button>
+</div>
+        `).join('');
+    } catch (err) {
+        container.innerHTML = '<p style="color: #e63946;">Failed to load holiday templates.</p>';
+        console.error('Holiday drip load error:', err);
+    }
+}
+
+function editHolidayDripTemplate(weekNum) {
+    const t = holidayDripTemplates.find(x => x.week_number === weekNum);
+    if (!t) return;
+    const weekLabel = `Week ${9 - weekNum} (${weekNum === 8 ? '60 days' : weekNum === 1 ? 'Final week' : `${weekNum * 7} days`} before holiday)`;
+
+    const modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+    modal.innerHTML = `
+<div style="background:#1a1a1a;border-radius:16px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;padding:32px;">
+<h3 style="margin:0 0 4px 0;">🎄 Edit Holiday Drip — ${weekLabel}</h3>
+<p style="margin:0 0 20px 0;font-size:12px;color:#888;">Use <code style="background:#333;padding:2px 6px;border-radius:4px;">{{holiday}}</code> and <code style="background:#333;padding:2px 6px;border-radius:4px;">{{firstName}}</code> as placeholders</p>
+
+<label style="display:block;margin-bottom:4px;font-size:13px;color:#aaa;">Subject Line</label>
+<input id="hdtSubject" value="${t.subject.replace(/"/g, '&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:16px;box-sizing:border-box;">
+
+<label style="display:block;margin-bottom:4px;font-size:13px;color:#aaa;">Email Heading</label>
+<input id="hdtHeading" value="${t.heading.replace(/"/g, '&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:16px;box-sizing:border-box;">
+
+<label style="display:block;margin-bottom:4px;font-size:13px;color:#aaa;">Body Copy</label>
+<textarea id="hdtBody" rows="5" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:16px;resize:vertical;box-sizing:border-box;">${t.body}</textarea>
+
+<label style="display:block;margin-bottom:4px;font-size:13px;color:#aaa;">CTA Button Text</label>
+<input id="hdtCta" value="${t.cta.replace(/"/g, '&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:24px;box-sizing:border-box;">
+
+<div style="display:flex;gap:12px;">
+<button id="hdtSaveBtn" onclick="saveHolidayDripTemplate(${weekNum})" style="flex:1;padding:12px;background:#e63946;border:none;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;">Save Changes</button>
+<button onclick="this.closest('div[style*=fixed]').remove()" style="flex:1;padding:12px;background:#333;border:none;color:#fff;border-radius:8px;cursor:pointer;">Cancel</button>
+</div>
+</div>`;
+    document.body.appendChild(modal);
+}
+
+async function saveHolidayDripTemplate(weekNum) {
+    const btn = document.getElementById('hdtSaveBtn');
+    btn.textContent = '⏳ Saving...';
+    btn.disabled = true;
+    try {
+        const res = await fetch('/.netlify/functions/holiday-templates', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                week_number: weekNum,
+                subject: document.getElementById('hdtSubject').value,
+                heading: document.getElementById('hdtHeading').value,
+                body: document.getElementById('hdtBody').value,
+                cta: document.getElementById('hdtCta').value
+            })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Save failed');
+        document.querySelector('div[style*="fixed"]')?.remove();
+        loadHolidayDripTemplates();
+        alert('✅ Holiday template updated!');
+    } catch (err) {
+        alert('❌ Save failed: ' + err.message);
+        btn.textContent = 'Save Changes';
+        btn.disabled = false;
+    }
 }
 
 function quickSendEmail() {

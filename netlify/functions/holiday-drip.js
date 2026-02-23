@@ -96,19 +96,18 @@ const weekTemplates = {
 };
 
 // ==================== BUILD EMAIL HTML ====================
-function buildHolidayEmail(firstName, holiday, week, printUrl) {
-    const template = weekTemplates[week];
-    if (!template) return null;
+function buildHolidayEmail(firstName, holiday, week, printUrl, resolved) {
+    if (!resolved) return null;
 
     return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #111; color: #fff; border-radius: 12px; overflow: hidden;">
         <div style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); padding: 40px 32px; text-align: center;">
             <img src="https://newurbaninfluence.com/logo-nav-cropped.png" alt="NUI" style="height: 36px; margin-bottom: 16px;">
-            <h1 style="margin: 0; font-size: 26px; font-weight: 800;">${template.heading(holiday)}</h1>
+            <h1 style="margin: 0; font-size: 26px; font-weight: 800;">${resolved.heading}</h1>
             <p style="margin: 8px 0 0; opacity: 0.85; font-size: 14px;">Week ${9 - week} of 8 countdown</p>
         </div>
         <div style="padding: 32px;">
-            <p style="font-size: 16px; line-height: 1.7; color: #ccc;">${template.body(firstName, holiday)}</p>
+            <p style="font-size: 16px; line-height: 1.7; color: #ccc;">${resolved.body}</p>
             <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; margin: 24px 0;">
                 <p style="font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #dc2626; margin: 0 0 12px;">Quick Picks</p>
                 <table style="width: 100%; border-collapse: collapse;">
@@ -118,7 +117,7 @@ function buildHolidayEmail(firstName, holiday, week, printUrl) {
                 </table>
             </div>
             <div style="text-align: center; margin: 32px 0;">
-                <a href="${printUrl}" style="display: inline-block; background: #dc2626; color: #fff; padding: 16px 40px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 8px;">${template.cta}</a>
+                <a href="${printUrl}" style="display: inline-block; background: #dc2626; color: #fff; padding: 16px 40px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 8px;">${resolved.cta}</a>
             </div>
             <p style="font-size: 13px; color: #555; text-align: center;">24hr production · $10 overnight shipping · Design included</p>
         </div>
@@ -141,6 +140,28 @@ exports.handler = async (event) => {
     if (!SUPABASE_URL || !SUPABASE_KEY || !SMTP_USER || !SMTP_PASS) {
         console.error('Missing env vars');
         return { statusCode: 500, body: 'Missing configuration' };
+    }
+
+    // Try to load editable templates from Supabase (fall back to hardcoded)
+    try {
+        const tplRes = await fetch(
+            `${SUPABASE_URL}/rest/v1/holiday_drip_templates?order=week_number.desc`,
+            { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+        );
+        const dbTemplates = await tplRes.json();
+        if (Array.isArray(dbTemplates) && dbTemplates.length > 0) {
+            for (const t of dbTemplates) {
+                weekTemplates[t.week_number] = {
+                    subject: (holiday) => t.subject.replace(/\{\{holiday\}\}/g, holiday),
+                    heading: (holiday) => t.heading.replace(/\{\{holiday\}\}/g, holiday),
+                    body: (firstName, holiday) => t.body.replace(/\{\{firstName\}\}/g, firstName).replace(/\{\{holiday\}\}/g, holiday),
+                    cta: t.cta
+                };
+            }
+            console.log(`📝 Loaded ${dbTemplates.length} editable templates from Supabase`);
+        }
+    } catch (err) {
+        console.warn('⚠️ Could not load templates from Supabase, using hardcoded defaults:', err.message);
     }
 
     const today = new Date();
@@ -219,9 +240,60 @@ exports.handler = async (event) => {
     let sentCount = 0;
     let errors = [];
 
+    // Fetch editable templates from Supabase (fall back to hardcoded if unavailable)
+    let dbTemplates = {};
+    try {
+        const tplRes = await fetch(
+            `${SUPABASE_URL}/rest/v1/holiday_drip_templates?select=*`,
+            { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+        );
+        const tplRows = await tplRes.json();
+        if (Array.isArray(tplRows)) {
+            for (const row of tplRows) {
+                dbTemplates[row.week_number] = row;
+            }
+            console.log(`📝 Loaded ${tplRows.length} editable templates from Supabase`);
+        }
+    } catch (e) {
+        console.warn('⚠️ Could not load Supabase templates, using hardcoded:', e.message);
+    }
+
+    // Helper: resolve template — Supabase version uses {{holiday}} / {{firstName}} placeholders
+    function resolveTemplate(weekNum, holidayName, firstName) {
+        const db = dbTemplates[weekNum];
+        if (db) {
+            return {
+                subject: db.subject.replace(/\{\{holiday\}\}/g, holidayName).replace(/\{\{firstName\}\}/g, firstName),
+                heading: db.heading.replace(/\{\{holiday\}\}/g, holidayName).replace(/\{\{firstName\}\}/g, firstName),
+                body: db.body.replace(/\{\{holiday\}\}/g, holidayName).replace(/\{\{firstName\}\}/g, firstName),
+                cta: db.cta.replace(/\{\{holiday\}\}/g, holidayName).replace(/\{\{firstName\}\}/g, firstName)
+            };
+        }
+        // Fallback to hardcoded
+        const hc = weekTemplates[weekNum];
+        if (!hc) return null;
+        return {
+            subject: hc.subject(holidayName),
+            heading: hc.heading(holidayName),
+            body: hc.body(firstName, holidayName),
+            cta: hc.cta
+        };
+    }
+
     for (const holiday of matchedHolidays) {
         for (const client of allClients) {
             try {
+                // DEDUP CHECK — skip if already sent this week for this holiday
+                const dedupRes = await fetch(
+                    `${SUPABASE_URL}/rest/v1/holiday_email_log?client_email=eq.${encodeURIComponent(client.email)}&holiday_slug=eq.${encodeURIComponent(holiday.slug)}&week_number=eq.${holiday.week}&select=id&limit=1`,
+                    { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+                );
+                const existing = await dedupRes.json();
+                if (Array.isArray(existing) && existing.length > 0) {
+                    console.log(`⏭️ Skip ${client.email} — already sent week ${holiday.week} for ${holiday.name}`);
+                    continue;
+                }
+
                 const firstName = (client.name || 'there').split(' ')[0];
                 const industry = client.industry || '';
                 let printUrl = 'https://newurbaninfluence.com/print';
@@ -230,16 +302,16 @@ exports.handler = async (event) => {
                 if (client.id) params.push(`client=${encodeURIComponent(client.id)}`);
                 if (params.length) printUrl += '?' + params.join('&');
 
-                const template = weekTemplates[holiday.week];
-                if (!template) continue;
+                const resolved = resolveTemplate(holiday.week, holiday.name, firstName);
+                if (!resolved) continue;
 
-                const html = buildHolidayEmail(firstName, holiday.name, holiday.week, printUrl);
+                const html = buildHolidayEmail(firstName, holiday.name, holiday.week, printUrl, resolved);
                 if (!html) continue;
 
                 await transporter.sendMail({
                     from: MAIL_FROM,
                     to: client.email,
-                    subject: template.subject(holiday.name),
+                    subject: resolved.subject,
                     html: html
                 });
 
