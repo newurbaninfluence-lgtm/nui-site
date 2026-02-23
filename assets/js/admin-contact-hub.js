@@ -643,7 +643,8 @@ async function convertHubToClient(contactId) {
         phone: c.phone || '',
         password: 'client' + Math.random().toString(36).substring(7),
         industry: c.industry || '',
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        _hubSynced: true  // Already in crm_contacts, skip re-sync
       });
       saveClients();
     }

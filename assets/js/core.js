@@ -591,7 +591,62 @@ NuiImageStore.init().catch(err => console.warn('IndexedDB init failed, falling b
 // ═══════════════════════════════════════════════
 
 let clients = JSON.parse(localStorage.getItem('nui_clients')) || [];
-function saveClients() { localStorage.setItem('nui_clients', JSON.stringify(clients)); syncToBackend('clients', clients); }
+function saveClients() {
+  localStorage.setItem('nui_clients', JSON.stringify(clients));
+  syncToBackend('clients', clients);
+  // Auto-sync new clients to Contact Hub (Supabase crm_contacts)
+  syncNewClientsToHub();
+}
+
+// Bridge: push any un-synced clients to Contact Hub
+async function syncNewClientsToHub() {
+  if (typeof db === 'undefined' || !db) return;
+  const unsynced = clients.filter(c => !c._hubSynced && (c.email || c.phone));
+  if (unsynced.length === 0) return;
+
+  for (const client of unsynced) {
+    try {
+      // Check if already exists by email or phone
+      let exists = false;
+      if (client.email) {
+        const { data } = await db.from('crm_contacts').select('id').eq('email', client.email).limit(1);
+        if (data && data.length > 0) exists = true;
+      }
+      if (!exists && client.phone) {
+        const { data } = await db.from('crm_contacts').select('id').eq('phone', client.phone).limit(1);
+        if (data && data.length > 0) exists = true;
+      }
+
+      if (!exists) {
+        // Parse name into first/last
+        const nameParts = (client.name || client.contact || '').trim().split(/\s+/);
+        const firstName = nameParts[0] || 'Client';
+        const lastName = nameParts.slice(1).join(' ') || null;
+
+        await db.from('crm_contacts').insert({
+          first_name: firstName,
+          last_name: lastName,
+          email: client.email || null,
+          phone: client.phone || null,
+          company: client.name || client.company || null,
+          industry: client.industry || null,
+          source: client.createdVia || 'admin_client',
+          status: 'client',
+          notes: client.notes || null,
+          last_activity_at: new Date().toISOString()
+        });
+        console.log('✅ Synced to Contact Hub:', client.name || client.email);
+      }
+
+      // Mark synced (even if already existed)
+      client._hubSynced = true;
+    } catch (err) {
+      console.warn('Hub sync failed for', client.email, err.message);
+    }
+  }
+  // Save the _hubSynced flags
+  localStorage.setItem('nui_clients', JSON.stringify(clients));
+}
 
 // Seed test account if not present
 (function seedTestAccount() {
