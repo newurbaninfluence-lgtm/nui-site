@@ -133,7 +133,7 @@ function showCreateBrandGuideModal() {
     ).join('') : '';
 
     const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
+    modal.className = 'modal-overlay active';
     modal.id = 'bgCreateModal';
     modal.innerHTML = `
 <div class="modal-content" style="max-width: 500px;">
