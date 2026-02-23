@@ -54,7 +54,7 @@ function loadAdminProjectsPanel() {
 <div class="order-header">
 <div>
 <div class="order-title">${project.name}</div>
-<div class="order-client">${client.name}</div>
+<div class="order-client">${client.contact ? client.contact + ' · ' + client.name : client.name}</div>
 <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
 <span class="tag">${pkg.name}</span>
                                 ${project.totalAmount ? `<span class="tag" style="background: rgba(42, 157, 143, 0.2); color: #2a9d8f;">$${project.totalAmount.toLocaleString()}</span>` : ''}

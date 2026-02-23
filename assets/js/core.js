@@ -1416,23 +1416,42 @@ function triggerNewLead(leadId) {
     const lead = leads.find(l => l.id === leadId);
     if (!lead) return;
 
+    // Add to CRM contacts (shows in pipeline kanban)
+    if (!crmData.contacts) crmData.contacts = [];
+    const existingContact = crmData.contacts.find(c => c.email === lead.email);
+    if (!existingContact) {
+        crmData.contacts.push({
+            id: Date.now(),
+            name: lead.name,
+            email: lead.email || '',
+            phone: lead.phone || '',
+            company: lead.business || '',
+            service: lead.service || '',
+            value: parseInt(lead.budget?.match(/\d+/)?.[0] || '0') * 1000,
+            stage: 1,
+            leadId: leadId,
+            createdAt: new Date().toISOString()
+        });
+        console.log('✅ Trigger: Contact added to CRM pipeline for ' + lead.name);
+    }
+
     // Add to CRM deals
     if (!crmData.deals) crmData.deals = [];
     const existingDeal = crmData.deals.find(d => d.leadId === leadId);
     if (!existingDeal) {
         crmData.deals.push({
-            id: Date.now(),
+            id: Date.now() + 1,
             leadId: leadId,
-            name: lead.business + ' - ' + lead.service,
+            name: (lead.business || lead.name) + ' - ' + lead.service,
             value: parseInt(lead.budget?.match(/\d+/)?.[0] || '0') * 1000,
             stage: 1,
             probability: 20,
             expectedClose: new Date(Date.now() + 14*24*60*60*1000).toISOString(),
             createdAt: new Date().toISOString()
         });
-        saveCrm();
-        console.log('✅ Trigger: New deal created in pipeline for ' + lead.name);
+        console.log('✅ Trigger: Deal created in pipeline for ' + lead.name);
     }
+    saveCrm();
 
     // Add to email subscribers
     const existingSub = emailMarketing.subscribers.find(s => s.email === lead.email);

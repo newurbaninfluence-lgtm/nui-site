@@ -300,10 +300,10 @@ function renderContactCard(contact, stageColor) {
 <div class="contact-card" draggable="true" ondragstart="handleDragStart(event, ${contact.id})" ondragend="handleDragEnd(event)" data-contact="${contact.id}">
 <div class="contact-card-header">
 <div class="flex-center-gap-12">
-<div class="contact-avatar" style="background: ${stageColor};">${contact.name?.charAt(0) || '?'}</div>
+<div class="contact-avatar" style="background: ${stageColor};">${(contact.company || contact.name)?.charAt(0) || '?'}</div>
 <div class="contact-info">
-<h4>${contact.name}</h4>
-<p>${contact.company || contact.email || 'No info'}</p>
+<h4>${contact.company || contact.name}</h4>
+<p>${contact.company ? contact.name + (contact.service ? ' · ' + contact.service : '') : contact.email || 'No info'}</p>
 </div>
 </div>
 <div class="contact-value">$${(contact.value || 0).toLocaleString()}</div>
@@ -935,12 +935,14 @@ function autoCreateProjectFromDeal(contact) {
         return;
     }
 
-    // Find or create client
-    let client = clients.find(c => c.email === contact.email) || clients.find(c => c.name === contact.name);
+    // Find or create client — use business name, not person name
+    const businessName = contact.company || contact.name;
+    let client = clients.find(c => c.email === contact.email) || clients.find(c => c.name === businessName);
     if (!client) {
         client = {
             id: Date.now(),
-            name: contact.name,
+            name: businessName,
+            contact: contact.name,
             email: contact.email || '',
             phone: contact.phone || '',
             status: 'active',
@@ -954,13 +956,13 @@ function autoCreateProjectFromDeal(contact) {
     }
 
     // Find matching deal for extra context
-    const deal = (crmData.deals || []).find(d => d.name?.includes(contact.name));
+    const deal = (crmData.deals || []).find(d => d.leadId === contact.leadId) || (crmData.deals || []).find(d => d.name?.includes(businessName));
     const dealService = deal?.name?.split(' - ')[1] || contact.service || 'Branding';
 
-    // Create project
+    // Create project — named: "Business Name - Service Type"
     const project = {
         id: Date.now() + 1,
-        name: contact.name + ' - ' + dealService,
+        name: businessName + ' - ' + dealService,
         clientId: client.id,
         crmContactId: contact.id,
         packageId: null,
@@ -1018,7 +1020,7 @@ function autoCreateProjectFromDeal(contact) {
     saveCrm();
 
     console.log('✅ Auto-created project: ' + project.name + ' ($' + project.totalAmount.toLocaleString() + ') for client ' + client.name);
-    alert('💰 Paid! Auto-created:\n• Client: ' + client.name + '\n• Project: ' + project.name + '\n• Value: $' + project.totalAmount.toLocaleString() + '\n• Deposit: $' + Math.round(project.totalAmount * 0.5).toLocaleString() + ' recorded\n\nHead to Projects to start working.');
+    alert('💰 Paid! Auto-created:\n• Client: ' + businessName + (contact.name !== businessName ? ' (' + contact.name + ')' : '') + '\n• Project: ' + project.name + '\n• Value: $' + project.totalAmount.toLocaleString() + '\n• Deposit: $' + Math.round(project.totalAmount * 0.5).toLocaleString() + ' recorded\n\nHead to Projects to start working.');
 }
 
 // Quick Actions
