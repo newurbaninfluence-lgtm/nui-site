@@ -832,7 +832,9 @@ function deleteDesigner(id) {
 // Current brand guide being edited
 let currentBrandGuide = null;
 
-function loadAdminBrandGuidePanel() {
+// LEGACY: Brand guide panel moved to admin-brandguide.js + admin-brandguide-editor.js
+// This old version is kept but renamed to avoid conflicts
+function _legacy_loadAdminBrandGuidePanel() {
     const clientProofs = proofs.filter(p => p.type === 'brandguide');
 
     document.getElementById('adminBrandguidePanel').innerHTML = `
@@ -926,7 +928,7 @@ function checkClientPaymentStatus(clientId) {
 }
 
 // Portfolio-style Brand Guide Editor
-function renderBrandGuideEditor() {
+function _legacy_renderBrandGuideEditor() {
     const p = proofs.find(x => x.id === currentBrandGuide);
     if (!p) return '';
     const client = clients.find(c => c.id == p.clientId);
@@ -1102,12 +1104,12 @@ function renderBrandGuideEditor() {
     `;
 }
 
-function editBrandGuidePortfolio(id) {
+function _legacy_editBrandGuidePortfolio(id) {
     currentBrandGuide = id;
     loadAdminBrandGuidePanel();
 }
 
-function updateBrandGuideField(id, field, value) {
+function _legacy_updateBrandGuideField(id, field, value) {
     const p = proofs.find(x => x.id === id);
     if (p) {
         p[field] = value;
@@ -1116,7 +1118,7 @@ function updateBrandGuideField(id, field, value) {
     }
 }
 
-function updateBrandGuideColor(id, index, value) {
+function _legacy_updateBrandGuideColor(id, index, value) {
     const p = proofs.find(x => x.id === id);
     if (p) {
         if (!p.brandColors) p.brandColors = ['#e63946', '#1d3557', '#f4a261'];
@@ -1127,7 +1129,7 @@ function updateBrandGuideColor(id, index, value) {
     }
 }
 
-function addBrandGuideColor(id) {
+function _legacy_addBrandGuideColor(id) {
     const p = proofs.find(x => x.id === id);
     if (p && (!p.brandColors || p.brandColors.length < 6)) {
         if (!p.brandColors) p.brandColors = [];
@@ -1137,7 +1139,7 @@ function addBrandGuideColor(id) {
     }
 }
 
-function updateBrandGuideFont(id, type, value) {
+function _legacy_updateBrandGuideFont(id, type, value) {
     const p = proofs.find(x => x.id === id);
     if (p) {
         if (!p.fonts) p.fonts = {};
@@ -1146,7 +1148,7 @@ function updateBrandGuideFont(id, type, value) {
     }
 }
 
-function uploadBrandGuideHero(id, input) {
+function _legacy_uploadBrandGuideHero(id, input) {
     const file = input.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -1162,7 +1164,7 @@ function uploadBrandGuideHero(id, input) {
     reader.readAsDataURL(file);
 }
 
-function uploadBrandGuideAsset(id, key, input) {
+function _legacy_uploadBrandGuideAsset(id, key, input) {
     const file = input.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -1178,7 +1180,7 @@ function uploadBrandGuideAsset(id, key, input) {
     reader.readAsDataURL(file);
 }
 
-function uploadBrandGuideMockup(id, input) {
+function _legacy_uploadBrandGuideMockup(id, input) {
     const file = input.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -1195,7 +1197,7 @@ function uploadBrandGuideMockup(id, input) {
     reader.readAsDataURL(file);
 }
 
-function removeBrandGuideMockup(id, index) {
+function _legacy_removeBrandGuideMockup(id, index) {
     const p = proofs.find(x => x.id === id);
     if (p && p.mockups) {
         p.mockups.splice(index, 1);
@@ -1204,7 +1206,7 @@ function removeBrandGuideMockup(id, index) {
     }
 }
 
-function addBrandGuideComment(id) {
+function _legacy_addBrandGuideComment(id) {
     const input = document.getElementById('bgNewComment');
     const text = input.value.trim();
     if (!text) return;
@@ -1668,7 +1670,7 @@ async function sendPaymentReminder(clientId) {
     }
 }
 
-function deleteBrandGuide(id) {
+function _legacy_deleteBrandGuide(id) {
     if (!confirm('Are you sure you want to delete this brand guide?')) return;
     proofs = proofs.filter(p => p.id !== id);
     saveProofs();
@@ -1676,7 +1678,7 @@ function deleteBrandGuide(id) {
     loadAdminBrandGuidePanel();
 }
 
-function showCreateBrandGuideModal() {
+function _legacy_showCreateBrandGuideModal() {
     const clientList = clients || [];
     const modal = document.createElement('div');
     modal.className = 'modal-overlay active';
@@ -1827,7 +1829,7 @@ function previewBrandGuideIconMark(input) {
     }
 }
 
-function saveBrandGuide() {
+function _legacy_saveBrandGuide() {
     const clientId = document.getElementById('bgClient').value;
     const client = clients.find(c => c.id == clientId);
 

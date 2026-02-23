@@ -145,14 +145,24 @@ function convertSubmissionToOrder(subId) {
     const order = {
         id: Date.now(),
         clientId: client.id,
+        projectName: sub.serviceName,
         project: sub.serviceName,
+        packageId: sub.serviceId || '',
+        packageName: sub.serviceName || '',
         status: 'pending',
         estimate: sub.price,
         dueDate: new Date(Date.now() + 14*24*60*60*1000).toISOString().split('T')[0],
-        deliverables: []
+        deliverables: [],
+        createdAt: new Date().toISOString()
     };
     orders.push(order);
     saveOrders();
+
+    // === AUTO-CREATE BRAND GUIDE for brand packages ===
+    if (typeof autoCreateBrandGuide === 'function' && typeof isBrandPackage === 'function' && isBrandPackage(order.packageId)) {
+        const guide = autoCreateBrandGuide(order, client);
+        if (guide) console.log('✅ Auto-created brand guide from submission:', guide.title);
+    }
 
     // Update submission status
     sub.status = 'converted';

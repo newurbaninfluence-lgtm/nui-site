@@ -24,7 +24,7 @@
 # Blog posts
 [[redirects]]
   from = "/blog/:post"
-  to = "/blog/:post.html"
+  to = "/index.html"
   status = 200
 
 # Case study pages

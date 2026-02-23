@@ -321,6 +321,11 @@ async function submitClientOrder(e) {
     orders.push(order);
     saveOrders();
 
+    // Auto-create brand guide for brand packages
+    if (typeof autoCreateBrandGuide === 'function' && typeof isBrandPackage === 'function' && isBrandPackage(order.packageId)) {
+        autoCreateBrandGuide(order, client);
+    }
+
     // Create invoice
     const invoice = {
         id: Date.now() + 1,
