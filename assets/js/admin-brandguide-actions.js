@@ -14,6 +14,7 @@ function uploadBGFile(guideId, itemId, input) {
         g.deliverables[itemId].uploadedAt = new Date().toISOString();
         g.updatedAt = new Date().toISOString();
         saveBrandGuides(guides);
+        syncBrandGuideToClient(guideId); // Keep portal in sync
         renderBrandGuideEditor(guideId);
     };
     reader.readAsDataURL(file);
@@ -27,6 +28,7 @@ function removeBGFile(guideId, itemId) {
     g.deliverables[itemId].status = 'not-started';
     g.updatedAt = new Date().toISOString();
     saveBrandGuides(guides);
+    syncBrandGuideToClient(guideId); // Keep portal in sync
     renderBrandGuideEditor(guideId);
 }
 
@@ -115,6 +117,9 @@ async function sendBrandGuideToClient(guideId) {
     g.updatedAt = new Date().toISOString();
     saveBrandGuides(guides);
 
+    // Sync deliverables to client.assets for portal display
+    syncBrandGuideToClient(guideId);
+
     try {
         await fetch('/.netlify/functions/send-email', {
             method: 'POST',
@@ -160,6 +165,9 @@ async function deliverBrandGuidePackage(guideId) {
     g.updatedAt = new Date().toISOString();
     saveBrandGuides(guides);
 
+    // Final sync — push all deliverables to client portal
+    syncBrandGuideToClient(guideId);
+
     // Send delivery email
     if (g.clientEmail) {
         try {
@@ -197,4 +205,93 @@ function deleteBrandGuideConfirm(guideId) {
     guides = guides.filter(g => g.id !== guideId);
     saveBrandGuides(guides);
     closeBrandGuideEditor();
+}
+
+// ==================== SYNC BRIDGE: Brand Guide → Client Portal ====================
+// Maps brand guide deliverable categories to client.assets categories
+const BG_TO_ASSET_MAP = {
+    'logo':             'logos',
+    'colors':           'brand',
+    'strategy':         'brand',
+    'social':           'social',
+    'mockups':          'mockups',
+    'print-collateral': 'print',
+    'signage':          'print',
+    'retail':           'print',
+    'apparel':          'apparel',
+    'digital':          'digital',
+    'marketing':        'digital',
+    'packaging':        'packaging'
+};
+
+function syncBrandGuideToClient(guideId) {
+    const guides = getBrandGuides();
+    const g = guides.find(x => x.id === guideId);
+    if (!g) return false;
+
+    const client = clients.find(c => c.id == g.clientId);
+    if (!client) return false;
+
+    if (!client.assets) client.assets = {};
+
+    // Sync brand colors & fonts from guide
+    if (g.brandColors?.length) client.colors = g.brandColors;
+    if (g.fonts) client.fonts = g.fonts;
+    if (g.brandVoice) client.brandVoice = g.brandVoice;
+    if (g.targetMarket) client.targetMarket = g.targetMarket;
+
+    // Get package config for category mapping
+    const config = BRAND_GUIDE_PACKAGES[g.packageKey];
+    if (!config) return false;
+
+    // Build a deliverable-id → category-id lookup
+    const itemCategoryMap = {};
+    config.categories.forEach(cat => {
+        cat.items.forEach(item => {
+            itemCategoryMap[item.id] = cat.id;
+        });
+    });
+
+    // Clear synced assets (only brand-guide sourced ones) to avoid duplicates
+    const syncedCategories = new Set();
+
+    // Walk all deliverables and push files to client.assets
+    Object.entries(g.deliverables || {}).forEach(([itemId, del]) => {
+        if (!del.file) return; // no file uploaded
+        if (del.status === 'not-started') return;
+
+        const bgCat = itemCategoryMap[itemId] || 'other';
+        const assetCat = BG_TO_ASSET_MAP[bgCat] || 'other';
+
+        // First time seeing this category — clear old synced items
+        if (!syncedCategories.has(assetCat)) {
+            if (!client.assets[assetCat]) client.assets[assetCat] = [];
+            // Remove previously synced brand guide items (keep manual uploads)
+            client.assets[assetCat] = client.assets[assetCat].filter(a => !a._fromBrandGuide);
+            syncedCategories.add(assetCat);
+        }
+
+        // Determine file type from base64 or name
+        const isImage = del.file.match(/\.(png|jpg|jpeg|gif|svg|webp)/i) || del.file.startsWith('data:image');
+        const isVideo = del.file.match(/\.(mp4|mov|webm)/i) || del.file.startsWith('data:video');
+
+        client.assets[assetCat].push({
+            name: del.name || itemId,
+            data: del.file,
+            type: isImage ? 'image' : isVideo ? 'video' : 'file',
+            category: del.category || bgCat,
+            itemId: itemId,
+            formats: del.formats || null,
+            uploadedAt: del.uploadedAt || new Date().toISOString(),
+            _fromBrandGuide: guideId // tag for de-dup on re-sync
+        });
+    });
+
+    // Store the brand guide metadata on the client for portal display
+    client.brandGuidePackage = g.packageName;
+    client.brandGuideStatus = g.status;
+
+    saveClients();
+    console.log(`✅ Synced ${Object.keys(g.deliverables).length} deliverables → client.assets for ${client.name}`);
+    return true;
 }
