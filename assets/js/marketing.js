@@ -454,7 +454,14 @@ function loadHomeView() {
     if (csGrid) { _refreshHomepageCaseStudies(csGrid); }
 
     const video = document.getElementById('heroVideo');
-    if (video) { video.muted = true; video.play().catch(e => {}); }
+    if (video) {
+        video.muted = true;
+        video.play().catch(e => {});
+        // Fade video in once loaded (prevents black flash)
+        function _showVideo() { video.classList.add('loaded'); }
+        if (video.readyState >= 3) _showVideo();
+        else video.addEventListener('canplay', _showVideo, { once: true });
+    }
 
     // GSAP Empire Reveal — deferred to window.load so browser has calculated 3D space
     function _nuiEmpireReveal() {
