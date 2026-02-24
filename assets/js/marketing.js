@@ -114,6 +114,7 @@ function loadHomeView() {
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>SEO & Digital Strategy</h3><p>Get Found. Get Chosen. Get Paid.</p><div class="learn-more">LEARN MORE →</div></div>
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>AI Systems & Automation</h3><p>Your Business. Always On. Always Working.</p><div class="learn-more">LEARN MORE →</div></div>
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Email & SMS Automation</h3><p>Capture Silent Visitors. Convert on Autopilot.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Geo-Fencing & Geo-Gridding</h3><p>Target Competitors' Customers. Dominate Your Map.</p><div class="learn-more">LEARN MORE →</div></div>
 </div>
 </div>
 </section>
@@ -1198,6 +1199,16 @@ function loadServicesView() {
         <p class="prob-q">People visit my site but never reach out — how do I follow up?</p>
         <p class="prob-sol">Silent visitor ID + automated email &amp; SMS sequences that bring them back.</p>
         <p class="prob-price">From $1,500</p>
+        <p class="prob-font-tag">Syne &middot; Montserrat</p>
+      </div>
+    </button>
+
+    <button class="svc-prob-card" data-filter="geo" onclick="filterServices('geo')">
+      <img class="prob-photo" src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&q=80" loading="lazy" onerror="this.style.display='none'" alt="">
+      <div class="prob-card-body">
+        <p class="prob-q">How do I steal customers from my competitors nearby?</p>
+        <p class="prob-sol">Geo-fence their location + geo-grid your Google rankings block by block.</p>
+        <p class="prob-price">From $750/mo</p>
         <p class="prob-font-tag">Syne &middot; Montserrat</p>
       </div>
     </button>
@@ -2576,6 +2587,176 @@ function loadServicesView() {
 
 <div class="package-cta">
 <button class="btn-package" onclick="startServiceIntake('email-sms')">Start Capturing Lost Revenue →</button>
+</div>
+</div>
+</section>
+
+<!-- GEO-FENCING & GEO-GRIDDING -->
+<section class="package-section" data-svc-filter="geo" style="background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);">
+<div class="package-image">
+<img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1920&q=80" alt="Geo-Fencing and Geo-Gridding Location Marketing" data-service-image="geo">
+</div>
+<div class="container-lg">
+<div class="package-header">
+<div class="package-label">Location-Based Marketing</div>
+<h2 class="package-title">GEO-FENCING & <span class="red">GEO-GRIDDING</span></h2>
+<p class="package-subtitle">Target people standing inside your competitor's business. Track exactly where you rank on Google block by block. Turn physical locations into digital ad triggers.</p>
+<div class="package-price">$1,500+ <span>per month</span></div>
+<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">Setup fee from <strong style="color:#a855f7;">$750</strong> · includes campaign build, zones, creative & reporting</div>
+</div>
+
+<!-- Problem/Solution Bar -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1000px;margin:0 auto 60px;">
+<div style="background:rgba(255,59,48,0.06);border:1px solid rgba(255,59,48,0.15);border-radius:16px;padding:32px;">
+<h3 style="font-size:16px;font-weight:800;color:#ff3b30;margin-bottom:16px;">❌ THE PROBLEM</h3>
+<p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.8;margin:0;">You're spending money on ads that reach everyone — including people who will never walk through your door. You don't know where you actually rank on Google across your service area. Your competitors are stealing your customers and you can't even see it happening.</p>
+</div>
+<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:16px;padding:32px;">
+<h3 style="font-size:16px;font-weight:800;color:#22c55e;margin-bottom:16px;">✅ THE SOLUTION</h3>
+<p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.8;margin:0;">We draw invisible boundaries around competitor locations, events, and high-traffic areas — anyone who walks in gets tagged and sees your ads for 30 days. We map your Google rankings on a grid across your entire city so you know exactly where to focus. Precision marketing, zero waste.</p>
+</div>
+</div>
+
+<div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr);">
+<div class="deliverable-card">
+<div class="deliverable-icon">📍</div>
+<h3 class="deliverable-title">Competitor Geo-Fencing</h3>
+<p class="deliverable-desc">Draw a virtual fence around your competitor's location. Anyone who walks in gets tagged and sees YOUR ads on their phone for up to 30 days.</p>
+<ul class="deliverable-list">
+<li>Target up to 20 competitor locations</li>
+<li>Ads served on 600,000+ apps & sites</li>
+<li>30-day retargeting after they leave</li>
+<li>Works on iOS and Android devices</li>
+<li>Foot traffic attribution tracking</li>
+</ul>
+<p class="pkg-note">BEST FOR: Restaurants, salons, gyms, retail stores</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">🎪</div>
+<h3 class="deliverable-title">Event & Location Targeting</h3>
+<p class="deliverable-desc">Fence trade shows, conferences, festivals, concerts — reach thousands of qualified people in one location at one time.</p>
+<ul class="deliverable-list">
+<li>Target any event or venue in real-time</li>
+<li>Capture attendees during & after events</li>
+<li>Custom audience building per event</li>
+<li>Historical event targeting (past 6 months)</li>
+<li>Perfect for B2B lead generation</li>
+</ul>
+<p class="pkg-note">BEST FOR: B2B companies, event vendors, sponsors</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">🗺️</div>
+<h3 class="deliverable-title">Geo-Grid Rank Tracking</h3>
+<p class="deliverable-desc">See exactly where you rank on Google Maps at every intersection across your city. A heat map that shows your strong zones and blind spots.</p>
+<ul class="deliverable-list">
+<li>Grid overlay of your entire service area</li>
+<li>Rankings tracked at every grid point</li>
+<li>Color-coded heat map (green/yellow/red)</li>
+<li>Competitor comparison at each point</li>
+<li>Monthly tracking & improvement reports</li>
+</ul>
+<p class="pkg-note">BEST FOR: Any local business relying on Google Maps</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">🏠</div>
+<h3 class="deliverable-title">Addressable Geo-Fencing</h3>
+<p class="deliverable-desc">Upload a list of specific addresses — homes, businesses, zip codes — and serve ads only to people at those locations. Direct mail, but digital.</p>
+<ul class="deliverable-list">
+<li>Target specific home & business addresses</li>
+<li>Upload customer or prospect lists</li>
+<li>Hyper-targeted by zip code or neighborhood</li>
+<li>Works with your existing mailing lists</li>
+<li>Cross-device household targeting</li>
+</ul>
+<p class="pkg-note">BEST FOR: Real estate, home services, political campaigns</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">🔥</div>
+<h3 class="deliverable-title">Conversion Zone Tracking</h3>
+<p class="deliverable-desc">Know exactly how many people who saw your geo-fenced ad actually walked into your business. Real foot traffic data, not guesses.</p>
+<ul class="deliverable-list">
+<li>Conversion zone around your location</li>
+<li>Track ad-to-visit attribution</li>
+<li>See which fenced zones drive the most visits</li>
+<li>Cost-per-visit calculations</li>
+<li>Weekly walk-in reports</li>
+</ul>
+<p class="pkg-note">BEST FOR: Brick & mortar businesses with physical locations</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">📊</div>
+<h3 class="deliverable-title">Local SEO Optimization</h3>
+<p class="deliverable-desc">Use geo-grid data to fix your weak zones. We optimize your Google Business Profile, citations, and reviews to dominate your local map pack.</p>
+<ul class="deliverable-list">
+<li>Google Business Profile optimization</li>
+<li>Citation building (100+ directories)</li>
+<li>Review generation strategy</li>
+<li>Category & keyword optimization</li>
+<li>Monthly ranking improvement reports</li>
+</ul>
+<p class="pkg-note">BEST FOR: Businesses not showing up in Google Map Pack</p>
+</div>
+</div>
+
+<!-- Package Tiers -->
+<div style="max-width:1100px;margin:60px auto 0;">
+<div style="text-align:center;margin-bottom:40px;">
+<div class="package-label">Choose Your Level</div>
+<h3 style="font-size:28px;font-weight:900;color:#fff;">Three Ways to <span class="red">Dominate Your Area</span></h3>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+<div style="background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px;text-align:center;">
+<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--red);font-weight:700;margin-bottom:12px;">Starter</div>
+<h4 style="font-size:20px;font-weight:800;margin-bottom:8px;">GEO-GRID INTEL</h4>
+<div style="font-size:36px;font-weight:900;color:var(--red);margin:16px 0;">$750</div>
+<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">setup + $297/mo tracking & optimization</div>
+<ul style="list-style:none;padding:0;text-align:left;font-size:13px;color:rgba(255,255,255,0.7);">
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Geo-grid rank tracking (your city)</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Google Business Profile optimization</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Monthly heat map reports</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Competitor ranking comparison</li>
+<li style="padding:8px 0;">✓ Citation building (50 directories)</li>
+</ul>
+</div>
+<div style="background:#080808;border:2px solid var(--red);border-radius:16px;padding:32px;text-align:center;position:relative;">
+<div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;padding:4px 16px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;">MOST POPULAR</div>
+<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--red);font-weight:700;margin-bottom:12px;">Growth</div>
+<h4 style="font-size:20px;font-weight:800;margin-bottom:8px;">FENCE & CONQUER</h4>
+<div style="font-size:36px;font-weight:900;color:var(--red);margin:16px 0;">$1,500</div>
+<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">setup + $1,500/mo ad management</div>
+<ul style="list-style:none;padding:0;text-align:left;font-size:13px;color:rgba(255,255,255,0.7);">
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Everything in Starter</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Geo-fence up to 10 competitor locations</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Event & venue targeting</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Custom display ad creative (4 sizes)</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Conversion zone tracking</li>
+<li style="padding:8px 0;">✓ Bi-weekly performance reports</li>
+</ul>
+</div>
+<div style="background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px;text-align:center;">
+<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--red);font-weight:700;margin-bottom:12px;">Enterprise</div>
+<h4 style="font-size:20px;font-weight:800;margin-bottom:8px;">TOTAL DOMINATION</h4>
+<div style="font-size:36px;font-weight:900;color:var(--red);margin:16px 0;">$3,000</div>
+<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">setup + $2,500/mo full management</div>
+<ul style="list-style:none;padding:0;text-align:left;font-size:13px;color:rgba(255,255,255,0.7);">
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Everything in Growth</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Fence up to 50 locations</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Addressable geo-fencing (mail lists)</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Multi-city geo-grid tracking</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Review generation campaign</li>
+<li style="padding:8px 0;">✓ Dedicated strategist + weekly calls</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="package-cta">
+<button class="btn-package" onclick="startServiceIntake('geo')">Start Dominating Your Area →</button>
 </div>
 </div>
 </section>

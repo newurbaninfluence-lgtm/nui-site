@@ -831,6 +831,42 @@ const serviceIntakeConfigs = {
             ]
         }
     },
+    'geo': {
+        name: 'Geo-Fencing & Geo-Gridding',
+        price: 750,
+        steps: ['About You', 'Business Info', 'Location Strategy', 'Package', 'Review'],
+        fields: {
+            1: clientBackgroundFields,
+            2: [
+                { id: 'businessName', type: 'text', label: 'Business Name', required: true },
+                { id: 'industry', type: 'text', label: 'Industry/Niche', required: true },
+                { id: 'businessAddress', type: 'text', label: 'Business Address', required: true },
+                { id: 'serviceArea', type: 'text', label: 'Service Area (cities/zip codes you serve)', required: true },
+                { id: 'hasGBP', type: 'select', label: 'Do you have a Google Business Profile?', options: ['Yes, it\'s active', 'Yes, but not updated', 'No', 'Not sure'] }
+            ],
+            3: [
+                { id: 'geoServices', type: 'checkbox', label: 'What interests you?', options: [
+                    { value: 'competitor-fence', title: 'Competitor Geo-Fencing', desc: 'Target people inside competitor locations with your ads' },
+                    { value: 'event-targeting', title: 'Event & Location Targeting', desc: 'Fence trade shows, festivals, venues for mass capture' },
+                    { value: 'geo-grid', title: 'Geo-Grid Rank Tracking', desc: 'See where you rank on Google at every block in your city' },
+                    { value: 'addressable', title: 'Addressable Geo-Fencing', desc: 'Target specific addresses from your mailing lists' },
+                    { value: 'conversion-zone', title: 'Conversion Zone Tracking', desc: 'Track how many ad viewers actually visit your location' },
+                    { value: 'local-seo', title: 'Local SEO Optimization', desc: 'Fix weak zones and dominate Google Map Pack' }
+                ]},
+                { id: 'competitors', type: 'textarea', label: 'List 3-5 competitors you want to geo-fence (name & address)', required: false },
+                { id: 'biggestGoal', type: 'textarea', label: 'What\'s your #1 goal? (more foot traffic, beat a competitor, rank higher, etc.)', required: true }
+            ],
+            4: [
+                { id: 'budget', type: 'radio', label: 'Which package fits your needs?', options: [
+                    { value: 'starter', title: 'Geo-Grid Intel — $750 setup + $297/mo', desc: 'Rank tracking + GBP optimization + citation building' },
+                    { value: 'growth', title: 'Fence & Conquer — $1,500 setup + $1,500/mo', desc: 'Grid tracking + geo-fencing 10 locations + conversion zones' },
+                    { value: 'enterprise', title: 'Total Domination — $3,000 setup + $2,500/mo', desc: 'Everything + 50 locations + addressable fencing + weekly strategy' }
+                ]},
+                { id: 'timeline', type: 'select', label: 'When do you want to start?', options: ['Immediately', 'Within 2 weeks', 'Within 1 month', 'Just exploring'] },
+                { id: 'additionalNotes', type: 'textarea', label: 'Anything else we should know?', required: false }
+            ]
+        }
+    },
     'custom-package': {
         name: 'Custom Package',
         price: 0,
