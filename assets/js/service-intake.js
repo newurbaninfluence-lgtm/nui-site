@@ -761,6 +761,41 @@ const serviceIntakeConfigs = {
             ]
         }
     },
+    'ai-systems': {
+        name: 'AI Systems & Automation',
+        price: 2500,
+        steps: ['About You', 'Business Info', 'AI Needs', 'Preferences', 'Review'],
+        fields: {
+            1: clientBackgroundFields,
+            2: [
+                { id: 'businessName', type: 'text', label: 'Business Name', required: true },
+                { id: 'industry', type: 'text', label: 'Industry/Niche', required: true },
+                { id: 'website', type: 'text', label: 'Current Website (if any)', required: false },
+                { id: 'teamSize', type: 'select', label: 'Team Size', options: ['Just me', '2-5', '6-15', '15+'] }
+            ],
+            3: [
+                { id: 'aiServices', type: 'checkbox', label: 'Which AI systems interest you?', options: [
+                    { value: 'chatbot', title: 'AI Chatbot & Lead Capture', desc: 'Smart assistant that answers questions & books calls 24/7' },
+                    { value: 'lead-followup', title: 'Automated Lead Follow-Up', desc: 'Instant personalized responses to new leads' },
+                    { value: 'custom-assistant', title: 'Custom AI Assistant', desc: 'AI trained on your business data & processes' },
+                    { value: 'content-engine', title: 'AI Content Engine', desc: 'Auto-generate social posts, emails & blog drafts' },
+                    { value: 'workflow', title: 'Workflow Automation', desc: 'Connect tools & automate repetitive tasks' },
+                    { value: 'analytics', title: 'AI Analytics & Reporting', desc: 'Automated dashboards & weekly insight reports' }
+                ]},
+                { id: 'currentTools', type: 'textarea', label: 'What tools/software do you currently use?', required: false },
+                { id: 'biggestPainPoint', type: 'textarea', label: 'What manual task wastes the most of your time?', required: true }
+            ],
+            4: [
+                { id: 'budget', type: 'radio', label: 'Budget Range', options: [
+                    { value: '2500-5000', title: '$2,500 - $5,000', desc: '1-2 AI systems' },
+                    { value: '5000-10000', title: '$5,000 - $10,000', desc: 'Full automation suite' },
+                    { value: '10000+', title: '$10,000+', desc: 'Enterprise-level custom AI' }
+                ]},
+                { id: 'timeline', type: 'select', label: 'When do you want to start?', options: ['Immediately', 'Within 2 weeks', 'Within 1 month', 'Just exploring'] },
+                { id: 'additionalNotes', type: 'textarea', label: 'Anything else we should know?', required: false }
+            ]
+        }
+    },
     'custom-package': {
         name: 'Custom Package',
         price: 0,
@@ -922,6 +957,13 @@ function renderIntakeWizard(serviceId) {
             agitate: "Every month you stay stuck is revenue left on the table. Your competitors aren't waiting.",
             solution: "Get a free strategy call with someone who's helped 50+ businesses break through. No pitch, just clarity on your next best move.",
             proof: "90% of strategy calls end with a clear action plan — whether you work with us or not."
+        },
+        'ai-systems': {
+            hook: "Stop working in your business. Let AI work for you.",
+            problem: "You're drowning in repetitive tasks — answering the same questions, chasing leads, manually doing things that should be automated.",
+            agitate: "Every hour spent on tasks AI could handle is an hour stolen from growing your business. Your competitors are already automating.",
+            solution: "Get custom AI systems built for YOUR business — chatbots that capture leads, automations that save hours, and analytics that tell you exactly what's working.",
+            proof: "Our AI clients save an average of 15+ hours per week and see 3x faster lead response times within 30 days."
         },
         'default': {
             hook: "Ready to stop blending in and start standing out?",
@@ -1183,6 +1225,12 @@ function renderReviewStep(serviceId) {
             description: 'No-obligation discovery call to discuss your business goals and find the perfect solution for your needs.',
             deliverables: ['30-Minute Call', 'Needs Assessment', 'Custom Recommendations', 'Project Roadmap'],
             timeline: 'Scheduled within 48 hours'
+        },
+        'ai-systems': {
+            title: 'AI Systems & Automation',
+            description: 'Custom AI-powered systems that automate your operations — chatbots, lead follow-up, content creation, workflow automation & analytics.',
+            deliverables: ['Custom AI Setup', 'Integration & Training', 'Automation Workflows', '30-Day Support & Optimization'],
+            timeline: '2-4 weeks'
         }
     };
 
