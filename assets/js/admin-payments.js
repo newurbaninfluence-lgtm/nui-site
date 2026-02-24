@@ -736,7 +736,7 @@ function quickAddServiceToInvoice(type, id) {
     const container = document.getElementById('invoiceLineItems');
     const lineItem = document.createElement('div');
     lineItem.className = 'invoice-line-item';
-    lineItem.style.cssText = 'display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 12px; margin-bottom: 12px; align-items: end;';
+    lineItem.style.cssText = 'display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 12px; margin-bottom: 12px; align-items: end; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 8px; padding: 12px; transition: background 1.5s, border-color 1.5s;';
     lineItem.innerHTML = `
 <div class="form-group m-0">
 <input type="text" class="form-input line-desc" value="${item.name}${item.turnaround ? ' (' + item.turnaround + ')' : ''}">
@@ -753,10 +753,20 @@ function quickAddServiceToInvoice(type, id) {
 <button class="btn-admin small" onclick="removeInvoiceLine(this)" style="margin-bottom: 4px;">×</button>
     `;
     container.appendChild(lineItem);
+    lineItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
     calculateInvoiceTotal();
 
-    // Reset dropdown
-    document.getElementById(type === 'package' ? 'quickAddPackage' : 'quickAddService').value = '';
+    // Fade the green highlight after 1.5s
+    setTimeout(function() {
+        lineItem.style.background = 'transparent';
+        lineItem.style.borderColor = 'transparent';
+    }, 1500);
+
+    // Keep the selection visible briefly, then reset
+    var selectId = type === 'package' ? 'quickAddPackage' : 'quickAddService';
+    setTimeout(function() {
+        document.getElementById(selectId).value = '';
+    }, 800);
 }
 
 function loadInvoiceClientProjects(clientId) {

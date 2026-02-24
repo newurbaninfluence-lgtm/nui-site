@@ -1259,15 +1259,18 @@
 
 /* ─── Color filter dots ─── */
 .mb-color-dot {
-  transition: border-color 0.15s, transform 0.15s !important;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s !important;
+  position: relative;
+  z-index: 10;
 }
 .mb-color-dot:hover {
-  transform: scale(1.15) !important;
-  border-color: rgba(255,255,255,0.4) !important;
+  transform: scale(1.2) !important;
+  border-color: rgba(255,255,255,0.5) !important;
 }
 .mb-color-dot.mb-color-active {
-  border-color: rgba(255,255,255,0.6) !important;
-  box-shadow: 0 0 8px rgba(255,255,255,0.15);
+  border-color: #fff !important;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.3), 0 0 12px rgba(255,255,255,0.2) !important;
+  transform: scale(1.15) !important;
 }
 
 
@@ -1287,19 +1290,19 @@
 
 /* Font grid */
 .dt-font-grid {
-  display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;
+  display:grid; grid-template-columns:1fr 1fr; gap:6px;
   max-height:320px; overflow-y:auto;
 }
 .dt-font-card {
   background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06);
-  border-radius:8px; padding:10px 8px 6px; text-align:center; cursor:pointer;
+  border-radius:8px; padding:14px 10px 8px; text-align:center; cursor:pointer;
   transition:all .15s;
 }
 .dt-font-card:hover {
   background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.15);
   transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.2);
 }
-.dt-font-preview { font-size:24px; color:#fff; margin-bottom:4px; line-height:1.2; }
+.dt-font-preview { font-size:28px; color:#fff; margin-bottom:6px; line-height:1.2; font-weight:600; }
 .dt-font-name { font-size:9px; color:rgba(255,255,255,0.35); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .dt-empty { grid-column:1/-1; text-align:center; padding:20px; color:rgba(255,255,255,0.3); font-size:12px; }
 

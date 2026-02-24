@@ -2474,6 +2474,13 @@ function openMoodboardEditor(id) {
     var client = clients.find(function(c) { return c.id == mb.clientId; });
     _mbZoom = 1; _mbPanX = 0; _mbPanY = 0;
     window._mbEditorState = { id: mb.id, selectedItem: null };
+    // Preload any Google fonts used in moodboard items
+    var fontsToLoad = [];
+    (mb.collageItems||[]).forEach(function(item) {
+        if (item.fontFamily && fontsToLoad.indexOf(item.fontFamily) === -1) fontsToLoad.push(item.fontFamily);
+        if (item.font && fontsToLoad.indexOf(item.font) === -1) fontsToLoad.push(item.font);
+    });
+    if (fontsToLoad.length && typeof loadGoogleFontBatch === 'function') loadGoogleFontBatch(fontsToLoad);
     var bgColor = mb.canvasBackground || '#0a0a0a';
 
     document.getElementById('adminMoodboardPanel').innerHTML = `
@@ -2733,26 +2740,27 @@ function openMoodboardEditor(id) {
 <button onclick="document.getElementById('mbImageUpload').click();mlHideAllPanels();" class="ml-fbtn">Upload from Computer</button>
 </div>
 
-<div class="ml-float" id="mlPanel-imageSearch" style="width:360px;">
+<div class="ml-float" id="mlPanel-imageSearch" style="width:420px;">
 <h4>Search Free Photos</h4>
 <div style="display:flex;gap:6px;margin-bottom:8px;">
-<input type="text" id="mbPexelsQuery" class="ml-finput" style="margin:0;flex:1;min-width:0;width:auto;" placeholder="Search photos..." onkeydown="if(event.key==='Enter') searchStockImages('${mb.id}')">
+<input type="text" id="mbPexelsQuery" style="margin:0;flex:1;min-width:0;padding:9px 12px;background:#222;border:1px solid #444;color:#fff;border-radius:8px;font-size:13px;box-sizing:border-box;" placeholder="Search photos..." onkeydown="if(event.key==='Enter') searchStockImages('${mb.id}')">
 <button onclick="searchStockImages('${mb.id}')" class="ml-fbtn" style="width:auto;padding:8px 14px;margin:0;flex-shrink:0;">Search</button>
 </div>
 <div style="margin-bottom:8px;">
 <div style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Filter by Color</div>
-<div id="mbColorFilter" style="display:flex;gap:5px;flex-wrap:wrap;">
-<div onclick="event.stopPropagation();setImageColorFilter('')" class="mb-color-dot mb-color-active" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);cursor:pointer;background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);position:relative;" title="Any color"></div>
-<div onclick="event.stopPropagation();setImageColorFilter('red')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#e63946;" title="Red"></div>
-<div onclick="event.stopPropagation();setImageColorFilter('orange')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#f4a261;" title="Orange"></div>
-<div onclick="event.stopPropagation();setImageColorFilter('yellow')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#e9c46a;" title="Yellow"></div>
-<div onclick="event.stopPropagation();setImageColorFilter('green')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#2a9d8f;" title="Green"></div>
-<div onclick="event.stopPropagation();setImageColorFilter('teal')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#14b8a6;" title="Teal"></div>
-<div onclick="event.stopPropagation();setImageColorFilter('blue')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#3b82f6;" title="Blue"></div>
-<div onclick="event.stopPropagation();setImageColorFilter('purple')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#8b5cf6;" title="Purple"></div>
-<div onclick="event.stopPropagation();setImageColorFilter('black')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#1a1a1a;" title="Black"></div>
-<div onclick="event.stopPropagation();setImageColorFilter('white')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#f5f5f5;" title="White"></div>
+<div id="mbColorFilter" style="display:flex;gap:6px;flex-wrap:wrap;">
+<div onclick="event.stopPropagation();setImageColorFilter('')" class="mb-color-dot mb-color-active" style="width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);cursor:pointer;background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);position:relative;" title="Any color"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('red')" class="mb-color-dot" style="width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#e63946;" title="Red"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('orange')" class="mb-color-dot" style="width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#f4a261;" title="Orange"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('yellow')" class="mb-color-dot" style="width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#e9c46a;" title="Yellow"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('green')" class="mb-color-dot" style="width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#2a9d8f;" title="Green"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('teal')" class="mb-color-dot" style="width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#14b8a6;" title="Teal"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('blue')" class="mb-color-dot" style="width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#3b82f6;" title="Blue"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('purple')" class="mb-color-dot" style="width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#8b5cf6;" title="Purple"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('black')" class="mb-color-dot" style="width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#1a1a1a;" title="Black"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('white')" class="mb-color-dot" style="width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#f5f5f5;" title="White"></div>
 </div>
+<div id="mbColorLabel" style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;">All colors</div>
 </div>
 <div id="mbPexelsResults" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:340px;overflow-y:auto;"></div>
 <div style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:6px;text-align:center;">Photos by Pexels + Unsplash + Pixabay</div>
@@ -3119,19 +3127,21 @@ function renderMoodboardItems(mb, isPreview) {
 
         } else if (item.type === 'note') {
             var stripColor = escCss(item.stripColor || '#e9c46a');
+            var fontStyle = item.fontFamily ? 'font-family:\'' + escCss(item.fontFamily) + '\',sans-serif;' : '';
+            if (item.fontFamily && typeof loadGoogleFont === 'function') loadGoogleFont(item.fontFamily);
             if (isPreview) {
                 return '<div class="ml-card ml-note" style="transform:'+tx+';width:'+w+'px;z-index:'+z+';padding:0;">'+
                     '<div class="ml-note-strip" style="background:'+stripColor+';"></div>'+
-                    '<div style="padding:12px 14px 4px;font-size:15px;font-weight:600;color:#1a1a1a;">'+escHtml(item.title||'Untitled')+'</div>'+
-                    '<div style="padding:4px 14px 12px;font-size:13px;color:#555;line-height:1.6;">'+escHtml(item.body||'')+'</div>'+
+                    '<div style="padding:12px 14px 4px;font-size:15px;font-weight:600;color:#1a1a1a;'+fontStyle+'">'+escHtml(item.title||'Untitled')+'</div>'+
+                    '<div style="padding:4px 14px 12px;font-size:13px;color:#555;line-height:1.6;'+fontStyle+'">'+escHtml(item.body||'')+'</div>'+
                 '</div>';
             }
             return '<div class="ml-card ml-note'+sel+'" data-idx="'+idx+'" style="transform:'+tx+';width:'+w+'px;z-index:'+z+';padding:0;">'+
                 rz+
                 '<div class="ml-note-strip" style="background:'+stripColor+';" onclick="event.stopPropagation();mbCycleNoteColor('+idx+')"></div>'+
                 '<div class="ml-note-handle" title="Drag to move"></div>'+
-                '<input class="ml-note-title" value="'+escHtml(item.title||'')+'" placeholder="Title" onchange="mbUpdateNote('+idx+',\'title\',this.value)" onclick="event.stopPropagation()">'+
-                '<textarea class="ml-note-body" placeholder="Write something..." onchange="mbUpdateNote('+idx+',\'body\',this.value)" onclick="event.stopPropagation()" oninput="this.style.height=\'auto\';this.style.height=this.scrollHeight+\'px\'">'+escHtml(item.body||'')+'</textarea>'+
+                '<input class="ml-note-title" style="'+fontStyle+'" value="'+escHtml(item.title||'')+'" placeholder="Title" onchange="mbUpdateNote('+idx+',\'title\',this.value)" onclick="event.stopPropagation()">'+
+                '<textarea class="ml-note-body" style="'+fontStyle+'" placeholder="Write something..." onchange="mbUpdateNote('+idx+',\'body\',this.value)" onclick="event.stopPropagation()" oninput="this.style.height=\'auto\';this.style.height=this.scrollHeight+\'px\'">'+escHtml(item.body||'')+'</textarea>'+
             '</div>';
 
         } else if (item.type === 'link') {
@@ -3500,9 +3510,12 @@ function setImageColorFilter(color) {
     var colorMap = ['','red','orange','yellow','green','teal','blue','purple','black','white'];
     var idx = colorMap.indexOf(color);
     if (idx >= 0 && dots[idx]) {
-        dots[idx].style.borderColor = 'rgba(255,255,255,0.6)';
+        dots[idx].style.borderColor = '#fff';
         dots[idx].classList.add('mb-color-active');
     }
+    // Show active label
+    var label = document.getElementById('mbColorLabel');
+    if (label) label.textContent = color ? ('Filtering: ' + color) : 'All colors';
     // Auto-search if query exists
     var q = (document.getElementById('mbPexelsQuery')?.value || '').trim();
     if (q && window._mbEditorState?.id) searchStockImages(window._mbEditorState.id);

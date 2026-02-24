@@ -450,6 +450,50 @@ async function proceedToPayment(inv) {
         return;
     }
 
+    // --- FINANCING REDIRECT: Afterpay/Klarna → Stripe Checkout ---
+    const hasFinancing = inv.payLater && inv.payLater !== 'none' && !inv.payLater.startsWith('split_');
+    const hasSubscription = inv.billingType && inv.billingType !== 'one_time';
+
+    if (hasFinancing || hasSubscription) {
+        try {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'financingRedirect';
+            loadingDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:10000;display:flex;align-items:center;justify-content:center;';
+            loadingDiv.innerHTML = '<div style="text-align:center;color:#fff;"><div style="width:40px;height:40px;border:3px solid #a855f7;border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div><div style="font-size:16px;font-weight:600;">Redirecting to secure checkout...</div><div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:8px;">' + (hasFinancing ? 'Afterpay & Klarna options will appear at checkout' : 'Setting up your subscription') + '</div></div>';
+            document.body.appendChild(loadingDiv);
+
+            const client = clients ? clients.find(c => c.id == inv.clientId) : null;
+            const resp = await fetch('/.netlify/functions/create-subscription', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    clientEmail: client?.email || '',
+                    clientName: client?.name || '',
+                    clientId: inv.clientId || '',
+                    amount: amount,
+                    description: inv.projectName || 'NUI Invoice #' + (inv.invoiceNumber || ''),
+                    invoiceId: inv.id,
+                    billingType: inv.billingType || 'one_time',
+                    billingCycles: inv.billingCycles || 0,
+                    payLater: inv.payLater || 'none'
+                })
+            });
+            const data = await resp.json();
+            if (data.url) {
+                window.location.href = data.url;
+                return;
+            } else {
+                throw new Error(data.error || 'Failed to create checkout');
+            }
+        } catch (err) {
+            console.error('Financing checkout error:', err);
+            const el = document.getElementById('financingRedirect');
+            if (el) el.remove();
+            alert('Could not set up financing checkout. You can still pay by card below.');
+            // Fall through to card payment
+        }
+    }
+
     // Build the Stripe payment modal
     const modalOverlay = document.createElement('div');
     modalOverlay.id = 'stripePaymentModal';

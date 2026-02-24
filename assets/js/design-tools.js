@@ -119,8 +119,8 @@ function dtRenderGoogleFonts(q) {
 
   grid.innerHTML = filtered.slice(0, 60).map(function(name) {
     return '<div class="dt-font-card" onclick="dtSelectFont(\'' + name.replace(/'/g,"\\'") + '\',\'google\')">' +
-      '<div class="dt-font-preview" style="font-family:\'' + name + '\',sans-serif;">Aa</div>' +
-      '<div class="dt-font-name">' + name + '</div>' +
+      '<div class="dt-font-preview" style="font-family:\'' + name + '\',sans-serif;">' + name + '</div>' +
+      '<div class="dt-font-name">Google Fonts</div>' +
     '</div>';
   }).join('');
 }
@@ -138,8 +138,8 @@ async function dtRenderLocalFonts(q) {
 
   grid.innerHTML = filtered.slice(0, 80).map(function(f) {
     return '<div class="dt-font-card" onclick="dtSelectFont(\'' + f.name.replace(/'/g,"\\'") + '\',\'local\')">' +
-      '<div class="dt-font-preview" style="font-family:\'' + f.name + '\',sans-serif;">Aa</div>' +
-      '<div class="dt-font-name">' + f.name + '</div>' +
+      '<div class="dt-font-preview" style="font-family:\'' + f.name + '\',sans-serif;">' + f.name + '</div>' +
+      '<div class="dt-font-name">System Font</div>' +
     '</div>';
   }).join('');
 }
