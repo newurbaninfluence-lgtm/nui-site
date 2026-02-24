@@ -549,6 +549,55 @@ function showCreateInvoiceModal() {
 <button class="btn-admin secondary" onclick="addInvoiceLine()" class="mt-12">+ Add Line Item</button>
 </div>
 
+                <!-- Billing Type -->
+<div class="form-section" style="margin-top: 24px; background: rgba(59,130,246,0.1); padding: 16px; border-radius: 8px; border: 1px solid rgba(59,130,246,0.3);">
+<div class="form-section-title" style="color: #3b82f6;">🔄 Billing Type</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">Type</label>
+<select id="invoiceBillingType" class="form-select" onchange="toggleSubscriptionFields()">
+<option value="one_time">One-Time Payment</option>
+<option value="monthly">Monthly Subscription</option>
+<option value="quarterly">Quarterly Subscription</option>
+<option value="yearly">Annual Subscription</option>
+</select>
+</div>
+<div class="form-group" id="subscriptionCyclesGroup" style="display:none;">
+<label class="form-label">Billing Cycles (0 = ongoing)</label>
+<input type="number" id="invoiceBillingCycles" class="form-input" value="0" min="0" placeholder="0 for ongoing">
+</div>
+</div>
+<p id="subscriptionNote" style="display:none;font-size:12px;color:#3b82f6;margin-top:8px;">💡 Client will be billed automatically via Stripe. You can cancel anytime from the Sites panel.</p>
+</div>
+
+                <!-- Pay Later / Financing -->
+<div class="form-section" style="margin-top: 24px; background: rgba(168,85,247,0.1); padding: 16px; border-radius: 8px; border: 1px solid rgba(168,85,247,0.3);">
+<div class="form-section-title" style="color: #a855f7;">🏦 Payment Options</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">Offer Pay Later / Financing?</label>
+<select id="invoicePayLater" class="form-select" onchange="togglePayLaterFields()">
+<option value="none">Full Payment Only</option>
+<option value="split_2">Split into 2 Payments</option>
+<option value="split_3">Split into 3 Payments</option>
+<option value="split_4">Split into 4 Payments</option>
+<option value="afterpay">Afterpay / Klarna (via Stripe)</option>
+<option value="affirm">Affirm (via Stripe)</option>
+</select>
+</div>
+<div class="form-group" id="payLaterDepositGroup" style="display:none;">
+<label class="form-label">Deposit / First Payment %</label>
+<select id="invoiceDepositPct" class="form-select" onchange="calculateInvoiceTotal()">
+<option value="25">25%</option>
+<option value="33">33%</option>
+<option value="50" selected>50%</option>
+</select>
+</div>
+</div>
+<div id="payLaterBreakdown" style="display:none;margin-top:12px;padding:12px;background:rgba(0,0,0,0.2);border-radius:6px;font-size:13px;color:#ccc;"></div>
+<p id="stripePayLaterNote" style="display:none;font-size:12px;color:#a855f7;margin-top:8px;">💡 Afterpay/Klarna/Affirm are handled through Stripe Checkout — no extra setup needed. Client chooses at payment time.</p>
+</div>
+
                 <!-- Discount Section -->
 <div class="form-section" style="margin-top: 24px; background: rgba(46,204,113,0.1); padding: 16px; border-radius: 8px;">
 <div class="form-section-title" style="color: #2ecc71;">💰 Discount</div>
@@ -752,6 +801,49 @@ function populateInvoiceFromProject(projectId) {
     calculateInvoiceTotal();
 }
 
+// ---- Billing Type + Pay Later Toggles ----
+function toggleSubscriptionFields() {
+    var type = document.getElementById('invoiceBillingType')?.value || 'one_time';
+    var show = type !== 'one_time';
+    var cyclesGroup = document.getElementById('subscriptionCyclesGroup');
+    var note = document.getElementById('subscriptionNote');
+    if (cyclesGroup) cyclesGroup.style.display = show ? '' : 'none';
+    if (note) note.style.display = show ? '' : 'none';
+}
+
+function togglePayLaterFields() {
+    var val = document.getElementById('invoicePayLater')?.value || 'none';
+    var isSplit = val.startsWith('split_');
+    var isStripe = val === 'afterpay' || val === 'affirm';
+    var depositGroup = document.getElementById('payLaterDepositGroup');
+    var breakdown = document.getElementById('payLaterBreakdown');
+    var stripeNote = document.getElementById('stripePayLaterNote');
+    if (depositGroup) depositGroup.style.display = isSplit ? '' : 'none';
+    if (breakdown) breakdown.style.display = isSplit ? '' : 'none';
+    if (stripeNote) stripeNote.style.display = isStripe ? '' : 'none';
+    if (isSplit) updatePayLaterBreakdown();
+}
+
+function updatePayLaterBreakdown() {
+    var totalEl = document.getElementById('invoiceTotal');
+    var total = parseFloat((totalEl?.textContent || '0').replace(/[$,]/g, '')) || 0;
+    var splitVal = document.getElementById('invoicePayLater')?.value || 'none';
+    var numPayments = parseInt(splitVal.replace('split_', '')) || 2;
+    var depositPct = parseInt(document.getElementById('invoiceDepositPct')?.value) || 50;
+    var deposit = total * (depositPct / 100);
+    var remaining = total - deposit;
+    var perPayment = remaining / (numPayments - 1);
+    var breakdown = document.getElementById('payLaterBreakdown');
+    if (!breakdown) return;
+    var html = '<strong>Payment Schedule:</strong><br>';
+    html += '1. Deposit (today): <strong>$' + deposit.toFixed(2) + '</strong><br>';
+    for (var i = 2; i <= numPayments; i++) {
+        html += i + '. Payment ' + i + ' (due ' + (i - 1) * 30 + ' days): <strong>$' + perPayment.toFixed(2) + '</strong><br>';
+    }
+    html += '<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.1);">Total: <strong>$' + total.toFixed(2) + '</strong> (0% interest)</div>';
+    breakdown.innerHTML = html;
+}
+
 function saveInvoice() {
     const clientSelect = document.getElementById('invoiceClient');
     const projectSelect = document.getElementById('invoiceProject');
@@ -783,6 +875,10 @@ function saveInvoice() {
         total: total,
         dueDate: document.getElementById('invoiceDueDate').value,
         notes: document.getElementById('invoiceNotes').value,
+        billingType: document.getElementById('invoiceBillingType')?.value || 'one_time',
+        billingCycles: parseInt(document.getElementById('invoiceBillingCycles')?.value) || 0,
+        payLater: document.getElementById('invoicePayLater')?.value || 'none',
+        depositPct: parseInt(document.getElementById('invoiceDepositPct')?.value) || 50,
         status: 'pending',
         createdAt: new Date().toISOString()
     };
@@ -872,6 +968,8 @@ function viewInvoice(id) {
 <span style="font-weight: 600; text-transform: uppercase; color: ${invoice.status === 'paid' ? '#155724' : '#856404'};">
                         ${invoice.status === 'paid' ? '✓ PAID' : '⏳ ' + invoice.status.toUpperCase()}
 </span>
+${invoice.billingType && invoice.billingType !== 'one_time' ? '<div style="margin-top:8px;font-size:13px;color:#3b82f6;">🔄 ' + invoice.billingType.replace('_',' ').toUpperCase() + ' SUBSCRIPTION' + (invoice.billingCycles > 0 ? ' (' + invoice.billingCycles + ' cycles)' : ' (Ongoing)') + '</div>' : ''}
+${invoice.payLater && invoice.payLater !== 'none' ? '<div style="margin-top:8px;font-size:13px;color:#a855f7;">🏦 ' + (invoice.payLater.startsWith('split_') ? 'Pay Later: ' + invoice.payLater.replace('split_','') + ' payments (' + (invoice.depositPct || 50) + '% deposit)' : invoice.payLater.charAt(0).toUpperCase() + invoice.payLater.slice(1) + ' Financing Available') + '</div>' : ''}
 </div>
 </div>
 <div class="modal-footer">
@@ -1038,7 +1136,10 @@ async function sendInvoiceToClient(id) {
 <div style="text-align: right; padding: 16px; background: #f8f8f8; border-radius: 8px;">
 <span style="font-size: 14px; color: #666;">Total Due: </span>
 <span style="font-size: 28px; font-weight: 700; color: #ff0000;">$${(invoice.total || invoice.amount || 0).toLocaleString()}</span>
+${invoice.billingType && invoice.billingType !== 'one_time' ? '<div style="margin-top:8px;font-size:13px;color:#3b82f6;">🔄 Billed ' + invoice.billingType.replace('_',' ') + (invoice.billingCycles > 0 ? ' for ' + invoice.billingCycles + ' cycles' : '') + '</div>' : ''}
 </div>
+
+${invoice.payLater && invoice.payLater !== 'none' ? '<div style="margin:16px 0;padding:16px;background:#f3e8ff;border-radius:8px;border:1px solid #d8b4fe;"><div style="font-weight:600;color:#7c3aed;margin-bottom:8px;">🏦 Flexible Payment Available</div><p style="font-size:14px;color:#666;margin:0;">' + (invoice.payLater.startsWith('split_') ? 'Split your payment into ' + invoice.payLater.replace('split_','') + ' installments with ' + (invoice.depositPct || 50) + '% deposit today — 0% interest.' : 'Pay over time with ' + invoice.payLater.charAt(0).toUpperCase() + invoice.payLater.slice(1) + '. Choose your plan at checkout.') + '</p></div>' : ''}
 
 <div style="text-align: center; margin-top: 32px;">
 <a href="${typeof window !== 'undefined' ? window.location.origin : 'https://newurbaninfluence.com'}" style="display: inline-block; padding: 14px 32px; background: #ff0000; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600;">View Invoice & Pay</a>
