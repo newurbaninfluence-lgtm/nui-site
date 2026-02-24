@@ -1200,7 +1200,6 @@ function loadServicesView() {
 <p class="package-subtitle">Complete branding system for businesses selling physical products. From packaging to retail displays, we've got you covered.</p>
 <div class="package-price">$5,500 <span>starting at</span></div>
 <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$1,375</strong> with Afterpay / Klarna</div>
-<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$1,375</strong> with Afterpay / Klarna</div>
 </div>
 
                 <!-- Core Brand Identity -->
@@ -1410,7 +1409,6 @@ function loadServicesView() {
 <h2 class="package-title">SERVICE <span class="red">BRAND IDENTITY</span></h2>
 <p class="package-subtitle">Complete branding system for consultants, agencies, contractors, and service providers. Build trust and attract premium clients.</p>
 <div class="package-price">$4,500 <span>starting at</span></div>
-<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$1,125</strong> with Afterpay / Klarna</div>
 <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$1,125</strong> with Afterpay / Klarna</div>
 </div>
 
@@ -2186,7 +2184,6 @@ function loadServicesView() {
 <h2 class="package-title">AI SYSTEMS & <span class="red">AUTOMATION</span></h2>
 <p class="package-subtitle">Stop doing everything manually. We build custom AI-powered systems that handle leads, answer questions, create content, and run your operations — while you sleep.</p>
 <div class="package-price">$2,500+ <span>starting at</span></div>
-<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$625</strong> with Afterpay / Klarna</div>
 <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$625</strong> with Afterpay / Klarna</div>
 </div>
 
