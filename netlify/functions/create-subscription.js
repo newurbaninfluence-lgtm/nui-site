@@ -111,12 +111,11 @@ exports.handler = async (event) => {
     if (payLater === 'afterpay') {
       sessionParams.append('payment_method_types[0]', 'card');
       sessionParams.append('payment_method_types[1]', 'afterpay_clearpay');
+      sessionParams.append('payment_method_types[2]', 'klarna');
     } else if (payLater === 'klarna') {
       sessionParams.append('payment_method_types[0]', 'card');
       sessionParams.append('payment_method_types[1]', 'klarna');
-    } else if (payLater === 'affirm') {
-      sessionParams.append('payment_method_types[0]', 'card');
-      sessionParams.append('payment_method_types[1]', 'affirm');
+      sessionParams.append('payment_method_types[2]', 'afterpay_clearpay');
     }
 
     const sessionResp = await fetch('https://api.stripe.com/v1/checkout/sessions', {
