@@ -2695,14 +2695,19 @@ function openMoodboardEditor(id) {
 <button onclick="document.getElementById('mbImageUpload').click();mlHideAllPanels();" class="ml-fbtn">Upload from Computer</button>
 </div>
 
-<div class="ml-float" id="mlPanel-imageSearch" style="width:320px;">
+<div class="ml-float" id="mlPanel-imageSearch" style="width:340px;">
 <h4>Search Free Photos</h4>
-<div style="display:flex;gap:6px;margin-bottom:10px;">
-<input type="text" id="mbPexelsQuery" class="ml-finput" style="margin:0;flex:1;" placeholder="Search photos..." onkeydown="if(event.key==='Enter') searchPexelsImages('${mb.id}')">
-<button onclick="searchPexelsImages('${mb.id}')" class="ml-fbtn" style="width:auto;padding:8px 14px;margin:0;">Search</button>
+<div style="display:flex;gap:4px;margin-bottom:8px;">
+<button onclick="switchPhotoSource('pexels','${mb.id}')" id="srcTab-pexels" style="flex:1;padding:6px 0;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:#e63946;color:#fff;">Pexels</button>
+<button onclick="switchPhotoSource('unsplash','${mb.id}')" id="srcTab-unsplash" style="flex:1;padding:6px 0;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:#333;color:#aaa;">Unsplash</button>
+<button onclick="switchPhotoSource('pixabay','${mb.id}')" id="srcTab-pixabay" style="flex:1;padding:6px 0;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:#333;color:#aaa;">Pixabay</button>
 </div>
-<div id="mbPexelsResults" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:340px;overflow-y:auto;"></div>
-<div style="font-size:9px;color:#bbb;margin-top:6px;text-align:center;">Photos by Pexels</div>
+<div style="display:flex;gap:6px;margin-bottom:10px;">
+<input type="text" id="mbPhotoQuery" class="ml-finput" style="margin:0;flex:1;" placeholder="Search photos..." onkeydown="if(event.key==='Enter') searchStockPhotos('${mb.id}')">
+<button onclick="searchStockPhotos('${mb.id}')" class="ml-fbtn" style="width:auto;padding:8px 14px;margin:0;">Search</button>
+</div>
+<div id="mbPhotoResults" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:340px;overflow-y:auto;"></div>
+<div id="mbPhotoCredit" style="font-size:9px;color:#bbb;margin-top:6px;text-align:center;">Photos by Pexels</div>
 </div>
 
 <div class="ml-float" id="mlPanel-link">
@@ -3400,49 +3405,90 @@ function loadMbTemplate(mbId, tplName) {
     if(typeof showNotification==='function') showNotification('Template loaded!','success');
 }
 
-// Pexels image search
-function searchPexelsImages(mbId) {
-    var query=(document.getElementById('mbPexelsQuery')?.value||'').trim();
-    if(!query){alert('Enter a search term.');return;}
-    var resultsDiv=document.getElementById('mbPexelsResults');
-    if(!resultsDiv) return;
-    resultsDiv.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:20px;color:#999;">Searching...</div>';
+// Multi-source stock photo search (Pexels, Unsplash, Pixabay)
+window._photoSource = 'pexels';
 
-    // Use Pexels API via backend proxy (key stored server-side)
-    fetch('/.netlify/functions/pexels-search?query='+encodeURIComponent(query))
-    .then(function(r){return r.json();})
+function switchPhotoSource(source, mbId) {
+    window._photoSource = source;
+    ['pexels','unsplash','pixabay'].forEach(function(s) {
+        var tab = document.getElementById('srcTab-' + s);
+        if (tab) {
+            tab.style.background = s === source ? '#e63946' : '#333';
+            tab.style.color = s === source ? '#fff' : '#aaa';
+        }
+    });
+    var credit = document.getElementById('mbPhotoCredit');
+    if (credit) credit.textContent = 'Photos by ' + source.charAt(0).toUpperCase() + source.slice(1);
+    var resultsDiv = document.getElementById('mbPhotoResults');
+    if (resultsDiv) resultsDiv.innerHTML = '';
+}
+
+function searchStockPhotos(mbId) {
+    var query = (document.getElementById('mbPhotoQuery')?.value || '').trim();
+    if (!query) { alert('Enter a search term.'); return; }
+    var resultsDiv = document.getElementById('mbPhotoResults');
+    if (!resultsDiv) return;
+    resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#999;">Searching ' + window._photoSource + '...</div>';
+
+    var source = window._photoSource || 'pexels';
+    var url = '/.netlify/functions/' + source + '-search?query=' + encodeURIComponent(query);
+
+    fetch(url)
+    .then(function(r) { return r.json(); })
     .then(function(data) {
-        if(!data.photos||!data.photos.length) {
-            resultsDiv.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:20px;color:#999;">No results found. Try different keywords.</div>';
+        var photos = [];
+        if (source === 'pexels' && data.photos) {
+            photos = data.photos.map(function(p) {
+                return { thumb: p.src.tiny, medium: p.src.medium, w: p.width, h: p.height, credit: 'Pexels' };
+            });
+        } else if (source === 'unsplash' && data.results) {
+            photos = data.results.map(function(p) {
+                return { thumb: p.urls.thumb, medium: p.urls.regular, w: p.width, h: p.height, credit: 'Unsplash / ' + (p.user?.name || 'Unknown') };
+            });
+        } else if (source === 'pixabay' && data.hits) {
+            photos = data.hits.map(function(p) {
+                return { thumb: p.previewURL, medium: p.webformatURL, w: p.imageWidth, h: p.imageHeight, credit: 'Pixabay' };
+            });
+        }
+
+        if (!photos.length) {
+            resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#999;">No results found. Try different keywords.</div>';
             return;
         }
-        resultsDiv.innerHTML=data.photos.map(function(photo) {
-            var safeUrl=escHtml(photo.src.medium);
-            var safeThumb=escHtml(photo.src.tiny);
-            return '<div onclick="addPexelsImage(\''+mbId+'\',\''+safeUrl+'\','+parseInt(photo.width)||0+','+parseInt(photo.height)||0+')" style="cursor:pointer;border-radius:6px;overflow:hidden;border:1px solid #eee;transition:all .15s;aspect-ratio:1;background:#f5f5f5;" onmouseover="this.style.transform=\'scale(1.03)\';this.style.boxShadow=\'0 2px 8px rgba(0,0,0,0.15)\'" onmouseout="this.style.transform=\'none\';this.style.boxShadow=\'none\'">'+
-                '<img alt="Moodboard thumbnail" loading="lazy" src="'+safeThumb+'" style="width:100%;height:100%;object-fit:cover;display:block;">'+
+        resultsDiv.innerHTML = photos.map(function(photo) {
+            var safeUrl = escHtml(photo.medium);
+            var safeThumb = escHtml(photo.thumb);
+            var safeCredit = escHtml(photo.credit);
+            return '<div onclick="addStockImage(\'' + mbId + '\',\'' + safeUrl + '\',' + (parseInt(photo.w) || 0) + ',' + (parseInt(photo.h) || 0) + ',\'' + safeCredit + '\')" style="cursor:pointer;border-radius:6px;overflow:hidden;border:1px solid #eee;transition:all .15s;aspect-ratio:1;background:#f5f5f5;" onmouseover="this.style.transform=\'scale(1.03)\';this.style.boxShadow=\'0 2px 8px rgba(0,0,0,0.15)\'" onmouseout="this.style.transform=\'none\';this.style.boxShadow=\'none\'">' +
+                '<img alt="Stock photo" loading="lazy" src="' + safeThumb + '" style="width:100%;height:100%;object-fit:cover;display:block;">' +
             '</div>';
         }).join('');
     })
     .catch(function(err) {
-        resultsDiv.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:20px;color:#e63946;">Search failed. Try again.</div>';
+        resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#e63946;">Search failed. Try again.</div>';
     });
 }
 
-function addPexelsImage(mbId, url, natW, natH) {
-    var mb=proofs.find(function(p){return p.id==mbId;});
-    if(!mb) return;
-    var cardW=280, cardH=Math.round(cardW*(natH/natW));
+// Legacy alias so any old calls still work
+function searchPexelsImages(mbId) { window._photoSource = 'pexels'; searchStockPhotos(mbId); }
+
+function addStockImage(mbId, url, natW, natH, credit) {
+    var mb = proofs.find(function(p) { return p.id == mbId; });
+    if (!mb) return;
+    var cardW = 280, cardH = natH > 0 ? Math.round(cardW * (natH / natW)) : 200;
     mb.collageItems.push({
-        type:'image', src:url, caption:'Photo by Pexels',
-        x:60+Math.random()*100, y:60+Math.random()*100,
-        width:cardW, height:cardH, rotation:0,
-        zIndex:mb.collageItems.length+1
+        type: 'image', src: url, caption: 'Photo by ' + (credit || 'Stock'),
+        x: 60 + Math.random() * 100, y: 60 + Math.random() * 100,
+        width: cardW, height: cardH, rotation: 0,
+        zIndex: mb.collageItems.length + 1
     });
-    mb.updatedAt=new Date().toISOString(); saveProofs();
+    mb.updatedAt = new Date().toISOString(); saveProofs();
     openMoodboardEditor(mb.id);
-    if(typeof showNotification==='function') showNotification('Image added!','success');
+    if (typeof showNotification === 'function') showNotification('Image added from ' + (credit || 'stock') + '!', 'success');
 }
+
+// Legacy alias
+function addPexelsImage(mbId, url, natW, natH) { addStockImage(mbId, url, natW, natH, 'Pexels'); }
 
 // Utility functions
 function isLightColor(hex) {
