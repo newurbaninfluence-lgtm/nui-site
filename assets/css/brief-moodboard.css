@@ -1255,3 +1255,17 @@
   .nui-brief-checks { flex-direction: column; }
   .ml-sidebar { width: 180px !important; }
 }
+
+
+/* ─── Color filter dots ─── */
+.mb-color-dot {
+  transition: border-color 0.15s, transform 0.15s !important;
+}
+.mb-color-dot:hover {
+  transform: scale(1.15) !important;
+  border-color: rgba(255,255,255,0.4) !important;
+}
+.mb-color-dot.mb-color-active {
+  border-color: rgba(255,255,255,0.6) !important;
+  box-shadow: 0 0 8px rgba(255,255,255,0.15);
+}

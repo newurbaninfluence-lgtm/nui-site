@@ -2608,7 +2608,7 @@ function openMoodboardEditor(id) {
 
 <div class="ml-sb-item" onclick="mlShowPanel('imageSearch')">
 <div class="ml-sb-icon" style="background:#dbeafe;color:#2563eb;">\ud83d\udd0d</div>
-<div><div class="fw-600">Search Photos</div><div class="text-muted-xs">Free stock images</div></div>
+<div><div class="fw-600">Search Photos</div><div class="text-muted-xs">Pexels + Unsplash</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="mlShowPanel('link')">
@@ -2710,14 +2710,29 @@ function openMoodboardEditor(id) {
 <button onclick="document.getElementById('mbImageUpload').click();mlHideAllPanels();" class="ml-fbtn">Upload from Computer</button>
 </div>
 
-<div class="ml-float" id="mlPanel-imageSearch" style="width:320px;">
+<div class="ml-float" id="mlPanel-imageSearch" style="width:360px;">
 <h4>Search Free Photos</h4>
-<div style="display:flex;gap:6px;margin-bottom:10px;">
-<input type="text" id="mbPexelsQuery" class="ml-finput" style="margin:0;flex:1;" placeholder="Search photos..." onkeydown="if(event.key==='Enter') searchPexelsImages('${mb.id}')">
-<button onclick="searchPexelsImages('${mb.id}')" class="ml-fbtn" style="width:auto;padding:8px 14px;margin:0;">Search</button>
+<div style="display:flex;gap:6px;margin-bottom:8px;">
+<input type="text" id="mbPexelsQuery" class="ml-finput" style="margin:0;flex:1;" placeholder="Search photos..." onkeydown="if(event.key==='Enter') searchStockImages('${mb.id}')">
+<button onclick="searchStockImages('${mb.id}')" class="ml-fbtn" style="width:auto;padding:8px 14px;margin:0;">Search</button>
+</div>
+<div style="margin-bottom:8px;">
+<div style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Filter by Color</div>
+<div id="mbColorFilter" style="display:flex;gap:5px;flex-wrap:wrap;">
+<div onclick="setImageColorFilter('')" class="mb-color-dot mb-color-active" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);cursor:pointer;background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);position:relative;" title="Any color"></div>
+<div onclick="setImageColorFilter('red')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#e63946;" title="Red"></div>
+<div onclick="setImageColorFilter('orange')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#f4a261;" title="Orange"></div>
+<div onclick="setImageColorFilter('yellow')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#e9c46a;" title="Yellow"></div>
+<div onclick="setImageColorFilter('green')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#2a9d8f;" title="Green"></div>
+<div onclick="setImageColorFilter('teal')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#14b8a6;" title="Teal"></div>
+<div onclick="setImageColorFilter('blue')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#3b82f6;" title="Blue"></div>
+<div onclick="setImageColorFilter('purple')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#8b5cf6;" title="Purple"></div>
+<div onclick="setImageColorFilter('black')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#1a1a1a;" title="Black"></div>
+<div onclick="setImageColorFilter('white')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#f5f5f5;" title="White"></div>
+</div>
 </div>
 <div id="mbPexelsResults" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:340px;overflow-y:auto;"></div>
-<div style="font-size:9px;color:#bbb;margin-top:6px;text-align:center;">Photos by Pexels</div>
+<div style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:6px;text-align:center;">Photos by Pexels + Unsplash</div>
 </div>
 
 <div class="ml-float" id="mlPanel-link">
@@ -3424,48 +3439,88 @@ function loadMbTemplate(mbId, tplName) {
 }
 
 // Pexels image search
-function searchPexelsImages(mbId) {
-    var query=(document.getElementById('mbPexelsQuery')?.value||'').trim();
-    if(!query){alert('Enter a search term.');return;}
-    var resultsDiv=document.getElementById('mbPexelsResults');
-    if(!resultsDiv) return;
-    resultsDiv.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:20px;color:#999;">Searching...</div>';
+var _mbColorFilter = '';
+function setImageColorFilter(color) {
+    _mbColorFilter = color;
+    // Update active state on dots
+    document.querySelectorAll('#mbColorFilter .mb-color-dot').forEach(function(d) {
+        d.style.borderColor = 'transparent';
+        d.classList.remove('mb-color-active');
+    });
+    var dots = document.querySelectorAll('#mbColorFilter .mb-color-dot');
+    // First dot = "any", others map to colors
+    var colorMap = ['','red','orange','yellow','green','teal','blue','purple','black','white'];
+    var idx = colorMap.indexOf(color);
+    if (idx >= 0 && dots[idx]) {
+        dots[idx].style.borderColor = 'rgba(255,255,255,0.6)';
+        dots[idx].classList.add('mb-color-active');
+    }
+    // Auto-search if query exists
+    var q = (document.getElementById('mbPexelsQuery')?.value || '').trim();
+    if (q && window._mbEditorState?.id) searchStockImages(window._mbEditorState.id);
+}
 
-    // Use Pexels API via backend proxy (key stored server-side)
-    fetch('/.netlify/functions/pexels-search?query='+encodeURIComponent(query))
-    .then(function(r){return r.json();})
+function searchStockImages(mbId) {
+    var query = (document.getElementById('mbPexelsQuery')?.value || '').trim();
+    if (!query) { alert('Enter a search term.'); return; }
+    var resultsDiv = document.getElementById('mbPexelsResults');
+    if (!resultsDiv) return;
+    resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:rgba(255,255,255,0.4);">Searching...</div>';
+
+    var url = '/.netlify/functions/image-search?query=' + encodeURIComponent(query) + '&per_page=24';
+    if (_mbColorFilter) url += '&color=' + encodeURIComponent(_mbColorFilter);
+
+    fetch(url)
+    .then(function(r) { return r.json(); })
     .then(function(data) {
-        if(!data.photos||!data.photos.length) {
-            resultsDiv.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:20px;color:#999;">No results found. Try different keywords.</div>';
+        if (data.error && (!data.photos || !data.photos.length)) {
+            resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#f87171;font-size:12px;">' + escHtml(data.error) + '</div>';
             return;
         }
-        resultsDiv.innerHTML=data.photos.map(function(photo) {
-            var safeUrl=escHtml(photo.src.medium);
-            var safeThumb=escHtml(photo.src.tiny);
-            return '<div onclick="addPexelsImage(\''+mbId+'\',\''+safeUrl+'\','+parseInt(photo.width)||0+','+parseInt(photo.height)||0+')" style="cursor:pointer;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);transition:all .15s;aspect-ratio:1;background:#111;" onmouseover="this.style.transform=\'scale(1.03)\';this.style.boxShadow=\'0 2px 8px rgba(0,0,0,0.3)\'" onmouseout="this.style.transform=\'none\';this.style.boxShadow=\'none\'">'+
-                '<img alt="Moodboard thumbnail" loading="lazy" src="'+safeThumb+'" style="width:100%;height:100%;object-fit:cover;display:block;">'+
+        if (!data.photos || !data.photos.length) {
+            resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:rgba(255,255,255,0.4);">No results. Try different keywords' + (_mbColorFilter ? ' or remove the color filter.' : '.') + '</div>';
+            return;
+        }
+        resultsDiv.innerHTML = data.photos.map(function(photo) {
+            var safeThumb = escHtml(photo.thumb);
+            var safeMedium = escHtml(photo.medium);
+            var safeLarge = escHtml(photo.large || photo.medium);
+            var badge = photo.source === 'unsplash' ? '🔲' : '📷';
+            return '<div onclick="addStockImage(\'' + mbId + '\',\'' + safeLarge + '\',' + (parseInt(photo.width)||800) + ',' + (parseInt(photo.height)||600) + ',\'' + escHtml(photo.photographer||'') + '\',\'' + photo.source + '\')" ' +
+                'style="cursor:pointer;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);transition:all .15s;aspect-ratio:1;background:#111;position:relative;" ' +
+                'onmouseover="this.style.transform=\'scale(1.03)\';this.style.boxShadow=\'0 4px 16px rgba(0,0,0,0.4)\'" ' +
+                'onmouseout="this.style.transform=\'none\';this.style.boxShadow=\'none\'">' +
+                '<img alt="' + escHtml(photo.alt||query) + '" loading="lazy" src="' + safeThumb + '" style="width:100%;height:100%;object-fit:cover;display:block;">' +
+                (photo.color ? '<div style="position:absolute;bottom:4px;left:4px;width:12px;height:12px;border-radius:50%;background:' + photo.color + ';border:1.5px solid rgba(255,255,255,0.3);"></div>' : '') +
+                '<div style="position:absolute;top:3px;right:4px;font-size:9px;opacity:0.5;">' + badge + '</div>' +
             '</div>';
         }).join('');
     })
     .catch(function(err) {
-        resultsDiv.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:20px;color:#e63946;">Search failed. Try again.</div>';
+        resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#f87171;">Search failed: ' + err.message + '</div>';
     });
 }
 
-function addPexelsImage(mbId, url, natW, natH) {
-    var mb=proofs.find(function(p){return p.id==mbId;});
-    if(!mb) return;
-    var cardW=280, cardH=Math.round(cardW*(natH/natW));
+function addStockImage(mbId, url, natW, natH, photographer, source) {
+    var mb = proofs.find(function(p) { return p.id == mbId; });
+    if (!mb) return;
+    var cardW = 280, cardH = Math.round(cardW * (natH / natW));
     mb.collageItems.push({
-        type:'image', src:url, caption:'Photo by Pexels',
-        x:60+Math.random()*100, y:60+Math.random()*100,
-        width:cardW, height:cardH, rotation:0,
-        zIndex:mb.collageItems.length+1
+        type: 'image', src: url,
+        caption: photographer ? ('Photo by ' + photographer + ' — ' + (source === 'unsplash' ? 'Unsplash' : 'Pexels')) : '',
+        x: 60 + Math.random() * 100, y: 60 + Math.random() * 100,
+        width: cardW, height: cardH, rotation: 0,
+        zIndex: mb.collageItems.length + 1
     });
-    mb.updatedAt=new Date().toISOString(); saveProofs();
+    mb.updatedAt = new Date().toISOString();
+    saveProofs();
     openMoodboardEditor(mb.id);
-    if(typeof showNotification==='function') showNotification('Image added!','success');
+    if (typeof showNotification === 'function') showNotification('Image added!', 'success');
 }
+
+// Legacy alias so old Pexels calls still work
+function searchPexelsImages(mbId) { searchStockImages(mbId); }
+function addPexelsImage(mbId, url, w, h) { addStockImage(mbId, url, w, h, '', 'pexels'); }
 
 // Utility functions
 function isLightColor(hex) {
@@ -3482,7 +3537,10 @@ function resizeMbItem(factor) {
     if(ci.width) ci.width=Math.round(ci.width*factor);
     if(ci.height) ci.height=Math.round(ci.height*factor);
     if(ci.fontSize) ci.fontSize=Math.round(ci.fontSize*factor);
-    saveProofs(); openMoodboardEditor(mb.id);
+    saveProofs();
+    // Direct DOM update — no full re-render
+    var el=document.querySelector('.ml-card[data-idx="'+idx+'"]');
+    if(el) { el.style.width=ci.width+'px'; if(ci.type!=='note') el.style.height=ci.height+'px'; }
 }
 
 function stretchMbItem(dim, amt) {
@@ -3491,7 +3549,10 @@ function stretchMbItem(dim, amt) {
     if(!mb||idx==null||!mb.collageItems[idx]) return;
     if(dim==='width') mb.collageItems[idx].width=Math.max(40,(mb.collageItems[idx].width||200)+amt);
     else mb.collageItems[idx].height=Math.max(40,(mb.collageItems[idx].height||150)+amt);
-    saveProofs(); openMoodboardEditor(mb.id);
+    saveProofs();
+    var el=document.querySelector('.ml-card[data-idx="'+idx+'"]');
+    var ci=mb.collageItems[idx];
+    if(el) { el.style.width=ci.width+'px'; el.style.height=ci.height+'px'; }
 }
 
 function rotateMbItem(deg) {
@@ -3499,7 +3560,10 @@ function rotateMbItem(deg) {
     var idx=window._mbEditorState.selectedItem;
     if(!mb||idx==null||!mb.collageItems[idx]) return;
     mb.collageItems[idx].rotation=((mb.collageItems[idx].rotation||0)+deg)%360;
-    saveProofs(); openMoodboardEditor(mb.id);
+    saveProofs();
+    var el=document.querySelector('.ml-card[data-idx="'+idx+'"]');
+    var ci=mb.collageItems[idx];
+    if(el) el.style.transform='translate('+ci.x+'px,'+ci.y+'px) rotate('+ci.rotation+'deg)';
 }
 
 function bringMbItemForward() {
@@ -3507,7 +3571,9 @@ function bringMbItemForward() {
     var idx=window._mbEditorState.selectedItem;
     if(!mb||idx==null||!mb.collageItems[idx]) return;
     mb.collageItems[idx].zIndex=(mb.collageItems[idx].zIndex||idx+1)+1;
-    saveProofs(); openMoodboardEditor(mb.id);
+    saveProofs();
+    var el=document.querySelector('.ml-card[data-idx="'+idx+'"]');
+    if(el) el.style.zIndex=mb.collageItems[idx].zIndex;
 }
 
 function sendMbItemBackward() {
@@ -3515,7 +3581,9 @@ function sendMbItemBackward() {
     var idx=window._mbEditorState.selectedItem;
     if(!mb||idx==null||!mb.collageItems[idx]) return;
     mb.collageItems[idx].zIndex=Math.max(1,(mb.collageItems[idx].zIndex||idx+1)-1);
-    saveProofs(); openMoodboardEditor(mb.id);
+    saveProofs();
+    var el=document.querySelector('.ml-card[data-idx="'+idx+'"]');
+    if(el) el.style.zIndex=mb.collageItems[idx].zIndex;
 }
 
 function deleteMbItem() {
@@ -3526,7 +3594,12 @@ function deleteMbItem() {
     window._mbEditorState.selectedItem=null;
     var sp=document.getElementById('mlPanel-selected');
     if(sp) sp.classList.remove('show');
-    saveProofs(); openMoodboardEditor(mb.id);
+    // Remove just the card element
+    var el=document.querySelector('.ml-card[data-idx="'+idx+'"]');
+    if(el) el.remove();
+    // Re-index remaining cards
+    document.querySelectorAll('.ml-card').forEach(function(c,i){c.dataset.idx=i;});
+    saveProofs();
 }
 
 function updateCanvasBackground(mbId, color) {
