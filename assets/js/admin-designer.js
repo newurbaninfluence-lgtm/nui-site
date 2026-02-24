@@ -2608,7 +2608,7 @@ function openMoodboardEditor(id) {
 
 <div class="ml-sb-item" onclick="mlShowPanel('imageSearch')">
 <div class="ml-sb-icon" style="background:#dbeafe;color:#2563eb;">\ud83d\udd0d</div>
-<div><div class="fw-600">Search Photos</div><div class="text-muted-xs">Pexels + Unsplash</div></div>
+<div><div class="fw-600">Search Photos</div><div class="text-muted-xs">Pexels + Unsplash + Pixabay</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="mlShowPanel('link')">
@@ -2629,6 +2629,29 @@ function openMoodboardEditor(id) {
 <div class="ml-sb-item" onclick="mlShowPanel('video')">
 <div class="ml-sb-icon" style="background:#fce7f3;color:#db2777;">\u25b6</div>
 <div><div class="fw-600">Video</div><div class="text-muted-xs">YouTube / Vimeo</div></div>
+</div>
+
+<div class="ml-sb-sep"></div>
+<div class="ml-sb-section">Design Tools</div>
+
+<div class="ml-sb-item" onclick="mlShowPanel('fonts')">
+<div class="ml-sb-icon" style="background:#e0e7ff;color:#4338ca;">Aa</div>
+<div><div class="fw-600">Font Browser</div><div class="text-muted-xs">Google + System fonts</div></div>
+</div>
+
+<div class="ml-sb-item" onclick="mlShowPanel('fontPair')">
+<div class="ml-sb-icon" style="background:#fef3c7;color:#d97706;">\ud83d\udd24</div>
+<div><div class="fw-600">Font Pairings</div><div class="text-muted-xs">Curated combinations</div></div>
+</div>
+
+<div class="ml-sb-item" onclick="mlShowPanel('colorCombo')">
+<div class="ml-sb-icon" style="background:#d1fae5;color:#059669;">\ud83c\udfa8</div>
+<div><div class="fw-600">Color Combos</div><div class="text-muted-xs">Harmony generator</div></div>
+</div>
+
+<div class="ml-sb-item" onclick="mlShowPanel('eagle')">
+<div class="ml-sb-icon" style="background:#fef2f2;color:#b91c1c;">\ud83e\udd85</div>
+<div><div class="fw-600">Eagle Library</div><div class="text-muted-xs">Your inspiration</div></div>
 </div>
 
 <div class="ml-sb-sep"></div>
@@ -2732,7 +2755,7 @@ function openMoodboardEditor(id) {
 </div>
 </div>
 <div id="mbPexelsResults" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:340px;overflow-y:auto;"></div>
-<div style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:6px;text-align:center;">Photos by Pexels + Unsplash</div>
+<div style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:6px;text-align:center;">Photos by Pexels + Unsplash + Pixabay</div>
 </div>
 
 <div class="ml-float" id="mlPanel-link">
@@ -2768,6 +2791,26 @@ function openMoodboardEditor(id) {
 <h4>Add Video</h4>
 <input type="text" id="mbVideoUrl" class="ml-finput" placeholder="YouTube or Vimeo URL..." onkeydown="if(event.key==='Enter'){addMoodboardVideo('${mb.id}');mlHideAllPanels();}">
 <button onclick="addMoodboardVideo('${mb.id}');mlHideAllPanels();" class="ml-fbtn">Add Video</button>
+</div>
+
+<div class="ml-float" id="mlPanel-fonts" style="width:380px;max-height:calc(100vh - 220px);overflow-y:auto;">
+<h4>Font Browser</h4>
+<div id="dtFontContainer"></div>
+</div>
+
+<div class="ml-float" id="mlPanel-fontPair" style="width:380px;max-height:calc(100vh - 220px);overflow-y:auto;">
+<h4>Font Pairings</h4>
+<div id="dtPairContainer"></div>
+</div>
+
+<div class="ml-float" id="mlPanel-colorCombo" style="width:360px;max-height:calc(100vh - 220px);overflow-y:auto;">
+<h4>Color Combos</h4>
+<div id="dtColorContainer"></div>
+</div>
+
+<div class="ml-float" id="mlPanel-eagle" style="width:380px;max-height:calc(100vh - 220px);overflow-y:auto;">
+<h4>Eagle Library</h4>
+<div id="dtEagleContainer"></div>
 </div>
 
 <div class="ml-float" id="mlPanel-brief" style="width:340px;max-height:calc(100vh - 280px);overflow-y:auto;">
@@ -2896,6 +2939,11 @@ function mlShowPanel(name) {
     mlHideAllPanels();
     var p = document.getElementById('mlPanel-' + name);
     if (p) p.classList.add('show');
+    // Initialize design tool panels on first open
+    if (name === 'fonts' && typeof renderFontPanel === 'function') renderFontPanel('dtFontContainer');
+    if (name === 'fontPair' && typeof renderFontPairingPanel === 'function') renderFontPairingPanel('dtPairContainer');
+    if (name === 'colorCombo' && typeof renderColorComboPanel === 'function') renderColorComboPanel('dtColorContainer');
+    if (name === 'eagle' && typeof renderEaglePanel === 'function') renderEaglePanel('dtEagleContainer');
 }
 function mlHideAllPanels() {
     document.querySelectorAll('.ml-float').forEach(function(p) {

@@ -1,118 +1,95 @@
 // image-search.js — Netlify Function
-// Combined Pexels + Unsplash image search with color filtering
-// GET ?query=...&color=...&source=pexels|unsplash|both&per_page=...
-// Env vars: PEXELS_API_KEY, UNSPLASH_ACCESS_KEY
+// Combined Pexels + Unsplash + Pixabay search with color filtering
+// GET ?query=...&color=...&per_page=...
+// Env vars: PEXELS_API_KEY, UNSPLASH_ACCESS_KEY, PIXABAY_API_KEY
 
-const CORS_HEADERS = {
+const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Methods': 'GET, OPTIONS'
 };
+const PIXABAY_COLORS = {
+  red:'red', orange:'orange', yellow:'yellow',
+  green:'green', teal:'turquoise', blue:'blue',
+  purple:'lilac', black:'black', white:'white'
+};
 
 exports.handler = async (event) => {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers: CORS_HEADERS, body: '' };
-  }
-  if (event.httpMethod !== 'GET') {
-    return { statusCode: 405, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Method not allowed' }) };
-  }
+  if (event.httpMethod === 'OPTIONS') return { statusCode:204, headers:CORS, body:'' };
+  if (event.httpMethod !== 'GET') return { statusCode:405, headers:CORS, body:'{"error":"Method not allowed"}' };
 
-  const params = event.queryStringParameters || {};
-  const query = params.query;
-  const color = params.color || '';
-  const source = params.source || 'both';
-  const perPage = parseInt(params.per_page) || 20;
+  const p = event.queryStringParameters || {};
+  const query = p.query;
+  if (!query) return { statusCode:400, headers:CORS, body:'{"error":"Missing query"}' };
 
-  if (!query) {
-    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Missing query' }) };
-  }
-
-  const PEXELS_KEY = process.env.PEXELS_API_KEY;
-  const UNSPLASH_KEY = process.env.UNSPLASH_ACCESS_KEY;
+  const color = p.color || '';
+  const perPage = Math.min(parseInt(p.per_page)||15, 30);
+  const PX = process.env.PEXELS_API_KEY;
+  const UN = process.env.UNSPLASH_ACCESS_KEY;
+  const PB = process.env.PIXABAY_API_KEY;
   const results = [];
 
-  // ─── PEXELS ───
-  if (PEXELS_KEY && (source === 'pexels' || source === 'both')) {
+  // ── PEXELS ──
+  if (PX) {
     try {
-      let pexelsUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}`;
-      if (color) pexelsUrl += `&color=${encodeURIComponent(color)}`;
-
-      const resp = await fetch(pexelsUrl, { headers: { 'Authorization': PEXELS_KEY } });
-      if (resp.ok) {
-        const data = await resp.json();
-        (data.photos || []).forEach(p => {
-          results.push({
-            id: 'pexels-' + p.id,
-            source: 'pexels',
-            thumb: p.src.tiny,
-            medium: p.src.medium,
-            large: p.src.large2x || p.src.large,
-            width: p.width,
-            height: p.height,
-            alt: p.alt || query,
-            photographer: p.photographer,
-            color: p.avg_color || '',
-            url: p.url
-          });
-        });
+      let u = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}`;
+      if (color) u += `&color=${encodeURIComponent(color)}`;
+      const r = await fetch(u, { headers:{ Authorization: PX } });
+      if (r.ok) {
+        const d = await r.json();
+        (d.photos||[]).forEach(x => results.push({
+          id:'pexels-'+x.id, source:'pexels',
+          thumb:x.src.tiny, medium:x.src.medium, large:x.src.large2x||x.src.large,
+          width:x.width, height:x.height, alt:x.alt||query,
+          photographer:x.photographer, color:x.avg_color||'', url:x.url
+        }));
       }
-    } catch (e) { console.warn('Pexels error:', e.message); }
+    } catch(e) { console.warn('Pexels:', e.message); }
   }
-
-  // ─── UNSPLASH ───
-  if (UNSPLASH_KEY && (source === 'unsplash' || source === 'both')) {
+  // ── UNSPLASH ──
+  if (UN) {
     try {
-      let unsplashUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${perPage}`;
-      if (color) unsplashUrl += `&color=${encodeURIComponent(color)}`;
-
-      const resp = await fetch(unsplashUrl, {
-        headers: { 'Authorization': `Client-ID ${UNSPLASH_KEY}` }
-      });
-      if (resp.ok) {
-        const data = await resp.json();
-        (data.results || []).forEach(p => {
-          results.push({
-            id: 'unsplash-' + p.id,
-            source: 'unsplash',
-            thumb: p.urls.thumb,
-            medium: p.urls.small,
-            large: p.urls.regular,
-            width: p.width,
-            height: p.height,
-            alt: p.alt_description || query,
-            photographer: p.user?.name || 'Unknown',
-            color: p.color || '',
-            url: p.links?.html || ''
-          });
-        });
+      let u = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${perPage}`;
+      if (color) u += `&color=${encodeURIComponent(color)}`;
+      const r = await fetch(u, { headers:{ Authorization:`Client-ID ${UN}` } });
+      if (r.ok) {
+        const d = await r.json();
+        (d.results||[]).forEach(x => results.push({
+          id:'unsplash-'+x.id, source:'unsplash',
+          thumb:x.urls.thumb, medium:x.urls.small, large:x.urls.regular,
+          width:x.width, height:x.height, alt:x.alt_description||query,
+          photographer:x.user?.name||'', color:x.color||'', url:x.links?.html||''
+        }));
       }
-    } catch (e) { console.warn('Unsplash error:', e.message); }
+    } catch(e) { console.warn('Unsplash:', e.message); }
   }
 
-  // No API keys configured
-  if (!PEXELS_KEY && !UNSPLASH_KEY) {
-    return {
-      statusCode: 200,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({
-        photos: [],
-        error: 'No image API keys configured. Set PEXELS_API_KEY and/or UNSPLASH_ACCESS_KEY in Netlify env vars.'
-      })
-    };
+  // ── PIXABAY ──
+  if (PB) {
+    try {
+      let u = `https://pixabay.com/api/?key=${PB}&q=${encodeURIComponent(query)}&per_page=${perPage}&image_type=photo`;
+      if (color && PIXABAY_COLORS[color]) u += `&colors=${PIXABAY_COLORS[color]}`;
+      const r = await fetch(u);
+      if (r.ok) {
+        const d = await r.json();
+        (d.hits||[]).forEach(x => results.push({
+          id:'pixabay-'+x.id, source:'pixabay',
+          thumb:x.previewURL, medium:x.webformatURL, large:x.largeImageURL,
+          width:x.imageWidth, height:x.imageHeight, alt:x.tags||query,
+          photographer:x.user||'', color:'', url:x.pageURL
+        }));
+      }
+    } catch(e) { console.warn('Pixabay:', e.message); }
   }
 
-  return {
-    statusCode: 200,
-    headers: CORS_HEADERS,
-    body: JSON.stringify({
-      photos: results,
-      total: results.length,
-      query,
-      color: color || null,
-      sources: {
-        pexels: !!PEXELS_KEY,
-        unsplash: !!UNSPLASH_KEY
-      }
-    })
-  };
+  if (!PX && !UN && !PB) {
+    return { statusCode:200, headers:CORS, body:JSON.stringify({
+      photos:[], error:'No image API keys configured. Set PEXELS_API_KEY, UNSPLASH_ACCESS_KEY, and/or PIXABAY_API_KEY.'
+    })};
+  }
+
+  return { statusCode:200, headers:CORS, body:JSON.stringify({
+    photos: results, total: results.length, query, color: color||null,
+    sources: { pexels:!!PX, unsplash:!!UN, pixabay:!!PB }
+  })};
 };
