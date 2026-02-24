@@ -2736,22 +2736,22 @@ function openMoodboardEditor(id) {
 <div class="ml-float" id="mlPanel-imageSearch" style="width:360px;">
 <h4>Search Free Photos</h4>
 <div style="display:flex;gap:6px;margin-bottom:8px;">
-<input type="text" id="mbPexelsQuery" class="ml-finput" style="margin:0;flex:1;" placeholder="Search photos..." onkeydown="if(event.key==='Enter') searchStockImages('${mb.id}')">
-<button onclick="searchStockImages('${mb.id}')" class="ml-fbtn" style="width:auto;padding:8px 14px;margin:0;">Search</button>
+<input type="text" id="mbPexelsQuery" class="ml-finput" style="margin:0;flex:1;min-width:0;width:auto;" placeholder="Search photos..." onkeydown="if(event.key==='Enter') searchStockImages('${mb.id}')">
+<button onclick="searchStockImages('${mb.id}')" class="ml-fbtn" style="width:auto;padding:8px 14px;margin:0;flex-shrink:0;">Search</button>
 </div>
 <div style="margin-bottom:8px;">
 <div style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Filter by Color</div>
 <div id="mbColorFilter" style="display:flex;gap:5px;flex-wrap:wrap;">
-<div onclick="setImageColorFilter('')" class="mb-color-dot mb-color-active" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);cursor:pointer;background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);position:relative;" title="Any color"></div>
-<div onclick="setImageColorFilter('red')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#e63946;" title="Red"></div>
-<div onclick="setImageColorFilter('orange')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#f4a261;" title="Orange"></div>
-<div onclick="setImageColorFilter('yellow')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#e9c46a;" title="Yellow"></div>
-<div onclick="setImageColorFilter('green')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#2a9d8f;" title="Green"></div>
-<div onclick="setImageColorFilter('teal')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#14b8a6;" title="Teal"></div>
-<div onclick="setImageColorFilter('blue')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#3b82f6;" title="Blue"></div>
-<div onclick="setImageColorFilter('purple')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#8b5cf6;" title="Purple"></div>
-<div onclick="setImageColorFilter('black')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#1a1a1a;" title="Black"></div>
-<div onclick="setImageColorFilter('white')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#f5f5f5;" title="White"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('')" class="mb-color-dot mb-color-active" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);cursor:pointer;background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);position:relative;" title="Any color"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('red')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#e63946;" title="Red"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('orange')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#f4a261;" title="Orange"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('yellow')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#e9c46a;" title="Yellow"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('green')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#2a9d8f;" title="Green"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('teal')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#14b8a6;" title="Teal"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('blue')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#3b82f6;" title="Blue"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('purple')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#8b5cf6;" title="Purple"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('black')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#1a1a1a;" title="Black"></div>
+<div onclick="event.stopPropagation();setImageColorFilter('white')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#f5f5f5;" title="White"></div>
 </div>
 </div>
 <div id="mbPexelsResults" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:340px;overflow-y:auto;"></div>
