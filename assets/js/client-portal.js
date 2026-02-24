@@ -156,7 +156,7 @@ ${activeOrders.length > 0 ? '<h3 style="font-size: 16px; font-weight: 600; margi
 ${clientOrders.length > 0 ? clientOrders.map(o => {
     const inv = invoices.find(i => i.orderId === o.id);
     const statusColors = { pending: '#f59e0b', 'in-progress': '#3b82f6', review: '#8b5cf6', delivered: '#10b981', cancelled: '#ef4444' };
-    return '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 16px;"><div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;"><div><h3 style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px;">' + o.projectName + '</h3><div class="text-muted-sm">' + (o.packageName || 'Custom') + ' • Created ' + new Date(o.createdAt).toLocaleDateString() + '</div></div><div style="display: flex; gap: 12px; align-items: center;"><span style="display: inline-block; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: ' + (statusColors[o.status] || '#888') + '20; color: ' + (statusColors[o.status] || '#888') + ';">' + (o.status || 'pending') + '</span>' + (o.estimate ? '<span style="font-size: 18px; font-weight: 700; color: #e11d48;">$' + o.estimate.toLocaleString() + '</span>' : '') + '</div></div>' + (o.turnaround ? '<div style="margin-top: 12px; font-size: 13px; color: #888;">⏱ Turnaround: ' + o.turnaround + (o.dueDate ? ' • Due: ' + new Date(o.dueDate).toLocaleDateString() : '') + '</div>' : '') + (inv ? '<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #222; display: flex; justify-content: space-between; align-items: center;"><span class="text-muted-sm">Invoice #' + (inv.invoiceNumber || inv.id) + '</span><span style="font-size: 13px; font-weight: 600; color: ' + (inv.status === 'paid' ? '#10b981' : '#f59e0b') + ';">' + (inv.status === 'paid' ? '✅ Paid' : '⏳ Unpaid — $' + (inv.total || inv.amount || 0).toLocaleString() + ' <span style="background:rgba(168,85,247,0.2);color:#a855f7;padding:3px 8px;border-radius:4px;font-size:11px;margin-left:8px;">Pay Later Available</span>') + '</span></div>' : '') + '</div>';
+    return '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 16px;"><div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;"><div><h3 style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px;">' + o.projectName + '</h3><div class="text-muted-sm">' + (o.packageName || 'Custom') + ' • Created ' + new Date(o.createdAt).toLocaleDateString() + '</div></div><div style="display: flex; gap: 12px; align-items: center;"><span style="display: inline-block; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: ' + (statusColors[o.status] || '#888') + '20; color: ' + (statusColors[o.status] || '#888') + ';">' + (o.status || 'pending') + '</span>' + (o.estimate ? '<span style="font-size: 18px; font-weight: 700; color: #e11d48;">$' + o.estimate.toLocaleString() + '</span>' : '') + '</div></div>' + (o.turnaround ? '<div style="margin-top: 12px; font-size: 13px; color: #888;">⏱ Turnaround: ' + o.turnaround + (o.dueDate ? ' • Due: ' + new Date(o.dueDate).toLocaleDateString() : '') + '</div>' : '') + (inv ? '<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #222; display: flex; justify-content: space-between; align-items: center;"><span class="text-muted-sm">Invoice #' + (inv.invoiceNumber || inv.id) + '</span><span style="font-size: 13px; font-weight: 600; color: ' + (inv.status === 'paid' ? '#10b981' : '#f59e0b') + ';">' + (inv.status === 'paid' ? '✅ Paid' : '⏳ Unpaid — $' + (inv.total || inv.amount || 0).toLocaleString() + ' <span style="background:rgba(168,85,247,0.2);color:#a855f7;padding:3px 8px;border-radius:4px;font-size:11px;margin-left:8px;">Pay Later Available</span>') + '</span>' + (inv.status !== 'paid' ? '<button onclick="portalPayInvoice(' + inv.id + ')" style="padding:8px 20px;background:#e11d48;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;margin-left:12px;">Pay Now →</button>' : '') + '</div>' : '') + '</div>';
 }).join('') : '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 48px; text-align: center;"><div style="font-size: 48px; margin-bottom: 16px;">📦</div><div style="color: #888; font-size: 16px;">No orders yet</div><div style="color: #666; font-size: 14px; margin-top: 8px;">Your orders and invoices will appear here</div></div>'}
 </div>
 
@@ -290,7 +290,7 @@ ${[
     { q: "What are your business hours?", a: "We are available Monday–Thursday 1:00 PM – 4:00 PM EST for calls. Fridays are reserved for design work. Email support is available 24/7 and we respond within 1 business day." },
     { q: "Can I add more services to my project?", a: "Absolutely! Contact us through your portal or call (248) 487-8747 to discuss adding services like social media templates, business cards, packaging design, or web design." },
     { q: "What is included in my brand guidelines?", a: "Your brand guidelines document includes: logo usage rules, color palette with hex/RGB/CMYK codes, typography specifications, brand voice guidelines, and dos and donts for brand consistency." },
-    { q: "How does payment work?", a: "We offer flexible payment options: pay in full (5% discount), 50/25/25 split, or 3 monthly payments. View your invoices and make payments in the <strong>Orders &amp; Invoices</strong> tab." }
+    { q: "How does payment work?", a: "We offer flexible payment options: pay in full (5% discount), 50/25/25 split, or 3 monthly payments. You can also use <strong>Afterpay</strong> or <strong>Klarna</strong> for 0% interest financing — just click <strong>Pay Now</strong> on any unpaid invoice and choose your plan at checkout." }
 ].map(function(faq, i) { return '<div style="background: #111; border: 1px solid #222; border-radius: 12px; margin-bottom: 8px; overflow: hidden;"><button onclick="this.parentElement.classList.toggle(\'faq-open\'); var sp=this.querySelectorAll(\'span\'); if(sp.length>1) sp[1].textContent=this.parentElement.classList.contains(\'faq-open\') ? String.fromCharCode(8722) : \'+\';" style="width: 100%; padding: 20px 24px; background: none; border: none; color: #fff; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: inherit;"><span class="flex-1">' + faq.q + '</span><span style="color: #e11d48; font-size: 20px; margin-left: 16px;">+</span></button><div style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px;"><div style="padding: 0 0 20px 0; color: #aaa; font-size: 14px; line-height: 1.7;">' + faq.a + '</div></div></div>'; }).join("")}
 </div>
 <style>.faq-open > div:last-child { max-height: 300px !important; }</style>
@@ -907,5 +907,62 @@ function requestMoodboardChanges(clientId, moodboardId) {
 
     const client = clients.find(c => c.id == clientId);
     if (client) showClientPortal(client);
+}
+
+// --- Pay Invoice from Client Portal ---
+async function portalPayInvoice(invoiceId) {
+    try {
+        // Find the invoice from global data
+        var invoice = (typeof invoices !== 'undefined' ? invoices : []).find(function(i) { return i.id == invoiceId; });
+        if (!invoice) {
+            alert('Invoice not found. Please contact your designer.');
+            return;
+        }
+        var client = (typeof clients !== 'undefined' ? clients : []).find(function(c) { return c.id == invoice.clientId; });
+        var amount = invoice.total || invoice.amount || 0;
+        if (!amount) {
+            alert('No amount due on this invoice.');
+            return;
+        }
+
+        // Determine if this invoice has pay-later or subscription settings
+        var billingType = invoice.billingType || 'one_time';
+        var payLater = invoice.payLater || 'none';
+        // Default to afterpay if not set — always offer financing
+        if (payLater === 'none') payLater = 'afterpay';
+
+        var btn = event.target;
+        btn.textContent = 'Loading...';
+        btn.disabled = true;
+
+        var resp = await fetch('/.netlify/functions/create-subscription', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                clientEmail: client?.email || '',
+                clientName: client?.name || '',
+                clientId: String(invoice.clientId || ''),
+                amount: amount,
+                description: invoice.description || invoice.projectName || 'NUI Invoice #' + (invoice.invoiceNumber || invoice.id),
+                invoiceId: String(invoiceId),
+                billingType: billingType,
+                billingCycles: invoice.billingCycles || 0,
+                payLater: payLater
+            })
+        });
+        var data = await resp.json();
+        if (data.url) {
+            window.location.href = data.url;
+        } else {
+            throw new Error(data.error || 'Could not create checkout session');
+        }
+    } catch (err) {
+        console.error('portalPayInvoice error:', err);
+        alert('Payment error: ' + err.message + '. Please try again or contact your designer.');
+        if (event && event.target) {
+            event.target.textContent = 'Pay Now →';
+            event.target.disabled = false;
+        }
+    }
 }
 

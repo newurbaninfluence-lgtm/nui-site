@@ -1141,7 +1141,8 @@ ${invoice.billingType && invoice.billingType !== 'one_time' ? '<div style="margi
 ${invoice.payLater && invoice.payLater !== 'none' ? '<div style="margin:16px 0;padding:16px;background:#f3e8ff;border-radius:8px;border:1px solid #d8b4fe;"><div style="font-weight:600;color:#7c3aed;margin-bottom:8px;">🏦 Flexible Payment Available</div><p style="font-size:14px;color:#666;margin:0;">' + (invoice.payLater.startsWith('split_') ? 'Split your payment into ' + invoice.payLater.replace('split_','') + ' installments with ' + (invoice.depositPct || 50) + '% deposit today — 0% interest.' : 'Pay over time with ' + invoice.payLater.charAt(0).toUpperCase() + invoice.payLater.slice(1) + '. Choose your plan at checkout.') + '</p></div>' : ''}
 
 <div style="text-align: center; margin-top: 32px;">
-<a href="${typeof window !== 'undefined' ? window.location.origin : 'https://newurbaninfluence.com'}" style="display: inline-block; padding: 14px 32px; background: #ff0000; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600;">View Invoice & Pay</a>
+<a href="${typeof window !== 'undefined' ? window.location.origin : 'https://newurbaninfluence.com'}/app#portal" style="display: inline-block; padding: 14px 32px; background: #ff0000; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600;">View Invoice & Pay →</a>
+${invoice.payLater && invoice.payLater !== 'none' ? '<p style="font-size:12px;color:#7c3aed;margin-top:12px;">💜 Afterpay & Klarna available — pay in 4 interest-free installments at checkout</p>' : ''}
 </div>
 
 <p style="font-size: 12px; color: #999; margin-top: 32px; text-align: center;">New Urban Influence · Detroit, MI · (248) 487-8747</p>
