@@ -887,6 +887,23 @@
         gtag('config', 'AW-XXXXXXXXXX');
     </script>
 
+    <!-- Meta Pixel (Facebook + Instagram) — replace YOUR_PIXEL_ID with your Meta Pixel ID -->
+    <!-- Get it from business.facebook.com → Events Manager → Connect Data Sources → Web -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'YOUR_PIXEL_ID');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+
     <!-- Favicon -->
  <link rel="icon" type="image/x-icon" href="favicon.ico">
  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -1051,8 +1068,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 })();
 </script>
 
-<!-- NUI Tracking: GA4 events + Google Ads remarketing audiences -->
+<!-- NUI Tracking: GA4 events + Google Ads + Meta Pixel remarketing audiences -->
 <script src="assets/js/nui-tracking.js" defer></script>
+
+<!-- Web Push Notifications: iPhone, Android, Desktop -->
+<script src="assets/js/nui-push.js" defer></script>
 
 </body>
 </html>
