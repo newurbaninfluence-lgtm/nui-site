@@ -123,7 +123,8 @@ function showAdminPanel(panel) {
         'about': loadAdminAboutPanel,
         'designers': loadAdminDesignersPanel,
         'integrations': loadAdminIntegrationsPanel,
-        'usermanagement': loadAdminUserManagementPanel
+        'usermanagement': loadAdminUserManagementPanel,
+        'sites': loadAdminSitesPanel
     };
     if (panelLoaders[panel]) panelLoaders[panel]();
 
