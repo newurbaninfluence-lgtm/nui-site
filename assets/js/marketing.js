@@ -113,6 +113,7 @@ function loadHomeView() {
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Print & Packaging</h3><p>Tangible Brand Power. From Cards to Wraps.</p><div class="learn-more">LEARN MORE →</div></div>
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>SEO & Digital Strategy</h3><p>Get Found. Get Chosen. Get Paid.</p><div class="learn-more">LEARN MORE →</div></div>
 <div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>AI Systems & Automation</h3><p>Your Business. Always On. Always Working.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Email & SMS Automation</h3><p>Capture Silent Visitors. Convert on Autopilot.</p><div class="learn-more">LEARN MORE →</div></div>
 </div>
 </div>
 </section>
@@ -1187,6 +1188,16 @@ function loadServicesView() {
         <p class="prob-q">Where can I get banners, signs, or cards printed in Michigan?</p>
         <p class="prob-sol">Design + print together. $10 overnight shipping anywhere in Michigan.</p>
         <p class="prob-price">From $35</p>
+        <p class="prob-font-tag">Syne &middot; Montserrat</p>
+      </div>
+    </button>
+
+    <button class="svc-prob-card" data-filter="email-sms" onclick="filterServices('email-sms')">
+      <img class="prob-photo" src="https://images.unsplash.com/photo-1563986768609-322da13575f2?w=600&q=80" loading="lazy" onerror="this.style.display='none'" alt="">
+      <div class="prob-card-body">
+        <p class="prob-q">People visit my site but never reach out — how do I follow up?</p>
+        <p class="prob-sol">Silent visitor ID + automated email &amp; SMS sequences that bring them back.</p>
+        <p class="prob-price">From $1,500</p>
         <p class="prob-font-tag">Syne &middot; Montserrat</p>
       </div>
     </button>
@@ -2395,6 +2406,176 @@ function loadServicesView() {
 
 <div class="package-cta">
 <button class="btn-package" onclick="startServiceIntake('ai-systems')">Build My AI System →</button>
+</div>
+</div>
+</section>
+
+<!-- EMAIL & SMS AUTOMATION -->
+<section class="package-section" data-svc-filter="email-sms" style="background: #050505;">
+<div class="package-image">
+<img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1563986768609-322da13575f2?w=1920&q=80" alt="Email and SMS Marketing Automation" data-service-image="email-sms">
+</div>
+<div class="container-lg">
+<div class="package-header">
+<div class="package-label">Revenue Recovery</div>
+<h2 class="package-title">EMAIL & SMS <span class="red">AUTOMATION</span></h2>
+<p class="package-subtitle">97% of your website visitors leave without contacting you. We identify them, track what they looked at, and automatically send personalized emails and texts that bring them back — on autopilot.</p>
+<div class="package-price">$1,500+ <span>setup</span></div>
+<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">+ $297/mo managed service · or 4 interest-free payments of <strong style="color:#a855f7;">$375</strong> with Afterpay / Klarna</div>
+</div>
+
+<!-- Problem/Solution Bar -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1000px;margin:0 auto 60px;">
+<div style="background:rgba(255,59,48,0.06);border:1px solid rgba(255,59,48,0.15);border-radius:16px;padding:32px;">
+<h3 style="font-size:16px;font-weight:800;color:#ff3b30;margin-bottom:16px;">❌ THE PROBLEM</h3>
+<p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.8;margin:0;">People visit your site, browse your services, check your pricing — then leave. You never know they were there. No name, no email, no follow-up. That's money walking out the door every single day.</p>
+</div>
+<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:16px;padding:32px;">
+<h3 style="font-size:16px;font-weight:800;color:#22c55e;margin-bottom:16px;">✅ THE SOLUTION</h3>
+<p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.8;margin:0;">We install silent visitor tracking on your site. When someone visits, we identify them — name, email, company, LinkedIn. Then our system sends them a personalized email based on exactly what they were looking at. Automatically.</p>
+</div>
+</div>
+
+<div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr);">
+<div class="deliverable-card">
+<div class="deliverable-icon">👤</div>
+<h3 class="deliverable-title">Silent Visitor Identification</h3>
+<p class="deliverable-desc">See who's visiting your website — even if they never fill out a form. Names, emails, companies, LinkedIn profiles.</p>
+<ul class="deliverable-list">
+<li>Identifies 15-30% of anonymous visitors</li>
+<li>Full profiles: name, email, company, title</li>
+<li>LinkedIn profile links</li>
+<li>Company size & industry data</li>
+<li>See exactly which pages they viewed</li>
+</ul>
+<p class="pkg-note">BEST FOR: B2B businesses & high-ticket services</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">📧</div>
+<h3 class="deliverable-title">Smart Email Sequences</h3>
+<p class="deliverable-desc">Automated emails that match what visitors actually looked at. Someone browsed pricing? They get a pricing-focused follow-up.</p>
+<ul class="deliverable-list">
+<li>Interest-based email templates</li>
+<li>Personalized with name & company</li>
+<li>5 pre-built campaign sequences</li>
+<li>7-day smart cooldown (no spamming)</li>
+<li>Open & click tracking</li>
+</ul>
+<p class="pkg-note">BEST FOR: Turning window-shoppers into booked calls</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">📱</div>
+<h3 class="deliverable-title">SMS Follow-Up Campaigns</h3>
+<p class="deliverable-desc">Text messages get 98% open rates vs 20% for email. We build automated SMS sequences that get responses.</p>
+<ul class="deliverable-list">
+<li>Automated text message sequences</li>
+<li>Triggered by visitor behavior</li>
+<li>Two-way conversation support</li>
+<li>Appointment reminders</li>
+<li>Re-engagement campaigns</li>
+</ul>
+<p class="pkg-note">BEST FOR: Local businesses & appointment-based services</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">🎯</div>
+<h3 class="deliverable-title">Retargeting Ads Setup</h3>
+<p class="deliverable-desc">Show your ads on Instagram, Facebook, YouTube, and Google to people who already visited your site — based on what they viewed.</p>
+<ul class="deliverable-list">
+<li>Meta Pixel (Facebook + Instagram ads)</li>
+<li>Google Ads remarketing tag</li>
+<li>Interest-based audience segments</li>
+<li>Custom conversion tracking</li>
+<li>Scroll depth & engagement signals</li>
+</ul>
+<p class="pkg-note">BEST FOR: Anyone running paid ads</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">🔔</div>
+<h3 class="deliverable-title">Push Notifications</h3>
+<p class="deliverable-desc">Send notifications straight to their phone or desktop — no app needed. Perfect for flash sales, new offers, or re-engagement.</p>
+<ul class="deliverable-list">
+<li>Web push for mobile + desktop</li>
+<li>No app download required</li>
+<li>Campaign builder for broadcasts</li>
+<li>Subscriber analytics dashboard</li>
+<li>Works on iPhone, Android, Chrome</li>
+</ul>
+<p class="pkg-note">BEST FOR: E-commerce, event-based, repeat purchase businesses</p>
+</div>
+
+<div class="deliverable-card">
+<div class="deliverable-icon">📊</div>
+<h3 class="deliverable-title">Lead Dashboard & CRM</h3>
+<p class="deliverable-desc">See every identified visitor, their journey through your site, and their status — all in one admin panel you control.</p>
+<ul class="deliverable-list">
+<li>Real-time visitor feed</li>
+<li>Page view history per visitor</li>
+<li>Lead status pipeline (New → Qualified → Converted)</li>
+<li>One-click convert to lead</li>
+<li>CSV export for outreach campaigns</li>
+</ul>
+<p class="pkg-note">BEST FOR: Sales teams & business owners who want visibility</p>
+</div>
+</div>
+
+<!-- Package Tiers -->
+<div style="max-width:1100px;margin:60px auto 0;">
+<div style="text-align:center;margin-bottom:40px;">
+<div class="package-label">Choose Your Level</div>
+<h3 style="font-size:28px;font-weight:900;color:#fff;">Three Ways to <span class="red">Capture Revenue</span></h3>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+<div style="background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px;text-align:center;">
+<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--red);font-weight:700;margin-bottom:12px;">Starter</div>
+<h4 style="font-size:20px;font-weight:800;margin-bottom:8px;">IDENTIFY & EMAIL</h4>
+<div style="font-size:36px;font-weight:900;color:var(--red);margin:16px 0;">$1,500</div>
+<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">one-time setup + $97/mo hosting</div>
+<ul style="list-style:none;padding:0;text-align:left;font-size:13px;color:rgba(255,255,255,0.7);">
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Visitor identification pixel</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ 5 automated email sequences</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Lead dashboard</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Weekly visitor reports</li>
+<li style="padding:8px 0;">✓ 7-day cooldown logic</li>
+</ul>
+</div>
+<div style="background:#080808;border:2px solid var(--red);border-radius:16px;padding:32px;text-align:center;position:relative;">
+<div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;padding:4px 16px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;">MOST POPULAR</div>
+<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--red);font-weight:700;margin-bottom:12px;">Growth</div>
+<h4 style="font-size:20px;font-weight:800;margin-bottom:8px;">OMNICHANNEL ENGINE</h4>
+<div style="font-size:36px;font-weight:900;color:var(--red);margin:16px 0;">$2,500</div>
+<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">one-time setup + $297/mo managed</div>
+<ul style="list-style:none;padding:0;text-align:left;font-size:13px;color:rgba(255,255,255,0.7);">
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Everything in Starter</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ SMS automation sequences</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Google + Meta retargeting setup</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Push notification system</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Monthly campaign optimization</li>
+<li style="padding:8px 0;">✓ Dedicated account manager</li>
+</ul>
+</div>
+<div style="background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px;text-align:center;">
+<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--red);font-weight:700;margin-bottom:12px;">Enterprise</div>
+<h4 style="font-size:20px;font-weight:800;margin-bottom:8px;">FULL REVENUE SYSTEM</h4>
+<div style="font-size:36px;font-weight:900;color:var(--red);margin:16px 0;">$5,000</div>
+<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">one-time setup + $497/mo managed</div>
+<ul style="list-style:none;padding:0;text-align:left;font-size:13px;color:rgba(255,255,255,0.7);">
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Everything in Growth</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ AI chatbot integration</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Custom CRM pipeline</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Advanced lead scoring</li>
+<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ White-label reporting</li>
+<li style="padding:8px 0;">✓ Priority support + strategy calls</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="package-cta">
+<button class="btn-package" onclick="startServiceIntake('email-sms')">Start Capturing Lost Revenue →</button>
 </div>
 </div>
 </section>

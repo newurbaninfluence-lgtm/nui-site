@@ -796,6 +796,41 @@ const serviceIntakeConfigs = {
             ]
         }
     },
+    'email-sms': {
+        name: 'Email & SMS Automation',
+        price: 1500,
+        steps: ['About You', 'Business Info', 'Automation Needs', 'Package', 'Review'],
+        fields: {
+            1: clientBackgroundFields,
+            2: [
+                { id: 'businessName', type: 'text', label: 'Business Name', required: true },
+                { id: 'industry', type: 'text', label: 'Industry/Niche', required: true },
+                { id: 'website', type: 'text', label: 'Current Website URL', required: true },
+                { id: 'monthlyVisitors', type: 'select', label: 'Estimated Monthly Website Visitors', options: ['Under 500', '500-2,000', '2,000-10,000', '10,000+', 'Not sure'] }
+            ],
+            3: [
+                { id: 'automationServices', type: 'checkbox', label: 'What do you need?', options: [
+                    { value: 'visitor-id', title: 'Silent Visitor Identification', desc: 'See who visits your site — names, emails, companies' },
+                    { value: 'email-sequences', title: 'Automated Email Sequences', desc: 'Personalized follow-ups based on pages viewed' },
+                    { value: 'sms-campaigns', title: 'SMS Follow-Up Campaigns', desc: 'Text message sequences with 98% open rates' },
+                    { value: 'retargeting', title: 'Retargeting Ads Setup', desc: 'Google + Meta ads to people who visited your site' },
+                    { value: 'push-notifications', title: 'Push Notifications', desc: 'Send alerts straight to their phone — no app needed' },
+                    { value: 'lead-dashboard', title: 'Lead Dashboard & CRM', desc: 'Track every visitor and their journey through your site' }
+                ]},
+                { id: 'currentMarketing', type: 'textarea', label: 'What marketing are you doing now? (email, ads, social, etc.)', required: false },
+                { id: 'biggestChallenge', type: 'textarea', label: 'What\'s your biggest challenge with getting leads?', required: true }
+            ],
+            4: [
+                { id: 'budget', type: 'radio', label: 'Which package fits your needs?', options: [
+                    { value: 'starter', title: 'Starter — $1,500 + $97/mo', desc: 'Visitor ID + email sequences + lead dashboard' },
+                    { value: 'growth', title: 'Growth — $2,500 + $297/mo', desc: 'Everything + SMS + retargeting + push notifications' },
+                    { value: 'enterprise', title: 'Enterprise — $5,000 + $497/mo', desc: 'Full revenue system + AI chatbot + custom CRM' }
+                ]},
+                { id: 'timeline', type: 'select', label: 'When do you want to start?', options: ['Immediately', 'Within 2 weeks', 'Within 1 month', 'Just exploring'] },
+                { id: 'additionalNotes', type: 'textarea', label: 'Anything else we should know?', required: false }
+            ]
+        }
+    },
     'custom-package': {
         name: 'Custom Package',
         price: 0,
