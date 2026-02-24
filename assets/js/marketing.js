@@ -1228,7 +1228,7 @@ function loadServicesView() {
 <button class="svc-back-btn" id="svcBackBtn" onclick="filterServices('all')">&#8592; Show all packages</button>
 
         <!-- BRAND KIT - STARTER PACKAGE -->
-<section class="package-section" style="background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);">
+<section class="package-section" data-svc-filter="new-business,print" style="background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);">
 <div class="package-image">
 <img loading="eager" fetchpriority="high" width="1920" height="1200" src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1920&q=80" alt="Brand Design" data-service-image="brand-kit">
 </div>
@@ -1328,7 +1328,7 @@ function loadServicesView() {
 </section>
 
         <!-- PRODUCT BUSINESS BRAND IDENTITY -->
-<section class="package-section" style="background: #050505;">
+<section class="package-section" data-svc-filter="established" style="background: #050505;">
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1920&q=80" alt="Product Branding" data-service-image="product-brand">
 </div>
@@ -1539,7 +1539,7 @@ function loadServicesView() {
 </section>
 
         <!-- SERVICE BUSINESS BRAND IDENTITY -->
-<section class="package-section" style="background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);">
+<section class="package-section" data-svc-filter="new-business,established" style="background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);">
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&q=80" alt="Service Branding" data-service-image="service-brand">
 </div>
@@ -1914,7 +1914,7 @@ function loadServicesView() {
 </section>
 
         <!-- WEBSITE & WEBAPP PACKAGES -->
-<section class="package-section" style="background: #050505;">
+<section class="package-section" data-svc-filter="new-business,established,digital" style="background: #050505;">
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&q=80" alt="Website Development" data-service-image="website">
 </div>
@@ -2013,7 +2013,7 @@ function loadServicesView() {
 </section>
 
         <!-- MOBILE APP PACKAGES -->
-<section class="package-section" style="background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);">
+<section class="package-section" data-svc-filter="digital" style="background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);">
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1920&q=80" alt="Mobile App Development" data-service-image="mobile-app">
 </div>
@@ -2089,7 +2089,7 @@ function loadServicesView() {
 </section>
 
         <!-- SALES FUNNELS & AUTOMATION -->
-<section class="package-section" style="background: #050505;">
+<section class="package-section" data-svc-filter="established,digital" style="background: #050505;">
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=1920&q=80" alt="Sales Funnels Marketing" data-service-image="sales-funnel">
 </div>
@@ -2149,7 +2149,7 @@ function loadServicesView() {
 </section>
 
         <!-- BUILD YOUR OWN PACKAGE -->
-<section class="package-section" style="background: linear-gradient(180deg, #0a0a0a 0%, #080808 100%);">
+<section class="package-section" data-svc-filter="new-business,established,digital,print,email-sms,geo" style="background: linear-gradient(180deg, #0a0a0a 0%, #080808 100%);">
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1920&q=80" alt="Custom Package" data-service-image="custom">
 </div>
@@ -2315,7 +2315,7 @@ function loadServicesView() {
 </style>
 
 <!-- AI SYSTEMS & AUTOMATION -->
-<section class="package-section" style="background: linear-gradient(180deg, #050505 0%, #0a0a0a 100%);">
+<section class="package-section" data-svc-filter="digital,established" style="background: linear-gradient(180deg, #050505 0%, #0a0a0a 100%);">
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1920&q=80" alt="AI Automation Systems" data-service-image="ai-systems">
 </div>
