@@ -867,14 +867,25 @@
     <!-- Individual Review Schemas — rich review snippets in search results -->
  
 
-    <!-- Google Analytics 4 -->
- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
- <script>
+    <!-- Google Tag Manager — replace GTM-XXXXXXX with your GTM Container ID -->
+    <!-- Get it from tagmanager.google.com → Admin → Container Settings -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+
+    <!-- GA4 + Google Ads — replace G-XXXXXXXXXX and AW-XXXXXXXXXX with your IDs -->
+    <!-- GA4: analytics.google.com → Admin → Data Streams → Measurement ID -->
+    <!-- Google Ads: ads.google.com → Tools → Audience Manager → Your Data Sources → Tag setup -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-XXXXXXXXXX');
- </script>
+        gtag('config', 'AW-XXXXXXXXXX');
+    </script>
 
     <!-- Favicon -->
  <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -942,6 +953,9 @@
     </script>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="cursor-dot"></div>
 <div class="cursor-ring"></div>
  <div class="scroll-progress" id="scrollProgress"></div>
@@ -1036,5 +1050,9 @@
   document.addEventListener('mouseenter',function(){dot.style.opacity='1';ring.style.opacity='1';});
 })();
 </script>
+
+<!-- NUI Tracking: GA4 events + Google Ads remarketing audiences -->
+<script src="assets/js/nui-tracking.js" defer></script>
+
 </body>
 </html>
