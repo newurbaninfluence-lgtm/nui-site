@@ -11,6 +11,12 @@
     const PROMPT_DELAY = 15000; // Show opt-in after 15 seconds
     const PROMPT_COOKIE = 'nui_push_prompted';
 
+    // ── Skip if VAPID key not configured yet ─────────────────────
+    if (!VAPID_PUBLIC_KEY || VAPID_PUBLIC_KEY.includes('YOUR_')) {
+        console.log('Push notifications: VAPID key not configured, skipping');
+        return;
+    }
+
     // ── Check support ────────────────────────────────────────────
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
         console.log('Push notifications not supported');
