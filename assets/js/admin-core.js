@@ -124,7 +124,8 @@ function showAdminPanel(panel) {
         'designers': loadAdminDesignersPanel,
         'integrations': loadAdminIntegrationsPanel,
         'usermanagement': loadAdminUserManagementPanel,
-        'sites': loadAdminSitesPanel
+        'sites': loadAdminSitesPanel,
+        'visitors': loadAdminVisitorsPanel
     };
     if (panelLoaders[panel]) panelLoaders[panel]();
 
