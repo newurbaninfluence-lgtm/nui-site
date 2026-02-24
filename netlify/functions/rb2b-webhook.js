@@ -1,12 +1,25 @@
 // rb2b-webhook.js — Receives RB2B visitor identification webhooks
 // Stores identified website visitors in Supabase for lead capture & outreach
+// Triggers auto-email based on pages visited
 
 const { createClient } = require('@supabase/supabase-js');
+const fetch = require('node-fetch');
 
 const supabase = createClient(
     process.env.SUPABASE_URL || 'https://tpouhkuglmfmhcakvkbj.supabase.co',
     process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY
 );
+
+// Fire auto-email in background (non-blocking)
+function triggerAutoEmail(visitorId, capturedUrl) {
+    const siteUrl = process.env.URL || 'https://newurbaninfluence.com';
+    fetch(`${siteUrl}/.netlify/functions/visitor-auto-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ visitor_id: visitorId, captured_url: capturedUrl })
+    }).then(r => console.log('Auto-email trigger:', r.status))
+      .catch(e => console.warn('Auto-email trigger failed:', e.message));
+}
 
 exports.handler = async (event) => {
     // CORS headers
@@ -95,6 +108,9 @@ exports.handler = async (event) => {
                 seen_at: visitor.seen_at
             });
 
+            // Trigger personalized auto-email (handles cooldown internally)
+            triggerAutoEmail(existing.id, visitor.captured_url);
+
             return {
                 statusCode: 200,
                 headers,
@@ -124,6 +140,9 @@ exports.handler = async (event) => {
                 referrer: visitor.referrer,
                 seen_at: visitor.seen_at
             });
+
+            // Trigger personalized auto-email for new visitor
+            triggerAutoEmail(inserted.id, visitor.captured_url);
 
             return {
                 statusCode: 200,
