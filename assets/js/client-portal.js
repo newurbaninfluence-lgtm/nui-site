@@ -1,4 +1,53 @@
 // ==================== CLIENT PORTAL (PORTFOLIO-STYLE BRAND GUIDE) ====================
+
+// Asset gallery builder — renders any category of assets as a responsive grid with lightbox
+function buildAssetGallery(assets, categoryLabel, accentColor, columns) {
+    if (!assets || !assets.length) return '';
+    const imageAssets = assets.filter(a => a.type === 'image' || a.data?.startsWith('data:image') || a.data?.match?.(/\.(png|jpg|jpeg|gif|svg|webp)/i));
+    const videoAssets = assets.filter(a => a.type === 'video' || a.data?.startsWith('data:video'));
+    const fileAssets = assets.filter(a => !imageAssets.includes(a) && !videoAssets.includes(a));
+    const allVisual = [...imageAssets, ...videoAssets, ...fileAssets];
+    if (!allVisual.length) return '';
+
+    const cols = columns || (allVisual.length === 1 ? 1 : allVisual.length === 2 ? 2 : 3);
+    const items = allVisual.map((a, i) => {
+        const isImg = imageAssets.includes(a);
+        const isVid = videoAssets.includes(a);
+        const safeName = (a.name || '').replace(/"/g, '&quot;');
+        if (isImg) {
+            return '<div class="bg-asset-card" data-lb-src="' + (a.data || '') + '" data-lb-name="' + safeName + '" onclick="openPortalLightbox(this.dataset.lbSrc, this.dataset.lbName)">' +
+                '<img loading="lazy" src="' + a.data + '" alt="' + safeName + '" style="width:100%;height:100%;object-fit:contain;padding:8px;">' +
+                '<div class="bg-asset-label">' + safeName + '</div></div>';
+        } else if (isVid) {
+            return '<div class="bg-asset-card"><video src="' + a.data + '" controls style="width:100%;height:100%;object-fit:contain;"></video>' +
+                '<div class="bg-asset-label">' + safeName + '</div></div>';
+        } else {
+            return '<div class="bg-asset-card" style="display:flex;align-items:center;justify-content:center;">' +
+                '<div style="text-align:center;"><div style="font-size:32px;margin-bottom:8px;">📎</div>' +
+                '<div style="color:rgba(255,255,255,0.6);font-size:13px;">' + safeName + '</div></div></div>';
+        }
+    }).join('');
+
+    return '<div class="brand-section"><div class="brand-section-title">' + categoryLabel + '</div>' +
+        '<div style="display:grid;grid-template-columns:repeat(' + cols + ',1fr);gap:16px;">' + items + '</div></div>';
+}
+
+// Lightbox for full-size image preview
+function openPortalLightbox(src, title) {
+    if (!src) return;
+    const existing = document.getElementById('portalLightbox');
+    if (existing) existing.remove();
+    const lb = document.createElement('div');
+    lb.id = 'portalLightbox';
+    lb.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:zoom-out;animation:fadeIn 0.2s ease;';
+    lb.onclick = () => lb.remove();
+    lb.innerHTML = `
+<img src="${src}" alt="${title || ''}" style="max-width:90vw;max-height:80vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
+${title ? '<div style="color:rgba(255,255,255,0.7);font-size:14px;margin-top:16px;text-align:center;">' + title + '</div>' : ''}
+<div style="position:absolute;top:24px;right:32px;font-size:32px;color:#fff;cursor:pointer;opacity:0.7;">✕</div>`;
+    document.body.appendChild(lb);
+}
+
 function showClientPortal(client) {
     // Ensure colors array exists (may be in brandAssets)
     if (!client.colors || !client.colors.length) {
@@ -278,6 +327,12 @@ ${[
             .mockup-box.tall { aspect-ratio: 4/5; }
             .mockup-box:hover { transform: scale(1.01); border-color: rgba(255,255,255,0.12); }
             .mockup-box img, .mockup-box video { width: 100%; height: 100%; object-fit: cover; }
+
+            .bg-asset-card { background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; overflow: hidden; position: relative; aspect-ratio: 4/3; cursor: pointer; transition: all 0.3s ease; }
+            .bg-asset-card:hover { border-color: rgba(255,255,255,0.15); transform: scale(1.02); }
+            .bg-asset-card img { transition: transform 0.3s ease; }
+            .bg-asset-card:hover img { transform: scale(1.03); }
+            .bg-asset-label { font-size: 10px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1.5px; padding: 10px 14px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); position: absolute; bottom: 0; left: 0; right: 0; font-weight: 600; }
             .mockup-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: rgba(255,255,255,0.12); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; gap: 10px; background: #080808; }
             .mockup-placeholder::before { content: '+'; width: 32px; height: 32px; border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: rgba(255,255,255,0.1); }
             .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -420,41 +475,25 @@ ${[
 <div class="brand-section">
 <div class="brand-section-title">Brand Voice</div>
 <div style="display: grid; grid-template-columns: ${client.slogan && client.mission ? '1fr 1fr' : '1fr'}; gap: 20px;">
-                        ${client.slogan ? '<div style="background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 32px;"><div style="font-size: 10px; color: ' + client.colors[0] + '; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">Slogan</div><div style="font-size: 24px; font-weight: 700; line-height: 1.3; color: #fff;">"' + client.slogan + '"</div></div>' : ''}
+                        ${client.slogan ? '<div style="background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 32px;"><div style="font-size: 10px; color: ' + client.colors[0] + '; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">Slogan</div><div style="font-size: 24px; font-weight: 700; line-height: 1.3; color: #fff;">&ldquo;' + client.slogan + '&rdquo;</div></div>' : ''}
                         ${client.mission ? '<div style="background: #080808; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 32px;"><div style="font-size: 10px; color: ' + client.colors[0] + '; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">Mission Statement</div><div style="font-size: 16px; line-height: 1.7; color: rgba(255,255,255,0.7);">' + client.mission + '</div></div>' : ''}
 </div>
 </div>
                 ` : ''}
 
-                <!-- LOGO SYSTEM (3-Column Grid) -->
-<div class="brand-section">
-<div class="brand-section-title">Logo System</div>
-<div class="logo-grid">
-<div class="logo-box" style="border-color: ${client.colors[0]}20;">
-<div class="logo-box-img">${logos[0]?.data ? '<img loading="lazy" src="' + logos[0].data + '" alt="Primary Logo">' : '<div class="logo-placeholder">No Logo</div>'}</div>
-<div class="logo-box-label">Primary Logo</div>
-</div>
-<div class="logo-box" style="border-color: ${client.colors[0]}20;">
-<div class="logo-box-img">${logos[1]?.data ? '<img loading="lazy" src="' + logos[1].data + '" alt="Secondary Logo">' : '<div class="logo-placeholder">No Logo</div>'}</div>
-<div class="logo-box-label">Secondary Logo</div>
-</div>
-<div class="logo-box" style="border-color: ${client.colors[0]}20;">
-<div class="logo-box-img">${logos[2]?.data ? '<img loading="lazy" src="' + logos[2].data + '" alt="Icon Mark">' : '<div class="logo-placeholder">No Icon</div>'}</div>
-<div class="logo-box-label">Icon / Logo Mark</div>
-</div>
-</div>
-</div>
+                <!-- LOGO SYSTEM -->
+                ${buildAssetGallery(client.assets?.logos?.length ? client.assets.logos : logos, 'Logo System', client.colors[0], 3)}
 
-                <!-- COLOR PALETTE (4-Column Grid) -->
+                <!-- COLOR PALETTE -->
 <div class="brand-section">
 <div class="brand-section-title">Color Palette</div>
 <div class="color-grid">
                         ${client.colors.map((c, idx) => '<div class="color-box" style="background: ' + c + ';"><div class="color-hex">' + c.toUpperCase() + '</div></div>').join('')}
-                        ${client.colors.length < 4 ? Array(4 - client.colors.length).fill('<div class="color-box" style="background: #1a1a1a;"><div class="color-hex">—</div></div>').join('') : ''}
+                        ${client.colors.length < 4 ? Array(4 - client.colors.length).fill('<div class="color-box" style="background: #1a1a1a;"><div class="color-hex">&mdash;</div></div>').join('') : ''}
 </div>
 </div>
 
-                <!-- FONT SYSTEM (2-Column Grid) -->
+                <!-- FONT SYSTEM -->
 <div class="brand-section">
 <div class="brand-section-title">Font System</div>
 <div class="font-grid">
@@ -471,33 +510,16 @@ ${[
 </div>
 </div>
 
-                <!-- BRAND MOCKUPS (Portfolio Layout: 16:9, two 4:5, 16:9) -->
-<div class="brand-section">
-<div class="brand-section-title">Brand Mockups</div>
-<div class="mockup-grid">
-                        <!-- Top 16:9 -->
-<div class="mockup-row full">
-<div class="mockup-box wide" style="border-color: ${client.colors[0]}15;">
-                                ${mockups[0]?.data ? '<img loading="lazy" src="' + mockups[0].data + '" alt="Mockup">' : '<div class="mockup-placeholder">Image / Video</div>'}
-</div>
-</div>
-                        <!-- Middle two 4:5 -->
-<div class="mockup-row split">
-<div class="mockup-box tall" style="border-color: ${client.colors[0]}15;">
-                                ${mockups[1]?.data ? '<img loading="lazy" src="' + mockups[1].data + '" alt="Mockup">' : '<div class="mockup-placeholder">Image / Video</div>'}
-</div>
-<div class="mockup-box tall" style="border-color: ${client.colors[0]}15;">
-                                ${mockups[2]?.data ? '<img loading="lazy" src="' + mockups[2].data + '" alt="Mockup">' : '<div class="mockup-placeholder">Image / Video</div>'}
-</div>
-</div>
-                        <!-- Bottom 16:9 -->
-<div class="mockup-row full">
-<div class="mockup-box wide" style="border-color: ${client.colors[0]}15;">
-                                ${mockups[3]?.data ? '<img loading="lazy" src="' + mockups[3].data + '" alt="Mockup">' : '<div class="mockup-placeholder">Image / Video</div>'}
-</div>
-</div>
-</div>
-</div>
+                <!-- DYNAMIC ASSET GALLERIES -->
+                ${buildAssetGallery(client.assets?.moodboard, 'Moodboard Imagery', client.colors[0], 3)}
+                ${buildAssetGallery(client.assets?.mockups, 'Brand Mockups', client.colors[0], 2)}
+                ${buildAssetGallery(client.assets?.social, 'Social Media', client.colors[0], 3)}
+                ${buildAssetGallery(client.assets?.print, 'Print & Signage', client.colors[0], 3)}
+                ${buildAssetGallery(client.assets?.apparel, 'Apparel & Merchandise', client.colors[0], 3)}
+                ${buildAssetGallery(client.assets?.digital, 'Digital Marketing', client.colors[0], 3)}
+                ${buildAssetGallery(client.assets?.packaging, 'Packaging & Labels', client.colors[0], 3)}
+                ${buildAssetGallery(client.assets?.other, 'Additional Assets', client.colors[0], 3)}
+                ${buildAssetGallery(client.assets?.documents, 'Documents', client.colors[0], 3)}
 </div>
 
             <!-- PANEL 1: WEBSITE / WEBAPP -->
@@ -571,6 +593,10 @@ ${[
                     ${videos.length > 0 ? '<div class="download-card" style="background: #dc2626;"><div><h4>Brand Video</h4><p>' + (videos[0]?.size || '1 video') + '</p></div><button class="download-btn" onclick="downloadAsset(' + client.id + ', \'video\', 0)" ' + (!isPaid ? 'disabled' : '') + '>Download ↓</button></div>' : ''}
                     ${social.length > 0 ? '<div class="download-card" style="background: linear-gradient(135deg, #7c3aed, #a855f7);"><div><h4>Social Templates</h4><p>' + social.length + ' template(s)</p></div><button class="download-btn" onclick="downloadAsset(' + client.id + ', \'social\', 0)" ' + (!isPaid ? 'disabled' : '') + '>Download ↓</button></div>' : ''}
                     ${banners.length > 0 ? '<div class="download-card" style="background: #0891b2;"><div><h4>Banners</h4><p>' + banners.length + ' banner(s)</p></div><button class="download-btn" onclick="downloadAsset(' + client.id + ', \'banner\', 0)" ' + (!isPaid ? 'disabled' : '') + '>Download ↓</button></div>' : ''}
+                    ${(client.assets?.print?.length > 0) ? '<div class="download-card" style="background: #b45309;"><div><h4>Print & Signage</h4><p>' + client.assets.print.length + ' file(s)</p></div><button class="download-btn" onclick="downloadAsset(' + client.id + ', \'print\', 0)" ' + (!isPaid ? 'disabled' : '') + '>Download ↓</button></div>' : ''}
+                    ${(client.assets?.apparel?.length > 0) ? '<div class="download-card" style="background: #7c3aed;"><div><h4>Apparel & Merch</h4><p>' + client.assets.apparel.length + ' file(s)</p></div><button class="download-btn" onclick="downloadAsset(' + client.id + ', \'apparel\', 0)" ' + (!isPaid ? 'disabled' : '') + '>Download ↓</button></div>' : ''}
+                    ${(client.assets?.digital?.length > 0) ? '<div class="download-card" style="background: #0d9488;"><div><h4>Digital Marketing</h4><p>' + client.assets.digital.length + ' file(s)</p></div><button class="download-btn" onclick="downloadAsset(' + client.id + ', \'digital\', 0)" ' + (!isPaid ? 'disabled' : '') + '>Download ↓</button></div>' : ''}
+                    ${(client.assets?.packaging?.length > 0) ? '<div class="download-card" style="background: #e11d48;"><div><h4>Packaging & Labels</h4><p>' + client.assets.packaging.length + ' file(s)</p></div><button class="download-btn" onclick="downloadAsset(' + client.id + ', \'packaging\', 0)" ' + (!isPaid ? 'disabled' : '') + '>Download ↓</button></div>' : ''}
 <div class="download-card" style="background: linear-gradient(135deg, ${client.colors[0]}, ${client.colors[1] || client.colors[0]});"><div><h4>Color Palette</h4><p>${client.colors.join(' • ')}</p></div><button class="download-btn" onclick="copyColors('${client.colors.join(',')}')">Copy Colors 📋</button></div>
 </div>
 </div>
@@ -769,6 +795,11 @@ function approveMoodboard(clientId, moodboardId) {
     mb.approvedAt = new Date().toISOString();
     mb.approved_by = clientId;
     if (typeof saveProofs === 'function') saveProofs();
+
+    // 1.5) SYNC: Extract colors, images, notes → client record + brand guide
+    if (typeof syncMoodboardToClient === 'function') {
+        syncMoodboardToClient(moodboardId);
+    }
 
     // 2) CREATE FORMAL APPROVAL RECORD in Supabase
     if (typeof supabaseClient !== 'undefined' && mb.project_id) {

@@ -9,22 +9,26 @@
 [functions."holiday-drip"]
   schedule = "0 14 * * *"
 
+# SMS drip campaign — runs every 30 min during business hours
+[functions."sms-drip"]
+  schedule = "*/5 * * * *"
+
 # Service pages — serve actual HTML files
 [[redirects]]
   from = "/services/:service"
   to = "/services/:service.html"
   status = 200
 
-# Blog index
+# Blog index — serve SPA (real blog with all posts lives in marketing.js)
 [[redirects]]
   from = "/blog"
-  to = "/blog/index.html"
+  to = "/index.html"
   status = 200
 
 # Blog posts
 [[redirects]]
   from = "/blog/:post"
-  to = "/blog/:post.html"
+  to = "/index.html"
   status = 200
 
 # Case study pages

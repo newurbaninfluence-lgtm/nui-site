@@ -48,6 +48,12 @@ async function createOrder(e) {
     orders.push(order);
     saveOrders();
 
+    // === AUTO-CREATE BRAND GUIDE for brand packages ===
+    if (typeof autoCreateBrandGuide === 'function' && isBrandPackage(order.packageId)) {
+        const guide = autoCreateBrandGuide(order, client);
+        if (guide) console.log('✅ Auto-created brand guide:', guide.title);
+    }
+
     // === CREATE REAL INVOICE ===
     const invoice = {
         id: Date.now() + 1,

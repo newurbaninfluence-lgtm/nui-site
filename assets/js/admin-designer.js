@@ -832,7 +832,9 @@ function deleteDesigner(id) {
 // Current brand guide being edited
 let currentBrandGuide = null;
 
-function loadAdminBrandGuidePanel() {
+// LEGACY: Brand guide panel moved to admin-brandguide.js + admin-brandguide-editor.js
+// This old version is kept but renamed to avoid conflicts
+function _legacy_loadAdminBrandGuidePanel() {
     const clientProofs = proofs.filter(p => p.type === 'brandguide');
 
     document.getElementById('adminBrandguidePanel').innerHTML = `
@@ -926,7 +928,7 @@ function checkClientPaymentStatus(clientId) {
 }
 
 // Portfolio-style Brand Guide Editor
-function renderBrandGuideEditor() {
+function _legacy_renderBrandGuideEditor() {
     const p = proofs.find(x => x.id === currentBrandGuide);
     if (!p) return '';
     const client = clients.find(c => c.id == p.clientId);
@@ -1102,12 +1104,12 @@ function renderBrandGuideEditor() {
     `;
 }
 
-function editBrandGuidePortfolio(id) {
+function _legacy_editBrandGuidePortfolio(id) {
     currentBrandGuide = id;
     loadAdminBrandGuidePanel();
 }
 
-function updateBrandGuideField(id, field, value) {
+function _legacy_updateBrandGuideField(id, field, value) {
     const p = proofs.find(x => x.id === id);
     if (p) {
         p[field] = value;
@@ -1116,7 +1118,7 @@ function updateBrandGuideField(id, field, value) {
     }
 }
 
-function updateBrandGuideColor(id, index, value) {
+function _legacy_updateBrandGuideColor(id, index, value) {
     const p = proofs.find(x => x.id === id);
     if (p) {
         if (!p.brandColors) p.brandColors = ['#e63946', '#1d3557', '#f4a261'];
@@ -1127,7 +1129,7 @@ function updateBrandGuideColor(id, index, value) {
     }
 }
 
-function addBrandGuideColor(id) {
+function _legacy_addBrandGuideColor(id) {
     const p = proofs.find(x => x.id === id);
     if (p && (!p.brandColors || p.brandColors.length < 6)) {
         if (!p.brandColors) p.brandColors = [];
@@ -1137,7 +1139,7 @@ function addBrandGuideColor(id) {
     }
 }
 
-function updateBrandGuideFont(id, type, value) {
+function _legacy_updateBrandGuideFont(id, type, value) {
     const p = proofs.find(x => x.id === id);
     if (p) {
         if (!p.fonts) p.fonts = {};
@@ -1146,7 +1148,7 @@ function updateBrandGuideFont(id, type, value) {
     }
 }
 
-function uploadBrandGuideHero(id, input) {
+function _legacy_uploadBrandGuideHero(id, input) {
     const file = input.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -1162,7 +1164,7 @@ function uploadBrandGuideHero(id, input) {
     reader.readAsDataURL(file);
 }
 
-function uploadBrandGuideAsset(id, key, input) {
+function _legacy_uploadBrandGuideAsset(id, key, input) {
     const file = input.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -1178,7 +1180,7 @@ function uploadBrandGuideAsset(id, key, input) {
     reader.readAsDataURL(file);
 }
 
-function uploadBrandGuideMockup(id, input) {
+function _legacy_uploadBrandGuideMockup(id, input) {
     const file = input.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -1195,7 +1197,7 @@ function uploadBrandGuideMockup(id, input) {
     reader.readAsDataURL(file);
 }
 
-function removeBrandGuideMockup(id, index) {
+function _legacy_removeBrandGuideMockup(id, index) {
     const p = proofs.find(x => x.id === id);
     if (p && p.mockups) {
         p.mockups.splice(index, 1);
@@ -1204,7 +1206,7 @@ function removeBrandGuideMockup(id, index) {
     }
 }
 
-function addBrandGuideComment(id) {
+function _legacy_addBrandGuideComment(id) {
     const input = document.getElementById('bgNewComment');
     const text = input.value.trim();
     if (!text) return;
@@ -1668,7 +1670,7 @@ async function sendPaymentReminder(clientId) {
     }
 }
 
-function deleteBrandGuide(id) {
+function _legacy_deleteBrandGuide(id) {
     if (!confirm('Are you sure you want to delete this brand guide?')) return;
     proofs = proofs.filter(p => p.id !== id);
     saveProofs();
@@ -1676,7 +1678,7 @@ function deleteBrandGuide(id) {
     loadAdminBrandGuidePanel();
 }
 
-function showCreateBrandGuideModal() {
+function _legacy_showCreateBrandGuideModal() {
     const clientList = clients || [];
     const modal = document.createElement('div');
     modal.className = 'modal-overlay active';
@@ -1827,7 +1829,7 @@ function previewBrandGuideIconMark(input) {
     }
 }
 
-function saveBrandGuide() {
+function _legacy_saveBrandGuide() {
     const clientId = document.getElementById('bgClient').value;
     const client = clients.find(c => c.id == clientId);
 
@@ -2472,7 +2474,7 @@ function openMoodboardEditor(id) {
     var client = clients.find(function(c) { return c.id == mb.clientId; });
     _mbZoom = 1; _mbPanX = 0; _mbPanY = 0;
     window._mbEditorState = { id: mb.id, selectedItem: null };
-    var bgColor = mb.canvasBackground || '#f5f5f5';
+    var bgColor = mb.canvasBackground || '#0a0a0a';
 
     document.getElementById('adminMoodboardPanel').innerHTML = `
 <style>
@@ -2606,7 +2608,7 @@ function openMoodboardEditor(id) {
 
 <div class="ml-sb-item" onclick="mlShowPanel('imageSearch')">
 <div class="ml-sb-icon" style="background:#dbeafe;color:#2563eb;">\ud83d\udd0d</div>
-<div><div class="fw-600">Search Photos</div><div class="text-muted-xs">Free stock images</div></div>
+<div><div class="fw-600">Search Photos</div><div class="text-muted-xs">Pexels + Unsplash + Pixabay</div></div>
 </div>
 
 <div class="ml-sb-item" onclick="mlShowPanel('link')">
@@ -2627,6 +2629,29 @@ function openMoodboardEditor(id) {
 <div class="ml-sb-item" onclick="mlShowPanel('video')">
 <div class="ml-sb-icon" style="background:#fce7f3;color:#db2777;">\u25b6</div>
 <div><div class="fw-600">Video</div><div class="text-muted-xs">YouTube / Vimeo</div></div>
+</div>
+
+<div class="ml-sb-sep"></div>
+<div class="ml-sb-section">Design Tools</div>
+
+<div class="ml-sb-item" onclick="mlShowPanel('fonts')">
+<div class="ml-sb-icon" style="background:#e0e7ff;color:#4338ca;">Aa</div>
+<div><div class="fw-600">Font Browser</div><div class="text-muted-xs">Google + System fonts</div></div>
+</div>
+
+<div class="ml-sb-item" onclick="mlShowPanel('fontPair')">
+<div class="ml-sb-icon" style="background:#fef3c7;color:#d97706;">\ud83d\udd24</div>
+<div><div class="fw-600">Font Pairings</div><div class="text-muted-xs">Curated combinations</div></div>
+</div>
+
+<div class="ml-sb-item" onclick="mlShowPanel('colorCombo')">
+<div class="ml-sb-icon" style="background:#d1fae5;color:#059669;">\ud83c\udfa8</div>
+<div><div class="fw-600">Color Combos</div><div class="text-muted-xs">Harmony generator</div></div>
+</div>
+
+<div class="ml-sb-item" onclick="mlShowPanel('eagle')">
+<div class="ml-sb-icon" style="background:#fef2f2;color:#b91c1c;">\ud83e\udd85</div>
+<div><div class="fw-600">Eagle Library</div><div class="text-muted-xs">Your inspiration</div></div>
 </div>
 
 <div class="ml-sb-sep"></div>
@@ -2663,10 +2688,23 @@ function openMoodboardEditor(id) {
 </div>
 
 <div class="ml-sb-sep"></div>
+<div class="ml-sb-section">Client Brief</div>
+
+<div class="ml-brief-tab" onclick="mlShowPanel('brief')">
+<div class="ml-sb-icon" style="background:rgba(220,38,38,0.1);color:#f87171;">📋</div>
+<div><div class="fw-600">Project Brief</div><div class="text-muted-xs">${client?.briefStatus === 'submitted' ? '<span class="ml-brief-badge-dot"></span> Submitted' : 'View responses'}</div></div>
+</div>
+
+<div class="ml-sb-item" onclick="autoGenFromBrief('${mb.id}')">
+<div class="ml-sb-icon" style="background:rgba(124,58,237,0.15);color:#a78bfa;">⚡</div>
+<div><div class="fw-600">Auto-Generate</div><div class="text-muted-xs">Board from brief</div></div>
+</div>
+
+<div class="ml-sb-sep"></div>
 <div class="ml-sb-section">Board</div>
 
 <div class="ml-sb-item" onclick="mlShowPanel('settings')">
-<div class="ml-sb-icon" style="background:#f5f5f5;color:#666;">\u2699</div>
+<div class="ml-sb-icon" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);">\u2699</div>
 <div><div class="fw-600">Settings</div><div class="text-muted-xs">Background, grid, notes</div></div>
 </div>
 
@@ -2695,19 +2733,29 @@ function openMoodboardEditor(id) {
 <button onclick="document.getElementById('mbImageUpload').click();mlHideAllPanels();" class="ml-fbtn">Upload from Computer</button>
 </div>
 
-<div class="ml-float" id="mlPanel-imageSearch" style="width:340px;">
+<div class="ml-float" id="mlPanel-imageSearch" style="width:360px;">
 <h4>Search Free Photos</h4>
-<div style="display:flex;gap:4px;margin-bottom:8px;">
-<button onclick="switchPhotoSource('pexels','${mb.id}')" id="srcTab-pexels" style="flex:1;padding:6px 0;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:#e63946;color:#fff;">Pexels</button>
-<button onclick="switchPhotoSource('unsplash','${mb.id}')" id="srcTab-unsplash" style="flex:1;padding:6px 0;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:#333;color:#aaa;">Unsplash</button>
-<button onclick="switchPhotoSource('pixabay','${mb.id}')" id="srcTab-pixabay" style="flex:1;padding:6px 0;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:#333;color:#aaa;">Pixabay</button>
+<div style="display:flex;gap:6px;margin-bottom:8px;">
+<input type="text" id="mbPexelsQuery" class="ml-finput" style="margin:0;flex:1;" placeholder="Search photos..." onkeydown="if(event.key==='Enter') searchStockImages('${mb.id}')">
+<button onclick="searchStockImages('${mb.id}')" class="ml-fbtn" style="width:auto;padding:8px 14px;margin:0;">Search</button>
 </div>
-<div style="display:flex;gap:6px;margin-bottom:10px;">
-<input type="text" id="mbPhotoQuery" class="ml-finput" style="margin:0;flex:1;" placeholder="Search photos..." onkeydown="if(event.key==='Enter') searchStockPhotos('${mb.id}')">
-<button onclick="searchStockPhotos('${mb.id}')" class="ml-fbtn" style="width:auto;padding:8px 14px;margin:0;">Search</button>
+<div style="margin-bottom:8px;">
+<div style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Filter by Color</div>
+<div id="mbColorFilter" style="display:flex;gap:5px;flex-wrap:wrap;">
+<div onclick="setImageColorFilter('')" class="mb-color-dot mb-color-active" style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);cursor:pointer;background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);position:relative;" title="Any color"></div>
+<div onclick="setImageColorFilter('red')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#e63946;" title="Red"></div>
+<div onclick="setImageColorFilter('orange')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#f4a261;" title="Orange"></div>
+<div onclick="setImageColorFilter('yellow')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#e9c46a;" title="Yellow"></div>
+<div onclick="setImageColorFilter('green')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#2a9d8f;" title="Green"></div>
+<div onclick="setImageColorFilter('teal')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#14b8a6;" title="Teal"></div>
+<div onclick="setImageColorFilter('blue')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#3b82f6;" title="Blue"></div>
+<div onclick="setImageColorFilter('purple')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#8b5cf6;" title="Purple"></div>
+<div onclick="setImageColorFilter('black')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#1a1a1a;" title="Black"></div>
+<div onclick="setImageColorFilter('white')" class="mb-color-dot" style="width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:#f5f5f5;" title="White"></div>
 </div>
-<div id="mbPhotoResults" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:340px;overflow-y:auto;"></div>
-<div id="mbPhotoCredit" style="font-size:9px;color:#bbb;margin-top:6px;text-align:center;">Photos by Pexels</div>
+</div>
+<div id="mbPexelsResults" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:340px;overflow-y:auto;"></div>
+<div style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:6px;text-align:center;">Photos by Pexels + Unsplash + Pixabay</div>
 </div>
 
 <div class="ml-float" id="mlPanel-link">
@@ -2745,12 +2793,37 @@ function openMoodboardEditor(id) {
 <button onclick="addMoodboardVideo('${mb.id}');mlHideAllPanels();" class="ml-fbtn">Add Video</button>
 </div>
 
+<div class="ml-float" id="mlPanel-fonts" style="width:380px;max-height:calc(100vh - 220px);overflow-y:auto;">
+<h4>Font Browser</h4>
+<div id="dtFontContainer"></div>
+</div>
+
+<div class="ml-float" id="mlPanel-fontPair" style="width:380px;max-height:calc(100vh - 220px);overflow-y:auto;">
+<h4>Font Pairings</h4>
+<div id="dtPairContainer"></div>
+</div>
+
+<div class="ml-float" id="mlPanel-colorCombo" style="width:360px;max-height:calc(100vh - 220px);overflow-y:auto;">
+<h4>Color Combos</h4>
+<div id="dtColorContainer"></div>
+</div>
+
+<div class="ml-float" id="mlPanel-eagle" style="width:380px;max-height:calc(100vh - 220px);overflow-y:auto;">
+<h4>Eagle Library</h4>
+<div id="dtEagleContainer"></div>
+</div>
+
+<div class="ml-float" id="mlPanel-brief" style="width:340px;max-height:calc(100vh - 280px);overflow-y:auto;">
+<h4>Client Brief — ${client?.name || 'Client'}</h4>
+${typeof renderAdminBriefPanel === 'function' ? renderAdminBriefPanel(mb.clientId) : '<div class="mb-brief-empty"><p style="color:rgba(255,255,255,0.4);">Brief system loading...</p></div>'}
+</div>
+
 <div class="ml-float" id="mlPanel-settings">
 <h4>Board Settings</h4>
 <label style="font-size:11px;color:#888;display:block;margin-bottom:4px;">Background</label>
 <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
 <input type="color" id="mbCanvasBg" value="${bgColor}" onchange="updateCanvasBackground('${mb.id}',this.value)" style="width:32px;height:32px;border:none;cursor:pointer;">
-                            ${['#f5f5f5','#ffffff','#f5f0e8','#fafafa','#1a1a1a','#111111'].map(c => `<div onclick="updateCanvasBackground('${mb.id}','${c}')" style="width:32px;height:32px;background:${c};border-radius:4px;cursor:pointer;border:1px solid #ddd;"></div>`).join('')}
+                            ${['#0a0a0a','#111111','#1a1a1a','#0d0d0d','#f5f5f5','#ffffff'].map(c => `<div onclick="updateCanvasBackground('${mb.id}','${c}')" style="width:32px;height:32px;background:${c};border-radius:4px;cursor:pointer;border:1px solid rgba(255,255,255,0.15);"></div>`).join('')}
 </div>
 <label style="font-size:11px;color:#888;display:block;margin-bottom:4px;">Grid</label>
 <button onclick="_mbSnapOn=!_mbSnapOn;document.getElementById('mbGrid').style.display=_mbSnapOn?'':'none';this.textContent=_mbSnapOn?'Grid: ON':'Grid: OFF'" class="ml-fbtn">${_mbSnapOn ? 'Grid: ON' : 'Grid: OFF'}</button>
@@ -2866,6 +2939,11 @@ function mlShowPanel(name) {
     mlHideAllPanels();
     var p = document.getElementById('mlPanel-' + name);
     if (p) p.classList.add('show');
+    // Initialize design tool panels on first open
+    if (name === 'fonts' && typeof renderFontPanel === 'function') renderFontPanel('dtFontContainer');
+    if (name === 'fontPair' && typeof renderFontPairingPanel === 'function') renderFontPairingPanel('dtPairContainer');
+    if (name === 'colorCombo' && typeof renderColorComboPanel === 'function') renderColorComboPanel('dtColorContainer');
+    if (name === 'eagle' && typeof renderEaglePanel === 'function') renderEaglePanel('dtEagleContainer');
 }
 function mlHideAllPanels() {
     document.querySelectorAll('.ml-float').forEach(function(p) {
@@ -2912,6 +2990,9 @@ function mbEditorWheel(e) {
 
 // Mouse handlers
 function mbEditorMouseDown(e) {
+    // Don't interfere with floating panels (image URL input, search, link, text, color, etc.)
+    if (e.target.closest('.ml-float')) return;
+    
     // Pan
     if (_mbSpaceHeld || e.button === 1) {
         _mbIsPanning = true;
@@ -3313,7 +3394,7 @@ function loadMbTemplate(mbId, tplName) {
     if(mb.collageItems.length>0 && !confirm('This will replace your current board. Continue?')) return;
 
     if(tplName==='brand') {
-        mb.canvasBackground='#f5f5f5';
+        mb.canvasBackground='#0a0a0a';
         mb.collageItems=[
             {type:'text',text:'Brand Guidelines',font:'Playfair Display, serif',fontSize:36,color:'#1a1a1a',x:60,y:40,rotation:0,zIndex:1},
             {type:'note',title:'Brand Story',body:'Write your brand narrative here...',stripColor:'#e63946',x:60,y:120,width:300,height:160,rotation:0,zIndex:2},
@@ -3405,90 +3486,89 @@ function loadMbTemplate(mbId, tplName) {
     if(typeof showNotification==='function') showNotification('Template loaded!','success');
 }
 
-// Multi-source stock photo search (Pexels, Unsplash, Pixabay)
-window._photoSource = 'pexels';
-
-function switchPhotoSource(source, mbId) {
-    window._photoSource = source;
-    ['pexels','unsplash','pixabay'].forEach(function(s) {
-        var tab = document.getElementById('srcTab-' + s);
-        if (tab) {
-            tab.style.background = s === source ? '#e63946' : '#333';
-            tab.style.color = s === source ? '#fff' : '#aaa';
-        }
+// Pexels image search
+var _mbColorFilter = '';
+function setImageColorFilter(color) {
+    _mbColorFilter = color;
+    // Update active state on dots
+    document.querySelectorAll('#mbColorFilter .mb-color-dot').forEach(function(d) {
+        d.style.borderColor = 'transparent';
+        d.classList.remove('mb-color-active');
     });
-    var credit = document.getElementById('mbPhotoCredit');
-    if (credit) credit.textContent = 'Photos by ' + source.charAt(0).toUpperCase() + source.slice(1);
-    var resultsDiv = document.getElementById('mbPhotoResults');
-    if (resultsDiv) resultsDiv.innerHTML = '';
+    var dots = document.querySelectorAll('#mbColorFilter .mb-color-dot');
+    // First dot = "any", others map to colors
+    var colorMap = ['','red','orange','yellow','green','teal','blue','purple','black','white'];
+    var idx = colorMap.indexOf(color);
+    if (idx >= 0 && dots[idx]) {
+        dots[idx].style.borderColor = 'rgba(255,255,255,0.6)';
+        dots[idx].classList.add('mb-color-active');
+    }
+    // Auto-search if query exists
+    var q = (document.getElementById('mbPexelsQuery')?.value || '').trim();
+    if (q && window._mbEditorState?.id) searchStockImages(window._mbEditorState.id);
 }
 
-function searchStockPhotos(mbId) {
-    var query = (document.getElementById('mbPhotoQuery')?.value || '').trim();
+function searchStockImages(mbId) {
+    var query = (document.getElementById('mbPexelsQuery')?.value || '').trim();
     if (!query) { alert('Enter a search term.'); return; }
-    var resultsDiv = document.getElementById('mbPhotoResults');
+    var resultsDiv = document.getElementById('mbPexelsResults');
     if (!resultsDiv) return;
-    resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#999;">Searching ' + window._photoSource + '...</div>';
+    resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:rgba(255,255,255,0.4);">Searching...</div>';
 
-    var source = window._photoSource || 'pexels';
-    var url = '/.netlify/functions/' + source + '-search?query=' + encodeURIComponent(query);
+    var url = '/.netlify/functions/image-search?query=' + encodeURIComponent(query) + '&per_page=24';
+    if (_mbColorFilter) url += '&color=' + encodeURIComponent(_mbColorFilter);
 
     fetch(url)
     .then(function(r) { return r.json(); })
     .then(function(data) {
-        var photos = [];
-        if (source === 'pexels' && data.photos) {
-            photos = data.photos.map(function(p) {
-                return { thumb: p.src.tiny, medium: p.src.medium, w: p.width, h: p.height, credit: 'Pexels' };
-            });
-        } else if (source === 'unsplash' && data.results) {
-            photos = data.results.map(function(p) {
-                return { thumb: p.urls.thumb, medium: p.urls.regular, w: p.width, h: p.height, credit: 'Unsplash / ' + (p.user?.name || 'Unknown') };
-            });
-        } else if (source === 'pixabay' && data.hits) {
-            photos = data.hits.map(function(p) {
-                return { thumb: p.previewURL, medium: p.webformatURL, w: p.imageWidth, h: p.imageHeight, credit: 'Pixabay' };
-            });
-        }
-
-        if (!photos.length) {
-            resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#999;">No results found. Try different keywords.</div>';
+        if (data.error && (!data.photos || !data.photos.length)) {
+            resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#f87171;font-size:12px;">' + escHtml(data.error) + '</div>';
             return;
         }
-        resultsDiv.innerHTML = photos.map(function(photo) {
-            var safeUrl = escHtml(photo.medium);
+        if (!data.photos || !data.photos.length) {
+            resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:rgba(255,255,255,0.4);">No results. Try different keywords' + (_mbColorFilter ? ' or remove the color filter.' : '.') + '</div>';
+            return;
+        }
+        resultsDiv.innerHTML = data.photos.map(function(photo) {
             var safeThumb = escHtml(photo.thumb);
-            var safeCredit = escHtml(photo.credit);
-            return '<div onclick="addStockImage(\'' + mbId + '\',\'' + safeUrl + '\',' + (parseInt(photo.w) || 0) + ',' + (parseInt(photo.h) || 0) + ',\'' + safeCredit + '\')" style="cursor:pointer;border-radius:6px;overflow:hidden;border:1px solid #eee;transition:all .15s;aspect-ratio:1;background:#f5f5f5;" onmouseover="this.style.transform=\'scale(1.03)\';this.style.boxShadow=\'0 2px 8px rgba(0,0,0,0.15)\'" onmouseout="this.style.transform=\'none\';this.style.boxShadow=\'none\'">' +
-                '<img alt="Stock photo" loading="lazy" src="' + safeThumb + '" style="width:100%;height:100%;object-fit:cover;display:block;">' +
+            var safeMedium = escHtml(photo.medium);
+            var safeLarge = escHtml(photo.large || photo.medium);
+            var badge = photo.source === 'unsplash' ? '🔲' : '📷';
+            return '<div onclick="addStockImage(\'' + mbId + '\',\'' + safeLarge + '\',' + (parseInt(photo.width)||800) + ',' + (parseInt(photo.height)||600) + ',\'' + escHtml(photo.photographer||'') + '\',\'' + photo.source + '\')" ' +
+                'style="cursor:pointer;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);transition:all .15s;aspect-ratio:1;background:#111;position:relative;" ' +
+                'onmouseover="this.style.transform=\'scale(1.03)\';this.style.boxShadow=\'0 4px 16px rgba(0,0,0,0.4)\'" ' +
+                'onmouseout="this.style.transform=\'none\';this.style.boxShadow=\'none\'">' +
+                '<img alt="' + escHtml(photo.alt||query) + '" loading="lazy" src="' + safeThumb + '" style="width:100%;height:100%;object-fit:cover;display:block;">' +
+                (photo.color ? '<div style="position:absolute;bottom:4px;left:4px;width:12px;height:12px;border-radius:50%;background:' + photo.color + ';border:1.5px solid rgba(255,255,255,0.3);"></div>' : '') +
+                '<div style="position:absolute;top:3px;right:4px;font-size:9px;opacity:0.5;">' + badge + '</div>' +
             '</div>';
         }).join('');
     })
     .catch(function(err) {
-        resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#e63946;">Search failed. Try again.</div>';
+        resultsDiv.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#f87171;">Search failed: ' + err.message + '</div>';
     });
 }
 
-// Legacy alias so any old calls still work
-function searchPexelsImages(mbId) { window._photoSource = 'pexels'; searchStockPhotos(mbId); }
-
-function addStockImage(mbId, url, natW, natH, credit) {
+function addStockImage(mbId, url, natW, natH, photographer, source) {
     var mb = proofs.find(function(p) { return p.id == mbId; });
     if (!mb) return;
-    var cardW = 280, cardH = natH > 0 ? Math.round(cardW * (natH / natW)) : 200;
+    var cardW = 280, cardH = Math.round(cardW * (natH / natW));
     mb.collageItems.push({
-        type: 'image', src: url, caption: 'Photo by ' + (credit || 'Stock'),
+        type: 'image', src: url,
+        caption: photographer ? ('Photo by ' + photographer + ' — ' + (source === 'unsplash' ? 'Unsplash' : 'Pexels')) : '',
         x: 60 + Math.random() * 100, y: 60 + Math.random() * 100,
         width: cardW, height: cardH, rotation: 0,
         zIndex: mb.collageItems.length + 1
     });
-    mb.updatedAt = new Date().toISOString(); saveProofs();
+    mb.updatedAt = new Date().toISOString();
+    saveProofs();
     openMoodboardEditor(mb.id);
-    if (typeof showNotification === 'function') showNotification('Image added from ' + (credit || 'stock') + '!', 'success');
+    if (typeof showNotification === 'function') showNotification('Image added!', 'success');
 }
 
-// Legacy alias
-function addPexelsImage(mbId, url, natW, natH) { addStockImage(mbId, url, natW, natH, 'Pexels'); }
+// Legacy alias so old Pexels calls still work
+function searchPexelsImages(mbId) { searchStockImages(mbId); }
+function addPexelsImage(mbId, url, w, h) { addStockImage(mbId, url, w, h, '', 'pexels'); }
 
 // Utility functions
 function isLightColor(hex) {
@@ -3505,7 +3585,10 @@ function resizeMbItem(factor) {
     if(ci.width) ci.width=Math.round(ci.width*factor);
     if(ci.height) ci.height=Math.round(ci.height*factor);
     if(ci.fontSize) ci.fontSize=Math.round(ci.fontSize*factor);
-    saveProofs(); openMoodboardEditor(mb.id);
+    saveProofs();
+    // Direct DOM update — no full re-render
+    var el=document.querySelector('.ml-card[data-idx="'+idx+'"]');
+    if(el) { el.style.width=ci.width+'px'; if(ci.type!=='note') el.style.height=ci.height+'px'; }
 }
 
 function stretchMbItem(dim, amt) {
@@ -3514,7 +3597,10 @@ function stretchMbItem(dim, amt) {
     if(!mb||idx==null||!mb.collageItems[idx]) return;
     if(dim==='width') mb.collageItems[idx].width=Math.max(40,(mb.collageItems[idx].width||200)+amt);
     else mb.collageItems[idx].height=Math.max(40,(mb.collageItems[idx].height||150)+amt);
-    saveProofs(); openMoodboardEditor(mb.id);
+    saveProofs();
+    var el=document.querySelector('.ml-card[data-idx="'+idx+'"]');
+    var ci=mb.collageItems[idx];
+    if(el) { el.style.width=ci.width+'px'; el.style.height=ci.height+'px'; }
 }
 
 function rotateMbItem(deg) {
@@ -3522,7 +3608,10 @@ function rotateMbItem(deg) {
     var idx=window._mbEditorState.selectedItem;
     if(!mb||idx==null||!mb.collageItems[idx]) return;
     mb.collageItems[idx].rotation=((mb.collageItems[idx].rotation||0)+deg)%360;
-    saveProofs(); openMoodboardEditor(mb.id);
+    saveProofs();
+    var el=document.querySelector('.ml-card[data-idx="'+idx+'"]');
+    var ci=mb.collageItems[idx];
+    if(el) el.style.transform='translate('+ci.x+'px,'+ci.y+'px) rotate('+ci.rotation+'deg)';
 }
 
 function bringMbItemForward() {
@@ -3530,7 +3619,9 @@ function bringMbItemForward() {
     var idx=window._mbEditorState.selectedItem;
     if(!mb||idx==null||!mb.collageItems[idx]) return;
     mb.collageItems[idx].zIndex=(mb.collageItems[idx].zIndex||idx+1)+1;
-    saveProofs(); openMoodboardEditor(mb.id);
+    saveProofs();
+    var el=document.querySelector('.ml-card[data-idx="'+idx+'"]');
+    if(el) el.style.zIndex=mb.collageItems[idx].zIndex;
 }
 
 function sendMbItemBackward() {
@@ -3538,7 +3629,9 @@ function sendMbItemBackward() {
     var idx=window._mbEditorState.selectedItem;
     if(!mb||idx==null||!mb.collageItems[idx]) return;
     mb.collageItems[idx].zIndex=Math.max(1,(mb.collageItems[idx].zIndex||idx+1)-1);
-    saveProofs(); openMoodboardEditor(mb.id);
+    saveProofs();
+    var el=document.querySelector('.ml-card[data-idx="'+idx+'"]');
+    if(el) el.style.zIndex=mb.collageItems[idx].zIndex;
 }
 
 function deleteMbItem() {
@@ -3549,7 +3642,12 @@ function deleteMbItem() {
     window._mbEditorState.selectedItem=null;
     var sp=document.getElementById('mlPanel-selected');
     if(sp) sp.classList.remove('show');
-    saveProofs(); openMoodboardEditor(mb.id);
+    // Remove just the card element
+    var el=document.querySelector('.ml-card[data-idx="'+idx+'"]');
+    if(el) el.remove();
+    // Re-index remaining cards
+    document.querySelectorAll('.ml-card').forEach(function(c,i){c.dataset.idx=i;});
+    saveProofs();
 }
 
 function updateCanvasBackground(mbId, color) {
@@ -3572,6 +3670,9 @@ function saveMoodboardState(mbId) {
     var n=document.getElementById('mbNotes');
     if(n) mb.notes=n.value;
     mb.updatedAt=new Date().toISOString(); saveProofs();
+    
+    // Sync to Supabase (non-blocking)
+    if (typeof saveMoodboardToSupabase === 'function') saveMoodboardToSupabase(mb);
 
     // AUTO-SEND: If moodboard has content, hasn't been sent yet, and client has a qualifying service package
     if (mb.collageItems && mb.collageItems.length > 0 && !mb.sentToClient && mb.status === 'draft') {
@@ -3619,7 +3720,7 @@ function previewMoodboard(mbId) {
     var mb=proofs.find(function(p){return p.id==mbId;});
     if(!mb) return;
     var client=clients.find(function(c){return c.id==mb.clientId;});
-    var bgColor=mb.canvasBackground||'#f5f5f5';
+    var bgColor=mb.canvasBackground||'#0a0a0a';
 
     var html='<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:10000;overflow-y:auto;">'+
         '<style>.ml-card{position:absolute;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);user-select:none} .ml-img-wrap{overflow:hidden;border-radius:6px 6px 0 0} .ml-img-wrap img{width:100%;display:block} .ml-note-strip{height:4px;border-radius:6px 6px 0 0} .ml-swatch-color{width:100%;aspect-ratio:1;border-radius:6px 6px 0 0} .ml-swatch-label{padding:6px 10px;font-size:11px;color:#666;font-family:monospace;text-align:center} .ml-link-domain{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:0.5px;display:flex;align-items:center;gap:6px;padding:12px 14px 6px} .ml-link-title{font-size:14px;font-weight:600;color:#1a1a1a;padding:0 14px 6px} .ml-link-url{border-top:1px solid #f0f0f0;padding:8px 14px;font-size:11px} .ml-link-url a{color:#4a90d9;text-decoration:none} .ml-text-card{background:transparent!important;box-shadow:none!important}</style>'+
@@ -3639,3 +3740,508 @@ function previewMoodboard(mbId) {
     setTimeout(resolveAllImages, 50);
 }
 
+
+
+// ═══════════════════════════════════════════════════════
+// BRIEF INTEGRATION & SUPABASE PERSISTENCE — v20260224
+// ═══════════════════════════════════════════════════════
+
+// Auto-generate moodboard items from client brief
+async function autoGenFromBrief(mbId) {
+    if (typeof generateMoodboardFromBrief !== 'function') {
+        showNotification('Brief module not loaded', 'error');
+        return;
+    }
+    var mb = proofs.find(function(p) { return p.id == mbId; });
+    if (!mb || !mb.clientId) {
+        showNotification('No client linked to this moodboard', 'error');
+        return;
+    }
+    try {
+        showNotification('Generating from brief...', 'info');
+        var items = await generateMoodboardFromBrief(mb.clientId);
+        if (!items || items.length === 0) {
+            showNotification('No brief found for this client', 'error');
+            return;
+        }
+        // Position items in a grid layout
+        var col = 0, row = 0, maxCols = 3;
+        items.forEach(function(item, i) {
+            item.x = 60 + (col * 280);
+            item.y = 60 + (row * 260);
+            item.w = item.w || 250;
+            item.h = item.h || 220;
+            item.z = (mb.collageItems ? mb.collageItems.length : 0) + i + 1;
+            col++;
+            if (col >= maxCols) { col = 0; row++; }
+        });
+        if (!mb.collageItems) mb.collageItems = [];
+        mb.collageItems = mb.collageItems.concat(items);
+        saveProofs();
+        // Re-render canvas
+        var canvas = document.querySelector('.ml-canvas');
+        if (canvas) {
+            items.forEach(function(item) {
+                canvas.insertAdjacentHTML('beforeend', renderOneCard(item, mbId));
+            });
+        }
+        showNotification(items.length + ' items added from brief!', 'success');
+        // Save to Supabase
+        saveMoodboardToSupabase(mbId);
+    } catch (e) {
+        console.error('autoGenFromBrief error:', e);
+        showNotification('Failed to generate from brief', 'error');
+    }
+}
+
+// Render brief panel HTML (called from template literal)
+function renderAdminBriefPanel(clientId) {
+    if (!clientId) return '<div class="mb-brief-empty"><p>No client linked</p></div>';
+    return '<div id="briefPanelContent" data-client-id="' + clientId + '"><div class="mb-brief-empty"><div style="font-size:24px;margin-bottom:8px;">📋</div><p style="color:rgba(255,255,255,0.4);font-size:13px;">Loading brief...</p></div></div>';
+}
+
+// Load brief data into panel after moodboard opens
+async function loadBriefIntoPanel(clientId) {
+    var container = document.getElementById('briefPanelContent');
+    if (!container) return;
+    try {
+        var resp = await fetch('/.netlify/functions/save-brief?clientId=' + encodeURIComponent(clientId));
+        if (!resp.ok) throw new Error('Failed to fetch brief');
+        var data = await resp.json();
+        if (!data.briefs || data.briefs.length === 0) {
+            container.innerHTML = '<div class="mb-brief-empty"><div style="font-size:24px;margin-bottom:8px;">📝</div><p style="color:rgba(255,255,255,0.4);font-size:13px;">No brief submitted yet</p><p style="color:rgba(255,255,255,0.25);font-size:11px;margin-top:6px;">Send questionnaire link to client</p></div>';
+            return;
+        }
+        var brief = data.briefs[0];
+        var responses = brief.responses || {};
+        var html = '<div class="mb-brief-responses">';
+        // Get question labels from client-brief module if available
+        var questions = (typeof BRAND_QUESTIONS !== 'undefined') ? BRAND_QUESTIONS : null;
+        Object.keys(responses).forEach(function(key) {
+            var val = responses[key];
+            if (!val || (typeof val === 'string' && !val.trim())) return;
+            var label = key;
+            if (questions) {
+                // Find question label from BRAND_QUESTIONS
+                ['section1', 'section2'].forEach(function(sec) {
+                    if (questions[sec] && questions[sec].questions) {
+                        var q = questions[sec].questions.find(function(qq) { return qq.id === key; });
+                        if (q) label = q.label;
+                    }
+                });
+            }
+            var displayVal = Array.isArray(val) ? val.join(', ') : String(val);
+            html += '<div class="mb-brief-item">';
+            html += '<div class="mb-brief-q-label">' + label + '</div>';
+            html += '<div class="mb-brief-q-answer">' + displayVal + '</div>';
+            html += '</div>';
+        });
+        html += '</div>';
+        container.innerHTML = html;
+    } catch (e) {
+        console.error('loadBriefIntoPanel error:', e);
+        container.innerHTML = '<div class="mb-brief-empty"><p style="color:#f87171;">Failed to load brief</p></div>';
+    }
+}
+
+// ─── Supabase Moodboard Persistence ───
+
+async function saveMoodboardToSupabase(mbId) {
+    var mb = proofs.find(function(p) { return p.id == mbId; });
+    if (!mb) return;
+    try {
+        var payload = {
+            id: mb.id,
+            client_id: mb.clientId || null,
+            client_name: null,
+            title: mb.title || 'Untitled',
+            status: mb.status || 'draft',
+            collage_items: mb.collageItems || [],
+            canvas_background: mb.canvasBackground || '#0a0a0a',
+            notes: mb.notes || ''
+        };
+        // Resolve client name
+        if (mb.clientId && typeof clients !== 'undefined') {
+            var client = clients.find(function(c) { return c.id == mb.clientId; });
+            if (client) payload.client_name = client.name;
+        }
+        var resp = await fetch('/.netlify/functions/save-moodboard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (!resp.ok) {
+            var errData = await resp.json().catch(function() { return {}; });
+            console.error('Supabase save failed:', errData);
+            return;
+        }
+        console.log('[NUI] Moodboard saved to Supabase:', mbId);
+    } catch (e) {
+        console.error('saveMoodboardToSupabase error:', e);
+    }
+}
+
+async function loadMoodboardFromSupabase(mbId) {
+    try {
+        var resp = await fetch('/.netlify/functions/save-moodboard?id=' + encodeURIComponent(mbId));
+        if (!resp.ok) return null;
+        var data = await resp.json();
+        return data.moodboard || null;
+    } catch (e) {
+        console.error('loadMoodboardFromSupabase error:', e);
+        return null;
+    }
+}
+
+async function loadAllMoodboardsFromSupabase() {
+    try {
+        var resp = await fetch('/.netlify/functions/save-moodboard');
+        if (!resp.ok) return [];
+        var data = await resp.json();
+        return data.moodboards || [];
+    } catch (e) {
+        console.error('loadAllMoodboardsFromSupabase error:', e);
+        return [];
+    }
+}
+
+// Hook into existing saveMoodboardState to also persist to Supabase
+var _origSaveMoodboardState = typeof saveMoodboardState === 'function' ? saveMoodboardState : null;
+
+// Debounced Supabase save (avoid hammering on every drag)
+var _supabaseSaveTimer = null;
+function debouncedSupabaseSave(mbId) {
+    clearTimeout(_supabaseSaveTimer);
+    _supabaseSaveTimer = setTimeout(function() {
+        saveMoodboardToSupabase(mbId);
+    }, 2000);
+}
+
+// Patch saveMoodboardState to also save to Supabase
+(function() {
+    var origSave = window.saveMoodboardState;
+    if (typeof origSave === 'function') {
+        window.saveMoodboardState = function(mbId) {
+            origSave(mbId);
+            debouncedSupabaseSave(mbId);
+        };
+    }
+})();
+
+// Load brief panel when moodboard editor opens
+(function() {
+    var origOpen = window.openMoodboardEditor;
+    if (typeof origOpen === 'function') {
+        window.openMoodboardEditor = function(mbId) {
+            origOpen(mbId);
+            // After editor renders, load brief data
+            setTimeout(function() {
+                var mb = proofs.find(function(p) { return p.id == mbId; });
+                if (mb && mb.clientId) {
+                    loadBriefIntoPanel(mb.clientId);
+                }
+            }, 300);
+        };
+    }
+})();
+
+// Migrate localStorage moodboards to Supabase (one-time)
+async function migrateMoodboardsToSupabase() {
+    if (localStorage.getItem('nui_moodboards_migrated')) return;
+    if (!proofs || proofs.length === 0) return;
+    var count = 0;
+    for (var i = 0; i < proofs.length; i++) {
+        try {
+            await saveMoodboardToSupabase(proofs[i].id);
+            count++;
+        } catch (e) {
+            console.error('Migration failed for:', proofs[i].id, e);
+        }
+    }
+    if (count > 0) {
+        localStorage.setItem('nui_moodboards_migrated', Date.now());
+        console.log('[NUI] Migrated ' + count + ' moodboards to Supabase');
+    }
+}
+
+// Trigger migration on admin load (non-blocking)
+if (typeof window !== 'undefined') {
+    window.addEventListener('load', function() {
+        setTimeout(migrateMoodboardsToSupabase, 5000);
+    });
+}
+
+
+// ═══════════════════════════════════════════════════════
+// BRIEF INTEGRATION & SUPABASE PERSISTENCE — v20260224
+// ═══════════════════════════════════════════════════════
+
+/**
+ * Auto-generate moodboard items from client brief responses
+ */
+async function autoGenFromBrief(mbId) {
+    var mb = proofs.find(p => p.id === mbId);
+    if (!mb) return;
+    
+    if (typeof generateMoodboardFromBrief !== 'function') {
+        showNotification('Brief module not loaded', 'error');
+        return;
+    }
+    
+    try {
+        showNotification('Generating board from brief...', 'info');
+        var items = await generateMoodboardFromBrief(mb.clientId);
+        
+        if (!items || items.length === 0) {
+            showNotification('No brief found for this client', 'warning');
+            return;
+        }
+        
+        // Position items in a grid layout on the canvas
+        var startX = 80, startY = 80;
+        var col = 0, row = 0;
+        var colWidth = 320, rowHeight = 260;
+        var maxCols = 3;
+        
+        items.forEach(function(item) {
+            item.x = startX + (col * colWidth);
+            item.y = startY + (row * rowHeight);
+            item.w = item.w || 280;
+            item.h = item.h || 220;
+            item.z = (mb.collageItems?.length || 0) + col + (row * maxCols) + 1;
+            
+            col++;
+            if (col >= maxCols) { col = 0; row++; }
+        });
+        
+        // Merge with existing items (don't replace)
+        if (!mb.collageItems) mb.collageItems = [];
+        mb.collageItems = mb.collageItems.concat(items);
+        
+        saveProofs();
+        
+        // Re-render the canvas
+        var canvas = document.getElementById('mlCanvas-' + mbId);
+        if (canvas) {
+            canvas.innerHTML = renderMoodboardItems(mb, false);
+            setTimeout(resolveAllImages, 50);
+        }
+        
+        showNotification(items.length + ' items added from brief!', 'success');
+        
+        // Also save to Supabase
+        saveMoodboardToSupabase(mb);
+        
+    } catch (err) {
+        console.error('Auto-gen error:', err);
+        showNotification('Failed to generate from brief', 'error');
+    }
+}
+
+/**
+ * Render brief panel HTML for the floating panel
+ */
+function renderBriefPanelHTML(clientId) {
+    if (!clientId) {
+        return '<div class="mb-brief-empty"><p>No client linked</p></div>';
+    }
+    
+    // Try to load from cache first, then fetch async
+    var cacheKey = 'nui_brief_' + clientId;
+    var cached = localStorage.getItem(cacheKey);
+    
+    if (cached) {
+        try {
+            var brief = JSON.parse(cached);
+            return formatBriefResponses(brief.responses || {});
+        } catch(e) {}
+    }
+    
+    // Trigger async fetch and show loading
+    fetchBriefForPanel(clientId);
+    return '<div class="mb-brief-empty"><p style="color:rgba(255,255,255,0.4);">Loading brief...</p></div>';
+}
+
+async function fetchBriefForPanel(clientId) {
+    try {
+        var resp = await fetch('/.netlify/functions/save-brief?clientId=' + clientId);
+        if (!resp.ok) return;
+        var data = await resp.json();
+        if (data.briefs && data.briefs.length > 0) {
+            var brief = data.briefs[0];
+            localStorage.setItem('nui_brief_' + clientId, JSON.stringify(brief));
+            
+            // Update the panel if it's open
+            var panel = document.getElementById('mlPanel-brief');
+            if (panel && panel.classList.contains('show')) {
+                var content = panel.querySelector('.mb-brief-responses, .mb-brief-empty');
+                if (content) {
+                    content.outerHTML = formatBriefResponses(brief.responses || {});
+                }
+            }
+        }
+    } catch(e) {
+        console.warn('Brief fetch error:', e);
+    }
+}
+
+function formatBriefResponses(responses) {
+    if (!responses || Object.keys(responses).length === 0) {
+        return '<div class="mb-brief-empty"><p style="color:rgba(255,255,255,0.4);">No brief submitted yet</p><p style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px;">Send the questionnaire link to this client</p></div>';
+    }
+    
+    // Use BRAND_QUESTIONS if available for labels
+    var questions = (typeof BRAND_QUESTIONS !== 'undefined') ? BRAND_QUESTIONS : null;
+    var html = '<div class="mb-brief-responses">';
+    
+    Object.keys(responses).forEach(function(key) {
+        var val = responses[key];
+        if (!val || val === '' || (Array.isArray(val) && val.length === 0)) return;
+        
+        var label = key;
+        // Try to find human-readable label from BRAND_QUESTIONS
+        if (questions) {
+            ['section1', 'section2'].forEach(function(sec) {
+                if (questions[sec] && questions[sec].questions) {
+                    var q = questions[sec].questions.find(function(qq) { return qq.id === key; });
+                    if (q) label = q.label;
+                }
+            });
+        }
+        
+        var displayVal = Array.isArray(val) ? val.join(', ') : String(val);
+        
+        html += '<div class="mb-brief-item">' +
+            '<div class="mb-brief-q-label">' + label + '</div>' +
+            '<div class="mb-brief-q-answer">' + escapeHTML(displayVal) + '</div>' +
+        '</div>';
+    });
+    
+    html += '</div>';
+    return html;
+}
+
+function escapeHTML(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+// ─── SUPABASE PERSISTENCE ─── 
+
+/**
+ * Save moodboard to Supabase (non-blocking, fire-and-forget with retry)
+ */
+async function saveMoodboardToSupabase(mb) {
+    if (!mb || !mb.id) return;
+    
+    try {
+        var client = clients.find(c => c.id === mb.clientId);
+        
+        // Strip base64 from items to keep payload small
+        var cleanItems = (mb.collageItems || []).map(function(item) {
+            var clean = Object.assign({}, item);
+            if (clean.src && clean.src.startsWith('data:')) {
+                clean.src = '[base64-stripped]';
+            }
+            if (clean.src && clean.src.startsWith('idb://')) {
+                clean.src = '[local-only:' + clean.src + ']';
+            }
+            return clean;
+        });
+        
+        var payload = {
+            id: mb.id,
+            client_id: mb.clientId || null,
+            client_name: client?.name || mb.clientName || null,
+            project_id: mb.projectId || null,
+            title: mb.title || 'Untitled',
+            status: mb.status || 'draft',
+            collage_items: cleanItems,
+            canvas_background: mb.canvasBackground || '#0a0a0a',
+            notes: mb.notes || '',
+            brand_colors: mb.brandColors || [],
+            fonts: mb.fonts || {}
+        };
+        
+        var resp = await fetch('/.netlify/functions/save-moodboard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        
+        if (resp.ok) {
+            console.log('[NUI] Moodboard synced to Supabase:', mb.id);
+        } else {
+            var err = await resp.text();
+            console.warn('[NUI] Moodboard sync failed:', err);
+        }
+    } catch (e) {
+        console.warn('[NUI] Moodboard sync error (offline?):', e.message);
+    }
+}
+
+/**
+ * Load moodboard from Supabase (fallback to localStorage)
+ */
+async function loadMoodboardFromSupabase(mbId) {
+    try {
+        var resp = await fetch('/.netlify/functions/save-moodboard?id=' + mbId);
+        if (!resp.ok) return null;
+        var data = await resp.json();
+        return data.moodboard || null;
+    } catch(e) {
+        console.warn('[NUI] Supabase load failed, using localStorage:', e.message);
+        return null;
+    }
+}
+
+
+/**
+ * One-time migration: push all localStorage moodboards to Supabase
+ */
+async function migrateMoodboardsToSupabase() {
+    if (!proofs || proofs.length === 0) {
+        showNotification('No moodboards to migrate', 'info');
+        return;
+    }
+    
+    var count = 0;
+    for (var i = 0; i < proofs.length; i++) {
+        try {
+            await saveMoodboardToSupabase(proofs[i]);
+            count++;
+        } catch(e) {
+            console.warn('Migration failed for:', proofs[i].id, e);
+        }
+    }
+    
+    showNotification(count + '/' + proofs.length + ' moodboards migrated to cloud', 'success');
+    console.log('[NUI] Migration complete:', count, 'of', proofs.length);
+}
+
+/**
+ * Load brief snapshot into new moodboard creation
+ * Called when creating a new moodboard for a client who has a submitted brief
+ */
+async function attachBriefToMoodboard(mb) {
+    if (!mb || !mb.clientId) return;
+    
+    try {
+        var resp = await fetch('/.netlify/functions/save-brief?clientId=' + mb.clientId);
+        if (!resp.ok) return;
+        var data = await resp.json();
+        
+        if (data.briefs && data.briefs.length > 0) {
+            var brief = data.briefs[0];
+            mb.briefId = brief.id;
+            mb.briefSnapshot = brief.responses || {};
+            saveProofs();
+            console.log('[NUI] Brief attached to moodboard:', mb.id);
+        }
+    } catch(e) {
+        console.warn('[NUI] Brief attach error:', e);
+    }
+}
+
+// End of brief + Supabase integration
