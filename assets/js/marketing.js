@@ -2421,342 +2421,188 @@ function loadServicesView() {
 </div>
 </section>
 
-<!-- EMAIL & SMS AUTOMATION -->
-<section class="package-section" data-svc-filter="email-sms" style="background: #050505;">
+<!-- MARKETING TECHNOLOGY SERVICES - Individual Service Cards -->
+<section class="package-section" data-svc-filter="email-sms,geo,digital,established" style="background: #050505;">
 <div class="package-image">
-<img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1563986768609-322da13575f2?w=1920&q=80" alt="Email and SMS Marketing Automation" data-service-image="email-sms">
+<img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1563986768609-322da13575f2?w=1920&q=80" alt="Marketing Technology Services" data-service-image="martech">
 </div>
 <div class="container-lg">
 <div class="package-header">
-<div class="package-label">Revenue Recovery</div>
-<h2 class="package-title">EMAIL & SMS <span class="red">AUTOMATION</span></h2>
-<p class="package-subtitle">97% of your website visitors leave without contacting you. We identify them, track what they looked at, and automatically send personalized emails and texts that bring them back — on autopilot.</p>
-<div class="package-price">$1,500+ <span>setup</span></div>
-<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">+ $297/mo managed service · or 4 interest-free payments of <strong style="color:#a855f7;">$375</strong> with Afterpay / Klarna</div>
+<div class="package-label">Marketing Technology</div>
+<h2 class="package-title">MARKETING <span class="red">TECHNOLOGY</span></h2>
+<p class="package-subtitle">Every tool your business needs to capture leads, retarget visitors, and dominate your local market. Buy individually or bundle for a discount.</p>
 </div>
 
-<!-- Problem/Solution Bar -->
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1000px;margin:0 auto 60px;">
-<div style="background:rgba(255,59,48,0.06);border:1px solid rgba(255,59,48,0.15);border-radius:16px;padding:32px;">
-<h3 style="font-size:16px;font-weight:800;color:#ff3b30;margin-bottom:16px;">❌ THE PROBLEM</h3>
-<p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.8;margin:0;">People visit your site, browse your services, check your pricing — then leave. You never know they were there. No name, no email, no follow-up. That's money walking out the door every single day.</p>
-</div>
-<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:16px;padding:32px;">
-<h3 style="font-size:16px;font-weight:800;color:#22c55e;margin-bottom:16px;">✅ THE SOLUTION</h3>
-<p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.8;margin:0;">We install silent visitor tracking on your site. When someone visits, we identify them — name, email, company, LinkedIn. Then our system sends them a personalized email based on exactly what they were looking at. Automatically.</p>
-</div>
-</div>
+<!-- Row 1: Visitor Intelligence -->
+<div style="margin-bottom:16px;"><span style="font-size:11px;text-transform:uppercase;letter-spacing:3px;color:var(--red);font-weight:700;">Visitor Intelligence</span></div>
+<div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 48px;">
 
-<div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr);">
-<div class="deliverable-card">
-<div class="deliverable-icon">👤</div>
-<h3 class="deliverable-title">Silent Visitor Identification</h3>
-<p class="deliverable-desc">See who's visiting your website — even if they never fill out a form. Names, emails, companies, LinkedIn profiles.</p>
+<div class="deliverable-card" style="border-color: rgba(255,255,255,0.1);">
+<div class="pkg-badge">Tracking</div>
+<h3 class="deliverable-title">Silent Visitor ID</h3>
+<div class="pkg-price">$500 <span style="font-size:14px;opacity:0.6;">setup</span> + $97<span style="font-size:14px;opacity:0.6;">/mo</span></div>
+<p class="deliverable-desc">Identify 15-30% of anonymous website visitors with full name, email, company, and LinkedIn.</p>
 <ul class="deliverable-list">
-<li>Identifies 15-30% of anonymous visitors</li>
-<li>Full profiles: name, email, company, title</li>
-<li>LinkedIn profile links</li>
-<li>Company size & industry data</li>
-<li>See exactly which pages they viewed</li>
+<li>RB2B Visitor Identification</li>
+<li>Real-Time Lead Dashboard</li>
+<li>Page View History</li>
+<li>Lead Status Pipeline</li>
+<li>CSV Export</li>
+<li>Weekly Reports</li>
 </ul>
-<p class="pkg-note">BEST FOR: B2B businesses & high-ticket services</p>
+<button class="btn-package" onclick="startServiceIntake('visitor-id')">Get Started →</button>
 </div>
 
-<div class="deliverable-card">
-<div class="deliverable-icon">📧</div>
-<h3 class="deliverable-title">Smart Email Sequences</h3>
-<p class="deliverable-desc">Automated emails that match what visitors actually looked at. Someone browsed pricing? They get a pricing-focused follow-up.</p>
+<div class="deliverable-card" style="border-color: rgba(255,255,255,0.1);">
+<div class="pkg-badge">Retargeting</div>
+<h3 class="deliverable-title">Facebook Pixel & Ads</h3>
+<div class="pkg-price">$500 <span style="font-size:14px;opacity:0.6;">setup</span> + $199<span style="font-size:14px;opacity:0.6;">/mo</span></div>
+<p class="deliverable-desc">Track every visitor, build custom audiences, and retarget them on Facebook & Instagram.</p>
 <ul class="deliverable-list">
-<li>Interest-based email templates</li>
-<li>Personalized with name & company</li>
-<li>5 pre-built campaign sequences</li>
-<li>7-day smart cooldown (no spamming)</li>
-<li>Open & click tracking</li>
+<li>Meta Pixel Installation</li>
+<li>Custom Audience Creation</li>
+<li>Retargeting Ad Campaigns</li>
+<li>Interest-Based Segments</li>
+<li>Lookalike Audiences</li>
+<li>Monthly Performance Reports</li>
 </ul>
-<p class="pkg-note">BEST FOR: Turning window-shoppers into booked calls</p>
+<button class="btn-package" onclick="startServiceIntake('facebook-pixel')">Get Started →</button>
 </div>
 
-<div class="deliverable-card">
-<div class="deliverable-icon">📱</div>
-<h3 class="deliverable-title">SMS Follow-Up Campaigns</h3>
-<p class="deliverable-desc">Text messages get 98% open rates vs 20% for email. We build automated SMS sequences that get responses.</p>
+<div class="deliverable-card" style="border-color: rgba(255,255,255,0.1);">
+<div class="pkg-badge">Retargeting</div>
+<h3 class="deliverable-title">Google Ads Pixel</h3>
+<div class="pkg-price">$500 <span style="font-size:14px;opacity:0.6;">setup</span> + $199<span style="font-size:14px;opacity:0.6;">/mo</span></div>
+<p class="deliverable-desc">Tag visitors with Google Ads remarketing and show your brand across 2M+ websites.</p>
 <ul class="deliverable-list">
-<li>Automated text message sequences</li>
-<li>Triggered by visitor behavior</li>
-<li>Two-way conversation support</li>
-<li>Appointment reminders</li>
-<li>Re-engagement campaigns</li>
+<li>Google Tag Manager Setup</li>
+<li>Conversion Tracking</li>
+<li>Remarketing Audiences</li>
+<li>Display Network Retargeting</li>
+<li>YouTube Retargeting</li>
+<li>Monthly Performance Reports</li>
 </ul>
-<p class="pkg-note">BEST FOR: Local businesses & appointment-based services</p>
+<button class="btn-package" onclick="startServiceIntake('google-pixel')">Get Started →</button>
+</div>
 </div>
 
-<div class="deliverable-card">
-<div class="deliverable-icon">🎯</div>
-<h3 class="deliverable-title">Retargeting Ads Setup</h3>
-<p class="deliverable-desc">Show your ads on Instagram, Facebook, YouTube, and Google to people who already visited your site — based on what they viewed.</p>
+<!-- Row 2: Automation -->
+<div style="margin-bottom:16px;"><span style="font-size:11px;text-transform:uppercase;letter-spacing:3px;color:var(--red);font-weight:700;">Automation & Communication</span></div>
+<div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 48px;">
+
+<div class="deliverable-card" style="border-color: var(--red); position: relative;">
+<div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 16px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;">Most Popular</div>
+<div class="pkg-badge">Automation</div>
+<h3 class="deliverable-title">Email Automation</h3>
+<div class="pkg-price">$750 <span style="font-size:14px;opacity:0.6;">setup</span> + $97<span style="font-size:14px;opacity:0.6;">/mo</span></div>
+<p class="deliverable-desc">Interest-based email sequences triggered by pages visitors view. 7-day smart cooldown.</p>
 <ul class="deliverable-list">
-<li>Meta Pixel (Facebook + Instagram ads)</li>
-<li>Google Ads remarketing tag</li>
-<li>Interest-based audience segments</li>
-<li>Custom conversion tracking</li>
-<li>Scroll depth & engagement signals</li>
+<li>5 Custom Email Sequences</li>
+<li>Behavior-Based Triggers</li>
+<li>Smart Send Scheduling</li>
+<li>Open & Click Tracking</li>
+<li>A/B Subject Testing</li>
+<li>Monthly Optimization</li>
 </ul>
-<p class="pkg-note">BEST FOR: Anyone running paid ads</p>
+<button class="btn-package" onclick="startServiceIntake('email-auto')">Get Started →</button>
 </div>
 
-<div class="deliverable-card">
-<div class="deliverable-icon">🔔</div>
-<h3 class="deliverable-title">Push Notifications</h3>
-<p class="deliverable-desc">Send notifications straight to their phone or desktop — no app needed. Perfect for flash sales, new offers, or re-engagement.</p>
+<div class="deliverable-card" style="border-color: rgba(255,255,255,0.1);">
+<div class="pkg-badge">Automation</div>
+<h3 class="deliverable-title">SMS Automation</h3>
+<div class="pkg-price">$500 <span style="font-size:14px;opacity:0.6;">setup</span> + $79<span style="font-size:14px;opacity:0.6;">/mo</span></div>
+<p class="deliverable-desc">98% open rate text message follow-ups. Two-way conversation, appointment reminders.</p>
 <ul class="deliverable-list">
-<li>Web push for mobile + desktop</li>
-<li>No app download required</li>
-<li>Campaign builder for broadcasts</li>
-<li>Subscriber analytics dashboard</li>
-<li>Works on iPhone, Android, Chrome</li>
+<li>SMS Campaign Builder</li>
+<li>Two-Way Messaging</li>
+<li>Appointment Reminders</li>
+<li>Drip Sequences</li>
+<li>Opt-In/Opt-Out Compliance</li>
+<li>Delivery Reports</li>
 </ul>
-<p class="pkg-note">BEST FOR: E-commerce, event-based, repeat purchase businesses</p>
+<button class="btn-package" onclick="startServiceIntake('sms-auto')">Get Started →</button>
 </div>
 
-<div class="deliverable-card">
-<div class="deliverable-icon">📊</div>
-<h3 class="deliverable-title">Lead Dashboard & CRM</h3>
-<p class="deliverable-desc">See every identified visitor, their journey through your site, and their status — all in one admin panel you control.</p>
+<div class="deliverable-card" style="border-color: rgba(255,255,255,0.1);">
+<div class="pkg-badge">AI Voice</div>
+<h3 class="deliverable-title">AI Phone Assistant</h3>
+<div class="pkg-price">$1,500 <span style="font-size:14px;opacity:0.6;">setup</span> + $197<span style="font-size:14px;opacity:0.6;">/mo</span></div>
+<p class="deliverable-desc">AI receptionist that answers calls 24/7, books appointments, and qualifies leads.</p>
 <ul class="deliverable-list">
-<li>Real-time visitor feed</li>
-<li>Page view history per visitor</li>
-<li>Lead status pipeline (New → Qualified → Converted)</li>
-<li>One-click convert to lead</li>
-<li>CSV export for outreach campaigns</li>
+<li>24/7 AI Call Answering</li>
+<li>Custom Voice & Script</li>
+<li>Appointment Booking</li>
+<li>Lead Qualification</li>
+<li>Call Transcripts & Summaries</li>
+<li>CRM Auto-Logging</li>
 </ul>
-<p class="pkg-note">BEST FOR: Sales teams & business owners who want visibility</p>
+<button class="btn-package" onclick="startServiceIntake('ai-phone')">Get Started →</button>
 </div>
 </div>
 
-<!-- Package Tiers -->
-<div style="max-width:1100px;margin:60px auto 0;">
-<div style="text-align:center;margin-bottom:40px;">
-<div class="package-label">Choose Your Level</div>
-<h3 style="font-size:28px;font-weight:900;color:#fff;">Three Ways to <span class="red">Capture Revenue</span></h3>
-</div>
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-<div style="background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px;text-align:center;">
-<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--red);font-weight:700;margin-bottom:12px;">Starter</div>
-<h4 style="font-size:20px;font-weight:800;margin-bottom:8px;">IDENTIFY & EMAIL</h4>
-<div style="font-size:36px;font-weight:900;color:var(--red);margin:16px 0;">$1,500</div>
-<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">one-time setup + $97/mo hosting</div>
-<ul style="list-style:none;padding:0;text-align:left;font-size:13px;color:rgba(255,255,255,0.7);">
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Visitor identification pixel</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ 5 automated email sequences</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Lead dashboard</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Weekly visitor reports</li>
-<li style="padding:8px 0;">✓ 7-day cooldown logic</li>
+<!-- Row 3: Location Marketing -->
+<div style="margin-bottom:16px;"><span style="font-size:11px;text-transform:uppercase;letter-spacing:3px;color:var(--red);font-weight:700;">Location-Based Marketing</span></div>
+<div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 48px;">
+
+<div class="deliverable-card" style="border-color: var(--red); position: relative;">
+<div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 16px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;">High ROI</div>
+<div class="pkg-badge">Location Ads</div>
+<h3 class="deliverable-title">Geo-Fencing</h3>
+<div class="pkg-price">$1,500 <span style="font-size:14px;opacity:0.6;">setup</span> + $997<span style="font-size:14px;opacity:0.6;">/mo</span></div>
+<p class="deliverable-desc">Draw invisible fences around competitor locations. Anyone who walks in sees your ads for 30 days.</p>
+<ul class="deliverable-list">
+<li>Fence Up to 10 Locations</li>
+<li>30-Day Retargeting Window</li>
+<li>Custom Ad Creative</li>
+<li>Foot Traffic Attribution</li>
+<li>Conversion Zone Tracking</li>
+<li>Monthly ROI Reports</li>
 </ul>
+<button class="btn-package" onclick="startServiceIntake('geo-fence')">Get Started →</button>
 </div>
-<div style="background:#080808;border:2px solid var(--red);border-radius:16px;padding:32px;text-align:center;position:relative;">
-<div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;padding:4px 16px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;">MOST POPULAR</div>
-<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--red);font-weight:700;margin-bottom:12px;">Growth</div>
-<h4 style="font-size:20px;font-weight:800;margin-bottom:8px;">OMNICHANNEL ENGINE</h4>
-<div style="font-size:36px;font-weight:900;color:var(--red);margin:16px 0;">$2,500</div>
-<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">one-time setup + $297/mo managed</div>
-<ul style="list-style:none;padding:0;text-align:left;font-size:13px;color:rgba(255,255,255,0.7);">
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Everything in Starter</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ SMS automation sequences</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Google + Meta retargeting setup</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Push notification system</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Monthly campaign optimization</li>
-<li style="padding:8px 0;">✓ Dedicated account manager</li>
+
+<div class="deliverable-card" style="border-color: rgba(255,255,255,0.1);">
+<div class="pkg-badge">Rank Intel</div>
+<h3 class="deliverable-title">Geo-Grid Tracking</h3>
+<div class="pkg-price">$750 <span style="font-size:14px;opacity:0.6;">setup</span> + $297<span style="font-size:14px;opacity:0.6;">/mo</span></div>
+<p class="deliverable-desc">See exactly where you rank on Google Maps block by block across your entire service area.</p>
+<ul class="deliverable-list">
+<li>7×7 Grid Scan (49 Points)</li>
+<li>Color-Coded Heat Maps</li>
+<li>Competitor Rank Comparison</li>
+<li>Monthly Trend Reports</li>
+<li>GBP Optimization</li>
+<li>50 Citation Submissions</li>
 </ul>
+<button class="btn-package" onclick="startServiceIntake('geo-grid')">Get Started →</button>
 </div>
-<div style="background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px;text-align:center;">
-<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--red);font-weight:700;margin-bottom:12px;">Enterprise</div>
-<h4 style="font-size:20px;font-weight:800;margin-bottom:8px;">FULL REVENUE SYSTEM</h4>
-<div style="font-size:36px;font-weight:900;color:var(--red);margin:16px 0;">$5,000</div>
-<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">one-time setup + $497/mo managed</div>
-<ul style="list-style:none;padding:0;text-align:left;font-size:13px;color:rgba(255,255,255,0.7);">
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Everything in Growth</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ AI chatbot integration</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Custom CRM pipeline</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Advanced lead scoring</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ White-label reporting</li>
-<li style="padding:8px 0;">✓ Priority support + strategy calls</li>
+
+<div class="deliverable-card" style="border-color: rgba(255,255,255,0.1);">
+<div class="pkg-badge">Integration</div>
+<h3 class="deliverable-title">CRM Integration</h3>
+<div class="pkg-price">$1,000 <span style="font-size:14px;opacity:0.6;">one-time</span></div>
+<p class="deliverable-desc">Connect all your marketing data into one dashboard. Leads, visitors, calls — everything in one place.</p>
+<ul class="deliverable-list">
+<li>Custom Lead Dashboard</li>
+<li>Pipeline Automation</li>
+<li>Contact Management</li>
+<li>Activity Logging</li>
+<li>Team Notifications</li>
+<li>Reporting & Analytics</li>
 </ul>
+<button class="btn-package" onclick="startServiceIntake('crm-integration')">Get Started →</button>
 </div>
 </div>
+
+<!-- Bundle Discount Banner -->
+<div style="background:linear-gradient(135deg,rgba(230,57,70,0.1),rgba(230,57,70,0.05));border:1px solid rgba(230,57,70,0.2);border-radius:16px;padding:32px;text-align:center;margin-bottom:40px;">
+<p style="font-size:13px;text-transform:uppercase;letter-spacing:3px;color:var(--red);font-weight:700;margin-bottom:8px;">💰 BUNDLE & SAVE</p>
+<p style="font-size:20px;font-weight:700;color:#fff;margin-bottom:8px;">Buy 3+ services and get 15% off monthly fees</p>
+<p style="font-size:14px;color:rgba(255,255,255,0.6);">Mix and match any services above. The more you connect, the more powerful each one becomes.</p>
 </div>
 
 <div class="package-cta">
-<button class="btn-package" onclick="startServiceIntake('email-sms')">Start Capturing Lost Revenue →</button>
-</div>
-</div>
-</section>
-
-<!-- GEO-FENCING & GEO-GRIDDING -->
-<section class="package-section" data-svc-filter="geo" style="background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);">
-<div class="package-image">
-<img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1920&q=80" alt="Geo-Fencing and Geo-Gridding Location Marketing" data-service-image="geo">
-</div>
-<div class="container-lg">
-<div class="package-header">
-<div class="package-label">Location-Based Marketing</div>
-<h2 class="package-title">GEO-FENCING & <span class="red">GEO-GRIDDING</span></h2>
-<p class="package-subtitle">Target people standing inside your competitor's business. Track exactly where you rank on Google block by block. Turn physical locations into digital ad triggers.</p>
-<div class="package-price">$1,500+ <span>per month</span></div>
-<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">Setup fee from <strong style="color:#a855f7;">$750</strong> · includes campaign build, zones, creative & reporting</div>
-</div>
-
-<!-- Problem/Solution Bar -->
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1000px;margin:0 auto 60px;">
-<div style="background:rgba(255,59,48,0.06);border:1px solid rgba(255,59,48,0.15);border-radius:16px;padding:32px;">
-<h3 style="font-size:16px;font-weight:800;color:#ff3b30;margin-bottom:16px;">❌ THE PROBLEM</h3>
-<p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.8;margin:0;">You're spending money on ads that reach everyone — including people who will never walk through your door. You don't know where you actually rank on Google across your service area. Your competitors are stealing your customers and you can't even see it happening.</p>
-</div>
-<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:16px;padding:32px;">
-<h3 style="font-size:16px;font-weight:800;color:#22c55e;margin-bottom:16px;">✅ THE SOLUTION</h3>
-<p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.8;margin:0;">We draw invisible boundaries around competitor locations, events, and high-traffic areas — anyone who walks in gets tagged and sees your ads for 30 days. We map your Google rankings on a grid across your entire city so you know exactly where to focus. Precision marketing, zero waste.</p>
-</div>
-</div>
-
-<div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr);">
-<div class="deliverable-card">
-<div class="deliverable-icon">📍</div>
-<h3 class="deliverable-title">Competitor Geo-Fencing</h3>
-<p class="deliverable-desc">Draw a virtual fence around your competitor's location. Anyone who walks in gets tagged and sees YOUR ads on their phone for up to 30 days.</p>
-<ul class="deliverable-list">
-<li>Target up to 20 competitor locations</li>
-<li>Ads served on 600,000+ apps & sites</li>
-<li>30-day retargeting after they leave</li>
-<li>Works on iOS and Android devices</li>
-<li>Foot traffic attribution tracking</li>
-</ul>
-<p class="pkg-note">BEST FOR: Restaurants, salons, gyms, retail stores</p>
-</div>
-
-<div class="deliverable-card">
-<div class="deliverable-icon">🎪</div>
-<h3 class="deliverable-title">Event & Location Targeting</h3>
-<p class="deliverable-desc">Fence trade shows, conferences, festivals, concerts — reach thousands of qualified people in one location at one time.</p>
-<ul class="deliverable-list">
-<li>Target any event or venue in real-time</li>
-<li>Capture attendees during & after events</li>
-<li>Custom audience building per event</li>
-<li>Historical event targeting (past 6 months)</li>
-<li>Perfect for B2B lead generation</li>
-</ul>
-<p class="pkg-note">BEST FOR: B2B companies, event vendors, sponsors</p>
-</div>
-
-<div class="deliverable-card">
-<div class="deliverable-icon">🗺️</div>
-<h3 class="deliverable-title">Geo-Grid Rank Tracking</h3>
-<p class="deliverable-desc">See exactly where you rank on Google Maps at every intersection across your city. A heat map that shows your strong zones and blind spots.</p>
-<ul class="deliverable-list">
-<li>Grid overlay of your entire service area</li>
-<li>Rankings tracked at every grid point</li>
-<li>Color-coded heat map (green/yellow/red)</li>
-<li>Competitor comparison at each point</li>
-<li>Monthly tracking & improvement reports</li>
-</ul>
-<p class="pkg-note">BEST FOR: Any local business relying on Google Maps</p>
-</div>
-
-<div class="deliverable-card">
-<div class="deliverable-icon">🏠</div>
-<h3 class="deliverable-title">Addressable Geo-Fencing</h3>
-<p class="deliverable-desc">Upload a list of specific addresses — homes, businesses, zip codes — and serve ads only to people at those locations. Direct mail, but digital.</p>
-<ul class="deliverable-list">
-<li>Target specific home & business addresses</li>
-<li>Upload customer or prospect lists</li>
-<li>Hyper-targeted by zip code or neighborhood</li>
-<li>Works with your existing mailing lists</li>
-<li>Cross-device household targeting</li>
-</ul>
-<p class="pkg-note">BEST FOR: Real estate, home services, political campaigns</p>
-</div>
-
-<div class="deliverable-card">
-<div class="deliverable-icon">🔥</div>
-<h3 class="deliverable-title">Conversion Zone Tracking</h3>
-<p class="deliverable-desc">Know exactly how many people who saw your geo-fenced ad actually walked into your business. Real foot traffic data, not guesses.</p>
-<ul class="deliverable-list">
-<li>Conversion zone around your location</li>
-<li>Track ad-to-visit attribution</li>
-<li>See which fenced zones drive the most visits</li>
-<li>Cost-per-visit calculations</li>
-<li>Weekly walk-in reports</li>
-</ul>
-<p class="pkg-note">BEST FOR: Brick & mortar businesses with physical locations</p>
-</div>
-
-<div class="deliverable-card">
-<div class="deliverable-icon">📊</div>
-<h3 class="deliverable-title">Local SEO Optimization</h3>
-<p class="deliverable-desc">Use geo-grid data to fix your weak zones. We optimize your Google Business Profile, citations, and reviews to dominate your local map pack.</p>
-<ul class="deliverable-list">
-<li>Google Business Profile optimization</li>
-<li>Citation building (100+ directories)</li>
-<li>Review generation strategy</li>
-<li>Category & keyword optimization</li>
-<li>Monthly ranking improvement reports</li>
-</ul>
-<p class="pkg-note">BEST FOR: Businesses not showing up in Google Map Pack</p>
-</div>
-</div>
-
-<!-- Package Tiers -->
-<div style="max-width:1100px;margin:60px auto 0;">
-<div style="text-align:center;margin-bottom:40px;">
-<div class="package-label">Choose Your Level</div>
-<h3 style="font-size:28px;font-weight:900;color:#fff;">Three Ways to <span class="red">Dominate Your Area</span></h3>
-</div>
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-<div style="background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px;text-align:center;">
-<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--red);font-weight:700;margin-bottom:12px;">Starter</div>
-<h4 style="font-size:20px;font-weight:800;margin-bottom:8px;">GEO-GRID INTEL</h4>
-<div style="font-size:36px;font-weight:900;color:var(--red);margin:16px 0;">$750</div>
-<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">setup + $297/mo tracking & optimization</div>
-<ul style="list-style:none;padding:0;text-align:left;font-size:13px;color:rgba(255,255,255,0.7);">
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Geo-grid rank tracking (your city)</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Google Business Profile optimization</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Monthly heat map reports</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Competitor ranking comparison</li>
-<li style="padding:8px 0;">✓ Citation building (50 directories)</li>
-</ul>
-</div>
-<div style="background:#080808;border:2px solid var(--red);border-radius:16px;padding:32px;text-align:center;position:relative;">
-<div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;padding:4px 16px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;">MOST POPULAR</div>
-<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--red);font-weight:700;margin-bottom:12px;">Growth</div>
-<h4 style="font-size:20px;font-weight:800;margin-bottom:8px;">FENCE & CONQUER</h4>
-<div style="font-size:36px;font-weight:900;color:var(--red);margin:16px 0;">$1,500</div>
-<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">setup + $1,500/mo ad management</div>
-<ul style="list-style:none;padding:0;text-align:left;font-size:13px;color:rgba(255,255,255,0.7);">
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Everything in Starter</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Geo-fence up to 10 competitor locations</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Event & venue targeting</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Custom display ad creative (4 sizes)</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Conversion zone tracking</li>
-<li style="padding:8px 0;">✓ Bi-weekly performance reports</li>
-</ul>
-</div>
-<div style="background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px;text-align:center;">
-<div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--red);font-weight:700;margin-bottom:12px;">Enterprise</div>
-<h4 style="font-size:20px;font-weight:800;margin-bottom:8px;">TOTAL DOMINATION</h4>
-<div style="font-size:36px;font-weight:900;color:var(--red);margin:16px 0;">$3,000</div>
-<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;">setup + $2,500/mo full management</div>
-<ul style="list-style:none;padding:0;text-align:left;font-size:13px;color:rgba(255,255,255,0.7);">
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Everything in Growth</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Fence up to 50 locations</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Addressable geo-fencing (mail lists)</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Multi-city geo-grid tracking</li>
-<li style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">✓ Review generation campaign</li>
-<li style="padding:8px 0;">✓ Dedicated strategist + weekly calls</li>
-</ul>
-</div>
-</div>
-</div>
-
-<div class="package-cta">
-<button class="btn-package" onclick="startServiceIntake('geo')">Start Dominating Your Area →</button>
+<button class="btn-package" onclick="startServiceIntake('consultation')">Book Free Strategy Call →</button>
 </div>
 </div>
 </section>

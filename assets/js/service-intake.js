@@ -867,6 +867,234 @@ const serviceIntakeConfigs = {
             ]
         }
     },
+    'visitor-id': {
+        name: 'Silent Visitor Identification',
+        price: 500,
+        steps: ['About You', 'Business Info', 'Setup', 'Review'],
+        fields: {
+            1: clientBackgroundFields,
+            2: [
+                { id: 'businessName', type: 'text', label: 'Business Name', required: true },
+                { id: 'website', type: 'text', label: 'Website URL', required: true },
+                { id: 'industry', type: 'text', label: 'Industry/Niche', required: true },
+                { id: 'monthlyVisitors', type: 'select', label: 'Estimated Monthly Website Visitors', options: ['Under 500', '500-1,000', '1,000-5,000', '5,000-10,000', '10,000+', 'Not sure'] }
+            ],
+            3: [
+                { id: 'currentCRM', type: 'select', label: 'Do you use a CRM?', options: ['Yes (please specify below)', 'No', 'Not sure what a CRM is'] },
+                { id: 'crmName', type: 'text', label: 'CRM Name (if applicable)', required: false },
+                { id: 'followUpProcess', type: 'textarea', label: 'How do you currently follow up with leads?', required: false },
+                { id: 'timeline', type: 'select', label: 'When do you want to start?', options: ['Immediately', 'Within 2 weeks', 'Within 1 month', 'Just exploring'] }
+            ]
+        }
+    },
+    'facebook-pixel': {
+        name: 'Facebook Pixel & Retargeting',
+        price: 500,
+        steps: ['About You', 'Business Info', 'Ad Strategy', 'Review'],
+        fields: {
+            1: clientBackgroundFields,
+            2: [
+                { id: 'businessName', type: 'text', label: 'Business Name', required: true },
+                { id: 'website', type: 'text', label: 'Website URL', required: true },
+                { id: 'hasFBPage', type: 'select', label: 'Do you have a Facebook Business Page?', options: ['Yes', 'No', 'Not sure'] },
+                { id: 'hasIGBusiness', type: 'select', label: 'Do you have an Instagram Business Account?', options: ['Yes', 'No', 'Not sure'] },
+                { id: 'hasAdAccount', type: 'select', label: 'Do you have a Meta Ads Manager account?', options: ['Yes', 'No', 'Not sure'] }
+            ],
+            3: [
+                { id: 'adBudget', type: 'select', label: 'Monthly Ad Budget (separate from our fee)', options: ['$300-$500/mo', '$500-$1,000/mo', '$1,000-$2,500/mo', '$2,500+/mo', 'Need guidance'] },
+                { id: 'targetAudience', type: 'textarea', label: 'Describe your ideal customer (age, location, interests)', required: true },
+                { id: 'adGoal', type: 'radio', label: 'Primary advertising goal?', options: [
+                    { value: 'awareness', title: 'Brand Awareness', desc: 'Get more people to know about my business' },
+                    { value: 'traffic', title: 'Website Traffic', desc: 'Drive more visitors to my site' },
+                    { value: 'leads', title: 'Lead Generation', desc: 'Capture contact info from interested people' },
+                    { value: 'sales', title: 'Sales/Conversions', desc: 'Drive purchases or bookings' }
+                ]},
+                { id: 'timeline', type: 'select', label: 'When do you want to start?', options: ['Immediately', 'Within 2 weeks', 'Within 1 month', 'Just exploring'] }
+            ]
+        }
+    },
+    'google-pixel': {
+        name: 'Google Ads Pixel & Retargeting',
+        price: 500,
+        steps: ['About You', 'Business Info', 'Ad Strategy', 'Review'],
+        fields: {
+            1: clientBackgroundFields,
+            2: [
+                { id: 'businessName', type: 'text', label: 'Business Name', required: true },
+                { id: 'website', type: 'text', label: 'Website URL', required: true },
+                { id: 'hasGoogleAds', type: 'select', label: 'Do you have a Google Ads account?', options: ['Yes', 'No', 'Not sure'] },
+                { id: 'hasAnalytics', type: 'select', label: 'Do you have Google Analytics installed?', options: ['Yes', 'No', 'Not sure'] }
+            ],
+            3: [
+                { id: 'adBudget', type: 'select', label: 'Monthly Ad Budget (separate from our fee)', options: ['$300-$500/mo', '$500-$1,000/mo', '$1,000-$2,500/mo', '$2,500+/mo', 'Need guidance'] },
+                { id: 'targetAudience', type: 'textarea', label: 'Describe your ideal customer (age, location, interests)', required: true },
+                { id: 'adGoal', type: 'radio', label: 'Primary advertising goal?', options: [
+                    { value: 'search', title: 'Search Ads', desc: 'Show up when people Google my services' },
+                    { value: 'display', title: 'Display Retargeting', desc: 'Follow visitors with banner ads across the web' },
+                    { value: 'youtube', title: 'YouTube Ads', desc: 'Video ads on YouTube' },
+                    { value: 'all', title: 'Full Strategy', desc: 'Search + Display + YouTube combined' }
+                ]},
+                { id: 'timeline', type: 'select', label: 'When do you want to start?', options: ['Immediately', 'Within 2 weeks', 'Within 1 month', 'Just exploring'] }
+            ]
+        }
+    },
+    'email-auto': {
+        name: 'Email Automation',
+        price: 750,
+        steps: ['About You', 'Business Info', 'Email Strategy', 'Review'],
+        fields: {
+            1: clientBackgroundFields,
+            2: [
+                { id: 'businessName', type: 'text', label: 'Business Name', required: true },
+                { id: 'website', type: 'text', label: 'Website URL', required: true },
+                { id: 'industry', type: 'text', label: 'Industry/Niche', required: true },
+                { id: 'hasEmailList', type: 'select', label: 'Do you have an existing email list?', options: ['Yes, 1-500 contacts', 'Yes, 500-2,000 contacts', 'Yes, 2,000+ contacts', 'No, starting fresh'] },
+                { id: 'currentEmailTool', type: 'select', label: 'Current email tool (if any)', options: ['Mailchimp', 'Constant Contact', 'ActiveCampaign', 'HubSpot', 'None', 'Other'] }
+            ],
+            3: [
+                { id: 'emailGoals', type: 'checkbox', label: 'What email sequences do you need?', options: [
+                    { value: 'welcome', title: 'Welcome Sequence', desc: 'Automated intro emails for new leads' },
+                    { value: 'nurture', title: 'Lead Nurture', desc: 'Warm up cold leads over time' },
+                    { value: 'followup', title: 'Visitor Follow-Up', desc: 'Auto-email people who visited specific pages' },
+                    { value: 'reactivation', title: 'Re-Engagement', desc: 'Win back inactive contacts' },
+                    { value: 'promo', title: 'Promotional', desc: 'Offers, discounts, announcements' }
+                ]},
+                { id: 'biggestGoal', type: 'textarea', label: 'What\'s the #1 thing you want email to do for your business?', required: true },
+                { id: 'timeline', type: 'select', label: 'When do you want to start?', options: ['Immediately', 'Within 2 weeks', 'Within 1 month', 'Just exploring'] }
+            ]
+        }
+    },
+    'sms-auto': {
+        name: 'SMS Automation',
+        price: 500,
+        steps: ['About You', 'Business Info', 'SMS Strategy', 'Review'],
+        fields: {
+            1: clientBackgroundFields,
+            2: [
+                { id: 'businessName', type: 'text', label: 'Business Name', required: true },
+                { id: 'website', type: 'text', label: 'Website URL', required: true },
+                { id: 'industry', type: 'text', label: 'Industry/Niche', required: true },
+                { id: 'hasPhoneList', type: 'select', label: 'Do you collect customer phone numbers?', options: ['Yes, regularly', 'Sometimes', 'No', 'Have a list but never text'] }
+            ],
+            3: [
+                { id: 'smsGoals', type: 'checkbox', label: 'What SMS features do you need?', options: [
+                    { value: 'reminders', title: 'Appointment Reminders', desc: 'Auto-text before appointments' },
+                    { value: 'followup', title: 'Follow-Up Texts', desc: 'After a service or purchase' },
+                    { value: 'promos', title: 'Promotional Texts', desc: 'Deals, events, announcements' },
+                    { value: 'twoway', title: 'Two-Way Chat', desc: 'Customers can text you back' },
+                    { value: 'drip', title: 'Drip Campaigns', desc: 'Multi-step text sequences' }
+                ]},
+                { id: 'biggestGoal', type: 'textarea', label: 'What\'s the #1 thing you want SMS to do for your business?', required: true },
+                { id: 'timeline', type: 'select', label: 'When do you want to start?', options: ['Immediately', 'Within 2 weeks', 'Within 1 month', 'Just exploring'] }
+            ]
+        }
+    },
+    'ai-phone': {
+        name: 'AI Phone Assistant',
+        price: 1500,
+        steps: ['About You', 'Business Info', 'Call Setup', 'Review'],
+        fields: {
+            1: clientBackgroundFields,
+            2: [
+                { id: 'businessName', type: 'text', label: 'Business Name', required: true },
+                { id: 'website', type: 'text', label: 'Website URL', required: true },
+                { id: 'industry', type: 'text', label: 'Industry/Niche', required: true },
+                { id: 'callVolume', type: 'select', label: 'How many calls do you get per week?', options: ['Under 10', '10-25', '25-50', '50-100', '100+', 'Not sure'] },
+                { id: 'missedCalls', type: 'select', label: 'How many calls do you miss?', options: ['Almost none', 'A few per week', 'Many — I\'m too busy to answer', 'Most calls go to voicemail'] }
+            ],
+            3: [
+                { id: 'aiPhoneGoals', type: 'checkbox', label: 'What should the AI assistant handle?', options: [
+                    { value: 'answer', title: 'Answer All Calls', desc: '24/7 live AI receptionist' },
+                    { value: 'book', title: 'Book Appointments', desc: 'Schedule directly into your calendar' },
+                    { value: 'qualify', title: 'Qualify Leads', desc: 'Ask screening questions before transferring' },
+                    { value: 'faq', title: 'Answer FAQs', desc: 'Pricing, hours, services, directions' },
+                    { value: 'transfer', title: 'Smart Transfer', desc: 'Route to the right person based on need' }
+                ]},
+                { id: 'currentPhone', type: 'text', label: 'Current business phone number', required: true },
+                { id: 'additionalNotes', type: 'textarea', label: 'Anything else about your call handling needs?', required: false },
+                { id: 'timeline', type: 'select', label: 'When do you want to start?', options: ['Immediately', 'Within 2 weeks', 'Within 1 month', 'Just exploring'] }
+            ]
+        }
+    },
+    'geo-fence': {
+        name: 'Geo-Fencing',
+        price: 1500,
+        steps: ['About You', 'Business Info', 'Targeting Strategy', 'Review'],
+        fields: {
+            1: clientBackgroundFields,
+            2: [
+                { id: 'businessName', type: 'text', label: 'Business Name', required: true },
+                { id: 'businessAddress', type: 'text', label: 'Your Business Address', required: true },
+                { id: 'industry', type: 'text', label: 'Industry/Niche', required: true },
+                { id: 'serviceArea', type: 'text', label: 'Service Area (cities/zip codes)', required: true }
+            ],
+            3: [
+                { id: 'competitors', type: 'textarea', label: 'List 3-5 competitors you want to fence (name & address)', required: true },
+                { id: 'fenceLocations', type: 'checkbox', label: 'What types of locations do you want to fence?', options: [
+                    { value: 'competitors', title: 'Competitor Locations', desc: 'Target people inside rival businesses' },
+                    { value: 'events', title: 'Events & Trade Shows', desc: 'Fence concerts, expos, conventions' },
+                    { value: 'retail', title: 'Retail Areas', desc: 'Malls, shopping centers, plazas' },
+                    { value: 'addresses', title: 'Specific Addresses', desc: 'Target mailing list addresses digitally' }
+                ]},
+                { id: 'adBudget', type: 'select', label: 'Monthly Ad Budget (separate from our fee)', options: ['$500-$1,000/mo', '$1,000-$2,500/mo', '$2,500-$5,000/mo', '$5,000+/mo', 'Need guidance'] },
+                { id: 'biggestGoal', type: 'textarea', label: 'What\'s your #1 goal with geo-fencing?', required: true },
+                { id: 'timeline', type: 'select', label: 'When do you want to start?', options: ['Immediately', 'Within 2 weeks', 'Within 1 month', 'Just exploring'] }
+            ]
+        }
+    },
+    'geo-grid': {
+        name: 'Geo-Grid Rank Tracking',
+        price: 750,
+        steps: ['About You', 'Business Info', 'Local SEO', 'Review'],
+        fields: {
+            1: clientBackgroundFields,
+            2: [
+                { id: 'businessName', type: 'text', label: 'Business Name', required: true },
+                { id: 'businessAddress', type: 'text', label: 'Business Address', required: true },
+                { id: 'industry', type: 'text', label: 'Industry/Niche', required: true },
+                { id: 'hasGBP', type: 'select', label: 'Do you have a Google Business Profile?', options: ['Yes, it\'s active', 'Yes, but not updated', 'No', 'Not sure'] },
+                { id: 'serviceArea', type: 'text', label: 'Service Area (cities/neighborhoods)', required: true }
+            ],
+            3: [
+                { id: 'keywords', type: 'textarea', label: 'What do customers search to find you? (e.g., "plumber near me", "best salon Detroit")', required: true },
+                { id: 'competitors', type: 'textarea', label: 'Top 3 local competitors you want to outrank', required: false },
+                { id: 'currentRank', type: 'select', label: 'Where do you currently rank on Google Maps?', options: ['Top 3 (Map Pack)', 'Page 1 (4-10)', 'Page 2+', 'I don\'t show up', 'Not sure'] },
+                { id: 'biggestGoal', type: 'textarea', label: 'What\'s your #1 local SEO goal?', required: true },
+                { id: 'timeline', type: 'select', label: 'When do you want to start?', options: ['Immediately', 'Within 2 weeks', 'Within 1 month', 'Just exploring'] }
+            ]
+        }
+    },
+    'crm-integration': {
+        name: 'CRM Integration',
+        price: 1000,
+        steps: ['About You', 'Business Info', 'Integration Needs', 'Review'],
+        fields: {
+            1: clientBackgroundFields,
+            2: [
+                { id: 'businessName', type: 'text', label: 'Business Name', required: true },
+                { id: 'website', type: 'text', label: 'Website URL', required: true },
+                { id: 'industry', type: 'text', label: 'Industry/Niche', required: true },
+                { id: 'teamSize', type: 'select', label: 'How many people on your team?', options: ['Just me', '2-5', '6-15', '15+'] }
+            ],
+            3: [
+                { id: 'currentTools', type: 'checkbox', label: 'What tools do you currently use?', options: [
+                    { value: 'spreadsheets', title: 'Spreadsheets', desc: 'Google Sheets, Excel' },
+                    { value: 'email', title: 'Email Only', desc: 'Gmail, Outlook for tracking leads' },
+                    { value: 'crm', title: 'Existing CRM', desc: 'HubSpot, Salesforce, etc.' },
+                    { value: 'nothing', title: 'Nothing Organized', desc: 'Leads tracked in head/notes' }
+                ]},
+                { id: 'crmNeeds', type: 'checkbox', label: 'What do you need the CRM to do?', options: [
+                    { value: 'pipeline', title: 'Lead Pipeline', desc: 'Track leads from first touch to close' },
+                    { value: 'contacts', title: 'Contact Management', desc: 'Organized client database' },
+                    { value: 'automation', title: 'Task Automation', desc: 'Auto-assign follow-ups and reminders' },
+                    { value: 'reporting', title: 'Reporting', desc: 'Revenue tracking and analytics' },
+                    { value: 'team', title: 'Team Collaboration', desc: 'Multiple users, role-based access' }
+                ]},
+                { id: 'additionalNotes', type: 'textarea', label: 'Anything else about your workflow?', required: false },
+                { id: 'timeline', type: 'select', label: 'When do you want to start?', options: ['Immediately', 'Within 2 weeks', 'Within 1 month', 'Just exploring'] }
+            ]
+        }
+    },
     'custom-package': {
         name: 'Custom Package',
         price: 0,
@@ -1035,6 +1263,69 @@ function renderIntakeWizard(serviceId) {
             agitate: "Every hour spent on tasks AI could handle is an hour stolen from growing your business. Your competitors are already automating.",
             solution: "Get custom AI systems built for YOUR business — chatbots that capture leads, automations that save hours, and analytics that tell you exactly what's working.",
             proof: "Our AI clients save an average of 15+ hours per week and see 3x faster lead response times within 30 days."
+        },
+        'visitor-id': {
+            hook: "You have leads visiting your site right now. You just can't see them.",
+            problem: "97% of your website visitors leave without filling out a form. They looked at your services, checked your pricing, and bounced. Gone forever.",
+            agitate: "You're paying for traffic that disappears. Every anonymous visitor is a missed sale. Your competitors are already identifying theirs.",
+            solution: "We install silent tracking that identifies 15-30% of anonymous visitors — full name, email, company, LinkedIn. You get a real lead without them filling out anything.",
+            proof: "Average client identifies 200+ anonymous visitors per month and converts 10-15% into paying customers."
+        },
+        'facebook-pixel': {
+            hook: "Stop letting website visitors forget you exist.",
+            problem: "People visit your site, get distracted, and never come back. You paid to get them there but have zero way to bring them back.",
+            agitate: "Without retargeting, you're spending money to rent attention once. Your competitors are following visitors across Instagram and Facebook for 30 days.",
+            solution: "We install Meta Pixel, build custom audiences from your visitors, and run retargeting campaigns that keep your brand in front of interested buyers until they convert.",
+            proof: "Retargeting ads convert 70% better than cold ads. Average client sees 3-5x return on ad spend within 60 days."
+        },
+        'google-pixel': {
+            hook: "Your visitors are browsing 2 million other websites. Show up on all of them.",
+            problem: "Someone visits your site, leaves, then sees your competitor's ad on YouTube and their local news site. That should have been YOUR ad.",
+            agitate: "Google Display Network reaches 90% of internet users. If you're not retargeting there, someone else is retargeting YOUR visitors.",
+            solution: "We install Google Ads tracking, build remarketing audiences, and follow your visitors across the entire Google ecosystem — Search, Display, YouTube, Gmail.",
+            proof: "Google remarketing audiences convert at 2-3x the rate of cold traffic. Average client cuts cost-per-lead by 40%."
+        },
+        'email-auto': {
+            hook: "Turn silent visitors into booked clients while you sleep.",
+            problem: "People visit your site, read your pages, and leave. You never know they were interested. No follow-up. No second chance.",
+            agitate: "Every day, leads slip through your fingers because you have no automated follow-up. Manual outreach can't scale. You're leaving money on the table.",
+            solution: "We build behavior-triggered email sequences. Someone reads your pricing page? They get a tailored email. Views your portfolio? Different sequence. All automatic.",
+            proof: "Automated email sequences generate 320% more revenue than manual outreach. Average client books 5-10 new meetings per month on autopilot."
+        },
+        'sms-auto': {
+            hook: "98% open rate. That's not email. That's text.",
+            problem: "Your emails are sitting in spam folders and promotions tabs. Half your audience never sees them. You're shouting into the void.",
+            agitate: "Meanwhile, every text message gets read within 3 minutes. Your competitors are booking appointments via text while you're hoping someone checks their inbox.",
+            solution: "We set up automated SMS campaigns — appointment reminders, follow-ups, promos, two-way chat. Your business in their pocket, not their spam folder.",
+            proof: "SMS campaigns see 45% response rates vs 6% for email. Average client reduces no-shows by 60% and increases rebookings by 35%."
+        },
+        'ai-phone': {
+            hook: "Never miss another call. Even at 2 AM.",
+            problem: "Every missed call is a missed sale. Customers don't leave voicemails — they call the next business on Google. You lose before you even know they called.",
+            agitate: "You can't answer every call while running your business. Hiring a receptionist costs $35K+/year. Missing 5 calls per week at $500 average job = $130K lost annually.",
+            solution: "Get an AI receptionist that answers every call 24/7, sounds natural, books appointments, qualifies leads, and sends you a summary. Never lose a lead to voicemail again.",
+            proof: "AI phone clients capture 40% more leads and book 25% more appointments within 30 days of installation."
+        },
+        'geo-fence': {
+            hook: "Your competitors' customers should be YOUR customers.",
+            problem: "People walk into your competitor's location every day. They chose them — maybe because they showed up first, maybe habit. But they don't know you exist.",
+            agitate: "While you're running generic ads to everyone, your competitors are keeping their customers loyal. You need to intercept, not just advertise.",
+            solution: "We draw invisible fences around competitor locations. Anyone who walks in sees YOUR ads on their phone for 30 days. They visited a competitor but now they know about YOU.",
+            proof: "Geo-fencing campaigns average 60% higher engagement than standard digital ads. Clients typically see 4-6x return on ad spend."
+        },
+        'geo-grid': {
+            hook: "You think you rank #1 on Google. You don't. Not everywhere.",
+            problem: "Google shows different results based on where the searcher is standing. You might rank #1 near your shop but be invisible 2 miles away.",
+            agitate: "Your competitors are winning customers in neighborhoods you think you own. Without geo-grid data, you're optimizing blind — guessing instead of knowing.",
+            solution: "We scan Google Maps from 49 points across your service area and show exactly where you rank at every block. Color-coded heat maps reveal your weak zones so we can fix them.",
+            proof: "Geo-grid clients improve average Map Pack ranking by 4+ positions within 90 days of targeted optimization."
+        },
+        'crm-integration': {
+            hook: "Your leads are scattered across 5 apps. We put them in one.",
+            problem: "Leads in your email, notes on your phone, deals in a spreadsheet, follow-ups in your head. Nothing talks to each other. Leads fall through the cracks daily.",
+            agitate: "Every dropped ball is lost revenue. You can't scale chaos. The bigger you grow, the more leads you lose without a system.",
+            solution: "We build a custom CRM dashboard that connects all your marketing data. Every lead, every call, every visit — one place, one pipeline, total clarity.",
+            proof: "CRM integration clients close 30% more deals and cut lead response time from 24 hours to under 5 minutes."
         },
         'default': {
             hook: "Ready to stop blending in and start standing out?",
@@ -1302,6 +1593,60 @@ function renderReviewStep(serviceId) {
             description: 'Custom AI-powered systems that automate your operations — chatbots, lead follow-up, content creation, workflow automation & analytics.',
             deliverables: ['Custom AI Setup', 'Integration & Training', 'Automation Workflows', '30-Day Support & Optimization'],
             timeline: '2-4 weeks'
+        },
+        'visitor-id': {
+            title: 'Silent Visitor Identification',
+            description: 'Identify 15-30% of anonymous website visitors with full name, email, company, and LinkedIn profile — no forms required.',
+            deliverables: ['RB2B Tracking Pixel', 'Real-Time Lead Dashboard', 'Page View History', 'Lead Pipeline', 'CSV Export', 'Weekly Reports'],
+            timeline: '3-5 business days'
+        },
+        'facebook-pixel': {
+            title: 'Facebook Pixel & Retargeting',
+            description: 'Install Meta tracking pixel, build custom audiences from visitors, and run retargeting campaigns across Facebook & Instagram.',
+            deliverables: ['Meta Pixel Installation', 'Custom Audiences', 'Retargeting Campaigns', 'Interest Segments', 'Lookalike Audiences', 'Monthly Reports'],
+            timeline: '5-7 business days'
+        },
+        'google-pixel': {
+            title: 'Google Ads Pixel & Retargeting',
+            description: 'Install Google Ads remarketing tag and follow visitors across Search, Display, YouTube, and Gmail with targeted ads.',
+            deliverables: ['GTM Setup', 'Conversion Tracking', 'Remarketing Audiences', 'Display Retargeting', 'YouTube Retargeting', 'Monthly Reports'],
+            timeline: '5-7 business days'
+        },
+        'email-auto': {
+            title: 'Email Automation',
+            description: 'Behavior-triggered email sequences that automatically follow up with website visitors based on the pages they viewed.',
+            deliverables: ['5 Custom Sequences', 'Behavior Triggers', 'Smart Scheduling', 'Open/Click Tracking', 'A/B Testing', 'Monthly Optimization'],
+            timeline: '1-2 weeks'
+        },
+        'sms-auto': {
+            title: 'SMS Automation',
+            description: '98% open rate text message campaigns with appointment reminders, follow-ups, promotions, and two-way conversation.',
+            deliverables: ['SMS Campaign Builder', 'Two-Way Messaging', 'Appointment Reminders', 'Drip Sequences', 'Compliance Setup', 'Delivery Reports'],
+            timeline: '5-7 business days'
+        },
+        'ai-phone': {
+            title: 'AI Phone Assistant',
+            description: '24/7 AI receptionist that answers calls, books appointments, qualifies leads, and sends you transcripts — never miss a call again.',
+            deliverables: ['AI Voice Setup', 'Custom Script', 'Calendar Integration', 'Lead Qualification', 'Call Transcripts', 'CRM Auto-Logging'],
+            timeline: '1-2 weeks'
+        },
+        'geo-fence': {
+            title: 'Geo-Fencing',
+            description: 'Draw invisible fences around competitor locations — anyone who walks in sees your ads on their phone for 30 days.',
+            deliverables: ['Fence 10 Locations', '30-Day Retargeting', 'Custom Ad Creative', 'Foot Traffic Attribution', 'Conversion Zones', 'Monthly ROI Reports'],
+            timeline: '1-2 weeks'
+        },
+        'geo-grid': {
+            title: 'Geo-Grid Rank Tracking',
+            description: 'See exactly where you rank on Google Maps block by block across your entire service area with color-coded heat maps.',
+            deliverables: ['7×7 Grid Scan (49 Points)', 'Heat Map Reports', 'Competitor Comparison', 'Monthly Trends', 'GBP Optimization', '50 Citations'],
+            timeline: '5-7 business days'
+        },
+        'crm-integration': {
+            title: 'CRM Integration',
+            description: 'Connect all your marketing data into one custom dashboard — leads, visitors, calls, and deals in one pipeline.',
+            deliverables: ['Custom Dashboard', 'Pipeline Automation', 'Contact Management', 'Activity Logging', 'Team Notifications', 'Analytics'],
+            timeline: '1-2 weeks'
         }
     };
 
