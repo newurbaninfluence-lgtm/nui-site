@@ -352,7 +352,7 @@ function loadHomeView() {
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">New Urban Influence offers flexible payment options for all branding packages: pay in full and receive a 5% discount, split payments 50/25/25, or choose 3 monthly installments. They accept credit cards, debit cards, and bank transfers. No one should have to delay building their brand because of budget — payment plans make professional branding accessible.</div>
+<div class="faq-answer-text">New Urban Influence offers flexible payment options for all branding packages: pay in full and receive a 5% discount, split payments 50/25/25, or choose 3 monthly installments. They also offer 0% interest financing through Afterpay (pay in 4 over 6 weeks) and Klarna (flexible monthly plans). Financing options appear at checkout with instant approval — no paperwork required. They accept credit cards, debit cards, Apple Pay, Google Pay, and Cash App Pay. No one should have to delay building their brand because of budget.</div>
 </div>
 </div>
 
@@ -1216,6 +1216,7 @@ function loadServicesView() {
 <h2 class="package-title">BRAND <span class="red">KIT</span></h2>
 <p class="package-subtitle">Everything you need to launch your brand with confidence. Logo, voice, visuals, and social presence — all in one complete package.</p>
 <div class="package-price">$1,500 <span>flat rate</span></div>
+<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$375</strong> with Afterpay</div>
 </div>
 
 <div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr);">
@@ -1315,6 +1316,8 @@ function loadServicesView() {
 <h2 class="package-title">PRODUCT <span class="red">BRAND IDENTITY</span></h2>
 <p class="package-subtitle">Complete branding system for businesses selling physical products. From packaging to retail displays, we've got you covered.</p>
 <div class="package-price">$5,500 <span>starting at</span></div>
+<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$1,375</strong> with Afterpay / Klarna</div>
+<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$1,375</strong> with Afterpay / Klarna</div>
 </div>
 
                 <!-- Core Brand Identity -->
@@ -1524,6 +1527,8 @@ function loadServicesView() {
 <h2 class="package-title">SERVICE <span class="red">BRAND IDENTITY</span></h2>
 <p class="package-subtitle">Complete branding system for consultants, agencies, contractors, and service providers. Build trust and attract premium clients.</p>
 <div class="package-price">$4,500 <span>starting at</span></div>
+<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$1,125</strong> with Afterpay / Klarna</div>
+<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$1,125</strong> with Afterpay / Klarna</div>
 </div>
 
                 <!-- Core Brand Identity -->
@@ -2298,6 +2303,8 @@ function loadServicesView() {
 <h2 class="package-title">AI SYSTEMS & <span class="red">AUTOMATION</span></h2>
 <p class="package-subtitle">Stop doing everything manually. We build custom AI-powered systems that handle leads, answer questions, create content, and run your operations — while you sleep.</p>
 <div class="package-price">$2,500+ <span>starting at</span></div>
+<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$625</strong> with Afterpay / Klarna</div>
+<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:-16px;margin-bottom:16px;">or 4 interest-free payments of <strong style="color:#a855f7;">$625</strong> with Afterpay / Klarna</div>
 </div>
 
 <div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr);">
@@ -2390,6 +2397,64 @@ function loadServicesView() {
 <button class="btn-package" onclick="startServiceIntake('ai-systems')">Build My AI System →</button>
 </div>
 </div>
+</section>
+
+<!-- Flexible Payment Section -->
+<section style="padding:80px 5%;background:linear-gradient(180deg,#000 0%,#0a0a0a 100%);text-align:center;">
+<div style="max-width:900px;margin:0 auto;">
+<p style="font-size:13px;text-transform:uppercase;letter-spacing:3px;color:#a855f7;font-weight:600;margin-bottom:12px;">FLEXIBLE FINANCING</p>
+<h2 style="font-size:clamp(32px,5vw,52px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;font-family:'Syne',sans-serif;">Don't Let Budget<br>Hold Your Brand Back</h2>
+<p style="font-size:18px;color:rgba(255,255,255,0.6);max-width:600px;margin:0 auto 48px;line-height:1.6;">Invest in your brand now, pay over time. 0% interest, no hidden fees, instant approval at checkout.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;text-align:left;margin-bottom:48px;">
+<div style="background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.25);border-radius:16px;padding:32px;">
+<div style="font-size:32px;margin-bottom:12px;">🟢</div>
+<h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">Pay in 4</h3>
+<p style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.5;">Split any project into 4 equal payments over 6 weeks. No interest, no credit check. Powered by Afterpay.</p>
+</div>
+<div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.25);border-radius:16px;padding:32px;">
+<div style="font-size:32px;margin-bottom:12px;">📅</div>
+<h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">Monthly Plans</h3>
+<p style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.5;">Choose a flexible monthly payment plan that fits your cash flow. 6 to 36 months available through Klarna.</p>
+</div>
+<div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:16px;padding:32px;">
+<div style="font-size:32px;margin-bottom:12px;">✅</div>
+<h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">Instant Approval</h3>
+<p style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.5;">Get approved in seconds at checkout. No paperwork, no waiting. Just pick your plan and get started.</p>
+</div>
+</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:32px;">
+<div style="display:flex;align-items:center;gap:10px;"><div style="width:40px;height:40px;background:#000;border:1px solid #333;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#b6f09c;">A</div><span style="font-size:14px;color:rgba(255,255,255,0.6);">Afterpay</span></div>
+<div style="display:flex;align-items:center;gap:10px;"><div style="width:40px;height:40px;background:#ffb3c7;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#000;">K</div><span style="font-size:14px;color:rgba(255,255,255,0.6);">Klarna</span></div>
+<div style="display:flex;align-items:center;gap:10px;"><div style="width:40px;height:40px;background:#635bff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff;">S</div><span style="font-size:14px;color:rgba(255,255,255,0.6);">Stripe Secure</span></div>
+</div>
+<p style="font-size:12px;color:rgba(255,255,255,0.3);">Financing options appear at checkout. Subject to eligibility. NUI receives full payment upfront — you pay over time with zero risk.</p>
+</div>
+</section>
+
+<section style="padding:80px 5%;background:linear-gradient(180deg,#0a0a0a,#111);text-align:center;">
+<h2 style="font-size:clamp(28px,5vw,48px);font-family:'Syne',sans-serif;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:12px;">Invest In Your Brand. <span style="color:#a855f7;">Pay On Your Terms.</span></h2>
+<p style="max-width:640px;margin:0 auto 48px;color:rgba(255,255,255,0.55);font-size:16px;line-height:1.7;">We believe budget should never hold you back from looking professional. That's why we offer 0% interest financing through Afterpay and Klarna — so you can get started now and pay over time. No credit check required for most purchases.</p>
+<div style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap;max-width:900px;margin:0 auto 48px;">
+<div style="flex:1;min-width:260px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.25);border-radius:16px;padding:32px 28px;text-align:left;">
+<div style="font-size:32px;margin-bottom:12px;">🟢</div>
+<h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">Afterpay</h3>
+<p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.6;margin-bottom:16px;">Split any project into 4 equal payments over 6 weeks. No interest, no surprises. You get approved instantly at checkout.</p>
+<div style="font-size:13px;color:#a855f7;font-weight:600;">$1 – $4,000 • 4 payments • 0% interest</div>
+</div>
+<div style="flex:1;min-width:260px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.25);border-radius:16px;padding:32px 28px;text-align:left;">
+<div style="font-size:32px;margin-bottom:12px;">🩷</div>
+<h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">Klarna</h3>
+<p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.6;margin-bottom:16px;">Pay in 4 or choose a flexible monthly plan that fits your cash flow. Klarna offers plans up to $10,000 for bigger investments.</p>
+<div style="font-size:13px;color:#3b82f6;font-weight:600;">$1 – $10,000 • Flexible plans • 0% interest</div>
+</div>
+<div style="flex:1;min-width:260px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:32px 28px;text-align:left;">
+<div style="font-size:32px;margin-bottom:12px;">💳</div>
+<h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">Split Payments</h3>
+<p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.6;margin-bottom:16px;">Prefer to pay in milestones? We also offer 50/25/25 splits and 2-4 payment plans directly — no third party needed.</p>
+<div style="font-size:13px;color:rgba(255,255,255,0.4);font-weight:600;">Custom schedule • Deposit + milestones</div>
+</div>
+</div>
+<p style="font-size:13px;color:rgba(255,255,255,0.3);max-width:500px;margin:0 auto;">Financing is offered through Afterpay and Klarna via Stripe. You get approved at checkout — we get paid upfront. Everyone wins.</p>
 </section>
 
 <section class="cta-section"><h2>HAVE <span>QUESTIONS?</span></h2><p>Book a free strategy call and we'll help you figure out exactly what your business needs.</p><button class="btn-white" onclick="startServiceIntake('consultation')">Book Free Consultation</button></section>
