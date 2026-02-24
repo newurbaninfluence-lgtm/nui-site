@@ -2474,7 +2474,7 @@ function openMoodboardEditor(id) {
     var client = clients.find(function(c) { return c.id == mb.clientId; });
     _mbZoom = 1; _mbPanX = 0; _mbPanY = 0;
     window._mbEditorState = { id: mb.id, selectedItem: null };
-    var bgColor = mb.canvasBackground || '#f5f5f5';
+    var bgColor = mb.canvasBackground || '#0a0a0a';
 
     document.getElementById('adminMoodboardPanel').innerHTML = `
 <style>
@@ -2665,10 +2665,23 @@ function openMoodboardEditor(id) {
 </div>
 
 <div class="ml-sb-sep"></div>
+<div class="ml-sb-section">Client Brief</div>
+
+<div class="ml-brief-tab" onclick="mlShowPanel('brief')">
+<div class="ml-sb-icon" style="background:rgba(220,38,38,0.1);color:#f87171;">📋</div>
+<div><div class="fw-600">Project Brief</div><div class="text-muted-xs">${client?.briefStatus === 'submitted' ? '<span class="ml-brief-badge-dot"></span> Submitted' : 'View responses'}</div></div>
+</div>
+
+<div class="ml-sb-item" onclick="autoGenFromBrief('${mb.id}')">
+<div class="ml-sb-icon" style="background:rgba(124,58,237,0.15);color:#a78bfa;">⚡</div>
+<div><div class="fw-600">Auto-Generate</div><div class="text-muted-xs">Board from brief</div></div>
+</div>
+
+<div class="ml-sb-sep"></div>
 <div class="ml-sb-section">Board</div>
 
 <div class="ml-sb-item" onclick="mlShowPanel('settings')">
-<div class="ml-sb-icon" style="background:#f5f5f5;color:#666;">\u2699</div>
+<div class="ml-sb-icon" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);">\u2699</div>
 <div><div class="fw-600">Settings</div><div class="text-muted-xs">Background, grid, notes</div></div>
 </div>
 
@@ -2742,12 +2755,17 @@ function openMoodboardEditor(id) {
 <button onclick="addMoodboardVideo('${mb.id}');mlHideAllPanels();" class="ml-fbtn">Add Video</button>
 </div>
 
+<div class="ml-float" id="mlPanel-brief" style="width:340px;max-height:calc(100vh - 280px);overflow-y:auto;">
+<h4>Client Brief — ${client?.name || 'Client'}</h4>
+${typeof renderAdminBriefPanel === 'function' ? renderAdminBriefPanel(mb.clientId) : '<div class="mb-brief-empty"><p style="color:rgba(255,255,255,0.4);">Brief system loading...</p></div>'}
+</div>
+
 <div class="ml-float" id="mlPanel-settings">
 <h4>Board Settings</h4>
 <label style="font-size:11px;color:#888;display:block;margin-bottom:4px;">Background</label>
 <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
 <input type="color" id="mbCanvasBg" value="${bgColor}" onchange="updateCanvasBackground('${mb.id}',this.value)" style="width:32px;height:32px;border:none;cursor:pointer;">
-                            ${['#f5f5f5','#ffffff','#f5f0e8','#fafafa','#1a1a1a','#111111'].map(c => `<div onclick="updateCanvasBackground('${mb.id}','${c}')" style="width:32px;height:32px;background:${c};border-radius:4px;cursor:pointer;border:1px solid #ddd;"></div>`).join('')}
+                            ${['#0a0a0a','#111111','#1a1a1a','#0d0d0d','#f5f5f5','#ffffff'].map(c => `<div onclick="updateCanvasBackground('${mb.id}','${c}')" style="width:32px;height:32px;background:${c};border-radius:4px;cursor:pointer;border:1px solid rgba(255,255,255,0.15);"></div>`).join('')}
 </div>
 <label style="font-size:11px;color:#888;display:block;margin-bottom:4px;">Grid</label>
 <button onclick="_mbSnapOn=!_mbSnapOn;document.getElementById('mbGrid').style.display=_mbSnapOn?'':'none';this.textContent=_mbSnapOn?'Grid: ON':'Grid: OFF'" class="ml-fbtn">${_mbSnapOn ? 'Grid: ON' : 'Grid: OFF'}</button>
@@ -3310,7 +3328,7 @@ function loadMbTemplate(mbId, tplName) {
     if(mb.collageItems.length>0 && !confirm('This will replace your current board. Continue?')) return;
 
     if(tplName==='brand') {
-        mb.canvasBackground='#f5f5f5';
+        mb.canvasBackground='#0a0a0a';
         mb.collageItems=[
             {type:'text',text:'Brand Guidelines',font:'Playfair Display, serif',fontSize:36,color:'#1a1a1a',x:60,y:40,rotation:0,zIndex:1},
             {type:'note',title:'Brand Story',body:'Write your brand narrative here...',stripColor:'#e63946',x:60,y:120,width:300,height:160,rotation:0,zIndex:2},
@@ -3421,7 +3439,7 @@ function searchPexelsImages(mbId) {
         resultsDiv.innerHTML=data.photos.map(function(photo) {
             var safeUrl=escHtml(photo.src.medium);
             var safeThumb=escHtml(photo.src.tiny);
-            return '<div onclick="addPexelsImage(\''+mbId+'\',\''+safeUrl+'\','+parseInt(photo.width)||0+','+parseInt(photo.height)||0+')" style="cursor:pointer;border-radius:6px;overflow:hidden;border:1px solid #eee;transition:all .15s;aspect-ratio:1;background:#f5f5f5;" onmouseover="this.style.transform=\'scale(1.03)\';this.style.boxShadow=\'0 2px 8px rgba(0,0,0,0.15)\'" onmouseout="this.style.transform=\'none\';this.style.boxShadow=\'none\'">'+
+            return '<div onclick="addPexelsImage(\''+mbId+'\',\''+safeUrl+'\','+parseInt(photo.width)||0+','+parseInt(photo.height)||0+')" style="cursor:pointer;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);transition:all .15s;aspect-ratio:1;background:#111;" onmouseover="this.style.transform=\'scale(1.03)\';this.style.boxShadow=\'0 2px 8px rgba(0,0,0,0.3)\'" onmouseout="this.style.transform=\'none\';this.style.boxShadow=\'none\'">'+
                 '<img alt="Moodboard thumbnail" loading="lazy" src="'+safeThumb+'" style="width:100%;height:100%;object-fit:cover;display:block;">'+
             '</div>';
         }).join('');
@@ -3528,6 +3546,9 @@ function saveMoodboardState(mbId) {
     var n=document.getElementById('mbNotes');
     if(n) mb.notes=n.value;
     mb.updatedAt=new Date().toISOString(); saveProofs();
+    
+    // Sync to Supabase (non-blocking)
+    if (typeof saveMoodboardToSupabase === 'function') saveMoodboardToSupabase(mb);
 
     // AUTO-SEND: If moodboard has content, hasn't been sent yet, and client has a qualifying service package
     if (mb.collageItems && mb.collageItems.length > 0 && !mb.sentToClient && mb.status === 'draft') {
@@ -3575,7 +3596,7 @@ function previewMoodboard(mbId) {
     var mb=proofs.find(function(p){return p.id==mbId;});
     if(!mb) return;
     var client=clients.find(function(c){return c.id==mb.clientId;});
-    var bgColor=mb.canvasBackground||'#f5f5f5';
+    var bgColor=mb.canvasBackground||'#0a0a0a';
 
     var html='<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:10000;overflow-y:auto;">'+
         '<style>.ml-card{position:absolute;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);user-select:none} .ml-img-wrap{overflow:hidden;border-radius:6px 6px 0 0} .ml-img-wrap img{width:100%;display:block} .ml-note-strip{height:4px;border-radius:6px 6px 0 0} .ml-swatch-color{width:100%;aspect-ratio:1;border-radius:6px 6px 0 0} .ml-swatch-label{padding:6px 10px;font-size:11px;color:#666;font-family:monospace;text-align:center} .ml-link-domain{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:0.5px;display:flex;align-items:center;gap:6px;padding:12px 14px 6px} .ml-link-title{font-size:14px;font-weight:600;color:#1a1a1a;padding:0 14px 6px} .ml-link-url{border-top:1px solid #f0f0f0;padding:8px 14px;font-size:11px} .ml-link-url a{color:#4a90d9;text-decoration:none} .ml-text-card{background:transparent!important;box-shadow:none!important}</style>'+
@@ -3595,3 +3616,508 @@ function previewMoodboard(mbId) {
     setTimeout(resolveAllImages, 50);
 }
 
+
+
+// ═══════════════════════════════════════════════════════
+// BRIEF INTEGRATION & SUPABASE PERSISTENCE — v20260224
+// ═══════════════════════════════════════════════════════
+
+// Auto-generate moodboard items from client brief
+async function autoGenFromBrief(mbId) {
+    if (typeof generateMoodboardFromBrief !== 'function') {
+        showNotification('Brief module not loaded', 'error');
+        return;
+    }
+    var mb = proofs.find(function(p) { return p.id == mbId; });
+    if (!mb || !mb.clientId) {
+        showNotification('No client linked to this moodboard', 'error');
+        return;
+    }
+    try {
+        showNotification('Generating from brief...', 'info');
+        var items = await generateMoodboardFromBrief(mb.clientId);
+        if (!items || items.length === 0) {
+            showNotification('No brief found for this client', 'error');
+            return;
+        }
+        // Position items in a grid layout
+        var col = 0, row = 0, maxCols = 3;
+        items.forEach(function(item, i) {
+            item.x = 60 + (col * 280);
+            item.y = 60 + (row * 260);
+            item.w = item.w || 250;
+            item.h = item.h || 220;
+            item.z = (mb.collageItems ? mb.collageItems.length : 0) + i + 1;
+            col++;
+            if (col >= maxCols) { col = 0; row++; }
+        });
+        if (!mb.collageItems) mb.collageItems = [];
+        mb.collageItems = mb.collageItems.concat(items);
+        saveProofs();
+        // Re-render canvas
+        var canvas = document.querySelector('.ml-canvas');
+        if (canvas) {
+            items.forEach(function(item) {
+                canvas.insertAdjacentHTML('beforeend', renderOneCard(item, mbId));
+            });
+        }
+        showNotification(items.length + ' items added from brief!', 'success');
+        // Save to Supabase
+        saveMoodboardToSupabase(mbId);
+    } catch (e) {
+        console.error('autoGenFromBrief error:', e);
+        showNotification('Failed to generate from brief', 'error');
+    }
+}
+
+// Render brief panel HTML (called from template literal)
+function renderAdminBriefPanel(clientId) {
+    if (!clientId) return '<div class="mb-brief-empty"><p>No client linked</p></div>';
+    return '<div id="briefPanelContent" data-client-id="' + clientId + '"><div class="mb-brief-empty"><div style="font-size:24px;margin-bottom:8px;">📋</div><p style="color:rgba(255,255,255,0.4);font-size:13px;">Loading brief...</p></div></div>';
+}
+
+// Load brief data into panel after moodboard opens
+async function loadBriefIntoPanel(clientId) {
+    var container = document.getElementById('briefPanelContent');
+    if (!container) return;
+    try {
+        var resp = await fetch('/.netlify/functions/save-brief?clientId=' + encodeURIComponent(clientId));
+        if (!resp.ok) throw new Error('Failed to fetch brief');
+        var data = await resp.json();
+        if (!data.briefs || data.briefs.length === 0) {
+            container.innerHTML = '<div class="mb-brief-empty"><div style="font-size:24px;margin-bottom:8px;">📝</div><p style="color:rgba(255,255,255,0.4);font-size:13px;">No brief submitted yet</p><p style="color:rgba(255,255,255,0.25);font-size:11px;margin-top:6px;">Send questionnaire link to client</p></div>';
+            return;
+        }
+        var brief = data.briefs[0];
+        var responses = brief.responses || {};
+        var html = '<div class="mb-brief-responses">';
+        // Get question labels from client-brief module if available
+        var questions = (typeof BRAND_QUESTIONS !== 'undefined') ? BRAND_QUESTIONS : null;
+        Object.keys(responses).forEach(function(key) {
+            var val = responses[key];
+            if (!val || (typeof val === 'string' && !val.trim())) return;
+            var label = key;
+            if (questions) {
+                // Find question label from BRAND_QUESTIONS
+                ['section1', 'section2'].forEach(function(sec) {
+                    if (questions[sec] && questions[sec].questions) {
+                        var q = questions[sec].questions.find(function(qq) { return qq.id === key; });
+                        if (q) label = q.label;
+                    }
+                });
+            }
+            var displayVal = Array.isArray(val) ? val.join(', ') : String(val);
+            html += '<div class="mb-brief-item">';
+            html += '<div class="mb-brief-q-label">' + label + '</div>';
+            html += '<div class="mb-brief-q-answer">' + displayVal + '</div>';
+            html += '</div>';
+        });
+        html += '</div>';
+        container.innerHTML = html;
+    } catch (e) {
+        console.error('loadBriefIntoPanel error:', e);
+        container.innerHTML = '<div class="mb-brief-empty"><p style="color:#f87171;">Failed to load brief</p></div>';
+    }
+}
+
+// ─── Supabase Moodboard Persistence ───
+
+async function saveMoodboardToSupabase(mbId) {
+    var mb = proofs.find(function(p) { return p.id == mbId; });
+    if (!mb) return;
+    try {
+        var payload = {
+            id: mb.id,
+            client_id: mb.clientId || null,
+            client_name: null,
+            title: mb.title || 'Untitled',
+            status: mb.status || 'draft',
+            collage_items: mb.collageItems || [],
+            canvas_background: mb.canvasBackground || '#0a0a0a',
+            notes: mb.notes || ''
+        };
+        // Resolve client name
+        if (mb.clientId && typeof clients !== 'undefined') {
+            var client = clients.find(function(c) { return c.id == mb.clientId; });
+            if (client) payload.client_name = client.name;
+        }
+        var resp = await fetch('/.netlify/functions/save-moodboard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (!resp.ok) {
+            var errData = await resp.json().catch(function() { return {}; });
+            console.error('Supabase save failed:', errData);
+            return;
+        }
+        console.log('[NUI] Moodboard saved to Supabase:', mbId);
+    } catch (e) {
+        console.error('saveMoodboardToSupabase error:', e);
+    }
+}
+
+async function loadMoodboardFromSupabase(mbId) {
+    try {
+        var resp = await fetch('/.netlify/functions/save-moodboard?id=' + encodeURIComponent(mbId));
+        if (!resp.ok) return null;
+        var data = await resp.json();
+        return data.moodboard || null;
+    } catch (e) {
+        console.error('loadMoodboardFromSupabase error:', e);
+        return null;
+    }
+}
+
+async function loadAllMoodboardsFromSupabase() {
+    try {
+        var resp = await fetch('/.netlify/functions/save-moodboard');
+        if (!resp.ok) return [];
+        var data = await resp.json();
+        return data.moodboards || [];
+    } catch (e) {
+        console.error('loadAllMoodboardsFromSupabase error:', e);
+        return [];
+    }
+}
+
+// Hook into existing saveMoodboardState to also persist to Supabase
+var _origSaveMoodboardState = typeof saveMoodboardState === 'function' ? saveMoodboardState : null;
+
+// Debounced Supabase save (avoid hammering on every drag)
+var _supabaseSaveTimer = null;
+function debouncedSupabaseSave(mbId) {
+    clearTimeout(_supabaseSaveTimer);
+    _supabaseSaveTimer = setTimeout(function() {
+        saveMoodboardToSupabase(mbId);
+    }, 2000);
+}
+
+// Patch saveMoodboardState to also save to Supabase
+(function() {
+    var origSave = window.saveMoodboardState;
+    if (typeof origSave === 'function') {
+        window.saveMoodboardState = function(mbId) {
+            origSave(mbId);
+            debouncedSupabaseSave(mbId);
+        };
+    }
+})();
+
+// Load brief panel when moodboard editor opens
+(function() {
+    var origOpen = window.openMoodboardEditor;
+    if (typeof origOpen === 'function') {
+        window.openMoodboardEditor = function(mbId) {
+            origOpen(mbId);
+            // After editor renders, load brief data
+            setTimeout(function() {
+                var mb = proofs.find(function(p) { return p.id == mbId; });
+                if (mb && mb.clientId) {
+                    loadBriefIntoPanel(mb.clientId);
+                }
+            }, 300);
+        };
+    }
+})();
+
+// Migrate localStorage moodboards to Supabase (one-time)
+async function migrateMoodboardsToSupabase() {
+    if (localStorage.getItem('nui_moodboards_migrated')) return;
+    if (!proofs || proofs.length === 0) return;
+    var count = 0;
+    for (var i = 0; i < proofs.length; i++) {
+        try {
+            await saveMoodboardToSupabase(proofs[i].id);
+            count++;
+        } catch (e) {
+            console.error('Migration failed for:', proofs[i].id, e);
+        }
+    }
+    if (count > 0) {
+        localStorage.setItem('nui_moodboards_migrated', Date.now());
+        console.log('[NUI] Migrated ' + count + ' moodboards to Supabase');
+    }
+}
+
+// Trigger migration on admin load (non-blocking)
+if (typeof window !== 'undefined') {
+    window.addEventListener('load', function() {
+        setTimeout(migrateMoodboardsToSupabase, 5000);
+    });
+}
+
+
+// ═══════════════════════════════════════════════════════
+// BRIEF INTEGRATION & SUPABASE PERSISTENCE — v20260224
+// ═══════════════════════════════════════════════════════
+
+/**
+ * Auto-generate moodboard items from client brief responses
+ */
+async function autoGenFromBrief(mbId) {
+    var mb = proofs.find(p => p.id === mbId);
+    if (!mb) return;
+    
+    if (typeof generateMoodboardFromBrief !== 'function') {
+        showNotification('Brief module not loaded', 'error');
+        return;
+    }
+    
+    try {
+        showNotification('Generating board from brief...', 'info');
+        var items = await generateMoodboardFromBrief(mb.clientId);
+        
+        if (!items || items.length === 0) {
+            showNotification('No brief found for this client', 'warning');
+            return;
+        }
+        
+        // Position items in a grid layout on the canvas
+        var startX = 80, startY = 80;
+        var col = 0, row = 0;
+        var colWidth = 320, rowHeight = 260;
+        var maxCols = 3;
+        
+        items.forEach(function(item) {
+            item.x = startX + (col * colWidth);
+            item.y = startY + (row * rowHeight);
+            item.w = item.w || 280;
+            item.h = item.h || 220;
+            item.z = (mb.collageItems?.length || 0) + col + (row * maxCols) + 1;
+            
+            col++;
+            if (col >= maxCols) { col = 0; row++; }
+        });
+        
+        // Merge with existing items (don't replace)
+        if (!mb.collageItems) mb.collageItems = [];
+        mb.collageItems = mb.collageItems.concat(items);
+        
+        saveProofs();
+        
+        // Re-render the canvas
+        var canvas = document.getElementById('mlCanvas-' + mbId);
+        if (canvas) {
+            canvas.innerHTML = renderMoodboardItems(mb, false);
+            setTimeout(resolveAllImages, 50);
+        }
+        
+        showNotification(items.length + ' items added from brief!', 'success');
+        
+        // Also save to Supabase
+        saveMoodboardToSupabase(mb);
+        
+    } catch (err) {
+        console.error('Auto-gen error:', err);
+        showNotification('Failed to generate from brief', 'error');
+    }
+}
+
+/**
+ * Render brief panel HTML for the floating panel
+ */
+function renderBriefPanelHTML(clientId) {
+    if (!clientId) {
+        return '<div class="mb-brief-empty"><p>No client linked</p></div>';
+    }
+    
+    // Try to load from cache first, then fetch async
+    var cacheKey = 'nui_brief_' + clientId;
+    var cached = localStorage.getItem(cacheKey);
+    
+    if (cached) {
+        try {
+            var brief = JSON.parse(cached);
+            return formatBriefResponses(brief.responses || {});
+        } catch(e) {}
+    }
+    
+    // Trigger async fetch and show loading
+    fetchBriefForPanel(clientId);
+    return '<div class="mb-brief-empty"><p style="color:rgba(255,255,255,0.4);">Loading brief...</p></div>';
+}
+
+async function fetchBriefForPanel(clientId) {
+    try {
+        var resp = await fetch('/.netlify/functions/save-brief?clientId=' + clientId);
+        if (!resp.ok) return;
+        var data = await resp.json();
+        if (data.briefs && data.briefs.length > 0) {
+            var brief = data.briefs[0];
+            localStorage.setItem('nui_brief_' + clientId, JSON.stringify(brief));
+            
+            // Update the panel if it's open
+            var panel = document.getElementById('mlPanel-brief');
+            if (panel && panel.classList.contains('show')) {
+                var content = panel.querySelector('.mb-brief-responses, .mb-brief-empty');
+                if (content) {
+                    content.outerHTML = formatBriefResponses(brief.responses || {});
+                }
+            }
+        }
+    } catch(e) {
+        console.warn('Brief fetch error:', e);
+    }
+}
+
+function formatBriefResponses(responses) {
+    if (!responses || Object.keys(responses).length === 0) {
+        return '<div class="mb-brief-empty"><p style="color:rgba(255,255,255,0.4);">No brief submitted yet</p><p style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px;">Send the questionnaire link to this client</p></div>';
+    }
+    
+    // Use BRAND_QUESTIONS if available for labels
+    var questions = (typeof BRAND_QUESTIONS !== 'undefined') ? BRAND_QUESTIONS : null;
+    var html = '<div class="mb-brief-responses">';
+    
+    Object.keys(responses).forEach(function(key) {
+        var val = responses[key];
+        if (!val || val === '' || (Array.isArray(val) && val.length === 0)) return;
+        
+        var label = key;
+        // Try to find human-readable label from BRAND_QUESTIONS
+        if (questions) {
+            ['section1', 'section2'].forEach(function(sec) {
+                if (questions[sec] && questions[sec].questions) {
+                    var q = questions[sec].questions.find(function(qq) { return qq.id === key; });
+                    if (q) label = q.label;
+                }
+            });
+        }
+        
+        var displayVal = Array.isArray(val) ? val.join(', ') : String(val);
+        
+        html += '<div class="mb-brief-item">' +
+            '<div class="mb-brief-q-label">' + label + '</div>' +
+            '<div class="mb-brief-q-answer">' + escapeHTML(displayVal) + '</div>' +
+        '</div>';
+    });
+    
+    html += '</div>';
+    return html;
+}
+
+function escapeHTML(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+// ─── SUPABASE PERSISTENCE ─── 
+
+/**
+ * Save moodboard to Supabase (non-blocking, fire-and-forget with retry)
+ */
+async function saveMoodboardToSupabase(mb) {
+    if (!mb || !mb.id) return;
+    
+    try {
+        var client = clients.find(c => c.id === mb.clientId);
+        
+        // Strip base64 from items to keep payload small
+        var cleanItems = (mb.collageItems || []).map(function(item) {
+            var clean = Object.assign({}, item);
+            if (clean.src && clean.src.startsWith('data:')) {
+                clean.src = '[base64-stripped]';
+            }
+            if (clean.src && clean.src.startsWith('idb://')) {
+                clean.src = '[local-only:' + clean.src + ']';
+            }
+            return clean;
+        });
+        
+        var payload = {
+            id: mb.id,
+            client_id: mb.clientId || null,
+            client_name: client?.name || mb.clientName || null,
+            project_id: mb.projectId || null,
+            title: mb.title || 'Untitled',
+            status: mb.status || 'draft',
+            collage_items: cleanItems,
+            canvas_background: mb.canvasBackground || '#0a0a0a',
+            notes: mb.notes || '',
+            brand_colors: mb.brandColors || [],
+            fonts: mb.fonts || {}
+        };
+        
+        var resp = await fetch('/.netlify/functions/save-moodboard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        
+        if (resp.ok) {
+            console.log('[NUI] Moodboard synced to Supabase:', mb.id);
+        } else {
+            var err = await resp.text();
+            console.warn('[NUI] Moodboard sync failed:', err);
+        }
+    } catch (e) {
+        console.warn('[NUI] Moodboard sync error (offline?):', e.message);
+    }
+}
+
+/**
+ * Load moodboard from Supabase (fallback to localStorage)
+ */
+async function loadMoodboardFromSupabase(mbId) {
+    try {
+        var resp = await fetch('/.netlify/functions/save-moodboard?id=' + mbId);
+        if (!resp.ok) return null;
+        var data = await resp.json();
+        return data.moodboard || null;
+    } catch(e) {
+        console.warn('[NUI] Supabase load failed, using localStorage:', e.message);
+        return null;
+    }
+}
+
+
+/**
+ * One-time migration: push all localStorage moodboards to Supabase
+ */
+async function migrateMoodboardsToSupabase() {
+    if (!proofs || proofs.length === 0) {
+        showNotification('No moodboards to migrate', 'info');
+        return;
+    }
+    
+    var count = 0;
+    for (var i = 0; i < proofs.length; i++) {
+        try {
+            await saveMoodboardToSupabase(proofs[i]);
+            count++;
+        } catch(e) {
+            console.warn('Migration failed for:', proofs[i].id, e);
+        }
+    }
+    
+    showNotification(count + '/' + proofs.length + ' moodboards migrated to cloud', 'success');
+    console.log('[NUI] Migration complete:', count, 'of', proofs.length);
+}
+
+/**
+ * Load brief snapshot into new moodboard creation
+ * Called when creating a new moodboard for a client who has a submitted brief
+ */
+async function attachBriefToMoodboard(mb) {
+    if (!mb || !mb.clientId) return;
+    
+    try {
+        var resp = await fetch('/.netlify/functions/save-brief?clientId=' + mb.clientId);
+        if (!resp.ok) return;
+        var data = await resp.json();
+        
+        if (data.briefs && data.briefs.length > 0) {
+            var brief = data.briefs[0];
+            mb.briefId = brief.id;
+            mb.briefSnapshot = brief.responses || {};
+            saveProofs();
+            console.log('[NUI] Brief attached to moodboard:', mb.id);
+        }
+    } catch(e) {
+        console.warn('[NUI] Brief attach error:', e);
+    }
+}
+
+// End of brief + Supabase integration
