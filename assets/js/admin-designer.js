@@ -2927,6 +2927,9 @@ function mbEditorWheel(e) {
 
 // Mouse handlers
 function mbEditorMouseDown(e) {
+    // Don't interfere with floating panels (image URL input, search, link, text, color, etc.)
+    if (e.target.closest('.ml-float')) return;
+    
     // Pan
     if (_mbSpaceHeld || e.button === 1) {
         _mbIsPanning = true;
