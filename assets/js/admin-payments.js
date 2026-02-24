@@ -582,7 +582,6 @@ function showCreateInvoiceModal() {
 <option value="split_3">Split into 3 Payments</option>
 <option value="split_4">Split into 4 Payments</option>
 <option value="afterpay">Afterpay / Klarna (via Stripe)</option>
-<option value="affirm">Affirm (via Stripe)</option>
 </select>
 </div>
 <div class="form-group" id="payLaterDepositGroup" style="display:none;">
