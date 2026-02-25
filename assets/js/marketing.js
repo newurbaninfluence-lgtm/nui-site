@@ -2459,6 +2459,89 @@ function loadServicesView() {
 <p style="font-size:14px;color:rgba(255,255,255,0.6);">Mix and match any services above. The more you connect, the more powerful each one becomes.</p>
 </div>
 
+<!-- Bundle Tier Cards -->
+<div style="margin-bottom:16px;"><span style="font-size:11px;text-transform:uppercase;letter-spacing:3px;color:var(--red);font-weight:700;">Pre-Built Bundles</span></div>
+<div class="deliverables-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 48px;">
+
+<div class="deliverable-card" style="border-color: rgba(255,255,255,0.1);">
+<div class="pkg-badge" style="background:rgba(59,130,246,0.2);color:#60a5fa;">Starter</div>
+<h3 class="deliverable-title">Brand Ready</h3>
+<div class="pkg-price">$1,500 <span style="font-size:14px;opacity:0.6;">setup</span> + $497<span style="font-size:14px;opacity:0.6;">/mo</span></div>
+<p class="deliverable-desc">The essentials for businesses just getting started with marketing technology.</p>
+<ul class="deliverable-list">
+<li>Silent Visitor ID</li>
+<li>Email Automation (5 sequences)</li>
+<li>CRM Integration</li>
+<li>Monthly Reports</li>
+</ul>
+<button class="btn-package" onclick="startServiceIntake('brand-ready')">Get Started →</button>
+</div>
+
+<div class="deliverable-card" style="border-color: var(--red); position: relative;">
+<div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 16px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;">Most Popular</div>
+<div class="pkg-badge" style="background:rgba(230,57,70,0.2);color:#ff6b6b;">Growth</div>
+<h3 class="deliverable-title">Brand Loaded</h3>
+<div class="pkg-price">$3,000 <span style="font-size:14px;opacity:0.6;">setup</span> + $1,497<span style="font-size:14px;opacity:0.6;">/mo</span></div>
+<p class="deliverable-desc">Full digital coverage — everything in Brand Ready plus retargeting, SMS, and rank tracking.</p>
+<ul class="deliverable-list">
+<li>Everything in Brand Ready</li>
+<li>Facebook Pixel & Retargeting</li>
+<li>Google Ads Retargeting</li>
+<li>SMS Automation</li>
+<li>Geo-Grid Rank Tracking</li>
+<li>Priority Support</li>
+</ul>
+<button class="btn-package" onclick="startServiceIntake('brand-loaded')">Get Started →</button>
+</div>
+
+<div class="deliverable-card" style="border-color: rgba(168,85,247,0.4); position: relative;">
+<div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg,#a855f7,#7c3aed); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 16px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;">Total Control</div>
+<div class="pkg-badge" style="background:rgba(168,85,247,0.2);color:#c084fc;">All 9 Services</div>
+<h3 class="deliverable-title">Brand Heavy</h3>
+<div class="pkg-price">$5,000 <span style="font-size:14px;opacity:0.6;">setup</span> + $2,497<span style="font-size:14px;opacity:0.6;">/mo</span></div>
+<p class="deliverable-desc">Every marketing tool, every channel, one monthly price. Total market control.</p>
+<ul class="deliverable-list">
+<li>Everything in Brand Loaded</li>
+<li>AI Phone Assistant (24/7)</li>
+<li>Geo-Fencing (10 locations)</li>
+<li>Dedicated Strategist</li>
+<li>Quarterly Strategy Reviews</li>
+<li>Save $700+/mo vs individual</li>
+</ul>
+<button class="btn-package" onclick="startServiceIntake('brand-heavy')">Get Started →</button>
+</div>
+</div>
+
+<!-- BRAND SYSTEM — Premium Full Launch -->
+<div style="background:linear-gradient(135deg,rgba(220,38,38,0.12),rgba(220,38,38,0.03));border:2px solid rgba(220,38,38,0.35);border-radius:20px;padding:48px 40px;margin-bottom:40px;position:relative;overflow:hidden;">
+<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),transparent);"></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+<div>
+<div style="font-size:11px;text-transform:uppercase;letter-spacing:3px;color:var(--red);font-weight:700;margin-bottom:12px;">⚡ PREMIUM LAUNCH PACKAGE</div>
+<h3 style="font-size:clamp(28px,3vw,36px);font-weight:900;margin-bottom:12px;line-height:1.1;">BRAND <span style="color:var(--red);">SYSTEM</span></h3>
+<p style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:20px;">Branding + Website + Print + All 9 Marketing Services. One team builds everything, one price launches everything. Walk in with a business name, walk out with a brand that's live, visible, and generating leads.</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
+<span style="padding:4px 12px;background:rgba(255,255,255,0.06);border-radius:20px;font-size:12px;color:rgba(255,255,255,0.6);">✓ Full Brand Identity</span>
+<span style="padding:4px 12px;background:rgba(255,255,255,0.06);border-radius:20px;font-size:12px;color:rgba(255,255,255,0.6);">✓ Custom Website</span>
+<span style="padding:4px 12px;background:rgba(255,255,255,0.06);border-radius:20px;font-size:12px;color:rgba(255,255,255,0.6);">✓ Print Collateral</span>
+<span style="padding:4px 12px;background:rgba(255,255,255,0.06);border-radius:20px;font-size:12px;color:rgba(255,255,255,0.6);">✓ All 9 Marketing Services</span>
+<span style="padding:4px 12px;background:rgba(255,255,255,0.06);border-radius:20px;font-size:12px;color:rgba(255,255,255,0.6);">✓ 6-8 Week Launch</span>
+</div>
+<button class="btn-package" onclick="startServiceIntake('brand-system')" style="background:var(--red);margin-right:12px;">Start My Brand System →</button>
+<a href="/services/brand-system-detroit" style="font-size:13px;color:rgba(255,255,255,0.5);text-decoration:underline;">See full details →</a>
+</div>
+<div style="text-align:center;">
+<div style="font-size:clamp(36px,5vw,52px);font-weight:900;color:var(--red);line-height:1;">$12,500</div>
+<div style="font-size:14px;color:rgba(255,255,255,0.5);margin-top:4px;">one-time setup</div>
+<div style="font-size:clamp(20px,3vw,28px);font-weight:700;color:#fff;margin-top:12px;">+ $2,497<span style="font-size:14px;color:rgba(255,255,255,0.4);font-weight:400;">/mo</span></div>
+<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:4px;">ongoing marketing</div>
+<div style="margin-top:16px;text-decoration:line-through;font-size:14px;color:rgba(255,255,255,0.3);">$16,500+ if purchased separately</div>
+<div style="display:inline-block;margin-top:8px;padding:4px 14px;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);border-radius:20px;font-size:12px;font-weight:600;color:#4ade80;">💰 Save $4,000+ on setup</div>
+<div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:12px;">Payment plan: 3 installments of $5K / $4.5K / $3K</div>
+</div>
+</div>
+</div>
+
 <div class="package-cta">
 <button class="btn-package" onclick="startServiceIntake('consultation')">Book Free Strategy Call →</button>
 </div>
