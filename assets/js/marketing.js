@@ -1,3 +1,7 @@
+// Service nav scroll + active section highlight
+function svcScrollTo(id){var el=document.getElementById(id);if(!el)return;var navH=document.getElementById('svcNav');var offset=navH?navH.offsetHeight+64:120;var top=el.getBoundingClientRect().top+window.pageYOffset-offset;window.scrollTo({top:top,behavior:'smooth'});}
+function _svcInitNavObserver(){var sections=['svc-branding','svc-web','svc-ai','svc-marketing','svc-print','svc-bundles'];var links=document.querySelectorAll('.svc-nav-link');if(!links.length)return;var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){var id=entry.target.id;links.forEach(function(l){var isActive=l.getAttribute('data-svc-nav')===id;l.style.color=isActive?'var(--red)':'rgba(255,255,255,0.4)';l.style.borderBottomColor=isActive?'var(--red)':'transparent';});}});},{rootMargin:'-120px 0px -60% 0px',threshold:0});sections.forEach(function(id){var el=document.getElementById(id);if(el)observer.observe(el);});}
+
 function loadHomeView() {
     document.getElementById('homeView').innerHTML = `
 <section class="hero">
@@ -1106,10 +1110,6 @@ function loadServicesView() {
 <a onclick="svcScrollTo('svc-bundles')" class="svc-nav-link" data-svc-nav="svc-bundles" style="padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;text-decoration:none;transition:all 0.3s;">Bundles</a>
 </div>
 </div>
-<script>
-function svcScrollTo(id){var el=document.getElementById(id);if(!el)return;var navH=document.getElementById('svcNav');var offset=navH?navH.offsetHeight+64:120;var top=el.getBoundingClientRect().top+window.pageYOffset-offset;window.scrollTo({top:top,behavior:'smooth'});}
-(function(){var sections=['svc-branding','svc-web','svc-ai','svc-marketing','svc-print','svc-bundles'];var links=document.querySelectorAll('.svc-nav-link');if(!links.length)return;var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){var id=entry.target.id;links.forEach(function(l){var isActive=l.getAttribute('data-svc-nav')===id;l.style.color=isActive?'var(--red)':'rgba(255,255,255,0.4)';l.style.borderBottomColor=isActive?'var(--red)':'transparent';});}});},{rootMargin:'-120px 0px -60% 0px',threshold:0});setTimeout(function(){sections.forEach(function(id){var el=document.getElementById(id);if(el)observer.observe(el);});},500);})();
-</script>
 
         <!-- BRAND KIT - STARTER PACKAGE -->
 <div id="svc-branding"></div>
@@ -2639,6 +2639,7 @@ function svcScrollTo(id){var el=document.getElementById(id);if(!el)return;var na
         ${getFooterHTML()}
     `;
     requestAnimationFrame(function() { _nuiMotionEngine(); });
+    setTimeout(_svcInitNavObserver, 500);
 }
 
 function toggleCustomService(event, el) {
