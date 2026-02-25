@@ -1,5 +1,6 @@
 // Service nav scroll + active section highlight
 function svcScrollTo(id){var el=document.getElementById(id);if(!el)return;var navH=document.getElementById('svcNav');var offset=navH?navH.offsetHeight+64:120;var top=el.getBoundingClientRect().top+window.pageYOffset-offset;window.scrollTo({top:top,behavior:'smooth'});}
+function goToService(sectionId){showView('services');setTimeout(function(){svcScrollTo(sectionId);},600);}
 function _svcInitNavObserver(){var sections=['svc-branding','svc-web','svc-ai','svc-marketing','svc-print','svc-bundles'];var links=document.querySelectorAll('.svc-nav-link');if(!links.length)return;var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){var id=entry.target.id;links.forEach(function(l){var isActive=l.getAttribute('data-svc-nav')===id;l.style.color=isActive?'var(--red)':'rgba(255,255,255,0.4)';l.style.borderBottomColor=isActive?'var(--red)':'transparent';});}});},{rootMargin:'-120px 0px -60% 0px',threshold:0});sections.forEach(function(id){var el=document.getElementById(id);if(el)observer.observe(el);});}
 
 function loadHomeView() {
@@ -110,15 +111,15 @@ function loadHomeView() {
 <button class="btn-cta mt-32" onclick="showView('services')">Explore All Services</button>
 </div>
 <div class="services-grid home-services nui-stagger">
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Brand Identity Design</h3><p>Forge Your Legacy. Define Your Empire.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Website Design & Dev</h3><p>Your Digital Headquarters. Built for Conversion.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Social Media & Ads</h3><p>Command Attention. Drive Engagement.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Motion & Video</h3><p>Bring Your Story to Life. Dynamically.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Print & Packaging</h3><p>Tangible Brand Power. From Cards to Wraps.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>SEO & Digital Strategy</h3><p>Get Found. Get Chosen. Get Paid.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>AI Systems & Automation</h3><p>Your Business. Always On. Always Working.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Email & SMS Automation</h3><p>Capture Silent Visitors. Convert on Autopilot.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="showView('services')"><div class="arrow">↗</div><h3>Geo-Fencing & Geo-Gridding</h3><p>Target Competitors' Customers. Dominate Your Map.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="goToService('svc-branding')"><div class="arrow">↗</div><h3>Brand Identity Design</h3><p>Forge Your Legacy. Define Your Empire.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="goToService('svc-web')"><div class="arrow">↗</div><h3>Website Design & Dev</h3><p>Your Digital Headquarters. Built for Conversion.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="goToService('svc-marketing')"><div class="arrow">↗</div><h3>Social Media & Ads</h3><p>Command Attention. Drive Engagement.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="goToService('svc-marketing')"><div class="arrow">↗</div><h3>Motion & Video</h3><p>Bring Your Story to Life. Dynamically.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="goToService('svc-print')"><div class="arrow">↗</div><h3>Print & Packaging</h3><p>Tangible Brand Power. From Cards to Wraps.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="goToService('svc-marketing')"><div class="arrow">↗</div><h3>SEO & Digital Strategy</h3><p>Get Found. Get Chosen. Get Paid.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="goToService('svc-ai')"><div class="arrow">↗</div><h3>AI Systems & Automation</h3><p>Your Business. Always On. Always Working.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="goToService('svc-marketing')"><div class="arrow">↗</div><h3>Email & SMS Automation</h3><p>Capture Silent Visitors. Convert on Autopilot.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="goToService('svc-marketing')"><div class="arrow">↗</div><h3>Geo-Fencing & Geo-Gridding</h3><p>Target Competitors' Customers. Dominate Your Map.</p><div class="learn-more">LEARN MORE →</div></div>
 </div>
 </div>
 </section>
