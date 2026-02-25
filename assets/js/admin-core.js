@@ -55,6 +55,10 @@ var _nuiBreadcrumbMap = {
         { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
         { label: 'SEO', action: "showAdminPanel('seo')" },
         { label: 'Rank Intel', action: '' }
+    ],
+    'retargeting': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Retargeting', action: '' }
     ]
 };
 
@@ -117,6 +121,7 @@ function showAdminPanel(panel) {
         'gmb': loadAdminGmbPanel,
         'blog': loadAdminBlogPanel,
         'emailmarketing': loadAdminEmailMarketingPanel,
+        'retargeting': loadAdminRetargetingPanel,
         'loyalty': loadAdminLoyaltyPanel,
         'communications': loadAdminCommunicationsPanel,
         'socialdm': loadAdminSocialDmPanel,

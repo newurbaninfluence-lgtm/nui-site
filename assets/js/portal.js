@@ -107,6 +107,7 @@ function loadPortalView() {
 <a onclick="showAdminPanel('rankintel')" class="admin-nav-link" data-panel="rankintel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>Rank Intel</a>
 <a onclick="showAdminPanel('blog')" class="admin-nav-link" data-panel="blog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Blog</a>
 <a onclick="showAdminPanel('emailmarketing')" class="admin-nav-link" data-panel="emailmarketing"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email</a>
+<a onclick="showAdminPanel('retargeting')" class="admin-nav-link" data-panel="retargeting"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Retargeting</a>
 </div>
 <div class="admin-nav-group">
 <span class="admin-nav-label">CONTENT</span>
@@ -146,6 +147,7 @@ function loadPortalView() {
 <div id="adminGmbPanel" class="admin-panel"></div>
 <div id="adminBlogPanel" class="admin-panel"></div>
 <div id="adminEmailmarketingPanel" class="admin-panel"></div>
+<div id="adminRetargetingPanel" class="admin-panel"></div>
 <div id="adminLoyaltyPanel" class="admin-panel"></div>
 <div id="adminCommunicationsPanel" class="admin-panel"></div>
 <div id="adminSocialdmPanel" class="admin-panel"></div>
