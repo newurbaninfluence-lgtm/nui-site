@@ -1038,8 +1038,15 @@ function loadServicesView() {
             .comparison-cell.check { text-align: center; color: var(--red); font-size: 18px; }
             .comparison-cell.empty { text-align: center; color: rgba(255,255,255,0.2); }
 
+            /* Service Nav scrollbar hide */
+            #svcNav > div::-webkit-scrollbar { display: none; }
+            #svcNav > div { -ms-overflow-style: none; scrollbar-width: none; }
+            .svc-nav-link:hover { color: var(--red) !important; }
+
             /* SERVICES PAGE MOBILE RESPONSIVE */
             @media (max-width: 768px) {
+                #svcNav > div { padding: 0 8px; }
+                .svc-nav-link { padding: 12px 14px !important; font-size: 11px !important; }
                 .package-section { padding: 0 0 60px 0; }
                 .package-image { height: 180px; margin-bottom: 32px; }
                 .package-header { margin-bottom: 40px; padding: 0 16px; }
@@ -1088,7 +1095,24 @@ function loadServicesView() {
 <p class="section-subtitle">Comprehensive branding solutions designed for product-based and service-based businesses. Every deliverable comes with clear direction on how to use it.</p>
 </section>
 
+<!-- Sticky Service Navigator -->
+<div id="svcNav" style="position:sticky;top:64px;z-index:90;background:rgba(10,10,10,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0;transition:box-shadow 0.3s;">
+<div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding:0 16px;">
+<a onclick="svcScrollTo('svc-branding')" class="svc-nav-link active" data-svc-nav="svc-branding" style="padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);cursor:pointer;white-space:nowrap;border-bottom:2px solid var(--red);text-decoration:none;transition:all 0.3s;">Branding</a>
+<a onclick="svcScrollTo('svc-web')" class="svc-nav-link" data-svc-nav="svc-web" style="padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;text-decoration:none;transition:all 0.3s;">Web Design</a>
+<a onclick="svcScrollTo('svc-ai')" class="svc-nav-link" data-svc-nav="svc-ai" style="padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;text-decoration:none;transition:all 0.3s;">AI & Automation</a>
+<a onclick="svcScrollTo('svc-marketing')" class="svc-nav-link" data-svc-nav="svc-marketing" style="padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;text-decoration:none;transition:all 0.3s;">Marketing</a>
+<a onclick="svcScrollTo('svc-print')" class="svc-nav-link" data-svc-nav="svc-print" style="padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;text-decoration:none;transition:all 0.3s;">Print</a>
+<a onclick="svcScrollTo('svc-bundles')" class="svc-nav-link" data-svc-nav="svc-bundles" style="padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;text-decoration:none;transition:all 0.3s;">Bundles</a>
+</div>
+</div>
+<script>
+function svcScrollTo(id){var el=document.getElementById(id);if(!el)return;var navH=document.getElementById('svcNav');var offset=navH?navH.offsetHeight+64:120;var top=el.getBoundingClientRect().top+window.pageYOffset-offset;window.scrollTo({top:top,behavior:'smooth'});}
+(function(){var sections=['svc-branding','svc-web','svc-ai','svc-marketing','svc-print','svc-bundles'];var links=document.querySelectorAll('.svc-nav-link');if(!links.length)return;var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){var id=entry.target.id;links.forEach(function(l){var isActive=l.getAttribute('data-svc-nav')===id;l.style.color=isActive?'var(--red)':'rgba(255,255,255,0.4)';l.style.borderBottomColor=isActive?'var(--red)':'transparent';});}});},{rootMargin:'-120px 0px -60% 0px',threshold:0});setTimeout(function(){sections.forEach(function(id){var el=document.getElementById(id);if(el)observer.observe(el);});},500);})();
+</script>
+
         <!-- BRAND KIT - STARTER PACKAGE -->
+<div id="svc-branding"></div>
 <section class="package-section" data-svc-filter="new-business,print" style="background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);">
 <div class="package-image">
 <img loading="eager" fetchpriority="high" width="1920" height="1200" src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1920&q=80" alt="Brand Design" data-service-image="brand-kit">
@@ -1773,6 +1797,7 @@ function loadServicesView() {
 </section>
 
         <!-- WEBSITE & WEBAPP PACKAGES -->
+<div id="svc-web"></div>
 <section class="package-section" data-svc-filter="new-business,established,digital" style="background: #050505;">
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&q=80" alt="Website Development" data-service-image="website">
@@ -2008,6 +2033,7 @@ function loadServicesView() {
 </section>
 
         <!-- BUILD YOUR OWN PACKAGE -->
+<div id="svc-print"></div>
 <section class="package-section" data-svc-filter="new-business,established,digital,print,email-sms,geo" style="background: linear-gradient(180deg, #0a0a0a 0%, #080808 100%);">
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1920&q=80" alt="Custom Package" data-service-image="custom">
@@ -2174,6 +2200,7 @@ function loadServicesView() {
 </style>
 
 <!-- AI SYSTEMS & AUTOMATION -->
+<div id="svc-ai"></div>
 <section class="package-section" data-svc-filter="digital,established" style="background: linear-gradient(180deg, #050505 0%, #0a0a0a 100%);">
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1920&q=80" alt="AI Automation Systems" data-service-image="ai-systems">
@@ -2280,6 +2307,7 @@ function loadServicesView() {
 </section>
 
 <!-- MARKETING TECHNOLOGY SERVICES - Individual Service Cards -->
+<div id="svc-marketing"></div>
 <section class="package-section" data-svc-filter="email-sms,geo,digital,established" style="background: #050505;">
 <div class="package-image">
 <img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1563986768609-322da13575f2?w=1920&q=80" alt="Marketing Technology Services" data-service-image="martech">
@@ -2453,6 +2481,7 @@ function loadServicesView() {
 </div>
 
 <!-- Bundle Discount Banner -->
+<div id="svc-bundles"></div>
 <div style="background:linear-gradient(135deg,rgba(230,57,70,0.1),rgba(230,57,70,0.05));border:1px solid rgba(230,57,70,0.2);border-radius:16px;padding:32px;text-align:center;margin-bottom:40px;">
 <p style="font-size:13px;text-transform:uppercase;letter-spacing:3px;color:var(--red);font-weight:700;margin-bottom:8px;">💰 BUNDLE & SAVE</p>
 <p style="font-size:20px;font-weight:700;color:#fff;margin-bottom:8px;">Buy 3+ services and get 15% off monthly fees</p>
