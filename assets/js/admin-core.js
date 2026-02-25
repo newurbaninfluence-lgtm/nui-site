@@ -50,6 +50,11 @@ var _nuiBreadcrumbMap = {
     'contacthub': [
         { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
         { label: 'Contact Hub', action: '' }
+    ],
+    'rankintel': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'SEO', action: "showAdminPanel('seo')" },
+        { label: 'Rank Intel', action: '' }
     ]
 };
 
@@ -108,6 +113,7 @@ function showAdminPanel(panel) {
         'payouts': loadAdminPayoutsPanel,
         'stripe': loadAdminStripePanel,
         'seo': loadAdminSeoPanel,
+        'rankintel': loadAdminRankIntelPanel,
         'gmb': loadAdminGmbPanel,
         'blog': loadAdminBlogPanel,
         'emailmarketing': loadAdminEmailMarketingPanel,
