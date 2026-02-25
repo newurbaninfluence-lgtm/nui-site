@@ -90,6 +90,15 @@ function showAdminPanel(panel) {
     if (panelEl) panelEl.classList.add('active');
 
     // Load panel content
+    // Check white-label module access
+    if (typeof _panelToModule !== 'undefined' && typeof isModuleEnabled === 'function') {
+        const modKey = _panelToModule[panel];
+        if (modKey && !isModuleEnabled(modKey)) {
+            console.log(`Module "${modKey}" is disabled for this instance`);
+            showAdminPanel('dashboard');
+            return;
+        }
+    }
     // Check role-based access
     if (!canAccessPanel(panel)) {
         alert('You do not have permission to access this panel.');
@@ -885,6 +894,10 @@ function renderAdminSidebar() {
     // For now, keep the static sidebar - role filtering is handled by canAccessPanel()
     // A more complete implementation would dynamically rebuild the sidebar HTML
     console.log(`Sidebar rendered for ${userType}: ${userName}`);
+
+    // ── WHITE-LABEL: Apply agency config to nav + branding ──
+    if (typeof filterAdminNav === 'function') filterAdminNav();
+    if (typeof updateAdminBranding === 'function') updateAdminBranding();
 }
 
 // ==================== USER MANAGEMENT PANEL ====================

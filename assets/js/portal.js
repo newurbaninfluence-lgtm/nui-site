@@ -740,8 +740,8 @@ async function confirmMeeting() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         to: meetingClientEmail,
-                        subject: `Welcome to New Urban Influence, ${meetingClientName}! 🎨`,
-                        html: `
+                        subject: typeof getBrandedWelcomeSubject === 'function' ? getBrandedWelcomeSubject(meetingClientName) : `Welcome to New Urban Influence, ${meetingClientName}! 🎨`,
+                        html: typeof brandEmailHtml === 'function' ? brandEmailHtml(`
 <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #181818; color: #ffffff; border-radius: 16px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #dc2626, #991b1b); padding: 40px; text-align: center;">
 <h2 style="margin: 0; font-size: 28px; color: #fff;">Welcome to NUI</h2>
@@ -764,7 +764,7 @@ async function confirmMeeting() {
 <div style="background: #1c1c1c; padding: 20px; text-align: center; border-top: 1px solid #222;">
 <p class="text-muted fs-12 m-0">New Urban Influence • Detroit, MI • newurbaninfluence.com</p>
 </div>
-</div>`
+</div>`) : `<p>Welcome!</p>`
                     })
                 });
                 console.log('✅ Auto-workflow: Welcome email sent');
@@ -777,8 +777,8 @@ async function confirmMeeting() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     to: meetingClientEmail,
-                    subject: `Quick Questionnaire Before Our Meeting — NUI`,
-                    html: `
+                    subject: `Quick Questionnaire Before Our Meeting — ${typeof getAgencyShortName === 'function' ? getAgencyShortName() : 'NUI'}`,
+                    html: typeof brandEmailHtml === 'function' ? brandEmailHtml(`
 <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #181818; color: #ffffff; border-radius: 16px; overflow: hidden;">
 <div style="background: #1c1c1c; padding: 32px; text-align: center; border-bottom: 1px solid #222;">
 <h2 style="margin: 0; color: #fff;">📋 Service Questionnaire</h2>
@@ -793,7 +793,7 @@ async function confirmMeeting() {
 <p class="text-muted fs-14">This takes about 3-5 minutes and covers your brand goals, target audience, style preferences, and project timeline.</p>
 <p style="color: #888; margin-top: 24px;">— The NUI Team</p>
 </div>
-</div>`
+</div>`) : `<p>Please complete the questionnaire.</p>`
                 })
             });
             console.log('✅ Auto-workflow: Questionnaire email sent');
@@ -826,8 +826,8 @@ async function confirmMeeting() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         to: meetingClientEmail,
-                        subject: `Your Custom Pricing Package — New Urban Influence`,
-                        html: `
+                        subject: `Your Custom Pricing Package — ${typeof getAgencyName === 'function' ? getAgencyName() : 'New Urban Influence'}`,
+                        html: typeof brandEmailHtml === 'function' ? brandEmailHtml(`
 <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #181818; color: #ffffff; border-radius: 16px; overflow: hidden;">
 <div style="background: #1c1c1c; padding: 32px; text-align: center; border-bottom: 1px solid #222;">
 <h2 style="margin: 0; color: #fff;">💰 Your Pricing Estimate</h2>
@@ -846,7 +846,7 @@ async function confirmMeeting() {
 </div>
 <p style="color: #888; margin-top: 24px;">— The NUI Team</p>
 </div>
-</div>`
+</div>`) : `<p>Your pricing estimate is ready.</p>`
                     })
                 });
                 console.log('✅ Auto-workflow: Pricing email sent');
@@ -928,9 +928,12 @@ async function handlePortalLogin(e) {
     console.log('Login attempt:', loginType, email);
 
     // ===== MASTER ADMIN — ALWAYS WORKS, BYPASSES EVERYTHING =====
-    const masterPw = localStorage.getItem('nui_master_admin_pw') || 'newurban';
-    if (email === 'newurbaninfluence@gmail.com' && password === masterPw) {
-        currentUser = { type: 'admin', email: 'newurbaninfluence@gmail.com', name: 'Faren Young', isMasterAdmin: true };
+    const _ma = (typeof AGENCY_CONFIG !== 'undefined' && AGENCY_CONFIG.masterAdmin) || {};
+    const masterEmail = _ma.email || 'newurbaninfluence@gmail.com';
+    const masterName = _ma.name || 'Faren Young';
+    const masterPw = localStorage.getItem('nui_master_admin_pw') || _ma.defaultPassword || 'newurban';
+    if (email === masterEmail.toLowerCase() && password === masterPw) {
+        currentUser = { type: 'admin', email: masterEmail, name: masterName, isMasterAdmin: true };
         document.getElementById('portalLogin').style.display = 'none';
         document.getElementById('adminDashboard').style.display = 'block';
         renderAdminSidebar();
