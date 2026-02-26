@@ -238,8 +238,8 @@ async function createClient(e) {
         servicePackageName: (() => { const sel = document.getElementById('newClientService'); return sel?.value === 'custom' ? 'Custom / Multiple Services' : (servicePackages.find(p => p.id === sel?.value)?.name || ''); })(),
         referralSource: document.getElementById('newClientReferral')?.value || '',
         notes: document.getElementById('newClientNotes')?.value || '',
-        colors: [document.getElementById('color1').value, document.getElementById('color2').value, document.getElementById('color3').value],
-        fonts: { heading: document.getElementById('newClientHeadingFont').value || 'Inter', body: document.getElementById('newClientBodyFont').value || 'Inter' },
+        hostingPlanId: document.getElementById('newClientHostingPlan')?.value || '',
+        designSubId: document.getElementById('newClientDesignSub')?.value || '',
         assets: { logos: [], mockups: [], social: [], video: [], banner: [], fonts: [], patterns: [], package: [] },
         emailVerified: false,
         verificationToken: generateToken(),
@@ -265,14 +265,123 @@ async function createClient(e) {
         console.warn('Supabase auth signup failed (client can still use localStorage login):', authErr.message);
     }
 
+    let actionsCompleted = [];
+
+    // === ASSIGN HOSTING PLAN ===
+    const hostingPlanId = client.hostingPlanId;
+    let hostingPlan = null;
+    let hostingStripeUrl = null;
+    if (hostingPlanId) {
+        hostingPlan = subscriptionPlans.find(p => p.id === hostingPlanId);
+        if (hostingPlan) {
+            const hostingSub = {
+                id: Date.now(),
+                planId: hostingPlanId,
+                clientId: client.id,
+                clientName: client.name,
+                clientEmail: client.email,
+                plan: hostingPlan.name,
+                price: hostingPlan.price,
+                billingMethod: 'stripe',
+                status: 'pending_payment',
+                startDate: new Date().toISOString(),
+                nextBillingDate: new Date(Date.now() + 30*86400000).toISOString(),
+                features: hostingPlan.features,
+                category: 'hosting',
+                history: [{ action: 'created', date: new Date().toISOString(), note: 'Assigned during onboarding', user: currentUser?.name || 'Admin' }]
+            };
+            subscriptions.push(hostingSub);
+            saveSubscriptions();
+            try {
+                const resp = await fetch('/.netlify/functions/create-subscription', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ clientEmail: client.email, clientName: client.name, clientId: String(client.id), amount: hostingPlan.price, description: hostingPlan.name + ' — Monthly Website Hosting', invoiceId: String(hostingSub.id), billingType: 'monthly', billingCycles: 0 })
+                });
+                const data = await resp.json();
+                if (data.url) { hostingStripeUrl = data.url; hostingSub.stripeCheckoutUrl = data.url; hostingSub.stripeSessionId = data.sessionId; saveSubscriptions(); }
+            } catch (e) { console.warn('Hosting Stripe link error:', e); }
+            actionsCompleted.push(`Hosting plan assigned (${hostingPlan.name})`);
+        }
+    }
+
+    // === ASSIGN DESIGN SUBSCRIPTION ===
+    const designSubId = client.designSubId;
+    let designPlan = null;
+    let designStripeUrl = null;
+    if (designSubId) {
+        designPlan = subscriptionPlans.find(p => p.id === designSubId);
+        if (designPlan) {
+            const designSub = {
+                id: Date.now() + 1,
+                planId: designSubId,
+                clientId: client.id,
+                clientName: client.name,
+                clientEmail: client.email,
+                plan: designPlan.name,
+                price: designPlan.price,
+                billingMethod: 'stripe',
+                status: 'pending_payment',
+                startDate: new Date().toISOString(),
+                nextBillingDate: new Date(Date.now() + 30*86400000).toISOString(),
+                orderLimit: designPlan.orderLimit,
+                features: designPlan.features,
+                category: 'design-sub',
+                history: [{ action: 'created', date: new Date().toISOString(), note: 'Assigned during onboarding', user: currentUser?.name || 'Admin' }]
+            };
+            subscriptions.push(designSub);
+            saveSubscriptions();
+            try {
+                const resp = await fetch('/.netlify/functions/create-subscription', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ clientEmail: client.email, clientName: client.name, clientId: String(client.id), amount: designPlan.price, description: designPlan.name + ' — Monthly Design Subscription', invoiceId: String(designSub.id), billingType: 'monthly', billingCycles: 0 })
+                });
+                const data = await resp.json();
+                if (data.url) { designStripeUrl = data.url; designSub.stripeCheckoutUrl = data.url; designSub.stripeSessionId = data.sessionId; saveSubscriptions(); }
+            } catch (e) { console.warn('Design sub Stripe link error:', e); }
+            actionsCompleted.push(`Design subscription assigned (${designPlan.name})`);
+        }
+    }
+
     const sendWelcome = document.getElementById('sendWelcomeEmail')?.checked;
     const sendQuest = document.getElementById('sendQuestionnaire')?.checked;
     const addPipeline = document.getElementById('addToPipeline')?.checked;
 
-    let actionsCompleted = [];
+    // actionsCompleted already populated by plan assignments above
 
     // === SEND WELCOME EMAIL ===
     if (sendWelcome) {
+        const startDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const endDate = new Date(Date.now() + 30*86400000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const renewDate = new Date(Date.now() + 30*86400000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+        // Build plan sections dynamically
+        let planSections = '';
+        if (hostingPlan) {
+            planSections += `<div style="background:#0d3320;border:1px solid #10b981;border-radius:12px;padding:24px;margin:24px 0;">
+<p style="color:#10b981;font-weight:700;font-size:18px;margin:0 0 12px;">🎉 Congratulations — Your Site Is Hosted!</p>
+<div style="display:flex;justify-content:space-between;margin:8px 0;"><span style="color:#888;">Plan</span><span style="color:#fff;font-weight:600;">${hostingPlan.name}</span></div>
+<div style="display:flex;justify-content:space-between;margin:8px 0;"><span style="color:#888;">Monthly Rate</span><span style="color:#10b981;font-weight:700;">$${hostingPlan.price}/mo</span></div>
+<div style="display:flex;justify-content:space-between;margin:8px 0;"><span style="color:#888;">Active Since</span><span style="color:#fff;">${startDate}</span></div>
+<div style="display:flex;justify-content:space-between;margin:8px 0;"><span style="color:#888;">Next Billing</span><span style="color:#fff;">${renewDate}</span></div>
+<div style="margin-top:12px;padding-top:12px;border-top:1px solid #1a4a30;"><p style="color:#ccc;font-size:13px;margin:0;">Includes: ${hostingPlan.features.join(' • ')}</p></div>
+${hostingStripeUrl ? `<div style="text-align:center;margin-top:16px;"><a href="${hostingStripeUrl}" style="display:inline-block;padding:12px 32px;background:#10b981;color:#000;text-decoration:none;border-radius:8px;font-weight:700;">Activate Hosting Payment →</a></div>` : ''}
+</div>`;
+        }
+
+        if (designPlan) {
+            planSections += `<div style="background:#1a0a2e;border:1px solid #8b5cf6;border-radius:12px;padding:24px;margin:24px 0;">
+<p style="color:#8b5cf6;font-weight:700;font-size:18px;margin:0 0 12px;">🎨 Your Design Subscription Is Active!</p>
+<div style="display:flex;justify-content:space-between;margin:8px 0;"><span style="color:#888;">Plan</span><span style="color:#fff;font-weight:600;">${designPlan.name}</span></div>
+<div style="display:flex;justify-content:space-between;margin:8px 0;"><span style="color:#888;">Monthly Rate</span><span style="color:#8b5cf6;font-weight:700;">$${designPlan.price}/mo</span></div>
+<div style="display:flex;justify-content:space-between;margin:8px 0;"><span style="color:#888;">Starts</span><span style="color:#fff;">${startDate}</span></div>
+<div style="display:flex;justify-content:space-between;margin:8px 0;"><span style="color:#888;">First Period Ends</span><span style="color:#fff;">${endDate}</span></div>
+<div style="display:flex;justify-content:space-between;margin:8px 0;"><span style="color:#888;">Design Credits</span><span style="color:#fff;">${designPlan.designsPerMonth} designs/month</span></div>
+${designPlan.videosPerMonth ? `<div style="display:flex;justify-content:space-between;margin:8px 0;"><span style="color:#888;">Video Credits</span><span style="color:#fff;">${designPlan.videosPerMonth} videos/month</span></div>` : ''}
+<div style="margin-top:12px;padding-top:12px;border-top:1px solid #2d1a4e;"><p style="color:#ccc;font-size:13px;margin:0;">Credits reset monthly. Unused credits do not roll over.</p></div>
+${designStripeUrl ? `<div style="text-align:center;margin-top:16px;"><a href="${designStripeUrl}" style="display:inline-block;padding:12px 32px;background:#8b5cf6;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;">Activate Design Subscription →</a></div>` : ''}
+</div>`;
+        }
+
         try {
             await fetch('/.netlify/functions/send-email', {
                 method: 'POST',
@@ -280,35 +389,60 @@ async function createClient(e) {
                 body: JSON.stringify({
                     to: client.email,
                     clientId: client.id,
-                    subject: `Welcome to New Urban Influence! 🎉`,
-                    html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #202020; color: #fff; border-radius: 12px; overflow: hidden;">
-<div style="background: linear-gradient(135deg, #e11d48, #ff6b6b); padding: 40px; text-align: center;">
-<h2 style="margin: 0; font-size: 28px; color: #fff;">Welcome to the Family!</h2>
-<p style="color: rgba(255,255,255,0.8); margin-top: 8px;">New Urban Influence</p>
+                    subject: hostingPlan ? `🎉 Your Site Is Live — Welcome to New Urban Influence!` : designPlan ? `🎨 Welcome to ${designPlan.name} — New Urban Influence` : `Welcome to New Urban Influence! 🎉`,
+                    html: `<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;border-radius:12px;overflow:hidden;">
+<div style="background:linear-gradient(135deg,#e11d48,#ff6b6b);padding:40px;text-align:center;">
+<img src="https://newurbaninfluence.com/assets/img/nui-logo-white.png" alt="NUI" style="height:40px;margin-bottom:16px;">
+<h2 style="margin:0;font-size:28px;color:#fff;">Welcome to the Family!</h2>
 </div>
-<div class="p-32">
-<p class="text-light">Hey ${client.contact || client.name},</p>
-<p class="text-light">We're thrilled to have you on board! Your client portal has been set up and is ready to go.</p>
-<div style="background: #1c1c1c; border: 1px solid #333; border-radius: 12px; padding: 24px; margin: 24px 0;">
-<p style="color: #e11d48; font-weight: 600; margin-bottom: 16px;">🔐 Your Login Credentials:</p>
-<p style="color: #ccc; margin: 8px 0;">Email: <strong>${client.email}</strong></p>
-<p style="color: #ccc; margin: 8px 0;">Password: <strong>${client.password}</strong></p>
-<p style="color: #888; font-size: 12px; margin-top: 12px;">We recommend changing your password after first login.</p>
+<div style="padding:32px;">
+<p style="color:#ccc;line-height:1.7;">Hey ${client.contact || client.name},</p>
+<p style="color:#ccc;line-height:1.7;">We're thrilled to have you on board! Your client portal is set up and ready to go.</p>
+
+<div style="background:#111;border:1px solid #333;border-radius:12px;padding:24px;margin:24px 0;">
+<p style="color:#e63946;font-weight:600;margin:0 0 16px;">🔐 Your Login Credentials</p>
+<p style="color:#ccc;margin:8px 0;">Email: <strong style="color:#fff;">${client.email}</strong></p>
+<p style="color:#ccc;margin:8px 0;">Password: <strong style="color:#fff;">${client.password}</strong></p>
+<p style="color:#666;font-size:12px;margin:12px 0 0;">We recommend changing your password after first login.</p>
 </div>
-<div style="text-align: center; margin: 24px 0;">
-<a href="https://newurbaninfluence.com/#portal" style="display: inline-block; background: #e11d48; color: #fff; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">Log In to Your Portal →</a>
+
+<div style="text-align:center;margin:24px 0;">
+<a href="https://newurbaninfluence.com/app/#login" style="display:inline-block;background:#e63946;color:#fff;padding:16px 48px;border-radius:8px;text-decoration:none;font-weight:700;font-size:16px;">Log In to Your Portal →</a>
 </div>
-<div style="background: #1c1c1c; border-left: 3px solid #e11d48; padding: 20px; border-radius: 0 8px 8px 0; margin: 24px 0;">
-<p style="color: #fff; font-weight: 600; margin-bottom: 8px;">What's Next?</p>
-<p style="color: #ccc; font-size: 14px; line-height: 1.8;">1. Log in and explore your portal<br>2. Complete the service questionnaire (check your inbox!)<br>3. Book a strategy call with our team<br>4. We start bringing your vision to life!</p>
+
+${planSections}
+
+<div style="background:#111;border:1px solid #333;border-radius:12px;padding:24px;margin:24px 0;">
+<p style="color:#fff;font-weight:600;margin:0 0 12px;">📋 Service Agreement</p>
+<p style="color:#999;font-size:14px;line-height:1.7;margin:0;">By using our services, you agree to the New Urban Influence Service Agreement. Key terms include:</p>
+<p style="color:#ccc;font-size:13px;line-height:1.8;margin:12px 0 0;">
+• 3-month minimum commitment on all subscription plans<br>
+• Failed payment = immediate service pause + 90-day file retention<br>
+• 48-hour response window on proofs (auto-approved after 7 days)<br>
+• No refunds on delivered designs<br>
+• Copyright transfers upon full payment only
+</p>
+<p style="color:#888;font-size:12px;margin:12px 0 0;">Full agreement: <a href="https://newurbaninfluence.com/services/design-subscriptions.html" style="color:#e63946;">View Service Terms</a></p>
 </div>
-<p class="text-muted-sm">Questions? Reply to this email or call us at (248) 487-8747.</p>
+
+<div style="background:#111;border-left:3px solid #e63946;padding:20px;border-radius:0 8px 8px 0;margin:24px 0;">
+<p style="color:#fff;font-weight:600;margin:0 0 8px;">What's Next?</p>
+<p style="color:#ccc;font-size:14px;line-height:1.8;margin:0;">
+1. Log in and explore your portal<br>
+${hostingPlan ? '2. Your website is live — we handle hosting, updates & security<br>' : ''}
+${designPlan ? `${hostingPlan ? '3' : '2'}. Submit your first design order from the portal<br>` : ''}
+${hostingStripeUrl || designStripeUrl ? `${hostingPlan && designPlan ? '4' : hostingPlan || designPlan ? '3' : '2'}. Activate your payment method (check links above)<br>` : ''}
+${!hostingPlan && !designPlan ? '2. Complete the service questionnaire (check your inbox!)<br>3. Book a strategy call with our team<br>' : ''}
+</p>
 </div>
-<div class="admin-footer-bar">
-<p class="text-muted fs-12 m-0">New Urban Influence • Unapologetically Detroit</p>
+
+<p style="color:#666;font-size:13px;">Questions? Reply to this email or call (248) 487-8747.</p>
+</div>
+<div style="border-top:1px solid #222;padding:16px 32px;text-align:center;">
+<p style="color:#555;font-size:12px;margin:0;">New Urban Influence • Detroit, MI • Unapologetically Detroit</p>
 </div>
 </div>`,
-                    text: `Welcome to New Urban Influence! Your portal is ready. Login: ${client.email} / ${client.password}. Visit newurbaninfluence.com to get started.`
+                    text: `Welcome to New Urban Influence! Your portal is ready. Login: ${client.email} / ${client.password}. Visit newurbaninfluence.com/app to get started.${hostingPlan ? ` Your ${hostingPlan.name} hosting is active ($${hostingPlan.price}/mo).` : ''}${designPlan ? ` Your ${designPlan.name} design subscription starts ${startDate} ($${designPlan.price}/mo).` : ''}`
                 })
             });
             actionsCompleted.push('Welcome email sent');

@@ -265,18 +265,24 @@ ${servicePackages.map(p => '<option value="' + p.id + '">' + p.name + ' — $' +
 <div class="form-group"><label class="form-label">Notes</label><textarea id="newClientNotes" class="form-input" rows="2" placeholder="Anything important to remember about this client..."></textarea></div>
 </div>
 
-            <!-- BRANDING (Optional) -->
-<div style="font-weight: 600; font-size: 16px; margin: 24px 0 16px; color: var(--red); display: flex; align-items: center; gap: 8px;">🎨 Branding (Optional — can be set later)</div>
-<div class="form-group"><label class="form-label">Brand Colors</label>
-<div class="flex-gap-12">
-<input type="color" id="color1" value="#ff0000" style="width: 50px; height: 40px; border: none; cursor: pointer;">
-<input type="color" id="color2" value="#000000" style="width: 50px; height: 40px; border: none; cursor: pointer;">
-<input type="color" id="color3" value="#ffffff" style="width: 50px; height: 40px; border: none; cursor: pointer;">
-</div>
-</div>
+            <!-- HOSTING & SUBSCRIPTION PLANS -->
+<div style="font-weight: 600; font-size: 16px; margin: 24px 0 16px; color: var(--red); display: flex; align-items: center; gap: 8px;">💰 Plans & Subscriptions</div>
 <div class="form-row">
-<div class="form-group"><label class="form-label">Heading Font</label><input type="text" id="newClientHeadingFont" class="form-input" value="Inter"></div>
-<div class="form-group"><label class="form-label">Body Font</label><input type="text" id="newClientBodyFont" class="form-input" value="Inter"></div>
+<div class="form-group"><label class="form-label">Hosting Plan</label>
+<select id="newClientHostingPlan" class="form-input">
+<option value="">— No Hosting Plan —</option>
+<option value="basic-hosting">Basic Hosting — $27/mo</option>
+<option value="hosting-funnels">Hosting + Funnels — $125/mo</option>
+</select>
+</div>
+<div class="form-group"><label class="form-label">Design Subscription</label>
+<select id="newClientDesignSub" class="form-input">
+<option value="">— No Design Subscription —</option>
+<option value="design-essentials">Brand Essentials — $297/mo</option>
+<option value="design-growth">Growth Engine — $497/mo</option>
+<option value="design-creative">Full Creative Team — $697/mo</option>
+</select>
+</div>
 </div>
 
             <!-- ONBOARDING OPTIONS -->
