@@ -1,7 +1,7 @@
 // sync-data.js — Netlify Function
-// Bi-directional Supabase data sync
-// GET ?type=all → returns all data for hydration
-// POST { type, data, syncedBy } → upserts data to Supabase
+// Bi-directional Supabase data sync using site_config as universal store
+// GET ?type=all → returns all data
+// POST { type, data, syncedBy } → upserts data
 // Env vars: SUPABASE_URL, SUPABASE_SERVICE_KEY
 
 const CORS_HEADERS = {
@@ -10,27 +10,18 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
 };
 
-// JSONB tables: store full JS object in `data` column
-const JSONB_TABLES = {
-  orders: 'orders',
-  clients: 'clients',
-  invoices: 'invoices',
-  subscriptions: 'subscriptions',
-  proofs: 'proofs',
-  projects: 'projects',
-  leads: 'leads',
-  services: 'services',
-  meetings: 'meetings',
-  submissions: 'submissions'
-};
-
-// Config stored as key-value in site_config
-const CONFIG_TYPES = ['site_images', 'about', 'portfolio',
+// ALL data types stored in site_config as key-value JSONB
+const ALL_TYPES = [
+  'orders', 'clients', 'invoices', 'subscriptions',
+  'proofs', 'projects', 'leads', 'services',
+  'meetings', 'submissions',
+  'site_images', 'about', 'portfolio',
   'stripe_settings', 'integrations', 'analytics',
-  'crm', 'comm_hub'];
+  'crm', 'comm_hub'
+];
 
 async function supabaseFetch(url, serviceKey, path, options = {}) {
-  const resp = await fetch(`${url}/rest/v1/${path}`, {
+  return fetch(`${url}/rest/v1/${path}`, {
     headers: {
       'apikey': serviceKey,
       'Authorization': `Bearer ${serviceKey}`,
@@ -39,7 +30,6 @@ async function supabaseFetch(url, serviceKey, path, options = {}) {
     },
     ...options
   });
-  return resp;
 }
 
 exports.handler = async (event) => {
@@ -56,51 +46,45 @@ exports.handler = async (event) => {
   }
 
   try {
-
-    // --- GET: Pull all data for hydration ---
+    // --- GET: Pull all data ---
     if (event.httpMethod === 'GET') {
       const syncData = {};
 
-      for (const [key, table] of Object.entries(JSONB_TABLES)) {
-        try {
-          const resp = await supabaseFetch(SUPABASE_URL, SUPABASE_SERVICE_KEY,
-            `${table}?select=id,data&order=id.desc&limit=1000`
-          );
-          if (resp.ok) {
-            const rows = await resp.json();
-            // Unwrap: each row is {id, data:{...}} → return the data object with id
-            const unwrapped = rows.map(r => ({ id: r.id, ...r.data }));
-            syncData[key] = { data: unwrapped, count: unwrapped.length, lastSync: new Date().toISOString() };
-          } else {
-            syncData[key] = { data: [], count: 0, error: `${table}: ${resp.status}` };
-          }
-        } catch (err) {
-          syncData[key] = { data: [], count: 0, error: err.message };
-        }
-      }
+      // Pull all types from site_config in one query
+      const typeList = ALL_TYPES.map(t => `"${t}"`).join(',');
+      const resp = await supabaseFetch(SUPABASE_URL, SUPABASE_SERVICE_KEY,
+        `site_config?select=key,value&key=in.(${typeList})`
+      );
 
-      // Pull config data
-      for (const configType of CONFIG_TYPES) {
-        try {
-          const resp = await supabaseFetch(SUPABASE_URL, SUPABASE_SERVICE_KEY,
-            `site_config?select=value&key=eq.${configType}&limit=1`
-          );
-          if (resp.ok) {
-            const rows = await resp.json();
-            syncData[configType] = { data: rows.length > 0 ? rows[0].value : null, lastSync: new Date().toISOString() };
+      if (resp.ok) {
+        const rows = await resp.json();
+        const rowMap = {};
+        rows.forEach(r => { rowMap[r.key] = r.value; });
+
+        ALL_TYPES.forEach(type => {
+          if (rowMap[type] !== undefined) {
+            syncData[type] = {
+              data: rowMap[type],
+              count: Array.isArray(rowMap[type]) ? rowMap[type].length : 1,
+              lastSync: new Date().toISOString()
+            };
           } else {
-            syncData[configType] = { data: null, error: `site_config: ${resp.status}` };
+            syncData[type] = { data: Array.isArray([]) ? [] : null, count: 0 };
           }
-        } catch (err) {
-          syncData[configType] = { data: null, error: err.message };
-        }
+        });
+      } else {
+        const errText = await resp.text();
+        console.warn('Bulk fetch failed:', resp.status, errText);
+        ALL_TYPES.forEach(type => {
+          syncData[type] = { data: [], count: 0, error: `${resp.status}` };
+        });
       }
 
       return { statusCode: 200, headers: CORS_HEADERS,
         body: JSON.stringify({ success: true, syncData, syncedAt: new Date().toISOString() }) };
     }
 
-    // --- POST: Push data to Supabase ---
+    // --- POST: Push data ---
     if (event.httpMethod === 'POST') {
       const { type, data, syncedBy } = JSON.parse(event.body || '{}');
       if (!type || data === undefined) {
@@ -108,49 +92,34 @@ exports.handler = async (event) => {
           body: JSON.stringify({ error: 'Missing type or data' }) };
       }
 
-      // Config types → site_config key-value table
-      if (CONFIG_TYPES.includes(type)) {
-        const resp = await supabaseFetch(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'site_config', {
-          method: 'POST',
-          headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
-          body: JSON.stringify({ key: type, value: data, updated_at: new Date().toISOString() })
-        });
-        if (!resp.ok) {
-          const errBody = await resp.text();
-          console.warn(`Config sync ${type}:`, resp.status, errBody);
-        }
-        return { statusCode: 200, headers: CORS_HEADERS,
-          body: JSON.stringify({ success: true, type, syncedAt: new Date().toISOString() }) };
-      }
-
-      // JSONB tables → wrap each record as {id, data, synced_at, synced_by}
-      const table = JSONB_TABLES[type];
-      if (!table) {
+      if (!ALL_TYPES.includes(type)) {
         return { statusCode: 400, headers: CORS_HEADERS,
           body: JSON.stringify({ error: `Unknown type: ${type}` }) };
       }
 
-      const records = Array.isArray(data) ? data : [data];
-      const wrapped = records.map(r => ({
-        id: r.id,
-        data: r,
-        synced_at: new Date().toISOString(),
-        synced_by: syncedBy || 'system'
-      }));
-
-      const resp = await supabaseFetch(SUPABASE_URL, SUPABASE_SERVICE_KEY, table, {
+      // Upsert into site_config
+      const resp = await supabaseFetch(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'site_config', {
         method: 'POST',
         headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
-        body: JSON.stringify(wrapped)
+        body: JSON.stringify({
+          key: type,
+          value: data,
+          updated_at: new Date().toISOString()
+        })
       });
 
       if (!resp.ok) {
         const errBody = await resp.text();
-        throw new Error(`Upsert failed ${table}: ${resp.status} - ${errBody}`);
+        throw new Error(`Upsert failed for ${type}: ${resp.status} - ${errBody}`);
       }
 
       return { statusCode: 200, headers: CORS_HEADERS,
-        body: JSON.stringify({ success: true, type, count: records.length, syncedAt: new Date().toISOString() }) };
+        body: JSON.stringify({
+          success: true, type,
+          count: Array.isArray(data) ? data.length : 1,
+          syncedAt: new Date().toISOString()
+        })
+      };
     }
 
     return { statusCode: 405, headers: CORS_HEADERS,
