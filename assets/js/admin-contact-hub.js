@@ -152,8 +152,8 @@ ${contactHubView === 'campaigns' ? `
 <!-- Source pills -->
 <div class="ch-source-pills">
   ${Object.entries(sources).map(([src, count]) => {
-    const colors = { quo_call: '#8b5cf6', quo_text: '#10b981', website_form: '#3b82f6', manual: '#f59e0b', referral: '#ec4899', csv_import: '#06b6d4' };
-    const labels = { quo_call: '📞 Calls', quo_text: '💬 Texts', website_form: '🌐 Forms', manual: '✏️ Manual', referral: '🤝 Referral', csv_import: '📄 CSV Import' };
+    const colors = { quo_call: '#8b5cf6', quo_text: '#10b981', website_form: '#3b82f6', manual: '#f59e0b', referral: '#ec4899', csv_import: '#06b6d4', sona_chat: '#a855f7' };
+    const labels = { quo_call: '📞 Calls', quo_text: '💬 Texts', website_form: '🌐 Forms', manual: '✏️ Manual', referral: '🤝 Referral', csv_import: '📄 CSV Import', sona_chat: '🤖 Sona' };
     return '<span class="ch-source-pill" style="background:' + (colors[src] || '#666') + '20;color:' + (colors[src] || '#999') + ';">' + (labels[src] || src) + ': ' + count + '</span>';
   }).join('')}
   ${contactHubData.emails.length > 0 ? (() => {
@@ -243,7 +243,7 @@ function renderContactTable(contacts) {
     client: { bg: '#8b5cf620', color: '#8b5cf6', label: 'Client' },
     lost: { bg: '#ef444420', color: '#ef4444', label: 'Lost' }
   };
-  const sourceIcons = { quo_call: '📞', quo_text: '💬', website_form: '🌐', manual: '✏️', referral: '🤝' };
+  const sourceIcons = { quo_call: '📞', quo_text: '💬', website_form: '🌐', manual: '✏️', referral: '🤝', csv_import: '📄', sona_chat: '🤖' };
 
   return `<div style="overflow-x:auto;border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
 <table class="ch-table">
@@ -413,7 +413,7 @@ function renderContactDrawer(contactId) {
     created_at: e.created_at, metadata: e.metadata, _isEmail: true
   }))].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 50);
 
-  const typeIcons = { text: '💬', call: '📞', email: '📧', sms: '💬', voicemail: '📬', form: '📋', email_sent: '📤', email_opened: '👁️', sms_sent: '💬' };
+  const typeIcons = { text: '💬', call: '📞', email: '📧', sms: '💬', voicemail: '📬', form: '📋', email_sent: '📤', email_opened: '👁️', sms_sent: '💬', sona_chat: '🤖', sona_summary: '🧠', note: '📝', status_change: '⚡', recording: '🎙️' };
   const statusOptions = ['new_lead', 'contacted', 'qualified', 'client', 'lost'];
   const tab = contactHubDrawerTab;
 
@@ -438,8 +438,19 @@ function renderContactDrawer(contactId) {
       ${statusOptions.map(s => '<option value="' + s + '"' + (c.status === s ? ' selected' : '') + '>' + s.replace(/_/g, ' ').toUpperCase() + '</option>').join('')}
     </select>
     <span style="font-size:12px;color:rgba(255,255,255,0.3);">Source: ${c.source || '—'}</span>
-    ${c.sona_qualified ? '<span style="font-size:12px;color:#10b981;">✅ Sona</span>' : ''}
+    ${c.sona_qualified ? '<span style="font-size:12px;color:#10b981;">✅ Sona Qualified</span>' : ''}
   </div>
+
+  <!-- Sona Insights (if available) -->
+  ${(c.service_interest || c.budget_range || c.timeline || c.industry) ? `
+  <div style="background:#1a1a2e;border:1px solid rgba(139,92,246,0.2);border-radius:8px;padding:12px;margin-bottom:16px;">
+    <div style="font-size:11px;font-weight:700;color:#8b5cf6;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">🤖 Sona Insights</div>
+    ${c.service_interest ? '<div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px;"><strong style="color:rgba(255,255,255,0.4);">Interested in:</strong> ' + _chEsc(c.service_interest) + '</div>' : ''}
+    ${c.budget_range ? '<div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px;"><strong style="color:rgba(255,255,255,0.4);">Budget:</strong> ' + _chEsc(c.budget_range) + '</div>' : ''}
+    ${c.timeline ? '<div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px;"><strong style="color:rgba(255,255,255,0.4);">Timeline:</strong> ' + _chEsc(c.timeline) + '</div>' : ''}
+    ${c.industry ? '<div style="font-size:12px;color:rgba(255,255,255,0.7);"><strong style="color:rgba(255,255,255,0.4);">Industry:</strong> ' + _chEsc(c.industry) + '</div>' : ''}
+  </div>
+  ` : ''}
 
   <!-- Tab Nav -->
   <div style="display:flex;gap:0;margin-bottom:16px;border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;">
