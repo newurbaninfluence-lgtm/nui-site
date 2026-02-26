@@ -960,7 +960,7 @@ function loadAdminSubscriptionsPanel() {
 <td style="padding: 16px; color: rgba(255,255,255,0.6); font-size: 13px;">${nextBillingDate}</td>
 <td style="padding: 16px; text-align: center;">
 <div style="display: flex; gap: 8px; justify-content: center;">
-                                    ${sub.status === 'active' ? `<button onclick="pauseSubscription(${sub.id})" style="background: #f59e0b; color: #000; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Pause</button>` : sub.status === 'paused' ? `<button onclick="resumeSubscription(${sub.id})" style="background: #10b981; color: #000; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Resume</button>` : ''}
+                                    ${sub.status === 'active' ? `<button onclick="pauseSubscription(${sub.id})" style="background: #f59e0b; color: #000; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Pause</button><button onclick="handleFailedPayment(${sub.id})" style="background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px; margin-left: 4px;">💳 Payment Failed</button>` : sub.status === 'paused' ? `<button onclick="resumeSubscription(${sub.id})" style="background: #10b981; color: #000; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Resume</button>` : ''}
 <button onclick="showChangePlanModal(${sub.id})" style="background: #3b82f6; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Change Plan</button>
 <button onclick="sendSubscriptionInvoice(${sub.id})" style="background: #10b981; color: #000; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Invoice</button>
 <button onclick="cancelSubscription(${sub.id})" style="background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Cancel</button>
@@ -1135,6 +1135,83 @@ function pauseSubscription(subId) {
     saveSubscriptions();
     loadAdminSubscriptionsPanel();
     alert('Subscription paused');
+}
+
+// ── Failed Payment Handler ──
+async function handleFailedPayment(subId) {
+    const sub = subscriptions.find(s => s.id === subId);
+    if (!sub) return;
+    const client = clients.find(c => c.id === sub.clientId);
+    if (!client) return;
+
+    // Pause the subscription
+    sub.status = 'paused';
+    sub.pauseReason = 'payment_failed';
+    sub.paymentFailedDate = new Date().toISOString();
+    sub.history.push({ action: 'paused', date: new Date().toISOString(), note: 'Auto-paused: payment failed', user: 'System' });
+    saveSubscriptions();
+
+    const planName = sub.plan || 'Design Subscription';
+    const portalUrl = 'https://newurbaninfluence.com/app/#login';
+
+    // Send email notification
+    if (client.email) {
+        try {
+            await fetch('/.netlify/functions/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    to: client.email,
+                    subject: 'Action Required: Your Design Subscription Has Been Paused',
+                    html: `
+<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; padding: 40px; border-radius: 12px;">
+<div style="text-align: center; margin-bottom: 32px;">
+<img src="https://newurbaninfluence.com/assets/img/nui-logo-white.png" alt="New Urban Influence" style="height: 40px;" />
+</div>
+<h2 style="color: #ef4444; margin-bottom: 16px;">⚠️ Subscription Paused</h2>
+<p style="color: #ccc; line-height: 1.7; font-size: 15px;">Hi ${client.name},</p>
+<p style="color: #ccc; line-height: 1.7; font-size: 15px;">We were unable to process your payment for your <strong style="color: #fff;">${planName}</strong> plan. Your subscription has been temporarily paused.</p>
+<div style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 20px; margin: 24px 0;">
+<p style="color: #f59e0b; font-weight: 600; margin: 0 0 8px 0;">What this means:</p>
+<p style="color: #999; font-size: 14px; line-height: 1.6; margin: 0;">• All active design orders are <strong style="color:#fff;">on hold</strong> until payment is resolved<br>
+• No new orders can be placed<br>
+• Per your service agreement, files from completed orders will be retained for 90 days<br>
+• After 90 days without payment, all project files may be permanently removed</p>
+</div>
+<p style="color: #ccc; line-height: 1.7; font-size: 15px;">Please update your payment method as soon as possible to resume your subscription and avoid interruption to your projects.</p>
+<div style="text-align: center; margin: 32px 0;">
+<a href="${portalUrl}" style="display: inline-block; padding: 14px 40px; background: #e63946; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 16px;">Update Payment Method →</a>
+</div>
+<p style="color: #666; font-size: 13px;">If you believe this was an error or need assistance, reply to this email or call us at (248) 487-8747.</p>
+<div style="border-top: 1px solid #222; margin-top: 32px; padding-top: 16px; text-align: center; color: #555; font-size: 12px;">
+New Urban Influence • Detroit, MI • newurbaninfluence.com
+</div>
+</div>`,
+                    clientId: client.id
+                })
+            });
+            console.log('Payment failed email sent to', client.email);
+        } catch (err) { console.error('Failed to send payment email:', err); }
+    }
+
+    // Send SMS notification
+    if (client.phone) {
+        try {
+            await fetch('/.netlify/functions/send-sms', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    to: client.phone,
+                    message: `Hi ${client.name}, your ${planName} subscription at New Urban Influence has been paused due to a payment issue. All active orders are on hold. Please update your payment method at ${portalUrl} or call us at (248) 487-8747 to resolve this. — NUI Team`,
+                    clientId: client.id
+                })
+            });
+            console.log('Payment failed SMS sent to', client.phone);
+        } catch (err) { console.error('Failed to send payment SMS:', err); }
+    }
+
+    loadAdminSubscriptionsPanel();
+    alert(`Subscription paused for ${sub.clientName}. Email and SMS notifications sent.`);
 }
 
 function resumeSubscription(subId) {
