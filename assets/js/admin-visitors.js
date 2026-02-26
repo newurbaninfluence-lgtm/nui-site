@@ -71,12 +71,12 @@ function buildVisitorsPanelHTML() {
 
 // ---- LOAD FROM SUPABASE ----
 async function loadVisitorsFromSupabase() {
-    if (typeof supabase === 'undefined') return;
+    if (typeof db === 'undefined' || !db) { console.warn('Supabase client (db) not ready'); return; }
     var filter = document.getElementById('visitorStatusFilter');
     var status = filter ? filter.value : 'all';
 
     try {
-        var query = supabase.from('identified_visitors').select('*').order('seen_at', { ascending: false }).limit(100);
+        var query = db.from('identified_visitors').select('*').order('seen_at', { ascending: false }).limit(100);
         if (status !== 'all') query = query.eq('status', status);
         var { data, error } = await query;
         if (error) throw error;
@@ -262,9 +262,9 @@ function buildStatusBtn(id, status, label) {
 }
 
 async function updateVisitorStatus(id, status) {
-    if (typeof supabase === 'undefined') return;
+    if (typeof db === 'undefined' || !db) return;
     try {
-        await supabase.from('identified_visitors').update({ status: status, updated_at: new Date().toISOString() }).eq('id', id);
+        await db.from('identified_visitors').update({ status: status, updated_at: new Date().toISOString() }).eq('id', id);
         var modal = document.getElementById('visitorDetailModal');
         if (modal) modal.remove();
         loadVisitorsFromSupabase();
@@ -280,8 +280,8 @@ async function convertVisitorToLead(id) {
 
     try {
         // Add to contacts table
-        if (typeof supabase !== 'undefined') {
-            await supabase.from('contacts').insert({
+        if (typeof db !== 'undefined' && db) {
+            await db.from('contacts').insert({
                 name: name,
                 email: v.business_email || '',
                 phone: '',
@@ -292,7 +292,7 @@ async function convertVisitorToLead(id) {
                 created_at: new Date().toISOString()
             });
             // Update visitor status
-            await supabase.from('identified_visitors').update({ status: 'qualified', updated_at: new Date().toISOString() }).eq('id', id);
+            await db.from('identified_visitors').update({ status: 'qualified', updated_at: new Date().toISOString() }).eq('id', id);
         }
         alert('✅ ' + name + ' added to Contacts as a new lead!');
         var modal = document.getElementById('visitorDetailModal');
