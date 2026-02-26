@@ -14,55 +14,44 @@
 // 3. Deploy with their config
 // ============================================================
 
+// ============================================================
+// MSaaS AGENCY — Full System ($1,000 + $300/mo)
+// Beta client — all modules enabled
+// ============================================================
+
 const AGENCY_CONFIG = {
 
-    // ── IDENTITY ──────────────────────────────────────
     agency: {
-        id: 'nui',
-        name: 'New Urban Influence',
-        shortName: 'NUI',
-        tagline: "We Don't Design. We Influence.",
-        domain: 'newurbaninfluence.com',
-        email: 'hello@newurbaninfluence.com',
-        phone: '(248) 487-8747',
-        address: {
-            street: '',
-            city: 'Detroit',
-            state: 'MI',
-            zip: '',
-            country: 'US'
-        },
-        socials: {
-            instagram: '',
-            facebook: '',
-            linkedin: '',
-            twitter: '',
-            youtube: '',
-            tiktok: ''
-        }
+        id: 'msaas',
+        name: 'MSaaS Agency',
+        shortName: 'MSaaS',
+        tagline: 'AI Assistants that Fully Automate for Conversion',
+        domain: 'msaasagency.com',
+        email: 'info@msaasagency.com',
+        phone: '(866) 781-5220',
+        address: { street: '', city: '', state: '', zip: '', country: 'US' },
+        socials: { instagram: '', facebook: '', linkedin: '', twitter: '', youtube: '', tiktok: '' }
     },
 
-    // ── MASTER ADMIN ──────────────────────────────────
     masterAdmin: {
-        email: 'newurbaninfluence@gmail.com',
-        name: 'Faren Young',
-        defaultPassword: 'newurban'
+        email: '',           // MSaaS owner email — fill before deploy
+        name: '',            // MSaaS owner name
+        defaultPassword: ''  // Set before deploy
     },
 
-    // ── BRANDING ──────────────────────────────────────
     brand: {
-        logo: '/icons/icon-192.png',
-        logoWhite: '/icons/icon-192.png',
-        logoWidth: 30,    // px
-        favicon: '/icons/favicon.ico',
+        logo: '/icons/msaas-logo.png',
+        logoWhite: '/icons/msaas-logo-white.png',
+        logoWidth: 140,
+        favicon: '/icons/msaas-favicon.ico',
         colors: {
-            primary: '#dc2626',      // Main accent (buttons, highlights)
-            primaryHover: '#b91c1c', // Hover state
-            primaryLight: 'rgba(220,38,38,0.1)',  // Backgrounds
-            secondary: '#1a1a1a',    // Cards, panels
-            background: '#0a0a0a',   // Page bg
-            surface: '#111111',      // Card bg
-            text: '#ffffff',         // Primary text
+            primary: '#6366f1',          // Indigo/purple from their site
+            primaryHover: '#4f46e5',
+            primaryLight: 'rgba(99,102,241,0.1)',
+            secondary: '#1a1a2e',
+            background: '#0a0a0f',
+            surface: '#111118',
+            text: '#ffffff',
             textMuted: 'rgba(255,255,255,0.5)',
             textDim: 'rgba(255,255,255,0.3)',
             border: 'rgba(255,255,255,0.06)',
@@ -72,90 +61,67 @@ const AGENCY_CONFIG = {
             info: '#818cf8'
         },
         fonts: {
-            heading: "'Syne', sans-serif",
+            heading: "'Inter', sans-serif",
             body: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-            accent: "'Teko', sans-serif"
+            accent: "'Inter', sans-serif"
         },
         borderRadius: '12px',
         glassEffect: 'rgba(255,255,255,0.03)'
     },
 
-    // ── MODULES (Admin Panels) ────────────────────────
-    // true = active, false = hidden but ready to enable
+    // ALL modules enabled — full system beta
     modules: {
         dashboard:      true,
         clients:        true,
         projects:       true,
-        orders:         true,    // Order/booking management
-        crm:            true,    // CRM & lead management
-        designer:       true,    // Brand designer tools
-        seo:            true,    // SEO management
-        rankintel:      true,    // Geo-grid rank tracking
-        retargeting:    true,    // Meta Pixel + Google Ads
-        emailmarketing: true,    // Email automation
-        sms:            true,    // SMS automation
-        aiphone:        true,    // AI phone assistant
-        geofencing:     true,    // Geo-fencing campaigns
-        analytics:      true,    // Analytics & reporting
-        invoicing:      true,    // Invoicing & payments
-        portfolio:      true,    // Portfolio/gallery
-        integrations:   true,    // Third-party integrations
-        settings:       true     // Account settings
+        orders:         true,
+        crm:            true,
+        designer:       false,   // MSaaS doesn't do brand design
+        seo:            true,
+        rankintel:      true,
+        citations:      true,
+        retargeting:    true,
+        emailmarketing: true,
+        sms:            true,
+        aiphone:        true,
+        geofencing:     true,
+        analytics:      true,
+        invoicing:      true,
+        portfolio:       false,  // No portfolio needed
+        integrations:   true,
+        settings:       true
     },
 
-    // ── INTEGRATIONS ──────────────────────────────────
     integrations: {
-        supabase: {
-            url: '',      // Set per instance
-            anonKey: ''   // Set per instance
-        },
-        checkcherry: {
-            enabled: false,
-            bookingUrl: ''
-        },
-        openphone: {
-            enabled: false,
-            apiKey: ''
-        },
-        stripe: {
-            enabled: false,
-            publicKey: ''
-        },
-        google: {
-            mapsApiKey: '',
-            ga4Id: '',
-            gtmId: '',
-            adsId: ''
-        },
-        meta: {
-            pixelId: ''
-        },
-        rb2b: {
-            enabled: false,
-            id: ''
-        }
+        supabase: { url: '', anonKey: '' },  // MSaaS gets own Supabase project
+        checkcherry: { enabled: false, bookingUrl: '' },
+        openphone: { enabled: false, apiKey: '' },
+        stripe: { enabled: false, publicKey: '' },
+        google: { mapsApiKey: '', ga4Id: '', gtmId: '', adsId: '' },
+        meta: { pixelId: '' },
+        rb2b: { enabled: false, id: '' }
     },
 
-    // ── SERVICE PACKAGES (Frontend) ───────────────────
-    // Define what shows on the public services page
-    // Each agency can define their own packages
     services: {
         showBundles: true,
-        showBrandSystem: true,
-        packages: []  // Custom per agency — populated in instance configs
+        showBrandSystem: false,
+        packages: [
+            { id: 'ai-chat', name: 'AI Chat Assistant', price: 297, type: 'monthly' },
+            { id: 'ai-voice', name: 'AI Voice Agent', price: 497, type: 'monthly' },
+            { id: 'ai-full', name: 'Full AI Suite', price: 997, type: 'monthly' },
+            { id: 'online-presence', name: 'Online Presence', price: 497, type: 'monthly' }
+        ]
     },
 
-    // ── NAVIGATION LABELS ─────────────────────────────
-    // Customize what nav items are called
     navLabels: {
         dashboard: 'Dashboard',
         clients: 'Clients',
         projects: 'Projects',
         orders: 'Orders',
         crm: 'CRM',
-        designer: 'Designer',
         seo: 'SEO',
         rankintel: 'Rank Intel',
+        citations: 'Citations',
         retargeting: 'Retargeting',
         emailmarketing: 'Email',
         sms: 'SMS',
@@ -163,10 +129,11 @@ const AGENCY_CONFIG = {
         geofencing: 'Geo-Fencing',
         analytics: 'Analytics',
         invoicing: 'Invoicing',
-        portfolio: 'Portfolio',
         integrations: 'Integrations',
         settings: 'Settings'
     }
+};
+
 };
 
 
@@ -281,14 +248,40 @@ function filterAdminNav() {
             link.removeAttribute('data-module-disabled');
         }
 
-        // Apply custom nav labels if defined
-        if (moduleKey && AGENCY_CONFIG.navLabels && AGENCY_CONFIG.navLabels[moduleKey]) {
-            // Only replace the text node, keep the SVG icon
+        // Apply custom nav labels — use panel-specific labels, NOT module-level
+        // (module-level would rename all CRM sub-panels to "CRM", etc.)
+        const _panelLabels = {
+            'dashboard': 'Dashboard',
+            'calendar': 'Calendar',
+            'clients': 'Clients',
+            'leads': 'Submissions',
+            'contacthub': 'Contact Hub',
+            'visitors': 'Visitors',
+            'projects': 'Projects',
+            'proofs': 'Proofs',
+            'brandguide': 'Brand Guide',
+            'payments': 'Payments',
+            'invoices': 'Invoices',
+            'seo': 'SEO',
+            'rankintel': 'Rank Intel',
+            'gmb': 'Google Business',
+            'citations': 'Citations',
+            'blog': 'Blog',
+            'emailmarketing': 'Email',
+            'retargeting': 'Retargeting',
+            'assets': 'Assets',
+            'moodboard': 'Moodboards',
+            'sites': 'Client Sites',
+            'integrations': 'Integrations',
+            'usermanagement': 'Settings'
+        };
+        const correctLabel = _panelLabels[panel];
+        if (correctLabel) {
             const svg = link.querySelector('svg');
             if (svg) {
                 link.textContent = '';
                 link.appendChild(svg);
-                link.appendChild(document.createTextNode(AGENCY_CONFIG.navLabels[moduleKey]));
+                link.appendChild(document.createTextNode(correctLabel));
             }
         }
     });

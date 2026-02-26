@@ -59,6 +59,16 @@ var _nuiBreadcrumbMap = {
     'retargeting': [
         { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
         { label: 'Retargeting', action: '' }
+    ],
+    'gmb': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'SEO', action: "showAdminPanel('seo')" },
+        { label: 'Google Business', action: '' }
+    ],
+    'citations': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'SEO', action: "showAdminPanel('seo')" },
+        { label: 'Citations', action: '' }
     ]
 };
 
@@ -145,7 +155,8 @@ function showAdminPanel(panel) {
         'integrations': loadAdminIntegrationsPanel,
         'usermanagement': loadAdminUserManagementPanel,
         'sites': loadAdminSitesPanel,
-        'visitors': loadAdminVisitorsPanel
+        'visitors': loadAdminVisitorsPanel,
+        'citations': loadAdminCitationsPanel
     };
     if (panelLoaders[panel]) panelLoaders[panel]();
 

@@ -105,6 +105,8 @@ function loadPortalView() {
 <span class="admin-nav-label">MARKETING</span>
 <a onclick="showAdminPanel('seo')" class="admin-nav-link" data-panel="seo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>SEO</a>
 <a onclick="showAdminPanel('rankintel')" class="admin-nav-link" data-panel="rankintel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>Rank Intel</a>
+<a onclick="showAdminPanel('gmb')" class="admin-nav-link" data-panel="gmb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Google Business</a>
+<a onclick="showAdminPanel('citations')" class="admin-nav-link" data-panel="citations"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Citations</a>
 <a onclick="showAdminPanel('blog')" class="admin-nav-link" data-panel="blog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Blog</a>
 <a onclick="showAdminPanel('emailmarketing')" class="admin-nav-link" data-panel="emailmarketing"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email</a>
 <a onclick="showAdminPanel('retargeting')" class="admin-nav-link" data-panel="retargeting"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Retargeting</a>
@@ -145,6 +147,7 @@ function loadPortalView() {
 <div id="adminSeoPanel" class="admin-panel"></div>
 <div id="adminRankintelPanel" class="admin-panel"></div>
 <div id="adminGmbPanel" class="admin-panel"></div>
+<div id="adminCitationsPanel" class="admin-panel"></div>
 <div id="adminBlogPanel" class="admin-panel"></div>
 <div id="adminEmailmarketingPanel" class="admin-panel"></div>
 <div id="adminRetargetingPanel" class="admin-panel"></div>
@@ -759,10 +762,10 @@ async function confirmMeeting() {
 <p>🎨 Start creating your brand identity</p>
 </div>
 <p>If you have any questions before our meeting, reply to this email or visit our website.</p>
-<p style="color: #888; margin-top: 24px;">— The NUI Team</p>
+<p style="color: #888; margin-top: 24px;">— The ${typeof getAgencyShortName === 'function' ? getAgencyShortName() : 'NUI'} Team</p>
 </div>
 <div style="background: #1c1c1c; padding: 20px; text-align: center; border-top: 1px solid #222;">
-<p class="text-muted fs-12 m-0">New Urban Influence • Detroit, MI • newurbaninfluence.com</p>
+<p class="text-muted fs-12 m-0">${typeof getAgencyName === 'function' ? getAgencyName() : 'New Urban Influence'} • ${typeof AGENCY_CONFIG !== 'undefined' ? (AGENCY_CONFIG.agency.address.city || 'Detroit') + ', ' + (AGENCY_CONFIG.agency.address.state || 'MI') : 'Detroit, MI'} • ${typeof AGENCY_CONFIG !== 'undefined' ? AGENCY_CONFIG.agency.domain : 'newurbaninfluence.com'}</p>
 </div>
 </div>`) : `<p>Welcome!</p>`
                     })
@@ -788,10 +791,10 @@ async function confirmMeeting() {
 <p>Hi ${meetingClientName},</p>
 <p>To make the most of our upcoming meeting, please take a moment to fill out our brief intake form. This helps us understand your brand needs and come prepared with ideas.</p>
 <div style="text-align: center; margin: 32px 0;">
-<a href="https://newurbaninfluence.com/#intake" style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #dc2626, #b91c1c); color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">Complete Questionnaire →</a>
+<a href="https://${typeof AGENCY_CONFIG !== 'undefined' ? AGENCY_CONFIG.agency.domain : 'newurbaninfluence.com'}/#intake" style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, ${typeof getBrandColor === 'function' ? getBrandColor('primary') : '#dc2626'}, ${typeof getBrandColor === 'function' ? getBrandColor('primaryHover') : '#b91c1c'}); color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">Complete Questionnaire →</a>
 </div>
 <p class="text-muted fs-14">This takes about 3-5 minutes and covers your brand goals, target audience, style preferences, and project timeline.</p>
-<p style="color: #888; margin-top: 24px;">— The NUI Team</p>
+<p style="color: #888; margin-top: 24px;">— The ${typeof getAgencyShortName === 'function' ? getAgencyShortName() : 'NUI'} Team</p>
 </div>
 </div>`) : `<p>Please complete the questionnaire.</p>`
                 })
@@ -842,9 +845,9 @@ async function confirmMeeting() {
 </div>
 <p class="text-muted fs-14">This is a preliminary estimate. We'll discuss your specific needs during our meeting and provide a finalized quote afterward.</p>
 <div style="text-align: center; margin: 24px 0;">
-<a href="https://newurbaninfluence.com/#portal" style="display: inline-block; padding: 14px 32px; background: #10b981; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600;">View in Client Portal →</a>
+<a href="https://${typeof AGENCY_CONFIG !== 'undefined' ? AGENCY_CONFIG.agency.domain : 'newurbaninfluence.com'}/#portal" style="display: inline-block; padding: 14px 32px; background: #10b981; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600;">View in Client Portal →</a>
 </div>
-<p style="color: #888; margin-top: 24px;">— The NUI Team</p>
+<p style="color: #888; margin-top: 24px;">— The ${typeof getAgencyShortName === 'function' ? getAgencyShortName() : 'NUI'} Team</p>
 </div>
 </div>`) : `<p>Your pricing estimate is ready.</p>`
                     })
@@ -1004,10 +1007,13 @@ async function handlePortalLogin(e) {
     const managers = JSON.parse(localStorage.getItem('nui_managers')) || [];
 
     if (loginType === 'admin') {
-        // Master admin - always works regardless of any settings
-        const masterPw = localStorage.getItem('nui_master_admin_pw') || 'newurban';
-        if (email === 'newurbaninfluence@gmail.com' && password === masterPw) {
-            currentUser = { type: 'admin', email: 'newurbaninfluence@gmail.com', name: 'Faren Young', isMasterAdmin: true };
+        // Master admin fallback - config-aware
+        const _maFb = (typeof AGENCY_CONFIG !== 'undefined' && AGENCY_CONFIG.masterAdmin) || {};
+        const masterEmailFb = (_maFb.email || 'newurbaninfluence@gmail.com').toLowerCase();
+        const masterNameFb = _maFb.name || 'Faren Young';
+        const masterPwFb = localStorage.getItem('nui_master_admin_pw') || _maFb.defaultPassword || 'newurban';
+        if (email === masterEmailFb && password === masterPwFb) {
+            currentUser = { type: 'admin', email: masterEmailFb, name: masterNameFb, isMasterAdmin: true };
             document.getElementById('portalLogin').style.display = 'none';
             document.getElementById('adminDashboard').style.display = 'block';
             renderAdminSidebar();
