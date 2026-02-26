@@ -469,13 +469,13 @@ function _riShowPointDetail(lat, lng, competitors, rank) {
 // ============================================================
 
 async function _riSaveScan(meta, points) {
-    if (typeof supabaseClient === 'undefined') {
+    if (typeof db === 'undefined' || !db) {
         alert('Supabase not loaded. Scan data shown but not saved.');
         return;
     }
 
     try {
-        const { data, error } = await supabaseClient
+        const { data, error } = await db
             .from('geo_grid_scans')
             .insert({
                 client_id: meta.clientId || null,
@@ -512,13 +512,13 @@ async function _riLoadHistory() {
     const histEl = document.getElementById('riScanHistory');
     if (!histEl) return;
 
-    if (typeof supabaseClient === 'undefined') {
+    if (typeof db === 'undefined' || !db) {
         histEl.innerHTML = '<div class="glass-panel" style="padding: 20px; text-align: center; color: rgba(255,255,255,0.4); font-size: 14px;">Connect Supabase to save & view scan history.</div>';
         return;
     }
 
     try {
-        const { data: scans, error } = await supabaseClient
+        const { data: scans, error } = await db
             .from('geo_grid_scans')
             .select('*')
             .order('scanned_at', { ascending: false })
@@ -588,7 +588,7 @@ async function _riLoadHistory() {
 
 async function _riViewSavedScan(scanId) {
     try {
-        const { data, error } = await supabaseClient
+        const { data, error } = await db
             .from('geo_grid_scans')
             .select('*')
             .eq('id', scanId)
