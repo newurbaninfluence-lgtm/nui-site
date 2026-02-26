@@ -11,6 +11,12 @@ function hubDisplayName(c) {
   return parts.length > 0 ? parts.join(' ') : 'Unknown';
 }
 
+// Helper: escape HTML to prevent template/render breakage
+function _chEsc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/`/g,'&#96;');
+}
+
 let contactHubData = { contacts: [], activities: [], emails: [], smsMessages: [], loading: true };
 let contactHubFilter = 'all';
 let contactHubView = 'contacts'; // 'contacts' or 'campaigns'
@@ -243,6 +249,7 @@ function renderContactTable(contacts) {
 <table class="ch-table">
 <thead><tr>
   <th>Contact</th>
+  <th>Business</th>
   <th>Phone</th>
   <th>Source</th>
   <th>Status</th>
@@ -256,27 +263,33 @@ ${contacts.map(c => {
   const activities = contactHubData.activities.filter(a => a.contact_id === c.id);
   const lastAct = activities[0];
   const hasUnread = activities.some(a => !a.read);
-  return `<tr class="${contactHubSelected === c.id ? 'selected' : ''}" onclick="openContactDrawer('${c.id}')">
+  const safeName = _chEsc(hubDisplayName(c));
+  const safeEmail = _chEsc(c.email);
+  const safeCompany = _chEsc(c.company);
+  const safePhone = _chEsc(c.phone);
+  const safeId = _chEsc(c.id);
+  return `<tr class="${contactHubSelected === c.id ? 'selected' : ''}" onclick="openContactDrawer('${safeId}')">
     <td>
       <div style="display:flex;align-items:center;gap:10px;">
-        <div class="ch-avatar" style="background:${st.color}20;color:${st.color};">${hubDisplayName(c).charAt(0).toUpperCase()}</div>
+        <div class="ch-avatar" style="background:${st.color}20;color:${st.color};">${safeName.charAt(0).toUpperCase()}</div>
         <div>
-          <div style="font-weight:600;font-size:14px;">${hubDisplayName(c)}${hasUnread ? ' <span style="color:#ef4444;font-size:10px;">●</span>' : ''}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.4);">${c.email || c.company || '—'}</div>
+          <div style="font-weight:600;font-size:14px;">${safeName}${hasUnread ? ' <span style="color:#ef4444;font-size:10px;">●</span>' : ''}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.4);">${safeEmail || '—'}</div>
         </div>
       </div>
     </td>
-    <td style="font-size:13px;font-family:monospace;color:rgba(255,255,255,0.7);">${c.phone || '—'}</td>
-    <td><span style="font-size:16px;" title="${c.source || 'unknown'}">${sourceIcons[c.source] || '❓'}</span></td>
+    <td style="font-size:13px;color:rgba(255,255,255,0.6);">${safeCompany || '<span style="color:rgba(255,255,255,0.15);">—</span>'}</td>
+    <td style="font-size:13px;font-family:monospace;color:rgba(255,255,255,0.7);">${safePhone || '—'}</td>
+    <td><span style="font-size:16px;" title="${_chEsc(c.source) || 'unknown'}">${sourceIcons[c.source] || '❓'}</span></td>
     <td><span class="ch-badge" style="background:${st.bg};color:${st.color};">${st.label}</span></td>
     <td style="font-size:12px;color:rgba(255,255,255,0.45);">${lastAct ? formatHubTime(lastAct.created_at) : '—'}</td>
     <td>${c.sona_qualified ? '<span style="color:#10b981;font-size:16px;" title="Sona qualified">✅</span>' : '<span style="color:rgba(255,255,255,0.2);">—</span>'}</td>
     <td>
       <div style="display:flex;gap:4px;" onclick="event.stopPropagation();">
-        ${c.phone ? '<button onclick="hubQuickCall(\'' + c.phone + '\')" style="padding:4px 8px;background:#8b5cf620;border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="Call">📞</button>' : ''}
-        ${c.phone ? '<button onclick="hubQuickSms(\'' + c.id + '\')" style="padding:4px 8px;background:#10b98120;border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="SMS">💬</button>' : ''}
-        ${c.email ? '<button onclick="hubQuickEmail(\'' + c.id + '\')" style="padding:4px 8px;background:#3b82f620;border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="Email">📧</button>' : ''}
-        <button onclick="updateHubContactStatus(\'' + c.id + '\')" style="padding:4px 8px;background:rgba(255,255,255,0.06);border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="Update status">⚡</button>
+        ${c.phone ? '<button onclick="hubQuickCall(\'' + safePhone + '\')" style="padding:4px 8px;background:#8b5cf620;border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="Call">📞</button>' : ''}
+        ${c.phone ? '<button onclick="hubQuickSms(\'' + safeId + '\')" style="padding:4px 8px;background:#10b98120;border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="SMS">💬</button>' : ''}
+        ${c.email ? '<button onclick="hubQuickEmail(\'' + safeId + '\')" style="padding:4px 8px;background:#3b82f620;border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="Email">📧</button>' : ''}
+        <button onclick="updateHubContactStatus(\'' + safeId + '\')" style="padding:4px 8px;background:rgba(255,255,255,0.06);border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="Update status">⚡</button>
       </div>
     </td>
   </tr>`;

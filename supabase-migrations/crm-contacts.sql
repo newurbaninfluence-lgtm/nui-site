@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS crm_contacts (
     source TEXT DEFAULT 'manual',
     notes TEXT,
     tags TEXT[] DEFAULT '{}',
+    industry TEXT,
     sona_qualified BOOLEAN DEFAULT false,
     last_activity_at TIMESTAMPTZ DEFAULT NOW(),
     created_at TIMESTAMPTZ DEFAULT NOW(),
