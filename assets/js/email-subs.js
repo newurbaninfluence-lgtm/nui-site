@@ -1063,7 +1063,7 @@ function showAssignPlanModal(planId) {
     });
 }
 
-function assignSubscription() {
+async function assignSubscription() {
     const clientId = parseInt(document.getElementById('assignPlanClient').value);
     const planId = document.getElementById('assignPlanSelect').value;
     const startDateStr = document.getElementById('assignPlanStartDate').value;

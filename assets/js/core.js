@@ -194,6 +194,12 @@ async function hydrateFromBackend() {
             hydrated++;
         }
 
+        if (sd.subscriptions?.data?.length > 0 && sd.subscriptions.data.length >= subscriptions.length) {
+            subscriptions = sd.subscriptions.data;
+            localStorage.setItem('nui_subscriptions', JSON.stringify(subscriptions));
+            hydrated++;
+        }
+
         if (sd.clients?.data?.length > 0 && sd.clients.data.length >= clients.length) {
             clients = sd.clients.data;
             localStorage.setItem('nui_clients', JSON.stringify(clients));
