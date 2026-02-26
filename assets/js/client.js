@@ -68,50 +68,109 @@ function loadClientDashboard() {
 </button>
 </div>
 
-            <!-- Subscription Plans Section -->
+            <!-- Design Subscription & Usage -->
             ${(() => {
                 const clientSubs = subscriptions.filter(s => s.clientId === client.id && s.status === 'active');
                 if (clientSubs.length === 0) return '';
                 const sub = clientSubs[0];
                 const plan = subscriptionPlans.find(p => p.id === sub.planId);
+                if (!plan || plan.category !== 'design-sub') {
+                    // Non-design subscription — show simple card
+                    const nextBillingDate = new Date(sub.nextBillingDate);
+                    const daysUntilBilling = Math.ceil((nextBillingDate - new Date()) / (1000 * 60 * 60 * 24));
+                    return `
+<div style="background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); border: 1px solid #333; border-radius: 16px; padding: 24px; margin-bottom: 24px;">
+<div class="flex-between"><div><h2 style="font-size: 20px; margin: 0;">${plan ? plan.name : 'Subscription'}</h2><p style="color:#888;font-size:13px;margin-top:4px;">Active • Next billing ${nextBillingDate.toLocaleDateString()}</p></div>
+<div style="font-size: 28px; font-weight: 700; color: #e63946;">$${plan ? plan.price : '—'}<span style="font-size:13px;color:#888;font-weight:400;">/mo</span></div></div></div>`;
+                }
+                // Design subscription — full usage tracker
                 const nextBillingDate = new Date(sub.nextBillingDate);
                 const daysUntilBilling = Math.ceil((nextBillingDate - new Date()) / (1000 * 60 * 60 * 24));
-                const activeOrders = myOrders.filter(o => !['delivered', 'completed', 'cancelled'].includes(o.status));
-                const progressPercent = plan.orderLimit ? Math.min(100, (activeOrders.length / plan.orderLimit) * 100) : 0;
+                const billingStart = new Date(sub.currentPeriodStart || sub.startDate || new Date(nextBillingDate.getTime() - 30*24*60*60*1000));
+                // Count this billing period's design orders
+                const periodOrders = myOrders.filter(o => new Date(o.createdAt) >= billingStart && o.orderType !== 'video' && o.orderType !== 'book');
+                const periodVideos = myOrders.filter(o => new Date(o.createdAt) >= billingStart && o.orderType === 'video');
+                const periodBooks = myOrders.filter(o => new Date(o.createdAt) >= billingStart && o.orderType === 'book');
+                const designsUsed = periodOrders.length;
+                const designsLeft = Math.max(0, (plan.designsPerMonth || 0) - designsUsed);
+                const designPct = plan.designsPerMonth ? Math.min(100, (designsUsed / plan.designsPerMonth) * 100) : 0;
+                const videosUsed = periodVideos.length;
+                const videosLeft = Math.max(0, (plan.videosPerMonth || 0) - videosUsed);
+                const videoPct = plan.videosPerMonth ? Math.min(100, (videosUsed / plan.videosPerMonth) * 100) : 0;
+                const booksUsed = periodBooks.length;
+                const bookAvail = plan.bookDesign && booksUsed < 1;
+                // Weekly tracking
+                const now = new Date();
+                const weekStart = new Date(now); weekStart.setDate(now.getDate() - now.getDay());
+                weekStart.setHours(0,0,0,0);
+                const thisWeekOrders = periodOrders.filter(o => new Date(o.createdAt) >= weekStart);
+                const weekDesignsLeft = Math.max(0, (plan.designsPerWeek || 0) - thisWeekOrders.length);
+                const tierColors = { 'design-starter': '#3b82f6', 'design-growth': '#8b5cf6', 'design-premium': '#f59e0b' };
+                const tierColor = tierColors[plan.id] || '#e63946';
+                const tierBadge = plan.id === 'design-premium' ? '👑' : plan.id === 'design-growth' ? '🚀' : '⚡';
                 return `
-<div style="background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); border: 1px solid #e63946; border-radius: 16px; padding: 24px; margin-bottom: 24px;">
+<div style="background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); border: 1px solid ${tierColor}; border-radius: 16px; padding: 24px; margin-bottom: 24px;">
+<!-- Header -->
 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
 <div>
-<h2 style="font-size: 20px; margin: 0; color: #fff;">Your Plan</h2>
-<p style="color: #888; font-size: 13px; margin-top: 4px;">Subscription Management</p>
+<div style="display:flex;align-items:center;gap:10px;"><h2 style="font-size: 22px; margin: 0; color: #fff;">${tierBadge} ${plan.name} Plan</h2>
+<span style="padding: 4px 12px; background: ${tierColor}20; color: ${tierColor}; border-radius: 100px; font-size: 11px; font-weight: 600;">✓ Active</span></div>
+<p style="color: #888; font-size: 13px; margin-top: 6px;">📅 Renews ${nextBillingDate.toLocaleDateString()} (${daysUntilBilling} days)</p>
 </div>
-<div class="text-right">
-<div style="font-size: 28px; font-weight: 700; color: #e63946;">$${plan.price}</div>
+<div style="text-align:right;">
+<div style="font-size: 32px; font-weight: 700; color: ${tierColor};">$${plan.price}</div>
 <div style="color: #888; font-size: 12px;">per month</div>
 </div>
 </div>
-<div style="background: #111; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-<span class="text-bold-white">${plan.name}</span>
-<span style="padding: 4px 12px; background: #10b981; color: #000; border-radius: 100px; font-size: 11px; font-weight: 600;">✓ Active</span>
+
+<!-- Usage Meters -->
+<div style="display: grid; grid-template-columns: ${plan.videosPerMonth > 0 ? (plan.bookDesign ? '1fr 1fr 1fr' : '1fr 1fr') : '1fr'}; gap: 12px; margin-bottom: 20px;">
+<!-- Designs -->
+<div style="background: #111; border-radius: 12px; padding: 16px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+<span style="font-size:13px;color:#888;">🎨 Designs</span>
+<span style="font-size:13px;font-weight:600;color:${designsLeft <= 2 ? '#ef4444' : '#fff'};">${designsUsed} / ${plan.designsPerMonth}</span>
 </div>
-<div style="font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6;">
-                            ${plan.features.slice(0, 3).map(f => '• ' + f).join('<br>')}
-                            ${plan.features.length > 3 ? '<br>+ ' + (plan.features.length - 3) + ' more features' : ''}
+<div style="height: 8px; background: #222; border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
+<div style="width: ${designPct}%; height: 100%; background: ${designPct >= 90 ? '#ef4444' : designPct >= 70 ? '#f59e0b' : tierColor}; border-radius: 4px; transition: width 0.3s;"></div>
 </div>
-                        ${plan.orderLimit ? `
-<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #222;">
-<div style="font-size: 12px; color: #888; margin-bottom: 8px;">Active Orders: ${activeOrders.length} / ${plan.orderLimit}</div>
-<div style="height: 4px; background: #222; border-radius: 2px; overflow: hidden;">
-<div style="width: ${progressPercent}%; height: 100%; background: #e63946; border-radius: 2px;"></div>
+<div style="display:flex;justify-content:space-between;font-size:12px;">
+<span style="color:#888;">${weekDesignsLeft} left this week</span>
+<span style="color:${designsLeft <= 2 ? '#ef4444' : '#10b981'};font-weight:600;">${designsLeft} left this month</span>
 </div>
 </div>
-                        ` : ''}
+
+${plan.videosPerMonth > 0 ? `
+<!-- Videos -->
+<div style="background: #111; border-radius: 12px; padding: 16px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+<span style="font-size:13px;color:#888;">🎬 Videos</span>
+<span style="font-size:13px;font-weight:600;color:${videosLeft === 0 ? '#ef4444' : '#fff'};">${videosUsed} / ${plan.videosPerMonth}</span>
 </div>
-<div style="display: flex; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.6);">
-<span>📅 Next billing:</span>
-<span>${nextBillingDate.toLocaleDateString()} (in ${daysUntilBilling} days)</span>
+<div style="height: 8px; background: #222; border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
+<div style="width: ${videoPct}%; height: 100%; background: ${videoPct >= 100 ? '#ef4444' : '#8b5cf6'}; border-radius: 4px; transition: width 0.3s;"></div>
 </div>
+<div style="font-size:12px;color:${videosLeft === 0 ? '#ef4444' : '#10b981'};font-weight:600;">${videosLeft} video${videosLeft !== 1 ? 's' : ''} remaining</div>
+</div>` : ''}
+
+${plan.bookDesign ? `
+<!-- Book/Catalog -->
+<div style="background: #111; border-radius: 12px; padding: 16px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+<span style="font-size:13px;color:#888;">📖 Book Design</span>
+<span style="font-size:13px;font-weight:600;color:${bookAvail ? '#10b981' : '#ef4444'};">${booksUsed} / 1</span>
+</div>
+<div style="height: 8px; background: #222; border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
+<div style="width: ${booksUsed > 0 ? 100 : 0}%; height: 100%; background: ${booksUsed > 0 ? '#ef4444' : '#222'}; border-radius: 4px;"></div>
+</div>
+<div style="font-size:12px;color:${bookAvail ? '#10b981' : '#ef4444'};font-weight:600;">${bookAvail ? '1 book/catalog slot available' : 'Used this month'}</div>
+</div>` : ''}
+</div>
+
+<!-- Place Order Button -->
+<button onclick="showDesignOrderForm()" style="width:100%;padding:16px;background:${tierColor};color:#fff;border:none;border-radius:10px;cursor:pointer;font-weight:700;font-size:16px;font-family:inherit;${designsLeft <= 0 && videosLeft <= 0 ? 'opacity:0.5;' : ''}">
+🎨 Place a Design Order ${designsLeft > 0 ? '(' + designsLeft + ' designs left)' : videosLeft > 0 ? '(' + videosLeft + ' videos left)' : '— All slots used'}
+</button>
 </div>
                 `;
             })()}
@@ -221,6 +280,156 @@ function loadClientDashboard() {
 </div>
 </div>
     `;
+}
+
+// ── Design Subscription Order Form ──
+function showDesignOrderForm() {
+    const client = clients.find(c => c.id === currentUser.clientId);
+    if (!client) return;
+    const clientSubs = subscriptions.filter(s => s.clientId === client.id && s.status === 'active');
+    const sub = clientSubs[0];
+    const plan = sub ? subscriptionPlans.find(p => p.id === sub.planId) : null;
+    if (!plan || plan.category !== 'design-sub') { showClientNewOrder(); return; }
+
+    const myOrders = orders.filter(o => o.clientId === client.id);
+    const billingStart = new Date(sub.currentPeriodStart || sub.startDate || new Date(new Date(sub.nextBillingDate).getTime() - 30*24*60*60*1000));
+    const periodDesigns = myOrders.filter(o => new Date(o.createdAt) >= billingStart && o.orderType !== 'video' && o.orderType !== 'book');
+    const periodVideos = myOrders.filter(o => new Date(o.createdAt) >= billingStart && o.orderType === 'video');
+    const periodBooks = myOrders.filter(o => new Date(o.createdAt) >= billingStart && o.orderType === 'book');
+    const designsLeft = Math.max(0, (plan.designsPerMonth || 0) - periodDesigns.length);
+    const videosLeft = Math.max(0, (plan.videosPerMonth || 0) - periodVideos.length);
+    const bookAvail = plan.bookDesign && periodBooks.length < 1;
+
+    const tierColors = { 'design-starter': '#3b82f6', 'design-growth': '#8b5cf6', 'design-premium': '#f59e0b' };
+    const tierColor = tierColors[plan.id] || '#e63946';
+
+    // Build order type options
+    let typeOptions = '';
+    if (designsLeft > 0) typeOptions += `<option value="design">🎨 Graphic Design (${designsLeft} left)</option>`;
+    if (plan.videosPerMonth > 0 && videosLeft > 0) typeOptions += `<option value="video">🎬 Video Edit (${videosLeft} left)</option>`;
+    if (plan.bookDesign && bookAvail) typeOptions += `<option value="book">📖 Book / Catalog Design (1 slot)</option>`;
+    if (!typeOptions) typeOptions = `<option value="" disabled selected>All slots used this month</option>`;
+
+    document.getElementById('clientPortalContent').innerHTML = `
+<div style="max-width: 700px; margin: 0 auto; padding: 24px;">
+<button onclick="loadClientDashboard()" style="margin-bottom: 24px; padding: 10px 20px; background: #333; color: #fff; border: none; border-radius: 8px; cursor: pointer;">← Back to Dashboard</button>
+<h2 style="font-size: 28px; margin-bottom: 4px;">Place a Design Order</h2>
+<p style="color: #888; margin-bottom: 24px;">Submit your request and we'll get started right away</p>
+
+<!-- Usage Summary -->
+<div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
+<div style="flex:1;min-width:120px;background:#111;border-radius:10px;padding:14px;text-align:center;border:1px solid ${designsLeft>0?'#222':'#ef444440'};">
+<div style="font-size:28px;font-weight:700;color:${designsLeft>0?tierColor:'#ef4444'};">${designsLeft}</div>
+<div style="font-size:12px;color:#888;">designs left</div>
+</div>
+${plan.videosPerMonth > 0 ? `<div style="flex:1;min-width:120px;background:#111;border-radius:10px;padding:14px;text-align:center;border:1px solid ${videosLeft>0?'#222':'#ef444440'};">
+<div style="font-size:28px;font-weight:700;color:${videosLeft>0?'#8b5cf6':'#ef4444'};">${videosLeft}</div>
+<div style="font-size:12px;color:#888;">videos left</div>
+</div>` : ''}
+${plan.bookDesign ? `<div style="flex:1;min-width:120px;background:#111;border-radius:10px;padding:14px;text-align:center;border:1px solid ${bookAvail?'#222':'#ef444440'};">
+<div style="font-size:28px;font-weight:700;color:${bookAvail?'#10b981':'#ef4444'};">${bookAvail?'1':'0'}</div>
+<div style="font-size:12px;color:#888;">book slot</div>
+</div>` : ''}
+</div>
+
+<!-- Order Form -->
+<form onsubmit="submitDesignOrder(event)" style="background: #111; padding: 28px; border-radius: 16px; border: 1px solid #333;">
+<div style="margin-bottom: 16px;">
+<label style="display: block; color: #888; font-size: 13px; margin-bottom: 6px;">Order Type *</label>
+<select id="designOrderType" required style="width:100%;padding:12px;background:#1a1a1a;border:1px solid #333;color:#fff;border-radius:8px;font-family:inherit;font-size:14px;">
+${typeOptions}
+</select>
+</div>
+<div style="margin-bottom: 16px;">
+<label style="display: block; color: #888; font-size: 13px; margin-bottom: 6px;">What do you need? *</label>
+<input type="text" id="designOrderTitle" required placeholder="e.g. Instagram post for grand opening, Menu redesign..." style="width:100%;padding:12px;background:#1a1a1a;border:1px solid #333;color:#fff;border-radius:8px;font-family:inherit;">
+</div>
+<div style="margin-bottom: 16px;">
+<label style="display: block; color: #888; font-size: 13px; margin-bottom: 6px;">Details & Instructions</label>
+<textarea id="designOrderDesc" rows="4" placeholder="Colors, text, sizes, inspiration links, anything that helps us nail it..." style="width:100%;padding:12px;background:#1a1a1a;border:1px solid #333;color:#fff;border-radius:8px;font-family:inherit;resize:vertical;"></textarea>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+<div>
+<label style="display: block; color: #888; font-size: 13px; margin-bottom: 6px;">Size / Format</label>
+<select id="designOrderSize" style="width:100%;padding:12px;background:#1a1a1a;border:1px solid #333;color:#fff;border-radius:8px;font-family:inherit;">
+<option value="instagram-square">Instagram Square (1080x1080)</option>
+<option value="instagram-story">Instagram Story (1080x1920)</option>
+<option value="facebook-post">Facebook Post (1200x630)</option>
+<option value="flyer-8.5x11">Flyer (8.5x11)</option>
+<option value="flyer-5x7">Flyer (5x7)</option>
+<option value="business-card">Business Card</option>
+<option value="menu">Menu Design</option>
+<option value="banner">Web Banner</option>
+<option value="custom">Custom Size</option>
+</select>
+</div>
+<div>
+<label style="display: block; color: #888; font-size: 13px; margin-bottom: 6px;">Priority</label>
+<select id="designOrderPriority" style="width:100%;padding:12px;background:#1a1a1a;border:1px solid #333;color:#fff;border-radius:8px;font-family:inherit;">
+<option value="normal">Normal</option>
+<option value="rush">Rush (ASAP)</option>
+</select>
+</div>
+</div>
+<button type="submit" style="width:100%;padding:16px;background:${tierColor};color:#fff;border:none;border-radius:10px;cursor:pointer;font-weight:700;font-size:16px;font-family:inherit;" ${!typeOptions.includes('value="design"') && !typeOptions.includes('value="video"') && !typeOptions.includes('value="book"') ? 'disabled' : ''}>
+Submit Design Request →
+</button>
+<p style="color: #666; font-size: 12px; text-align: center; margin-top: 12px;">Included in your ${plan.name} plan — no extra charge</p>
+</form>
+</div>`;
+}
+
+async function submitDesignOrder(e) {
+    e.preventDefault();
+    const client = clients.find(c => c.id === currentUser.clientId);
+    if (!client) return;
+    const orderType = document.getElementById('designOrderType').value;
+    const title = document.getElementById('designOrderTitle').value;
+    const desc = document.getElementById('designOrderDesc').value;
+    const size = document.getElementById('designOrderSize')?.value || '';
+    const priority = document.getElementById('designOrderPriority')?.value || 'normal';
+    const turnarounds = { design: '1-2 days', video: '3-5 days', book: '7-14 days' };
+    const typeLabels = { design: 'Graphic Design', video: 'Video Edit', book: 'Book/Catalog Design' };
+    const order = {
+        id: Date.now(),
+        clientId: client.id,
+        projectName: title,
+        description: desc + (size ? '\\nSize: ' + size : '') + (priority === 'rush' ? '\\n⚡ RUSH' : ''),
+        orderType: orderType,
+        format: size,
+        priority: priority,
+        estimate: 0,
+        turnaround: turnarounds[orderType] || '2-3 days',
+        turnaroundDaysMin: orderType === 'book' ? 7 : orderType === 'video' ? 3 : 1,
+        turnaroundDaysMax: orderType === 'book' ? 14 : orderType === 'video' ? 5 : 2,
+        packageId: 'subscription-' + orderType,
+        packageName: typeLabels[orderType] || 'Design',
+        dueDate: new Date(Date.now() + (orderType === 'book' ? 14 : orderType === 'video' ? 5 : 2) * 24*60*60*1000).toISOString().split('T')[0],
+        status: 'pending',
+        statusHistory: [{ status: 'pending', timestamp: new Date().toISOString(), note: 'Design order submitted by client', user: client.name }],
+        createdAt: new Date().toISOString(),
+        deliveredAt: null,
+        deliverables: [],
+        paymentStatus: 'subscription',
+        submittedByClient: true,
+        isSubscriptionOrder: true
+    };
+    orders.push(order);
+    saveOrders();
+    // Show success and go back
+    document.getElementById('clientPortalContent').innerHTML = `
+<div style="max-width:600px;margin:60px auto;text-align:center;padding:40px;">
+<div style="font-size:64px;margin-bottom:16px;">✅</div>
+<h2 style="font-size:24px;margin-bottom:8px;">Order Submitted!</h2>
+<p style="color:#888;margin-bottom:24px;">"${title}" is in the queue. We'll start on it shortly.</p>
+<div style="background:#111;border-radius:12px;padding:20px;margin-bottom:24px;text-align:left;">
+<div style="font-size:13px;color:#888;margin-bottom:8px;">Order Details</div>
+<div style="font-size:15px;margin-bottom:4px;"><strong>Type:</strong> ${typeLabels[orderType] || orderType}</div>
+<div style="font-size:15px;margin-bottom:4px;"><strong>Turnaround:</strong> ${turnarounds[orderType]}</div>
+<div style="font-size:15px;"><strong>Status:</strong> <span style="color:#f59e0b;">Pending</span></div>
+</div>
+<button onclick="loadClientDashboard()" style="padding:14px 32px;background:var(--red);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:16px;">Back to Dashboard</button>
+</div>`;
 }
 
 function showClientNewOrder() {

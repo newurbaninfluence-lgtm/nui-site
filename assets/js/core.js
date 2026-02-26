@@ -814,9 +814,19 @@ function saveInvoices() { localStorage.setItem('nui_invoices', JSON.stringify(in
 const subscriptionPlans = [
     { id: 'basic-hosting', name: 'Basic Hosting', price: 27, interval: 'monthly', features: ['Website Hosting', 'SSL Security', 'Monthly Updates', 'Uptime Monitoring'], orderLimit: null, category: 'hosting' },
     { id: 'hosting-funnels', name: 'Hosting + Funnels', price: 125, interval: 'monthly', features: ['Everything in Basic Hosting', 'Sales Funnel Builder', 'Marketing Automation System', 'Landing Page Templates', 'Email Integration'], orderLimit: null, category: 'hosting' },
-    { id: 'ad-design', name: 'Ad Design Creation', price: 100, interval: 'monthly', features: ['4 Custom Flyer Designs', '1 AI-Generated Flyer', 'Digital Ad Formats', 'Social Media Sizes', 'Print-Ready Files'], orderLimit: null, category: 'design' },
-    { id: 'unlimited-designs', name: 'Unlimited Designs', price: 350, interval: 'monthly', features: ['Unlimited Graphic Designs', 'Social Media Graphics', 'Marketing Materials', 'Digital Ads', 'Excludes Brand Packages', 'Excludes Video Creation'], orderLimit: 2, category: 'design' },
-    { id: 'reel-unlimited', name: 'Reel + Unlimited Design', price: 550, interval: 'monthly', features: ['Monthly Reel Creation', 'Unlimited Graphic Designs', 'Social Media Content', 'Marketing Materials', 'Digital Ads', 'Excludes Brand Packages'], orderLimit: 2, category: 'premium' }
+    // Design Subscription Tiers
+    { id: 'design-starter', name: 'Starter', price: 250, interval: 'monthly', category: 'design-sub',
+      designsPerWeek: 2, designsPerMonth: 8, videosPerMonth: 0, bookDesign: false,
+      features: ['2 Designs Per Week', '8 Designs Per Month', 'Social Media Graphics', 'Flyers & Marketing Materials', 'Digital Ad Creatives', '48hr Turnaround', 'Unlimited Revisions'],
+      orderLimit: 8 },
+    { id: 'design-growth', name: 'Growth', price: 450, interval: 'monthly', category: 'design-sub',
+      designsPerWeek: 4, designsPerMonth: 16, videosPerMonth: 2, bookDesign: true,
+      features: ['4 Designs Per Week', '16 Designs Per Month', '2 Short-Form Videos/Month', 'Booklet or Lookbook Design', 'Social Media Graphics', 'Flyers & Marketing Materials', 'Digital Ad Creatives', '24hr Turnaround', 'Unlimited Revisions'],
+      orderLimit: 16 },
+    { id: 'design-premium', name: 'Premium', price: 650, interval: 'monthly', category: 'design-sub',
+      designsPerWeek: 6, designsPerMonth: 24, videosPerMonth: 4, bookDesign: true,
+      features: ['6 Designs Per Week', '24 Designs Per Month', '4 Short-Form Videos/Month', 'Full Book or Catalog Design', 'Social Media Graphics', 'Flyers & Marketing Materials', 'Digital Ad Creatives', 'Same-Day Turnaround', 'Unlimited Revisions', 'Priority Support'],
+      orderLimit: 24 }
 ];
 
 let subscriptions = JSON.parse(localStorage.getItem('nui_subscriptions')) || [];
