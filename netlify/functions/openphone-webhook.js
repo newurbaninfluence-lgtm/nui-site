@@ -77,6 +77,67 @@ async function touchContact(contactId) {
   });
 }
 
+async function updateContactInfo(contactId, updates) {
+  // Only update fields that have values and aren't already set
+  const cleanUpdates = {};
+  for (const [key, val] of Object.entries(updates)) {
+    if (val && val.trim && val.trim().length > 0) cleanUpdates[key] = val.trim();
+  }
+  if (Object.keys(cleanUpdates).length === 0) return;
+  cleanUpdates.last_activity_at = new Date().toISOString();
+  await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contactId}`, {
+    method: 'PATCH',
+    headers: { ...supaHeaders, 'Prefer': 'return=minimal' },
+    body: JSON.stringify(cleanUpdates)
+  });
+  console.log(`[NUI] Contact ${contactId} updated:`, Object.keys(cleanUpdates).join(', '));
+}
+
+// Extract caller name/email from transcript text
+function extractCallerInfo(text) {
+  const info = {};
+  if (!text) return info;
+
+  // Extract name patterns
+  const namePatterns = [
+    /my name is ([A-Z][a-z]+ [A-Z][a-z]+)/i,
+    /this is ([A-Z][a-z]+ [A-Z][a-z]+)/i,
+    /I'm ([A-Z][a-z]+ [A-Z][a-z]+)/i,
+    /i am ([A-Z][a-z]+ [A-Z][a-z]+)/i,
+    /name'?s ([A-Z][a-z]+ [A-Z][a-z]+)/i,
+    /call me ([A-Z][a-z]+ [A-Z][a-z]+)/i,
+  ];
+  for (const pattern of namePatterns) {
+    const match = text.match(pattern);
+    if (match) {
+      const name = match[1].trim();
+      // Skip if it's the AI assistant's name
+      if (!/sona|monty|assistant/i.test(name)) {
+        const parts = name.split(' ');
+        info.first_name = parts[0];
+        if (parts.length > 1) info.last_name = parts.slice(1).join(' ');
+        break;
+      }
+    }
+  }
+
+  // Extract email
+  const emailMatch = text.match(/[\w.-]+@[\w.-]+\.\w{2,}/i);
+  if (emailMatch) info.email = emailMatch[0].toLowerCase();
+
+  // Extract from summary format: "The caller, Bo Taylor" or "caller Bo Taylor"
+  if (!info.first_name) {
+    const summaryName = text.match(/(?:caller|client|customer)[,]?\s+([A-Z][a-z]+ [A-Z][a-z]+)/i);
+    if (summaryName) {
+      const parts = summaryName[1].trim().split(' ');
+      info.first_name = parts[0];
+      if (parts.length > 1) info.last_name = parts.slice(1).join(' ');
+    }
+  }
+
+  return info;
+}
+
 // ── Phone extraction ──────────────────────────────────────────────
 
 function extractPhone(obj, direction) {
@@ -222,6 +283,12 @@ async function handleCallSummary(obj) {
     body: JSON.stringify({ sona_qualified: true, last_activity_at: new Date().toISOString() })
   });
 
+  // Extract caller name/email from summary and update contact
+  const callerInfo = extractCallerInfo(summaryText + ' ' + nextStepsText);
+  if (callerInfo.first_name || callerInfo.email) {
+    await updateContactInfo(contactId, callerInfo);
+  }
+
   return { action: 'call_summary_logged', contactId };
 }
 
@@ -248,6 +315,13 @@ async function handleCallTranscript(obj) {
     call_id: callId,
     raw_transcript: obj.transcript || obj.dialogue,
   });
+
+  // Extract caller name/email from transcript and update contact
+  const callerInfo = extractCallerInfo(transcriptText);
+  if (callerInfo.first_name || callerInfo.email) {
+    await updateContactInfo(contactId, callerInfo);
+  }
+
   return { action: 'call_transcript_logged', contactId };
 }
 
