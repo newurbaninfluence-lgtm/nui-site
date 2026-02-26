@@ -12,6 +12,6 @@ window.INSTAGRAM_APP_ID = '';
 window.FACEBOOK_APP_ID = '';
 window.LINKEDIN_CLIENT_ID = '';
 
-window.SITE_URL = 'https://soft-rolypoly-668214.netlify.app';
+window.SITE_URL = 'https://newurbaninfluence.com';
 
 console.log('✅ NUI Environment loaded:', window.SITE_URL);
