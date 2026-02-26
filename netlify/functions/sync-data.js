@@ -15,6 +15,7 @@ const ALL_TYPES = [
   'orders', 'clients', 'invoices', 'subscriptions',
   'proofs', 'projects', 'leads', 'services',
   'meetings', 'submissions',
+  'designer_messages', 'client_messages',
   'site_images', 'about', 'portfolio',
   'stripe_settings', 'integrations', 'analytics',
   'crm', 'comm_hub'

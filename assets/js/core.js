@@ -314,6 +314,7 @@ async function forceFullSync() {
         ['orders', orders],
         ['invoices', invoices],
         ['clients', clients],
+        ['subscriptions', subscriptions],
         ['designer_messages', typeof designerMessages !== 'undefined' ? designerMessages : []],
         ['client_messages', typeof clientMessages !== 'undefined' ? clientMessages : []],
         ['crm', crmData],
