@@ -21,14 +21,15 @@ const ALL_TYPES = [
 ];
 
 async function supabaseFetch(url, serviceKey, path, options = {}) {
+  const { headers: extraHeaders, ...restOptions } = options;
   return fetch(`${url}/rest/v1/${path}`, {
     headers: {
       'apikey': serviceKey,
       'Authorization': `Bearer ${serviceKey}`,
       'Content-Type': 'application/json',
-      ...options.headers
+      ...(extraHeaders || {})
     },
-    ...options
+    ...restOptions
   });
 }
 
