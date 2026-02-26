@@ -940,8 +940,8 @@ function loadAdminSubscriptionsPanel() {
     `;
 
     subscriptions.forEach(sub => {
-        const statusColors = { active: '#10b981', paused: '#f59e0b', cancelled: '#ef4444' };
-        const statusIcons = { active: '●', paused: '⏸', cancelled: '✕' };
+        const statusColors = { active: '#10b981', paused: '#f59e0b', cancelled: '#ef4444', pending_payment: '#3b82f6' };
+        const statusIcons = { active: '●', paused: '⏸', cancelled: '✕', pending_payment: '💳' };
         const startDate = new Date(sub.startDate).toLocaleDateString();
         const nextBillingDate = new Date(sub.nextBillingDate).toLocaleDateString();
 
@@ -960,7 +960,7 @@ function loadAdminSubscriptionsPanel() {
 <td style="padding: 16px; color: rgba(255,255,255,0.6); font-size: 13px;">${nextBillingDate}</td>
 <td style="padding: 16px; text-align: center;">
 <div style="display: flex; gap: 8px; justify-content: center;">
-                                    ${sub.status === 'active' ? `<button onclick="pauseSubscription(${sub.id})" style="background: #f59e0b; color: #000; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Pause</button><button onclick="handleFailedPayment(${sub.id})" style="background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px; margin-left: 4px;">💳 Payment Failed</button>` : sub.status === 'paused' ? `<button onclick="resumeSubscription(${sub.id})" style="background: #10b981; color: #000; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Resume</button>` : ''}
+                                    ${sub.status === 'active' ? `<button onclick="pauseSubscription(${sub.id})" style="background: #f59e0b; color: #000; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Pause</button><button onclick="handleFailedPayment(${sub.id})" style="background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px; margin-left: 4px;">💳 Payment Failed</button>` : sub.status === 'paused' ? `<button onclick="resumeSubscription(${sub.id})" style="background: #10b981; color: #000; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Resume</button>` : sub.status === 'pending_payment' ? `<button onclick="resendPaymentLink(${sub.id})" style="background: #3b82f6; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">📨 Resend Payment Link</button>` : ''}
 <button onclick="showChangePlanModal(${sub.id})" style="background: #3b82f6; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Change Plan</button>
 <button onclick="sendSubscriptionInvoice(${sub.id})" style="background: #10b981; color: #000; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Invoice</button>
 <button onclick="cancelSubscription(${sub.id})" style="background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 11px;">Cancel</button>
@@ -1110,18 +1110,83 @@ function assignSubscription() {
 
     logProofActivity(clientId, 'subscription_assigned', `${plan.name} subscription assigned for $${plan.price}/mo`, subscription);
 
-    // Send email notification
-    if (client.email) {
+    // Generate Stripe payment link and send to client
+    if (client.email && billingMethod !== 'manual') {
         try {
-            simulateEmailNotification(client.email, `Welcome to ${plan.name}!`, `Your ${plan.name} plan is now active. Next billing date: ${nextBillingDate.toLocaleDateString()}`);
-        } catch (e) {
-            console.log('Email notification not available');
+            const stripeResp = await fetch('/.netlify/functions/create-subscription', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    clientEmail: client.email,
+                    clientName: client.name,
+                    clientId: String(clientId),
+                    amount: plan.price,
+                    description: plan.name + ' — Monthly Design Subscription',
+                    invoiceId: String(subscription.id),
+                    billingType: 'monthly',
+                    billingCycles: 0
+                })
+            });
+            const stripeData = await stripeResp.json();
+            if (stripeData.url) {
+                subscription.stripeCheckoutUrl = stripeData.url;
+                subscription.stripeSessionId = stripeData.sessionId;
+                subscription.status = 'pending_payment';
+                saveSubscriptions();
+
+                // Send payment link email
+                await fetch('/.netlify/functions/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        to: client.email,
+                        subject: 'Welcome to ' + plan.name + ' — Activate Your Subscription',
+                        html: `<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;border-radius:12px;">
+<div style="text-align:center;margin-bottom:32px;"><img src="https://newurbaninfluence.com/assets/img/nui-logo-white.png" alt="NUI" style="height:40px;" /></div>
+<h2 style="color:#fff;margin-bottom:16px;">Welcome to ${plan.name}! 🎨</h2>
+<p style="color:#ccc;line-height:1.7;">Hi ${client.name},</p>
+<p style="color:#ccc;line-height:1.7;">Your <strong style="color:#fff;">${plan.name}</strong> design subscription is ready to activate. Click below to set up your payment method and start your first month.</p>
+<div style="background:#111;border:1px solid #333;border-radius:10px;padding:20px;margin:24px 0;">
+<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#888;">Plan</span><span style="color:#fff;font-weight:600;">${plan.name}</span></div>
+<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:#888;">Monthly Price</span><span style="color:#e63946;font-weight:700;font-size:18px;">$${plan.price}/mo</span></div>
+<div style="display:flex;justify-content:space-between;"><span style="color:#888;">Billing</span><span style="color:#fff;">Monthly recurring</span></div>
+</div>
+<div style="text-align:center;margin:32px 0;">
+<a href="${stripeData.url}" style="display:inline-block;padding:16px 48px;background:#e63946;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:18px;">Activate Subscription →</a>
+</div>
+<p style="color:#666;font-size:13px;text-align:center;">This link expires in 24 hours. If you have questions, reply to this email or call (248) 487-8747.</p>
+<div style="border-top:1px solid #222;margin-top:32px;padding-top:16px;text-align:center;color:#555;font-size:12px;">New Urban Influence • Detroit, MI</div>
+</div>`,
+                        clientId: String(clientId)
+                    })
+                });
+
+                // Also send SMS with payment link
+                if (client.phone) {
+                    await fetch('/.netlify/functions/send-sms', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            to: client.phone,
+                            message: `Hi ${client.name}! Your ${plan.name} design subscription ($${plan.price}/mo) is ready. Activate here: ${stripeData.url} — NUI Team`,
+                            clientId: String(clientId)
+                        })
+                    });
+                }
+
+                document.getElementById('assignPlanModal').remove();
+                loadAdminSubscriptionsPanel();
+                alert(`✅ Subscription created! Stripe payment link sent to ${client.email} and ${client.phone || 'no phone'}.`);
+                return;
+            }
+        } catch (err) {
+            console.error('Stripe link error:', err);
         }
     }
 
     document.getElementById('assignPlanModal').remove();
     loadAdminSubscriptionsPanel();
-    alert(`Subscription assigned! ${client.name} is now on the ${plan.name} plan.`);
+    alert(`Subscription assigned to ${client.name}. No payment link sent (manual billing or no email).`);
 }
 
 function pauseSubscription(subId) {
@@ -1212,6 +1277,74 @@ New Urban Influence • Detroit, MI • newurbaninfluence.com
 
     loadAdminSubscriptionsPanel();
     alert(`Subscription paused for ${sub.clientName}. Email and SMS notifications sent.`);
+}
+
+// ── Resend Stripe Payment Link ──
+async function resendPaymentLink(subId) {
+    const sub = subscriptions.find(s => s.id === subId);
+    if (!sub) return;
+    const client = clients.find(c => c.id === sub.clientId);
+    if (!client || !client.email) { alert('No email on file for this client.'); return; }
+    const plan = subscriptionPlans.find(p => p.id === sub.planId) || { name: sub.plan, price: sub.price };
+
+    try {
+        const resp = await fetch('/.netlify/functions/create-subscription', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                clientEmail: client.email,
+                clientName: client.name,
+                clientId: String(client.id),
+                amount: sub.price,
+                description: plan.name + ' — Monthly Design Subscription',
+                invoiceId: String(sub.id),
+                billingType: 'monthly',
+                billingCycles: 0
+            })
+        });
+        const data = await resp.json();
+        if (!data.url) throw new Error('No checkout URL returned');
+
+        sub.stripeCheckoutUrl = data.url;
+        sub.stripeSessionId = data.sessionId;
+        saveSubscriptions();
+
+        await fetch('/.netlify/functions/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                to: client.email,
+                subject: 'Your Payment Link — ' + plan.name + ' Subscription',
+                html: `<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;border-radius:12px;">
+<h2 style="color:#fff;">Activate Your ${plan.name} Plan</h2>
+<p style="color:#ccc;line-height:1.7;">Hi ${client.name}, click below to set up payment for your <strong>$${sub.price}/mo</strong> design subscription.</p>
+<div style="text-align:center;margin:32px 0;"><a href="${data.url}" style="display:inline-block;padding:16px 48px;background:#e63946;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:18px;">Activate Subscription →</a></div>
+<p style="color:#666;font-size:13px;text-align:center;">Link expires in 24 hours. Questions? Call (248) 487-8747.</p>
+<div style="border-top:1px solid #222;margin-top:32px;padding-top:16px;text-align:center;color:#555;font-size:12px;">New Urban Influence • Detroit, MI</div></div>`,
+                clientId: String(client.id)
+            })
+        });
+
+        if (client.phone) {
+            await fetch('/.netlify/functions/send-sms', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    to: client.phone,
+                    message: `Hi ${client.name}! Here's your payment link for the ${plan.name} plan ($${sub.price}/mo): ${data.url} — NUI Team`,
+                    clientId: String(client.id)
+                })
+            });
+        }
+
+        sub.history.push({ action: 'payment_link_sent', date: new Date().toISOString(), note: 'Stripe payment link resent', user: currentUser?.name || 'Admin' });
+        saveSubscriptions();
+        loadAdminSubscriptionsPanel();
+        alert(`✅ New payment link sent to ${client.email}${client.phone ? ' and ' + client.phone : ''}!`);
+    } catch (err) {
+        console.error('Resend payment link error:', err);
+        alert('Error generating payment link: ' + err.message);
+    }
 }
 
 function resumeSubscription(subId) {
