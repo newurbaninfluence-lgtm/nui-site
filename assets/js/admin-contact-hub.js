@@ -36,8 +36,8 @@ async function fetchContactHubData() {
 
     contactHubData.contacts = contactsRes.data || [];
     contactHubData.activities = activitiesRes.data || [];
-    contactHubData.emails = emailsRes.data || [];
-    contactHubData.smsMessages = smsRes.data || [];
+    contactHubData.emails = (emailsRes.error ? [] : emailsRes.data) || [];
+    contactHubData.smsMessages = (smsRes.error ? [] : smsRes.data) || [];
     contactHubData.loading = false;
     console.log('✅ Contact Hub: ' + contactHubData.contacts.length + ' contacts, ' + contactHubData.activities.length + ' activities, ' + contactHubData.emails.length + ' emails, ' + contactHubData.smsMessages.length + ' sms');
   } catch (err) {
@@ -58,14 +58,20 @@ async function loadAdminContactHubPanel() {
   // Show loading state
   panel.innerHTML = '<div style="padding:60px;text-align:center;color:rgba(255,255,255,0.4);"><div style="font-size:32px;margin-bottom:12px;">📡</div>Loading contacts from Supabase...</div>';
 
-  await fetchContactHubData();
-  renderContactHub();
+  try {
+    await fetchContactHubData();
+    renderContactHub();
+  } catch (err) {
+    console.error('Contact Hub load error:', err);
+    panel.innerHTML = '<div style="padding:60px;text-align:center;color:#ef4444;"><div style="font-size:32px;margin-bottom:12px;">⚠️</div><div style="margin-bottom:8px;">Contact Hub failed to load</div><div style="font-size:13px;color:rgba(255,255,255,0.4);">' + (err.message || err) + '</div><button onclick="loadAdminContactHubPanel()" style="margin-top:16px;padding:10px 20px;background:var(--red);border:none;border-radius:8px;color:#fff;cursor:pointer;">Retry</button></div>';
+  }
 }
 
 function renderContactHub() {
   const panel = document.getElementById('adminContacthubPanel');
   if (!panel) return;
 
+  try {
   const contacts = getFilteredContacts();
   const totalContacts = contactHubData.contacts.length;
   const newLeads = contactHubData.contacts.filter(c => c.status === 'new_lead').length;
@@ -185,6 +191,11 @@ ${contacts.length > 0 ? renderContactTable(contacts) : '<div class="ch-empty"><d
       id: c.id, name: hubDisplayName(c), phone: c.phone, email: c.email, status: c.status
     }));
     setTimeout(() => renderSmsCampaignsTab(), 50);
+  }
+
+  } catch (renderErr) {
+    console.error('Contact Hub render error:', renderErr);
+    panel.innerHTML = '<div style="padding:60px;text-align:center;color:#ef4444;"><div style="font-size:32px;margin-bottom:12px;">⚠️</div><div style="margin-bottom:8px;">Contact Hub render failed</div><div style="font-size:13px;color:rgba(255,255,255,0.4);max-width:500px;margin:0 auto;word-break:break-all;">' + (renderErr.message || renderErr) + '</div><button onclick="loadAdminContactHubPanel()" style="margin-top:16px;padding:10px 20px;background:var(--red);border:none;border-radius:8px;color:#fff;cursor:pointer;">Retry</button></div>';
   }
 }
 
