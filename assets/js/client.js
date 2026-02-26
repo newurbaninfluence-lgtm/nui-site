@@ -105,9 +105,9 @@ function loadClientDashboard() {
                 weekStart.setHours(0,0,0,0);
                 const thisWeekOrders = periodOrders.filter(o => new Date(o.createdAt) >= weekStart);
                 const weekDesignsLeft = Math.max(0, (plan.designsPerWeek || 0) - thisWeekOrders.length);
-                const tierColors = { 'design-starter': '#3b82f6', 'design-growth': '#8b5cf6', 'design-premium': '#f59e0b' };
+                const tierColors = { 'design-essentials': '#3b82f6', 'design-growth': '#8b5cf6', 'design-creative': '#f59e0b' };
                 const tierColor = tierColors[plan.id] || '#e63946';
-                const tierBadge = plan.id === 'design-premium' ? '👑' : plan.id === 'design-growth' ? '🚀' : '⚡';
+                const tierBadge = plan.id === 'design-creative' ? '👑' : plan.id === 'design-growth' ? '🚀' : '⚡';
                 return `
 <div style="background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); border: 1px solid ${tierColor}; border-radius: 16px; padding: 24px; margin-bottom: 24px;">
 <!-- Header -->
@@ -300,7 +300,7 @@ function showDesignOrderForm() {
     const videosLeft = Math.max(0, (plan.videosPerMonth || 0) - periodVideos.length);
     const bookAvail = plan.bookDesign && periodBooks.length < 1;
 
-    const tierColors = { 'design-starter': '#3b82f6', 'design-growth': '#8b5cf6', 'design-premium': '#f59e0b' };
+    const tierColors = { 'design-essentials': '#3b82f6', 'design-growth': '#8b5cf6', 'design-creative': '#f59e0b' };
     const tierColor = tierColors[plan.id] || '#e63946';
 
     // Build order type options

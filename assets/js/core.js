@@ -815,17 +815,17 @@ const subscriptionPlans = [
     { id: 'basic-hosting', name: 'Basic Hosting', price: 27, interval: 'monthly', features: ['Website Hosting', 'SSL Security', 'Monthly Updates', 'Uptime Monitoring'], orderLimit: null, category: 'hosting' },
     { id: 'hosting-funnels', name: 'Hosting + Funnels', price: 125, interval: 'monthly', features: ['Everything in Basic Hosting', 'Sales Funnel Builder', 'Marketing Automation System', 'Landing Page Templates', 'Email Integration'], orderLimit: null, category: 'hosting' },
     // Design Subscription Tiers
-    { id: 'design-starter', name: 'Starter', price: 250, interval: 'monthly', category: 'design-sub',
-      designsPerWeek: 2, designsPerMonth: 8, videosPerMonth: 0, bookDesign: false,
-      features: ['2 Designs Per Week', '8 Designs Per Month', 'Social Media Graphics', 'Flyers & Marketing Materials', 'Digital Ad Creatives', '48hr Turnaround', 'Unlimited Revisions'],
+    { id: 'design-essentials', name: 'Brand Essentials', price: 297, interval: 'monthly', category: 'design-sub',
+      designsPerWeek: 2, designsPerMonth: 8, videosPerMonth: 0, bookDesign: false, captionWriting: false, strategyCall: false,
+      features: ['Monthly Content Calendar', '2 Designs Per Week (8/month)', 'Sized For All Platforms', 'Brand-Consistent Templates', 'Flyers & Marketing Materials', 'Digital Ad Creatives', '48hr Turnaround', 'Unlimited Revisions'],
       orderLimit: 8 },
-    { id: 'design-growth', name: 'Growth', price: 450, interval: 'monthly', category: 'design-sub',
-      designsPerWeek: 4, designsPerMonth: 16, videosPerMonth: 2, bookDesign: true,
-      features: ['4 Designs Per Week', '16 Designs Per Month', '2 Short-Form Videos/Month', 'Booklet or Lookbook Design', 'Social Media Graphics', 'Flyers & Marketing Materials', 'Digital Ad Creatives', '24hr Turnaround', 'Unlimited Revisions'],
+    { id: 'design-growth', name: 'Growth Engine', price: 497, interval: 'monthly', category: 'design-sub',
+      designsPerWeek: 4, designsPerMonth: 16, videosPerMonth: 2, bookDesign: true, captionWriting: true, strategyCall: 'monthly',
+      features: ['Everything in Essentials', '4 Designs Per Week (16/month)', '2 Short-Form Videos/Month', 'Booklet or Menu Design', 'Caption Writing Included', 'Monthly 15-Min Strategy Call', '24hr Turnaround', 'Unlimited Revisions'],
       orderLimit: 16 },
-    { id: 'design-premium', name: 'Premium', price: 650, interval: 'monthly', category: 'design-sub',
-      designsPerWeek: 6, designsPerMonth: 24, videosPerMonth: 4, bookDesign: true,
-      features: ['6 Designs Per Week', '24 Designs Per Month', '4 Short-Form Videos/Month', 'Full Book or Catalog Design', 'Social Media Graphics', 'Flyers & Marketing Materials', 'Digital Ad Creatives', 'Same-Day Turnaround', 'Unlimited Revisions', 'Priority Support'],
+    { id: 'design-creative', name: 'Full Creative Team', price: 697, interval: 'monthly', category: 'design-sub',
+      designsPerWeek: 6, designsPerMonth: 24, videosPerMonth: 4, bookDesign: true, captionWriting: true, strategyCall: 'weekly',
+      features: ['Everything in Growth', '6 Designs Per Week (24/month)', '4 Short-Form Videos/Month', 'Full Book or Catalog Design', 'Caption Writing For Every Post', 'Weekly Strategy Call', 'Hashtag Research Included', 'Content Repurposing (1→5 Formats)', 'Same-Day Turnaround', 'Unlimited Revisions', 'Priority Support'],
       orderLimit: 24 }
 ];
 
