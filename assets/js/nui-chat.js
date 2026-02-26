@@ -1,4 +1,4 @@
-// NUI Chat Widget — "Sona" AI Assistant
+// NUI Chat Widget — "Monty" AI Assistant
 // Bottom-right chat bubble powered by Claude API
 
 (function() {
@@ -113,9 +113,9 @@
   const chatHTML = `
     <div id="nui-chat-window">
       <div class="nui-chat-header">
-        <div class="nui-chat-avatar">S</div>
+        <div class="nui-chat-avatar">M</div>
         <div class="nui-chat-header-info">
-          <h4>Sona</h4>
+          <h4>Monty</h4>
           <span>NUI AI Assistant — typically replies instantly</span>
         </div>
       </div>
@@ -127,13 +127,13 @@
         <button class="nui-chat-quick" onclick="nuiQuickAsk(this)">Pricing for a website</button>
       </div>
       <div class="nui-chat-input-area">
-        <input type="text" id="nuiChatInput" placeholder="Ask Sona anything..." autocomplete="off" />
+        <input type="text" id="nuiChatInput" placeholder="Ask Monty anything..." autocomplete="off" />
         <button class="nui-chat-send" id="nuiChatSend" onclick="nuiSendMessage()">
           <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         </button>
       </div>
     </div>
-    <button id="nui-chat-bubble" onclick="nuiToggleChat()" aria-label="Chat with Sona">
+    <button id="nui-chat-bubble" onclick="nuiToggleChat()" aria-label="Chat with Monty">
       <svg class="chat-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
       <svg class="close-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
     </button>
@@ -145,7 +145,7 @@
 
   // ── Welcome message ────────────────────────────────────────
   function showWelcome() {
-    addBotMessage("Hey! I'm Sona, NUI's AI assistant. I can help you find the right branding, marketing, or tech service for your business. What are you looking for?");
+    addBotMessage("Hey! I'm Monty, NUI's AI assistant. I can help you find the right branding, marketing, or tech service for your business. What are you looking for?");
   }
 
   // ── Toggle chat ────────────────────────────────────────────

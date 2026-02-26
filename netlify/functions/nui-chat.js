@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const { createClient } = require('@supabase/supabase-js');
 
 // NUI Brand Knowledge — everything the chatbot needs to know
-const SYSTEM_PROMPT = `You are Sona, the AI assistant for New Urban Influence (NUI), a boutique branding and design agency based in Detroit, Michigan. You help visitors understand NUI's services, recommend the right solutions, and guide them toward getting started.
+const SYSTEM_PROMPT = `You are Monty, the AI assistant for New Urban Influence (NUI), a boutique branding and design agency based in Detroit, Michigan. You help visitors understand NUI's services, recommend the right solutions, and guide them toward getting started.
 
 PERSONALITY:
 - Confident but not pushy — you're a knowledgeable guide, not a used car salesman
@@ -84,7 +84,7 @@ FOUNDER: Faren Young — founder and creative director. Based in Detroit.
 LOCATION: Detroit, Michigan. Serve businesses nationwide.`;
 
 // ── Lead extraction prompt — runs after conversation ──
-const EXTRACT_PROMPT = `Analyze this conversation between a website visitor and Sona (NUI's AI assistant). Extract any contact information the visitor shared and assess their lead quality.
+const EXTRACT_PROMPT = `Analyze this conversation between a website visitor and Monty (NUI's AI assistant). Extract any contact information the visitor shared and assess their lead quality.
 
 Return ONLY valid JSON (no markdown, no explanation):
 {
@@ -182,7 +182,7 @@ async function extractAndSaveLead(apiKey, messages, sessionId) {
   // Build conversation text for extraction
   const convoText = messages
     .filter(m => m.role === 'user' || m.role === 'assistant')
-    .map(m => `${m.role === 'user' ? 'Visitor' : 'Sona'}: ${m.content}`)
+    .map(m => `${m.role === 'user' ? 'Visitor' : 'Monty'}: ${m.content}`)
     .join('\n');
 
   // Ask Claude to extract contact info
@@ -262,15 +262,15 @@ async function extractAndSaveLead(apiKey, messages, sessionId) {
 
     if (Object.keys(updates).length > 1) {
       await supabase.from('crm_contacts').update(updates).eq('id', existing.id);
-      console.log('✅ Sona updated contact:', existing.id, updates);
+      console.log('✅ Monty updated contact:', existing.id, updates);
     }
 
     // Log activity
     await supabase.from('activity_log').insert({
       contact_id: existing.id,
-      type: 'sona_chat',
+      type: 'monty_chat',
       direction: 'inbound',
-      content: lead.summary || 'Chat conversation via Sona',
+      content: lead.summary || 'Chat conversation via Monty',
       metadata: { session_id: sessionId, qualified: lead.qualified, service_interest: lead.service_interest },
       read: false
     });
@@ -284,7 +284,7 @@ async function extractAndSaveLead(apiKey, messages, sessionId) {
       phone: phone || null,
       company: lead.company || null,
       industry: lead.industry || null,
-      source: 'sona_chat',
+      source: 'monty_chat',
       status: lead.qualified ? 'qualified' : 'new_lead',
       sona_qualified: lead.qualified || false,
       service_interest: lead.service_interest || null,
@@ -298,19 +298,19 @@ async function extractAndSaveLead(apiKey, messages, sessionId) {
       .insert(newContact).select().single();
 
     if (created) {
-      console.log('✅ Sona created new lead:', created.id, newContact.first_name);
+      console.log('✅ Monty created new lead:', created.id, newContact.first_name);
 
       // Log the chat activity
       await supabase.from('activity_log').insert({
         contact_id: created.id,
-        type: 'sona_chat',
+        type: 'monty_chat',
         direction: 'inbound',
-        content: lead.summary || 'New lead from Sona chat',
+        content: lead.summary || 'New lead from Monty chat',
         metadata: { session_id: sessionId, qualified: lead.qualified, service_interest: lead.service_interest },
         read: false
       });
     }
-    if (error) console.warn('Sona lead insert error:', error.message);
+    if (error) console.warn('Monty lead insert error:', error.message);
   }
 }
 

@@ -152,8 +152,8 @@ ${contactHubView === 'campaigns' ? `
 <!-- Source pills -->
 <div class="ch-source-pills">
   ${Object.entries(sources).map(([src, count]) => {
-    const colors = { quo_call: '#8b5cf6', quo_text: '#10b981', website_form: '#3b82f6', manual: '#f59e0b', referral: '#ec4899', csv_import: '#06b6d4', sona_chat: '#a855f7' };
-    const labels = { quo_call: '📞 Calls', quo_text: '💬 Texts', website_form: '🌐 Forms', manual: '✏️ Manual', referral: '🤝 Referral', csv_import: '📄 CSV Import', sona_chat: '🤖 Sona' };
+    const colors = { quo_call: '#8b5cf6', quo_text: '#10b981', website_form: '#3b82f6', manual: '#f59e0b', referral: '#ec4899', csv_import: '#06b6d4', sona_chat: '#a855f7', monty_chat: '#a855f7' };
+    const labels = { quo_call: '📞 Calls', quo_text: '💬 Texts', website_form: '🌐 Forms', manual: '✏️ Manual', referral: '🤝 Referral', csv_import: '📄 CSV Import', sona_chat: '🤖 Sona', monty_chat: '💬 Monty' };
     return '<span class="ch-source-pill" style="background:' + (colors[src] || '#666') + '20;color:' + (colors[src] || '#999') + ';">' + (labels[src] || src) + ': ' + count + '</span>';
   }).join('')}
   ${contactHubData.emails.length > 0 ? (() => {
@@ -243,7 +243,7 @@ function renderContactTable(contacts) {
     client: { bg: '#8b5cf620', color: '#8b5cf6', label: 'Client' },
     lost: { bg: '#ef444420', color: '#ef4444', label: 'Lost' }
   };
-  const sourceIcons = { quo_call: '📞', quo_text: '💬', website_form: '🌐', manual: '✏️', referral: '🤝', csv_import: '📄', sona_chat: '🤖' };
+  const sourceIcons = { quo_call: '📞', quo_text: '💬', website_form: '🌐', manual: '✏️', referral: '🤝', csv_import: '📄', sona_chat: '🤖', monty_chat: '💬' };
 
   return `<div style="overflow-x:auto;border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
 <table class="ch-table">
@@ -413,7 +413,7 @@ function renderContactDrawer(contactId) {
     created_at: e.created_at, metadata: e.metadata, _isEmail: true
   }))].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 50);
 
-  const typeIcons = { text: '💬', call: '📞', email: '📧', sms: '💬', voicemail: '📬', form: '📋', email_sent: '📤', email_opened: '👁️', sms_sent: '💬', sona_chat: '🤖', sona_summary: '🧠', note: '📝', status_change: '⚡', recording: '🎙️' };
+  const typeIcons = { text: '💬', call: '📞', email: '📧', sms: '💬', voicemail: '📬', form: '📋', email_sent: '📤', email_opened: '👁️', sms_sent: '💬', sona_chat: '🤖', sona_summary: '🧠', monty_chat: '💬', note: '📝', status_change: '⚡', recording: '🎙️' };
   const statusOptions = ['new_lead', 'contacted', 'qualified', 'client', 'lost'];
   const tab = contactHubDrawerTab;
 
