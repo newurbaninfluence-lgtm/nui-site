@@ -24,6 +24,30 @@ let contactHubSearch = '';
 let contactHubSelected = null;
 let contactHubSort = 'newest';
 
+// Partial table render — updates just the table without destroying search/sort inputs
+let _chDebounceTimer = null;
+function _chRenderTable() {
+  const area = document.getElementById('chTableArea');
+  if (!area) return;
+  try {
+    const contacts = getFilteredContacts();
+    area.innerHTML = contacts.length > 0 
+      ? renderContactTable(contacts) 
+      : '<div class="ch-empty"><div style="font-size:48px;margin-bottom:12px;">📡</div><div style="font-size:16px;margin-bottom:8px;">No contacts yet</div><div>Contacts appear automatically when someone calls or texts your Quo number</div></div>';
+    // Update filter button active states
+    document.querySelectorAll('.ch-toolbar .ch-filter-btn').forEach(btn => {
+      const txt = btn.textContent.trim();
+      const map = { 'All': 'all', '🔥 New': 'new_lead', '📞 Contacted': 'contacted', '✅ Qualified': 'qualified', '⭐ Client': 'client' };
+      const val = map[txt];
+      if (val) btn.classList.toggle('active', contactHubFilter === val);
+    });
+  } catch (e) { console.error('Table render error:', e); }
+}
+function _chDebouncedRender() {
+  clearTimeout(_chDebounceTimer);
+  _chDebounceTimer = setTimeout(_chRenderTable, 200);
+}
+
 // ── Fetch from Supabase ──────────────────────
 async function fetchContactHubData() {
   contactHubData.loading = true;
@@ -166,13 +190,13 @@ ${contactHubView === 'campaigns' ? `
 
 <!-- Toolbar -->
 <div class="ch-toolbar">
-  <input type="text" class="ch-search" placeholder="Search name, phone, email..." value="${contactHubSearch}" oninput="contactHubSearch=this.value;renderContactHub();">
-  <button class="ch-filter-btn ${contactHubFilter === 'all' ? 'active' : ''}" onclick="contactHubFilter='all';renderContactHub();">All</button>
-  <button class="ch-filter-btn ${contactHubFilter === 'new_lead' ? 'active' : ''}" onclick="contactHubFilter='new_lead';renderContactHub();">🔥 New</button>
-  <button class="ch-filter-btn ${contactHubFilter === 'contacted' ? 'active' : ''}" onclick="contactHubFilter='contacted';renderContactHub();">📞 Contacted</button>
-  <button class="ch-filter-btn ${contactHubFilter === 'qualified' ? 'active' : ''}" onclick="contactHubFilter='qualified';renderContactHub();">✅ Qualified</button>
-  <button class="ch-filter-btn ${contactHubFilter === 'client' ? 'active' : ''}" onclick="contactHubFilter='client';renderContactHub();">⭐ Client</button>
-  <select onchange="contactHubSort=this.value;renderContactHub();" style="padding:8px 12px;background:#1c1c1c;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-size:12px;">
+  <input type="text" class="ch-search" id="chSearchInput" placeholder="Search name, phone, email..." value="${contactHubSearch}" oninput="contactHubSearch=this.value;_chDebouncedRender();">
+  <button class="ch-filter-btn ${contactHubFilter === 'all' ? 'active' : ''}" onclick="contactHubFilter='all';_chRenderTable();">All</button>
+  <button class="ch-filter-btn ${contactHubFilter === 'new_lead' ? 'active' : ''}" onclick="contactHubFilter='new_lead';_chRenderTable();">🔥 New</button>
+  <button class="ch-filter-btn ${contactHubFilter === 'contacted' ? 'active' : ''}" onclick="contactHubFilter='contacted';_chRenderTable();">📞 Contacted</button>
+  <button class="ch-filter-btn ${contactHubFilter === 'qualified' ? 'active' : ''}" onclick="contactHubFilter='qualified';_chRenderTable();">✅ Qualified</button>
+  <button class="ch-filter-btn ${contactHubFilter === 'client' ? 'active' : ''}" onclick="contactHubFilter='client';_chRenderTable();">⭐ Client</button>
+  <select onchange="contactHubSort=this.value;_chRenderTable();" id="chSortSelect" style="padding:8px 12px;background:#1c1c1c;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-size:12px;">
     <option value="newest" ${contactHubSort === 'newest' ? 'selected' : ''}>Newest First</option>
     <option value="oldest" ${contactHubSort === 'oldest' ? 'selected' : ''}>Oldest First</option>
     <option value="recent_activity" ${contactHubSort === 'recent_activity' ? 'selected' : ''}>Recent Activity</option>
@@ -181,7 +205,9 @@ ${contactHubView === 'campaigns' ? `
 </div>
 
 <!-- Contact Table -->
+<div id="chTableArea">
 ${contacts.length > 0 ? renderContactTable(contacts) : '<div class="ch-empty"><div style="font-size:48px;margin-bottom:12px;">📡</div><div style="font-size:16px;margin-bottom:8px;">No contacts yet</div><div>Contacts appear automatically when someone calls or texts your Quo number</div></div>'}
+</div>
 
 <!-- Drawer overlay -->
 <div class="ch-drawer-overlay ${contactHubSelected ? 'open' : ''}" onclick="closeContactDrawer()"></div>
