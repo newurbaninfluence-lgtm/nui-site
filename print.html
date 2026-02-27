@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Print Shop | Custom Printing Michigan | New Urban Influence</title>
-    <meta name="description" content="Custom printing for Michigan businesses. Banners, yard signs, business cards, vehicle wraps, t-shirts, retractable displays. Design included. Ships overnight statewide.">
+    <meta name="description" content="Custom printing for Michigan businesses. Banners, yard signs, business cards, vehicle wraps, t-shirts, retractable displays. Instant quotes. Ships overnight statewide.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://newurbaninfluence.com/print">
     <link rel="icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <meta property="og:title" content="Print Shop | New Urban Influence">
-    <meta property="og:description" content="Custom printing for Michigan businesses. Design included. Ships overnight statewide.">
+    <meta property="og:description" content="Custom printing for Michigan businesses. Instant quotes. Ships overnight statewide.">
     <meta property="og:image" content="https://newurbaninfluence.com/og-image.jpg">
     <meta property="og:url" content="https://newurbaninfluence.com/print">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,6 +46,14 @@
         .hero p { color: rgba(255,255,255,0.7); font-size: 18px; max-width: 600px; margin: 0 auto 20px; }
         .hero .subtext { color: rgba(255,255,255,0.45); font-size: 14px; }
 
+        /* Two Doors Hero */
+        .doors { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 700px; margin: 32px auto 0; }
+        .door-hero { padding: 28px 24px; border-radius: 16px; border: 2px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; transition: all 0.3s; }
+        .door-hero:hover { border-color: rgba(220,38,38,0.5); transform: translateY(-2px); }
+        .door-hero .door-icon { font-size: 36px; margin-bottom: 8px; }
+        .door-hero h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+        .door-hero p { color: rgba(255,255,255,0.5); font-size: 13px; margin: 0; }
+
         /* Industry Filter Tabs */
         .filter-bar { padding: 0 24px; text-align: center; margin-bottom: 48px; }
         .filter-bar-inner { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 900px; margin: 0 auto; }
@@ -62,18 +70,13 @@
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-bottom: 80px; }
         .product-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; transition: all 0.3s; }
         .product-card:hover { border-color: rgba(220,38,38,0.4); transform: translateY(-4px); }
-        .product-card.hidden { display: none; }
         .product-img { width: 100%; height: 200px; object-fit: cover; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; }
-        .product-img img { width: 100%; height: 100%; object-fit: cover; }
         .product-img .placeholder { color: rgba(255,255,255,0.2); font-size: 48px; }
         .product-body { padding: 24px; }
         .product-body h3 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 6px; }
         .product-body .price { font-size: 28px; font-weight: 900; color: #dc2626; margin: 8px 0 4px; }
         .product-body .price span { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.45); }
         .product-body .desc { color: rgba(255,255,255,0.55); font-size: 14px; margin-bottom: 16px; line-height: 1.6; }
-        .product-body .includes { list-style: none; margin-bottom: 20px; }
-        .product-body .includes li { padding: 6px 0; color: rgba(255,255,255,0.6); font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .product-body .includes li::before { content: '✓ '; color: #dc2626; font-weight: 700; }
         .product-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
         .product-tag { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; background: rgba(220,38,38,0.1); color: #dc2626; }
 
@@ -99,14 +102,15 @@
         .bundle-card ul { list-style: none; margin-bottom: 24px; }
         .bundle-card ul li { padding: 8px 0; color: rgba(255,255,255,0.65); font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .bundle-card ul li::before { content: '✓ '; color: #dc2626; font-weight: 700; }
+        .bundle-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-        /* Request Form Modal */
+        /* Modal (shared) */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 9999; align-items: center; justify-content: center; padding: 24px; }
         .modal-overlay.active { display: flex; }
-        .modal { background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 40px 32px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
+        .modal { background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 40px 32px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
         .modal h2 { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; margin-bottom: 8px; }
         .modal p { color: rgba(255,255,255,0.5); font-size: 14px; margin-bottom: 24px; }
-        .modal .close-btn { position: absolute; top: 16px; right: 20px; background: none; border: none; color: rgba(255,255,255,0.5); font-size: 28px; cursor: pointer; }
+        .close-btn { position: absolute; top: 16px; right: 20px; background: none; border: none; color: rgba(255,255,255,0.5); font-size: 28px; cursor: pointer; }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 6px; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 15px; font-family: 'Montserrat', sans-serif; outline: none; transition: border-color 0.3s; }
@@ -117,6 +121,20 @@
         .form-success .check { font-size: 64px; margin-bottom: 16px; }
         .form-success h3 { font-family: 'Syne', sans-serif; font-size: 24px; margin-bottom: 8px; }
         .form-success p { color: rgba(255,255,255,0.5); font-size: 14px; }
+
+        /* Cart Drawer */
+        .cart-drawer { position: fixed; top: 0; right: -420px; width: 400px; max-width: 90vw; height: 100vh; background: #0a0a0a; border-left: 1px solid rgba(255,255,255,0.08); z-index: 10000; transition: right 0.3s ease; display: flex; flex-direction: column; }
+        .cart-drawer.active { right: 0; }
+        .cart-header { padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; }
+        .cart-header h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; }
+        .cart-body { flex: 1; overflow-y: auto; padding: 0 24px; }
+        .cart-footer { padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .cart-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; }
+        .cart-overlay.active { display: block; }
+
+        /* Cart Badge */
+        .cart-btn { position: relative; background: none; border: none; color: #fff; cursor: pointer; font-size: 22px; padding: 8px; margin-left: 16px; }
+        .cart-badge { position: absolute; top: 0; right: -2px; background: #dc2626; color: #fff; font-size: 10px; font-weight: 800; width: 18px; height: 18px; border-radius: 50%; display: none; align-items: center; justify-content: center; }
 
         /* CTA & Footer */
         .cta-section { text-align: center; padding: 100px 24px; background: linear-gradient(180deg, transparent 0%, rgba(220,38,38,0.06) 100%); }
@@ -138,6 +156,7 @@
             .hamburger { display: flex; }
             .hero { padding: 80px 16px 60px; }
             .hero p { font-size: 16px; }
+            .doors { grid-template-columns: 1fr; max-width: 360px; }
             .product-grid { grid-template-columns: 1fr; }
             .bundle-grid { grid-template-columns: 1fr; }
             .trust-strip { gap: 24px; }
@@ -147,6 +166,7 @@
             .bundles-section { padding: 60px 16px; }
             .cta-section { padding: 60px 16px; }
             .modal { padding: 28px 20px; }
+            .bundle-btns { grid-template-columns: 1fr; }
         }
         @media (max-width: 480px) {
             .product-grid { grid-template-columns: 1fr; }
@@ -166,48 +186,55 @@
             <a href="/">Home</a>
             <a href="/services/branding-agency-detroit">Services</a>
             <a href="/portfolio">Work</a>
-            <a href="/blog">Blog</a>
             <a href="/contact">Contact</a>
+            <button class="cart-btn" onclick="NUI_PRINT.showCartDrawer()">
+                🛒 <span class="cart-badge" id="cartBadge">0</span>
+            </button>
         </div>
-        <div class="hamburger" onclick="document.querySelector('.mobile-menu').classList.toggle('active'); this.classList.toggle('active');">
-            <span></span><span></span><span></span>
+        <div style="display:flex;align-items:center;gap:8px">
+            <button class="cart-btn" style="display:none" id="mobileCartBtn" onclick="NUI_PRINT.showCartDrawer()">
+                🛒 <span class="cart-badge" id="cartBadgeMobile">0</span>
+            </button>
+            <div class="hamburger" onclick="document.querySelector('.mobile-menu').classList.toggle('active'); this.classList.toggle('active');">
+                <span></span><span></span><span></span>
+            </div>
         </div>
     </nav>
     <div class="mobile-menu">
         <a href="/" onclick="document.querySelector('.mobile-menu').classList.remove('active')">Home</a>
         <a href="/services/branding-agency-detroit">Services</a>
         <a href="/portfolio">Work</a>
-        <a href="/blog">Blog</a>
         <a href="/contact">Contact</a>
         <a href="/print" style="color:#dc2626;">Print Shop</a>
     </div>
 
     <!-- Hero -->
     <section class="hero">
-        <div class="badge">🖨️ Design + Print Included</div>
+        <div class="badge">🖨️ Instant Quotes · Design Included</div>
         <h1>Your Brand.<br><span class="red">Printed.</span></h1>
-        <p>Custom signage, banners, business cards, and more for Michigan businesses. We design it, print it, and ship it to your door — overnight.</p>
-        <p class="subtext">No minimums on most items · Ships statewide · Wholesale pricing passed to you</p>
+        <p>Custom signage, banners, business cards, and more for Michigan businesses. Pick your product, get an instant price, and we handle the rest.</p>
+        <p class="subtext">No minimums on most items · Ships statewide overnight · Design available on everything</p>
+
+        <div class="doors">
+            <div class="door-hero" onclick="document.getElementById('productSection').scrollIntoView({behavior:'smooth'})">
+                <div class="door-icon">✅</div>
+                <h3>I Have Artwork</h3>
+                <p>Upload files, get instant quote, we print and ship</p>
+            </div>
+            <div class="door-hero" onclick="document.getElementById('productSection').scrollIntoView({behavior:'smooth'})">
+                <div class="door-icon">🎨</div>
+                <h3>I Need Design</h3>
+                <p>We design it, you approve it, then we print and ship</p>
+            </div>
+        </div>
     </section>
 
     <!-- Trust Strip -->
     <div class="trust-strip">
-        <div class="trust-item">
-            <div class="num">24hr</div>
-            <div class="lbl">Production Time</div>
-        </div>
-        <div class="trust-item">
-            <div class="num">$10</div>
-            <div class="lbl">Overnight Shipping</div>
-        </div>
-        <div class="trust-item">
-            <div class="num">100%</div>
-            <div class="lbl">Design Included</div>
-        </div>
-        <div class="trust-item">
-            <div class="num">MI</div>
-            <div class="lbl">Ships Statewide</div>
-        </div>
+        <div class="trust-item"><div class="num">24hr</div><div class="lbl">Production Time</div></div>
+        <div class="trust-item"><div class="num">$10</div><div class="lbl">Overnight Shipping</div></div>
+        <div class="trust-item"><div class="num">Instant</div><div class="lbl">Online Quotes</div></div>
+        <div class="trust-item"><div class="num">MI</div><div class="lbl">Ships Statewide</div></div>
     </div>
 
     <!-- Industry Filter -->
@@ -227,196 +254,15 @@
         </div>
     </div>
 
-    <!-- Products -->
-    <section>
+    <!-- Products (JS-rendered) -->
+    <section id="productSection">
         <div class="container">
             <div class="section-label">Products</div>
             <h2 class="section-title">Print Products</h2>
-            <p class="section-text">Every product includes custom design. Just tell us what you need — we handle the rest.</p>
-
+            <p class="section-text">Click any product for an instant quote. Choose "I have artwork" for print-only pricing, or "I need design" to add custom design.</p>
             <div class="product-grid" id="productGrid">
-
-                <!-- Business Cards -->
-                <div class="product-card" data-industries="trades,marine,farming,manufacturing,bars,authors,apparel,tax,tech,events">
-                    <div class="product-img"><div class="placeholder">🃏</div></div>
-                    <div class="product-body">
-                        <div class="product-tags"><span class="product-tag">All Industries</span></div>
-                        <h3>Business Cards</h3>
-                        <div class="price">$195 <span>/ 250 cards</span></div>
-                        <p class="desc">Premium 16pt full color, both sides. UV gloss or matte coating. Design included.</p>
-                        <ul class="includes">
-                            <li>Custom design, both sides</li>
-                            <li>16pt premium cardstock</li>
-                            <li>UV gloss or matte finish</li>
-                            <li>Print-ready files included</li>
-                        </ul>
-                        <button class="btn btn-red btn-block btn-sm" onclick="openRequest('Business Cards', '$195')">Request This</button>
-                    </div>
-                </div>
-
-                <!-- Yard Signs -->
-                <div class="product-card" data-industries="trades,farming,events,tax,manufacturing">
-                    <div class="product-img"><div class="placeholder">🪧</div></div>
-                    <div class="product-body">
-                        <div class="product-tags"><span class="product-tag">Trades</span><span class="product-tag">Farming</span><span class="product-tag">Events</span></div>
-                        <h3>Yard Signs</h3>
-                        <div class="price">$35 <span>/ each (min 10)</span></div>
-                        <p class="desc">Corrugated plastic, full color, weatherproof. H-stake included. Perfect for job sites, events, campaigns.</p>
-                        <ul class="includes">
-                            <li>18×24 or 24×36 sizes</li>
-                            <li>Double-sided printing</li>
-                            <li>H-wire stake included</li>
-                            <li>Custom design included</li>
-                        </ul>
-                        <button class="btn btn-red btn-block btn-sm" onclick="openRequest('Yard Signs', '$35/each')">Request This</button>
-                    </div>
-                </div>
-
-                <!-- Vinyl Banner -->
-                <div class="product-card" data-industries="trades,bars,events,manufacturing,farming,marine">
-                    <div class="product-img"><div class="placeholder">🏷️</div></div>
-                    <div class="product-body">
-                        <div class="product-tags"><span class="product-tag">Trades</span><span class="product-tag">Events</span><span class="product-tag">Bars</span></div>
-                        <h3>Vinyl Banner</h3>
-                        <div class="price">$175 <span>/ starting</span></div>
-                        <p class="desc">13oz scrim vinyl, full color, hemmed edges, grommets. Indoor/outdoor use.</p>
-                        <ul class="includes">
-                            <li>Custom size up to 10ft</li>
-                            <li>Hemmed edges + grommets</li>
-                            <li>UV & weather resistant</li>
-                            <li>Design included</li>
-                        </ul>
-                        <button class="btn btn-red btn-block btn-sm" onclick="openRequest('Vinyl Banner', '$175+')">Request This</button>
-                    </div>
-                </div>
-
-                <!-- Retractable Banner -->
-                <div class="product-card" data-industries="trades,bars,events,tech,tax,authors,manufacturing">
-                    <div class="product-img"><div class="placeholder">🎯</div></div>
-                    <div class="product-body">
-                        <div class="product-tags"><span class="product-tag">Events</span><span class="product-tag">Tech</span><span class="product-tag">Tax</span></div>
-                        <h3>Retractable Banner</h3>
-                        <div class="price">$275 <span>/ with stand</span></div>
-                        <p class="desc">33×80 retractable display with carrying case. Sets up in 30 seconds. Perfect for trade shows and pop-ups.</p>
-                        <ul class="includes">
-                            <li>33×80 premium display</li>
-                            <li>Retractable stand + case</li>
-                            <li>Sets up in 30 seconds</li>
-                            <li>Custom design included</li>
-                        </ul>
-                        <button class="btn btn-red btn-block btn-sm" onclick="openRequest('Retractable Banner', '$275')">Request This</button>
-                    </div>
-                </div>
-
-                <!-- Vehicle Magnets -->
-                <div class="product-card" data-industries="trades,farming,marine,manufacturing">
-                    <div class="product-img"><div class="placeholder">🚗</div></div>
-                    <div class="product-body">
-                        <div class="product-tags"><span class="product-tag">Trades</span><span class="product-tag">Farming</span><span class="product-tag">Marine</span></div>
-                        <h3>Vehicle Magnets</h3>
-                        <div class="price">$195 <span>/ pair</span></div>
-                        <p class="desc">12×24 UV-laminated magnets. Removable, reusable. Turn your truck into a mobile billboard.</p>
-                        <ul class="includes">
-                            <li>12×24 per magnet (pair)</li>
-                            <li>UV laminated for weather</li>
-                            <li>Removable & reusable</li>
-                            <li>Custom design included</li>
-                        </ul>
-                        <button class="btn btn-red btn-block btn-sm" onclick="openRequest('Vehicle Magnets', '$195/pair')">Request This</button>
-                    </div>
-                </div>
-
-                <!-- Table Cover -->
-                <div class="product-card" data-industries="events,tech,tax,authors,trades,bars">
-                    <div class="product-img"><div class="placeholder">🎪</div></div>
-                    <div class="product-body">
-                        <div class="product-tags"><span class="product-tag">Events</span><span class="product-tag">Trade Shows</span></div>
-                        <h3>Table Cover</h3>
-                        <div class="price">$225 <span>/ 6ft fitted</span></div>
-                        <p class="desc">Full-color fitted table cover. Stretches snug over standard 6ft table. Machine washable.</p>
-                        <ul class="includes">
-                            <li>6ft fitted (8ft available)</li>
-                            <li>Full dye-sublimation print</li>
-                            <li>Machine washable</li>
-                            <li>Custom design included</li>
-                        </ul>
-                        <button class="btn btn-red btn-block btn-sm" onclick="openRequest('Table Cover', '$225')">Request This</button>
-                    </div>
-                </div>
-
-                <!-- Poster -->
-                <div class="product-card" data-industries="events,bars,authors,apparel,tech">
-                    <div class="product-img"><div class="placeholder">🖼️</div></div>
-                    <div class="product-body">
-                        <div class="product-tags"><span class="product-tag">Events</span><span class="product-tag">Bars</span><span class="product-tag">Authors</span></div>
-                        <h3>Poster</h3>
-                        <div class="price">$95 <span>/ 24×36</span></div>
-                        <p class="desc">High-resolution poster on premium paper or foam board mounting available. Great for menus, events, promotions.</p>
-                        <ul class="includes">
-                            <li>24×36 standard (custom sizes ok)</li>
-                            <li>Premium paper or foam mount</li>
-                            <li>Gloss or matte finish</li>
-                            <li>Custom design included</li>
-                        </ul>
-                        <button class="btn btn-red btn-block btn-sm" onclick="openRequest('Poster', '$95')">Request This</button>
-                    </div>
-                </div>
-
-                <!-- Acrylic Sign -->
-                <div class="product-card" data-industries="bars,tax,tech,manufacturing,trades">
-                    <div class="product-img"><div class="placeholder">💎</div></div>
-                    <div class="product-body">
-                        <div class="product-tags"><span class="product-tag">Premium</span><span class="product-tag">Bars</span><span class="product-tag">Tax</span></div>
-                        <h3>Acrylic Sign</h3>
-                        <div class="price">$275 <span>/ starting</span></div>
-                        <p class="desc">Crystal-clear acrylic with UV-printed graphics. Perfect for lobby signs, menus, and interior branding.</p>
-                        <ul class="includes">
-                            <li>1/4" crystal clear acrylic</li>
-                            <li>UV direct print</li>
-                            <li>Standoff hardware available</li>
-                            <li>Custom design included</li>
-                        </ul>
-                        <button class="btn btn-red btn-block btn-sm" onclick="openRequest('Acrylic Sign', '$275+')">Request This</button>
-                    </div>
-                </div>
-
-                <!-- DTF Transfers (T-Shirts) -->
-                <div class="product-card" data-industries="apparel,events,bars,trades">
-                    <div class="product-img"><div class="placeholder">👕</div></div>
-                    <div class="product-body">
-                        <div class="product-tags"><span class="product-tag">Apparel</span><span class="product-tag">Events</span></div>
-                        <h3>DTF Transfers</h3>
-                        <div class="price">$15 <span>/ per transfer</span></div>
-                        <p class="desc">Full-color DTF transfers. Press onto t-shirts, hoodies, tote bags. You supply the blank — we supply the fire.</p>
-                        <ul class="includes">
-                            <li>Full color, any design</li>
-                            <li>Works on cotton, poly, blends</li>
-                            <li>Gang sheet pricing available</li>
-                            <li>Custom design included</li>
-                        </ul>
-                        <button class="btn btn-red btn-block btn-sm" onclick="openRequest('DTF Transfers', '$15/each')">Request This</button>
-                    </div>
-                </div>
-
-                <!-- Coroplast Signs -->
-                <div class="product-card" data-industries="trades,farming,events,manufacturing,marine">
-                    <div class="product-img"><div class="placeholder">📋</div></div>
-                    <div class="product-body">
-                        <div class="product-tags"><span class="product-tag">Trades</span><span class="product-tag">Farming</span></div>
-                        <h3>Coroplast Signs</h3>
-                        <div class="price">$45 <span>/ 24×36</span></div>
-                        <p class="desc">Lightweight corrugated plastic. Great for temporary signage, open houses, directional signs, job sites.</p>
-                        <ul class="includes">
-                            <li>4mm corrugated plastic</li>
-                            <li>Full color one or both sides</li>
-                            <li>Weatherproof</li>
-                            <li>Custom design included</li>
-                        </ul>
-                        <button class="btn btn-red btn-block btn-sm" onclick="openRequest('Coroplast Signs', '$45')">Request This</button>
-                    </div>
-                </div>
-
-            </div><!-- /product-grid -->
+                <!-- Rendered by print-store.js -->
+            </div>
         </div>
     </section>
 
@@ -430,47 +276,56 @@
             <div class="bundle-grid">
                 <div class="bundle-card">
                     <h3>Starter Kit</h3>
-                    <div class="bundle-price">$450</div>
+                    <div class="bundle-price">$450 <span>/ print only</span></div>
                     <p class="bundle-desc">Perfect for your first pop-up or vendor event</p>
                     <ul>
                         <li>Retractable banner + stand</li>
-                        <li>250 business cards</li>
-                        <li>1 poster (24×36)</li>
-                        <li>All custom designed</li>
+                        <li>250 business cards (double-sided)</li>
+                        <li>2x4 HD banner (13oz)</li>
+                        <li>5 yard signs + stakes</li>
                     </ul>
-                    <button class="btn btn-red btn-block btn-sm" onclick="openRequest('Pop-Up Starter Kit', '$450')">Request This</button>
+                    <div class="bundle-btns">
+                        <button class="btn btn-red btn-sm" onclick="NUI_PRINT.addBundle('starter-kit', false)">Print Only $450</button>
+                        <button class="btn btn-outline btn-sm" onclick="NUI_PRINT.addBundle('starter-kit', true)">+ Design $800</button>
+                    </div>
                 </div>
 
                 <div class="bundle-card">
                     <div class="popular">Most Popular</div>
                     <h3>Standard Kit</h3>
-                    <div class="bundle-price">$850</div>
+                    <div class="bundle-price">$850 <span>/ print only</span></div>
                     <p class="bundle-desc">Full trade show presence. Walk in looking professional.</p>
                     <ul>
                         <li>Retractable banner + stand</li>
-                        <li>6ft fitted table cover</li>
-                        <li>500 business cards</li>
-                        <li>2 posters (24×36)</li>
-                        <li>10 yard signs</li>
-                        <li>All custom designed</li>
+                        <li>3x6 HD banner (15oz) + grommets</li>
+                        <li>500 business cards (double-sided)</li>
+                        <li>10 yard signs (double) + stakes</li>
+                        <li>2 vehicle magnets (24x18")</li>
                     </ul>
-                    <button class="btn btn-red btn-block btn-sm" onclick="openRequest('Pop-Up Standard Kit', '$850')">Request This</button>
+                    <div class="bundle-btns">
+                        <button class="btn btn-red btn-sm" onclick="NUI_PRINT.addBundle('standard-kit', false)">Print Only $850</button>
+                        <button class="btn btn-outline btn-sm" onclick="NUI_PRINT.addBundle('standard-kit', true)">+ Design $1,350</button>
+                    </div>
                 </div>
 
                 <div class="bundle-card">
                     <h3>Premium Kit</h3>
-                    <div class="bundle-price">$1,500</div>
-                    <p class="bundle-desc">The full experience. Dominate any event or storefront launch.</p>
+                    <div class="bundle-price">$1,500 <span>/ print only</span></div>
+                    <p class="bundle-desc">Dominate any event or storefront launch.</p>
                     <ul>
                         <li>2 retractable banners + stands</li>
-                        <li>HD vinyl banner (up to 8ft)</li>
-                        <li>6ft fitted table cover</li>
-                        <li>1000 business cards</li>
-                        <li>20 yard signs</li>
-                        <li>DTF transfers (10 pack)</li>
-                        <li>All custom designed</li>
+                        <li>4x8 HD banner (18oz)</li>
+                        <li>1,000 business cards (double-sided)</li>
+                        <li>25 yard signs (double) + stakes</li>
+                        <li>4 vehicle magnets (24x18")</li>
+                        <li>Window cling (18x24")</li>
+                        <li>Foamcore display board</li>
+                        <li>DTF transfers (2 designs)</li>
                     </ul>
-                    <button class="btn btn-red btn-block btn-sm" onclick="openRequest('Pop-Up Premium Kit', '$1,500')">Request This</button>
+                    <div class="bundle-btns">
+                        <button class="btn btn-red btn-sm" onclick="NUI_PRINT.addBundle('premium-kit', false)">Print Only $1,500</button>
+                        <button class="btn btn-outline btn-sm" onclick="NUI_PRINT.addBundle('premium-kit', true)">+ Design $2,250</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -480,34 +335,31 @@
     <section class="cta-section">
         <h2>Need Something <span style="color:#dc2626">Custom?</span></h2>
         <p>Don't see exactly what you need? We print just about everything. Tell us what you're looking for.</p>
-        <button class="btn btn-red" onclick="openRequest('Custom Request', 'TBD')">Get a Custom Quote</button>
+        <button class="btn btn-red" onclick="NUI_PRINT.openRequest('Custom Request', 'TBD')">Get a Custom Quote</button>
     </section>
 
-    <!-- Request Modal -->
-    <div class="modal-overlay" id="requestModal">
-        <div class="modal" style="position:relative;">
-            <button class="close-btn" onclick="closeRequest()">&times;</button>
+    <!-- ═══ CONFIGURATOR MODAL (Instant Quote) ═══ -->
+    <div class="modal-overlay" id="configModal" onclick="if(event.target===this)NUI_PRINT.closeConfigurator()">
+        <div class="modal">
+            <button class="close-btn" onclick="NUI_PRINT.closeConfigurator()">&times;</button>
+            <div id="configBody">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ REQUEST MODAL (Custom Quotes / Legacy) ═══ -->
+    <div class="modal-overlay" id="requestModal" onclick="if(event.target===this){this.classList.remove('active');document.body.style.overflow=''}">
+        <div class="modal">
+            <button class="close-btn" onclick="document.getElementById('requestModal').classList.remove('active');document.body.style.overflow=''">&times;</button>
             <div id="requestForm">
                 <h2>Request a Quote</h2>
-                <p id="requestProduct">Product: Business Cards — $195</p>
-                <div class="form-group">
-                    <label>Your Name *</label>
-                    <input type="text" id="reqName" placeholder="Full name" required>
-                </div>
-                <div class="form-group">
-                    <label>Email *</label>
-                    <input type="email" id="reqEmail" placeholder="you@business.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Phone</label>
-                    <input type="tel" id="reqPhone" placeholder="(555) 555-5555">
-                </div>
-                <div class="form-group">
-                    <label>Business Name</label>
-                    <input type="text" id="reqBusiness" placeholder="Your business name">
-                </div>
-                <div class="form-group">
-                    <label>Industry</label>
+                <p id="requestProduct">Product: Custom — TBD</p>
+                <div class="form-group"><label>Your Name *</label><input type="text" id="reqName" placeholder="Full name" required></div>
+                <div class="form-group"><label>Email *</label><input type="email" id="reqEmail" placeholder="you@business.com" required></div>
+                <div class="form-group"><label>Phone</label><input type="tel" id="reqPhone" placeholder="(555) 555-5555"></div>
+                <div class="form-group"><label>Business Name</label><input type="text" id="reqBusiness" placeholder="Your business name"></div>
+                <div class="form-group"><label>Industry</label>
                     <select id="reqIndustry">
                         <option value="">Select your industry</option>
                         <option value="trades">Skilled Trades</option>
@@ -523,19 +375,84 @@
                         <option value="other">Other</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Details / Quantity</label>
-                    <textarea id="reqDetails" placeholder="How many? What size? Any specific colors or text?"></textarea>
-                </div>
+                <div class="form-group"><label>Details / Quantity</label><textarea id="reqDetails" placeholder="How many? What size? Any specific colors or text?"></textarea></div>
                 <input type="hidden" id="reqProduct" value="">
                 <input type="hidden" id="reqPrice" value="">
                 <input type="hidden" id="reqClientId" value="">
-                <button class="btn btn-red btn-block" id="submitRequest" onclick="submitRequest()">Send Request</button>
+                <button class="btn btn-red btn-block" id="submitRequest" onclick="submitLegacyRequest()">Send Request</button>
             </div>
-            <div id="requestSuccess" class="form-success" style="display:none;">
+            <div id="requestSuccess" class="form-success" style="display:none">
                 <div class="check">✅</div>
                 <h3>Request Sent!</h3>
-                <p>We'll get back to you within 24 hours with a final quote and timeline. Check your email.</p>
+                <p>We'll get back to you within 24 hours with a final quote and timeline.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ CART DRAWER ═══ -->
+    <div class="cart-overlay" id="cartOverlay" onclick="NUI_PRINT.hideCartDrawer()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>Your Order</h3>
+            <button style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:24px;cursor:pointer" onclick="NUI_PRINT.hideCartDrawer()">&times;</button>
+        </div>
+        <div class="cart-body" id="cartItems">
+            <p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px 0">Your order is empty</p>
+        </div>
+        <div class="cart-footer">
+            <p id="cartShipNote" style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:8px"></p>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+                <span style="font-weight:700;font-size:16px">Total</span>
+                <span id="cartTotal" style="font-weight:900;font-size:24px;color:#dc2626">$0</span>
+            </div>
+            <button class="btn btn-red btn-block" id="cartCheckoutBtn" style="display:none" onclick="NUI_PRINT.showCheckout()">Checkout</button>
+            <button class="btn btn-outline btn-block btn-sm" style="margin-top:8px" onclick="if(confirm('Clear your entire order?'))NUI_PRINT.clearCart()">Clear Order</button>
+        </div>
+    </div>
+
+    <!-- ═══ CHECKOUT MODAL ═══ -->
+    <div class="modal-overlay" id="checkoutModal" onclick="if(event.target===this)NUI_PRINT.hideCheckout()">
+        <div class="modal" style="max-width:550px">
+            <button class="close-btn" onclick="NUI_PRINT.hideCheckout()">&times;</button>
+            <div id="checkoutForm">
+                <h2>Complete Your Order</h2>
+                <p>Fill in your details and we'll get started right away. No payment needed now — we'll send a final invoice after confirming your order.</p>
+                <div class="form-group"><label>Your Name *</label><input type="text" id="coName" placeholder="Full name" required></div>
+                <div class="form-group"><label>Email *</label><input type="email" id="coEmail" placeholder="you@business.com" required></div>
+                <div class="form-group"><label>Phone</label><input type="tel" id="coPhone" placeholder="(555) 555-5555"></div>
+                <div class="form-group"><label>Business Name</label><input type="text" id="coBusiness" placeholder="Your business name"></div>
+                <div class="form-group"><label>Industry</label>
+                    <select id="coIndustry">
+                        <option value="">Select your industry</option>
+                        <option value="trades">Skilled Trades</option>
+                        <option value="marine">Marine / Boating</option>
+                        <option value="farming">Farming / Agriculture</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="bars">Bars & Restaurants</option>
+                        <option value="authors">Authors / Publishing</option>
+                        <option value="apparel">Apparel / Fashion</option>
+                        <option value="tax">Tax & Financial</option>
+                        <option value="tech">Tech / SaaS</option>
+                        <option value="events">Events / Comedy</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div style="margin:24px 0 8px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.7)">Shipping Address</div>
+                <div class="form-group"><label>Street Address</label><input type="text" id="coAddress" placeholder="123 Main St"></div>
+                <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px">
+                    <div class="form-group"><label>City</label><input type="text" id="coCity" placeholder="Detroit"></div>
+                    <div class="form-group"><label>State</label><input type="text" id="coState" placeholder="MI" value="MI"></div>
+                    <div class="form-group"><label>Zip</label><input type="text" id="coZip" placeholder="48201"></div>
+                </div>
+                <div class="form-group"><label>Notes / Special Instructions</label><textarea id="coNotes" placeholder="Anything we should know?"></textarea></div>
+                <button class="btn btn-red btn-block" id="coSubmitBtn" onclick="NUI_PRINT.submitOrder()">Submit Order</button>
+                <p style="font-size:11px;color:rgba(255,255,255,0.3);text-align:center;margin-top:12px">No payment required now. We'll review your order and send a final invoice.</p>
+            </div>
+            <div id="checkoutSuccess" class="form-success" style="display:none">
+                <div class="check">🎉</div>
+                <h3>Order Submitted!</h3>
+                <p>We've got your order and we're on it. Check your email for confirmation and next steps. Most items ship within 24 hours of approval.</p>
+                <a href="/print" class="btn btn-outline" style="margin-top:24px">Back to Print Shop</a>
             </div>
         </div>
     </div>
@@ -545,196 +462,70 @@
         <p>&copy; 2025 New Urban Influence. Detroit, Michigan. <a href="/contact">Contact Us</a> · <a href="tel:2484878747">(248) 487-8747</a></p>
     </footer>
 
-    <!-- Config -->
+    <!-- Config + Print Store Engine -->
     <script src="/env.js"></script>
+    <script src="/assets/js/print-store.js"></script>
 
-    <!-- JavaScript -->
+    <!-- Legacy request form (for custom quotes) -->
     <script>
-        // === URL PARAMS: Auto-filter by industry & pre-fill client ===
-        const params = new URLSearchParams(window.location.search);
-        const industryParam = params.get('industry');
-        const clientParam = params.get('client');
-
-        if (industryParam) {
-            // Auto-click the matching filter button
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.filter === industryParam) {
-                    btn.classList.add('active');
-                }
-            });
-            filterProducts(industryParam);
-        }
-
-        if (clientParam) {
-            document.getElementById('reqClientId').value = clientParam;
-        }
-
-        // === FILTER LOGIC ===
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                filterProducts(btn.dataset.filter);
-            });
-        });
-
-        function filterProducts(filter) {
-            document.querySelectorAll('.product-card').forEach(card => {
-                if (filter === 'all') {
-                    card.classList.remove('hidden');
-                } else {
-                    const industries = card.dataset.industries.split(',');
-                    if (industries.includes(filter)) {
-                        card.classList.remove('hidden');
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                }
-            });
-        }
-
-        // === REQUEST MODAL ===
-        function openRequest(product, price) {
-            document.getElementById('requestProduct').textContent = `Product: ${product} — ${price}`;
-            document.getElementById('reqProduct').value = product;
-            document.getElementById('reqPrice').value = price;
-            document.getElementById('requestModal').classList.add('active');
-            document.getElementById('requestForm').style.display = 'block';
-            document.getElementById('requestSuccess').style.display = 'none';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeRequest() {
-            document.getElementById('requestModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // Close on overlay click
-        document.getElementById('requestModal').addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) closeRequest();
-        });
-
-        // === SUBMIT REQUEST ===
-        async function submitRequest() {
-            const name = document.getElementById('reqName').value.trim();
-            const email = document.getElementById('reqEmail').value.trim();
-            const phone = document.getElementById('reqPhone').value.trim();
-            const business = document.getElementById('reqBusiness').value.trim();
-            const industry = document.getElementById('reqIndustry').value;
-            const details = document.getElementById('reqDetails').value.trim();
-            const product = document.getElementById('reqProduct').value;
-            const price = document.getElementById('reqPrice').value;
-            const clientId = document.getElementById('reqClientId').value;
-
-            if (!name || !email) {
-                alert('Please enter your name and email.');
-                return;
-            }
-
-            const btn = document.getElementById('submitRequest');
-            btn.textContent = 'Sending...';
-            btn.disabled = true;
-
-            try {
-                // 1. Save to Supabase print_requests table
-                const requestData = {
-                    client_name: name,
-                    client_email: email,
-                    client_phone: phone,
-                    business_name: business,
-                    industry: industry,
-                    product: product,
-                    price_shown: price,
-                    details: details,
-                    client_id: clientId || null,
-                    status: 'new',
-                    source: window.location.href,
-                    created_at: new Date().toISOString()
-                };
-
-                // Try Supabase save
-                const SUPABASE_URL = window.SUPABASE_URL || '';
-                const SUPABASE_KEY = window.SUPABASE_ANON_KEY || '';
-
-                if (SUPABASE_URL && SUPABASE_KEY) {
-                    await fetch(`${SUPABASE_URL}/rest/v1/print_requests`, {
-                        method: 'POST',
-                        headers: {
-                            'apikey': SUPABASE_KEY,
-                            'Authorization': `Bearer ${SUPABASE_KEY}`,
-                            'Content-Type': 'application/json',
-                            'Prefer': 'return=minimal'
-                        },
-                        body: JSON.stringify(requestData)
-                    });
-                }
-
-                // 2. Notify Faren via email
-                await fetch('/.netlify/functions/send-email', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        to: 'info@newurbaninfluence.com',
-                        subject: `🖨️ New Print Request: ${product} — ${name}`,
-                        html: `
-                            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #111; color: #fff; padding: 32px; border-radius: 12px;">
-                                <h2 style="color: #dc2626; margin-bottom: 16px;">New Print Request</h2>
-                                <table style="width: 100%; border-collapse: collapse;">
-                                    <tr><td style="padding: 8px 0; color: #999; width: 120px;">Product</td><td style="padding: 8px 0; font-weight: bold;">${product} — ${price}</td></tr>
-                                    <tr><td style="padding: 8px 0; color: #999;">Client</td><td style="padding: 8px 0;">${name}</td></tr>
-                                    <tr><td style="padding: 8px 0; color: #999;">Email</td><td style="padding: 8px 0;"><a href="mailto:${email}" style="color: #dc2626;">${email}</a></td></tr>
-                                    <tr><td style="padding: 8px 0; color: #999;">Phone</td><td style="padding: 8px 0;">${phone || 'Not provided'}</td></tr>
-                                    <tr><td style="padding: 8px 0; color: #999;">Business</td><td style="padding: 8px 0;">${business || 'Not provided'}</td></tr>
-                                    <tr><td style="padding: 8px 0; color: #999;">Industry</td><td style="padding: 8px 0;">${industry || 'Not selected'}</td></tr>
-                                    <tr><td style="padding: 8px 0; color: #999;">Details</td><td style="padding: 8px 0;">${details || 'None'}</td></tr>
-                                </table>
-                                <p style="margin-top: 24px; color: #666; font-size: 12px;">Source: ${window.location.href}</p>
-                            </div>
-                        `
-                    })
+    async function submitLegacyRequest() {
+        const name = document.getElementById('reqName').value.trim();
+        const email = document.getElementById('reqEmail').value.trim();
+        if (!name || !email) { alert('Please enter your name and email.'); return; }
+        const btn = document.getElementById('submitRequest');
+        btn.textContent = 'Sending...'; btn.disabled = true;
+        try {
+            const data = {
+                client_name: name, client_email: email,
+                client_phone: document.getElementById('reqPhone').value.trim(),
+                business_name: document.getElementById('reqBusiness').value.trim(),
+                industry: document.getElementById('reqIndustry').value,
+                product: document.getElementById('reqProduct').value,
+                price_shown: document.getElementById('reqPrice').value,
+                details: document.getElementById('reqDetails').value.trim(),
+                client_id: document.getElementById('reqClientId').value || null,
+                status: 'new', source: window.location.href, created_at: new Date().toISOString()
+            };
+            const SB = window.SUPABASE_URL, SK = window.SUPABASE_ANON_KEY;
+            if (SB && SK) {
+                await fetch(`${SB}/rest/v1/print_requests`, {
+                    method: 'POST', headers: { 'apikey': SK, 'Authorization': `Bearer ${SK}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                    body: JSON.stringify(data)
                 });
-
-                // 3. Send confirmation email to client
-                await fetch('/.netlify/functions/send-email', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        to: email,
-                        subject: `Your Print Request — ${product} | New Urban Influence`,
-                        html: `
-                            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #111; color: #fff; padding: 32px; border-radius: 12px;">
-                                <div style="text-align: center; margin-bottom: 24px;">
-                                    <img src="https://newurbaninfluence.com/logo-nav-cropped.png" alt="NUI" style="height: 40px;">
-                                </div>
-                                <h2 style="text-align: center; margin-bottom: 8px;">We Got Your Request!</h2>
-                                <p style="text-align: center; color: #999; margin-bottom: 32px;">Here's what we received:</p>
-                                <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; margin-bottom: 24px;">
-                                    <p style="margin: 0 0 8px;"><strong style="color: #dc2626;">${product}</strong> — ${price}</p>
-                                    <p style="margin: 0; color: #999; font-size: 14px;">${details || 'No additional details'}</p>
-                                </div>
-                                <p style="color: #ccc; font-size: 15px; line-height: 1.6;">We'll review your request and get back to you within <strong>24 hours</strong> with a final quote and timeline. Most orders ship overnight once approved.</p>
-                                <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 24px 0;">
-                                <p style="color: #666; font-size: 12px; text-align: center;">New Urban Influence · Detroit, Michigan · (248) 487-8747</p>
-                            </div>
-                        `
-                    })
-                });
-
-                // Show success
-                document.getElementById('requestForm').style.display = 'none';
-                document.getElementById('requestSuccess').style.display = 'block';
-
-            } catch (err) {
-                console.error('Print request error:', err);
-                // Still show success - the email to Faren is what matters
-                document.getElementById('requestForm').style.display = 'none';
-                document.getElementById('requestSuccess').style.display = 'block';
             }
-
-            btn.textContent = 'Send Request';
-            btn.disabled = false;
+            await fetch('/.netlify/functions/send-email', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    to: 'info@newurbaninfluence.com',
+                    subject: `🖨️ Print Quote Request: ${data.product} — ${name}`,
+                    html: `<div style="font-family:Arial;background:#111;color:#fff;padding:32px;border-radius:12px"><h2 style="color:#dc2626">Print Quote Request</h2><p><strong>${data.product}</strong> — ${data.price_shown}</p><p>Client: ${name} / ${email} / ${data.client_phone || 'no phone'}</p><p>Business: ${data.business_name || 'n/a'} / ${data.industry || 'n/a'}</p><p>Details: ${data.details || 'none'}</p></div>`
+                })
+            });
+            document.getElementById('requestForm').style.display = 'none';
+            document.getElementById('requestSuccess').style.display = 'block';
+        } catch(e) {
+            document.getElementById('requestForm').style.display = 'none';
+            document.getElementById('requestSuccess').style.display = 'block';
         }
+        btn.textContent = 'Send Request'; btn.disabled = false;
+    }
+
+    // Mobile cart badge sync
+    if (window.innerWidth <= 768) {
+        document.getElementById('mobileCartBtn').style.display = 'block';
+    }
+    // Override updateCartBadge to sync both badges
+    const origUpdate = NUI_PRINT.updateCartBadge.bind(NUI_PRINT);
+    NUI_PRINT.updateCartBadge = function() {
+        origUpdate();
+        const mb = document.getElementById('cartBadgeMobile');
+        if (mb) { mb.textContent = this.cart.length; mb.style.display = this.cart.length > 0 ? 'flex' : 'none'; }
+    };
+    // Cart drawer toggle overlay
+    const origShow = NUI_PRINT.showCartDrawer.bind(NUI_PRINT);
+    NUI_PRINT.showCartDrawer = function() { origShow(); document.getElementById('cartOverlay').classList.add('active'); };
+    const origHide = NUI_PRINT.hideCartDrawer.bind(NUI_PRINT);
+    NUI_PRINT.hideCartDrawer = function() { origHide(); document.getElementById('cartOverlay').classList.remove('active'); };
     </script>
     <script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("E63P0HZ53POW");</script>
 </body>
