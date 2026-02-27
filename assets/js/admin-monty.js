@@ -86,11 +86,41 @@ function loadAdminMontyPanel() {
 
   // Check mode
   checkMontyMode();
+
+  // Restore chat history from localStorage
+  restoreMontyChatLog();
+}
+
+function restoreMontyChatLog() {
+  if (!montyChatLog || montyChatLog.length === 0) return;
+  const container = document.getElementById('montyChatMessages');
+  if (!container) return;
+  for (const entry of montyChatLog) {
+    const div = document.createElement('div');
+    div.className = `monty-msg monty-msg-${entry.type === 'user' ? 'user' : 'bot'}`;
+    div.innerHTML = `
+      <div class="monty-avatar">${entry.type === 'user' ? '👤' : '🤖'}</div>
+      <div class="monty-bubble">${entry.html}</div>
+    `;
+    container.appendChild(div);
+  }
+  container.scrollTop = container.scrollHeight;
 }
 
 
-// ═══ CONVERSATION HISTORY ═══
-let montyHistory = [];
+// ═══ CONVERSATION HISTORY (persisted to localStorage) ═══
+let montyHistory = JSON.parse(localStorage.getItem('monty_history') || '[]');
+let montyChatLog = JSON.parse(localStorage.getItem('monty_chat_log') || '[]');
+
+function saveMontyState() {
+  try {
+    // Keep last 50 messages for context
+    if (montyHistory.length > 50) montyHistory = montyHistory.slice(-50);
+    if (montyChatLog.length > 100) montyChatLog = montyChatLog.slice(-100);
+    localStorage.setItem('monty_history', JSON.stringify(montyHistory));
+    localStorage.setItem('monty_chat_log', JSON.stringify(montyChatLog));
+  } catch(e) { /* quota exceeded, trim more */ }
+}
 
 // ═══ CHECK MODE ═══
 async function checkMontyMode() {
@@ -143,6 +173,7 @@ async function montySend() {
     // Store history for AI mode
     montyHistory.push({ role: 'user', content: msg });
     montyHistory.push({ role: 'assistant', content: data.response });
+    saveMontyState();
 
     // Build response with action cards
     let html = formatMontyResponse(data.response);
@@ -150,44 +181,62 @@ async function montySend() {
     if (data.results && data.results.length > 0) {
       for (const r of data.results) {
         html += renderActionCard(r);
+        // Show extra message if action has one (like "No contacts found")
+        if (r.message && !r.success) {
+          html += `<div style="margin-top:8px;padding:10px 14px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:8px;color:#f59e0b;font-size:13px;">💡 ${r.message}</div>`;
+        }
       }
     }
 
     appendMontyMsg('bot', html, true);
 
     // If lookup returned contacts, show them
-    const lookupResult = (data.results || []).find(r => r.action === 'lookup_contact' && r.contacts);
-    if (lookupResult && lookupResult.contacts.length > 0) {
-      let contactHtml = '<div style="margin-top:8px;">';
-      for (const c of lookupResult.contacts) {
-        contactHtml += `<div class="monty-action-card" style="cursor:pointer;" onclick="showAdminPanel('contacthub')">
-          <div style="font-weight:700;color:#fff;">${c.name || 'Unknown'}</div>
-          <div style="color:rgba(255,255,255,0.5);font-size:12px;">${c.email || ''} ${c.phone ? '· ' + c.phone : ''}</div>
-          ${c.company ? '<div style="color:rgba(255,255,255,0.4);font-size:11px;">'+c.company+'</div>' : ''}
+    const lookupResult = (data.results || []).find(r => r.action === 'lookup_contact');
+    if (lookupResult) {
+      if (lookupResult.contacts && lookupResult.contacts.length > 0) {
+        let contactHtml = '<div style="margin-top:8px;">';
+        for (const c of lookupResult.contacts) {
+          contactHtml += `<div class="monty-action-card" style="cursor:pointer;" onclick="showAdminPanel('contacthub')">
+            <div style="font-weight:700;color:#fff;">${c.name || 'Unknown'}</div>
+            <div style="color:rgba(255,255,255,0.5);font-size:12px;">${c.email || ''} ${c.phone ? '· ' + c.phone : ''}</div>
+            ${c.company ? '<div style="color:rgba(255,255,255,0.4);font-size:11px;">'+c.company+'</div>' : ''}
+          </div>`;
+        }
+        contactHtml += '</div>';
+        appendMontyMsg('bot', contactHtml, true);
+      } else {
+        // No results — offer to add
+        const query = lookupResult.query || '';
+        let noResultHtml = `<div style="margin-top:8px;padding:14px 18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
+          <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:10px;">No contacts found matching "<strong style="color:#fff;">${escapeHtml(query)}</strong>"</div>
+          <button onclick="montyQuick('Add client ${escapeHtml(query)}')" class="monty-chip" style="font-size:13px;padding:8px 16px;">+ Add "${escapeHtml(query)}" as new client</button>
         </div>`;
+        appendMontyMsg('bot', noResultHtml, true);
       }
-      contactHtml += '</div>';
-      appendMontyMsg('bot', contactHtml, true);
     }
 
     // If list_jobs returned jobs, show them
-    const jobsResult = (data.results || []).find(r => r.action === 'list_jobs' && r.jobs);
-    if (jobsResult && jobsResult.jobs.length > 0) {
-      let jobsHtml = '<div style="margin-top:8px;">';
-      const statusColors = { new: '#3b82f6', inprogress: '#f59e0b', review: '#a855f7', done: '#22c55e' };
-      for (const j of jobsResult.jobs.slice(0, 10)) {
-        const color = statusColors[j.status] || '#888';
-        jobsHtml += `<div class="monty-action-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-weight:700;color:#fff;">${j.title || j.client_name || 'Untitled'}</span>
-            <span class="act-status" style="background:${color}20;color:${color};">${(j.status || 'new').toUpperCase()}</span>
-          </div>
-          ${j.client_name ? '<div style="color:rgba(255,255,255,0.4);font-size:12px;">Client: '+j.client_name+'</div>' : ''}
-        </div>`;
+    const jobsResult = (data.results || []).find(r => r.action === 'list_jobs');
+    if (jobsResult) {
+      if (jobsResult.jobs && jobsResult.jobs.length > 0) {
+        let jobsHtml = '<div style="margin-top:8px;">';
+        const statusColors = { new: '#3b82f6', inprogress: '#f59e0b', review: '#a855f7', done: '#22c55e' };
+        for (const j of jobsResult.jobs.slice(0, 10)) {
+          const color = statusColors[j.status] || '#888';
+          jobsHtml += `<div class="monty-action-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-weight:700;color:#fff;">${j.title || j.client_name || 'Untitled'}</span>
+              <span class="act-status" style="background:${color}20;color:${color};">${(j.status || 'new').toUpperCase()}</span>
+            </div>
+            ${j.client_name ? '<div style="color:rgba(255,255,255,0.4);font-size:12px;">Client: '+j.client_name+'</div>' : ''}
+          </div>`;
+        }
+        if (jobsResult.jobs.length > 10) jobsHtml += `<div style="color:rgba(255,255,255,0.4);font-size:12px;text-align:center;padding:8px;">+${jobsResult.jobs.length - 10} more</div>`;
+        jobsHtml += '</div>';
+        appendMontyMsg('bot', jobsHtml, true);
+      } else {
+        appendMontyMsg('bot', `<div style="color:rgba(255,255,255,0.5);font-size:13px;padding:10px;">📋 No jobs found. Want me to create one?</div>`, true);
       }
-      if (jobsResult.jobs.length > 10) jobsHtml += `<div style="color:rgba(255,255,255,0.4);font-size:12px;text-align:center;padding:8px;">+${jobsResult.jobs.length - 10} more</div>`;
-      jobsHtml += '</div>';
-      appendMontyMsg('bot', jobsHtml, true);
     }
 
   } catch(err) {
@@ -208,6 +257,9 @@ function montyQuick(text) {
 // ═══ CLEAR CHAT ═══
 function montyClear() {
   montyHistory = [];
+  montyChatLog = [];
+  localStorage.removeItem('monty_history');
+  localStorage.removeItem('monty_chat_log');
   const container = document.getElementById('montyChatMessages');
   if (container) {
     container.innerHTML = `
@@ -218,18 +270,23 @@ function montyClear() {
   }
 }
 
-// ═══ APPEND MESSAGE ═══
+// ═══ APPEND MESSAGE (with persistence) ═══
 function appendMontyMsg(type, content, isHtml) {
   const container = document.getElementById('montyChatMessages');
   if (!container) return;
+  const htmlContent = isHtml ? content : escapeHtml(content);
   const div = document.createElement('div');
   div.className = `monty-msg monty-msg-${type === 'user' ? 'user' : 'bot'}`;
   div.innerHTML = `
     <div class="monty-avatar">${type === 'user' ? '👤' : '🤖'}</div>
-    <div class="monty-bubble">${isHtml ? content : escapeHtml(content)}</div>
+    <div class="monty-bubble">${htmlContent}</div>
   `;
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
+
+  // Persist to chat log
+  montyChatLog.push({ type, html: htmlContent, ts: Date.now() });
+  saveMontyState();
 }
 
 // ═══ TYPING INDICATOR ═══
@@ -292,6 +349,7 @@ function renderActionCard(result) {
       <span class="act-status ${ok ? 'act-success' : 'act-fail'}">${ok ? '✓ Done' : '✗ Failed'}</span>
     </div>
     ${detail ? '<div style="color:rgba(255,255,255,0.5);font-size:12px;margin-top:4px;">'+detail+'</div>' : ''}
+    ${result.message ? '<div style="color:rgba(255,255,255,0.4);font-size:12px;margin-top:4px;">'+result.message+'</div>' : ''}
     ${result.error ? '<div style="color:#ef4444;font-size:12px;margin-top:4px;">'+result.error+'</div>' : ''}
   </div>`;
 }

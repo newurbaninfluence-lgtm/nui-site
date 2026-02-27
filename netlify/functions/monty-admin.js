@@ -128,7 +128,7 @@ exports.handler = async (event) => {
             const d = action.data;
             const id = 'c_' + Date.now();
             if (SB_URL && SB_KEY) {
-              await (await fetch)(`${SB_URL}/rest/v1/contacts`, {
+              const insertRes = await (await fetch)(`${SB_URL}/rest/v1/contacts`, {
                 method: 'POST',
                 headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
                 body: JSON.stringify({
@@ -139,8 +139,12 @@ exports.handler = async (event) => {
                   created_at: new Date().toISOString()
                 })
               });
+              const insertData = await insertRes.json();
+              const ok = insertRes.ok && !insertData.error;
+              results.push({ action: 'add_contact', success: ok, id: ok ? id : null, name: d.name, error: ok ? null : (insertData.message || insertData.error || 'Insert failed') });
+            } else {
+              results.push({ action: 'add_contact', success: false, name: d.name, error: 'Database not connected' });
             }
-            results.push({ action: 'add_contact', success: true, id, name: d.name });
             break;
           }
 
@@ -148,9 +152,9 @@ exports.handler = async (event) => {
             const d = action.data;
             const id = 'j_' + Date.now();
             if (SB_URL && SB_KEY) {
-              await (await fetch)(`${SB_URL}/rest/v1/jobs`, {
+              const insertRes = await (await fetch)(`${SB_URL}/rest/v1/jobs`, {
                 method: 'POST',
-                headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
                 body: JSON.stringify({
                   id, client_name: d.client_name, client_id: d.client_id || null,
                   title: d.title, type: d.type || 'branding', status: d.status || 'new',
@@ -159,8 +163,12 @@ exports.handler = async (event) => {
                   created_at: new Date().toISOString()
                 })
               });
+              const insertData = await insertRes.json();
+              const ok = insertRes.ok && !insertData.error;
+              results.push({ action: 'create_job', success: ok, id: ok ? id : null, title: d.title, error: ok ? null : (insertData.message || insertData.error || 'Insert failed') });
+            } else {
+              results.push({ action: 'create_job', success: false, title: d.title, error: 'Database not connected' });
             }
-            results.push({ action: 'create_job', success: true, id, title: d.title });
             break;
           }
 
@@ -228,7 +236,16 @@ exports.handler = async (event) => {
                 headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
               });
               const contacts = await searchRes.json();
-              results.push({ action: 'lookup_contact', success: true, contacts });
+              const found = Array.isArray(contacts) && contacts.length > 0;
+              results.push({ 
+                action: 'lookup_contact', 
+                success: found, 
+                contacts: found ? contacts : [],
+                query: d.query,
+                message: found ? `Found ${contacts.length} result(s)` : `No contacts found matching "${d.query}". Want me to add them?`
+              });
+            } else {
+              results.push({ action: 'lookup_contact', success: false, contacts: [], query: d.query, error: 'Database not connected' });
             }
             break;
           }
@@ -242,7 +259,10 @@ exports.handler = async (event) => {
                 headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
               });
               const jobs = await jobsRes.json();
-              results.push({ action: 'list_jobs', success: true, jobs });
+              const found = Array.isArray(jobs) && jobs.length > 0;
+              results.push({ action: 'list_jobs', success: found, jobs: found ? jobs : [], message: found ? `Found ${jobs.length} job(s)` : 'No jobs found' });
+            } else {
+              results.push({ action: 'list_jobs', success: false, jobs: [], error: 'Database not connected' });
             }
             break;
           }
@@ -424,10 +444,11 @@ function parseCommand(msg) {
 
   // ── LOOKUP ──
   else if (m.includes('find') || m.includes('look up') || m.includes('search') || m.includes('who is')) {
-    const queryMatch = msg.match(/(?:find|look\s*up|search|who\s+is)\s+(.+)/i);
+    const queryMatch = msg.match(/(?:find|look\s*up|search|who\s+is)\s+(?:client\s+|contact\s+)?(.+)/i);
     if (queryMatch) {
-      actions.push({ action: 'lookup_contact', data: { query: queryMatch[1].trim() } });
-      response = `Searching for "${queryMatch[1].trim()}"...`;
+      const query = queryMatch[1].trim();
+      actions.push({ action: 'lookup_contact', data: { query } });
+      response = `Searching for client '${query}' in the database...`;
     }
   }
 
