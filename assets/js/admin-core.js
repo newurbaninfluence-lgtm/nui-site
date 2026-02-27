@@ -154,6 +154,7 @@ function showAdminPanel(panel) {
         'designers': loadAdminDesignersPanel,
         'integrations': loadAdminIntegrationsPanel,
         'usermanagement': loadAdminUserManagementPanel,
+        'monty': loadAdminMontyPanel,
         'sites': loadAdminSitesPanel,
         'visitors': loadAdminVisitorsPanel,
         'citations': loadAdminCitationsPanel
