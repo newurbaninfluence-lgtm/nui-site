@@ -483,12 +483,14 @@ function renderContactDrawer(contactId) {
     <button onclick="contactHubDrawerTab='timeline';renderContactHub();" style="flex:1;padding:10px;border:none;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'timeline' ? 'background:var(--red);color:#fff;' : 'background:#1c1c1c;color:rgba(255,255,255,0.5);'}">⏱ Timeline</button>
     <button onclick="contactHubDrawerTab='sms';renderContactHub();setTimeout(()=>{const i=document.getElementById('hubSmsInput');if(i)i.focus();},100);" style="flex:1;padding:10px;border:none;border-left:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'sms' ? 'background:var(--red);color:#fff;' : 'background:#1c1c1c;color:rgba(255,255,255,0.5);'}">${c.phone ? '💬 SMS' : '💬 SMS'} ${allSms.length > 0 ? '(' + allSms.length + ')' : ''}</button>
     <button onclick="contactHubDrawerTab='email';renderContactHub();" style="flex:1;padding:10px;border:none;border-left:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'email' ? 'background:var(--red);color:#fff;' : 'background:#1c1c1c;color:rgba(255,255,255,0.5);'}">${c.email ? '📧 Email' : '📧 Email'} ${allEmails.length > 0 ? '(' + allEmails.length + ')' : ''}</button>
+    <button onclick="contactHubDrawerTab='calls';renderContactHub();" style="flex:1;padding:10px;border:none;border-left:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;${tab === 'calls' ? 'background:var(--red);color:#fff;' : 'background:#1c1c1c;color:rgba(255,255,255,0.5);'}">📞 Calls</button>
   </div>
 
   <!-- Tab Content -->
   ${tab === 'timeline' ? renderDrawerTimeline(c, allActivity, typeIcons) : ''}
   ${tab === 'sms' ? renderDrawerSms(c, allSms) : ''}
   ${tab === 'email' ? renderDrawerEmail(c, allEmails) : ''}
+  ${tab === 'calls' ? renderDrawerCalls(c) : ''}
 
   <!-- Notes (always visible) -->
   <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">
@@ -604,6 +606,97 @@ function renderDrawerEmail(c, allEmails) {
 </div>`;
 
   return content;
+}
+
+// ── Drawer Tab: Calls ────────────────────────
+async function loadCallRecordings(contactId) {
+  if (!db) return [];
+  try {
+    const { data, error } = await db
+      .from('communications')
+      .select('*')
+      .eq('client_id', contactId)
+      .eq('channel', 'call')
+      .order('created_at', { ascending: false })
+      .limit(50);
+    if (error) { console.error('Load calls error:', error); return []; }
+    return data || [];
+  } catch (e) { console.error('Load calls:', e); return []; }
+}
+
+function renderDrawerCalls(c) {
+  // We need to load calls async, so show loading then replace
+  const containerId = 'hubCallsContainer';
+  setTimeout(async () => {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const calls = await loadCallRecordings(c.id);
+    if (calls.length === 0) {
+      container.innerHTML = '<div style="text-align:center;padding:40px 10px;color:rgba(255,255,255,0.2);font-size:13px;">📞 No call recordings yet<br><span style="font-size:11px;margin-top:6px;display:block;">When clients call, recordings and transcripts will appear here.</span></div>';
+      return;
+    }
+
+    let html = '';
+    calls.forEach((call, i) => {
+      const meta = call.metadata || {};
+      const duration = meta.duration || 0;
+      const durationStr = duration ? `${Math.floor(duration/60)}:${String(Math.round(duration%60)).padStart(2,'0')}` : '—';
+      const dir = call.direction === 'inbound' ? '📥 Incoming' : '📤 Outgoing';
+      const dirColor = call.direction === 'inbound' ? '#10b981' : '#3b82f6';
+      const time = formatHubTime(call.created_at);
+      const recordingUrl = meta.recording_url || null;
+      const transcript = meta.transcript || null;
+      const summary = meta.summary || null;
+      const from = meta.from || '';
+      const to = meta.to || '';
+
+      html += `<div style="padding:14px;margin-bottom:10px;background:#202020;border:1px solid rgba(255,255,255,0.06);border-radius:10px;">`;
+
+      // Header row
+      html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">`;
+      html += `<div style="display:flex;align-items:center;gap:8px;">`;
+      html += `<span style="font-size:13px;font-weight:600;color:${dirColor};">${dir}</span>`;
+      html += `<span style="font-size:11px;color:rgba(255,255,255,0.3);">⏱ ${durationStr}</span>`;
+      html += `</div>`;
+      html += `<span style="font-size:10px;color:rgba(255,255,255,0.3);">${time}</span>`;
+      html += `</div>`;
+
+      // Audio player
+      if (recordingUrl) {
+        html += `<div style="margin-bottom:8px;">`;
+        html += `<audio controls preload="none" style="width:100%;height:36px;border-radius:6px;outline:none;" src="${recordingUrl}"></audio>`;
+        html += `</div>`;
+      } else {
+        html += `<div style="padding:8px;background:#1a1a1a;border-radius:6px;text-align:center;font-size:11px;color:rgba(255,255,255,0.2);margin-bottom:8px;">No recording available</div>`;
+      }
+
+      // Summary
+      if (summary) {
+        html += `<div style="padding:8px 10px;background:#1a1a2e;border:1px solid rgba(139,92,246,0.15);border-radius:6px;margin-bottom:6px;">`;
+        html += `<div style="font-size:10px;font-weight:700;color:#8b5cf6;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">🧠 AI Summary</div>`;
+        html += `<div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.5;">${summary}</div>`;
+        html += `</div>`;
+      }
+
+      // Transcript toggle
+      if (transcript) {
+        const transcriptId = 'callTranscript_' + i;
+        html += `<div>`;
+        html += `<button onclick="document.getElementById('${transcriptId}').style.display=document.getElementById('${transcriptId}').style.display==='none'?'block':'none';" style="background:none;border:none;color:#8b5cf6;font-size:11px;cursor:pointer;padding:4px 0;font-weight:600;font-family:inherit;">📝 Toggle Transcript</button>`;
+        html += `<div id="${transcriptId}" style="display:none;margin-top:6px;padding:10px;background:#1a1a1a;border-radius:6px;font-size:11px;color:rgba(255,255,255,0.55);line-height:1.6;max-height:200px;overflow-y:auto;white-space:pre-wrap;">${transcript}</div>`;
+        html += `</div>`;
+      }
+
+      html += `</div>`;
+    });
+
+    container.innerHTML = html;
+  }, 50);
+
+  return `<div id="${containerId}" style="max-height:420px;overflow-y:auto;">
+    <div style="text-align:center;padding:30px;color:rgba(255,255,255,0.3);font-size:12px;">Loading calls...</div>
+  </div>`;
 }
 
 // ── Send SMS Inline ──────────────────────────
