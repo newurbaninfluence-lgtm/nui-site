@@ -10,7 +10,7 @@ You help the admin (Faren) manage the business by executing commands against the
 AVAILABLE ACTIONS (return as JSON array):
 
 1. add_contact — Add a new client/contact
-   { "action": "add_contact", "data": { "name": "...", "email": "...", "phone": "...", "company": "...", "industry": "...", "source": "...", "notes": "..." } }
+   { "action": "add_contact", "data": { "first_name": "...", "last_name": "...", "email": "...", "phone": "...", "company": "...", "industry": "...", "source": "...", "notes": "..." } }
 
 2. create_job — Create a new job on the kanban board
    { "action": "create_job", "data": { "client_name": "...", "client_id": "...", "title": "...", "type": "branding|print|design|web", "status": "new|inprogress|review|done", "services": [...], "notes": "...", "priority": "normal|high|urgent", "price": "...", "paid": "...", "retainer": "..." } }
@@ -22,7 +22,7 @@ AVAILABLE ACTIONS (return as JSON array):
    { "action": "create_brand_guide", "data": { "client_name": "...", "client_id": "...", "job_id": "...", "business_name": "...", "industry": "..." } }
 
 5. add_print_order — Create a print request
-   { "action": "add_print_order", "data": { "client_name": "...", "client_email": "...", "product": "...", "quantity": "...", "details": "...", "price_shown": "...", "design_needed": true/false } }
+   { "action": "add_print_order", "data": { "client_name": "...", "client_email": "...", "product_name": "...", "quantity": "...", "details": "...", "design_needed": true/false } }
 
 6. send_email — Send email to a client
    { "action": "send_email", "data": { "to": "...", "subject": "...", "body": "..." } }
@@ -169,18 +169,27 @@ exports.handler = async (event) => {
 
           case 'add_contact': {
             const d = action.data;
-            const id = 'c_' + Date.now();
-            const data = await sbFetch('contacts', {
+            // Support both "name" (legacy) and "first_name"/"last_name" (new)
+            let firstName = d.first_name || '';
+            let lastName = d.last_name || '';
+            if (!firstName && d.name) {
+              const parts = d.name.trim().split(/\s+/);
+              firstName = parts[0] || '';
+              lastName = parts.slice(1).join(' ') || '';
+            }
+            const data = await sbFetch('crm_contacts', {
               method: 'POST',
               body: JSON.stringify({
-                id, name: d.name, email: d.email || null, phone: d.phone || null,
+                first_name: firstName, last_name: lastName,
+                email: d.email || null, phone: d.phone || null,
                 company: d.company || null, industry: d.industry || null,
                 source: d.source || 'monty', notes: d.notes || null,
                 tags: d.tags || [], status: d.status || 'active',
                 created_at: new Date().toISOString()
               })
             });
-            results.push({ action: 'add_contact', success: true, id, name: d.name });
+            const contactId = Array.isArray(data) && data[0] ? data[0].id : null;
+            results.push({ action: 'add_contact', success: true, id: contactId, name: `${firstName} ${lastName}`.trim() });
             break;
           }
 
@@ -239,20 +248,20 @@ exports.handler = async (event) => {
               method: 'POST',
               body: JSON.stringify({
                 client_name: d.client_name, client_email: d.client_email || null,
-                product: d.product, details: d.details || d.quantity || '',
-                price_shown: d.price_shown || 'TBD', status: 'new',
-                source: 'monty-admin',
+                product_name: d.product || d.product_name, notes: d.details || d.quantity || '',
+                quantity: parseInt(d.quantity) || null,
+                status: 'new', source: 'monty-admin',
                 created_at: new Date().toISOString()
               })
             });
-            results.push({ action: 'add_print_order', success: true, product: d.product });
+            results.push({ action: 'add_print_order', success: true, product: d.product || d.product_name });
             break;
           }
 
           case 'lookup_contact': {
             const d = action.data;
             const q = encodeURIComponent(d.query);
-            const data = await sbFetch(`contacts?or=(name.ilike.*${q}*,email.ilike.*${q}*,company.ilike.*${q}*)&limit=10`);
+            const data = await sbFetch(`crm_contacts?or=(first_name.ilike.*${q}*,last_name.ilike.*${q}*,email.ilike.*${q}*,company.ilike.*${q}*)&limit=10`);
             const found = Array.isArray(data) && data.length > 0;
             results.push({ 
               action: 'lookup_contact', success: found, 
@@ -319,7 +328,7 @@ exports.handler = async (event) => {
               method: 'POST',
               prefer: 'return=minimal',
               body: JSON.stringify({
-                type: d.type || 'note', message: d.note,
+                type: d.type || 'note', content: d.note,
                 contact_id: d.contact_id || null,
                 metadata: { client_name: d.client_name, source: 'monty' },
                 created_at: new Date().toISOString()
