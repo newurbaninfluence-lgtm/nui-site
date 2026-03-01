@@ -3,9 +3,11 @@
 // PATCH { action: 'log', channel, direction, subject, message, client_id, metadata } → logs activity
 // Env vars: SUPABASE_URL, SUPABASE_SERVICE_KEY
 
+const { requireAdmin } = require('./utils/security');
+
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
+  'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
   'Access-Control-Allow-Methods': 'GET, PATCH, OPTIONS'
 };
 

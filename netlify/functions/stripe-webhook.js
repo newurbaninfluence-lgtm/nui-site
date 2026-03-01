@@ -7,7 +7,10 @@
 const crypto = require('crypto');
 
 function verifyStripeSignature(payload, sigHeader, secret) {
-  if (!secret) return true;
+  if (!secret) {
+    console.error('STRIPE_WEBHOOK_SECRET not configured — rejecting webhook');
+    return false;  // FAIL CLOSED: reject if no secret configured
+  }
   const parts = sigHeader.split(',').reduce((acc, part) => {
     const [key, val] = part.split('=');
     acc[key] = val;

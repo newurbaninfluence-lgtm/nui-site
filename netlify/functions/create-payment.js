@@ -2,9 +2,11 @@
 // Creates a Stripe PaymentIntent for invoice payments
 // Env vars: STRIPE_SECRET_KEY
 
+const { requireAdmin } = require('./utils/security');
+
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
+  'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
   'Access-Control-Allow-Methods': 'POST, OPTIONS'
 };
 
@@ -14,6 +16,12 @@ exports.handler = async (event) => {
   }
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Method not allowed' }) };
+  }
+
+  // ── Auth Required ──
+  const auth = requireAdmin(event);
+  if (!auth.authorized) {
+    return { statusCode: 401, headers: CORS_HEADERS, body: JSON.stringify({ error: auth.error }) };
   }
 
   try {

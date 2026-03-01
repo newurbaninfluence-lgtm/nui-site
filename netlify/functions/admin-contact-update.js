@@ -1,8 +1,10 @@
 // admin-contact-update.js — One-off utility to update contact info
 // POST { phone, first_name, last_name, email, company }
+const { requireAdmin } = require('./utils/security');
+
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
+  'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
   'Access-Control-Allow-Methods': 'POST, OPTIONS'
 };
 

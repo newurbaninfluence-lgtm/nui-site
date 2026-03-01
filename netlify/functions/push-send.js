@@ -2,6 +2,8 @@
 // Filter by platform (ios/android/all) and interests
 // Uses web-push library with VAPID authentication
 
+const { requireAdmin } = require('./utils/security');
+
 const webpush = require('web-push');
 const { createClient } = require('@supabase/supabase-js');
 
@@ -19,9 +21,9 @@ webpush.setVapidDetails(
 
 exports.handler = async (event) => {
     const headers = {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
         'Content-Type': 'application/json'
     };
 

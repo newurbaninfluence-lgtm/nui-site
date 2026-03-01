@@ -1263,10 +1263,16 @@ let stripeSettings = JSON.parse(localStorage.getItem('nui_stripe')) || {
     connected: false,
     accountId: '',
     publishableKey: '',
-    secretKey: '',
-    webhookSecret: '',
     testMode: true
 };
+
+// SECURITY: Purge any secret keys that were previously stored in browser
+if (stripeSettings.secretKey || stripeSettings.webhookSecret) {
+    delete stripeSettings.secretKey;
+    delete stripeSettings.webhookSecret;
+    localStorage.setItem('nui_stripe', JSON.stringify(stripeSettings));
+    console.log('🔒 Purged secret keys from browser storage');
+}
 function saveStripeSettings() {
     localStorage.setItem('nui_stripe', JSON.stringify(stripeSettings));
     // Also sync to Supabase so settings persist across browsers/sessions
@@ -1340,7 +1346,9 @@ function loadAdminStripePanel() {
 </div>
 <div>
 <label style="font-size: 13px; color: rgba(255,255,255,0.6); display: block; margin-bottom: 8px;">Secret Key</label>
-<input type="password" id="stripeSecretKey" value="${stripeSettings.secretKey}" placeholder="sk_test_..." style="width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-family: monospace; font-size: 13px; background: #252525; color: #fff;">
+<div style="padding: 12px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: #1a1a1a; color: #666; font-size: 13px;">
+🔒 Managed via Netlify Dashboard (never stored in browser)
+</div>
 </div>
 </div>
 <button onclick="saveStripeKeys()" class="btn-cta mt-20">Save API Keys</button>
@@ -1422,9 +1430,9 @@ function connectStripe() {
 
 function saveStripeKeys() {
     stripeSettings.publishableKey = document.getElementById('stripePublishableKey').value;
-    stripeSettings.secretKey = document.getElementById('stripeSecretKey').value;
+    // Secret key is NEVER stored in browser — managed via Netlify env vars only
     saveStripeSettings();
-    alert('Stripe API keys saved!');
+    alert('Stripe publishable key saved!');
 }
 
 function toggleStripeMode(testMode) {
@@ -1435,17 +1443,34 @@ function toggleStripeMode(testMode) {
 
 // ==================== INTEGRATIONS PANEL ====================
 let integrations = JSON.parse(localStorage.getItem('nui_integrations')) || {
-    openphone: { connected: false, apiKey: '', phoneNumber: '' },
-    mailchimp: { connected: false, apiKey: '', listId: '' },
-    sendgrid: { connected: false, apiKey: '' },
-    instagram: { connected: false, accessToken: '', username: '' },
-    facebook: { connected: false, accessToken: '', pageId: '' },
-    twitter: { connected: false, apiKey: '', apiSecret: '' },
-    linkedin: { connected: false, accessToken: '' },
-    google: { connected: false, clientId: '', clientSecret: '' },
-    zapier: { connected: false, webhookUrl: '' },
-    slack: { connected: false, webhookUrl: '' }
+    openphone: { connected: false },
+    mailchimp: { connected: false },
+    sendgrid: { connected: false },
+    instagram: { connected: false, username: '' },
+    facebook: { connected: false, pageId: '' },
+    twitter: { connected: false },
+    linkedin: { connected: false },
+    google: { connected: false },
+    zapier: { connected: false },
+    slack: { connected: false }
 };
+
+// SECURITY: Purge any API keys/secrets/tokens that were previously stored in browser
+(function purgeIntegrationSecrets() {
+    const sensitiveFields = ['apiKey', 'apiSecret', 'accessToken', 'clientSecret', 'webhookUrl'];
+    let purged = false;
+    for (const [platform, config] of Object.entries(integrations)) {
+        if (typeof config === 'object') {
+            for (const field of sensitiveFields) {
+                if (config[field]) { delete config[field]; purged = true; }
+            }
+        }
+    }
+    if (purged) {
+        localStorage.setItem('nui_integrations', JSON.stringify(integrations));
+        console.log('🔒 Purged API keys/tokens from integrations storage');
+    }
+})();
 
 function saveIntegrations() {
     localStorage.setItem('nui_integrations', JSON.stringify(integrations));

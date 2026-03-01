@@ -3,9 +3,11 @@
 // Supports: recurring billing, Afterpay, Klarna, Affirm
 // Env vars: STRIPE_SECRET_KEY
 
+const { requireAdmin } = require('./utils/security');
+
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
+  'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
   'Access-Control-Allow-Methods': 'POST, OPTIONS'
 };
 

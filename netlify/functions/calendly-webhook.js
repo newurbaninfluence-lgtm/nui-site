@@ -5,7 +5,7 @@
 // Env vars: SUPABASE_URL, SUPABASE_SERVICE_KEY, CALENDLY_WEBHOOK_SECRET (optional)
 
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
   'Access-Control-Allow-Headers': 'Content-Type, Calendly-Webhook-Signature',
   'Access-Control-Allow-Methods': 'POST, OPTIONS'
 };

@@ -2,11 +2,13 @@
 // Sends email via Hostinger SMTP using nodemailer
 // Env vars: HOSTINGER_EMAIL, HOSTINGER_PASSWORD, MAIL_FROM
 
+const { requireAdmin } = require('./utils/security');
+
 const nodemailer = require('nodemailer');
 
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
+  'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
   'Access-Control-Allow-Methods': 'POST, OPTIONS'
 };
 

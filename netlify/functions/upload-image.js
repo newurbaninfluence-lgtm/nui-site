@@ -2,13 +2,15 @@
 // Uses SUPABASE_SERVICE_KEY + REST API to bypass RLS policies
 // No external dependencies needed (uses built-in fetch)
 
+const { requireAdmin } = require('./utils/security');
+
 const BUCKET = 'nui-images';
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 
 exports.handler = async (event) => {
   const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
+    'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Content-Type': 'application/json'
   };

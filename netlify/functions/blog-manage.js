@@ -1,10 +1,12 @@
 // Netlify Function: Blog Post Management (service_role only)
 // Handles upsert and delete for blog_posts table securely
 
+const { requireAdmin } = require('./utils/security');
+
 exports.handler = async (event) => {
   const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
+    'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
     'Access-Control-Allow-Methods': 'POST, DELETE, OPTIONS',
     'Content-Type': 'application/json'
   };

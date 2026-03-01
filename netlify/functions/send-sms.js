@@ -2,9 +2,11 @@
 // Sends SMS via OpenPhone API
 // Env vars: OPENPHONE_API_KEY, OPENPHONE_PHONE_NUMBER
 
+const { requireAdmin } = require('./utils/security');
+
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
+  'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
   'Access-Control-Allow-Methods': 'POST, OPTIONS'
 };
 

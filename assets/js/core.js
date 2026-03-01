@@ -250,9 +250,11 @@ async function hydrateFromBackend() {
             hydrated++;
         }
 
-        // Hydrate Stripe settings from backend
+        // Hydrate Stripe settings from backend (strip secrets)
         if (sd.stripe_settings?.data && typeof sd.stripe_settings.data === 'object' && sd.stripe_settings.data.connected !== undefined) {
             stripeSettings = sd.stripe_settings.data;
+            delete stripeSettings.secretKey;     // SECURITY: never store in browser
+            delete stripeSettings.webhookSecret;  // SECURITY: never store in browser
             localStorage.setItem('nui_stripe', JSON.stringify(stripeSettings));
             if (stripeSettings.connected) { siteAnalytics.stripeConnected = true; saveAnalytics(); }
             hydrated++;
