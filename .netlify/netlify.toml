@@ -1,13 +1,13 @@
-functionsDirectory = "/Users/farenyoung/Desktop/nui-deploy/netlify/functions"
+functionsDirectory = "/Users/farenyoung/nui-site/netlify/functions"
 functionsDirectoryOrigin = "config-v1"
 headersOrigin = "config"
 redirectsOrigin = "config"
 plugins = []
 
 [build]
-publish = "/Users/farenyoung/Desktop/nui-deploy"
+publish = "/Users/farenyoung/nui-site"
 publishOrigin = "config"
-functions = "/Users/farenyoung/Desktop/nui-deploy/netlify/functions"
+functions = "/Users/farenyoung/nui-site/netlify/functions"
 
 [build.environment]
 
@@ -27,6 +27,9 @@ functions = "/Users/farenyoung/Desktop/nui-deploy/netlify/functions"
 
 [functions.holiday-drip]
 schedule = "0 14 * * *"
+
+[functions.sms-drip]
+schedule = "*/5 * * * *"
 
 [functions."*"]
 node_bundler = "esbuild"
