@@ -944,6 +944,8 @@ async function handlePortalLogin(e) {
         renderAdminSidebar();
         loadAdminDashboardPanel();
         console.log('Master admin login successful');
+        // Prompt for API security token
+        if (window.NuiAdminAuth) NuiAdminAuth.promptIfNeeded();
         return;
     }
 
@@ -964,6 +966,7 @@ async function handlePortalLogin(e) {
                 renderAdminSidebar();
                 loadAdminDashboardPanel();
                 console.log('Admin login successful (Supabase)');
+                if (window.NuiAdminAuth) NuiAdminAuth.promptIfNeeded();
             } else if (role === 'manager') {
                 currentUser = { type: 'manager', email: authUser.email, name: authUser.user_metadata?.name || 'Manager', id: authUser.id, ...authUser.user_metadata };
                 document.getElementById('portalLogin').style.display = 'none';
@@ -971,6 +974,7 @@ async function handlePortalLogin(e) {
                 renderAdminSidebar();
                 loadAdminDashboardPanel();
                 console.log('Manager login successful (Supabase)');
+                if (window.NuiAdminAuth) NuiAdminAuth.promptIfNeeded();
             } else if (role === 'designer') {
                 const meta = authUser.user_metadata || {};
                 currentUser = { type: 'designer', email: authUser.email, name: meta.name || 'Designer', id: authUser.id, ...meta };

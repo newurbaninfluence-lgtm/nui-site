@@ -65,3 +65,27 @@ const NuiAdminAuth = {
 };
 
 window.NuiAdminAuth = NuiAdminAuth;
+
+// ═══════════════════════════════════════════════════════════════
+// AUTO-INTERCEPTOR: Patches global fetch to add admin token
+// to ALL requests to /.netlify/functions/ endpoints
+// This means existing admin code doesn't need to be modified
+// ═══════════════════════════════════════════════════════════════
+(function() {
+  const _originalFetch = window.fetch;
+  window.fetch = function(url, options) {
+    // Only intercept calls to our Netlify functions
+    if (typeof url === 'string' && url.includes('/.netlify/functions/')) {
+      const token = NuiAdminAuth.getToken();
+      if (token) {
+        options = options || {};
+        options.headers = options.headers || {};
+        // Don't overwrite if already set
+        if (!options.headers['X-Admin-Token'] && !options.headers['x-admin-token']) {
+          options.headers['X-Admin-Token'] = token;
+        }
+      }
+    }
+    return _originalFetch.call(this, url, options);
+  };
+})();
