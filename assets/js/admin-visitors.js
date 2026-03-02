@@ -78,6 +78,8 @@ async function loadVisitorsFromSupabase() {
     try {
         var query = db.from('identified_visitors').select('*').order('seen_at', { ascending: false }).limit(100);
         if (status !== 'all') query = query.eq('status', status);
+        // LinkedIn-only filter
+        query = query.not('linkedin_url', 'is', null).neq('linkedin_url', '');
         var { data, error } = await query;
         if (error) throw error;
 
