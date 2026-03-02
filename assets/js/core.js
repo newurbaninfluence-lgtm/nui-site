@@ -599,7 +599,8 @@ NuiImageStore.init().catch(err => console.warn('IndexedDB init failed, falling b
 
 // ═══════════════════════════════════════════════
 
-let clients = JSON.parse(localStorage.getItem('nui_clients')) || [];
+let clients = JSON.parse(localStorage.getItem('nui_clients') || '[]');
+if (!Array.isArray(clients)) { clients = []; localStorage.removeItem('nui_clients'); }
 function saveClients() {
   localStorage.setItem('nui_clients', JSON.stringify(clients));
   syncToBackend('clients', clients);
@@ -705,8 +706,10 @@ async function syncNewClientsToHub() {
     }
 })();
 
-let orders = JSON.parse(localStorage.getItem('nui_orders')) || [];
-let leads = JSON.parse(localStorage.getItem('nui_leads')) || [];
+let orders = JSON.parse(localStorage.getItem('nui_orders') || '[]');
+if (!Array.isArray(orders)) { orders = []; localStorage.removeItem('nui_orders'); }
+let leads = JSON.parse(localStorage.getItem('nui_leads') || '[]');
+if (!Array.isArray(leads)) { leads = []; localStorage.removeItem('nui_leads'); }
 
 function saveOrders() { localStorage.setItem('nui_orders', JSON.stringify(orders)); syncToBackend('orders', orders); }
 function saveLeads() { localStorage.setItem('nui_leads', JSON.stringify(leads)); }
@@ -814,8 +817,10 @@ function saveProjects() {
 }
 
 // ==================== PAYMENTS & INVOICES ====================
-let payments = JSON.parse(localStorage.getItem('nui_payments')) || [];
-let invoices = JSON.parse(localStorage.getItem('nui_invoices')) || [];
+let payments = JSON.parse(localStorage.getItem('nui_payments') || '[]');
+if (!Array.isArray(payments)) { payments = []; localStorage.removeItem('nui_payments'); }
+let invoices = JSON.parse(localStorage.getItem('nui_invoices') || '[]');
+if (!Array.isArray(invoices)) { invoices = []; localStorage.removeItem('nui_invoices'); }
 function savePayments() { localStorage.setItem('nui_payments', JSON.stringify(payments)); }
 function saveInvoices() { localStorage.setItem('nui_invoices', JSON.stringify(invoices)); syncToBackend('invoices', invoices); }
 

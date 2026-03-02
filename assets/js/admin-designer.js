@@ -4215,7 +4215,7 @@ async function loadMoodboardFromSupabase(mbId) {
  */
 async function migrateMoodboardsToSupabase() {
     if (!proofs || proofs.length === 0) {
-        showNotification('No moodboards to migrate', 'info');
+        // Silent return — no notification when nothing to migrate
         return;
     }
     
