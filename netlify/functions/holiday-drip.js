@@ -4,6 +4,7 @@
 // Emails upsell print products (social graphics, signage, banners).
 
 const nodemailer = require('nodemailer');
+const { getBrand, getFromAddress, getTransporter, buildEmailFooter } = require('./utils/agency-brand');
 
 // ==================== HOLIDAY CALENDAR ====================
 // Returns holidays for a given year with their dates
@@ -311,15 +312,7 @@ function buildHolidayEmail(firstName, holiday, week, printUrl, resolved, holiday
         <p style="margin: 0; font-size: 13px; color: #888;">⭐⭐⭐⭐⭐ <span style="color: #fff; font-weight: 600;">4.9/5</span> from 50+ Michigan businesses · <span style="color: ${theme.accent}; font-weight: 600;">10+ years in business</span></p>
     </div>
 
-    <!-- ============ FOOTER ============ -->
-    <div style="padding: 24px 28px; text-align: center;">
-        <div style="margin-bottom: 12px;">
-            <span style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.3);">NEW URBAN </span><span style="font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.2);">INFLUENCE</span>
-            <div style="font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.15); margin-top: 3px;">We don't design. We influence.</div>
-        </div>
-        <p style="margin: 0 0 8px; color: #444; font-size: 11px;">Detroit, Michigan · (248) 487-8747 · newurbaninfluence.com</p>
-        <p style="margin: 0; color: #333; font-size: 10px;">You're receiving this because you're a valued NUI client.</p>
-    </div>
+    ${buildEmailFooter(brand)}
 
 </div>
 </body></html>`;
@@ -328,6 +321,11 @@ function buildHolidayEmail(firstName, holiday, week, printUrl, resolved, holiday
 // ==================== MAIN HANDLER ====================
 exports.handler = async (event) => {
     console.log('🎄 Holiday drip check running...');
+    // Resolve brand — holiday drip uses NUI by default (no agency_id on scheduled functions)
+    // To run for a specific agency, pass agency_id in event body
+    let agencyId = null;
+    try { const body = JSON.parse(event.body||'{}'); agencyId = body.agency_id || null; } catch(e){}
+    const brand = await getBrand(agencyId);
 
     const SUPABASE_URL = process.env.SUPABASE_URL;
     const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -494,7 +492,7 @@ exports.handler = async (event) => {
 
                 const firstName = (client.name || 'there').split(' ')[0];
                 const industry = client.industry || '';
-                let printUrl = 'https://newurbaninfluence.com/print';
+                let printUrl = brand.print_store_url || 'https://newurbaninfluence.com/print';
                 const params = [];
                 if (industry) params.push(`industry=${encodeURIComponent(industry)}`);
                 if (client.id) params.push(`client=${encodeURIComponent(client.id)}`);
@@ -503,11 +501,11 @@ exports.handler = async (event) => {
                 const resolved = resolveTemplate(holiday.week, holiday.name, firstName);
                 if (!resolved) continue;
 
-                const html = buildHolidayEmail(firstName, holiday.name, holiday.week, printUrl, resolved, holiday.slug);
+                const html = buildHolidayEmail(firstName, holiday.name, holiday.week, printUrl, resolved, holiday.slug, brand);
                 if (!html) continue;
 
                 await transporter.sendMail({
-                    from: MAIL_FROM,
+                    from: getFromAddress(brand),
                     to: client.email,
                     subject: resolved.subject,
                     html: html

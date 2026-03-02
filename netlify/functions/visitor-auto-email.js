@@ -4,6 +4,7 @@
 
 const nodemailer = require('nodemailer');
 const { createClient } = require('@supabase/supabase-js');
+const { getBrand, getFromAddress, getTransporter, buildEmailSignature } = require('./utils/agency-brand');
 
 const supabase = createClient(
     process.env.SUPABASE_URL || 'https://jcgvkyizoimwbolhfpta.supabase.co',
@@ -59,14 +60,14 @@ function getEmailTemplate(visitor, topInterest, pagesViewed) {
         <p style="font-size:15px;line-height:1.7;color:#333;">Most businesses we work with come to us at a tipping point: they've outgrown the DIY look, or they're launching something new and need to show up like they mean it.</p>
         <p style="font-size:15px;line-height:1.7;color:#333;">Our brand packages start at <strong>$1,500</strong> and include everything — logo, colors, typography, social templates, and brand guidelines. No hidden fees, no scope creep.</p>
         <div style="text-align:center;margin:32px 0;">
-            <a href="https://newurbaninfluence.com/#intake" style="background:#dc2626;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.5px;">BOOK A FREE STRATEGY CALL</a>
+            <a href="https://${brand.company_website || 'newurbaninfluence.com'}" style="background:#dc2626;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.5px;">BOOK A FREE STRATEGY CALL</a>
         </div>
         <p style="font-size:14px;color:#666;line-height:1.6;">No pitch. No pressure. Just a real conversation about where your brand is and where it could be.</p>
-        <p style="font-size:15px;line-height:1.7;color:#333;margin-top:24px;">Talk soon,<br><strong>Faren Young</strong><br>Founder, New Urban Influence<br><span style="color:#888;font-size:13px;">(248) 487-8747</span></p>
+        ${buildEmailSignature(brand)}
     </div>
     <div style="background:#f5f5f5;padding:16px 24px;text-align:center;font-size:11px;color:#999;">
-        New Urban Influence • Detroit, MI<br>
-        <a href="https://newurbaninfluence.com" style="color:#dc2626;">newurbaninfluence.com</a>
+        ${brand.agency_name}${brand.company_city ? ' • ' + brand.company_city : ''}<br>
+        ${brand.company_website ? '<a href="https://'+brand.company_website+'" style="color:'+brand.brand_color+';">'+brand.company_website+'</a>' : ''}
     </div>
 </div>`
         },
@@ -86,14 +87,14 @@ function getEmailTemplate(visitor, topInterest, pagesViewed) {
         <p style="font-size:15px;line-height:1.7;color:#333;">We're building AI-powered tools for small businesses that handle the stuff that eats your time: lead follow-up, content creation, client onboarding, booking automation. All trained on <em>your</em> brand voice and business data.</p>
         <p style="font-size:15px;line-height:1.7;color:#333;">Most of our clients save <strong>10-15 hours per week</strong> after implementation. Systems start at <strong>$2,500</strong> with monthly maintenance plans.</p>
         <div style="text-align:center;margin:32px 0;">
-            <a href="https://newurbaninfluence.com/#intake" style="background:#dc2626;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.5px;">BOOK A FREE AI STRATEGY CALL</a>
+            <a href="https://${brand.company_website || 'newurbaninfluence.com'}" style="background:#dc2626;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.5px;">BOOK A FREE AI STRATEGY CALL</a>
         </div>
         <p style="font-size:14px;color:#666;line-height:1.6;">15 minutes. I'll show you exactly what we could automate for ${visitor.company_name || 'your business'}.</p>
-        <p style="font-size:15px;line-height:1.7;color:#333;margin-top:24px;">Talk soon,<br><strong>Faren Young</strong><br>Founder, New Urban Influence<br><span style="color:#888;font-size:13px;">(248) 487-8747</span></p>
+        ${buildEmailSignature(brand)}
     </div>
     <div style="background:#f5f5f5;padding:16px 24px;text-align:center;font-size:11px;color:#999;">
-        New Urban Influence • Detroit, MI<br>
-        <a href="https://newurbaninfluence.com" style="color:#dc2626;">newurbaninfluence.com</a>
+        ${brand.agency_name}${brand.company_city ? ' • ' + brand.company_city : ''}<br>
+        ${brand.company_website ? '<a href="https://'+brand.company_website+'" style="color:'+brand.brand_color+';">'+brand.company_website+'</a>' : ''}
     </div>
 </div>`
         },
@@ -113,13 +114,13 @@ function getEmailTemplate(visitor, topInterest, pagesViewed) {
         <p style="font-size:15px;line-height:1.7;color:#333;">Every project in there started the same way: a business that knew they deserved better than what they had. We turned that feeling into a brand that actually works — one that attracts the right clients and makes the competition nervous.</p>
         <p style="font-size:15px;line-height:1.7;color:#333;">If ${visitor.company_name || 'your business'} is ready for that kind of transformation, I'd love to chat about what's possible.</p>
         <div style="text-align:center;margin:32px 0;">
-            <a href="https://newurbaninfluence.com/#intake" style="background:#dc2626;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.5px;">LET'S TALK ABOUT YOUR BRAND</a>
+            <a href="https://${brand.company_website || 'newurbaninfluence.com'}" style="background:#dc2626;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.5px;">LET'S TALK ABOUT YOUR BRAND</a>
         </div>
-        <p style="font-size:15px;line-height:1.7;color:#333;margin-top:24px;">Talk soon,<br><strong>Faren Young</strong><br>Founder, New Urban Influence<br><span style="color:#888;font-size:13px;">(248) 487-8747</span></p>
+        ${buildEmailSignature(brand)}
     </div>
     <div style="background:#f5f5f5;padding:16px 24px;text-align:center;font-size:11px;color:#999;">
-        New Urban Influence • Detroit, MI<br>
-        <a href="https://newurbaninfluence.com" style="color:#dc2626;">newurbaninfluence.com</a>
+        ${brand.agency_name}${brand.company_city ? ' • ' + brand.company_city : ''}<br>
+        ${brand.company_website ? '<a href="https://'+brand.company_website+'" style="color:'+brand.brand_color+';">'+brand.company_website+'</a>' : ''}
     </div>
 </div>`
         },
@@ -144,14 +145,14 @@ function getEmailTemplate(visitor, topInterest, pagesViewed) {
         </p>
         <p style="font-size:15px;line-height:1.7;color:#333;">Worst case, you walk away with free expert advice. Best case, we build something incredible together.</p>
         <div style="text-align:center;margin:32px 0;">
-            <a href="https://newurbaninfluence.com/#intake" style="background:#dc2626;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.5px;">FINISH BOOKING YOUR CALL</a>
+            <a href="https://${brand.company_website || 'newurbaninfluence.com'}" style="background:#dc2626;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.5px;">FINISH BOOKING YOUR CALL</a>
         </div>
         <p style="font-size:14px;color:#666;line-height:1.6;">Or just reply to this email — I read every one.</p>
-        <p style="font-size:15px;line-height:1.7;color:#333;margin-top:24px;">Talk soon,<br><strong>Faren Young</strong><br>Founder, New Urban Influence<br><span style="color:#888;font-size:13px;">(248) 487-8747</span></p>
+        ${buildEmailSignature(brand)}
     </div>
     <div style="background:#f5f5f5;padding:16px 24px;text-align:center;font-size:11px;color:#999;">
-        New Urban Influence • Detroit, MI<br>
-        <a href="https://newurbaninfluence.com" style="color:#dc2626;">newurbaninfluence.com</a>
+        ${brand.agency_name}${brand.company_city ? ' • ' + brand.company_city : ''}<br>
+        ${brand.company_website ? '<a href="https://'+brand.company_website+'" style="color:'+brand.brand_color+';">'+brand.company_website+'</a>' : ''}
     </div>
 </div>`
         },
@@ -177,13 +178,13 @@ function getEmailTemplate(visitor, topInterest, pagesViewed) {
             → Payment plans on everything
         </p>
         <div style="text-align:center;margin:32px 0;">
-            <a href="https://newurbaninfluence.com/#intake" style="background:#dc2626;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.5px;">BOOK A FREE STRATEGY CALL</a>
+            <a href="https://${brand.company_website || 'newurbaninfluence.com'}" style="background:#dc2626;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.5px;">BOOK A FREE STRATEGY CALL</a>
         </div>
-        <p style="font-size:15px;line-height:1.7;color:#333;margin-top:24px;">Talk soon,<br><strong>Faren Young</strong><br>Founder, New Urban Influence<br><span style="color:#888;font-size:13px;">(248) 487-8747</span></p>
+        ${buildEmailSignature(brand)}
     </div>
     <div style="background:#f5f5f5;padding:16px 24px;text-align:center;font-size:11px;color:#999;">
-        New Urban Influence • Detroit, MI<br>
-        <a href="https://newurbaninfluence.com" style="color:#dc2626;">newurbaninfluence.com</a>
+        ${brand.agency_name}${brand.company_city ? ' • ' + brand.company_city : ''}<br>
+        ${brand.company_website ? '<a href="https://'+brand.company_website+'" style="color:'+brand.brand_color+';">'+brand.company_website+'</a>' : ''}
     </div>
 </div>`
         }
@@ -310,20 +311,19 @@ async function sendVisitorEmail(visitorId, currentUrl) {
     const SMTP_PASS = process.env.HOSTINGER_PASSWORD;
     const MAIL_FROM = process.env.MAIL_FROM || SMTP_USER;
 
-    if (!SMTP_USER || !SMTP_PASS) {
+    // Resolve agency brand (agency_id in visitor record or event body)
+    const agencyId = (visitor && visitor.agency_id) || null;
+    const brand = await getBrand(agencyId);
+
+    if (!SMTP_USER && !brand.smtp_user) {
         console.error('SMTP not configured');
         return { sent: false, reason: 'smtp_not_configured' };
     }
 
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.hostinger.com',
-        port: 465,
-        secure: true,
-        auth: { user: SMTP_USER, pass: SMTP_PASS }
-    });
+    const transporter = getTransporter(brand);
 
     await transporter.sendMail({
-        from: `"Faren Young | NUI" <${MAIL_FROM}>`,
+        from: getFromAddress(brand),
         to: visitor.business_email,
         subject: template.subject,
         html: template.html,

@@ -1,3 +1,17 @@
+const { getBrand, getFromAddress, buildSmsSystemPrompt } = require('./utils/agency-brand');
+
+// ═══════════════════════════════════════════════════════════════
+// MONTY ADMIN — AI Command Center for NUI Admin Panel
+// Natural language in → System actions out
+// v2: Graceful fallback, real error handling, verified executions
+// ═══════════════════════════════════════════════════════════════
+
+// SYSTEM_PROMPT is now built dynamically per-brand in handler
+const BUILD_MONTY_PROMPT = (brand) => `You are Monty, the AI assistant for ${brand.agency_name}${brand.company_city ? ', a creative agency in ' + brand.company_city : ''}.
+You help the admin (${brand.founder_name}) manage the business by executing commands against the system.
+You operate with speed, precision, and loyalty to ${brand.founder_name}.
+Always refer to the agency as "${brand.agency_name}" — never as NUI or New Urban Influence unless that IS the agency.`;onst { getBrand, getFromAddress, buildSmsSystemPrompt } = require('./utils/agency-brand');
+
 // ═══════════════════════════════════════════════════════════════
 // MONTY ADMIN — AI Command Center for NUI Admin Panel
 // Natural language in → System actions out
@@ -55,6 +69,11 @@ RULES:
 - Include payment/pricing info in job notes when provided`;
 
 exports.handler = async (event) => {
+  // Resolve agency brand — admin Monty can act on behalf of any agency
+  let agencyId = null;
+  try { const b = JSON.parse(event.body||'{}'); agencyId = b.agency_id||null; } catch(e){}
+  const brand = await getBrand(agencyId);
+
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers: CORS_HEADERS, body: '' };
   }
@@ -308,7 +327,7 @@ exports.handler = async (event) => {
               auth: { user: process.env.SMTP_USER || process.env.EMAIL_USER, pass: process.env.SMTP_PASS || process.env.EMAIL_PASS }
             });
             await transporter.sendMail({
-              from: `"New Urban Influence" <${process.env.SMTP_USER || process.env.EMAIL_USER}>`,
+              from: `${brand.agency_name} <${brand.smtp_user || process.env.SMTP_USER || process.env.EMAIL_USER}>`,
               to: d.to, subject: d.subject,
               html: `<div style="font-family:Arial,sans-serif;background:#111;color:#fff;padding:32px;border-radius:12px"><img src="https://newurbaninfluence.com/logo-nav-cropped.png" height="32" style="margin-bottom:16px"><div style="white-space:pre-wrap;line-height:1.7">${d.body}</div><hr style="border:none;border-top:1px solid #333;margin:24px 0"><p style="color:#666;font-size:12px">New Urban Influence · Detroit, MI · (248) 487-8747</p></div>`
             });
@@ -321,7 +340,7 @@ exports.handler = async (event) => {
             const smsRes = await fetch('https://api.openphone.com/v1/messages', {
               method: 'POST',
               headers: { 'Authorization': process.env.OPENPHONE_API_KEY, 'Content-Type': 'application/json' },
-              body: JSON.stringify({ from: process.env.OPENPHONE_NUMBER || '+12484878747', to: [d.to], content: d.message })
+              body: JSON.stringify({ from: brand.openphone_number || process.env.OPENPHONE_NUMBER || '+12484878747', to: [d.to], content: d.message })
             });
             if (!smsRes.ok) throw new Error(`SMS failed: ${smsRes.status}`);
             results.push({ action: 'send_sms', success: true, to: d.to });

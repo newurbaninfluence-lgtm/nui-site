@@ -150,6 +150,7 @@ function buildAccountCard(acct) {
                     (acct.status==='active'?'⏸ Suspend':'▶ Activate') +
                 '</button>' +
                 '<button onclick="openSubAccountModal(\'' + acct.id + '\')" style="padding:7px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">✏️ Manage</button>' +
+                '<button onclick="openWhiteLabelSettings(\'' + acct.id + '\')" style="padding:7px 14px;background:rgba(99,102,241,0.1);color:#818cf8;border:1px solid rgba(99,102,241,0.25);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;" title="White Label Settings">🎨 Brand</button>' +
             '</div>' +
         '</div>' +
     '</div>';
@@ -228,6 +229,7 @@ function openSubAccountModal(accountId) {
             '<div style="display:flex;gap:10px;">' +
                 '<button onclick="closeSubAccountModal()" style="padding:10px 22px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">Cancel</button>' +
                 '<button onclick="saveSubAccount()" style="padding:10px 28px;background:#dc2626;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;">' + (_editingAccount?'💾 Save Changes':'🚀 Create Account') + '</button>' +
+                (_editingAccount ? '<button onclick="closeSubAccountModal();openWhiteLabelSettings(\'' + acct.id + '\')" style="padding:10px 18px;background:rgba(99,102,241,0.1);color:#818cf8;border:1px solid rgba(99,102,241,0.25);border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;margin-left:6px;">🎨 White Label</button>' : '') +
             '</div>' +
         '</div>';
 
@@ -466,4 +468,150 @@ async function deleteSubAccount(id) {
         updateSubAcctStats();
         if (typeof showNotification === 'function') showNotification('Account deleted', 'info');
     } catch(err) { alert('Error: ' + err.message); }
+}
+
+
+// ══════════════════════════════════════════════════════════════════
+// WHITE LABEL SETTINGS PANEL
+// Opens from the "⚙️ Manage" button on each account card
+// Lets Faren set the agency's sender identity, email sig, logo, etc.
+// ══════════════════════════════════════════════════════════════════
+
+function openWhiteLabelSettings(accountId) {
+    var acct = _subAccounts.find(function(a){ return a.id == accountId; });
+    if (!acct) return;
+
+    var overlay = document.createElement('div');
+    overlay.id = 'wl-settings-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:10000;overflow-y:auto;display:flex;align-items:flex-start;justify-content:center;padding:40px 20px;font-family:Montserrat,sans-serif;';
+
+    var brand = acct.brand_color || '#dc2626';
+
+    function field(label, id, val, placeholder, type, hint) {
+        return '<div style="margin-bottom:14px;">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">' +
+                '<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:.8px;">' + label + '</div>' +
+                (hint ? '<div style="font-size:10px;color:rgba(255,255,255,0.2);">' + hint + '</div>' : '') +
+            '</div>' +
+            '<input id="wl-' + id + '" type="' + (type||'text') + '" value="' + (val||'').replace(/"/g,'&quot;') + '" placeholder="' + placeholder + '" style="width:100%;background:#1a1a1a;border:1px solid rgba(255,255,255,0.08);color:#fff;padding:10px 13px;border-radius:9px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box;">' +
+        '</div>';
+    }
+
+    overlay.innerHTML =
+        '<div style="width:100%;max-width:680px;">' +
+            '<div style="background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;">' +
+
+                // Header
+                '<div style="background:' + brand + '18;border-bottom:1px solid ' + brand + '33;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;">' +
+                    '<div style="display:flex;align-items:center;gap:12px;">' +
+                        '<div style="font-size:24px;">🎨</div>' +
+                        '<div>' +
+                            '<div style="font-family:Syne,sans-serif;font-size:17px;font-weight:800;color:#fff;">White Label Settings</div>' +
+                            '<div style="font-size:12px;color:rgba(255,255,255,0.35);">' + acct.agency_name + ' — Sender Identity & Branding</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<button onclick="document.getElementById('wl-settings-overlay').remove()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">×</button>' +
+                '</div>' +
+
+                '<div style="padding:28px;">' +
+
+                    // Section: Sender Identity
+                    '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">📧 Email Sender Identity</div>' +
+                    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;">' +
+                        field('Founder / Owner Name', 'founder_name', acct.founder_name||acct.owner_name, 'Marcus Johnson', 'text', 'Appears in email signature') +
+                        field('Title', 'founder_title', acct.founder_title, 'Founder & Creative Director', 'text', 'Under name in signature') +
+                    '</div>' +
+                    field('From Email (SMTP user)', 'company_email', acct.company_email||acct.owner_email, 'hello@youragency.com', 'email', 'Must match SMTP credentials below') +
+
+                    // Section: Agency Info
+                    '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1.5px;margin:20px 0 14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">🏢 Agency Info</div>' +
+                    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;">' +
+                        field('City', 'company_city', acct.company_city, 'Detroit, Michigan', 'text', 'Appears in email footer') +
+                        field('Phone', 'company_phone', acct.company_phone, '(313) 555-0100', 'text', 'In email footer & SMS') +
+                    '</div>' +
+                    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;">' +
+                        field('Website', 'company_website', acct.company_website||acct.domain, 'youragency.com', 'text', 'No https:// needed') +
+                        field('Tagline', 'company_tagline', acct.company_tagline, 'Your brand slogan here', 'text', 'Under logo in footer') +
+                    '</div>' +
+                    field('Logo URL', 'logo_url', acct.logo_url, 'https://youragency.com/logo.png', 'url', 'Full URL to logo image (PNG/SVG)') +
+                    field('Print Store URL', 'print_store_url', acct.print_store_url, 'https://youragency.com/print', 'url', 'Override print store link in drip emails') +
+
+                    // Section: SMTP Credentials
+                    '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1.5px;margin:20px 0 14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">📨 SMTP (Email Sending)</div>' +
+                    '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,0.35);">Leave blank to use NUI's Hostinger email account. Fill these in to send emails as their own domain.</div>' +
+                    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;">' +
+                        field('SMTP User / Email', 'smtp_user', acct.smtp_user, 'hello@youragency.com', 'email', '') +
+                        field('SMTP Password', 'smtp_pass', acct.smtp_pass, '••••••••••', 'password', 'Hostinger / Gmail app password') +
+                    '</div>' +
+
+                    // Section: SMS / OpenPhone
+                    '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1.5px;margin:20px 0 14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">📱 OpenPhone (SMS)</div>' +
+                    '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,0.35);">Leave blank to use NUI's OpenPhone. Their own keys let SMS go out from their number.</div>' +
+                    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;">' +
+                        field('OpenPhone API Key', 'openphone_key', acct.openphone_key, 'op_api_xxxxx', 'text', 'openphone.com → Settings → API') +
+                        field('OpenPhone Phone Number ID', 'openphone_number', acct.openphone_number, 'PN...', 'text', 'Phone Number ID (not the actual number)') +
+                    '</div>' +
+
+                    // Preview
+                    '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1.5px;margin:20px 0 14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">👁 Email Signature Preview</div>' +
+                    '<div id="wl-sig-preview" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:16px 18px;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.8;">' +
+                        '<div>Talk soon,</div>' +
+                        '<div style="font-weight:700;color:#fff;">' + (acct.founder_name||acct.owner_name||'Founder Name') + '</div>' +
+                        '<div style="color:rgba(255,255,255,0.4);">' + (acct.founder_title||'Founder') + ', ' + acct.agency_name + '</div>' +
+                        '<div style="color:rgba(255,255,255,0.3);font-size:12px;">' + (acct.company_phone||'Phone') + '</div>' +
+                    '</div>' +
+
+                    // Actions
+                    '<div style="display:flex;gap:10px;margin-top:24px;">' +
+                        '<button onclick="document.getElementById('wl-settings-overlay').remove()" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);padding:12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;">Cancel</button>' +
+                        '<button onclick="saveWhiteLabelSettings(' + accountId + ')" style="flex:3;background:' + brand + ';color:#fff;border:none;padding:12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;">💾 Save White Label Settings</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+
+    document.body.appendChild(overlay);
+
+    // Live preview update
+    ['wl-founder_name','wl-founder_title','wl-company_phone'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('input', function() {
+            var prev = document.getElementById('wl-sig-preview');
+            if (!prev) return;
+            prev.innerHTML =
+                '<div>Talk soon,</div>' +
+                '<div style="font-weight:700;color:#fff;">' + (document.getElementById('wl-founder_name').value||'Founder Name') + '</div>' +
+                '<div style="color:rgba(255,255,255,0.4);">' + (document.getElementById('wl-founder_title').value||'Founder') + ', ' + acct.agency_name + '</div>' +
+                '<div style="color:rgba(255,255,255,0.3);font-size:12px;">' + (document.getElementById('wl-company_phone').value||'Phone') + '</div>';
+        });
+    });
+}
+
+async function saveWhiteLabelSettings(accountId) {
+    var fields = ['founder_name','founder_title','company_email','company_city','company_phone',
+                  'company_website','company_tagline','logo_url','print_store_url',
+                  'smtp_user','smtp_pass','openphone_key','openphone_number'];
+
+    var payload = { updated_at: new Date().toISOString() };
+    fields.forEach(function(f) {
+        var el = document.getElementById('wl-' + f);
+        if (el) payload[f] = el.value.trim();
+    });
+
+    try {
+        if (typeof db !== 'undefined' && db) {
+            var res = await db.from('agency_subaccounts').update(payload).eq('id', accountId);
+            if (res.error) throw res.error;
+        }
+        // Update local cache
+        var idx = _subAccounts.findIndex(function(a){return a.id==accountId;});
+        if (idx > -1) _subAccounts[idx] = Object.assign({}, _subAccounts[idx], payload);
+        localStorage.setItem('nui_subaccounts', JSON.stringify(_subAccounts));
+
+        document.getElementById('wl-settings-overlay').remove();
+        if (typeof showNotification === 'function') showNotification('✅ White label settings saved!', 'success');
+    } catch(err) {
+        alert('Save failed: ' + err.message);
+    }
 }

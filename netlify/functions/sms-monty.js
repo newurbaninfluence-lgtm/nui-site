@@ -11,6 +11,8 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS'
 };
 
+const { getBrand, buildSmsSystemPrompt } = require('./utils/agency-brand');
+
 const SMS_SYSTEM_PROMPT = `You are Monty, the SMS customer service assistant for New Urban Influence (NUI), a branding and design agency in Detroit, Michigan. You're responding to client text messages.
 
 PERSONALITY:
@@ -66,6 +68,12 @@ LOCATION: Detroit, Michigan`;
 
 
 exports.handler = async function(event) {
+  // Resolve agency brand
+  let agencyId = null;
+  try { const b = JSON.parse(event.body||'{}'); agencyId = b.agency_id||null; } catch(e){}
+  const brand = await getBrand(agencyId);
+  const AGENCY_SYSTEM_PROMPT = buildSmsSystemPrompt(brand);
+
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }
@@ -210,7 +218,7 @@ Respond as Monty via SMS. Keep it short (1-3 sentences). Be helpful and direct.`
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 300,
-        system: SMS_SYSTEM_PROMPT,
+        system: AGENCY_SYSTEM_PROMPT,
         messages: [{ role: 'user', content: userPrompt }]
       })
     });

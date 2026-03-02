@@ -414,3 +414,46 @@ document.addEventListener('DOMContentLoaded', function() {
 }, true); // Capture phase so we run before other listeners
 
 })();
+
+// ── MONTY COMING SOON FOR TENANT PORTALS ─────────────────────
+// Intercept Monty panel load for agency sub-accounts
+// Monty is NUI-specific — show Coming Soon until per-agency AI is wired
+(function() {
+    var _origLoad = window.loadAdminMontyPanel;
+    document.addEventListener('DOMContentLoaded', function() {
+        // Wrap after all scripts load
+        setTimeout(function() {
+            if (!window._isAgencyTenant) return; // NUI admin — leave Monty alone
+
+            window.loadAdminMontyPanel = function() {
+                var panel = document.getElementById('adminMontyPanel');
+                if (!panel) return;
+                var brand = (window._agencyData && window._agencyData.brand_color) || '#6366f1';
+                var agencyName = (window._agencyData && window._agencyData.agency_name) || 'Your Agency';
+                panel.innerHTML = [
+                    '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;padding:40px;text-align:center;">',
+                        '<div style="width:72px;height:72px;border-radius:20px;background:' + brand + '18;border:1px solid ' + brand + '44;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:24px;">🤖</div>',
+                        '<div style="font-family:Syne,sans-serif;font-size:24px;font-weight:800;color:#fff;margin-bottom:8px;">AI Assistant</div>',
+                        '<div style="display:inline-flex;align-items:center;gap:6px;background:' + brand + '18;border:1px solid ' + brand + '33;color:' + brand + ';font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px;">🚧 Coming Soon</div>',
+                        '<div style="font-size:14px;color:rgba(255,255,255,0.4);max-width:400px;line-height:1.7;margin-bottom:32px;">',
+                            'Your AI assistant is being configured for ' + agencyName + '. ',
+                            'Once set up, it will let you manage clients, create jobs, send emails, and run your entire agency by typing in plain English.',
+                        '</div>',
+                        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:380px;width:100%;">',
+                            _featureChip('📋 Jobs & Projects'),
+                            _featureChip('📧 Send Emails'),
+                            _featureChip('👥 Manage Clients'),
+                            _featureChip('💬 SMS Campaigns'),
+                            _featureChip('💳 Invoice Clients'),
+                            _featureChip('📊 Pull Reports'),
+                        '</div>',
+                    '</div>'
+                ].join('');
+            };
+
+            function _featureChip(label) {
+                return '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px 16px;font-size:12px;color:rgba(255,255,255,0.35);">' + label + '</div>';
+            }
+        }, 300);
+    });
+})();

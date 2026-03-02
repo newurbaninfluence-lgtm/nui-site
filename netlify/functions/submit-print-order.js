@@ -1,5 +1,7 @@
 const nodemailer = require('nodemailer');
 
+const { getBrand, getFromAddress } = require('./utils/agency-brand');
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
@@ -7,6 +9,7 @@ exports.handler = async (event) => {
 
   try {
     const order = JSON.parse(event.body);
+  const brand = await getBrand(body.agency_id || null);
     const { client_name, client_email, client_phone, business_name,
             industry, shipping_address, items, subtotal, shipping,
             total, notes, status, source } = order;
@@ -104,8 +107,8 @@ exports.handler = async (event) => {
     });
 
     await transporter.sendMail({
-      from: `"NUI Print Orders" <${process.env.SMTP_USER || process.env.EMAIL_USER}>`,
-      to: 'info@newurbaninfluence.com',
+      from: `"${brand.agency_name} Orders" <${brand.smtp_user || process.env.SMTP_USER || process.env.EMAIL_USER}>`,
+      to: brand.company_email || 'info@newurbaninfluence.com',
       subject: `🖨️ New Print Order: $${total} — ${client_name}`,
       html: `
         <div style="font-family:Arial,sans-serif;max-width:650px;margin:0 auto;background:#0a0a0a;color:#fff;padding:32px;border-radius:12px;border:1px solid #222">
@@ -165,13 +168,13 @@ exports.handler = async (event) => {
     `).join('');
 
     await transporter.sendMail({
-      from: `"New Urban Influence" <${process.env.SMTP_USER || process.env.EMAIL_USER}>`,
+      from: `"${brand.agency_name}" <${brand.smtp_user || process.env.SMTP_USER || process.env.EMAIL_USER}>`,
       to: client_email,
-      subject: `Your Print Order — $${total} | New Urban Influence`,
+      subject: `Your Print Order — $${total} | ${brand.agency_name}`,
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#111;color:#fff;padding:32px;border-radius:12px">
           <div style="text-align:center;margin-bottom:24px">
-            <img src="https://newurbaninfluence.com/logo-nav-cropped.png" alt="NUI" style="height:40px">
+            <img src="${brand.logo_url || 'https://newurbaninfluence.com/logo-nav-cropped.png'}" alt="NUI" style="height:40px">
           </div>
           <h2 style="text-align:center;margin-bottom:8px">Order Received! 🎉</h2>
           <p style="text-align:center;color:#999;margin-bottom:32px">Here's what we got from you:</p>
@@ -192,10 +195,10 @@ exports.handler = async (event) => {
             <li>You\'ll get tracking info as soon as it ships</li>
           </ol>
 
-          <p style="color:#999;font-size:14px;margin-top:24px">Questions? Reply to this email or call us at <a href="tel:2484878747" style="color:#dc2626">(248) 487-8747</a></p>
+          <p style="color:#999;font-size:14px;margin-top:24px">Questions? Reply to this email or call us at <a href="tel:2484878747" style="color:#dc2626">${brand.company_phone || '(248) 487-8747'}</a></p>
 
           <hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:24px 0">
-          <p style="color:#666;font-size:12px;text-align:center">New Urban Influence · Detroit, Michigan</p>
+          <p style="color:#666;font-size:12px;text-align:center">${brand.agency_name}${brand.company_city ? ' · ' + brand.company_city : ''}</p>
         </div>
       `
     });

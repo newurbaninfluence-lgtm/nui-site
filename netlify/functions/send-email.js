@@ -3,6 +3,7 @@
 // Env vars: HOSTINGER_EMAIL, HOSTINGER_PASSWORD, MAIL_FROM
 
 const { requireAdmin } = require('./utils/security');
+const { getBrand, getTransporter, getFromAddress } = require('./utils/agency-brand');
 
 const nodemailer = require('nodemailer');
 
@@ -21,7 +22,8 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { to, subject, html, text, clientId, contactId } = JSON.parse(event.body || '{}');
+    const { to, subject, html, text, clientId, contactId, agency_id } = JSON.parse(event.body || '{}')
+    const brand = await getBrand(agency_id || null);;
 
     if (!to || !subject) {
       return {
@@ -67,7 +69,7 @@ exports.handler = async (event) => {
 
     // Send email
     const info = await transporter.sendMail({
-      from: MAIL_FROM,
+      from: getFromAddress(brand),
       to: to,
       subject: subject,
       html: trackedHtml,
