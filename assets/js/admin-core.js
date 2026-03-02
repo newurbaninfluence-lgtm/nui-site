@@ -584,6 +584,10 @@ async function loadAdminCalendarPanel() {
     syncMeetingsToLeads();
 
     // Aggregate calendar events from multiple sources
+    const orders = window.adminOrders || JSON.parse(localStorage.getItem('nui_orders') || '[]');
+    const invoices = window.adminInvoices || JSON.parse(localStorage.getItem('nui_invoices') || '[]');
+    const clients = window.adminClients || JSON.parse(localStorage.getItem('nui_clients') || '[]');
+
     const events = [
         // Scheduled meetings/appointments
         ...meetings.map(m => ({
