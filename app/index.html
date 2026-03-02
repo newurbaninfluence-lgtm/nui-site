@@ -28,6 +28,8 @@
 
   <!-- Critical scripts -->
   <script src="/env.js" defer></script>
+  <!-- Agency Tenant: MUST load before portal.js -->
+  <script src="/assets/js/agency-tenant.js?v=20260302"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="/supabase-client.js" defer></script>
 
@@ -129,7 +131,8 @@
     initializeTheme();
     if (typeof updateSiteLogos === 'function') updateSiteLogos();
     // Load portal (login/dashboard) immediately
-    if (typeof loadPortalView === 'function') {
+    // Agency tenant handles its own portal load
+    if (!window._agencyTenantActive && typeof loadPortalView === 'function') {
       loadPortalView();
     }
     // Hydrate data from backend (non-blocking)

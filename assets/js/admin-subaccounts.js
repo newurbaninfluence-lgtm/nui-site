@@ -263,6 +263,17 @@ function toggleAllFeatures(enable) {
     });
 }
 
+// ── HELPERS ──────────────────────────────────────────────────
+function _genSlug(name) {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g,'');
+}
+function _genPassword() {
+    var chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#';
+    var p = '';
+    for (var i=0;i<10;i++) p += chars[Math.floor(Math.random()*chars.length)];
+    return p;
+}
+
 async function saveSubAccount() {
     var name = (document.getElementById('subacct-name')||{}).value || '';
     if (!name.trim()) { alert('Agency name is required'); return; }
@@ -272,51 +283,159 @@ async function saveSubAccount() {
         return cb && cb.checked;
     });
 
-    var plan = (document.getElementById('subacct-plan')||{}).value || 'starter';
-    var rateVal = (document.getElementById('subacct-rate')||{}).value;
+    var plan     = (document.getElementById('subacct-plan')||{}).value || 'starter';
+    var rateVal  = (document.getElementById('subacct-rate')||{}).value;
+    var isNew    = !_editingAccount;
+
+    var slug     = isNew ? _genSlug(name.trim()) : (_editingAccount.portal_slug || _genSlug(name.trim()));
+    var tempPass = isNew ? _genPassword() : (_editingAccount.login_password || _genPassword());
 
     var payload = {
-        agency_name:  name.trim(),
-        domain:       (document.getElementById('subacct-domain')||{}).value || '',
-        owner_name:   (document.getElementById('subacct-owner')||{}).value || '',
-        owner_email:  (document.getElementById('subacct-email')||{}).value || '',
-        owner_phone:  (document.getElementById('subacct-phone')||{}).value || '',
-        brand_color:  (document.getElementById('subacct-color')||{}).value || '#dc2626',
-        plan:         plan,
-        monthly_rate: rateVal ? parseInt(rateVal) : ((NUI_PLANS[plan]||{}).price || 0),
-        features:     features,
-        notes:        (document.getElementById('subacct-notes')||{}).value || '',
-        status:       'active',
-        updated_at:   new Date().toISOString(),
+        agency_name:          name.trim(),
+        domain:               (document.getElementById('subacct-domain')||{}).value || '',
+        owner_name:           (document.getElementById('subacct-owner')||{}).value || '',
+        owner_email:          (document.getElementById('subacct-email')||{}).value || '',
+        owner_phone:          (document.getElementById('subacct-phone')||{}).value || '',
+        brand_color:          (document.getElementById('subacct-color')||{}).value || '#dc2626',
+        plan:                 plan,
+        monthly_rate:         rateVal ? parseInt(rateVal) : ((NUI_PLANS[plan]||{}).price || 0),
+        features:             features,
+        notes:                (document.getElementById('subacct-notes')||{}).value || '',
+        status:               'active',
+        portal_slug:          slug,
+        login_password:       tempPass,
+        setup_complete:       false,
+        updated_at:           new Date().toISOString(),
     };
 
+    var savedRecord = null;
     try {
         if (typeof db !== 'undefined' && db) {
             if (_editingAccount) {
-                var res = await db.from('agency_subaccounts').update(payload).eq('id', _editingAccount.id);
+                var res = await db.from('agency_subaccounts').update(payload).eq('id', _editingAccount.id).select().single();
                 if (res.error) throw res.error;
-                _subAccounts = _subAccounts.map(function(a){ return a.id==_editingAccount.id ? Object.assign({},a,payload) : a; });
+                savedRecord = res.data;
+                _subAccounts = _subAccounts.map(function(a){ return a.id==_editingAccount.id ? savedRecord : a; });
             } else {
                 payload.created_at = new Date().toISOString();
                 var res2 = await db.from('agency_subaccounts').insert(payload).select().single();
                 if (res2.error) throw res2.error;
-                _subAccounts.unshift(res2.data);
+                savedRecord = res2.data;
+                _subAccounts.unshift(savedRecord);
             }
         } else {
+            payload.id = Date.now(); payload.created_at = new Date().toISOString();
+            savedRecord = payload;
             if (_editingAccount) {
-                _subAccounts = _subAccounts.map(function(a){ return a.id==_editingAccount.id ? Object.assign({},a,payload) : a; });
+                _subAccounts = _subAccounts.map(function(a){ return a.id==_editingAccount.id ? savedRecord : a; });
             } else {
-                payload.id = Date.now(); payload.created_at = new Date().toISOString();
-                _subAccounts.unshift(payload);
+                _subAccounts.unshift(savedRecord);
             }
         }
+
         localStorage.setItem('nui_subaccounts', JSON.stringify(_subAccounts));
         closeSubAccountModal();
         renderSubAccountsGrid();
         updateSubAcctStats();
-        if (typeof showNotification === 'function') showNotification(_editingAccount ? 'Account updated' : 'Sub-account created!', 'success');
+
+        if (isNew && savedRecord) {
+            _showInviteModal(savedRecord);
+        } else {
+            if (typeof showNotification === 'function') showNotification('Account updated', 'success');
+        }
     } catch(err) { console.error(err); alert('Error saving: ' + err.message); }
 }
+
+// ── INVITE MODAL ─────────────────────────────────────────────
+function _showInviteModal(acct) {
+    var portalUrl = 'https://newurbaninfluence.com/app?agency=' + acct.portal_slug;
+    var email     = acct.owner_email || '';
+    var name      = acct.owner_name  || acct.agency_name;
+    var pass      = acct.login_password;
+    var brand     = acct.brand_color  || '#dc2626';
+
+    var emailBody = 'Hi ' + name + ',\n\nYour agency portal is ready!\n\n' +
+        'LOGIN DETAILS:\n' +
+        'Portal URL: ' + portalUrl + '\n' +
+        'Email: ' + email + '\n' +
+        'Temp Password: ' + pass + '\n\n' +
+        'On first login, a setup wizard will walk you through connecting your tools (Stripe, OpenPhone, email, etc.). It takes about 3 minutes.\n\n' +
+        'After setup, your full dashboard goes live with all the features on your plan.\n\n' +
+        '— New Urban Influence';
+
+    var mailtoLink = 'mailto:' + email +
+        '?subject=' + encodeURIComponent('Your Agency Portal is Ready — ' + acct.agency_name) +
+        '&body=' + encodeURIComponent(emailBody);
+
+    var overlay = document.createElement('div');
+    overlay.id = 'invite-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;font-family:Montserrat,sans-serif;';
+    overlay.innerHTML =
+        '<div style="width:100%;max-width:560px;background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;">' +
+            '<div style="background:' + brand + '18;border-bottom:1px solid ' + brand + '33;padding:22px 28px;display:flex;align-items:center;gap:14px;">' +
+                '<div style="font-size:28px;">🚀</div>' +
+                '<div>' +
+                    '<div style="font-family:Syne,sans-serif;font-size:18px;font-weight:800;color:#fff;">Portal Created!</div>' +
+                    '<div style="font-size:12px;color:rgba(255,255,255,0.4);">' + acct.agency_name + ' · ' + (acct.plan||'starter') + ' plan · ' + acct.monthly_rate + '/mo</div>' +
+                '</div>' +
+            '</div>' +
+            '<div style="padding:24px 28px;">' +
+                // Portal URL row
+                '<div style="margin-bottom:16px;">' +
+                    '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🔗 Client Portal URL</div>' +
+                    '<div style="display:flex;gap:8px;">' +
+                        '<div style="flex:1;background:#1a1a1a;border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:11px 14px;font-size:12px;color:' + brand + ';font-family:monospace;word-break:break-all;">' + portalUrl + '</div>' +
+                        '<button id="copy-url-btn" onclick="window._nui_copy(\'' + portalUrl + '\',\'copy-url-btn\')" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:11px 14px;border-radius:9px;cursor:pointer;font-size:11px;white-space:nowrap;font-family:inherit;">📋 Copy</button>' +
+                    '</div>' +
+                '</div>' +
+                // Credentials row
+                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">' +
+                    '<div>' +
+                        '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">📧 Login Email</div>' +
+                        '<div style="display:flex;gap:6px;">' +
+                            '<div style="flex:1;background:#1a1a1a;border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:10px 13px;font-size:12px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + (email||'—') + '</div>' +
+                            '<button id="copy-em-btn" onclick="window._nui_copy(\'' + email + '\',\'copy-em-btn\')" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:10px 12px;border-radius:9px;cursor:pointer;font-size:11px;font-family:inherit;">📋</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div>' +
+                        '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🔑 Temp Password</div>' +
+                        '<div style="display:flex;gap:6px;">' +
+                            '<div style="flex:1;background:#1a1a1a;border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:10px 13px;font-size:13px;font-family:monospace;color:#10b981;font-weight:700;letter-spacing:2px;">' + pass + '</div>' +
+                            '<button id="copy-pw-btn" onclick="window._nui_copy(\'' + pass + '\',\'copy-pw-btn\')" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:10px 12px;border-radius:9px;cursor:pointer;font-size:11px;font-family:inherit;">📋</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                // What happens next
+                '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:11px;padding:14px 16px;margin-bottom:20px;">' +
+                    '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.35);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">What Happens When They Log In</div>' +
+                    '<div style="font-size:12px;color:rgba(255,255,255,0.5);display:flex;gap:8px;margin-bottom:6px;"><span>1️⃣</span><span>They go to the URL and enter their email + temp password</span></div>' +
+                    '<div style="font-size:12px;color:rgba(255,255,255,0.5);display:flex;gap:8px;margin-bottom:6px;"><span>2️⃣</span><span>Setup wizard asks for their API keys: Stripe, OpenPhone, SendGrid, etc.</span></div>' +
+                    '<div style="font-size:12px;color:rgba(255,255,255,0.5);display:flex;gap:8px;"><span>3️⃣</span><span>Full dashboard unlocks — only panels on their plan are active</span></div>' +
+                '</div>' +
+                // Actions
+                '<div style="display:flex;gap:10px;">' +
+                    '<button onclick="document.getElementById(\'invite-overlay\').remove()" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);padding:12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;">Close</button>' +
+                    '<a href="' + mailtoLink + '" style="flex:2;text-decoration:none;" target="_blank">' +
+                        '<button style="width:100%;background:' + brand + ';color:#fff;border:none;padding:12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;">📧 Open Invite Email</button>' +
+                    '</a>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+    document.body.appendChild(overlay);
+}
+
+window._nui_copy = function(text, btnId) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(function() {
+            var btn = document.getElementById(btnId);
+            if (!btn) return;
+            var orig = btn.textContent;
+            btn.textContent = '✓';
+            btn.style.color = '#10b981';
+            setTimeout(function(){ btn.textContent=orig; btn.style.color=''; }, 2000);
+        });
+    }
+};
 
 async function toggleSubAccountStatus(id) {
     var acct = _subAccounts.find(function(a){return a.id==id;});
