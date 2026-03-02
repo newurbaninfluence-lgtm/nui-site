@@ -179,6 +179,11 @@ function showAdminPanel(panel) {
 
 // ==================== ADMIN PANELS ====================
 function loadAdminDashboardPanel() {
+    // Safety: ensure globals are always arrays before use
+    if (!Array.isArray(window.clients)) window.clients = JSON.parse(localStorage.getItem('nui_clients') || '[]');
+    if (!Array.isArray(window.orders)) window.orders = JSON.parse(localStorage.getItem('nui_orders') || '[]');
+    if (!Array.isArray(window.invoices)) window.invoices = JSON.parse(localStorage.getItem('nui_invoices') || '[]');
+
     const totalAssets = clients.reduce((sum, c) => sum + (c.assets ? Object.values(c.assets).flat().length : 0), 0);
     const pendingOrders = orders.filter(o => o.status !== 'delivered').length;
     const deliveredOrders = orders.filter(o => o.status === 'delivered').length;
@@ -429,7 +434,9 @@ function renderDashCalendar() {
     const monthName = now.toLocaleString('default', { month: 'long', year: 'numeric' });
 
     // Gather events for this month
-    const meetings = JSON.parse(localStorage.getItem('nui_meetings')) || [];
+    const meetings = Array.isArray(JSON.parse(localStorage.getItem('nui_meetings') || '[]'))
+        ? JSON.parse(localStorage.getItem('nui_meetings') || '[]') : [];
+    const _orders = Array.isArray(window.orders) ? window.orders : JSON.parse(localStorage.getItem('nui_orders') || '[]');
     const eventDays = new Set();
     const deadlineDays = new Set();
 
@@ -437,7 +444,7 @@ function renderDashCalendar() {
         const d = new Date(m.date);
         if (d.getMonth() === month && d.getFullYear() === year) eventDays.add(d.getDate());
     });
-    orders.filter(o => o.dueDate).forEach(o => {
+    _orders.filter(o => o.dueDate).forEach(o => {
         const d = new Date(o.dueDate);
         if (d.getMonth() === month && d.getFullYear() === year) deadlineDays.add(d.getDate());
     });
@@ -475,7 +482,7 @@ function renderDashCalendar() {
             label: (m.type === 'zoom' ? 'Zoom' : 'Phone') + ' — ' + (m.clientName || m.client_name || 'Client') + (m.service ? ' · ' + m.service : ''),
             color: '#3b82f6'
         })),
-        ...orders.filter(o => o.dueDate && new Date(o.dueDate) >= new Date(year, month, today)).slice(0, 3).map(o => ({
+        ..._orders.filter(o => o.dueDate && new Date(o.dueDate) >= new Date(year, month, today)).slice(0, 3).map(o => ({
             date: new Date(o.dueDate),
             label: o.projectName + ' due',
             color: '#f59e0b'
