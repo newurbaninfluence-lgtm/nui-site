@@ -112,6 +112,10 @@
 # ---- SMS ----
 # OPENPHONE_API_KEY         ✅ already set
 # OPENPHONE_PHONE_NUMBER    ✅ already set
+# ---- PUSH NOTIFICATIONS ----
+# VAPID_PUBLIC_KEY          ⬅ BMAqcFUu-F4jDsPcT_MH0kGxQFoidPwu8qzLebXLJM2DQHEa7W3MIsUu_wM4nvOF25s82mPyeuCHbZEW8-WFBT4
+# VAPID_PRIVATE_KEY         ⬅ MWMOcNGqedAzzyo_IM_tVxMmAFE9Mp-XkKtLICdjZ8w
+# VAPID_EMAIL               ⬅ mailto:newurbaninfluence@gmail.com
 # ---- PAYMENTS ----
 # STRIPE_SECRET_KEY         ✅ already set
 # STRIPE_WEBHOOK_SECRET     ⬅ add this
