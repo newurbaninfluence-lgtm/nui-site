@@ -567,7 +567,8 @@ async function syncAllData() {
 // ==================== CALENDAR PANEL ====================
 async function loadAdminCalendarPanel() {
     // Try to fetch meetings from Supabase first, fall back to localStorage
-    let meetings = JSON.parse(localStorage.getItem('nui_meetings')) || [];
+    let meetings = JSON.parse(localStorage.getItem('nui_meetings') || '[]');
+    if (!Array.isArray(meetings)) meetings = [];
 
     try {
         const resp = await fetch('/.netlify/functions/save-booking?date=all');
