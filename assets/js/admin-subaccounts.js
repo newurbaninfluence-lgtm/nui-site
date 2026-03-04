@@ -140,6 +140,11 @@ function buildAccountCard(acct) {
                 (enabledCount > 6 ? '<span style="padding:3px 9px;background:rgba(255,255,255,0.03);border-radius:20px;font-size:10px;color:rgba(255,255,255,0.3);">+' + (enabledCount-6) + ' more</span>' : '') +
             '</div>' +
         '</div>' +
+        '<div style="padding:12px 20px;background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:8;">' +
+            '<span style="font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.5px;text-transform:uppercase;flex-shrink:0;">Portal URL</span>' +
+            '<code id="portalurl-' + acct.id + '" style="flex:1;font-size:11px;color:#6ee7b7;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:6px;padding:5px 10px;margin:0 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;">newurbaninfluence.com/portal/?agency=' + (acct.portal_slug||acct.id) + '</code>' +
+            '<button onclick="copyPortalLink(\'' + (acct.portal_slug||acct.id) + '\')" style="flex-shrink:0;padding:5px 10px;background:rgba(16,185,129,0.08);color:#6ee7b7;border:1px solid rgba(16,185,129,0.2);border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;">📋 Copy</button>' +
+        '</div>' +
         '<div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">' +
             '<div>' +
                 '<div style="font-size:18px;font-weight:800;color:#fff;">$' + (acct.monthly_rate || plan.price).toLocaleString() + '<span style="font-size:11px;font-weight:400;color:rgba(255,255,255,0.3)">/mo</span></div>' +
@@ -151,8 +156,7 @@ function buildAccountCard(acct) {
                 '</button>' +
                 '<button onclick="openSubAccountModal(\'' + acct.id + '\')" style="padding:7px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">✏️ Manage</button>' +
                 '<button onclick="openWhiteLabelSettings(\'' + acct.id + '\')" style="padding:7px 14px;background:rgba(99,102,241,0.1);color:#818cf8;border:1px solid rgba(99,102,241,0.25);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;" title="White Label Settings">🎨 Brand</button>' +
-                '<a href="https://newurbaninfluence.com/portal/?agency=' + (acct.portal_slug||acct.id) + '" target="_blank" style="text-decoration:none;">' +
-                '<button style="padding:7px 14px;background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.25);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;" title="View their portal">👁 Portal</button></a>' +
+                '<button onclick="enterPortalAsAdmin(\'' + acct.id + '\')" style="padding:7px 14px;background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.25);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;" title="Enter their portal as admin — no login required">🚀 Enter Portal</button>' +
             '</div>' +
         '</div>' +
     '</div>';
@@ -683,3 +687,55 @@ window._sendInviteEmail = async function(acct) {
         }
     }
 };
+
+// ── PORTAL LINK COPY ─────────────────────────────────────────
+function copyPortalLink(slug) {
+    var url = 'https://newurbaninfluence.com/portal/?agency=' + slug;
+    navigator.clipboard.writeText(url).then(function() {
+        // Flash the code element green
+        var el = document.querySelector('[id^="portalurl-"]');
+        if (el) { el.style.color = '#fff'; setTimeout(function(){ el.style.color = '#6ee7b7'; }, 1200); }
+        // Quick toast
+        var t = document.createElement('div');
+        t.textContent = '✅ Portal link copied!';
+        t.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#10b981;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;z-index:99999;box-shadow:0 4px 20px rgba(0,0,0,0.3)';
+        document.body.appendChild(t);
+        setTimeout(function(){ t.remove(); }, 2000);
+    }).catch(function() {
+        prompt('Copy this portal link:', url);
+    });
+}
+
+// ── ONE-CLICK PORTAL IMPERSONATION ───────────────────────────
+// Writes an admin session directly to localStorage then opens the portal.
+// The portal picks up the session and skips the login screen entirely.
+function enterPortalAsAdmin(accountId) {
+    var acct = _subAccounts.find(function(a){ return a.id === accountId; });
+    if (!acct) return;
+    var slug = acct.portal_slug || acct.id;
+    var url  = 'https://newurbaninfluence.com/portal/?agency=' + slug;
+
+    // Write impersonation session — portal reads this key on load
+    var session = {
+        slug:      slug,
+        role:      'admin',
+        email:     acct.owner_email || 'admin@' + slug + '.com',
+        agency:    acct,
+        loginAt:   Date.now(),
+        impersonatedByNUI: true  // flag so portal can show "Exit to NUI Admin" link
+    };
+
+    // Open portal in new tab with session pre-written
+    var win = window.open(url, '_blank');
+    // Write session into new tab before it loads
+    var interval = setInterval(function() {
+        try {
+            win.localStorage.setItem('nui_agency_session', JSON.stringify(session));
+            clearInterval(interval);
+        } catch(e) {
+            // Cross-origin not ready yet — keep trying
+        }
+    }, 100);
+    // Stop trying after 5s regardless
+    setTimeout(function(){ clearInterval(interval); }, 5000);
+}
