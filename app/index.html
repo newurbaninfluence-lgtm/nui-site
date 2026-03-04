@@ -28,8 +28,7 @@
 
   <!-- Critical scripts -->
   <script src="/env.js" defer></script>
-  <!-- Agency Tenant: MUST load before portal.js -->
-  <script src="/assets/js/agency-tenant.js?v=20260302"></script>
+  <!-- Agency tenant wiring removed — sub-account portals are served separately -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="/supabase-client.js" defer></script>
 
@@ -67,8 +66,7 @@
   <div class="view" id="founderView" style="display:none;"></div>
   <div class="view" id="intakeView" style="display:none;"></div>
 
-  <!-- Agency Config — MUST load first (white-label branding/modules) -->
-  <script src="/assets/js/agency-config.js?v=20260226v2"></script>
+  <!-- Agency Config removed from main portal — NUI admin uses global.css defaults -->
 
   <!-- Security: Admin auth token management (must load FIRST) -->
   <script src="/assets/js/admin-auth.js?v=20260301"></script>
@@ -132,7 +130,7 @@
     if (typeof updateSiteLogos === 'function') updateSiteLogos();
     // Load portal (login/dashboard) immediately
     // Agency tenant handles its own portal load
-    if (!window._agencyTenantActive && typeof loadPortalView === 'function') {
+    if (typeof loadPortalView === 'function') {
       loadPortalView();
     }
     // Hydrate data from backend (non-blocking)
