@@ -10,6 +10,18 @@ var _agencySlug   = null;
 var _agencyData   = null;
 var _agencyRole   = null; // 'admin' | 'designer' | 'client'
 var _agencySession = null;
+var _sb           = null; // private Supabase client — independent of global db
+
+// Init own Supabase client — doesn't wait for supabase-client.js or defer scripts
+function _getClient() {
+    if (_sb) return _sb;
+    // Wait for CDN library
+    if (typeof supabase === 'undefined' || !supabase.createClient) return null;
+    var url = 'https://jcgvkyizoimwbolhfpta.supabase.co';
+    var key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpjZ3ZreWl6b2ltd2JvbGhmcHRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMDMwMjQsImV4cCI6MjA4NTg3OTAyNH0.a8gjkPoUHQ1kgROa2Lqaq3252opqg5CPMm6vR3t1NOk';
+    _sb = supabase.createClient(url, key);
+    return _sb;
+}
 
 // ── BOOT ─────────────────────────────────────────────────────
 window._agencyTenantInit = function() {
@@ -42,14 +54,21 @@ window._agencyTenantInit = function() {
 
 // ── LOAD AGENCY DATA ─────────────────────────────────────────
 async function _loadAgencyThenShowPicker() {
+    // Wait up to 5s for Supabase CDN to load
+    var waited = 0;
+    while (!_getClient() && waited < 5000) {
+        await new Promise(function(r){ setTimeout(r, 100); });
+        waited += 100;
+    }
     try {
-        if (typeof db !== 'undefined' && db) {
-            var res = await db.from('agency_subaccounts').select('*')
+        var client = _getClient();
+        if (client) {
+            var res = await client.from('agency_subaccounts').select('*')
                 .eq('portal_slug', _agencySlug).single();
             if (!res.error && res.data) {
                 _agencyData = res.data;
             } else {
-                var r2 = await db.from('agency_subaccounts').select('*')
+                var r2 = await client.from('agency_subaccounts').select('*')
                     .eq('domain', _agencySlug).single();
                 if (!r2.error && r2.data) _agencyData = r2.data;
             }
@@ -318,9 +337,9 @@ window._wizNext = function() {
 };
 window._wizSkip = function() { _wizStep++; _renderWizStep(); };
 window._wizFinish = async function() {
-    if (_agencyData && typeof db !== 'undefined' && db) {
+    if (_agencyData && _getClient()) {
         try {
-            await db.from('agency_subaccounts').update({
+            await _getClient().from('agency_subaccounts').update({
                 integrations_config: _wizKeys, setup_complete: true, updated_at: new Date().toISOString()
             }).eq('id', _agencyData.id);
             _agencyData.integrations_config = _wizKeys;
