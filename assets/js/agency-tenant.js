@@ -360,64 +360,147 @@ function _launchPortal() {
     var role  = _agencyRole;
     var brand = d.brand_color || '#6366f1';
     var name  = d.agency_name;
+    var initials = name.charAt(0).toUpperCase();
 
-    // Inject brand CSS vars — REPLACE all NUI red with agency color
+    // ── 1. Inject brand CSS — override ALL NUI red/branding BEFORE overlay drops
     var style = document.getElementById('agency-tenant-styles') || document.createElement('style');
     style.id = 'agency-tenant-styles';
-    style.textContent =
-        ':root{--admin-accent:' + brand + ' !important;--brand-primary:' + brand + ' !important;}' +
-        '.admin-nav-link.active,.ni.on{background:' + brand + '18 !important;color:' + brand + ' !important;border-color:' + brand + '33 !important;}' +
-        '.btn-primary,.admin-save-btn,.sidebar-logo-dot{background:' + brand + ' !important;}' +
-        // Hide NUI logo text / branding elements completely
-        '.nui-wordmark,.nui-brand-text,.sidebar-powered{display:none !important;}';
+    style.textContent = [
+        ':root{',
+        '  --admin-accent:' + brand + ' !important;',
+        '  --brand-primary:' + brand + ' !important;',
+        '  --red:' + brand + ' !important;',
+        '}',
+        // Active nav uses brand color
+        '.admin-nav-link.active{background:' + brand + '18 !important;color:' + brand + ' !important;border-color:' + brand + '33 !important;}',
+        // Buttons use brand color
+        '.btn-primary,.admin-save-btn,.sidebar-logo-dot,button[onclick*="portalLogin"]{background:' + brand + ' !important;}',
+        // Hide every NUI-specific element
+        '.nui-wordmark,.nui-brand-text,.sidebar-powered,#staffDemoSection{display:none !important;}',
+        // Hide the NUI login screen completely — agency-tenant owns auth
+        '#portalLogin{display:none !important;}',
+        // Hide the NUI background / marketing elements
+        '.portal-bg,.portal-hero,.marketing-bg{display:none !important;}'
+    ].join('\n');
     if (!style.parentNode) document.head.appendChild(style);
 
-    document.title = name + ' — ' + (role.charAt(0).toUpperCase()+role.slice(1)) + ' Portal';
-
-    // Set globals for feature filtering
+    // ── 2. Set globals BEFORE calling loadPortalView
+    document.title = name + ' — ' + (role.charAt(0).toUpperCase() + role.slice(1)) + ' Portal';
     window._isAgencyTenant = true;
     window._agencyRole     = role;
     window._agencyData     = d;
     window._agencyFeatures = Array.isArray(d.features) ? d.features : [];
     window._agencyKeys     = d.integrations_config || {};
 
-    // Remove overlay, boot portal
+    // ── 3. Fake NUI auth state so portal.js thinks admin is logged in
+    window.currentUser = {
+        type: role === 'admin' ? 'admin' : role,
+        email: (_agencySession && _agencySession.email) || d.owner_email || '',
+        name: name + ' ' + (role.charAt(0).toUpperCase() + role.slice(1)),
+        isMasterAdmin: (role === 'admin'),
+        isAgencyTenant: true
+    };
+
+    // ── 4. Render the portal HTML
+    if (typeof loadPortalView === 'function') loadPortalView();
+
+    // ── 5. Immediately show adminDashboard, hide NUI login form
+    var loginEl = document.getElementById('portalLogin');
+    var dashEl  = document.getElementById('adminDashboard');
+    var clientEl = document.getElementById('clientPortal');
+    if (loginEl)  loginEl.style.display  = 'none';
+    if (clientEl) clientEl.style.display = 'none';
+    if (dashEl) {
+        dashEl.style.display   = 'block';
+        dashEl.style.visibility = 'visible';
+        dashEl.classList.remove('hidden');
+    }
+
+    // ── 6. Replace sidebar branding synchronously — no setTimeout
+    // Sidebar brand name
+    document.querySelectorAll('.sidebar-brand span, .sb-name, #adminHeaderTitle, [id*="adminHeader"] span').forEach(function(el) {
+        if (el.textContent.trim() === 'NUI Admin' || el.textContent.trim() === 'Admin Dashboard' || el.id === 'adminHeaderTitle') {
+            el.textContent = name + (role !== 'admin' ? ' — ' + role.charAt(0).toUpperCase() + role.slice(1) : '');
+        }
+    });
+
+    // Sidebar logo: replace NUI icon-192.png with agency initial
+    document.querySelectorAll('.sidebar-brand img, #adminHeaderLogo, [src*="icon-192"]').forEach(function(img) {
+        var mark = document.createElement('div');
+        mark.style.cssText = 'width:' + (img.style.height || '28px') + ';height:' + (img.style.height || '28px') + ';' +
+            'min-width:28px;min-height:28px;border-radius:8px;background:' + brand + ';' +
+            'display:inline-flex;align-items:center;justify-content:center;' +
+            'font-size:15px;font-weight:900;color:#fff;flex-shrink:0;';
+        mark.textContent = initials;
+        if (img.parentNode) img.parentNode.replaceChild(mark, img);
+    });
+
+    // Header user info
+    var userInfoEl = document.getElementById('adminUserInfo');
+    if (userInfoEl) userInfoEl.textContent = name + ' · ' + (role.charAt(0).toUpperCase() + role.slice(1));
+
+    // ── 7. Remove overlay — LAST, so no flash of NUI branding
     var overlay = document.getElementById('tenant-overlay');
     if (overlay) overlay.remove();
 
-    if (typeof loadPortalView === 'function') loadPortalView();
-
-    setTimeout(_applyBranding, 350);
-    setTimeout(function(){ _filterFeatures(role); }, 600);
+    // ── 8. Load dashboard panel + filter features
+    setTimeout(function() {
+        if (typeof showAdminPanel === 'function') showAdminPanel('dashboard');
+        _applyBranding();
+    }, 100);
+    setTimeout(function() { _filterFeatures(role); }, 300);
 }
 
 // ── APPLY BRANDING ────────────────────────────────────────────
 function _applyBranding() {
-    var d     = _agencyData;
-    var brand = d.brand_color || '#6366f1';
-    var name  = d.agency_name;
+    var d       = _agencyData;
+    var brand   = d.brand_color || '#6366f1';
+    var name    = d.agency_name;
+    var initials = name.charAt(0).toUpperCase();
 
-    // Replace sidebar brand name — never show "New Urban Influence"
-    var brandEls = document.querySelectorAll('.sidebar-brand span,.sb-name,.admin-brand-name');
-    brandEls.forEach(function(el){ el.textContent = name; });
-
-    // Replace any NUI logo images with styled text logo mark
-    var logoImgs = document.querySelectorAll('.sidebar-logo img,.admin-logo img,.sb-logo img');
-    logoImgs.forEach(function(img){
-        var wrap = img.parentNode;
-        var mark = document.createElement('div');
-        mark.style.cssText = 'width:32px;height:32px;border-radius:9px;background:' + brand + ';' +
-            'display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;';
-        mark.textContent = name.charAt(0).toUpperCase();
-        wrap.replaceChild(mark, img);
+    // 1. Replace ALL sidebar brand spans
+    document.querySelectorAll('.sidebar-brand span,.sb-name,.admin-brand-name,#adminHeaderTitle').forEach(function(el) {
+        el.textContent = name;
     });
 
-    // Add "Powered by NUI" in footer only — subtle, never on main UI
+    // 2. Replace ALL remaining NUI icon images
+    document.querySelectorAll('img[src*="icon-192"],img[alt="NUI"],img[src*="logo"]').forEach(function(img) {
+        if (img.closest('#tenant-overlay')) return; // skip overlay
+        var mark = document.createElement('div');
+        var sz = img.offsetHeight || 28;
+        mark.style.cssText = 'width:' + sz + 'px;height:' + sz + 'px;border-radius:8px;background:' + brand + ';' +
+            'display:inline-flex;align-items:center;justify-content:center;font-size:' + Math.round(sz*0.55) + 'px;font-weight:900;color:#fff;flex-shrink:0;';
+        mark.textContent = initials;
+        if (img.parentNode) img.parentNode.replaceChild(mark, img);
+    });
+
+    // 3. Walk text nodes — replace "New Urban Influence" & "NUI Admin" with agency name
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    var node;
+    while ((node = walker.nextNode())) {
+        if (!node.parentElement) continue;
+        var tag = node.parentElement.tagName;
+        if (tag === 'SCRIPT' || tag === 'STYLE') continue;
+        if (node.nodeValue.indexOf('New Urban Influence') !== -1 ||
+            node.nodeValue.indexOf('NUI Admin') !== -1) {
+            node.nodeValue = node.nodeValue
+                .replace(/New Urban Influence/g, name)
+                .replace(/NUI Admin/g, name);
+        }
+    }
+
+    // 4. Header user display
+    var userInfoEl = document.getElementById('adminUserInfo');
+    if (userInfoEl && _agencySession) {
+        userInfoEl.textContent = name + ' · ' + (_agencyRole.charAt(0).toUpperCase() + _agencyRole.slice(1));
+    }
+
+    // 5. Subtle powered-by in sidebar footer only
     var foot = document.querySelector('.sidebar-footer,.sb-foot');
     if (foot && !foot.querySelector('.nui-powered')) {
         var p = document.createElement('div');
         p.className = 'nui-powered';
-        p.style.cssText = 'font-size:9px;color:rgba(255,255,255,0.15);margin-top:8px;text-align:center;';
+        p.style.cssText = 'font-size:9px;color:rgba(255,255,255,0.1);margin-top:8px;text-align:center;letter-spacing:0.5px;';
         p.textContent = 'Powered by NUI';
         foot.appendChild(p);
     }
