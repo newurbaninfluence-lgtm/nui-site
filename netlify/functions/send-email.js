@@ -3,7 +3,7 @@
 // Env vars: HOSTINGER_EMAIL, HOSTINGER_PASSWORD, MAIL_FROM
 
 const { requireAdmin } = require('./utils/security');
-const { getBrand, getTransporter, getFromAddress } = require('./utils/agency-brand');
+const { getBrand, hasSMTP, getTransporter, getFromAddress } = require('./utils/agency-brand');
 
 const nodemailer = require('nodemailer');
 
@@ -23,7 +23,7 @@ exports.handler = async (event) => {
 
   try {
     const { to, subject, html, text, clientId, contactId, agency_id } = JSON.parse(event.body || '{}')
-    const brand = await getBrand(agency_id || null);;
+    const brand = await getBrand(agency_id || null);
 
     if (!to || !subject) {
       return {
@@ -33,11 +33,24 @@ exports.handler = async (event) => {
       };
     }
 
+    // Sub-accounts must have their own SMTP configured — never use NUI's credentials.
+    if (agency_id && !hasSMTP(brand)) {
+      return {
+        statusCode: 503,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({
+          error: 'Email not configured',
+          detail: 'This agency has not set up their own SMTP credentials yet. Go to Settings → Integrations to add them.'
+        })
+      };
+    }
+
     const SMTP_USER = process.env.HOSTINGER_EMAIL;
     const SMTP_PASS = process.env.HOSTINGER_PASSWORD;
     const MAIL_FROM = process.env.MAIL_FROM || SMTP_USER;
 
-    if (!SMTP_USER || !SMTP_PASS) {
+    // NUI master admin path: require env vars
+    if (!agency_id && (!SMTP_USER || !SMTP_PASS)) {
       return {
         statusCode: 500,
         headers: CORS_HEADERS,
@@ -45,16 +58,8 @@ exports.handler = async (event) => {
       };
     }
 
-    // Create SMTP transporter (Hostinger uses SSL on port 465)
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.hostinger.com',
-      port: 465,
-      secure: true,
-      auth: {
-        user: SMTP_USER,
-        pass: SMTP_PASS
-      }
-    });
+    // Build transporter — uses brand's own SMTP if sub-account, NUI env vars if master.
+    const transporter = getTransporter(brand);
 
     // Build HTML with tracking pixel
     const baseHtml = html || `<p>${text || ''}</p>`;

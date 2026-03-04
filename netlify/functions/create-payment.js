@@ -1,8 +1,10 @@
 // create-payment.js — Netlify Function
-// Creates a Stripe PaymentIntent for invoice payments
-// Env vars: STRIPE_SECRET_KEY
+// Creates a Stripe PaymentIntent for invoice payments.
+// Sub-accounts must supply their own Stripe key — NUI's key is never shared.
+// Env vars (NUI master only): STRIPE_SECRET_KEY
 
 const { requireAdmin } = require('./utils/security');
+const { getBrand } = require('./utils/agency-brand');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
@@ -25,13 +27,29 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { invoiceId, amount, clientId, clientEmail, description } = JSON.parse(event.body || '{}');
+    const { invoiceId, amount, clientId, clientEmail, description, agency_id } = JSON.parse(event.body || '{}');
 
     if (!amount) {
       return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Missing required field: amount' }) };
     }
 
-    const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
+    // Resolve Stripe key — sub-accounts must use their own, never NUI's.
+    const brand = await getBrand(agency_id || null);
+    const stripeKey = (brand._raw && brand._raw.integrations_config && brand._raw.integrations_config.stripe_sk)
+      || (!agency_id ? process.env.STRIPE_SECRET_KEY : null);
+
+    if (agency_id && !stripeKey) {
+      return {
+        statusCode: 503,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({
+          error: 'Stripe not configured',
+          detail: 'This agency has not set up their own Stripe credentials yet. Go to Settings → Integrations to add them.'
+        })
+      };
+    }
+
+    const STRIPE_SECRET_KEY = stripeKey || process.env.STRIPE_SECRET_KEY;
     if (!STRIPE_SECRET_KEY) {
       return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Stripe not configured. Set STRIPE_SECRET_KEY.' }) };
     }

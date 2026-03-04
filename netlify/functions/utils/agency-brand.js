@@ -28,7 +28,9 @@ const NUI_DEFAULTS = {
 };
 
 async function getBrand(agencyId) {
-    if (!agencyId) return { ...NUI_DEFAULTS };
+    // _agencyId: null means NUI master — allowed to use env var credentials.
+    // _agencyId: set means sub-account — must only use their own stored credentials.
+    if (!agencyId) return { ...NUI_DEFAULTS, _agencyId: null };
 
     const SUPABASE_URL = process.env.SUPABASE_URL;
     const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY;
@@ -56,6 +58,7 @@ async function getBrand(agencyId) {
         const row = rows[0];
 
         return {
+            _agencyId:        agencyId,   // marks this as a sub-account — no NUI cred fallback
             agency_name:      row.agency_name     || NUI_DEFAULTS.agency_name,
             founder_name:     row.founder_name    || row.owner_name || NUI_DEFAULTS.founder_name,
             founder_title:    row.founder_title   || NUI_DEFAULTS.founder_title,
@@ -79,10 +82,25 @@ async function getBrand(agencyId) {
     }
 }
 
+// Returns true if this brand has its own SMTP credentials configured.
+// Sub-accounts that haven't provided SMTP keys must NOT fall back to NUI's credentials.
+function hasSMTP(brand) {
+    return !!(brand.smtp_user && brand.smtp_pass);
+}
+
+// Returns true if this brand has its own OpenPhone credentials configured.
+function hasOpenPhone(brand) {
+    return !!(brand.openphone_key && brand.openphone_number);
+}
+
 function getTransporter(brand) {
     const nodemailer = require('nodemailer');
-    const user = brand.smtp_user  || process.env.HOSTINGER_EMAIL   || process.env.SMTP_USER;
-    const pass = brand.smtp_pass  || process.env.HOSTINGER_PASSWORD || process.env.SMTP_PASS;
+    // NUI master admin (_agencyId === null) → use env vars.
+    // Sub-accounts with no SMTP configured → throw clearly. Caller must check hasSMTP() first.
+    const isNUI = !brand._agencyId;
+    const user = brand.smtp_user || (isNUI ? (process.env.HOSTINGER_EMAIL || process.env.SMTP_USER) : null);
+    const pass = brand.smtp_pass || (isNUI ? (process.env.HOSTINGER_PASSWORD || process.env.SMTP_PASS) : null);
+    if (!user || !pass) throw new Error('SMTP_NOT_CONFIGURED');
     return nodemailer.createTransport({
         host: 'smtp.hostinger.com',
         port: 465,
@@ -92,7 +110,9 @@ function getTransporter(brand) {
 }
 
 function getFromAddress(brand) {
-    const email = brand.smtp_user || process.env.MAIL_FROM || process.env.HOSTINGER_EMAIL;
+    const isNUI = !brand._agencyId;
+    const email = brand.smtp_user || (isNUI ? (process.env.MAIL_FROM || process.env.HOSTINGER_EMAIL) : null);
+    if (!email) throw new Error('SMTP_NOT_CONFIGURED');
     const label = brand.founder_name
         ? `${brand.founder_name} | ${brand.agency_name}`
         : brand.agency_name;
@@ -146,4 +166,4 @@ ${brand.company_website ? `Web: ${brand.company_website}` : ''}
 OWNER: ${brand.founder_name}${brand.founder_title ? `, ${brand.founder_title}` : ''}`;
 }
 
-module.exports = { getBrand, getTransporter, getFromAddress, buildEmailFooter, buildEmailSignature, buildSmsSystemPrompt, NUI_DEFAULTS };
+module.exports = { getBrand, getTransporter, getFromAddress, hasSMTP, hasOpenPhone, buildEmailFooter, buildEmailSignature, buildSmsSystemPrompt, NUI_DEFAULTS };

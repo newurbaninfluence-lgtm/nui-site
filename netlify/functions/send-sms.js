@@ -1,8 +1,10 @@
 // send-sms.js — Netlify Function
 // Sends SMS via OpenPhone API
-// Env vars: OPENPHONE_API_KEY, OPENPHONE_PHONE_NUMBER
+// Sub-accounts must supply their own OpenPhone keys — NUI's keys are never shared.
+// Env vars (NUI master only): OPENPHONE_API_KEY, OPENPHONE_PHONE_NUMBER
 
 const { requireAdmin } = require('./utils/security');
+const { getBrand, hasOpenPhone } = require('./utils/agency-brand');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
@@ -19,14 +21,30 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { to, message, clientId, contactId } = JSON.parse(event.body || '{}');
+    const { to, message, clientId, contactId, agency_id } = JSON.parse(event.body || '{}');
 
     if (!to || !message) {
       return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Missing required fields: to, message' }) };
     }
 
-    const OPENPHONE_API_KEY = process.env.OPENPHONE_API_KEY;
-    const FROM_NUMBER_ID = process.env.OPENPHONE_PHONE_NUMBER;
+    // Resolve credentials — sub-accounts use their own keys, never NUI's.
+    const brand = await getBrand(agency_id || null);
+
+    if (agency_id && !hasOpenPhone(brand)) {
+      return {
+        statusCode: 503,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({
+          error: 'SMS not configured',
+          detail: 'This agency has not set up their own OpenPhone credentials yet. Go to Settings → Integrations to add them.'
+        })
+      };
+    }
+
+    // NUI master uses env vars; sub-accounts use their stored keys.
+    const isNUI = !agency_id;
+    const OPENPHONE_API_KEY = brand.openphone_key || (isNUI ? process.env.OPENPHONE_API_KEY : null);
+    const FROM_NUMBER_ID    = brand.openphone_number || (isNUI ? process.env.OPENPHONE_PHONE_NUMBER : null);
 
     if (!OPENPHONE_API_KEY || !FROM_NUMBER_ID) {
       return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'OpenPhone not configured. Set OPENPHONE_API_KEY and OPENPHONE_PHONE_NUMBER.' }) };

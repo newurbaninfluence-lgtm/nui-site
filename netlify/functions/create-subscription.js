@@ -1,9 +1,11 @@
 // create-subscription.js — Netlify Function
-// Creates a Stripe Checkout session for subscriptions or pay-later
+// Creates a Stripe Checkout session for subscriptions or pay-later.
+// Sub-accounts must supply their own Stripe key — NUI's key is never shared.
 // Supports: recurring billing, Afterpay, Klarna, Affirm
-// Env vars: STRIPE_SECRET_KEY
+// Env vars (NUI master only): STRIPE_SECRET_KEY
 
 const { requireAdmin } = require('./utils/security');
+const { getBrand } = require('./utils/agency-brand');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
@@ -28,14 +30,30 @@ exports.handler = async (event) => {
     const {
       clientEmail, clientName, clientId,
       amount, description, invoiceId,
-      billingType,   // 'one_time', 'monthly', 'quarterly', 'yearly'
-      billingCycles, // 0 = ongoing
-      payLater       // 'none', 'afterpay', 'affirm', 'klarna'
+      billingType, billingCycles, payLater,
+      agency_id
     } = JSON.parse(event.body || '{}');
 
     if (!amount) {
       return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Amount required' }) };
     }
+
+    // Resolve Stripe key — sub-accounts must use their own, never NUI's.
+    const brand = await getBrand(agency_id || null);
+    const agencyStripeKey = brand._raw && brand._raw.integrations_config && brand._raw.integrations_config.stripe_sk;
+
+    if (agency_id && !agencyStripeKey) {
+      return {
+        statusCode: 503,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({
+          error: 'Stripe not configured',
+          detail: 'This agency has not set up their own Stripe credentials yet. Go to Settings → Integrations to add them.'
+        })
+      };
+    }
+
+    const stripeKey = agencyStripeKey || STRIPE_SECRET_KEY;
 
     const amountCents = Math.round(amount * 100);
     const origin = event.headers.origin || event.headers.referer?.replace(/\/+$/, '') || 'https://newurbaninfluence.com';
@@ -58,7 +76,7 @@ exports.handler = async (event) => {
       const priceResp = await fetch('https://api.stripe.com/v1/prices', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${STRIPE_SECRET_KEY}`,
+          'Authorization': `Bearer ${stripeKey}`,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: priceParams.toString()
@@ -81,7 +99,7 @@ exports.handler = async (event) => {
       const sessionResp = await fetch('https://api.stripe.com/v1/checkout/sessions', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${STRIPE_SECRET_KEY}`,
+          'Authorization': `Bearer ${stripeKey}`,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: sessionParams.toString()
@@ -123,7 +141,7 @@ exports.handler = async (event) => {
     const sessionResp = await fetch('https://api.stripe.com/v1/checkout/sessions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${STRIPE_SECRET_KEY}`,
+        'Authorization': `Bearer ${stripeKey}`,
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       body: sessionParams.toString()
