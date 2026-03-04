@@ -42,6 +42,7 @@ window._agencyTenantInit = function() {
     // Check if already logged in this session
     try {
         var saved = sessionStorage.getItem('nui_agency_session');
+        if (!saved) saved = localStorage.getItem('nui_agency_session');
         if (saved) {
             _agencySession = JSON.parse(saved);
             if (_agencySession.slug === _agencySlug) {
@@ -63,16 +64,29 @@ async function _loadAgencyAndShowLogin() {
 
     try {
         if (typeof db !== 'undefined' && db) {
+            // Primary lookup: portal_slug (matches ?agency=SLUG in URL)
             var res = await db.from('agency_subaccounts')
                 .select('*')
-                .eq('domain', _agencySlug)
+                .eq('portal_slug', _agencySlug)
                 .single();
             if (!res.error && res.data) {
                 _agencyData = res.data;
             } else {
-                // Try by agency_name slug
-                var res2 = await db.from('agency_subaccounts').select('*').ilike('agency_name', _agencySlug.replace(/-/g,' ')).single();
-                if (!res2.error && res2.data) _agencyData = res2.data;
+                // Fallback: domain field
+                var res2 = await db.from('agency_subaccounts')
+                    .select('*')
+                    .eq('domain', _agencySlug)
+                    .single();
+                if (!res2.error && res2.data) {
+                    _agencyData = res2.data;
+                } else {
+                    // Last resort: agency_name slug match
+                    var res3 = await db.from('agency_subaccounts')
+                        .select('*')
+                        .ilike('agency_name', _agencySlug.replace(/-/g, ' '))
+                        .single();
+                    if (!res3.error && res3.data) _agencyData = res3.data;
+                }
             }
         }
     } catch(e) { console.warn('[Tenant] Supabase lookup failed:', e); }
@@ -152,7 +166,10 @@ window._tenantLogin = async function() {
 
     // Save session
     _agencySession = { slug: _agencySlug, data: _agencyData, email: email, loginAt: Date.now() };
-    try { sessionStorage.setItem('nui_agency_session', JSON.stringify(_agencySession)); } catch(e) {}
+    try {
+        localStorage.setItem('nui_agency_session', JSON.stringify(_agencySession));
+        sessionStorage.setItem('nui_agency_session', JSON.stringify(_agencySession));
+    } catch(e) {}
 
     // Check if setup wizard needed
     var integrations = (_agencyData && _agencyData.integrations_config) || null;
@@ -291,6 +308,7 @@ window._wizardFinish = async function() {
             // Update session
             _agencySession.data = _agencyData;
             sessionStorage.setItem('nui_agency_session', JSON.stringify(_agencySession));
+            localStorage.setItem('nui_agency_session', JSON.stringify(_agencySession));
         } catch(e) { console.warn('[Tenant] Could not save integrations:', e); }
     }
     _launchAgencyPortal();

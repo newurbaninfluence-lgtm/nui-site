@@ -419,9 +419,7 @@ function _showInviteModal(acct) {
                 // Actions
                 '<div style="display:flex;gap:10px;">' +
                     '<button onclick="document.getElementById(\'invite-overlay\').remove()" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);padding:12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;">Close</button>' +
-                    '<a href="' + mailtoLink + '" style="flex:2;text-decoration:none;" target="_blank">' +
-                        '<button style="width:100%;background:' + brand + ';color:#fff;border:none;padding:12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;">📧 Open Invite Email</button>' +
-                    '</a>' +
+                    '<button id="send-invite-btn" onclick="window._sendInviteEmail(' + JSON.stringify(acct).replace(/'/g,"&#39;") + ')" style="flex:2;background:' + brand + ';color:#fff;border:none;padding:12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;">📧 Send Invite Email</button>' +
                 '</div>' +
             '</div>' +
         '</div>';
@@ -617,3 +615,71 @@ async function saveWhiteLabelSettings(accountId) {
         alert('Save failed: ' + err.message);
     }
 }
+
+// ── SEND INVITE EMAIL via Netlify Function ────────────────────
+window._sendInviteEmail = async function(acct) {
+    var btn = document.getElementById('send-invite-btn');
+    if (btn) { btn.textContent = '⏳ Sending...'; btn.disabled = true; }
+
+    var portalUrl = 'https://newurbaninfluence.com/portal/?agency=' + acct.portal_slug;
+    var name      = acct.owner_name || acct.agency_name;
+    var brand     = acct.brand_color || '#dc2626';
+
+    var htmlBody = '<div style="font-family:Montserrat,sans-serif;max-width:560px;margin:0 auto;background:#0a0a0f;color:#fff;border-radius:16px;overflow:hidden;">' +
+        '<div style="background:' + brand + ';padding:32px 36px;">' +
+            '<div style="font-family:Syne,sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:4px;">' + acct.agency_name + '</div>' +
+            '<div style="font-size:13px;color:rgba(255,255,255,0.7);">Your agency portal is ready to launch 🚀</div>' +
+        '</div>' +
+        '<div style="padding:36px;">' +
+            '<p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.8);margin:0 0 28px;">Hi ' + name + ', your white-label portal is live. Here are your login details:</p>' +
+            '<div style="background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 24px;margin-bottom:28px;">' +
+                '<div style="margin-bottom:14px;">' +
+                    '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🔗 Portal URL</div>' +
+                    '<a href="' + portalUrl + '" style="color:' + brand + ';font-size:13px;font-family:monospace;">' + portalUrl + '</a>' +
+                '</div>' +
+                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">' +
+                    '<div><div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">📧 Email</div>' +
+                    '<div style="font-size:13px;color:#fff;">' + (acct.owner_email||'—') + '</div></div>' +
+                    '<div><div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🔑 Temp Password</div>' +
+                    '<div style="font-size:15px;font-family:monospace;font-weight:700;color:#10b981;letter-spacing:2px;">' + acct.login_password + '</div></div>' +
+                '</div>' +
+            '</div>' +
+            '<div style="background:rgba(255,255,255,0.03);border-left:3px solid ' + brand + ';padding:16px 20px;border-radius:0 10px 10px 0;margin-bottom:28px;">' +
+                '<div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;">On first login:</div>' +
+                '<div style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.8;">1️⃣ Visit your portal URL<br>2️⃣ Enter email + temp password<br>3️⃣ Connect your tools in the setup wizard (~3 min)<br>4️⃣ Full dashboard unlocks</div>' +
+            '</div>' +
+            '<div style="text-align:center;margin-bottom:28px;">' +
+                '<a href="' + portalUrl + '" style="display:inline-block;background:' + brand + ';color:#fff;text-decoration:none;padding:14px 40px;border-radius:10px;font-size:15px;font-weight:700;">Open My Portal →</a>' +
+            '</div>' +
+            '<p style="font-size:12px;color:rgba(255,255,255,0.3);border-top:1px solid rgba(255,255,255,0.07);padding-top:20px;margin:0;">Powered by <strong style="color:rgba(255,255,255,0.5);">New Urban Influence</strong></p>' +
+        '</div>' +
+    '</div>';
+
+    try {
+        var resp = await fetch('/.netlify/functions/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                to:      acct.owner_email,
+                subject: '🚀 Your Agency Portal is Ready — ' + acct.agency_name,
+                html:    htmlBody,
+                text:    'Hi ' + name + ',\n\nPortal: ' + portalUrl + '\nEmail: ' + (acct.owner_email||'') + '\nPassword: ' + acct.login_password + '\n\n— New Urban Influence'
+            })
+        });
+        var data = await resp.json();
+        if (resp.ok) {
+            if (btn) { btn.textContent = '✅ Invite Sent!'; btn.style.background = '#10b981'; }
+            setTimeout(function(){ var o=document.getElementById('invite-overlay'); if(o) o.remove(); }, 2000);
+        } else {
+            throw new Error(data.error || 'Send failed (' + resp.status + ')');
+        }
+    } catch(err) {
+        if (btn) { btn.textContent = '📧 Send Invite Email'; btn.disabled = false; }
+        var fallback = 'mailto:' + (acct.owner_email||'') +
+            '?subject=' + encodeURIComponent('Your Agency Portal is Ready — ' + acct.agency_name) +
+            '&body=' + encodeURIComponent('Hi ' + name + ',\n\nPortal: ' + portalUrl + '\nEmail: ' + (acct.owner_email||'') + '\nPassword: ' + acct.login_password + '\n\n— New Urban Influence');
+        if (confirm('Email send failed: ' + err.message + '\n\nOpen your email client instead?')) {
+            window.open(fallback, '_blank');
+        }
+    }
+};
