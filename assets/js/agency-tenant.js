@@ -26,7 +26,9 @@ function _getClient() {
 // ── BOOT ─────────────────────────────────────────────────────
 window._agencyTenantInit = function() {
     var params = new URLSearchParams(window.location.search);
-    _agencySlug = params.get('agency');
+    var rawSlug = params.get('agency') || '';
+    // Sanitize — strip anything that's not a-z, 0-9, hyphen
+    _agencySlug = rawSlug.toLowerCase().replace(/[^a-z0-9-]/g, '');
     if (!_agencySlug) return false;
 
     document.title = 'Portal — Loading...';

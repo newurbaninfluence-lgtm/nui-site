@@ -19,10 +19,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="/supabase-client.js" defer></script>
-  <script src="/env.js" defer></script>
+  <!-- Supabase — sync load so agency-tenant can query on DOMContentLoaded -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/supabase-client.js"></script>
+  <script src="/env.js"></script>
 
   <!-- Stripe lazy loader -->
   <script>
@@ -57,8 +57,8 @@
        AGENCY TENANT SYSTEM — must load before everything else
        Detects ?agency=SLUG → branded login → portal dashboard
        ═══════════════════════════════════════════════════════ -->
-  <script src="/assets/js/agency-isolation.js?v=20260305v2"></script>
-  <script src="/assets/js/agency-tenant.js?v=20260305"></script>
+  <script src="/assets/js/agency-isolation.js?v=20260305v3"></script>
+  <script src="/assets/js/agency-tenant.js?v=20260305v2"></script>
 
   <!-- portalStyles variable needed by portal.js -->
   <script src="/assets/js/marketing.js?v=20260305"></script>
@@ -110,7 +110,6 @@
   <script src="/assets/js/admin-monty.js?v=20260227v2"></script>
   <script src="/assets/js/designer.js?v=20260223v2"></script>
   <script src="/assets/js/client.js?v=20260226v6"></script>
-  <script src="/assets/js/email-subs.js?v=20260226v7"></script>
 
   <!-- NOTE: admin-subaccounts.js intentionally NOT loaded here.
        Sub-account tenants cannot create their own sub-accounts. -->
