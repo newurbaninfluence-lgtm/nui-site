@@ -54,19 +54,17 @@
   <div class="view" id="intakeView"    style="display:none;"></div>
 
   <!-- ═══════════════════════════════════════════════════════
-       AGENCY TENANT SYSTEM — loads first, intercepts portalView
-       Detects ?agency=SLUG → branded login → setup wizard → portal
+       AGENCY TENANT SYSTEM — must load before everything else
+       Detects ?agency=SLUG → branded login → portal dashboard
        ═══════════════════════════════════════════════════════ -->
+  <script src="/assets/js/agency-isolation.js?v=20260305v2"></script>
+  <script src="/assets/js/agency-tenant.js?v=20260305"></script>
+
+  <!-- portalStyles variable needed by portal.js -->
   <script src="/assets/js/marketing.js?v=20260305"></script>
-  <script src="/assets/js/agency-tenant.js?v=20260302"></script>
-  <script src="/assets/js/agency-isolation.js?v=20260305"></script>
 
-  <!-- Security -->
-  <script src="/assets/js/admin-auth.js?v=20260301"></script>
-
-  <!-- Core app — same stack as NUI admin, agency-tenant filters it -->
+  <!-- Core app — router.js intentionally excluded (hijacks /portal/ URLs) -->
   <script src="/assets/js/core.js?v=20260226v8"></script>
-  <script src="/assets/js/router.js?v=20260223v2"></script>
   <script src="/assets/js/portal.js?v=20260223v2"></script>
   <script src="/assets/js/admin-core.js?v=20260223v2"></script>
 
