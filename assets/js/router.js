@@ -108,7 +108,8 @@ function updatePageSEO(viewName) {
 
 function showView(viewName, skipTracking = false) {
     // If portal/admin requested on marketing site, redirect to app shell
-    if (viewName === 'portal' && !document.getElementById('portalView')) {
+    // Skip if we're already inside the portal shell
+    if (viewName === 'portal' && !document.getElementById('portalView') && !window.location.pathname.startsWith('/portal/')) {
         window.location.href = '/app/';
         return;
     }
@@ -211,8 +212,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const pathView = window.location.pathname.replace(/^\//, '').split('/')[0].split('?')[0];
 
     // Redirect portal/app routes to the dedicated app shell
-    // (only if we're on the marketing site — not already in /app/)
-    if ((pathView === 'portal' || pathView === 'app') && !document.getElementById('portalView')) {
+    // Skip if already inside /app/ or /portal/ shell pages
+    const alreadyInShell = window.location.pathname.startsWith('/app/') ||
+                           window.location.pathname.startsWith('/portal/');
+    if ((pathView === 'portal' || pathView === 'app') && !document.getElementById('portalView') && !alreadyInShell) {
         window.location.href = '/app/';
         return;
     }
