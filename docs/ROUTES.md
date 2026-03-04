@@ -75,8 +75,23 @@
 | `/work/good-cakes-and-bakes` | `/work/good-cakes-and-bakes.html` | marketing | static | Case study |
 | `/work/motor-city-bistro` | `/work/motor-city-bistro.html` | marketing | static | Case study |
 
-## App Shell (Single SPA — portal.js)
+## App Shell — NUI Admin (Single SPA — portal.js)
+> `/app/` — NUI master admin only. No tenant scripts. Faren-only.
 
+| Route | File | System | Notes |
+|-------|------|--------|-------|
+| `/app` | `/app/index.html` | app | NUI admin entry |
+| `/app/*` | `/app/index.html` | app | SPA catch-all |
+
+## Sub-Account Tenant Portal (agency-tenant.js)
+> `/portal/` — Sub-account agencies only. Requires `?agency=SLUG` param.
+> Completely separate from NUI admin. Never shares scripts or auth.
+
+| Route | File | System | Notes |
+|-------|------|--------|-------|
+| `/portal/` | `/portal/index.html` | tenant | Tenant portal entry |
+| `/portal/?agency=SLUG` | `/portal/index.html` | tenant | Branded sub-account login |
+| `/portal/*` | `/portal/index.html` | tenant | SPA catch-all |
 | Route | File | System | Type | Notes |
 |-------|------|--------|------|-------|
 | `/app` | `/app/index.html` | app | SPA shell | App entry point |
@@ -137,8 +152,9 @@
 | From | To | Status | Notes |
 |------|----|--------|-------|
 | `/work/good-cakes` | `/work/good-cakes-and-bakes` | 301 | Fix old portfolio link |
-| `/portal` | `/app/index.html` | 200 | Legacy portal redirect |
-| `/portal/*` | `/app/index.html` | 200 | Legacy portal catch-all |
+| `/portal` | `/portal/index.html` | 200 | Tenant portal |
+| `/portal/` | `/portal/index.html` | 200 | Tenant portal (trailing slash) |
+| `/portal/*` | `/portal/index.html` | 200 | Tenant portal catch-all |
 | `/*` | `/index.html` | 200 | SPA fallback (MUST BE LAST) |
 
 ## Missing Pages (TODO)

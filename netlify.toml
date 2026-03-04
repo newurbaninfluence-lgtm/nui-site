@@ -67,15 +67,20 @@
   to = "/contact.html"
   status = 200
 
-# Portal → App shell (dedicated admin/client/designer app)
+# Sub-account tenant portal — completely separate from NUI admin
 [[redirects]]
   from = "/portal"
-  to = "/app/index.html"
+  to = "/portal/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/portal/"
+  to = "/portal/index.html"
   status = 200
 
 [[redirects]]
   from = "/portal/*"
-  to = "/app/index.html"
+  to = "/portal/index.html"
   status = 200
 
 [[redirects]]

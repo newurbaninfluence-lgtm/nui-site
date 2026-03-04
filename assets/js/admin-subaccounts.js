@@ -151,7 +151,7 @@ function buildAccountCard(acct) {
                 '</button>' +
                 '<button onclick="openSubAccountModal(\'' + acct.id + '\')" style="padding:7px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">✏️ Manage</button>' +
                 '<button onclick="openWhiteLabelSettings(\'' + acct.id + '\')" style="padding:7px 14px;background:rgba(99,102,241,0.1);color:#818cf8;border:1px solid rgba(99,102,241,0.25);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;" title="White Label Settings">🎨 Brand</button>' +
-                '<a href="https://newurbaninfluence.com/app?agency=' + (acct.portal_slug||acct.id) + '" target="_blank" style="text-decoration:none;">' +
+                '<a href="https://newurbaninfluence.com/portal/?agency=' + (acct.portal_slug||acct.id) + '" target="_blank" style="text-decoration:none;">' +
                 '<button style="padding:7px 14px;background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.25);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;" title="View their portal">👁 Portal</button></a>' +
             '</div>' +
         '</div>' +
@@ -352,7 +352,7 @@ async function saveSubAccount() {
 
 // ── INVITE MODAL ─────────────────────────────────────────────
 function _showInviteModal(acct) {
-    var portalUrl = 'https://newurbaninfluence.com/app?agency=' + acct.portal_slug;
+    var portalUrl = 'https://newurbaninfluence.com/portal/?agency=' + acct.portal_slug;
     var email     = acct.owner_email || '';
     var name      = acct.owner_name  || acct.agency_name;
     var pass      = acct.login_password;

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agency Portal</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#6366f1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="/supabase-client.js" defer></script>
+  <script src="/env.js" defer></script>
+
+  <!-- Stripe lazy loader -->
+  <script>
+  function loadStripe(){if(window.Stripe)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://js.stripe.com/v3/';s.onload=r;document.head.appendChild(s);});}
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/global.css?v=20260223v2">
+  <link rel="stylesheet" href="/assets/css/admin.css?v=20260223v2">
+  <link rel="stylesheet" href="/assets/css/components.css?v=20260223v2">
+  <link rel="stylesheet" href="/assets/css/brief-moodboard.css?v=20260224v3">
+</head>
+<body>
+  <!-- Minimal nav — branding swapped dynamically by agency-tenant.js -->
+  <nav class="nav" id="portalNav" style="display:none;">
+    <a class="logo" href="/portal/" id="mainNavLogo">
+      <img src="/icons/icon-192.png" alt="Agency Portal" width="36" height="36" style="height:36px;width:36px;display:block;">
+    </a>
+  </nav>
+
+  <!-- All content renders here -->
+  <div class="view active" id="portalView"></div>
+
+  <!-- Hidden views (for any marketing preview panels) -->
+  <div class="view" id="homeView"      style="display:none;"></div>
+  <div class="view" id="aboutView"     style="display:none;"></div>
+  <div class="view" id="servicesView"  style="display:none;"></div>
+  <div class="view" id="portfolioView" style="display:none;"></div>
+  <div class="view" id="blogView"      style="display:none;"></div>
+  <div class="view" id="intakeView"    style="display:none;"></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AGENCY TENANT SYSTEM — loads first, intercepts portalView
+       Detects ?agency=SLUG → branded login → setup wizard → portal
+       ═══════════════════════════════════════════════════════ -->
+  <script src="/assets/js/agency-tenant.js?v=20260302"></script>
+
+  <!-- Security -->
+  <script src="/assets/js/admin-auth.js?v=20260301"></script>
+
+  <!-- Core app — same stack as NUI admin, agency-tenant filters it -->
+  <script src="/assets/js/core.js?v=20260226v8"></script>
+  <script src="/assets/js/router.js?v=20260223v2"></script>
+  <script src="/assets/js/portal.js?v=20260223v2"></script>
+  <script src="/assets/js/admin-core.js?v=20260223v2"></script>
+
+  <!-- CRM / Client system -->
+  <script src="/assets/js/admin-clients-core.js?v=20260223v2"></script>
+  <script src="/assets/js/admin-orders.js?v=20260224v4"></script>
+  <script src="/assets/js/admin-leads.js?v=20260223v2"></script>
+  <script src="/assets/js/admin-new-forms.js?v=20260227v1"></script>
+  <script src="/assets/js/admin-assets-mgr.js?v=20260223v2"></script>
+  <script src="/assets/js/admin-order-ops.js?v=20260227v1"></script>
+  <script src="/assets/js/admin-invoices.js?v=20260223v2"></script>
+  <script src="/assets/js/admin-payment-gate.js?v=20260223v2"></script>
+  <script src="/assets/js/admin-submissions.js?v=20260223v2"></script>
+  <script src="/assets/js/admin-crm.js?v=20260223v2"></script>
+
+  <!-- Client-facing panels -->
+  <script src="/assets/js/client-portal.js?v=20260224v5"></script>
+  <script src="/assets/js/client-proofs.js?v=20260223v2"></script>
+  <script src="/assets/js/client-messaging.js?v=20260223v2"></script>
+  <script src="/assets/js/client-booking.js?v=20260223v2"></script>
+  <script src="/assets/js/brand-portal.js?v=20260223v2"></script>
+  <script src="/assets/js/service-intake.js?v=20260223v2"></script>
+
+  <!-- Feature panels -->
+  <script src="/assets/js/admin-projects.js?v=20260223v2"></script>
+  <script src="/assets/js/admin-payments.js?v=20260223v2"></script>
+  <script src="/assets/js/design-tools.js?v=20260224v1"></script>
+  <script src="/assets/js/admin-designer.js?v=20260224v6"></script>
+  <script src="/assets/js/client-brief.js?v=20260224v1"></script>
+  <script src="/assets/js/admin-brandguide-config.js?v=20260224v2"></script>
+  <script src="/assets/js/admin-brandguide.js?v=20260224v2"></script>
+  <script src="/assets/js/admin-brandguide-editor.js?v=20260224v2"></script>
+  <script src="/assets/js/admin-brandguide-actions.js?v=20260224v5"></script>
+  <script src="/assets/js/admin-stats.js?v=20260223v2"></script>
+  <script src="/assets/js/admin-rankintel.js?v=20260225v1"></script>
+  <script src="/assets/js/admin-citations.js?v=1"></script>
+  <script src="/assets/js/admin-retargeting.js?v=20260225v1"></script>
+  <script src="/assets/js/admin-contact-hub.js?v=20260226v5"></script>
+  <script src="/assets/js/admin-sms-voice.js?v=20260224v1"></script>
+  <script src="/assets/js/admin-sms-campaigns.js?v=20260224v2"></script>
+  <script src="/assets/js/admin-sites.js?v=20260224"></script>
+  <script src="/assets/js/admin-visitors.js?v=20260227"></script>
+  <script src="/assets/js/admin-monty.js?v=20260227v2"></script>
+  <script src="/assets/js/designer.js?v=20260223v2"></script>
+  <script src="/assets/js/client.js?v=20260226v6"></script>
+  <script src="/assets/js/email-subs.js?v=20260226v7"></script>
+
+  <!-- NOTE: admin-subaccounts.js intentionally NOT loaded here.
+       Sub-account tenants cannot create their own sub-accounts. -->
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // agency-tenant.js runs in capture phase (before this) and sets
+    // window._agencyTenantActive = true if ?agency=SLUG was found.
+    // If no slug — show a "portal not found" message instead of NUI admin.
+    if (!window._agencyTenantActive) {
+      var params = new URLSearchParams(window.location.search);
+      var slug = params.get('agency');
+      if (!slug) {
+        // No agency slug — redirect to NUI admin
+        window.location.replace('/app/');
+        return;
+      }
+      // Has slug but tenant system hasn't fired yet — it handles the rest
+    }
+  });
+  </script>
+</body>
+</html>
