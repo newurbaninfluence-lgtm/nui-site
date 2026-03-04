@@ -151,6 +151,8 @@ function buildAccountCard(acct) {
                 '</button>' +
                 '<button onclick="openSubAccountModal(\'' + acct.id + '\')" style="padding:7px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">✏️ Manage</button>' +
                 '<button onclick="openWhiteLabelSettings(\'' + acct.id + '\')" style="padding:7px 14px;background:rgba(99,102,241,0.1);color:#818cf8;border:1px solid rgba(99,102,241,0.25);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;" title="White Label Settings">🎨 Brand</button>' +
+                '<a href="https://newurbaninfluence.com/app?agency=' + (acct.portal_slug||acct.id) + '" target="_blank" style="text-decoration:none;">' +
+                '<button style="padding:7px 14px;background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.25);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;" title="View their portal">👁 Portal</button></a>' +
             '</div>' +
         '</div>' +
     '</div>';
@@ -510,7 +512,7 @@ function openWhiteLabelSettings(accountId) {
                             '<div style="font-size:12px;color:rgba(255,255,255,0.35);">' + acct.agency_name + ' — Sender Identity & Branding</div>' +
                         '</div>' +
                     '</div>' +
-                    '<button onclick="document.getElementById('wl-settings-overlay').remove()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">×</button>' +
+                    '<button onclick="document.getElementById(\'wl-settings-overlay\').remove()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">×</button>' +
                 '</div>' +
 
                 '<div style="padding:28px;">' +
@@ -538,7 +540,7 @@ function openWhiteLabelSettings(accountId) {
 
                     // Section: SMTP Credentials
                     '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1.5px;margin:20px 0 14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">📨 SMTP (Email Sending)</div>' +
-                    '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,0.35);">Leave blank to use NUI's Hostinger email account. Fill these in to send emails as their own domain.</div>' +
+                    '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,0.35);">Leave blank to use NUI\'s Hostinger email account. Fill these in to send emails as their own domain.</div>' +
                     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;">' +
                         field('SMTP User / Email', 'smtp_user', acct.smtp_user, 'hello@youragency.com', 'email', '') +
                         field('SMTP Password', 'smtp_pass', acct.smtp_pass, '••••••••••', 'password', 'Hostinger / Gmail app password') +
@@ -546,7 +548,7 @@ function openWhiteLabelSettings(accountId) {
 
                     // Section: SMS / OpenPhone
                     '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1.5px;margin:20px 0 14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);">📱 OpenPhone (SMS)</div>' +
-                    '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,0.35);">Leave blank to use NUI's OpenPhone. Their own keys let SMS go out from their number.</div>' +
+                    '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,0.35);">Leave blank to use NUI\'s OpenPhone. Their own keys let SMS go out from their number.</div>' +
                     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;">' +
                         field('OpenPhone API Key', 'openphone_key', acct.openphone_key, 'op_api_xxxxx', 'text', 'openphone.com → Settings → API') +
                         field('OpenPhone Phone Number ID', 'openphone_number', acct.openphone_number, 'PN...', 'text', 'Phone Number ID (not the actual number)') +
@@ -563,7 +565,7 @@ function openWhiteLabelSettings(accountId) {
 
                     // Actions
                     '<div style="display:flex;gap:10px;margin-top:24px;">' +
-                        '<button onclick="document.getElementById('wl-settings-overlay').remove()" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);padding:12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;">Cancel</button>' +
+                        '<button onclick="document.getElementById(\'wl-settings-overlay\').remove()" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);padding:12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;">Cancel</button>' +
                         '<button onclick="saveWhiteLabelSettings(' + accountId + ')" style="flex:3;background:' + brand + ';color:#fff;border:none;padding:12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;">💾 Save White Label Settings</button>' +
                     '</div>' +
                 '</div>' +

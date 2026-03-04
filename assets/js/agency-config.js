@@ -134,8 +134,6 @@ const AGENCY_CONFIG = {
     }
 };
 
-};
-
 
 // ============================================================
 // CONFIG HELPERS — Use these throughout the app
