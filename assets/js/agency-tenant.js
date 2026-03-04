@@ -38,9 +38,10 @@ window._agencyTenantInit = function() {
                     sessionStorage.getItem('nui_agency_session');
         if (saved) {
             var sess = JSON.parse(saved);
-            if (sess.slug === _agencySlug && sess.role && sess.data) {
+            var sessData = sess.data || sess.agency; // accept both field names
+            if (sess.slug === _agencySlug && sess.role && sessData) {
                 _agencySession = sess;
-                _agencyData    = sess.data;
+                _agencyData    = sessData;
                 _agencyRole    = sess.role;
                 _launchPortal();
                 return true;

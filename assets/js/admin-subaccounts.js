@@ -707,35 +707,30 @@ function copyPortalLink(slug) {
 }
 
 // ── ONE-CLICK PORTAL IMPERSONATION ───────────────────────────
-// Writes an admin session directly to localStorage then opens the portal.
-// The portal picks up the session and skips the login screen entirely.
+// One-click portal access — no login required.
+// Both /app/ and /portal/ are same origin (newurbaninfluence.com)
+// so localStorage is SHARED. Write session HERE first, then open tab.
+// Portal reads localStorage on DOMContentLoaded and skips login.
 function enterPortalAsAdmin(accountId) {
     var acct = _subAccounts.find(function(a){ return a.id === accountId; });
     if (!acct) return;
     var slug = acct.portal_slug || acct.id;
-    var url  = 'https://newurbaninfluence.com/portal/?agency=' + slug;
 
-    // Write impersonation session — portal reads this key on load
+    // Build session — must include BOTH 'data' and 'agency' fields
+    // agency-tenant.js checks for sess.data to validate session
     var session = {
-        slug:      slug,
-        role:      'admin',
-        email:     acct.owner_email || 'admin@' + slug + '.com',
-        agency:    acct,
-        loginAt:   Date.now(),
-        impersonatedByNUI: true  // flag so portal can show "Exit to NUI Admin" link
+        slug:              slug,
+        role:              'admin',
+        email:             acct.owner_email || 'admin@' + slug + '.com',
+        data:              acct,   // ← required by agency-tenant session check
+        agency:            acct,   // ← kept for compatibility
+        loginAt:           Date.now(),
+        impersonatedByNUI: true
     };
 
-    // Open portal in new tab with session pre-written
-    var win = window.open(url, '_blank');
-    // Write session into new tab before it loads
-    var interval = setInterval(function() {
-        try {
-            win.localStorage.setItem('nui_agency_session', JSON.stringify(session));
-            clearInterval(interval);
-        } catch(e) {
-            // Cross-origin not ready yet — keep trying
-        }
-    }, 100);
-    // Stop trying after 5s regardless
-    setTimeout(function(){ clearInterval(interval); }, 5000);
+    // Step 1: Write to THIS tab's localStorage (same origin = instantly visible to portal tab)
+    localStorage.setItem('nui_agency_session', JSON.stringify(session));
+
+    // Step 2: Now open the portal — it reads localStorage on first load, finds session, skips login
+    window.open('https://newurbaninfluence.com/portal/?agency=' + slug, '_blank');
 }
