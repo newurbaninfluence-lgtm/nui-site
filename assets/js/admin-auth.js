@@ -9,18 +9,18 @@ const NuiAdminAuth = {
   // Set token after admin login
   setToken(token) {
     this._token = token;
-    try { sessionStorage.setItem('nui_admin_token', token); } catch(e) {}
+    try { localStorage.setItem('nui_admin_token', token); } catch(e) {}
   },
 
   getToken() {
     if (this._token) return this._token;
-    try { this._token = sessionStorage.getItem('nui_admin_token'); } catch(e) {}
+    try { this._token = localStorage.getItem('nui_admin_token'); } catch(e) {}
     return this._token;
   },
 
   clear() {
     this._token = null;
-    try { sessionStorage.removeItem('nui_admin_token'); } catch(e) {}
+    try { localStorage.removeItem('nui_admin_token'); } catch(e) {}
   },
 
   // Prompt for token if not set
