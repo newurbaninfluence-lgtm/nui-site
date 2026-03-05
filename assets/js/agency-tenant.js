@@ -41,12 +41,17 @@ window._agencyTenantInit = function() {
         if (saved) {
             var sess = JSON.parse(saved);
             var sessData = sess.data || sess.agency; // accept both field names
-            if (sess.slug === _agencySlug && sess.role && sessData) {
+            // Use loose == for slug comparison (string vs number safety)
+            if (sess.slug == _agencySlug && sess.role && sessData) {
                 _agencySession = sess;
                 _agencyData    = sessData;
                 _agencyRole    = sess.role;
                 _launchPortal();
                 return true;
+            } else {
+                // Stale session for different agency — clear it
+                localStorage.removeItem('nui_agency_session');
+                sessionStorage.removeItem('nui_agency_session');
             }
         }
     } catch(e) {}
