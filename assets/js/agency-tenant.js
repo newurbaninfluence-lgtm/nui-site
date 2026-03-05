@@ -688,6 +688,33 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 400);
 });
 
+// ── AUTO-INJECT agency_id INTO ALL NETLIFY FUNCTION CALLS ────
+// Same pattern as admin-auth.js token interceptor
+// Only fires when _nuiAgencyId is set (portal only, never /app/)
+(function() {
+    var _origFetch = window.fetch;
+    window.fetch = function(url, options) {
+        var agencyId = window._nuiAgencyId;
+        if (agencyId && typeof url === 'string' && url.includes('/.netlify/functions/')) {
+            options = options || {};
+            // For POST/PATCH — inject into body
+            if (options.method && options.method !== 'GET' && options.body) {
+                try {
+                    var body = JSON.parse(options.body);
+                    if (!body.agency_id) body.agency_id = agencyId;
+                    options.body = JSON.stringify(body);
+                } catch(e) {} // not JSON, skip
+            }
+            // For GET — append to URL
+            if (!options.method || options.method === 'GET') {
+                var sep = url.includes('?') ? '&' : '?';
+                if (!url.includes('agency_id=')) url = url + sep + 'agency_id=' + encodeURIComponent(agencyId);
+            }
+        }
+        return _origFetch.call(this, url, options);
+    };
+})();
+
 // ── AUTO-INIT ─────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
     var intercepted = window._agencyTenantInit();

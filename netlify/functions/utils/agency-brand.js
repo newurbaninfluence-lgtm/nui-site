@@ -56,13 +56,15 @@ async function getBrand(agencyId) {
             return { ...NUI_DEFAULTS };
         }
         const row = rows[0];
+        // Wizard saves keys to integrations_config JSONB — read from there
+        const keys = row.integrations_config || {};
 
         return {
             _agencyId:        agencyId,   // marks this as a sub-account — no NUI cred fallback
             agency_name:      row.agency_name     || NUI_DEFAULTS.agency_name,
             founder_name:     row.founder_name    || row.owner_name || NUI_DEFAULTS.founder_name,
             founder_title:    row.founder_title   || NUI_DEFAULTS.founder_title,
-            company_phone:    row.company_phone   || NUI_DEFAULTS.company_phone,
+            company_phone:    row.company_phone   || row.owner_phone || NUI_DEFAULTS.company_phone,
             company_city:     row.company_city    || NUI_DEFAULTS.company_city,
             company_website:  row.company_website || row.domain || NUI_DEFAULTS.company_website,
             company_email:    row.company_email   || row.owner_email || NUI_DEFAULTS.company_email,
@@ -70,10 +72,15 @@ async function getBrand(agencyId) {
             logo_url:         row.logo_url        || NUI_DEFAULTS.logo_url,
             brand_color:      row.brand_color     || NUI_DEFAULTS.brand_color,
             print_store_url:  row.print_store_url || NUI_DEFAULTS.print_store_url,
-            smtp_user:        row.smtp_user       || null,
-            smtp_pass:        row.smtp_pass       || null,
-            openphone_key:    row.openphone_key   || null,
-            openphone_number: row.openphone_number|| null,
+            // Keys: check top-level columns THEN integrations_config JSONB
+            smtp_user:        row.smtp_user       || keys.sendgrid || null,
+            smtp_pass:        row.smtp_pass       || keys.sendgrid_pass || null,
+            openphone_key:    row.openphone_key   || keys.openphone || null,
+            openphone_number: row.openphone_number|| keys.openphone_number || null,
+            stripe_pk:        row.stripe_pk       || keys.stripe || null,
+            stripe_sk:        row.stripe_sk       || keys.stripe_sk || null,
+            ga4_id:           keys.ga4            || null,
+            meta_pixel:       keys.meta_pixel     || null,
             _raw: row,
         };
     } catch (err) {
