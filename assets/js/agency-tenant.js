@@ -406,6 +406,29 @@ function _launchPortal() {
     // ── 3. Stub for missing panel loader (admin-subaccounts.js not in portal)
     if (typeof loadAdminSubAccountsPanel === 'undefined') window.loadAdminSubAccountsPanel = function(){};
 
+    // ── 3b. ISOLATE LOCALSTORAGE — Clear NUI data so tenant starts clean
+    //    /app/ and /portal/ share the same domain = same localStorage.
+    //    Without this, tenants see Faren's clients, orders, etc.
+    //    We save the NUI session key (to not break /app/ in other tabs)
+    //    but wipe all data keys so panels load empty for the tenant.
+    var _nuiDataKeys = [
+        'nui_clients','nui_orders','nui_invoices','nui_subscriptions',
+        'nui_proofs','nui_projects','nui_leads','nui_services',
+        'nui_meetings','nui_submissions','nui_crm','nui_comm_hub',
+        'nui_designer_messages','nui_client_messages','nui_analytics',
+        'nui_site_images','nui_about','nui_portfolio'
+    ];
+    _nuiDataKeys.forEach(function(k) {
+        var existing = localStorage.getItem(k);
+        if (existing) {
+            // Back up NUI data so /app/ can restore it
+            localStorage.setItem('_nui_backup_' + k, existing);
+            localStorage.removeItem(k);
+        }
+    });
+    // Set agency ID for isolation patch
+    window._nuiAgencyId = _agencySlug;
+
     // ── 4. Render portal HTML (this resets currentUser to null)
     if (typeof loadPortalView === 'function') loadPortalView();
 
@@ -486,6 +509,42 @@ function _launchPortal() {
         });
         _obs.observe(mainEl, { childList: true, subtree: true });
     }
+
+    // ── 11. Force Supabase isolation patch (retry until db is available)
+    var _dbPatchAttempts = 0;
+    var _dbPatchTimer = setInterval(function() {
+        _dbPatchAttempts++;
+        var rawDb = window.db || window.supabaseClient;
+        if (rawDb && rawDb.from && !rawDb.__nuiIsolated) {
+            // Patch it manually — same logic as agency-isolation.js
+            var origFrom = rawDb.from.bind(rawDb);
+            var slug = _agencySlug;
+            var TENANT_TABLES = ['clients','orders','invoices','proofs','projects','leads','services','meetings','submissions','crm_contacts','contacts','activity_log','communications','sms_campaigns','sms_drip_queue','identified_visitors','chat_logs','tasks','approvals','client_sites'];
+            rawDb.from = function(table) {
+                var q = origFrom(table);
+                if (TENANT_TABLES.indexOf(table) === -1) return q;
+                var _sel = q.select.bind(q);
+                q.select = function() { return _sel.apply(this, arguments).eq('agency_id', slug); };
+                var _ins = q.insert.bind(q);
+                q.insert = function(data) {
+                    if (Array.isArray(data)) data = data.map(function(r){ return Object.assign({}, r, {agency_id: slug}); });
+                    else if (data && typeof data === 'object') data = Object.assign({}, data, {agency_id: slug});
+                    return _ins.call(this, data);
+                };
+                var _upd = q.update.bind(q);
+                q.update = function(data) { return _upd.call(this, data).eq('agency_id', slug); };
+                var _del = q.delete.bind(q);
+                q.delete = function() { return _del.call(this).eq('agency_id', slug); };
+                return q;
+            };
+            rawDb.__nuiIsolated = slug;
+            window.db = rawDb;
+            window.supabaseClient = rawDb;
+            console.log('[Tenant] Force-patched db isolation — agency_id:', slug);
+            clearInterval(_dbPatchTimer);
+        }
+        if (_dbPatchAttempts > 100) clearInterval(_dbPatchTimer); // stop after 25s
+    }, 250);
 }
 
 // ── APPLY BRANDING ────────────────────────────────────────────
