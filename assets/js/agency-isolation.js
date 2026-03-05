@@ -8,9 +8,15 @@
 'use strict';
 
 var TENANT_TABLES = [
-    'crm_contacts','activity_log','communications','tasks','approvals',
-    'identified_visitors','messages','payments',
-    'clients','orders','invoices','proofs','projects','leads','meetings','form_submissions'
+    'clients','orders','invoices','proofs','projects','leads',
+    'services','meetings','submissions',
+    'crm_contacts','contacts','activity_log','communications',
+    'sms_campaigns','sms_drip_queue','sms_replies','sms_suppression',
+    'identified_visitors','chat_logs',
+    'tasks','approvals','client_sites',
+    'retargeting_setups','retargeting_campaigns','retargeting_audiences',
+    'geo_grid_scans','push_campaigns','push_subscriptions',
+    'visitor_page_views','visitor_auto_emails'
 ];
 
 var NUI_ONLY_TABLES = [

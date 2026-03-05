@@ -53,9 +53,13 @@ exports.handler = async (event) => {
     // --- GET: Pull all data ---
     if (event.httpMethod === 'GET') {
       const syncData = {};
+      const agency_id = event.queryStringParameters?.agency_id || null;
 
-      // Pull all types from site_config in one query
-      const typeList = ALL_TYPES.map(t => `"${t}"`).join(',');
+      // Scope keys by agency_id — tenants get "clients:detroit-creative" etc.
+      const typeList = ALL_TYPES.map(t => {
+        const key = agency_id ? `${t}:${agency_id}` : t;
+        return `"${key}"`;
+      }).join(',');
       const resp = await supabaseFetch(SUPABASE_URL, SUPABASE_SERVICE_KEY,
         `site_config?select=key,value&key=in.(${typeList})`
       );
@@ -63,7 +67,11 @@ exports.handler = async (event) => {
       if (resp.ok) {
         const rows = await resp.json();
         const rowMap = {};
-        rows.forEach(r => { rowMap[r.key] = r.value; });
+        rows.forEach(r => {
+          // Strip agency suffix — "clients:detroit-creative" → "clients"
+          const baseKey = agency_id ? r.key.replace(`:${agency_id}`, '') : r.key;
+          rowMap[baseKey] = r.value;
+        });
 
         ALL_TYPES.forEach(type => {
           if (rowMap[type] !== undefined) {
@@ -90,7 +98,7 @@ exports.handler = async (event) => {
 
     // --- POST: Push data ---
     if (event.httpMethod === 'POST') {
-      const { type, data, syncedBy } = JSON.parse(event.body || '{}');
+      const { type, data, syncedBy, agency_id } = JSON.parse(event.body || '{}');
       if (!type || data === undefined) {
         return { statusCode: 400, headers: CORS_HEADERS,
           body: JSON.stringify({ error: 'Missing type or data' }) };
@@ -101,12 +109,15 @@ exports.handler = async (event) => {
           body: JSON.stringify({ error: `Unknown type: ${type}` }) };
       }
 
+      // Scope key by agency_id — tenants get "clients:detroit-creative", NUI gets "clients"
+      const scopedKey = agency_id ? `${type}:${agency_id}` : type;
+
       // Upsert into site_config
       const resp = await supabaseFetch(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'site_config', {
         method: 'POST',
         headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
         body: JSON.stringify({
-          key: type,
+          key: scopedKey,
           value: data,
           updated_at: new Date().toISOString()
         })

@@ -140,13 +140,15 @@ function syncToBackend(type, data) {
 
 async function _pushToBackend(type, data) {
     try {
+        const agencyId = window._nuiAgencyId || null;
         const resp = await fetch('/.netlify/functions/sync-data', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 type,
                 data,
-                syncedBy: currentUser?.email || currentUser?.name || 'admin'
+                syncedBy: currentUser?.email || currentUser?.name || 'admin',
+                agency_id: agencyId
             })
         });
         if (!resp.ok) {
@@ -166,7 +168,11 @@ async function _pushToBackend(type, data) {
 // Pull ALL data from backend — called on app load
 async function hydrateFromBackend() {
     try {
-        const resp = await fetch('/.netlify/functions/sync-data?type=all');
+        const agencyId = window._nuiAgencyId || null;
+        const url = agencyId
+            ? `/.netlify/functions/sync-data?type=all&agency_id=${encodeURIComponent(agencyId)}`
+            : '/.netlify/functions/sync-data?type=all';
+        const resp = await fetch(url);
         if (!resp.ok) {
             console.warn('Backend hydration failed:', resp.status);
             _backendAvailable = false;
