@@ -213,6 +213,11 @@ function openSubAccountModal(accountId) {
                 mi('Brand Color','subacct-color',acct.brand_color||'#dc2626','','color') +
             '</div>' +
             '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">' +
+                '<div><div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.35);margin-bottom:6px;">Portal Theme</div>' +
+                '<select id="subacct-theme" style="width:100%;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);color:#fff;padding:11px 14px;border-radius:10px;font-size:13px;">' +
+                '<option value="dark" ' + ((acct.brand_theme||'dark')==='dark'?'selected':'') + '>⬛ Dark (Black Background)</option>' +
+                '<option value="light" ' + (acct.brand_theme==='light'?'selected':'') + '>⬜ Light (White Background)</option>' +
+                '</select></div>' +
                 '<div><div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.35);margin-bottom:6px;">Plan</div>' +
                 '<select id="subacct-plan" onchange="onPlanChange(this.value)" style="width:100%;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);color:#fff;padding:11px 14px;border-radius:10px;font-size:13px;">' +
                 Object.entries(NUI_PLANS).map(function(e){ return '<option value="'+e[0]+'" '+(acct.plan===e[0]?'selected':'')+'>'+e[1].label+' — $'+e[1].price+'/mo</option>'; }).join('') +
@@ -305,6 +310,7 @@ async function saveSubAccount() {
         owner_email:          (document.getElementById('subacct-email')||{}).value || '',
         owner_phone:          (document.getElementById('subacct-phone')||{}).value || '',
         brand_color:          (document.getElementById('subacct-color')||{}).value || '#dc2626',
+        brand_theme:          (document.getElementById('subacct-theme')||{}).value || 'dark',
         plan:                 plan,
         monthly_rate:         rateVal ? parseInt(rateVal) : ((NUI_PLANS[plan]||{}).price || 0),
         features:             features,

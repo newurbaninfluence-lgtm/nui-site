@@ -363,6 +363,7 @@ function _launchPortal() {
     var initials = name.charAt(0).toUpperCase();
 
     // ── 1. Inject brand CSS — override ALL NUI red/branding BEFORE overlay drops
+    var isLight = (d.brand_theme === 'light' || d.brand_theme === 'white');
     var style = document.getElementById('agency-tenant-styles') || document.createElement('style');
     style.id = 'agency-tenant-styles';
     style.textContent = [
@@ -370,11 +371,43 @@ function _launchPortal() {
         '  --admin-accent:' + brand + ' !important;',
         '  --brand-primary:' + brand + ' !important;',
         '  --red:' + brand + ' !important;',
+        isLight ? [
+        '  --admin-bg:#f5f5f5 !important;',
+        '  --admin-bg-secondary:#ffffff !important;',
+        '  --admin-text:#0a0a0a !important;',
+        '  --admin-text-muted:#666666 !important;',
+        '  --admin-card:#ffffff !important;',
+        '  --admin-card-hover:#f0f0f0 !important;',
+        '  --admin-border:rgba(0,0,0,0.1) !important;',
+        '  --admin-input-bg:#ffffff !important;',
+        '  --admin-sidebar:#ffffff !important;',
+        '  --admin-header:#ffffff !important;',
+        ].join('\n') : '',
         '}',
+        // White theme body override
+        isLight ? [
+        'body{background:#f5f5f5 !important;color:#0a0a0a !important;}',
+        '.admin-sidebar{background:#fff !important;border-right-color:rgba(0,0,0,0.08) !important;}',
+        '.admin-header{background:#fff !important;border-bottom-color:rgba(0,0,0,0.08) !important;color:#0a0a0a !important;}',
+        '.admin-header span,.admin-header .sb-name{color:#0a0a0a !important;}',
+        '.admin-nav-label{color:rgba(0,0,0,0.4) !important;}',
+        '.admin-nav-link{color:rgba(0,0,0,0.5) !important;}',
+        '.admin-nav-link.active{color:' + brand + ' !important;background:' + brand + '0a !important;}',
+        '.admin-nav-link:hover{color:' + brand + ' !important;}',
+        '.admin-card-dark,.admin-card-dark-sm,.admin-card-dark-center{background:#fff !important;border-color:rgba(0,0,0,0.08) !important;color:#0a0a0a !important;}',
+        '.admin-card-glass{background:rgba(255,255,255,0.9) !important;border-color:rgba(0,0,0,0.06) !important;color:#0a0a0a !important;}',
+        '.admin-input,.admin-input-dark,.admin-select,.admin-textarea{background:#fff !important;color:#0a0a0a !important;border-color:rgba(0,0,0,0.15) !important;}',
+        '.admin-main{background:transparent !important;}',
+        '.admin-main h1,.admin-main h2,.admin-main h3,.stat-num-lg,.stat-num-xl{color:#0a0a0a !important;}',
+        '.admin-heading-sm,.admin-heading-xs,.admin-label-xs,.admin-field-label{color:#666 !important;}',
+        '.admin-list-item,.admin-list-item-lg{border-bottom-color:rgba(0,0,0,0.06) !important;}',
+        '#adminUserInfo{color:#666 !important;}',
+        ].join('\n') : '',
         // Active nav uses brand color
         '.admin-nav-link.active{background:' + brand + '18 !important;color:' + brand + ' !important;border-color:' + brand + '33 !important;}',
         // Buttons use brand color
         '.btn-primary,.admin-save-btn,.sidebar-logo-dot,button[onclick*="portalLogin"]{background:' + brand + ' !important;}',
+        '.btn-cta{background:' + brand + ' !important;box-shadow:0 4px 20px ' + brand + '40 !important;}',
         // Hide every NUI-specific element
         '.nui-wordmark,.nui-brand-text,.sidebar-powered,#staffDemoSection{display:none !important;}',
         // Hide the NUI login screen completely — agency-tenant owns auth
@@ -443,12 +476,33 @@ function _launchPortal() {
     var overlay = document.getElementById('tenant-overlay');
     if (overlay) overlay.remove();
 
-    // ── 8. Load dashboard panel + filter features
+    // ── 8. Load dashboard panel + filter features + rename dashboard
     setTimeout(function() {
         if (typeof showAdminPanel === 'function') showAdminPanel('dashboard');
         _applyBranding();
+        // Replace dashboard title with agency name
+        document.querySelectorAll('.admin-main h1, .admin-main h2, .admin-panel h1').forEach(function(h) {
+            if (h.textContent.trim() === 'Dashboard' || h.textContent.indexOf('Dashboard') !== -1) {
+                h.textContent = name + ' Dashboard';
+            }
+        });
     }, 100);
     setTimeout(function() { _filterFeatures(role); }, 300);
+
+    // ── 10. Re-apply branding on every panel switch (MutationObserver)
+    var mainEl = document.querySelector('.admin-main');
+    if (mainEl) {
+        var _brandObs = new MutationObserver(function() {
+            _applyBranding();
+            // Also rename any dashboard header in new panel content
+            document.querySelectorAll('.admin-panel.active h1, .admin-panel.active h2').forEach(function(h) {
+                if (h.textContent.indexOf('NUI') !== -1 || h.textContent.indexOf('New Urban Influence') !== -1) {
+                    h.textContent = h.textContent.replace(/New Urban Influence/g, name).replace(/NUI/g, name);
+                }
+            });
+        });
+        _brandObs.observe(mainEl, { childList: true, subtree: true });
+    }
 }
 
 // ── APPLY BRANDING ────────────────────────────────────────────
@@ -547,17 +601,24 @@ function _filterFeatures(role) {
             el.style.display = 'none';
             return;
         }
-        // Hide if not in their plan features (admin only — designers/clients have fixed panels)
+        // HIDE if not in their plan features (admin only — designers/clients have fixed panels)
         if (role === 'admin' && feat && !features.includes(feat)) {
-            el.style.opacity = '0.25';
-            el.style.pointerEvents = 'none';
-            el.title = 'Not included in your plan';
+            el.style.display = 'none';
         }
     });
 
     // Always hide sub-accounts panel from tenants
     document.querySelectorAll('[data-panel="subaccounts"],[onclick*="subaccounts"]').forEach(function(el){
         el.style.display = 'none';
+    });
+
+    // Hide entire nav groups if ALL child links are hidden
+    document.querySelectorAll('.admin-nav-group').forEach(function(group) {
+        var links = group.querySelectorAll('.admin-nav-link');
+        if (!links.length) return;
+        var allHidden = true;
+        links.forEach(function(l) { if (l.style.display !== 'none') allHidden = false; });
+        if (allHidden) group.style.display = 'none';
     });
 }
 

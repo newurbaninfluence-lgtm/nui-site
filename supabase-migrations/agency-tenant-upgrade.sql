@@ -7,7 +7,9 @@ alter table agency_subaccounts
     add column if not exists portal_slug         text unique,
     add column if not exists login_password      text,
     add column if not exists setup_complete      boolean default false,
-    add column if not exists integrations_config jsonb default '{}'::jsonb;
+    add column if not exists integrations_config jsonb default '{}'::jsonb,
+    add column if not exists brand_theme         text default 'dark',
+    add column if not exists company_tagline     text;
 
 -- index for fast slug lookup (used on every portal login)
 create index if not exists idx_subaccounts_slug on agency_subaccounts(portal_slug);
