@@ -420,48 +420,40 @@ function _launchPortal() {
     };
     window.currentUser = currentUser;
 
-    // ── 6. Show dashboard, hide login
-    var loginEl = document.getElementById('portalLogin');
-    var dashEl  = document.getElementById('adminDashboard');
-    var clientEl = document.getElementById('clientPortal');
-    if (loginEl)  loginEl.style.display = 'none';
-    if (clientEl) clientEl.style.display = 'none';
-    if (dashEl) { dashEl.style.display = 'block'; dashEl.style.visibility = 'visible'; dashEl.classList.remove('hidden'); }
+    // ── 6. Show dashboard, hide login — MUST be after loadPortalView's 10ms setTimeout
+    //    portal.js line 377 queues setTimeout(10ms) to show login + hide dashboard
+    //    We wait 50ms to override it. Cannot touch portal.js.
+    setTimeout(function() {
+        var loginEl = document.getElementById('portalLogin');
+        var dashEl  = document.getElementById('adminDashboard');
+        var clientEl = document.getElementById('clientPortal');
+        if (loginEl)  loginEl.style.display = 'none';
+        if (clientEl) clientEl.style.display = 'none';
+        if (dashEl) { dashEl.style.display = 'block'; dashEl.style.visibility = 'visible'; dashEl.classList.remove('hidden'); }
 
-    // ── 7. Apply brand theme + filter nav + rebrand — USE EXISTING CONFIG SYSTEM
-    if (typeof applyBrandTheme === 'function') applyBrandTheme();
-    if (typeof filterAdminNav === 'function') filterAdminNav();
-    if (typeof rebrandPortal === 'function') rebrandPortal();
+        // Apply brand theme + filter nav + rebrand
+        if (typeof applyBrandTheme === 'function') applyBrandTheme();
+        if (typeof filterAdminNav === 'function') filterAdminNav();
+        if (typeof rebrandPortal === 'function') rebrandPortal();
 
-    // Light theme CSS overrides
-    if (isLight) {
-        var style = document.getElementById('tenant-light-theme') || document.createElement('style');
-        style.id = 'tenant-light-theme';
-        style.textContent = [
-            'body{background:#f5f5f5 !important;color:#0a0a0a !important;}',
-            '.admin-sidebar{background:#fff !important;border-right-color:rgba(0,0,0,0.08) !important;}',
-            '.admin-header{background:#fff !important;border-bottom-color:rgba(0,0,0,0.08) !important;}',
-            '.admin-header span,.admin-header .sb-name,#adminHeaderTitle{color:#0a0a0a !important;}',
-            '.admin-nav-label{color:rgba(0,0,0,0.4) !important;}',
-            '.admin-nav-link{color:rgba(0,0,0,0.5) !important;}',
-            '.admin-nav-link.active{color:' + brand + ' !important;background:' + brand + '0a !important;}',
-            '.admin-card-dark,.admin-card-dark-sm,.admin-card-dark-center,.admin-card-glass{background:#fff !important;border-color:rgba(0,0,0,0.08) !important;color:#0a0a0a !important;}',
-            '.admin-input,.admin-input-dark,.admin-select,.admin-textarea{background:#fff !important;color:#0a0a0a !important;border-color:rgba(0,0,0,0.15) !important;}',
-            '.admin-main h1,.admin-main h2,.admin-main h3,.stat-num-lg,.stat-num-xl{color:#0a0a0a !important;}',
-            '.admin-heading-sm,.admin-heading-xs,.admin-label-xs,.admin-field-label,#adminUserInfo{color:#666 !important;}',
-        ].join('\n');
-        if (!style.parentNode) document.head.appendChild(style);
-    }
+        // Header user info
+        var userInfoEl = document.getElementById('adminUserInfo');
+        if (userInfoEl) userInfoEl.textContent = name + ' · ' + (role.charAt(0).toUpperCase() + role.slice(1));
 
-    // Header user info
-    var userInfoEl = document.getElementById('adminUserInfo');
-    if (userInfoEl) userInfoEl.textContent = name + ' · ' + (role.charAt(0).toUpperCase() + role.slice(1));
+        // Remove overlay
+        var overlay = document.getElementById('tenant-overlay');
+        if (overlay) overlay.remove();
 
-    // ── 8. Remove overlay
-    var overlay = document.getElementById('tenant-overlay');
-    if (overlay) overlay.remove();
+        // Light theme CSS overrides
+        if (isLight) {
+            var ls = document.getElementById('tenant-light-theme') || document.createElement('style');
+            ls.id = 'tenant-light-theme';
+            ls.textContent = 'body{background:#f5f5f5!important;color:#0a0a0a!important}.admin-sidebar{background:#fff!important;border-right-color:rgba(0,0,0,.08)!important}.admin-header{background:#fff!important;border-bottom-color:rgba(0,0,0,.08)!important}.admin-header span,.admin-header .sb-name,#adminHeaderTitle{color:#0a0a0a!important}.admin-nav-label{color:rgba(0,0,0,.4)!important}.admin-nav-link{color:rgba(0,0,0,.5)!important}.admin-nav-link.active{color:'+brand+'!important;background:'+brand+'0a!important}.admin-card-dark,.admin-card-dark-sm,.admin-card-dark-center,.admin-card-glass{background:#fff!important;border-color:rgba(0,0,0,.08)!important;color:#0a0a0a!important}.admin-input,.admin-input-dark,.admin-select,.admin-textarea{background:#fff!important;color:#0a0a0a!important;border-color:rgba(0,0,0,.15)!important}.admin-main h1,.admin-main h2,.admin-main h3,.stat-num-lg,.stat-num-xl{color:#0a0a0a!important}.admin-heading-sm,.admin-heading-xs,.admin-label-xs,.admin-field-label,#adminUserInfo{color:#666!important}';
+            if (!ls.parentNode) document.head.appendChild(ls);
+        }
+    }, 50);
 
-    // ── 9. Load landing panel + role-based nav hiding
+    // ── 9. Load landing panel + role-based nav hiding (after step 6 at 50ms)
     var landingPanel = (role === 'designer') ? 'projects' : 'dashboard';
     setTimeout(function() {
         if (typeof showAdminPanel === 'function') showAdminPanel(landingPanel);
