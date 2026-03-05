@@ -105,7 +105,7 @@ function _showRolePicker() {
     var roles = [
         { id: 'admin',    icon: '⚡', title: 'Admin',    desc: 'Full dashboard — manage clients, projects, invoicing & more', always: true },
         { id: 'designer', icon: '🎨', title: 'Designer', desc: 'Projects, moodboard, brand guide, proofs & jobs board', always: false, enabled: hasDesigner },
-        { id: 'client',   icon: '👤', title: 'Client',   desc: 'View invoices, proofs, messages & project status', always: true },
+        { id: 'client',   icon: '👤', title: 'Client',   desc: 'Brand portal, orders & invoices, proofs, moodboard & project status', always: true },
     ];
 
     var cards = roles.filter(function(r){ return r.always || r.enabled; }).map(function(r) {
@@ -570,7 +570,7 @@ function _filterFeatures(role) {
     var roleAllowed = {
         admin:    null, // all features on their plan
         designer: ['projects','orders','moodboard','brandguide','proofs','assets','designer'],
-        client:   ['dashboard','proofs','invoices','payments','calendar','messaging'],
+        client:   ['dashboard','brandguide','moodboard','assets','orders','delivery','invoices','payments','proofs'],
     };
 
     var allowed = roleAllowed[role];
