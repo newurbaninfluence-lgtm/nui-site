@@ -103,7 +103,7 @@ function updateAdminHeader() {
 initializeTheme();
 
 // ==================== STATE ====================
-let currentUser = null;
+var currentUser = null;
 let loginType = 'client';
 let currentAdminClient = null;
 let assetCategory = 'logos';
