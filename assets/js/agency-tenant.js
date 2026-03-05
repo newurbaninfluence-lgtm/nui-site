@@ -210,14 +210,11 @@ window._tenantLogin = async function() {
 
     if (_agencyRole === 'admin') {
         var adminPass = d.admin_password || d.login_password || 'agency2026';
-        if (emailMatch && pass === adminPass) match = true;
+        if (pass === adminPass) match = true;
     } else if (_agencyRole === 'designer') {
         var designerPass = d.designer_password || 'designer2026';
-        // Designer can use owner email or any email (no separate designer email yet)
         if (pass === designerPass) match = true;
     } else if (_agencyRole === 'client') {
-        // Client login — check against agency_clients table (future)
-        // For now: use a client_password field or default
         var clientPass = d.client_password || 'client2026';
         if (pass === clientPass) match = true;
     }
