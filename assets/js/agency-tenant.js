@@ -360,64 +360,40 @@ function _launchPortal() {
     var role  = _agencyRole;
     var brand = d.brand_color || '#6366f1';
     var name  = d.agency_name;
-    var initials = name.charAt(0).toUpperCase();
-
-    // ── 1. Inject brand CSS — override ALL NUI red/branding BEFORE overlay drops
     var isLight = (d.brand_theme === 'light' || d.brand_theme === 'white');
-    var style = document.getElementById('agency-tenant-styles') || document.createElement('style');
-    style.id = 'agency-tenant-styles';
-    style.textContent = [
-        ':root{',
-        '  --admin-accent:' + brand + ' !important;',
-        '  --brand-primary:' + brand + ' !important;',
-        '  --red:' + brand + ' !important;',
-        isLight ? [
-        '  --admin-bg:#f5f5f5 !important;',
-        '  --admin-bg-secondary:#ffffff !important;',
-        '  --admin-text:#0a0a0a !important;',
-        '  --admin-text-muted:#666666 !important;',
-        '  --admin-card:#ffffff !important;',
-        '  --admin-card-hover:#f0f0f0 !important;',
-        '  --admin-border:rgba(0,0,0,0.1) !important;',
-        '  --admin-input-bg:#ffffff !important;',
-        '  --admin-sidebar:#ffffff !important;',
-        '  --admin-header:#ffffff !important;',
-        ].join('\n') : '',
-        '}',
-        // White theme body override
-        isLight ? [
-        'body{background:#f5f5f5 !important;color:#0a0a0a !important;}',
-        '.admin-sidebar{background:#fff !important;border-right-color:rgba(0,0,0,0.08) !important;}',
-        '.admin-header{background:#fff !important;border-bottom-color:rgba(0,0,0,0.08) !important;color:#0a0a0a !important;}',
-        '.admin-header span,.admin-header .sb-name{color:#0a0a0a !important;}',
-        '.admin-nav-label{color:rgba(0,0,0,0.4) !important;}',
-        '.admin-nav-link{color:rgba(0,0,0,0.5) !important;}',
-        '.admin-nav-link.active{color:' + brand + ' !important;background:' + brand + '0a !important;}',
-        '.admin-nav-link:hover{color:' + brand + ' !important;}',
-        '.admin-card-dark,.admin-card-dark-sm,.admin-card-dark-center{background:#fff !important;border-color:rgba(0,0,0,0.08) !important;color:#0a0a0a !important;}',
-        '.admin-card-glass{background:rgba(255,255,255,0.9) !important;border-color:rgba(0,0,0,0.06) !important;color:#0a0a0a !important;}',
-        '.admin-input,.admin-input-dark,.admin-select,.admin-textarea{background:#fff !important;color:#0a0a0a !important;border-color:rgba(0,0,0,0.15) !important;}',
-        '.admin-main{background:transparent !important;}',
-        '.admin-main h1,.admin-main h2,.admin-main h3,.stat-num-lg,.stat-num-xl{color:#0a0a0a !important;}',
-        '.admin-heading-sm,.admin-heading-xs,.admin-label-xs,.admin-field-label{color:#666 !important;}',
-        '.admin-list-item,.admin-list-item-lg{border-bottom-color:rgba(0,0,0,0.06) !important;}',
-        '#adminUserInfo{color:#666 !important;}',
-        ].join('\n') : '',
-        // Active nav uses brand color
-        '.admin-nav-link.active{background:' + brand + '18 !important;color:' + brand + ' !important;border-color:' + brand + '33 !important;}',
-        // Buttons use brand color
-        '.btn-primary,.admin-save-btn,.sidebar-logo-dot,button[onclick*="portalLogin"]{background:' + brand + ' !important;}',
-        '.btn-cta{background:' + brand + ' !important;box-shadow:0 4px 20px ' + brand + '40 !important;}',
-        // Hide every NUI-specific element
-        '.nui-wordmark,.nui-brand-text,.sidebar-powered,#staffDemoSection{display:none !important;}',
-        // Hide the NUI login screen completely — agency-tenant owns auth
-        '#portalLogin{display:none !important;}',
-        // Hide the NUI background / marketing elements
-        '.portal-bg,.portal-hero,.marketing-bg{display:none !important;}'
-    ].join('\n');
-    if (!style.parentNode) document.head.appendChild(style);
 
-    // ── 3. Set globals BEFORE calling loadPortalView (currentUser set AFTER — see step 4b)
+    // ── 1. POPULATE AGENCY_CONFIG — the existing config system handles everything
+    if (typeof AGENCY_CONFIG !== 'undefined') {
+        AGENCY_CONFIG.agency.id        = d.portal_slug || d.id;
+        AGENCY_CONFIG.agency.name      = name;
+        AGENCY_CONFIG.agency.shortName = name.split(' ')[0];
+        AGENCY_CONFIG.agency.tagline   = d.company_tagline || '';
+        AGENCY_CONFIG.agency.domain    = d.domain || '';
+        AGENCY_CONFIG.agency.email     = d.owner_email || '';
+        AGENCY_CONFIG.agency.phone     = d.owner_phone || '';
+        // Brand colors
+        AGENCY_CONFIG.brand.colors.primary      = brand;
+        AGENCY_CONFIG.brand.colors.primaryHover  = brand;
+        AGENCY_CONFIG.brand.colors.primaryLight  = brand + '18';
+        if (isLight) {
+            AGENCY_CONFIG.brand.colors.background = '#f5f5f5';
+            AGENCY_CONFIG.brand.colors.surface    = '#ffffff';
+            AGENCY_CONFIG.brand.colors.text       = '#0a0a0a';
+            AGENCY_CONFIG.brand.colors.textMuted  = '#666666';
+            AGENCY_CONFIG.brand.colors.textDim    = 'rgba(0,0,0,0.3)';
+            AGENCY_CONFIG.brand.colors.border     = 'rgba(0,0,0,0.1)';
+        }
+        // Modules — map features array to module toggles
+        var features = Array.isArray(d.features) ? d.features : [];
+        Object.keys(AGENCY_CONFIG.modules).forEach(function(k) {
+            AGENCY_CONFIG.modules[k] = features.includes(k);
+        });
+        AGENCY_CONFIG.modules.dashboard = true; // always on
+        // Always hide sub-accounts from tenants
+        AGENCY_CONFIG.modules.subaccounts = false;
+    }
+
+    // ── 2. Set globals
     document.title = name + ' — ' + (role.charAt(0).toUpperCase() + role.slice(1)) + ' Portal';
     window._isAgencyTenant = true;
     window._agencyRole     = role;
@@ -425,16 +401,13 @@ function _launchPortal() {
     window._agencyFeatures = Array.isArray(d.features) ? d.features : [];
     window._agencyKeys     = d.integrations_config || {};
 
-    // ── 4. Render the portal HTML (WARNING: loadPortalView resets currentUser to null)
-    //   Define stubs for panel loaders not loaded in /portal/ (admin-subaccounts.js excluded)
-    //   Without this, showAdminPanel() crashes with ReferenceError on the panelLoaders object
+    // ── 3. Stub for missing panel loader (admin-subaccounts.js not in portal)
     if (typeof loadAdminSubAccountsPanel === 'undefined') window.loadAdminSubAccountsPanel = function(){};
+
+    // ── 4. Render portal HTML (this resets currentUser to null)
     if (typeof loadPortalView === 'function') loadPortalView();
 
-    // ── 4b. Set currentUser AFTER loadPortalView — it resets to null internally
-    //        Set type:'admin' for ALL roles so canAccessPanel() passes.
-    //        Actual panel visibility is controlled by _filterFeatures() which
-    //        hides nav links based on role. This avoids touching core.js PANEL_ACCESS.
+    // ── 5. Set currentUser AFTER loadPortalView reset
     currentUser = {
         type: 'admin',
         email: (_agencySession && _agencySession.email) || d.owner_email || '',
@@ -445,72 +418,79 @@ function _launchPortal() {
     };
     window.currentUser = currentUser;
 
-    // ── 5. Immediately show adminDashboard, hide NUI login form
+    // ── 6. Show dashboard, hide login
     var loginEl = document.getElementById('portalLogin');
     var dashEl  = document.getElementById('adminDashboard');
     var clientEl = document.getElementById('clientPortal');
-    if (loginEl)  loginEl.style.display  = 'none';
+    if (loginEl)  loginEl.style.display = 'none';
     if (clientEl) clientEl.style.display = 'none';
-    if (dashEl) {
-        dashEl.style.display   = 'block';
-        dashEl.style.visibility = 'visible';
-        dashEl.classList.remove('hidden');
+    if (dashEl) { dashEl.style.display = 'block'; dashEl.style.visibility = 'visible'; dashEl.classList.remove('hidden'); }
+
+    // ── 7. Apply brand theme + filter nav + rebrand — USE EXISTING CONFIG SYSTEM
+    if (typeof applyBrandTheme === 'function') applyBrandTheme();
+    if (typeof filterAdminNav === 'function') filterAdminNav();
+    if (typeof rebrandPortal === 'function') rebrandPortal();
+
+    // Light theme CSS overrides
+    if (isLight) {
+        var style = document.getElementById('tenant-light-theme') || document.createElement('style');
+        style.id = 'tenant-light-theme';
+        style.textContent = [
+            'body{background:#f5f5f5 !important;color:#0a0a0a !important;}',
+            '.admin-sidebar{background:#fff !important;border-right-color:rgba(0,0,0,0.08) !important;}',
+            '.admin-header{background:#fff !important;border-bottom-color:rgba(0,0,0,0.08) !important;}',
+            '.admin-header span,.admin-header .sb-name,#adminHeaderTitle{color:#0a0a0a !important;}',
+            '.admin-nav-label{color:rgba(0,0,0,0.4) !important;}',
+            '.admin-nav-link{color:rgba(0,0,0,0.5) !important;}',
+            '.admin-nav-link.active{color:' + brand + ' !important;background:' + brand + '0a !important;}',
+            '.admin-card-dark,.admin-card-dark-sm,.admin-card-dark-center,.admin-card-glass{background:#fff !important;border-color:rgba(0,0,0,0.08) !important;color:#0a0a0a !important;}',
+            '.admin-input,.admin-input-dark,.admin-select,.admin-textarea{background:#fff !important;color:#0a0a0a !important;border-color:rgba(0,0,0,0.15) !important;}',
+            '.admin-main h1,.admin-main h2,.admin-main h3,.stat-num-lg,.stat-num-xl{color:#0a0a0a !important;}',
+            '.admin-heading-sm,.admin-heading-xs,.admin-label-xs,.admin-field-label,#adminUserInfo{color:#666 !important;}',
+        ].join('\n');
+        if (!style.parentNode) document.head.appendChild(style);
     }
-
-    // ── 6. Replace sidebar branding synchronously — no setTimeout
-    // Sidebar brand name
-    document.querySelectorAll('.sidebar-brand span, .sb-name, #adminHeaderTitle, [id*="adminHeader"] span').forEach(function(el) {
-        if (el.textContent.trim() === 'NUI Admin' || el.textContent.trim() === 'Admin Dashboard' || el.id === 'adminHeaderTitle') {
-            el.textContent = name + (role !== 'admin' ? ' — ' + role.charAt(0).toUpperCase() + role.slice(1) : '');
-        }
-    });
-
-    // Sidebar logo: replace NUI icon-192.png with agency initial
-    document.querySelectorAll('.sidebar-brand img, #adminHeaderLogo, [src*="icon-192"]').forEach(function(img) {
-        var mark = document.createElement('div');
-        mark.style.cssText = 'width:' + (img.style.height || '28px') + ';height:' + (img.style.height || '28px') + ';' +
-            'min-width:28px;min-height:28px;border-radius:8px;background:' + brand + ';' +
-            'display:inline-flex;align-items:center;justify-content:center;' +
-            'font-size:15px;font-weight:900;color:#fff;flex-shrink:0;';
-        mark.textContent = initials;
-        if (img.parentNode) img.parentNode.replaceChild(mark, img);
-    });
 
     // Header user info
     var userInfoEl = document.getElementById('adminUserInfo');
     if (userInfoEl) userInfoEl.textContent = name + ' · ' + (role.charAt(0).toUpperCase() + role.slice(1));
 
-    // ── 7. Remove overlay — LAST, so no flash of NUI branding
+    // ── 8. Remove overlay
     var overlay = document.getElementById('tenant-overlay');
     if (overlay) overlay.remove();
 
-    // ── 8. Load dashboard panel + filter features + rename dashboard
+    // ── 9. Load landing panel + role-based nav hiding
     var landingPanel = (role === 'designer') ? 'projects' : 'dashboard';
     setTimeout(function() {
         if (typeof showAdminPanel === 'function') showAdminPanel(landingPanel);
-        _applyBranding();
-        // Replace dashboard title with agency name
-        document.querySelectorAll('.admin-main h1, .admin-main h2, .admin-panel h1').forEach(function(h) {
-            if (h.textContent.trim() === 'Dashboard' || h.textContent.indexOf('Dashboard') !== -1) {
-                h.textContent = name + ' Dashboard';
-            }
-        });
-    }, 100);
-    setTimeout(function() { _filterFeatures(role); }, 300);
+        // Role-based additional filtering (designer/client see fewer panels)
+        if (role !== 'admin') {
+            var roleAllowed = {
+                designer: ['projects','orders','moodboard','brandguide','proofs','assets','designer'],
+                client: ['dashboard','brandguide','moodboard','assets','orders','delivery','invoices','payments','proofs'],
+            };
+            var allowed = roleAllowed[role] || [];
+            document.querySelectorAll('.admin-nav-link[data-panel]').forEach(function(el) {
+                var panel = el.getAttribute('data-panel');
+                if (!allowed.includes(panel)) el.style.display = 'none';
+            });
+            // Hide empty nav groups
+            document.querySelectorAll('.admin-nav-group,.admin-nav-section').forEach(function(g) {
+                var vis = g.querySelectorAll('.admin-nav-link:not([style*="display: none"]),.admin-nav-link:not([data-module-disabled])');
+                var allHidden = true;
+                vis.forEach(function(l) { if (l.style.display !== 'none' && !l.hasAttribute('data-module-disabled')) allHidden = false; });
+                if (allHidden) g.style.display = 'none';
+            });
+        }
+    }, 150);
 
-    // ── 10. Re-apply branding on every panel switch (MutationObserver)
+    // ── 10. Re-rebrand on panel switches
     var mainEl = document.querySelector('.admin-main');
     if (mainEl) {
-        var _brandObs = new MutationObserver(function() {
-            _applyBranding();
-            // Also rename any dashboard header in new panel content
-            document.querySelectorAll('.admin-panel.active h1, .admin-panel.active h2').forEach(function(h) {
-                if (h.textContent.indexOf('NUI') !== -1 || h.textContent.indexOf('New Urban Influence') !== -1) {
-                    h.textContent = h.textContent.replace(/New Urban Influence/g, name).replace(/NUI/g, name);
-                }
-            });
+        var _obs = new MutationObserver(function() {
+            if (typeof rebrandPortal === 'function') rebrandPortal();
         });
-        _brandObs.observe(mainEl, { childList: true, subtree: true });
+        _obs.observe(mainEl, { childList: true, subtree: true });
     }
 }
 
