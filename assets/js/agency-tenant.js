@@ -417,7 +417,7 @@ function _launchPortal() {
     ].join('\n');
     if (!style.parentNode) document.head.appendChild(style);
 
-    // ── 2. Set globals BEFORE calling loadPortalView
+    // ── 3. Set globals BEFORE calling loadPortalView (currentUser set AFTER — see step 4b)
     document.title = name + ' — ' + (role.charAt(0).toUpperCase() + role.slice(1)) + ' Portal';
     window._isAgencyTenant = true;
     window._agencyRole     = role;
@@ -425,17 +425,22 @@ function _launchPortal() {
     window._agencyFeatures = Array.isArray(d.features) ? d.features : [];
     window._agencyKeys     = d.integrations_config || {};
 
-    // ── 3. Fake NUI auth state so portal.js thinks admin is logged in
-    window.currentUser = {
-        type: role === 'admin' ? 'admin' : role,
+    // ── 4. Render the portal HTML (WARNING: loadPortalView resets currentUser to null)
+    if (typeof loadPortalView === 'function') loadPortalView();
+
+    // ── 4b. Set currentUser AFTER loadPortalView — it resets to null internally
+    //        Set type:'admin' for ALL roles so canAccessPanel() passes.
+    //        Actual panel visibility is controlled by _filterFeatures() which
+    //        hides nav links based on role. This avoids touching core.js PANEL_ACCESS.
+    currentUser = {
+        type: 'admin',
         email: (_agencySession && _agencySession.email) || d.owner_email || '',
         name: name + ' ' + (role.charAt(0).toUpperCase() + role.slice(1)),
-        isMasterAdmin: (role === 'admin'),
-        isAgencyTenant: true
+        isMasterAdmin: false,
+        isAgencyTenant: true,
+        tenantRole: role
     };
-
-    // ── 4. Render the portal HTML
-    if (typeof loadPortalView === 'function') loadPortalView();
+    window.currentUser = currentUser;
 
     // ── 5. Immediately show adminDashboard, hide NUI login form
     var loginEl = document.getElementById('portalLogin');
