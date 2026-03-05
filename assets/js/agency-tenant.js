@@ -426,6 +426,9 @@ function _launchPortal() {
     window._agencyKeys     = d.integrations_config || {};
 
     // ── 4. Render the portal HTML (WARNING: loadPortalView resets currentUser to null)
+    //   Define stubs for panel loaders not loaded in /portal/ (admin-subaccounts.js excluded)
+    //   Without this, showAdminPanel() crashes with ReferenceError on the panelLoaders object
+    if (typeof loadAdminSubAccountsPanel === 'undefined') window.loadAdminSubAccountsPanel = function(){};
     if (typeof loadPortalView === 'function') loadPortalView();
 
     // ── 4b. Set currentUser AFTER loadPortalView — it resets to null internally
