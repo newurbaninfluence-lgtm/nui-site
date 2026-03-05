@@ -104,7 +104,7 @@ function _showRolePicker() {
 
     var roles = [
         { id: 'admin',    icon: '⚡', title: 'Admin',    desc: 'Full dashboard — manage clients, projects, invoicing & more', always: true },
-        { id: 'designer', icon: '🎨', title: 'Designer', desc: 'Brand guide, moodboard, proofs & creative tools', always: false, enabled: hasDesigner },
+        { id: 'designer', icon: '🎨', title: 'Designer', desc: 'Projects, moodboard, brand guide, proofs & jobs board', always: false, enabled: hasDesigner },
         { id: 'client',   icon: '👤', title: 'Client',   desc: 'View invoices, proofs, messages & project status', always: true },
     ];
 
@@ -477,8 +477,9 @@ function _launchPortal() {
     if (overlay) overlay.remove();
 
     // ── 8. Load dashboard panel + filter features + rename dashboard
+    var landingPanel = (role === 'designer') ? 'projects' : 'dashboard';
     setTimeout(function() {
-        if (typeof showAdminPanel === 'function') showAdminPanel('dashboard');
+        if (typeof showAdminPanel === 'function') showAdminPanel(landingPanel);
         _applyBranding();
         // Replace dashboard title with agency name
         document.querySelectorAll('.admin-main h1, .admin-main h2, .admin-panel h1').forEach(function(h) {
@@ -568,7 +569,7 @@ function _filterFeatures(role) {
     // Role-based panel visibility
     var roleAllowed = {
         admin:    null, // all features on their plan
-        designer: ['dashboard','projects','designer','moodboard','brandguide','assets','proofs'],
+        designer: ['projects','orders','moodboard','brandguide','proofs','assets','designer'],
         client:   ['dashboard','proofs','invoices','payments','calendar','messaging'],
     };
 
