@@ -749,7 +749,7 @@ function copyPortalLink(slug) {
 // so localStorage is SHARED. Write session HERE first, then open tab.
 // Portal reads localStorage on DOMContentLoaded and skips login.
 function enterPortalAsAdmin(accountId) {
-    var acct = _subAccounts.find(function(a){ return a.id === accountId; });
+    var acct = _subAccounts.find(function(a){ return a.id == accountId; });
     if (!acct) return;
     var slug = acct.portal_slug || acct.id;
 
