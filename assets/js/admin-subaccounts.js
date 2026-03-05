@@ -98,6 +98,25 @@ async function loadSubAccountsFromSupabase() {
 function renderSubAccountsGrid() {
     var el = document.getElementById('subaccounts-list');
     if (!el) return;
+
+    // Auto-generate passwords for any accounts missing one
+    _subAccounts.forEach(function(a) {
+        var needsUpdate = {};
+        if (!a.login_password) {
+            a.login_password = _genPassword();
+            needsUpdate.login_password = a.login_password;
+        }
+        if (!a.portal_slug && a.agency_name) {
+            a.portal_slug = _genSlug(a.agency_name);
+            needsUpdate.portal_slug = a.portal_slug;
+        }
+        // Save to Supabase in background if anything was missing
+        if (Object.keys(needsUpdate).length > 0 && typeof db !== 'undefined' && db && a.id) {
+            db.from('agency_subaccounts').update(needsUpdate).eq('id', a.id)
+                .then(function() { console.log('Auto-filled missing fields for', a.agency_name); });
+        }
+    });
+
     if (_subAccounts.length === 0) {
         el.innerHTML = '<div style="text-align:center;padding:80px 40px;border:1px dashed rgba(255,255,255,0.08);border-radius:16px;">' +
             '<div style="font-size:48px;margin-bottom:16px;">🏢</div>' +
@@ -140,7 +159,15 @@ function buildAccountCard(acct) {
                 (enabledCount > 6 ? '<span style="padding:3px 9px;background:rgba(255,255,255,0.03);border-radius:20px;font-size:10px;color:rgba(255,255,255,0.3);">+' + (enabledCount-6) + ' more</span>' : '') +
             '</div>' +
         '</div>' +
-        '<div style="padding:12px 20px;background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:8;">' +
+        // LOGIN CREDENTIALS ROW — always visible
+        '<div style="padding:12px 20px;background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:12px;">' +
+            '<span style="font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.5px;text-transform:uppercase;flex-shrink:0;">Login</span>' +
+            '<span style="font-size:11px;color:rgba(255,255,255,0.5);font-family:monospace;">' + (acct.owner_email||'—') + '</span>' +
+            '<span style="font-size:11px;color:rgba(255,255,255,0.15);">·</span>' +
+            '<span style="font-size:11px;color:#f59e0b;font-family:monospace;font-weight:600;">' + (acct.login_password || '<em style="color:#ef4444;font-style:normal;">No password — click Manage to set</em>') + '</span>' +
+        '</div>' +
+        // PORTAL URL ROW
+        '<div style="padding:12px 20px;background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:8;">' +
             '<span style="font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.5px;text-transform:uppercase;flex-shrink:0;">Portal URL</span>' +
             '<code id="portalurl-' + acct.id + '" style="flex:1;font-size:11px;color:#6ee7b7;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:6px;padding:5px 10px;margin:0 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;">newurbaninfluence.com/portal/?agency=' + (acct.portal_slug||acct.id) + '</code>' +
             '<button onclick="copyPortalLink(\'' + (acct.portal_slug||acct.id) + '\')" style="flex-shrink:0;padding:5px 10px;background:rgba(16,185,129,0.08);color:#6ee7b7;border:1px solid rgba(16,185,129,0.2);border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;">📋 Copy</button>' +
@@ -156,8 +183,12 @@ function buildAccountCard(acct) {
                 '</button>' +
                 '<button onclick="openSubAccountModal(\'' + acct.id + '\')" style="padding:7px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">✏️ Manage</button>' +
                 '<button onclick="openWhiteLabelSettings(\'' + acct.id + '\')" style="padding:7px 14px;background:rgba(99,102,241,0.1);color:#818cf8;border:1px solid rgba(99,102,241,0.25);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;" title="White Label Settings">🎨 Brand</button>' +
-                '<button onclick="enterPortalAsAdmin(\'' + acct.id + '\')" style="padding:7px 14px;background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.25);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;" title="Enter their portal as admin — no login required">🚀 Enter Portal</button>' +
             '</div>' +
+        '</div>' +
+        // BIG ENTER PORTAL BUTTON — full width, can't miss it
+        '<div style="padding:12px 20px;border-top:1px solid rgba(255,255,255,0.05);">' +
+            '<button onclick="enterPortalAsAdmin(\'' + acct.id + '\')" style="width:100%;padding:12px;background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.3);border-radius:10px;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;" onmouseover="this.style.background=\'#10b981\';this.style.color=\'#fff\'" onmouseout="this.style.background=\'rgba(16,185,129,0.12)\';this.style.color=\'#10b981\'">🚀 Enter Portal as Admin — No Login Required</button>' +
+        '</div>' +
         '</div>' +
     '</div>';
 }
