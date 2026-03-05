@@ -4,9 +4,9 @@
 # Fix old/broken portfolio links
 /work/good-cakes  /work/good-cakes-and-bakes  301
 
-# Portal → dedicated app shell (admin/client/designer)
-/portal    /app/index.html   200
-/portal/*  /app/index.html   200
+# Portal → dedicated tenant portal (NOT /app/ — that's NUI admin)
+# Rules in netlify.toml handle /portal → /portal/index.html
+# DO NOT add /portal rules here — _redirects overrides netlify.toml
 /app       /app/index.html   200
 
 # SPA catch-all ONLY for unmatched routes (must be last)

@@ -337,13 +337,55 @@ exports.handler = async (event) => {
 
           case 'send_sms': {
             const d = action.data;
+            const fromNumber = brand.openphone_number || process.env.OPENPHONE_NUMBER || '+12484878747';
             const smsRes = await fetch('https://api.openphone.com/v1/messages', {
               method: 'POST',
               headers: { 'Authorization': process.env.OPENPHONE_API_KEY, 'Content-Type': 'application/json' },
-              body: JSON.stringify({ from: brand.openphone_number || process.env.OPENPHONE_NUMBER || '+12484878747', to: [d.to], content: d.message })
+              body: JSON.stringify({ from: fromNumber, to: [d.to], content: d.message })
             });
             if (!smsRes.ok) throw new Error(`SMS failed: ${smsRes.status}`);
-            results.push({ action: 'send_sms', success: true, to: d.to });
+
+            // Find contact by phone so we can link the activity
+            const toDigits = (d.to || '').replace(/\D/g, '').slice(-10);
+            let contactId = d.contact_id || null;
+            if (!contactId && toDigits.length === 10) {
+              const e164 = `+1${toDigits}`;
+              const lookupRes = await sbFetch(`crm_contacts?or=(phone.eq.${encodeURIComponent(d.to)},phone.eq.${encodeURIComponent(e164)},phone.eq.${toDigits})&select=id&limit=1`);
+              if (Array.isArray(lookupRes) && lookupRes[0]) contactId = lookupRes[0].id;
+            }
+
+            // Log to activity_log so Contact Hub sees it
+            await sbFetch('activity_log', {
+              method: 'POST',
+              prefer: 'return=minimal',
+              body: JSON.stringify({
+                type: 'text',
+                event_type: 'sms_sent',
+                direction: 'outbound',
+                content: d.message,
+                contact_id: contactId,
+                metadata: { from: fromNumber, to: d.to, source: 'monty', sent_at: new Date().toISOString() },
+                created_at: new Date().toISOString()
+              })
+            });
+
+            // Also log to communications table for Contact Hub SMS tab
+            await sbFetch('communications', {
+              method: 'POST',
+              prefer: 'return=minimal',
+              body: JSON.stringify({
+                channel: 'sms',
+                direction: 'outbound',
+                subject: d.message.slice(0, 80),
+                body: d.message,
+                contact_id: contactId,
+                client_id: d.client_id || null,
+                metadata: { from: fromNumber, to: d.to, source: 'monty' },
+                created_at: new Date().toISOString()
+              })
+            });
+
+            results.push({ action: 'send_sms', success: true, to: d.to, logged: true });
             break;
           }
 
