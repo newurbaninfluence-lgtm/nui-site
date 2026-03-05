@@ -1,0 +1,44 @@
+# ═══════════════════════════════════════════════════════════════
+# PORTAL SITE — portal.newurbaninfluence.com
+# Separate Netlify site, same repo, different entry point
+# This file lives at /portal-netlify.toml and is referenced
+# in the portal Netlify site's build settings
+# ═══════════════════════════════════════════════════════════════
+
+[build]
+  publish = "."
+  # No build command needed — static site
+
+# Root → portal/index.html
+[[redirects]]
+  from = "/"
+  to = "/portal/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/index.html"
+  to = "/portal/index.html"
+  status = 200
+
+# Block access to /app/ on the portal domain — tenants should never see it
+[[redirects]]
+  from = "/app/*"
+  to = "/portal/index.html"
+  status = 302
+
+# All other routes fall through to static files (/assets/*, /env.js, etc.)
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-XSS-Protection = "1; mode=block"
+
+# Cache static assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"

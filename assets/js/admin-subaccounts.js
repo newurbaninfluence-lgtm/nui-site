@@ -3,6 +3,15 @@
 // NUI Master Admin controls all sub-accounts from here
 // ═══════════════════════════════════════════════════════════════
 
+// Portal domain — separate from NUI admin for full data isolation
+var NUI_PORTAL_DOMAIN = 'https://portal.newurbaninfluence.com';
+// Fallback while DNS propagates:
+// var NUI_PORTAL_DOMAIN = 'https://newurbaninfluence.com/portal';
+
+function _portalUrl(slug) {
+    return NUI_PORTAL_DOMAIN + '/?agency=' + slug;
+}
+
 const NUI_FEATURES = [
     { key: 'dashboard',      label: 'Dashboard',           icon: '📊', group: 'Core' },
     { key: 'clients',        label: 'Clients CRM',         icon: '👥', group: 'Core' },
@@ -169,7 +178,7 @@ function buildAccountCard(acct) {
         // PORTAL URL ROW
         '<div style="padding:12px 20px;background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:8;">' +
             '<span style="font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.5px;text-transform:uppercase;flex-shrink:0;">Portal URL</span>' +
-            '<code id="portalurl-' + acct.id + '" style="flex:1;font-size:11px;color:#6ee7b7;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:6px;padding:5px 10px;margin:0 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;">newurbaninfluence.com/portal/?agency=' + (acct.portal_slug||acct.id) + '</code>' +
+            '<code id="portalurl-' + acct.id + '" style="flex:1;font-size:11px;color:#6ee7b7;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:6px;padding:5px 10px;margin:0 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;">' + _portalUrl(acct.portal_slug||acct.id) + '</code>' +
             '<button onclick="copyPortalLink(\'' + (acct.portal_slug||acct.id) + '\')" style="flex-shrink:0;padding:5px 10px;background:rgba(16,185,129,0.08);color:#6ee7b7;border:1px solid rgba(16,185,129,0.2);border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;">📋 Copy</button>' +
         '</div>' +
         '<div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">' +
@@ -393,7 +402,7 @@ async function saveSubAccount() {
 
 // ── INVITE MODAL ─────────────────────────────────────────────
 function _showInviteModal(acct) {
-    var portalUrl = 'https://newurbaninfluence.com/portal/?agency=' + acct.portal_slug;
+    var portalUrl = _portalUrl(acct.portal_slug);
     var email     = acct.owner_email || '';
     var name      = acct.owner_name  || acct.agency_name;
     var pass      = acct.login_password;
@@ -662,7 +671,7 @@ window._sendInviteEmail = async function(acct) {
     var btn = document.getElementById('send-invite-btn');
     if (btn) { btn.textContent = '⏳ Sending...'; btn.disabled = true; }
 
-    var portalUrl = 'https://newurbaninfluence.com/portal/?agency=' + acct.portal_slug;
+    var portalUrl = _portalUrl(acct.portal_slug);
     var name      = acct.owner_name || acct.agency_name;
     var brand     = acct.brand_color || '#dc2626';
 
@@ -727,7 +736,7 @@ window._sendInviteEmail = async function(acct) {
 
 // ── PORTAL LINK COPY ─────────────────────────────────────────
 function copyPortalLink(slug) {
-    var url = 'https://newurbaninfluence.com/portal/?agency=' + slug;
+    var url = _portalUrl(slug);
     navigator.clipboard.writeText(url).then(function() {
         // Flash the code element green
         var el = document.querySelector('[id^="portalurl-"]');
@@ -746,28 +755,25 @@ function copyPortalLink(slug) {
 // ── ONE-CLICK PORTAL IMPERSONATION ───────────────────────────
 // One-click portal access — no login required.
 // Both /app/ and /portal/ are same origin (newurbaninfluence.com)
-// so localStorage is SHARED. Write session HERE first, then open tab.
-// Portal reads localStorage on DOMContentLoaded and skips login.
+// Portal is on a DIFFERENT domain (portal.newurbaninfluence.com)
+// so localStorage is NOT shared. Pass session via URL token.
+// agency-tenant.js reads ?token= and creates local session.
 function enterPortalAsAdmin(accountId) {
     var acct = _subAccounts.find(function(a){ return a.id == accountId; });
     if (!acct) return;
     var slug = acct.portal_slug || acct.id;
 
-    // Build session — must include BOTH 'data' and 'agency' fields
-    // agency-tenant.js checks for sess.data to validate session
     var session = {
         slug:              slug,
         role:              'admin',
         email:             acct.owner_email || 'admin@' + slug + '.com',
-        data:              acct,   // ← required by agency-tenant session check
-        agency:            acct,   // ← kept for compatibility
+        data:              acct,
+        agency:            acct,
         loginAt:           Date.now(),
         impersonatedByNUI: true
     };
 
-    // Step 1: Write to THIS tab's localStorage (same origin = instantly visible to portal tab)
-    localStorage.setItem('nui_agency_session', JSON.stringify(session));
-
-    // Step 2: Now open the portal — it reads localStorage on first load, finds session, skips login
-    window.open('https://newurbaninfluence.com/portal/?agency=' + slug, '_blank');
+    // Encode session as base64 URL token
+    var token = btoa(unescape(encodeURIComponent(JSON.stringify(session))));
+    window.open(_portalUrl(slug) + '&token=' + token, '_blank');
 }

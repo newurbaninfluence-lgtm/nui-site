@@ -34,6 +34,27 @@ window._agencyTenantInit = function() {
     document.title = 'Portal — Loading...';
     _showOverlay(_html.loading());
 
+    // Check URL token bypass (from Enter Portal button — cross-domain)
+    var tokenParam = params.get('token');
+    if (tokenParam) {
+        try {
+            var sess = JSON.parse(decodeURIComponent(escape(atob(tokenParam))));
+            if (sess.slug == _agencySlug && sess.role && (sess.data || sess.agency)) {
+                _agencySession = sess;
+                _agencyData    = sess.data || sess.agency;
+                _agencyRole    = sess.role;
+                // Save to localStorage so future visits don't need token
+                localStorage.setItem('nui_agency_session', JSON.stringify(sess));
+                sessionStorage.setItem('nui_agency_session', JSON.stringify(sess));
+                // Clean URL — remove token param
+                var cleanUrl = window.location.pathname + '?agency=' + _agencySlug;
+                history.replaceState(null, '', cleanUrl);
+                _launchPortal();
+                return true;
+            }
+        } catch(e) { console.warn('[Tenant] Token parse failed:', e); }
+    }
+
     // Check saved session
     try {
         var saved = localStorage.getItem('nui_agency_session') ||
@@ -406,26 +427,25 @@ function _launchPortal() {
     // ── 3. Stub for missing panel loader (admin-subaccounts.js not in portal)
     if (typeof loadAdminSubAccountsPanel === 'undefined') window.loadAdminSubAccountsPanel = function(){};
 
-    // ── 3b. ISOLATE LOCALSTORAGE — Clear NUI data so tenant starts clean
-    //    /app/ and /portal/ share the same domain = same localStorage.
-    //    Without this, tenants see Faren's clients, orders, etc.
-    //    We save the NUI session key (to not break /app/ in other tabs)
-    //    but wipe all data keys so panels load empty for the tenant.
-    var _nuiDataKeys = [
-        'nui_clients','nui_orders','nui_invoices','nui_subscriptions',
-        'nui_proofs','nui_projects','nui_leads','nui_services',
-        'nui_meetings','nui_submissions','nui_crm','nui_comm_hub',
-        'nui_designer_messages','nui_client_messages','nui_analytics',
-        'nui_site_images','nui_about','nui_portfolio'
-    ];
-    _nuiDataKeys.forEach(function(k) {
-        var existing = localStorage.getItem(k);
-        if (existing) {
-            // Back up NUI data so /app/ can restore it
-            localStorage.setItem('_nui_backup_' + k, existing);
-            localStorage.removeItem(k);
-        }
-    });
+    // ── 3b. ISOLATE LOCALSTORAGE
+    //    If portal is on same domain as /app/ (fallback), clear NUI data.
+    //    On portal.newurbaninfluence.com this is a no-op (separate origin).
+    if (window.location.hostname === 'newurbaninfluence.com') {
+        var _nuiDataKeys = [
+            'nui_clients','nui_orders','nui_invoices','nui_subscriptions',
+            'nui_proofs','nui_projects','nui_leads','nui_services',
+            'nui_meetings','nui_submissions','nui_crm','nui_comm_hub',
+            'nui_designer_messages','nui_client_messages','nui_analytics',
+            'nui_site_images','nui_about','nui_portfolio'
+        ];
+        _nuiDataKeys.forEach(function(k) {
+            var existing = localStorage.getItem(k);
+            if (existing) {
+                localStorage.setItem('_nui_backup_' + k, existing);
+                localStorage.removeItem(k);
+            }
+        });
+    }
     // Set agency ID for isolation patch
     window._nuiAgencyId = _agencySlug;
 
