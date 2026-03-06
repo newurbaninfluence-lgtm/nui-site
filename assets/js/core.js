@@ -666,6 +666,7 @@ async function syncNewClientsToHub() {
 
 // Seed test account if not present
 (function seedTestAccount() {
+    if (window._isAgencyTenant) return; // Skip NUI seed data on tenant portals
     if (!clients.find(c => c.email === 'newurbaninfluence@gmail.com')) {
         const testClient = {
             id: Date.now(),
@@ -721,7 +722,7 @@ function saveOrders() { localStorage.setItem('nui_orders', JSON.stringify(orders
 function saveLeads() { localStorage.setItem('nui_leads', JSON.stringify(leads)); }
 
 // ==================== NEW SYSTEMS DATA ====================
-// SEO/AEO/GEO Management
+// SEO/AEO/GEO Management — Skip NUI defaults on tenant portals
 let seoData = JSON.parse(localStorage.getItem('nui_seo')) || {
     siteMeta: {
         title: 'New Urban Influence | Detroit Branding Agency — Logo Design & Brand Identity from $1,500',
@@ -1233,7 +1234,7 @@ function saveCrm() { localStorage.setItem('nui_crm', JSON.stringify(crmData)); s
 // Designer System
 let designers = JSON.parse(localStorage.getItem('nui_designers')) || [];
 // Only seed default designer on first-ever load (no key exists yet)
-if (!localStorage.getItem('nui_designers')) {
+if (!localStorage.getItem('nui_designers') && !window._isAgencyTenant) {
     designers.push({ id: 1, name: 'Faren Young', email: 'faren@nui.com', password: 'designer123', role: 'Lead Designer', avatar: '', permissions: ['projects', 'proofs', 'assets'] });
     localStorage.setItem('nui_designers', JSON.stringify(designers));
 }

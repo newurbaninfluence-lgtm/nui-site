@@ -4,6 +4,29 @@
 // so every Supabase query is scoped to the logged-in agency_id.
 // Loaded in portal/index.html ONLY — never on /app/
 // ═══════════════════════════════════════════════════════════════
+
+// EARLY TENANT FLAG — set BEFORE core.js loads to prevent NUI seed data
+// core.js checks this flag to skip seeding Faren Young + NUI FAQ + NUI SEO
+(function() {
+    var p = new URLSearchParams(window.location.search);
+    if (p.get('agency')) {
+        window._isAgencyTenant = true;
+        // Pre-seed empty localStorage so core.js doesn't inject NUI defaults.
+        // On subdomain this is already empty, but core.js uses `|| { NUI defaults }`
+        // which fires when the key doesn't exist. Setting empty objects prevents that.
+        var emptySeeds = {
+            'nui_seo': JSON.stringify({ siteMeta: {}, localSeo: {}, faq: [], snippets: [] }),
+            'nui_email_marketing': JSON.stringify({ settings: {}, campaigns: [], templates: [], subscribers: [], analytics: {} }),
+            'nui_social_dm': JSON.stringify({ conversations: [], autoResponses: [], settings: {} }),
+            'nui_sms': JSON.stringify({ openPhone: { connected: false }, conversations: [], templates: [] }),
+            'nui_comm_hub': JSON.stringify({ emails: [], calls: [], messages: [] }),
+            'nui_loyalty': JSON.stringify({ settings: {}, tiers: [], members: [] })
+        };
+        Object.keys(emptySeeds).forEach(function(k) {
+            if (!localStorage.getItem(k)) localStorage.setItem(k, emptySeeds[k]);
+        });
+    }
+})();
 (function() {
 'use strict';
 
