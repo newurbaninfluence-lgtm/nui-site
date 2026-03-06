@@ -7,7 +7,7 @@
 const { requireAdmin } = require('./utils/security');
 
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
+  'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
   'Access-Control-Allow-Methods': 'GET, OPTIONS'
 };

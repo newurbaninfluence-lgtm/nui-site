@@ -8,7 +8,7 @@ const { getBrand, hasSMTP, getTransporter, getFromAddress } = require('./utils/a
 const nodemailer = require('nodemailer');
 
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
+  'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
   'Access-Control-Allow-Methods': 'POST, OPTIONS'
 };

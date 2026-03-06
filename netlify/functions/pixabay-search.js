@@ -4,7 +4,7 @@
 // Env vars: PIXABAY_API_KEY
 
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
+  'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Methods': 'GET, OPTIONS'
 };

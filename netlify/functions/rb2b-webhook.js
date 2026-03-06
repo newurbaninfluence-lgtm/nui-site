@@ -24,7 +24,7 @@ function triggerAutoEmail(visitorId, capturedUrl) {
 exports.handler = async (event) => {
     // CORS headers
     const headers = {
-        'Access-Control-Allow-Origin': 'https://newurbaninfluence.com',
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'

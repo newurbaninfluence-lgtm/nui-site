@@ -521,11 +521,46 @@ function _launchPortal() {
         }
     }, 150);
 
-    // ── 10. Re-rebrand on panel switches
+    // ── 10. Re-rebrand on panel switches — catch ALL NUI text in rendered content
     var mainEl = document.querySelector('.admin-main');
     if (mainEl) {
+        var _brandName = name;
+        var _brandShort = name.split(' ')[0];
+        var _brandColor = brand;
+        var _obsDebounce = null;
         var _obs = new MutationObserver(function() {
-            if (typeof rebrandPortal === 'function') rebrandPortal();
+            clearTimeout(_obsDebounce);
+            _obsDebounce = setTimeout(function() {
+                // 1. Replace all text nodes containing NUI branding
+                var walker = document.createTreeWalker(
+                    document.querySelector('.admin-main'),
+                    NodeFilter.SHOW_TEXT, null, false
+                );
+                var node;
+                while (node = walker.nextNode()) {
+                    if (node.nodeValue.indexOf('New Urban') !== -1 ||
+                        node.nodeValue.indexOf('NUI Admin') !== -1 ||
+                        node.nodeValue.indexOf('NUI') !== -1) {
+                        node.nodeValue = node.nodeValue
+                            .replace(/New Urban Influence/g, _brandName)
+                            .replace(/NUI Admin/g, _brandName)
+                            .replace(/NUI/g, _brandShort);
+                    }
+                }
+                // 2. Replace red accent spans in dashboard banner
+                document.querySelectorAll('.admin-panel span[style*="dc2626"], .admin-panel span[style*="#dc2626"]').forEach(function(s) {
+                    s.style.color = _brandColor;
+                });
+                // 3. Replace NUI logos that sneak in
+                document.querySelectorAll('.admin-panel img[src*="icon-192"], .admin-panel img[alt="NUI"]').forEach(function(img) {
+                    var mark = document.createElement('div');
+                    mark.style.cssText = 'width:28px;height:28px;border-radius:8px;background:' + _brandColor + ';display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;';
+                    mark.textContent = _brandName.charAt(0).toUpperCase();
+                    if (img.parentNode) img.parentNode.replaceChild(mark, img);
+                });
+                // 4. Also rebrand sidebar/header if needed
+                if (typeof rebrandPortal === 'function') rebrandPortal();
+            }, 50);
         });
         _obs.observe(mainEl, { childList: true, subtree: true });
     }
