@@ -9,7 +9,7 @@ var NUI_PORTAL_DOMAIN = 'https://portal.newurbaninfluence.com';
 // var NUI_PORTAL_DOMAIN = 'https://newurbaninfluence.com/portal';
 
 function _portalUrl(slug) {
-    return NUI_PORTAL_DOMAIN + '/?agency=' + slug;
+    return NUI_PORTAL_DOMAIN + '/portal/?agency=' + slug;
 }
 
 const NUI_FEATURES = [
