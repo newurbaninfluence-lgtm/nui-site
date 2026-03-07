@@ -86,7 +86,8 @@ const AGENCY_CONFIG = {
         settings:       true,
         subaccounts:    true,
         sites:          true,
-        visitors:       true
+        visitors:       true,
+        monty:          true
     },
 
     integrations: {
@@ -212,7 +213,7 @@ const _panelToModule = {
     'orders':        'orders',
     'stats':         'analytics',
     'portfolio':     'portfolio',
-    'monty':         'dashboard'
+    'monty':         'monty'
 };
 
 function filterAdminNav() {

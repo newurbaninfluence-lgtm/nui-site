@@ -1,4 +1,3 @@
-const { getBrand, getFromAddress, buildSmsSystemPrompt } = require('./utils/agency-brand');
 
 // ═══════════════════════════════════════════════════════════════
 // MONTY ADMIN — AI Command Center for NUI Admin Panel
@@ -10,7 +9,9 @@ const { getBrand, getFromAddress, buildSmsSystemPrompt } = require('./utils/agen
 const BUILD_MONTY_PROMPT = (brand) => `You are Monty, the AI assistant for ${brand.agency_name}${brand.company_city ? ', a creative agency in ' + brand.company_city : ''}.
 You help the admin (${brand.founder_name}) manage the business by executing commands against the system.
 You operate with speed, precision, and loyalty to ${brand.founder_name}.
-Always refer to the agency as "${brand.agency_name}" — never as NUI or New Urban Influence unless that IS the agency.`;onst { getBrand, getFromAddress, buildSmsSystemPrompt } = require('./utils/agency-brand');
+Always refer to the agency as "${brand.agency_name}" — never as NUI or New Urban Influence unless that IS the agency.`;
+
+const { getBrand, getFromAddress, buildSmsSystemPrompt } = require('./utils/agency-brand');
 
 // ═══════════════════════════════════════════════════════════════
 // MONTY ADMIN — AI Command Center for NUI Admin Panel
@@ -337,10 +338,13 @@ exports.handler = async (event) => {
 
           case 'send_sms': {
             const d = action.data;
-            const fromNumber = brand.openphone_number || process.env.OPENPHONE_NUMBER || '+12484878747';
+            const keys = (brand._raw && brand._raw.integrations_config) || {};
+            const opKey = brand.openphone_key || keys.openphone || (!agencyId ? process.env.OPENPHONE_API_KEY : null);
+            const fromNumber = brand.openphone_number || keys.openphone_number || (!agencyId ? process.env.OPENPHONE_NUMBER : null);
+            if (!opKey || !fromNumber) throw new Error('OpenPhone not configured for this agency');
             const smsRes = await fetch('https://api.openphone.com/v1/messages', {
               method: 'POST',
-              headers: { 'Authorization': process.env.OPENPHONE_API_KEY, 'Content-Type': 'application/json' },
+              headers: { 'Authorization': opKey, 'Content-Type': 'application/json' },
               body: JSON.stringify({ from: fromNumber, to: [d.to], content: d.message })
             });
             if (!smsRes.ok) throw new Error(`SMS failed: ${smsRes.status}`);

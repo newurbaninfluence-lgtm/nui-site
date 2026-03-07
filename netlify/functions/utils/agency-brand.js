@@ -92,38 +92,66 @@ async function getBrand(agencyId) {
 // Returns true if this brand has its own SMTP credentials configured.
 // Sub-accounts that haven't provided SMTP keys must NOT fall back to NUI's credentials.
 function hasSMTP(brand) {
-    return !!(brand.smtp_user && brand.smtp_pass);
+    if (!brand._agencyId) return true; // NUI uses env vars
+    const keys = (brand._raw && brand._raw.integrations_config) || {};
+    return !!(keys.email_key || brand.smtp_user);
 }
 
-// Returns true if this brand has its own OpenPhone credentials configured.
 function hasOpenPhone(brand) {
-    return !!(brand.openphone_key && brand.openphone_number);
+    const keys = (brand._raw && brand._raw.integrations_config) || {};
+    return !!(brand.openphone_key || keys.openphone) && !!(brand.openphone_number || keys.openphone_number);
 }
 
 function getTransporter(brand) {
     const nodemailer = require('nodemailer');
-    // NUI master admin (_agencyId === null) → use env vars.
-    // Sub-accounts with no SMTP configured → throw clearly. Caller must check hasSMTP() first.
     const isNUI = !brand._agencyId;
-    const user = brand.smtp_user || (isNUI ? (process.env.HOSTINGER_EMAIL || process.env.SMTP_USER) : null);
-    const pass = brand.smtp_pass || (isNUI ? (process.env.HOSTINGER_PASSWORD || process.env.SMTP_PASS) : null);
-    if (!user || !pass) throw new Error('SMTP_NOT_CONFIGURED');
-    return nodemailer.createTransport({
-        host: 'smtp.hostinger.com',
-        port: 465,
-        secure: true,
-        auth: { user, pass },
-    });
+
+    // NUI master → use env vars (Hostinger)
+    if (isNUI) {
+        const user = process.env.HOSTINGER_EMAIL || process.env.SMTP_USER;
+        const pass = process.env.HOSTINGER_PASSWORD || process.env.SMTP_PASS;
+        if (!user || !pass) throw new Error('SMTP_NOT_CONFIGURED');
+        return nodemailer.createTransport({ host: 'smtp.hostinger.com', port: 465, secure: true, auth: { user, pass } });
+    }
+
+    // Sub-account → read from integrations_config
+    const keys = (brand._raw && brand._raw.integrations_config) || {};
+    const provider = (keys.email_provider || '').toLowerCase();
+    const emailKey = keys.email_key || brand.smtp_pass || null;
+    const emailFrom = keys.email_from || brand.smtp_user || null;
+
+    if (!emailKey) throw new Error('SMTP_NOT_CONFIGURED');
+
+    // Provider-specific SMTP configs
+    const PROVIDERS = {
+        sendgrid:  { host: 'smtp.sendgrid.net',     port: 587, secure: false, auth: { user: 'apikey', pass: emailKey } },
+        gmail:     { host: 'smtp.gmail.com',         port: 587, secure: false, auth: { user: emailFrom, pass: emailKey } },
+        hostinger: { host: 'smtp.hostinger.com',     port: 465, secure: true,  auth: { user: emailFrom, pass: emailKey } },
+        mailchimp: { host: 'smtp.mandrillapp.com',   port: 587, secure: false, auth: { user: emailFrom || 'anyuser', pass: emailKey } },
+        smtp:      { host: keys.smtp_host || 'smtp.hostinger.com', port: parseInt(keys.smtp_port) || 587, secure: false, auth: { user: emailFrom, pass: emailKey } }
+    };
+
+    // Auto-detect if no provider set
+    let config = PROVIDERS[provider];
+    if (!config) {
+        if (emailKey.startsWith('SG.')) config = PROVIDERS.sendgrid;
+        else if (emailFrom && emailFrom.includes('gmail.com')) config = PROVIDERS.gmail;
+        else if (emailFrom && emailFrom.includes('hostinger')) config = PROVIDERS.hostinger;
+        else config = { host: 'smtp.hostinger.com', port: 465, secure: true, auth: { user: emailFrom || emailKey, pass: emailKey } };
+    }
+
+    return nodemailer.createTransport(config);
 }
 
 function getFromAddress(brand) {
     const isNUI = !brand._agencyId;
-    const email = brand.smtp_user || (isNUI ? (process.env.MAIL_FROM || process.env.HOSTINGER_EMAIL) : null);
+    const keys = (brand._raw && brand._raw.integrations_config) || {};
+    const email = keys.email_from || brand.smtp_user || (isNUI ? (process.env.MAIL_FROM || process.env.HOSTINGER_EMAIL) : null);
     if (!email) throw new Error('SMTP_NOT_CONFIGURED');
     const label = brand.founder_name
         ? `${brand.founder_name} | ${brand.agency_name}`
         : brand.agency_name;
-    return `"${label}" <${email}>`;
+    return `"${label}" <${email}>`; 
 }
 
 function buildEmailFooter(brand) {

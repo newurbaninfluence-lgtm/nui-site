@@ -270,12 +270,15 @@ window._tenantLogin = async function() {
 
 // ── SETUP WIZARD (admin only) ─────────────────────────────────
 var INTEGRATIONS = [
-    { id:'stripe',       name:'Stripe Publishable', icon:'💳', cat:'Billing',   placeholder:'pk_live_...', required:true,  hint:'Dashboard → Developers → API Keys' },
-    { id:'stripe_sk',    name:'Stripe Secret Key',  icon:'🔑', cat:'Billing',   placeholder:'sk_live_...', required:true,  hint:'Keep private — server-side only' },
-    { id:'openphone',    name:'OpenPhone API Key',   icon:'📱', cat:'SMS',       placeholder:'op_api_...', required:false, hint:'openphone.com → Settings → Integrations' },
-    { id:'sendgrid',     name:'SendGrid API Key',    icon:'📧', cat:'Email',     placeholder:'SG.xxxxx...', required:false, hint:'app.sendgrid.com → Settings → API Keys' },
-    { id:'ga4',          name:'Google Analytics',    icon:'📊', cat:'Analytics', placeholder:'G-XXXXXXXX', required:false, hint:'GA4 → Admin → Data Streams' },
-    { id:'meta_pixel',   name:'Meta Pixel ID',       icon:'📘', cat:'Ads',       placeholder:'1234567890', required:false, hint:'Meta Business → Events Manager' },
+    { id:'stripe',            name:'Stripe Publishable Key', icon:'💳', cat:'Billing',   placeholder:'pk_live_...', required:true,  hint:'Dashboard → Developers → API Keys' },
+    { id:'stripe_sk',         name:'Stripe Secret Key',      icon:'🔑', cat:'Billing',   placeholder:'sk_live_...', required:true,  hint:'Keep private — server-side only' },
+    { id:'openphone',         name:'OpenPhone API Key',      icon:'📱', cat:'SMS',       placeholder:'op_api_...', required:false, hint:'openphone.com → Settings → Integrations' },
+    { id:'openphone_number',  name:'OpenPhone Phone Number ID', icon:'📞', cat:'SMS',    placeholder:'PNxxxxxx...', required:false, hint:'openphone.com → Phone Numbers → click number → copy Resource ID' },
+    { id:'email_provider',    name:'Email Provider',         icon:'📧', cat:'Email',     placeholder:'sendgrid', required:false, hint:'Choose: sendgrid, gmail, mailchimp, hostinger, smtp', type:'select', options:['sendgrid','gmail','hostinger','mailchimp','smtp'] },
+    { id:'email_key',         name:'Email API Key or Password', icon:'🔑', cat:'Email',  placeholder:'SG.xxx / app password / API key', required:false, hint:'SendGrid: API key starting with SG. | Gmail: App Password (16 chars) | Hostinger: email password | SMTP: password' },
+    { id:'email_from',        name:'Send-From Email Address', icon:'✉️', cat:'Email',    placeholder:'hello@yourdomain.com', required:false, hint:'The email address your clients will see' },
+    { id:'ga4',               name:'Google Analytics',       icon:'📊', cat:'Analytics', placeholder:'G-XXXXXXXX', required:false, hint:'GA4 → Admin → Data Streams' },
+    { id:'meta_pixel',        name:'Meta Pixel ID',          icon:'📘', cat:'Ads',       placeholder:'1234567890', required:false, hint:'Meta Business → Events Manager' },
 ];
 var _wizStep = 0, _wizKeys = {};
 var _wizCats = [];
@@ -315,7 +318,12 @@ function _renderWizStep() {
                         (it.required ? '<span style="font-size:9px;background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.25);border-radius:20px;padding:1px 7px;font-weight:700;">REQUIRED</span>' : '') +
                         '<span style="margin-left:auto;font-size:10px;color:rgba(255,255,255,0.2);" title="' + it.hint + '">ⓘ Where?</span>' +
                     '</div>' +
-                    '<input id="wiz-' + it.id + '" type="' + (it.id.includes('sk')?'password':'text') + '" value="' + (_wizKeys[it.id]||'') + '" placeholder="' + it.placeholder + '" style="width:100%;background:#1a1a1a;border:1px solid rgba(255,255,255,0.08);color:#fff;padding:10px 13px;border-radius:9px;font-size:12px;font-family:monospace;outline:none;box-sizing:border-box;">' +
+                    (it.type !== 'select' ?
+                    '<input id="wiz-' + it.id + '" type="' + (it.id.includes('sk')||it.id.includes('key')||it.id.includes('password')?'password':'text') + '" value="' + (_wizKeys[it.id]||'') + '" placeholder="' + it.placeholder + '" style="width:100%;background:#1a1a1a;border:1px solid rgba(255,255,255,0.08);color:#fff;padding:10px 13px;border-radius:9px;font-size:12px;font-family:monospace;outline:none;box-sizing:border-box;">' :
+                    '<select id="wiz-' + it.id + '" style="width:100%;background:#1a1a1a;border:1px solid rgba(255,255,255,0.08);color:#fff;padding:10px 13px;border-radius:9px;font-size:12px;outline:none;box-sizing:border-box;">' +
+                        '<option value="">— Select —</option>' +
+                        it.options.map(function(o){ return '<option value="' + o + '"' + (_wizKeys[it.id]===o?' selected':'') + '>' + o.charAt(0).toUpperCase() + o.slice(1) + '</option>'; }).join('') +
+                    '</select>') +
                 '</div>';
             }).join('');
     } else {
@@ -412,8 +420,9 @@ function _launchPortal() {
             AGENCY_CONFIG.modules[k] = features.includes(k);
         });
         AGENCY_CONFIG.modules.dashboard = true; // always on
-        // Always hide sub-accounts from tenants
+        // Always hide these from tenants — NUI-only features
         AGENCY_CONFIG.modules.subaccounts = false;
+        AGENCY_CONFIG.modules.monty = false;
     }
 
     // ── 2. Set globals
@@ -765,10 +774,9 @@ function _filterFeatures(role) {
         'contacthub':    { key: 'openphone',  label: 'OpenPhone API Key',  icon: '📱', desc: 'Connect your phone system to manage contacts, calls, and texts' },
         'sms':           { key: 'openphone',  label: 'OpenPhone API Key',  icon: '📱', desc: 'Send and receive SMS messages from your dashboard' },
         'communications':{ key: 'openphone',  label: 'OpenPhone API Key',  icon: '📱', desc: 'View all client communications in one place' },
-        'emailmarketing':{ key: 'sendgrid',   label: 'SendGrid API Key',   icon: '📧', desc: 'Send email campaigns and newsletters to your clients' },
+        'emailmarketing':{ key: 'email_key',  label: 'Email API Key',      icon: '📧', desc: 'Send email campaigns and newsletters to your clients' },
         'stripe':        { key: 'stripe',     label: 'Stripe Publishable Key', icon: '💳', desc: 'Accept payments and manage subscriptions' },
-        'payments':      { key: 'stripe',     label: 'Stripe Keys',        icon: '💳', desc: 'Process payments and view transaction history' },
-        'monty':         { key: 'openphone',  label: 'OpenPhone + AI Keys',icon: '🤖', desc: 'AI assistant that handles client messages automatically' }
+        'payments':      { key: 'stripe',     label: 'Stripe Keys',        icon: '💳', desc: 'Process payments and view transaction history' }
     };
 
     function _setupPromptHtml(req, brand) {
