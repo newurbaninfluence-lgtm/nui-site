@@ -427,6 +427,43 @@ function _launchPortal() {
     // ── 3. Stub for missing panel loader (admin-subaccounts.js not in portal)
     if (typeof loadAdminSubAccountsPanel === 'undefined') window.loadAdminSubAccountsPanel = function(){};
 
+    // ── 3b. FORCE PATCH db isolation BEFORE any panel loads
+    //    Try synchronously first. If db isn't ready, retry loop catches it later.
+    var _dbPatched = false;
+    function _patchDbNow() {
+        var rawDb = window.db || window.supabaseClient;
+        if (rawDb && rawDb.from && !rawDb.__nuiIsolated) {
+            var origFrom = rawDb.from.bind(rawDb);
+            var slug = _agencySlug;
+            var TENANT_TABLES = ['clients','orders','invoices','proofs','projects','leads','services','meetings','submissions','crm_contacts','contacts','activity_log','communications','sms_campaigns','sms_drip_queue','identified_visitors','chat_logs','tasks','approvals','client_sites'];
+            rawDb.from = function(table) {
+                var q = origFrom(table);
+                if (TENANT_TABLES.indexOf(table) === -1) return q;
+                var _sel = q.select.bind(q);
+                q.select = function() { return _sel.apply(this, arguments).eq('agency_id', slug); };
+                var _ins = q.insert.bind(q);
+                q.insert = function(data) {
+                    if (Array.isArray(data)) data = data.map(function(r){ return Object.assign({}, r, {agency_id: slug}); });
+                    else if (data && typeof data === 'object') data = Object.assign({}, data, {agency_id: slug});
+                    return _ins.call(this, data);
+                };
+                var _upd = q.update.bind(q);
+                q.update = function(data) { return _upd.call(this, data).eq('agency_id', slug); };
+                var _del = q.delete.bind(q);
+                q.delete = function() { return _del.call(this).eq('agency_id', slug); };
+                return q;
+            };
+            rawDb.__nuiIsolated = slug;
+            window.db = rawDb;
+            window.supabaseClient = rawDb;
+            _dbPatched = true;
+            console.log('[Tenant] DB isolation patched — agency_id:', slug);
+            return true;
+        }
+        return false;
+    }
+    _patchDbNow(); // try once synchronously
+
     // ── 3b. ISOLATE LOCALSTORAGE
     //    If portal is on same domain as /app/ (fallback), clear NUI data.
     //    On portal.newurbaninfluence.com this is a no-op (separate origin).
@@ -483,6 +520,18 @@ function _launchPortal() {
         var userInfoEl = document.getElementById('adminUserInfo');
         if (userInfoEl) userInfoEl.textContent = name + ' · ' + (role.charAt(0).toUpperCase() + role.slice(1));
 
+        // Header logo — replace NUI icon with brand initial
+        var headerLogo = document.getElementById('adminHeaderLogo');
+        if (headerLogo) {
+            var mark = document.createElement('div');
+            mark.style.cssText = 'width:32px;height:32px;border-radius:8px;background:' + brand + ';display:inline-flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;flex-shrink:0;';
+            mark.textContent = name.charAt(0).toUpperCase();
+            if (headerLogo.parentNode) headerLogo.parentNode.replaceChild(mark, headerLogo);
+        }
+        // Header title
+        var headerTitle = document.getElementById('adminHeaderTitle');
+        if (headerTitle) headerTitle.textContent = name + ' Dashboard';
+
         // Remove overlay
         var overlay = document.getElementById('tenant-overlay');
         if (overlay) overlay.remove();
@@ -496,10 +545,16 @@ function _launchPortal() {
         }
     }, 50);
 
-    // ── 9. Load landing panel + role-based nav hiding (after step 6 at 50ms)
+    // ── 9. Load landing panel — WAITS for db patch before loading any data
     var landingPanel = (role === 'designer') ? 'projects' : 'dashboard';
-    setTimeout(function() {
-        if (typeof showAdminPanel === 'function') showAdminPanel(landingPanel);
+    var _panelLoadAttempts = 0;
+    var _panelLoadTimer = setInterval(function() {
+        _panelLoadAttempts++;
+        if (!_dbPatched) _patchDbNow(); // keep trying
+        if (_dbPatched || _panelLoadAttempts > 40) { // patched or 2s timeout
+            clearInterval(_panelLoadTimer);
+            if (!_dbPatched) console.warn('[Tenant] DB patch timeout — loading panel without isolation');
+            if (typeof showAdminPanel === 'function') showAdminPanel(landingPanel);
         // Role-based additional filtering (designer/client see fewer panels)
         if (role !== 'admin') {
             var roleAllowed = {
@@ -519,7 +574,8 @@ function _launchPortal() {
                 if (allHidden) g.style.display = 'none';
             });
         }
-    }, 150);
+        }
+    }, 50);
 
     // ── 10. Re-rebrand on panel switches — catch ALL NUI text in rendered content
     var mainEl = document.querySelector('.admin-main');
@@ -565,41 +621,7 @@ function _launchPortal() {
         _obs.observe(mainEl, { childList: true, subtree: true });
     }
 
-    // ── 11. Force Supabase isolation patch (retry until db is available)
-    var _dbPatchAttempts = 0;
-    var _dbPatchTimer = setInterval(function() {
-        _dbPatchAttempts++;
-        var rawDb = window.db || window.supabaseClient;
-        if (rawDb && rawDb.from && !rawDb.__nuiIsolated) {
-            // Patch it manually — same logic as agency-isolation.js
-            var origFrom = rawDb.from.bind(rawDb);
-            var slug = _agencySlug;
-            var TENANT_TABLES = ['clients','orders','invoices','proofs','projects','leads','services','meetings','submissions','crm_contacts','contacts','activity_log','communications','sms_campaigns','sms_drip_queue','identified_visitors','chat_logs','tasks','approvals','client_sites'];
-            rawDb.from = function(table) {
-                var q = origFrom(table);
-                if (TENANT_TABLES.indexOf(table) === -1) return q;
-                var _sel = q.select.bind(q);
-                q.select = function() { return _sel.apply(this, arguments).eq('agency_id', slug); };
-                var _ins = q.insert.bind(q);
-                q.insert = function(data) {
-                    if (Array.isArray(data)) data = data.map(function(r){ return Object.assign({}, r, {agency_id: slug}); });
-                    else if (data && typeof data === 'object') data = Object.assign({}, data, {agency_id: slug});
-                    return _ins.call(this, data);
-                };
-                var _upd = q.update.bind(q);
-                q.update = function(data) { return _upd.call(this, data).eq('agency_id', slug); };
-                var _del = q.delete.bind(q);
-                q.delete = function() { return _del.call(this).eq('agency_id', slug); };
-                return q;
-            };
-            rawDb.__nuiIsolated = slug;
-            window.db = rawDb;
-            window.supabaseClient = rawDb;
-            console.log('[Tenant] Force-patched db isolation — agency_id:', slug);
-            clearInterval(_dbPatchTimer);
-        }
-        if (_dbPatchAttempts > 100) clearInterval(_dbPatchTimer); // stop after 25s
-    }, 250);
+    // ── 11. (MOVED to step 3b — db patch now happens before panel load)
 }
 
 // ── APPLY BRANDING ────────────────────────────────────────────
