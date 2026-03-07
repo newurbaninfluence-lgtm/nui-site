@@ -495,6 +495,10 @@ function _launchPortal() {
     // Set agency ID for isolation patch
     window._nuiAgencyId = _agencySlug;
 
+    // Override client-side API keys with tenant's keys from wizard
+    var tenantKeys = d.integrations_config || {};
+    if (tenantKeys.stripe) window.STRIPE_PUBLISHABLE_KEY = tenantKeys.stripe;
+
     // ── 4. Render portal HTML (this resets currentUser to null)
     if (typeof loadPortalView === 'function') loadPortalView();
 
