@@ -532,6 +532,21 @@ function _launchPortal() {
         var headerTitle = document.getElementById('adminHeaderTitle');
         if (headerTitle) headerTitle.textContent = name + ' Dashboard';
 
+        // Sidebar brand — replace NUI icon + "NUI Admin" text
+        document.querySelectorAll('.sidebar-brand img').forEach(function(img) {
+            var mark = document.createElement('div');
+            mark.style.cssText = 'width:28px;height:28px;border-radius:8px;background:' + brand + ';display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;';
+            mark.textContent = name.charAt(0).toUpperCase();
+            if (img.parentNode) img.parentNode.replaceChild(mark, img);
+        });
+        document.querySelectorAll('.sidebar-brand span').forEach(function(s) {
+            s.textContent = name.split(' ')[0] + ' Admin';
+        });
+
+        // Portal nav logo (top bar before login)
+        var navLogo = document.getElementById('mainNavLogo');
+        if (navLogo) navLogo.style.display = 'none';
+
         // Remove overlay
         var overlay = document.getElementById('tenant-overlay');
         if (overlay) overlay.remove();
@@ -740,6 +755,83 @@ function _filterFeatures(role) {
         if (allHidden) group.style.display = 'none';
     });
 }
+
+// ── API KEY GATE — Show setup prompt for panels that need keys ──
+// Wraps panel loaders so tenants see "Set up your API" when keys are missing
+// instead of broken panels or NUI data. Wizard saves keys to integrations_config.
+(function() {
+    // Map: panel name → which wizard key it needs
+    var PANEL_KEY_REQUIREMENTS = {
+        'contacthub':    { key: 'openphone',  label: 'OpenPhone API Key',  icon: '📱', desc: 'Connect your phone system to manage contacts, calls, and texts' },
+        'sms':           { key: 'openphone',  label: 'OpenPhone API Key',  icon: '📱', desc: 'Send and receive SMS messages from your dashboard' },
+        'communications':{ key: 'openphone',  label: 'OpenPhone API Key',  icon: '📱', desc: 'View all client communications in one place' },
+        'emailmarketing':{ key: 'sendgrid',   label: 'SendGrid API Key',   icon: '📧', desc: 'Send email campaigns and newsletters to your clients' },
+        'stripe':        { key: 'stripe',     label: 'Stripe Publishable Key', icon: '💳', desc: 'Accept payments and manage subscriptions' },
+        'payments':      { key: 'stripe',     label: 'Stripe Keys',        icon: '💳', desc: 'Process payments and view transaction history' },
+        'monty':         { key: 'openphone',  label: 'OpenPhone + AI Keys',icon: '🤖', desc: 'AI assistant that handles client messages automatically' }
+    };
+
+    function _setupPromptHtml(req, brand) {
+        return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;padding:40px;text-align:center;">' +
+            '<div style="width:72px;height:72px;border-radius:18px;background:' + (brand||'#6366f1') + '18;border:1px solid ' + (brand||'#6366f1') + '33;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:20px;">' + req.icon + '</div>' +
+            '<h2 style="color:#fff;font-size:22px;font-weight:800;margin:0 0 8px;">Setup Required</h2>' +
+            '<p style="color:rgba(255,255,255,0.5);font-size:14px;max-width:400px;line-height:1.7;margin:0 0 24px;">' + req.desc + '</p>' +
+            '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 24px;margin-bottom:24px;">' +
+                '<div style="color:rgba(255,255,255,0.3);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">Required</div>' +
+                '<div style="color:#fff;font-size:15px;font-weight:600;">' + req.label + '</div>' +
+            '</div>' +
+            '<button onclick="if(typeof _showSetupWizard===\'function\')_showSetupWizard();" style="padding:12px 32px;background:' + (brand||'#6366f1') + ';color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">⚙️ Open Setup Wizard</button>' +
+            '<p style="color:rgba(255,255,255,0.2);font-size:11px;margin-top:16px;">You can also configure this in Settings → Integrations</p>' +
+        '</div>';
+    }
+
+    // Override panel loaders after DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Only for tenants
+        if (!window._isAgencyTenant) return;
+
+        // Wait for panel loaders to be defined
+        setTimeout(function() {
+            var keys = window._agencyKeys || {};
+            var brand = (window._agencyData && window._agencyData.brand_color) || '#6366f1';
+
+            Object.keys(PANEL_KEY_REQUIREMENTS).forEach(function(panel) {
+                var req = PANEL_KEY_REQUIREMENTS[panel];
+                var hasKey = keys[req.key] && keys[req.key].trim().length > 0;
+                if (hasKey) return; // Key exists, let the real panel load
+
+                // Panel ID: adminContacthubPanel (lowercase)
+                var panelId = 'admin' + panel.charAt(0).toUpperCase() + panel.slice(1) + 'Panel';
+
+                // Loader function names have inconsistent casing — map explicitly
+                var loaderMap = {
+                    'contacthub': 'loadAdminContactHubPanel',
+                    'sms': 'loadAdminSmsPanel',
+                    'communications': 'loadAdminCommunicationsPanel',
+                    'emailmarketing': 'loadAdminEmailMarketingPanel',
+                    'stripe': 'loadAdminStripePanel',
+                    'payments': 'loadAdminPaymentsPanel',
+                    'monty': 'loadAdminMontyPanel'
+                };
+                var origFnName = loaderMap[panel];
+
+                // Find and override the global function
+                if (typeof window[origFnName] === 'function') {
+                    var _orig = window[origFnName];
+                    window[origFnName] = function() {
+                        // Re-check keys in case wizard was completed during session
+                        var currentKeys = window._agencyKeys || {};
+                        if (currentKeys[req.key] && currentKeys[req.key].trim().length > 0) {
+                            return _orig.apply(this, arguments); // Key now exists, use real loader
+                        }
+                        var el = document.getElementById(panelId);
+                        if (el) el.innerHTML = _setupPromptHtml(req, brand);
+                    };
+                }
+            });
+        }, 200);
+    });
+})();
 
 // ── HTML HELPERS ──────────────────────────────────────────────
 var _html = {
