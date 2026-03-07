@@ -779,11 +779,17 @@ document.addEventListener('DOMContentLoaded', function() {
 // ── AUTO-INJECT agency_id INTO ALL NETLIFY FUNCTION CALLS ────
 // Same pattern as admin-auth.js token interceptor
 // Only fires when _nuiAgencyId is set (portal only, never /app/)
+// Also rewrites function URLs to main domain (portal site has no env vars)
 (function() {
     var _origFetch = window.fetch;
+    var MAIN_DOMAIN = 'https://newurbaninfluence.com';
     window.fetch = function(url, options) {
         var agencyId = window._nuiAgencyId;
         if (agencyId && typeof url === 'string' && url.includes('/.netlify/functions/')) {
+            // Rewrite to main domain if on portal subdomain
+            if (window.location.hostname !== 'newurbaninfluence.com') {
+                url = MAIN_DOMAIN + url.substring(url.indexOf('/.netlify/'));
+            }
             options = options || {};
             // For POST/PATCH — inject into body
             if (options.method && options.method !== 'GET' && options.body) {
