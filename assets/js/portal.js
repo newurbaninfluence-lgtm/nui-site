@@ -63,7 +63,7 @@ function loadPortalView() {
 <header class="admin-header">
 <div style="display: flex; align-items: center; gap: 16px;">
 <button id="adminMobileToggle" class="admin-mobile-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
-<span style="font-weight: 600; color: var(--admin-text);" id="adminHeaderTitle">Admin Dashboard</span>
+<span style="font-weight:800;font-size:15px;letter-spacing:1px;font-family:'Syne',sans-serif;color:var(--admin-text);">New Urban <span style="color:#dc2626;">Influence</span></span>
 </div>
 <div class="flex-center-gap-12">
 <span id="adminUserInfo" style="font-size: 13px; color: var(--admin-text-muted);"></span>
