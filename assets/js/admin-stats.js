@@ -2,23 +2,54 @@
 // Analytics, Reviews, SEO, GMB, Email Marketing, Loyalty, Communications, Social DM, SMS
 
 // ==================== SITE ANALYTICS PANEL ====================
-function loadAdminAnalyticsPanel() {
-    const visitors = siteAnalytics.visitors || { total: 2847, today: 156, week: 892 };
-    const pageViews = siteAnalytics.pageViews || { total: 12453, today: 543, week: 3241 };
-    const topPages = siteAnalytics.topPages || [];
-    const trafficSources = siteAnalytics.trafficSources || [];
+async function loadAdminAnalyticsPanel() {
+    // Show loading state
+    const panel = document.getElementById('adminAnalyticsPanel');
+    if (panel) panel.innerHTML = '<div style="padding:60px;text-align:center;color:rgba(255,255,255,0.4);font-size:14px;">📊 Loading real analytics...</div>';
+
+    // Fetch from GA4 Netlify function
+    let ga4 = null;
+    try {
+        const range = document.getElementById('analyticsDateRange')?.value || '30d';
+        const resp = await fetch(`/.netlify/functions/ga4-analytics?range=${range}`);
+        const data = await resp.json();
+        if (data.configured) ga4 = data;
+    } catch(e) { console.warn('GA4 fetch failed:', e); }
+
+    const isLive = !!ga4;
+    const visitors = {
+        total: ga4?.overview?.totalUsers ?? (siteAnalytics.visitors?.total ?? 2847),
+        week: ga4?.overview?.totalSessions ?? (siteAnalytics.visitors?.week ?? 892),
+        today: siteAnalytics.visitors?.today ?? 156
+    };
+    const pageViews = {
+        total: ga4?.overview?.totalPageViews ?? (siteAnalytics.pageViews?.total ?? 12453),
+        week: ga4?.overview?.totalPageViews ?? (siteAnalytics.pageViews?.week ?? 3241),
+        today: siteAnalytics.pageViews?.today ?? 543
+    };
+    const topPages = ga4?.topPages?.length ? ga4.topPages : (siteAnalytics.topPages || []);
+    const trafficSources = ga4?.trafficSources?.length ? ga4.trafficSources : (siteAnalytics.trafficSources || []);
+    const dailyChart = ga4?.dailyChart || null;
+    const bounceRate = ga4?.overview?.bounceRate ?? 38;
+    const avgSession = ga4?.overview?.avgSession ?? '3:42';
 
     document.getElementById('adminAnalyticsPanel').innerHTML = `
 <div class="flex-between mb-32">
+<div>
 <h2 class="fs-28 fw-700">📈 Site Analytics</h2>
+<div style="margin-top:6px;">
+<span style="font-size:11px;padding:4px 10px;border-radius:100px;background:${isLive ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)'};color:${isLive ? '#34d399' : '#fbbf24'};">${isLive ? '● Live from GA4' : '● Demo Data — configure GA4 env vars to go live'}</span>
+${ga4 ? `<span style="font-size:11px;color:rgba(255,255,255,0.3);margin-left:8px;">${ga4.startDate} → ${ga4.endDate}</span>` : ''}
+</div>
+</div>
 <div class="flex-gap-12">
-<select id="analyticsDateRange" onchange="updateAnalyticsRange(this.value)" style="padding: 10px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 14px;">
+<select id="analyticsDateRange" onchange="loadAdminAnalyticsPanel()" style="padding: 10px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 14px;">
 <option value="7d">Last 7 Days</option>
-<option value="30d">Last 30 Days</option>
+<option value="30d" selected>Last 30 Days</option>
 <option value="90d">Last 90 Days</option>
-<option value="all">All Time</option>
+<option value="all">Last Year</option>
 </select>
-<button onclick="refreshAnalytics()" class="btn-outline">🔄 Refresh</button>
+<button onclick="loadAdminAnalyticsPanel()" class="btn-outline">🔄 Refresh</button>
 </div>
 </div>
 
@@ -28,7 +59,7 @@ function loadAdminAnalyticsPanel() {
 <div style="font-size: 13px; opacity: 0.8; margin-bottom: 8px;">Total Visitors</div>
 <div style="font-size: 36px; font-weight: 700;">${visitors.total.toLocaleString()}</div>
 <div style="font-size: 13px; margin-top: 8px; display: flex; align-items: center; gap: 4px;">
-<span style="color: #86efac;">↑ 12%</span> vs last period
+<span style="color: #86efac;">${isLive ? '● Live' : '↑ 12%'}</span> ${isLive ? 'unique users' : 'vs last period'}
 </div>
 </div>
 <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ff0000 100%); padding: 24px; border-radius: 16px; color: #fff;">
@@ -40,14 +71,14 @@ function loadAdminAnalyticsPanel() {
 </div>
 <div style="background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); padding: 24px; border-radius: 16px; color: #fff; border: 1px solid rgba(255,255,255,0.1);">
 <div style="font-size: 13px; opacity: 0.8; margin-bottom: 8px;">Avg. Session</div>
-<div style="font-size: 36px; font-weight: 700;">3:42</div>
+<div style="font-size: 36px; font-weight: 700;">${avgSession}</div>
 <div style="font-size: 13px; margin-top: 8px; display: flex; align-items: center; gap: 4px;">
 <span style="color: #86efac;">↑ 5%</span> vs last period
 </div>
 </div>
 <div style="background: linear-gradient(135deg, #333333 0%, #1a1a1a 100%); padding: 24px; border-radius: 16px; color: #fff; border: 1px solid rgba(255,255,255,0.1);">
 <div style="font-size: 13px; opacity: 0.8; margin-bottom: 8px;">Bounce Rate</div>
-<div style="font-size: 36px; font-weight: 700;">38%</div>
+<div style="font-size: 36px; font-weight: 700;">${bounceRate}%</div>
 <div style="font-size: 13px; margin-top: 8px; display: flex; align-items: center; gap: 4px;">
 <span style="color: #86efac;">↓ 3%</span> vs last period
 </div>
@@ -60,10 +91,10 @@ function loadAdminAnalyticsPanel() {
 <div style="background: #1c1c1c; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);">
 <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #fff;">Traffic Overview</h3>
 <div style="height: 200px; display: flex; align-items: flex-end; gap: 8px; padding: 20px 0;">
-                    ${generateTrafficBars()}
+                    ${dailyChart ? generateTrafficBarsFromData(dailyChart) : generateTrafficBars()}
 </div>
 <div style="display: flex; justify-content: space-between; margin-top: 12px; font-size: 12px; color: rgba(255,255,255,0.5);">
-<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+${dailyChart ? dailyChart.map(d => `<span>${new Date(d.date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3')).toLocaleDateString('en-US',{weekday:'short'})}</span>`).join('') : '<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>'}
 </div>
 </div>
 
@@ -149,6 +180,15 @@ function loadAdminAnalyticsPanel() {
     `;
 }
 
+function generateTrafficBarsFromData(dailyChart) {
+    return dailyChart.map(d => `
+<div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+  <div style="font-size:10px;color:rgba(255,255,255,0.4);">${d.users}</div>
+  <div style="width: 100%; height: ${Math.max(d.height, 5)}%; background: linear-gradient(180deg, var(--red, #ff0000) 0%, #cc0000 100%); border-radius: 4px; min-height: 6px;"></div>
+</div>
+    `).join('');
+}
+
 function generateTrafficBars() {
     const heights = [65, 82, 45, 91, 73, 58, 87];
     return heights.map(h => `
@@ -158,21 +198,8 @@ function generateTrafficBars() {
     `).join('');
 }
 
-function refreshAnalytics() {
-    const btn = event.target;
-    btn.innerHTML = '🔄 Loading...';
-    setTimeout(() => {
-        siteAnalytics.visitors.today += Math.floor(Math.random() * 10);
-        siteAnalytics.pageViews.today += Math.floor(Math.random() * 20);
-        saveAnalytics();
-        loadAdminAnalyticsPanel();
-    }, 1000);
-}
-
-function updateAnalyticsRange(range) {
-    console.log('Updating analytics for range:', range);
-    loadAdminAnalyticsPanel();
-}
+function refreshAnalytics() { loadAdminAnalyticsPanel(); }
+function updateAnalyticsRange(range) { loadAdminAnalyticsPanel(); }
 
 // ==================== GOOGLE REVIEWS PANEL ====================
 let googleReviews = JSON.parse(localStorage.getItem('nui_reviews')) || [
