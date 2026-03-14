@@ -162,6 +162,17 @@
   [headers.values]
     Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
 
+# Admin assets — no stale-while-revalidate so phones always get fresh code
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 # Service worker must NEVER be cached — critical for updates on Safari/mobile
 # MUST come AFTER the generic /*.js rule — Netlify last-match wins for duplicate headers
 [[headers]]

@@ -38,10 +38,10 @@
   function loadGoogleIdentity(){if(window.google&&window.google.accounts)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=r;document.head.appendChild(s);});}
   </script>
 
-  <link rel="stylesheet" href="/assets/css/global.css?v=20260223v2">
+  <link rel="stylesheet" href="/assets/css/global.css?v=20260315v1">
   <link rel="stylesheet" href="/assets/css/admin.css?v=20260315m1">
-  <link rel="stylesheet" href="/assets/css/components.css?v=20260223v2">
-  <link rel="stylesheet" href="/assets/css/brief-moodboard.css?v=20260224v3">
+  <link rel="stylesheet" href="/assets/css/components.css?v=20260315v1">
+  <link rel="stylesheet" href="/assets/css/brief-moodboard.css?v=20260315v1">
 </head>
 <body>
   <!-- Minimal nav — just logo + back to site -->
@@ -69,59 +69,59 @@
   <!-- Agency Config removed from main portal — NUI admin uses global.css defaults -->
 
   <!-- Security: Admin auth token management (must load FIRST) -->
-  <script src="/assets/js/admin-auth.js?v=20260301"></script>
+  <script src="/assets/js/admin-auth.js?v=20260315v1"></script>
 
   <!-- App scripts — full stack for admin/client/designer -->
-  <script src="/assets/js/core.js?v=20260305v3"></script>
-  <script src="/assets/js/router.js?v=20260223v2"></script>
-  <script src="/assets/js/marketing.js?v=20260223v2"></script>
-  <script src="/assets/js/portal.js?v=20260305v2"></script>
-  <script src="/assets/js/admin-core.js?v=20260305v3"></script>
+  <script src="/assets/js/core.js?v=20260315v1"></script>
+  <script src="/assets/js/router.js?v=20260315v1"></script>
+  <script src="/assets/js/marketing.js?v=20260315v1"></script>
+  <script src="/assets/js/portal.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-core.js?v=20260315v1"></script>
 
   <!-- Client/CRM system (split from monolith) -->
-  <script src="/assets/js/admin-clients-core.js?v=20260305v3"></script>
-  <script src="/assets/js/admin-orders.js?v=20260224v4"></script>
-  <script src="/assets/js/admin-leads.js?v=20260223v2"></script>
-  <script src="/assets/js/admin-new-forms.js?v=20260227v1"></script>
-  <script src="/assets/js/admin-assets-mgr.js?v=20260223v2"></script>
-  <script src="/assets/js/admin-order-ops.js?v=20260227v1"></script>
-  <script src="/assets/js/admin-invoices.js?v=20260223v2"></script>
-  <script src="/assets/js/admin-payment-gate.js?v=20260223v2"></script>
-  <script src="/assets/js/admin-submissions.js?v=20260223v2"></script>
-  <script src="/assets/js/admin-crm.js?v=20260223v2"></script>
+  <script src="/assets/js/admin-clients-core.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-orders.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-leads.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-new-forms.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-assets-mgr.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-order-ops.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-invoices.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-payment-gate.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-submissions.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-crm.js?v=20260315v1"></script>
 
   <!-- Client-facing portal -->
-  <script src="/assets/js/client-portal.js?v=20260305v2"></script>
-  <script src="/assets/js/client-proofs.js?v=20260223v2"></script>
-  <script src="/assets/js/client-messaging.js?v=20260223v2"></script>
-  <script src="/assets/js/client-booking.js?v=20260223v2"></script>
-  <script src="/assets/js/brand-portal.js?v=20260305v2"></script>
-  <script src="/assets/js/service-intake.js?v=20260223v2"></script>
+  <script src="/assets/js/client-portal.js?v=20260315v1"></script>
+  <script src="/assets/js/client-proofs.js?v=20260315v1"></script>
+  <script src="/assets/js/client-messaging.js?v=20260315v1"></script>
+  <script src="/assets/js/client-booking.js?v=20260315v1"></script>
+  <script src="/assets/js/brand-portal.js?v=20260315v1"></script>
+  <script src="/assets/js/service-intake.js?v=20260315v1"></script>
 
   <!-- Existing splits -->
-  <script src="/assets/js/admin-projects.js?v=20260223v2"></script>
-  <script src="/assets/js/admin-payments.js?v=20260223v2"></script>
-  <script src="/assets/js/design-tools.js?v=20260224v1"></script>
-  <script src="/assets/js/admin-designer.js?v=20260224v6"></script>
-  <script src="/assets/js/client-brief.js?v=20260224v1"></script>
-  <script src="/assets/js/admin-brandguide-config.js?v=20260224v2"></script>
-  <script src="/assets/js/admin-brandguide.js?v=20260224v2"></script>
-  <script src="/assets/js/admin-brandguide-editor.js?v=20260224v2"></script>
-  <script src="/assets/js/admin-brandguide-actions.js?v=20260224v5"></script>
-  <script src="/assets/js/admin-stats.js?v=20260223v2"></script>
-  <script src="/assets/js/admin-rankintel.js?v=20260225v1"></script>
-  <script src="/assets/js/admin-citations.js?v=1"></script>
-  <script src="/assets/js/admin-retargeting.js?v=20260225v1"></script>
-  <script src="/assets/js/admin-contact-hub.js?v=20260226v5"></script>
-  <script src="/assets/js/admin-sms-voice.js?v=20260224v1"></script>
-  <script src="/assets/js/admin-sms-campaigns.js?v=20260224v2"></script>
-  <script src="/assets/js/admin-sites.js?v=20260224"></script>
-  <script src="/assets/js/admin-subaccounts.js?v=20260305v2"></script>
-  <script src="/assets/js/admin-visitors.js?v=20260227"></script>
-  <script src="/assets/js/admin-monty.js?v=20260227v2"></script>
-  <script src="/assets/js/designer.js?v=20260223v2"></script>
-  <script src="/assets/js/client.js?v=20260226v6"></script>
-  <script src="/assets/js/email-subs.js?v=20260226v7"></script>
+  <script src="/assets/js/admin-projects.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-payments.js?v=20260315v1"></script>
+  <script src="/assets/js/design-tools.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-designer.js?v=20260315v1"></script>
+  <script src="/assets/js/client-brief.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-brandguide-config.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-brandguide.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-brandguide-editor.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-brandguide-actions.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-stats.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-rankintel.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-citations.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-retargeting.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-contact-hub.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-sms-voice.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-sms-campaigns.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-sites.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-subaccounts.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-visitors.js?v=20260315v1"></script>
+  <script src="/assets/js/admin-monty.js?v=20260315v1"></script>
+  <script src="/assets/js/designer.js?v=20260315v1"></script>
+  <script src="/assets/js/client.js?v=20260315v1"></script>
+  <script src="/assets/js/email-subs.js?v=20260315v1"></script>
 
   <!-- Auto-load portal view on app entry -->
   <script>
