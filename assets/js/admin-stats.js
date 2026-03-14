@@ -7,14 +7,19 @@ async function loadAdminAnalyticsPanel() {
     const panel = document.getElementById('adminAnalyticsPanel');
     if (panel) panel.innerHTML = '<div style="padding:60px;text-align:center;color:rgba(255,255,255,0.4);font-size:14px;">📊 Loading real analytics...</div>';
 
-    // Fetch from GA4 Netlify function
-    let ga4 = null;
+    // Fetch GA4 + Meta Pixel in parallel
+    const range = document.getElementById('analyticsDateRange')?.value || '30d';
+    let ga4 = null, meta = null;
     try {
-        const range = document.getElementById('analyticsDateRange')?.value || '30d';
-        const resp = await fetch(`/.netlify/functions/ga4-analytics?range=${range}`);
-        const data = await resp.json();
-        if (data.configured) ga4 = data;
-    } catch(e) { console.warn('GA4 fetch failed:', e); }
+        const [ga4Resp, metaResp] = await Promise.all([
+            fetch(`/.netlify/functions/ga4-analytics?range=${range}`),
+            fetch(`/.netlify/functions/meta-pixel-analytics?range=${range}`)
+        ]);
+        const ga4Data  = await ga4Resp.json();
+        const metaData = await metaResp.json();
+        if (ga4Data.configured)  ga4  = ga4Data;
+        if (metaData.configured) meta = metaData;
+    } catch(e) { console.warn('Analytics fetch failed:', e); }
 
     const isLive = !!ga4;
     const visitors = {
@@ -150,7 +155,7 @@ ${dailyChart ? dailyChart.map(d => `<span>${new Date(d.date.replace(/(\d{4})(\d{
 </div>
 
         <!-- Real-time Stats -->
-<div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 24px; border-radius: 16px; color: #fff;">
+<div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 24px; border-radius: 16px; color: #fff; margin-bottom: 24px;">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 <h3 style="font-size: 16px; font-weight: 600;">Real-Time Visitors</h3>
 <span style="display: flex; align-items: center; gap: 6px;">
@@ -176,6 +181,44 @@ ${dailyChart ? dailyChart.map(d => `<span>${new Date(d.date.replace(/(\d{4})(\d{
 <div class="text-muted-sm">Pages/Session</div>
 </div>
 </div>
+</div>
+
+        <!-- Meta Pixel Section -->
+<div style="background: #1c1c1c; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+<div>
+<h3 style="font-size: 16px; font-weight: 600; color: #fff;">🟦 Meta Pixel Events</h3>
+<div style="margin-top: 4px;">
+<span style="font-size: 11px; padding: 3px 8px; border-radius: 100px; background: ${meta ? 'rgba(59,130,246,0.15)' : 'rgba(245,158,11,0.15)'}; color: ${meta ? '#60a5fa' : '#fbbf24'};">${meta ? '● Live · Pixel ' + meta.pixelId : '● Demo — add FB_ACCESS_TOKEN to Netlify env vars'}</span>
+${meta?.lastFired ? `<span style="font-size:11px;color:rgba(255,255,255,0.3);margin-left:8px;">Last fired: ${new Date(meta.lastFired).toLocaleString()}</span>` : ''}
+</div>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px;">
+<div style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); padding: 16px; border-radius: 12px; text-align: center;">
+<div style="font-size: 28px; font-weight: 700; color: #60a5fa;">${(meta?.pageViews ?? 0).toLocaleString()}</div>
+<div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px;">Page Views</div>
+</div>
+<div style="background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); padding: 16px; border-radius: 12px; text-align: center;">
+<div style="font-size: 28px; font-weight: 700; color: #34d399;">${(meta?.leads ?? 0).toLocaleString()}</div>
+<div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px;">Leads</div>
+</div>
+<div style="background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); padding: 16px; border-radius: 12px; text-align: center;">
+<div style="font-size: 28px; font-weight: 700; color: #fbbf24;">${(meta?.viewContent ?? 0).toLocaleString()}</div>
+<div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px;">View Content</div>
+</div>
+<div style="background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); padding: 16px; border-radius: 12px; text-align: center;">
+<div style="font-size: 28px; font-weight: 700; color: #a78bfa;">${(meta?.totalFires ?? 0).toLocaleString()}</div>
+<div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px;">Total Fires</div>
+</div>
+</div>
+${meta?.dailyChart?.length ? `
+<div style="display:flex;align-items:flex-end;gap:6px;height:80px;padding-bottom:4px;">
+  ${meta.dailyChart.map(d => `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="font-size:9px;color:rgba(255,255,255,0.3);">${d.count}</div><div style="width:100%;background:rgba(59,130,246,0.6);border-radius:3px;height:${Math.max(d.height,4)}%;min-height:4px;"></div></div>`).join('')}
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:rgba(255,255,255,0.3);">
+  ${meta.dailyChart.map(d => `<span>${new Date(d.date).toLocaleDateString('en-US',{weekday:'short'})}</span>`).join('')}
+</div>` : ''}
 </div>
     `;
 }
