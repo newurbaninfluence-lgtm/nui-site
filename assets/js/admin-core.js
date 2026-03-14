@@ -183,23 +183,19 @@ function showAdminPanel(panel) {
 
 // ==================== MOBILE NAV ====================
 function initAdminMobileNav() {
-    if (document.getElementById('adminMobileToggle')) return; // already injected
+    var btn = document.getElementById('adminMobileToggle');
+    if (!btn || btn.dataset.wired) return;
+    btn.dataset.wired = '1';
 
-    // Hamburger button
-    var btn = document.createElement('button');
-    btn.id = 'adminMobileToggle';
-    btn.className = 'admin-mobile-toggle';
-    btn.setAttribute('aria-label', 'Toggle navigation');
-    btn.innerHTML = '<span></span><span></span><span></span>';
-    document.body.appendChild(btn);
+    var overlay = document.getElementById('adminSidebarOverlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'admin-sidebar-overlay';
+        overlay.id = 'adminSidebarOverlay';
+        document.body.appendChild(overlay);
+    }
 
-    // Overlay
-    var overlay = document.createElement('div');
-    overlay.className = 'admin-sidebar-overlay';
-    overlay.id = 'adminSidebarOverlay';
-    document.body.appendChild(overlay);
-
-    var sidebar = document.querySelector('.admin-sidebar') || document.querySelector('.portal-sidebar');
+    var sidebar = document.getElementById('adminSidebar');
 
     function openNav() {
         if (sidebar) sidebar.classList.add('open');
@@ -219,7 +215,6 @@ function initAdminMobileNav() {
     });
     overlay.addEventListener('click', closeNav);
 
-    // Close nav when a panel link is tapped on mobile
     document.addEventListener('click', function(e) {
         var link = e.target.closest('.admin-nav-link');
         if (link && window.innerWidth <= 768) closeNav();

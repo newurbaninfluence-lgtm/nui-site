@@ -62,7 +62,7 @@ function loadPortalView() {
 <div id="adminDashboard" class="hidden">
 <header class="admin-header">
 <div style="display: flex; align-items: center; gap: 16px;">
-<img loading="lazy" id="adminHeaderLogo" src="icons/icon-192.png" alt="NUI" style="height: 32px;">
+<button id="adminMobileToggle" class="admin-mobile-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
 <span style="font-weight: 600; color: var(--admin-text);" id="adminHeaderTitle">Admin Dashboard</span>
 </div>
 <div class="flex-center-gap-12">
@@ -74,8 +74,7 @@ function loadPortalView() {
 <div class="admin-container">
 <aside class="admin-sidebar" id="adminSidebar">
 <div class="sidebar-brand">
-<img alt="NUI" src="/icons/icon-192.png" style="width:28px;height:28px;border-radius:6px;">
-<span style="font-weight:800;font-size:15px;letter-spacing:-0.3px;">NUI Admin</span>
+<img alt="NUI" src="/icons/icon-192.png" style="width:32px;height:32px;border-radius:6px;">
 </div>
 <nav class="admin-nav" id="adminNav">
 <div class="admin-nav-group">
