@@ -945,6 +945,7 @@ async function handlePortalLogin(e) {
         document.getElementById('adminDashboard').style.display = 'block';
         renderAdminSidebar();
         loadAdminDashboardPanel();
+        setTimeout(function(){ if(typeof initAdminMobileNav==='function') initAdminMobileNav(); }, 100);
         console.log('Master admin login successful');
         // Prompt for API security token
         // Token prompt removed from login — auto-interceptor handles auth silently
@@ -968,6 +969,7 @@ async function handlePortalLogin(e) {
                 document.getElementById('adminDashboard').style.display = 'block';
                 renderAdminSidebar();
                 loadAdminDashboardPanel();
+                setTimeout(function(){ if(typeof initAdminMobileNav==='function') initAdminMobileNav(); }, 100);
                 console.log('Admin login successful (Supabase)');
                 // Token prompt removed from login — auto-interceptor handles auth silently
         // If server returns 401, admin-auth.js will prompt then

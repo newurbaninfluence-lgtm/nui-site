@@ -252,3 +252,10 @@
   /* Date range select full width */
   #analyticsDateRange { width: 100%; }
 }
+
+/* Hide site nav on /app/ — admin has its own header */
+body:has(#adminDashboard) .nav { display: none !important; }
+
+/* When admin dashboard is visible, ensure no top padding from site nav */
+#adminDashboard[style*="display: block"] ~ .nav,
+#adminDashboard.active ~ .nav { display: none !important; }
