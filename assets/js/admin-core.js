@@ -175,8 +175,56 @@ function showAdminPanel(panel) {
         var bcBar = document.getElementById('nuiBreadcrumb');
         if (bcBar) bcBar.innerHTML = '';
     }
+
+    // Init mobile nav on first panel load
+    if (typeof initAdminMobileNav === 'function') initAdminMobileNav();
 }
 
+
+// ==================== MOBILE NAV ====================
+function initAdminMobileNav() {
+    if (document.getElementById('adminMobileToggle')) return; // already injected
+
+    // Hamburger button
+    var btn = document.createElement('button');
+    btn.id = 'adminMobileToggle';
+    btn.className = 'admin-mobile-toggle';
+    btn.setAttribute('aria-label', 'Toggle navigation');
+    btn.innerHTML = '<span></span><span></span><span></span>';
+    document.body.appendChild(btn);
+
+    // Overlay
+    var overlay = document.createElement('div');
+    overlay.className = 'admin-sidebar-overlay';
+    overlay.id = 'adminSidebarOverlay';
+    document.body.appendChild(overlay);
+
+    var sidebar = document.querySelector('.admin-sidebar') || document.querySelector('.portal-sidebar');
+
+    function openNav() {
+        if (sidebar) sidebar.classList.add('open');
+        overlay.classList.add('open');
+        btn.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeNav() {
+        if (sidebar) sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+        btn.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    btn.addEventListener('click', function() {
+        btn.classList.contains('open') ? closeNav() : openNav();
+    });
+    overlay.addEventListener('click', closeNav);
+
+    // Close nav when a panel link is tapped on mobile
+    document.addEventListener('click', function(e) {
+        var link = e.target.closest('.admin-nav-link');
+        if (link && window.innerWidth <= 768) closeNav();
+    });
+}
 
 // ==================== ADMIN PANELS ====================
 function loadAdminDashboardPanel() {
