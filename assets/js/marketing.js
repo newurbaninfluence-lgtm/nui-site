@@ -3452,7 +3452,7 @@ input:checked + .slider:before { transform: translateX(24px); }
         left: 0 !important;
         bottom: 0 !important;
         width: 260px !important;
-        z-index: 999 !important;
+        z-index: 10001 !important;
         transform: translateX(-100%) !important;
         transition: transform 0.28s cubic-bezier(0.4,0,0.2,1) !important;
         overflow-y: auto !important;
