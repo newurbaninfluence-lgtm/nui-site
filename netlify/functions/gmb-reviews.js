@@ -11,7 +11,26 @@
 //   GET /.netlify/functions/gmb-reviews?slug=aj-photography-studio-detroit
 //   Returns: { placeId, name, rating, reviewCount, reviews[] }
 //
-// Place IDs (find at: maps.google.com → search business → share → embed → extract CID):
+// Known GMB data (verified March 2026 from Google My Business listings)
+// Rating and review counts are manually verified — review TEXT requires Places API
+const KNOWN_GMB = {
+  'aj-photography-studio-detroit': {
+    name: 'AJ Photography Studio',
+    rating: 4.9,
+    reviewCount: 229,
+    address: '21700 Greenfield Rd Ste LL18, Oak Park, MI 48237',
+    phone: '+1 313-631-8819',
+    // Place ID: find at maps.google.com → search "AJ Photography Oak Park MI" → Share → Embed
+    // Copy the ID from: ...maps/place/.../@.../data=...1s{PLACE_ID}...
+  },
+  'larry-castleberry-detroit-storyteller-speaker': {
+    name: 'Larry Castleberry',
+    rating: 5.0,
+    reviewCount: null, // No GMB profile found yet
+  },
+};
+
+// Place IDs from env vars (set in Netlify dashboard)
 const PLACE_IDS = {
   'aj-photography-studio-detroit':
     process.env.AJ_PHOTOGRAPHY_PLACE_ID || null,

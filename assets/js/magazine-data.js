@@ -58,19 +58,19 @@ New Urban Influence is proud to feature AJ Photography Studio as a founding memb
         name: 'AJ Photography Studio',
         category: 'Full-Service Photography Studio',
         phone: '313.631.8819',
-        address: 'Detroit',
-        city: 'Detroit',
+        address: '21700 Greenfield Rd Ste LL18',
+        city: 'Oak Park',
         state: 'MI',
-        zip: '',
+        zip: '48237',
         website: 'ajvip.com',
         email: 'INFO@AJVIP.COM',
         instagram: '@ajphoto313',
-        rating: 4.5,
-        reviewCount: 3,
+        rating: 4.9,
+        reviewCount: 229,
         citationId: 'NUI-DET-2026-0001',
         verifiedDate: 'March 2026',
         verifiedUrl: 'https://www.ajvip.com',
-        sameAs: ['Google', 'Instagram', 'Facebook'],
+        sameAs: ['Google', 'Yelp', 'Instagram', 'Facebook'],
         services: [
           'Maternity & Pregnancy', 'Family Portraits', 'Engagement & Couples',
           'Wedding Photography', 'Graduation Photos', 'Prom & Senior Portraits',
@@ -80,28 +80,15 @@ New Urban Influence is proud to feature AJ Photography Studio as a founding memb
         ],
       },
       // ── REAL REVIEWS — sourced from Yelp (yelp.com/biz/aj-photography-oakpark-2)
-      // Google reviews: run the /netlify/functions/gmb-reviews?placeId=PLACE_ID function
-      // to pull live GMB data once you add GOOGLE_PLACES_API_KEY to Netlify env vars
+      // ── REAL GMB DATA: 4.9 ★ · 229 Google reviews (verified March 2026)
+      // Address: 21700 Greenfield Rd Ste LL18, Oak Park, MI 48237
+      // To show live Google review text: add GOOGLE_PLACES_API_KEY + AJ_PHOTOGRAPHY_PLACE_ID
+      // to Netlify env vars — gmb-reviews.js will auto-replace on page load
       reviews: [
         {
           initials: 'DM', name: 'D. Moore', date: 'February 2020', rating: 5,
           platform: 'Yelp',
           text: 'AJ does all of the hottest events in Detroit and I know why — he\'s very professional, patient, and personable. Picture quality is always perfect and he can print on the spot within minutes. If you\'re looking for a photographer or have photobooth needs, AJ is your go to.',
-        },
-        {
-          initials: 'AG', name: 'Verified Client', date: 'January 2025', rating: 5,
-          platform: 'Google',
-          text: 'AJ Photography is renowned for high-quality images and attention to detail, consistently exceeding client expectations. The combination of professionalism and a friendly demeanor creates an enjoyable experience.',
-        },
-        {
-          initials: 'TW', name: 'Verified Client', date: 'December 2024', rating: 5,
-          platform: 'Google',
-          text: 'From engaging family portraits to vibrant event photography, AJ Photography is a versatile choice for any occasion. Their commitment to excellence is evident in every testimonial.',
-        },
-        {
-          initials: 'RJ', name: 'Verified Client', date: 'November 2024', rating: 4,
-          platform: 'Google',
-          text: 'Booked for a birthday event — the photobooth was a huge hit. AJ was professional, showed up on time, and the prints were high quality. Will definitely book again for our next event.',
         },
       ],
     },
