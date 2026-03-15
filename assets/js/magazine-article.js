@@ -147,9 +147,9 @@
           '<svg width="32" height="32" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#ff0000" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="#ff0000"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#ff0000" stroke-width="1.5" stroke-linecap="round"/></svg>' +
         '</div>' +
         '<div class="mag-podcast-info">' +
-          '<div class="mag-podcast-label">AI Audio Overview</div>' +
+          '<div class="mag-podcast-label">Audio Overview</div>' +
           '<div class="mag-podcast-title">From Detroit Snack Hustler to Brand Architect</div>' +
-          '<div class="mag-podcast-sub">Built Heavy Podcast · AI-Generated Discussion</div>' +
+          '<div class="mag-podcast-sub">Built Heavy Podcast</div>' +
         '</div>' +
       '</div>' +
       '<audio id="builtHeavyAudio" preload="metadata"><source src="' + url + '" type="audio/mp4"></audio>' +
