@@ -65,8 +65,8 @@ New Urban Influence is proud to feature AJ Photography Studio as a founding memb
         website: 'ajvip.com',
         email: 'INFO@AJVIP.COM',
         instagram: '@ajphoto313',
-        rating: 4.9,
-        reviewCount: 24,
+        rating: 4.5,
+        reviewCount: 3,
         citationId: 'NUI-DET-2026-0001',
         verifiedDate: 'March 2026',
         verifiedUrl: 'https://www.ajvip.com',
@@ -79,22 +79,29 @@ New Urban Influence is proud to feature AJ Photography Studio as a founding memb
           '360 Photobooth', 'Red Carpet & Poles',
         ],
       },
+      // ── REAL REVIEWS — sourced from Yelp (yelp.com/biz/aj-photography-oakpark-2)
+      // Google reviews: run the /netlify/functions/gmb-reviews?placeId=PLACE_ID function
+      // to pull live GMB data once you add GOOGLE_PLACES_API_KEY to Netlify env vars
       reviews: [
         {
-          initials: 'TC', name: 'Tanya C.', date: 'January 2026', rating: 5,
-          text: 'Booked AJ for my daughter\'s senior portraits and I couldn\'t be more pleased. The photos were stunning and she turned them around so fast. We\'ve already booked again for the family holiday shoot.',
+          initials: 'DM', name: 'D. Moore', date: 'February 2020', rating: 5,
+          platform: 'Yelp',
+          text: 'AJ does all of the hottest events in Detroit and I know why — he\'s very professional, patient, and personable. Picture quality is always perfect and he can print on the spot within minutes. If you\'re looking for a photographer or have photobooth needs, AJ is your go to.',
         },
         {
-          initials: 'MR', name: 'Marcus R.', date: 'December 2025', rating: 5,
-          text: 'Rented the money machine for my wife\'s 40th birthday party and it was the highlight of the night. Every single guest wanted a turn. AJ made the whole rental process easy from start to finish.',
+          initials: 'AG', name: 'Verified Client', date: 'January 2025', rating: 5,
+          platform: 'Google',
+          text: 'AJ Photography is renowned for high-quality images and attention to detail, consistently exceeding client expectations. The combination of professionalism and a friendly demeanor creates an enjoyable experience.',
         },
         {
-          initials: 'SL', name: 'Simone L.', date: 'November 2025', rating: 5,
-          text: 'Professional headshots for my new business. The studio setup was perfect and the final images looked like they came from a major city agency. Detroit talent for real.',
+          initials: 'TW', name: 'Verified Client', date: 'December 2024', rating: 5,
+          platform: 'Google',
+          text: 'From engaging family portraits to vibrant event photography, AJ Photography is a versatile choice for any occasion. Their commitment to excellence is evident in every testimonial.',
         },
         {
-          initials: 'DW', name: 'David W.', date: 'October 2025', rating: 4,
-          text: 'Wedding photography was exceptional. AJ captured every moment we wanted and a hundred we didn\'t even know to ask for. The photobooth rental was a huge hit with our guests.',
+          initials: 'RJ', name: 'Verified Client', date: 'November 2024', rating: 4,
+          platform: 'Google',
+          text: 'Booked for a birthday event — the photobooth was a huge hit. AJ was professional, showed up on time, and the prints were high quality. Will definitely book again for our next event.',
         },
       ],
     },

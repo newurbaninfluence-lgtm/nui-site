@@ -360,7 +360,9 @@
           ${miniStarsHTML(r.rating)}
         </div>
         <div class="mag-review-text">${r.text}</div>
-        <div class="mag-review-verified">✓ Verified client — NUI Creator Network</div>
+        <div class="mag-review-verified">
+          ✓ Verified — ${r.platform || 'NUI Creator Network'}
+        </div>
       </div>`).join('');
   }
 
@@ -392,6 +394,17 @@
       </a>`).join('');
   }
 
+  // ── Fetch live GMB reviews (if API configured) ────
+  async function fetchGMBReviews(slug) {
+    try {
+      const res  = await fetch(`/.netlify/functions/gmb-reviews?slug=${slug}`);
+      if (!res.ok) return null;
+      const data = await res.json();
+      if (data.error || !data.reviews?.length) return null;
+      return data;
+    } catch { return null; }
+  }
+
   // ── INIT ──────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
     const slug    = getSlug();
@@ -408,9 +421,23 @@
     injectMeta(article);
     renderBody(article);
     renderSidebar(article);
-    renderReviews(article);
+    renderReviews(article);        // render static/fallback reviews first
     initBadge(article);
     renderRelated(article);
+
+    // Then try to upgrade with live GMB reviews in background
+    fetchGMBReviews(article.slug).then(gmb => {
+      if (!gmb) return;
+      // Merge GMB data into article and re-render reviews
+      article.business.rating      = gmb.rating;
+      article.business.reviewCount = gmb.reviewCount;
+      article.reviews              = gmb.reviews;
+      renderReviews(article);
+      // Update star rating in sidebar too
+      document.getElementById('sibStars').innerHTML =
+        starsHTML(gmb.rating) +
+        `<span class="mag-stars-count">${gmb.reviewCount} Google reviews</span>`;
+    });
   });
 
 })();
