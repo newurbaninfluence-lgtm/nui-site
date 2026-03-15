@@ -3470,6 +3470,12 @@ input:checked + .slider:before { transform: translateX(24px); }
     /* Flex */
     .admin-row-between,.flex-between { flex-wrap:wrap!important;gap:8px!important; }
     .flex-gap-12,.flex-gap-16,.flex-gap-24 { flex-wrap:wrap!important;gap:8px!important; }
+    /* Panel header rows — stack title above buttons, make all buttons visible */
+    .flex-between.mb-32, .flex-between.mb-24, .admin-row-between { flex-direction:column!important;align-items:flex-start!important; }
+    .flex-between.mb-32 > div:last-child, .flex-between.mb-24 > div:last-child, .admin-row-between > div:last-child { display:flex!important;flex-wrap:wrap!important;gap:8px!important;width:100%!important; }
+    .flex-between.mb-32 button, .flex-between.mb-24 button, .admin-row-between button, .admin-row-between .btn-admin, .admin-row-between a.btn-cta { flex:1!important;min-width:80px!important;text-align:center!important;font-size:12px!important;padding:8px 10px!important; }
+    /* fs-28 headers */
+    .fs-28 { font-size:18px!important; }
     /* Gap reduction on inline style elements */
     [style*="gap: 24px"] { gap:10px!important; }
     [style*="gap: 20px"] { gap:10px!important; }

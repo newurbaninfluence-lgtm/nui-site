@@ -61,13 +61,11 @@ function loadPortalView() {
 </div>
 <div id="adminDashboard" class="hidden">
 <header class="admin-header">
-<div style="display: flex; align-items: center; gap: 16px;">
+<div style="display: flex; align-items: center; gap: 12px;">
 <button id="adminMobileToggle" class="admin-mobile-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
 <span style="font-weight:800;font-size:15px;letter-spacing:1px;font-family:'Syne',sans-serif;color:var(--admin-text);">New Urban <span style="color:#dc2626;">Influence</span></span>
 </div>
 <div class="flex-center-gap-12">
-<span id="adminUserInfo" style="font-size: 13px; color: var(--admin-text-muted);"></span>
-<button class="theme-toggle-btn" onclick="toggleTheme()" style="padding: 8px 16px; background: var(--admin-card); border: 1px solid var(--admin-border); color: var(--admin-text); cursor: pointer; border-radius: 4px; font-family: inherit; font-weight: 500;">☀️ Light</button>
 <button onclick="portalLogout()" style="padding: 8px 16px; background: var(--red); border: none; color: #fff; cursor: pointer; border-radius: 4px; font-family: inherit; font-weight: 500;">Logout</button>
 </div>
 </header>
