@@ -63,10 +63,15 @@
   // ── Parse minimal markdown ────────────────────────
   function parseBody(text) {
     if (!text) return '';
-    return text.split('\n').filter(l => l.trim()).map(line => {
-      if (line.startsWith('## ')) return `<h2>${line.slice(3)}</h2>`;
-      if (line.startsWith('> ')) return `<div class="mag-pull-quote"><p>${line.slice(2)}</p></div>`;
-      return `<p>${line}</p>`;
+    return text.split('\n\n').filter(l => l.trim()).map(block => {
+      block = block.trim();
+      if (block.startsWith('## ')) return `<h2 class="mag-body-h2">${block.slice(3)}</h2>`;
+      // Pull quote: *"..."*
+      if (/^\*".*"\*$/.test(block)) {
+        return `<div class="mag-pull-quote"><p>${block.replace(/^\*"|"\*$/g,'')}</p></div>`;
+      }
+      if (block.startsWith('> ')) return `<div class="mag-pull-quote"><p>${block.slice(2)}</p></div>`;
+      return `<p>${block}</p>`;
     }).join('');
   }
 
@@ -364,8 +369,57 @@
 
     setHtml('artBody', bodyBefore + ownerBlock + bodyAfter);
 
-    // Tags
-    document.getElementById('artTags').innerHTML = (a.tags || [])
+    // Premium article upgrades
+    if (a.premium) {
+      document.querySelector('.mag-article-header')?.classList.add('is-premium');
+
+      // Press bar — inject after owner feature block in body
+      const pressBar = `
+        <div class="mag-press-bar">
+          <div class="mag-press-label">As Featured In</div>
+          <div class="mag-press-logos">
+            <span class="mag-press-item">Rolling Out</span>
+            <span class="mag-press-item">Detroit Free Press</span>
+            <span class="mag-press-item">Model D Media</span>
+            <span class="mag-press-item">Clutch.co</span>
+            <span class="mag-press-item">Yelp</span>
+          </div>
+        </div>`;
+
+      // Stat row
+      const statRow = `
+        <div class="mag-stat-row">
+          <div class="mag-stat-cell"><div class="mag-stat-cell-val">20+</div><div class="mag-stat-cell-label">Years in Detroit</div></div>
+          <div class="mag-stat-cell"><div class="mag-stat-cell-val">500+</div><div class="mag-stat-cell-label">Brands Built</div></div>
+          <div class="mag-stat-cell"><div class="mag-stat-cell-val">4.9★</div><div class="mag-stat-cell-label">Google Rating</div></div>
+          <div class="mag-stat-cell"><div class="mag-stat-cell-val">$1.5K</div><div class="mag-stat-cell-label">Packages From</div></div>
+        </div>`;
+
+      // Services grid
+      const services = [
+        ['Brand Identity', 'Logo, color, type, guidelines — the complete system.'],
+        ['Web Design', 'Mobile-first, SEO-optimized, conversion-ready.'],
+        ['AI Systems', 'Chatbots, lead automation, voice assistants.'],
+        ['Silent Visitor ID', 'Identify anonymous visitors by name & email.'],
+        ['Geo-Fencing', 'Target competitor locations with your ads.'],
+        ['Print & Packaging', 'Turnkey design + print, delivered to your door.'],
+      ];
+      const servicesGrid = `
+        <div class="mag-services-showcase">
+          ${services.map(([name, desc], i) => `
+            <div class="mag-service-tile">
+              <div class="mag-service-tile-num">0${i+1}</div>
+              <div class="mag-service-tile-name">${name}</div>
+              <div class="mag-service-tile-desc">${desc}</div>
+            </div>`).join('')}
+        </div>`;
+
+      // Inject after body is set
+      const bodyEl = document.getElementById('artBody');
+      if (bodyEl) {
+        bodyEl.insertAdjacentHTML('beforeend', pressBar + statRow + servicesGrid);
+      }
+    }
       .map(t => `<span class="mag-body-tag">${t}</span>`).join('');
 
     // Breadcrumb

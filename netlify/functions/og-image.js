@@ -30,7 +30,14 @@ const ARTICLES = {
     business: 'AJ Photography Studio',
     rating: 4.9, award: true, date: 'March 2026',
   },
-  'larry-castleberry-detroit-storyteller-speaker': {
+  'faren-young-new-urban-influence-detroit': {
+    title: 'Faren Young Is Building Detroit\'s Creative Economy — One Brand at a Time',
+    dek: 'From Bravo Graphix on the Avenue of Fashion to a full-stack branding and AI automation agency — 20 years in the making.',
+    category: 'Agency Founder',
+    business: 'New Urban Influence',
+    rating: 4.9, award: true, date: 'March 2026',
+    heroImage: '/images/magazine/faren-young-studio.png',
+  },
     title: 'Larry Castleberry: Detroit\'s Master Storyteller, Speaker, and Voice Actor',
     dek: 'Over 20 years bringing stories to life — engineering background, Aikido philosophy, and a voice that commands any room.',
     category: 'Storyteller & Speaker',

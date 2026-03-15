@@ -101,6 +101,69 @@
   </div>
 </header>
 
+<!-- ══ MAGAZINE EDITORIAL HERO ══ -->
+<section class="mag-editorial-hero" id="heroSection">
+
+  <!-- Background: studio image with overlay -->
+  <div class="mag-editorial-bg" id="editorialBg"></div>
+
+  <!-- About the magazine — left column -->
+  <div class="mag-editorial-left">
+    <div class="mag-editorial-issue">
+      <span class="mag-editorial-issue-dot"></span>
+      Detroit Creator Network · Vol. 1 · March 2026
+    </div>
+    <div class="mag-editorial-wordmark">
+      <div class="mag-editorial-nui">NUI</div>
+      <div class="mag-editorial-mag-word">MAGAZINE</div>
+    </div>
+    <p class="mag-editorial-mission">
+      Detroit's creative authority. We feature, verify, and amplify the brands, founders, and studios shaping the city's next era.
+    </p>
+    <div class="mag-editorial-stats">
+      <div class="mag-editorial-stat">
+        <span class="mag-editorial-stat-val">3</span>
+        <span class="mag-editorial-stat-label">Features</span>
+      </div>
+      <div class="mag-editorial-stat">
+        <span class="mag-editorial-stat-val">1</span>
+        <span class="mag-editorial-stat-label">Award</span>
+      </div>
+      <div class="mag-editorial-stat">
+        <span class="mag-editorial-stat-val">∞</span>
+        <span class="mag-editorial-stat-label">More Coming</span>
+      </div>
+    </div>
+    <a href="/magazine/submit.html" class="mag-editorial-cta">
+      Get Your Business Featured →
+    </a>
+  </div>
+
+  <!-- Cover story — right column -->
+  <div class="mag-editorial-cover">
+    <div class="mag-editorial-cover-label">
+      <span class="mag-editorial-cover-rule"></span>
+      Cover Story
+    </div>
+    <div class="mag-editorial-cover-card" id="coverCard">
+      <!-- Populated by magazine.js -->
+      <div class="mag-editorial-cover-img" id="coverImg"></div>
+      <div class="mag-editorial-cover-body">
+        <div class="mag-editorial-cover-cat" id="coverCat">Agency Founder</div>
+        <h2 class="mag-editorial-cover-title" id="coverTitle">Loading...</h2>
+        <p class="mag-editorial-cover-dek" id="coverDek"></p>
+        <div class="mag-editorial-cover-meta">
+          <span id="coverAuthor">NUI Editorial</span>
+          <span>·</span>
+          <span id="coverRead">8 min</span>
+        </div>
+        <a class="mag-editorial-cover-btn" id="coverBtn" href="#">Read Feature →</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
 <!-- CATEGORY NAV -->
 <div class="mag-cat-nav">
   <div class="mag-cat-nav-inner" id="catNav">
@@ -115,34 +178,9 @@
   </div>
 </div>
 
-<!-- HERO COVER STORY -->
-<section class="mag-hero" id="heroSection">
-  <div class="mag-hero-inner">
-    <div>
-      <div class="mag-hero-kicker">Cover Story</div>
-      <h1 class="mag-hero-title" id="heroTitle">AJ VIP Studios: Where Detroit Creatives Come to Be Seen</h1>
-      <p class="mag-hero-dek" id="heroDek">Inside the studio redefining professional photography for Detroit's rising generation of entrepreneurs, podcasters, and artists.</p>
-      <div class="mag-hero-meta">
-        <strong id="heroAuthor">NUI Editorial</strong>
-        <span>·</span>
-        <span id="heroDate">March 2025</span>
-        <span>·</span>
-        <span id="heroRead">4 min read</span>
-      </div>
-      <a class="mag-hero-btn" id="heroBtn" href="/magazine/article.html?slug=aj-vip-studios-detroit-photography">
-        Read Feature →
-      </a>
-    </div>
-    <div class="mag-hero-img" id="heroImg">
-      <span>Photography Studio · Detroit, MI</span>
-      <div class="mag-hero-award" id="heroAward">🏆 2025 Award Winner</div>
-    </div>
-  </div>
-</section>
-
 <!-- MAIN CONTENT -->
 <main class="mag-content">
-  <div class="mag-section-head">Featured</div>
+  <div class="mag-section-head" id="featuredHead">Featured</div>
   <div class="mag-grid" id="featuredGrid"></div>
 
   <div class="mag-section-head" style="margin-top:56px">Latest</div>

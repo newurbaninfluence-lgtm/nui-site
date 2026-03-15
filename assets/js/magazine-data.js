@@ -205,11 +205,133 @@ New Urban Influence is honored to feature Larry Castleberry as a founding member
         },
       ],
     },
-  ],
+
+    // ─────────────────────────────────────────────────────
+    // ARTICLE 3: Faren Young — PREMIUM FOUNDER FEATURE
+    // NUI Magazine flagship article — highest tier layout
+    // ─────────────────────────────────────────────────────
+    {
+      id: 'faren-young-nui-2026',
+      slug: 'faren-young-new-urban-influence-detroit',
+      title: 'Faren Young Is Building Detroit\'s Creative Economy — One Brand at a Time',
+      dek: 'From Bravo Graphix on the Avenue of Fashion to a full-stack branding and AI automation agency, the founder of New Urban Influence has spent two decades doing what Detroit does best: building something real from nothing.',
+      category: 'agencies',
+      categoryLabel: 'Agency Founder',
+      author: 'NUI Editorial',
+      publishedAt: '2026-03-16',
+      readTime: '8 min read',
+      featured: true,
+      premium: true,
+      award: 'NUI Detroit Founder Spotlight 2026',
+      awardLabel: 'Detroit Creative Leader — NUI Magazine',
+      heroImage: '/images/magazine/faren-young-studio.png',
+      profileImage: '/images/magazine/faren-young-profile.png',
+      profileBio: 'Native Detroiter. Creative Director. Founder of New Urban Influence. 20+ years building brands that compete. Obsessed with making small businesses look like Fortune 500 companies.',
+      tags: ['Detroit', 'Branding Agency', 'Founder', 'Creative Director', 'AI Automation', 'NUI'],
+
 
   // Helpers
   getBySlug(slug)     { return this.articles.find(a => a.slug === slug); },
   getFeatured()       { return this.articles.filter(a => a.featured); },
   getByCategory(cat)  { return this.articles.filter(a => a.category === cat); },
   getRecent(n)        { return [...this.articles].sort((a,b) => new Date(b.publishedAt)-new Date(a.publishedAt)).slice(0,n||6); },
+};
+      ownerBio: {
+        label: 'Founder & Creative Director — New Urban Influence',
+        headline: 'The Architect of Detroit\'s Next Brand Era',
+        body: 'Faren Young built New Urban Influence from a single storefront on Detroit\'s Avenue of Fashion into a full-stack branding and AI automation agency. Twenty years in, his work has been featured in Rolling Out, the Detroit Free Press, and Model D Media. His clients include everyone from first-time entrepreneurs to established Detroit institutions — all getting the same obsessive attention to craft.',
+        stats: [
+          { val: '20+', label: 'Years Experience' },
+          { val: '500+', label: 'Brands Built' },
+          { val: '4.9★', label: 'Google Rating' },
+          { val: '31+', label: 'Google Reviews' },
+        ],
+        tags: ['Branding', 'Web Design', 'AI Systems', 'Detroit Native', 'NUI Founder'],
+      },
+      body: `Detroit has always produced people who build — who take raw materials and raw will and make something the world didn't know it needed. Faren Young is one of those people.
+
+As the founder and Creative Director of New Urban Influence, Young has spent more than two decades doing what most designers never do: running an actual business while building other people's businesses. Not a freelancer. Not a studio that just makes things pretty. A strategist who happens to design, and a builder who happens to understand brand.
+
+## How It Started
+
+The story begins on Detroit's Avenue of Fashion — a stretch of Livernois that has been the city's creative and commercial backbone for generations. That's where Young opened Bravo Graphix, the print and design shop that became the foundation for everything that followed.
+
+It wasn't glamorous. It was hustle — learning every day what small business owners actually needed, what they couldn't articulate but could feel when it was missing, and how design could bridge the gap between where a business was and where it deserved to be.
+
+Rolling Out covered it. Model D Media covered it. The Detroit Free Press put it in the paper. Detroit noticed.
+
+## What New Urban Influence Is Today
+
+NUI has evolved far beyond a design shop. Today it's a full-service branding and AI automation agency — one of the few in Metro Detroit operating at the intersection of creative identity and intelligent systems.
+
+The core service is still brand identity: logo design, color systems, typography, packaging, brand guidelines. But wrapped around that core is an entire ecosystem of growth infrastructure: custom websites, print collateral, email and SMS automation, AI phone assistants, geo-fencing, geo-grid tracking, Facebook and Google pixel campaigns, and Silent Visitor ID — a system that identifies anonymous website visitors by name, email, and LinkedIn before they ever fill out a form.
+
+It's the kind of stack that Fortune 500 companies pay agencies ten times the price for. NUI delivers it to small businesses, coaches, creators, and entrepreneurs across Detroit and nationwide — at a price point designed to make the playing field level.
+
+## The NUI Philosophy
+
+Young's approach is direct: most small businesses are invisible not because they're bad at what they do, but because no one helped them look the part. A brand that looks like it belongs at the top of the market attracts clients who pay top-of-market prices.
+
+*"We don't design. We influence."* That's not a slogan. It's a precise description of what NUI does. Design is the output. Influence — over perception, over reputation, over the decisions potential clients make before they ever pick up the phone — is the actual product.
+
+## The Platform He's Building
+
+NUI isn't just an agency anymore. It's becoming a platform — a multi-tenant system where brands can be built, monitored, and scaled from a single dashboard. Client portals. Proof approval workflows. Automated marketing pipelines. AI systems that work while you sleep.
+
+The NUI Magazine you're reading right now is part of that platform — a citation authority network designed to give Detroit's best creators and business owners the verified online presence they deserve. The kind of presence that shows up in Google, gets picked up by AI search engines, and builds the backlink profile that makes a business findable by the right people.
+
+It's a long game. Young has been playing it for twenty years. He's not stopping.`,
+      business: {
+        name: 'New Urban Influence',
+        category: 'Branding & AI Automation Agency',
+        phone: '(248) 487-8747',
+        address: 'Detroit',
+        city: 'Detroit',
+        state: 'MI',
+        zip: '',
+        website: 'newurbaninfluence.com',
+        email: 'info@newurbaninfluence.com',
+        instagram: '@newurbaninfluence',
+        rating: 4.9,
+        reviewCount: 31,
+        citationId: 'NUI-DET-2026-0000',
+        verifiedDate: 'March 2026',
+        verifiedUrl: 'https://newurbaninfluence.com',
+        sameAs: ['Google', 'Rolling Out', 'Detroit Free Press', 'Model D Media', 'Clutch', 'Yelp', 'LinkedIn'],
+        services: [
+          'Brand Identity Design', 'Logo Design', 'Web Design & Development',
+          'AI Systems & Automation', 'Email & SMS Automation', 'Geo-Fencing',
+          'Silent Visitor ID', 'Print & Packaging', 'Social Media & Ads',
+        ],
+      },
+      reviews: [
+        {
+          initials: 'MB', name: 'Miss B', date: 'November 2025', rating: 5,
+          platform: 'Google',
+          text: 'I would recommend working with New Urban Influence. My experience with Faren was great — even when I was being a difficult customer. The care and attention put into making sure they understood my vision for my brand was amazing.',
+        },
+        {
+          initials: 'CB', name: 'Chevelles Bar', date: 'October 2025', rating: 5,
+          platform: 'Google',
+          text: 'Faren did a great job on a few flyers for me. Prices were reasonable and the quality was superb. My go-to company for all my promotional needs. The best at what he does.',
+        },
+        {
+          initials: 'SM', name: 'Sierra Meriwether', date: 'December 2025', rating: 5,
+          platform: 'Google',
+          text: 'The best graphic design company in the world. I have been a customer for over 10 years and every time they exceed my expectations. Very professional and prompt with all my services.',
+        },
+        {
+          initials: 'LC', name: 'Larry Castleberry', date: 'December 2025', rating: 5,
+          platform: 'Google',
+          text: 'Great experience. New Urban Influence gives you personal and detailed attention, making you feel like you are their most important customer. Love the services and the personal touch they provide.',
+        },
+      ],
+    },
+  ],
+  // Helpers
+  getBySlug(slug)     { return this.articles.find(a => a.slug === slug); },
+  getFeatured()       { return this.articles.filter(a => a.featured); },
+  getByCategory(cat)  { return this.articles.filter(a => a.category === cat); },
+  getRecent(n)        { return [...this.articles].sort((a,b) => new Date(b.publishedAt)-new Date(a.publishedAt)).slice(0,n||6); },
+  getPremium()        { return this.articles.filter(a => a.premium); },
 };

@@ -74,5 +74,24 @@
       <image:title>Larry Castleberry on stage — Detroit storyteller and speaker</image:title>
     </image:image>
   </url>
+  <!-- Article: Faren Young — Premium Founder Feature -->
+  <url>
+    <loc>https://newurbaninfluence.com/magazine/article?slug=faren-young-new-urban-influence-detroit</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <news:news>
+      <news:publication>
+        <news:name>NUI Magazine</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-03-16</news:publication_date>
+      <news:title>Faren Young Is Building Detroit's Creative Economy — One Brand at a Time</news:title>
+    </news:news>
+    <image:image>
+      <image:loc>https://newurbaninfluence.com/images/magazine/faren-young-studio.png</image:loc>
+      <image:title>Faren Young — Founder, New Urban Influence Detroit</image:title>
+    </image:image>
+  </url>
 
 </urlset>
