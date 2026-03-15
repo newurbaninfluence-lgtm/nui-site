@@ -278,18 +278,38 @@
   }
 
   function initBadge(a) {
-    var url  = BASE + '/magazine/article.html?slug=' + a.slug;
-    var code = '<a href="' + url + '" rel="dofollow" target="_blank">\n  <img src="' + BASE + '/images/badges/nui-featured.svg" alt="As Seen on NUI Magazine" width="200">\n</a>';
     var btn = document.getElementById('embedBtn');
     var ec  = document.getElementById('embedCode');
-    if (!btn || !ec) return;
-    var showing = false;
-    btn.addEventListener('click', function() {
-      showing = !showing;
-      ec.style.display = showing ? '' : 'none';
-      ec.textContent = code;
-      if (showing && navigator.clipboard) navigator.clipboard.writeText(code);
-      btn.textContent = showing ? 'Copied! ✓' : 'Get Embed Code';
+    if (!btn) return;
+
+    // Always show a clean PNG download button — no code needed
+    btn.textContent = '⬇ Download Badge';
+    btn.style.cursor = 'pointer';
+    if (ec) ec.style.display = 'none';
+
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      var img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = function() {
+        var canvas = document.createElement('canvas');
+        canvas.width  = img.naturalWidth  || 400;
+        canvas.height = img.naturalHeight || 200;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        var link = document.createElement('a');
+        link.download = 'nui-magazine-badge.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      };
+      img.onerror = function() {
+        // Fallback: direct SVG download if canvas fails (CORS)
+        var link = document.createElement('a');
+        link.href = BASE + '/images/badges/nui-featured.svg';
+        link.download = 'nui-magazine-badge.svg';
+        link.click();
+      };
+      img.src = BASE + '/images/badges/nui-featured.svg?v=' + Date.now();
     });
   }
 
