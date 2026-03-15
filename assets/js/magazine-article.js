@@ -73,7 +73,7 @@
   // ── Build all 3 schemas ───────────────────────────
   function buildSchemas(a) {
     const b   = a.business;
-    const url = `${BASE}/magazine/${a.slug}`;
+    const url = `${BASE}/magazine/article?slug=${a.slug}`;
 
     // 1 — NewsArticle
     const schemaArticle = {
@@ -152,36 +152,36 @@
   // ── Inject all OG tags + schemas ─────────────────
   function injectMeta(a) {
     const b   = a.business;
-    const url = `${BASE}/magazine/${a.slug}`;
-    // The OG image uses the dynamic Netlify function
+    const url = `${BASE}/magazine/article?slug=${a.slug}`;
     const ogImg = `${BASE}/.netlify/functions/og-image?slug=${a.slug}`;
 
     // Page title
     document.title = `${a.title} | NUI Magazine`;
 
     // Canonical
-    setMeta('canonical', 'href', url);
+    const canonEl = document.getElementById('artCanonical');
+    if (canonEl) canonEl.setAttribute('href', url);
 
     // Standard meta
     setMeta('metaDesc', 'content', a.dek);
 
     // OG tags
-    setMeta('ogUrl',      'content', url);
-    setMeta('ogTitle',    'content', a.title);
-    setMeta('ogDesc',     'content', a.dek);
-    setMeta('ogImage',    'content', ogImg);
-    setMeta('ogImageSec', 'content', ogImg);
-    setMeta('ogImageAlt', 'content', a.title);
-    setMeta('ogPubTime',  'content', a.publishedAt);
-    setMeta('ogAuthor',   'content', 'NUI Editorial');
-    setMeta('ogSection',  'content', a.categoryLabel);
+    setMeta('artOgUrl',      'content', url);
+    setMeta('artOgTitle',    'content', a.title);
+    setMeta('artOgDesc',     'content', a.dek);
+    setMeta('artOgImage',    'content', ogImg);
+    setMeta('artOgImageSec', 'content', ogImg);
+    setMeta('artOgImageAlt', 'content', a.title);
+    setMeta('artPubTime',    'content', a.publishedAt);
+    setMeta('artOgAuthor',   'content', 'NUI Editorial');
+    setMeta('artOgSection',  'content', a.categoryLabel);
 
     // Twitter tags
-    setMeta('twTitle',  'content', a.title);
-    setMeta('twDesc',   'content', a.dek);
-    setMeta('twImage',  'content', ogImg);
-    setMeta('twImgAlt', 'content', a.title);
-    setMeta('twUrl',    'content', url);
+    setMeta('artTwTitle',  'content', a.title);
+    setMeta('artTwDesc',   'content', a.dek);
+    setMeta('artTwImage',  'content', ogImg);
+    setMeta('artTwImgAlt', 'content', a.title);
+    setMeta('artTwUrl',    'content', url);
 
     // JSON-LD schemas
     const { schemaArticle, schemaBusiness, schemaReviews } = buildSchemas(a);
@@ -213,15 +213,16 @@
       starsHTML(b.rating) +
       `<span class="mag-stars-count">${b.reviewCount} reviews</span>`;
 
-    // NAP
-    const napRows = [
+    // NAP — skip empty fields
+    const napFields = [
       { label: 'Business Name', val: b.name },
-      { label: 'Phone',         val: b.phone },
-      { label: 'Address',       val: `${b.address}, ${b.city} ${b.state} ${b.zip}`.trim() },
-      { label: 'Website',       val: b.website,
+      b.phone    && { label: 'Phone',   val: b.phone },
+      b.address  && { label: 'Address', val: `${b.address}, ${b.city} ${b.state} ${b.zip}`.trim() },
+      b.email    && { label: 'Email',   val: b.email },
+      b.website  && { label: 'Website', val: b.website,
         extra: `<a href="https://${b.website}" target="_blank" rel="noopener" style="color:#3b82f6;font-size:12px">${b.website}</a>` },
-    ];
-    document.getElementById('sibNap').innerHTML = napRows.map(r => `
+    ].filter(Boolean);
+    document.getElementById('sibNap').innerHTML = napFields.map(r => `
       <div>
         <span class="mag-nap-label">${r.label}</span>
         ${r.extra || `<div class="mag-nap-val">${r.val}</div>`}
@@ -277,7 +278,7 @@
 
   // ── Render article body ───────────────────────────
   function renderBody(a) {
-    const url = `${BASE}/magazine/${a.slug}`;
+    const url = `${BASE}/magazine/article?slug=${a.slug}`;
 
     // Header
     setContent('artKicker', `${a.categoryLabel} · Detroit, MI`);
@@ -286,8 +287,13 @@
     setContent('artDate',   fmtDate(a.publishedAt));
     setContent('artRead',   a.readTime);
 
-    // Hero image
-    document.getElementById('artHeroLabel').textContent = `${a.business.name} · ${a.business.city}, ${a.business.state}`;
+    // Hero image — real photo if available
+    const heroEl = document.getElementById('artHero');
+    if (a.heroImage) {
+      heroEl.innerHTML = `<img src="${a.heroImage}" alt="${a.title}" style="width:100%;height:100%;object-fit:cover">`;
+    } else {
+      document.getElementById('artHeroLabel').textContent = `${a.business.name} · ${a.business.city}, ${a.business.state}`;
+    }
 
     // Body
     setHtml('artBody', parseBody(a.body));
@@ -338,7 +344,7 @@
 
   // ── Badge embed code ──────────────────────────────
   function initBadge(a) {
-    const url = `${BASE}/magazine/${a.slug}`;
+    const url  = `${BASE}/magazine/article?slug=${a.slug}`;
     const code = `<a href="${url}" rel="dofollow" target="_blank">\n  <img src="${BASE}/images/badges/nui-featured.svg"\n       alt="As Seen on NUI Magazine" width="200">\n</a>`;
     let showing = false;
     document.getElementById('embedBtn').addEventListener('click', function() {

@@ -23,19 +23,19 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // Article data (mirrors magazine-data.js — keep in sync)
 // Phase 2: replace with Supabase query
 const ARTICLES = {
-  'aj-vip-studios-detroit-photography': {
-    title: 'AJ VIP Studios: Where Detroit Creatives Come to Be Seen',
-    dek: 'Inside the studio redefining professional photography for Detroit\'s rising generation.',
+  'aj-photography-studio-detroit': {
+    title: 'AJ Photography Studio: Detroit\'s Full-Service Photography Experience Since 2012',
+    dek: 'From maternity portraits to weddings, throne chair rentals to 360 photobooths — capturing Detroit\'s moments since 2012.',
     category: 'Photography Studio',
-    business: 'AJ VIP Studios',
-    rating: 4.9, award: true, date: 'March 2025',
+    business: 'AJ Photography Studio',
+    rating: 4.9, award: true, date: 'March 2026',
   },
-  'larry-castleberry-detroit-author-voice-actor': {
-    title: 'Larry Castleberry: The Voice Detroit Didn\'t Know It Needed',
-    dek: 'How a Detroit author and voice actor is building a national platform from the ground up.',
-    category: 'Author & Voice Actor',
+  'larry-castleberry-detroit-storyteller-speaker': {
+    title: 'Larry Castleberry: Detroit\'s Master Storyteller, Speaker, and Voice Actor',
+    dek: 'Over 20 years bringing stories to life — engineering background, Aikido philosophy, and a voice that commands any room.',
+    category: 'Storyteller & Speaker',
     business: 'Larry Castleberry',
-    rating: 5.0, award: false, date: 'February 2025',
+    rating: 5.0, award: false, date: 'March 2026',
   },
 };
 

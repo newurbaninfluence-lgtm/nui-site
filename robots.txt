@@ -10,5 +10,7 @@ Disallow: /netlify/
 Disallow: /app/
 Disallow: /portal/
 
-# Sitemap
+# Sitemaps
+Sitemap: https://newurbaninfluence.com/sitemap-index.xml
 Sitemap: https://newurbaninfluence.com/sitemap.xml
+Sitemap: https://newurbaninfluence.com/magazine/sitemap.xml

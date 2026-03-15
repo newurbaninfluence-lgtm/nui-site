@@ -1,65 +1,57 @@
 <!DOCTYPE html>
-<html lang="en" id="articleDoc">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- ══ SEO — dynamically set by magazine-article.js ══ -->
-  <title id="pageTitle">NUI Magazine</title>
-  <meta name="description"  id="metaDesc"    content="">
-  <meta name="robots"       content="index, follow">
-  <link rel="canonical"     id="canonical"   href="https://newurbaninfluence.com/magazine">
-
-  <!-- ══ OPEN GRAPH ══ -->
-  <meta property="og:type"        content="article">
-  <meta property="og:site_name"   content="NUI Magazine">
-  <meta property="og:url"         id="ogUrl"    content="">
-  <meta property="og:title"       id="ogTitle"  content="">
-  <meta property="og:description" id="ogDesc"   content="">
-  <!-- og:image is the most critical — set dynamically to the OG function URL -->
-  <meta property="og:image"             id="ogImage"     content="">
-  <meta property="og:image:secure_url"  id="ogImageSec"  content="">
-  <meta property="og:image:width"       content="1200">
-  <meta property="og:image:height"      content="630">
-  <meta property="og:image:type"        content="image/jpeg">
-  <meta property="og:image:alt"         id="ogImageAlt"  content="">
-  <meta property="og:locale"            content="en_US">
-  <meta property="article:published_time" id="ogPubTime" content="">
-  <meta property="article:author"         id="ogAuthor"  content="NUI Editorial">
-  <meta property="article:section"        id="ogSection" content="">
-</head>
-  <!-- ══ TWITTER / X CARD ══ -->
-  <meta name="twitter:card"        content="summary_large_image">
-  <meta name="twitter:site"        content="@newurbaninfluence">
-  <meta name="twitter:creator"     content="@newurbaninfluence">
-  <meta name="twitter:title"       id="twTitle"  content="">
-  <meta name="twitter:description" id="twDesc"   content="">
-  <meta name="twitter:image"       id="twImage"  content="">
-  <meta name="twitter:image:alt"   id="twImgAlt" content="">
-  <meta name="twitter:url"         id="twUrl"    content="">
-
-  <!-- ══ SCHEMA (injected dynamically) ══ -->
+  <title>NUI Magazine — Detroit Creator Network</title>
+  <meta name="description" content="NUI Magazine features, awards, and verified citations for Detroit's top creative businesses.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" id="artCanonical" href="https://newurbaninfluence.com/magazine/article">
+  <meta property="og:type"    content="article">
+  <meta property="og:site_name" content="NUI Magazine">
+  <meta property="og:url"     id="artOgUrl"   content="">
+  <meta property="og:title"   id="artOgTitle" content="">
+  <meta property="og:description" id="artOgDesc" content="">
+  <meta property="og:image"   id="artOgImage" content="">
+  <meta property="og:image:secure_url" id="artOgImageSec" content="">
+  <meta property="og:image:width"  content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type"   content="image/png">
+  <meta property="og:image:alt"    id="artOgImageAlt" content="">
+  <meta property="og:locale"       content="en_US">
+  <meta property="article:published_time" id="artPubTime" content="">
+  <meta property="article:author"  id="artOgAuthor" content="NUI Editorial">
+  <meta property="article:section" id="artOgSection" content="">
+  <meta name="twitter:card"    content="summary_large_image">
+  <meta name="twitter:site"    content="@newurbaninfluence">
+  <meta name="twitter:creator" content="@newurbaninfluence">
+  <meta name="twitter:title"   id="artTwTitle" content="">
+  <meta name="twitter:description" id="artTwDesc" content="">
+  <meta name="twitter:image"   id="artTwImage" content="">
+  <meta name="twitter:image:alt" id="artTwImgAlt" content="">
   <script type="application/ld+json" id="schemaBusiness">{}</script>
   <script type="application/ld+json" id="schemaArticle">{}</script>
-
-  <!-- ══ FONTS ══ -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- ══ STYLES ══ -->
   <link rel="stylesheet" href="/assets/css/magazine.css">
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { background:#000; color:#fff; font-family:'Montserrat',sans-serif; }
-  </style>
+  <style>* { margin:0; padding:0; box-sizing:border-box; } body { background:#000; color:#fff; font-family:'Montserrat',sans-serif; }</style>
 </head>
 <body>
 
-<!-- TOP BAR -->
-<div class="mag-topbar">NUI Creator Network — Detroit's Creative Authority</div>
+<!-- NOSCRIPT: Google crawler fallback — full article content readable without JS -->
+<noscript>
+<article style="max-width:900px;margin:40px auto;padding:0 24px;font-family:sans-serif;line-height:1.7;color:#fff">
+  <h1 id="ns-title">NUI Magazine Feature — Detroit Creator Network</h1>
+  <p id="ns-dek" style="font-size:18px;color:#aaa;margin:12px 0 24px"></p>
+  <p>Published by <strong>NUI Editorial</strong> — New Urban Influence Magazine</p>
+  <p>Visit <a href="https://newurbaninfluence.com/magazine" style="color:#ff0000">newurbaninfluence.com/magazine</a> for the full interactive article.</p>
+  <p>NUI Magazine is a publication of <a href="https://newurbaninfluence.com" style="color:#ff0000">New Urban Influence</a> — Detroit's creative authority.</p>
+</article>
+</noscript>
 
-<!-- MASTHEAD -->
+<div class="mag-topbar">NUI Magazine — Detroit's Creative Authority</div>
+
 <header class="mag-masthead">
   <div class="mag-masthead-inner">
     <a class="mag-wordmark" href="/magazine">
@@ -75,25 +67,21 @@
   </div>
 </header>
 
-<!-- BREADCRUMB -->
 <div class="mag-breadcrumb">
   <div class="mag-breadcrumb-inner">
     <span onclick="location.href='/magazine'">Magazine</span>
     <span>›</span>
-    <span id="breadCat" onclick="">Category</span>
+    <span id="breadCat" style="cursor:pointer">Category</span>
     <span>›</span>
     <span class="active" id="breadBiz">Business</span>
   </div>
 </div>
 
-<!-- ARTICLE PAGE -->
 <div class="mag-article-page">
-
-  <!-- HEADER -->
   <div class="mag-article-header">
     <div class="mag-article-kicker" id="artKicker">Category · Detroit, MI</div>
     <h1 class="mag-article-title" id="artTitle">Article Title</h1>
-    <p class="mag-article-dek"  id="artDek">Article dek goes here.</p>
+    <p class="mag-article-dek"  id="artDek">Article dek.</p>
     <div class="mag-article-byline">
       <div class="mag-byline-dot">NUI</div>
       <div>
@@ -110,29 +98,21 @@
     </div>
   </div>
 
-  <!-- HERO IMAGE -->
   <div class="mag-article-hero" id="artHero">
     <span id="artHeroLabel">Business · Detroit, MI</span>
   </div>
 
-  <!-- BODY + SIDEBAR -->
   <div class="mag-article-layout">
-
-    <!-- LEFT: BODY -->
     <div>
       <div class="mag-body" id="artBody"></div>
-
       <div class="mag-body-tags" id="artTags"></div>
-
       <div class="mag-share-row">
         <span class="mag-share-label">Share</span>
-        <button class="mag-share-btn" id="btnX"  title="Share on X">𝕏</button>
-        <button class="mag-share-btn" id="btnFB" title="Share on Facebook">f</button>
-        <button class="mag-share-btn" id="btnLI" title="Share on LinkedIn">in</button>
+        <button class="mag-share-btn" id="btnX"    title="Share on X">𝕏</button>
+        <button class="mag-share-btn" id="btnFB"   title="Share on Facebook">f</button>
+        <button class="mag-share-btn" id="btnLI"   title="Share on LinkedIn">in</button>
         <button class="mag-share-btn" id="btnCopy" title="Copy link">⎘</button>
       </div>
-
-      <!-- REVIEWS -->
       <div class="mag-reviews">
         <div class="mag-reviews-header">
           <div>
@@ -144,11 +124,7 @@
         <div class="mag-review-list" id="reviewList"></div>
       </div>
     </div>
-
-    <!-- RIGHT: SIDEBAR -->
     <aside class="mag-sidebar">
-
-      <!-- CITATION CARD -->
       <div class="mag-citation-card">
         <div class="mag-citation-head">
           <span>NUI Verified Citation</span>
@@ -157,24 +133,20 @@
         <div class="mag-citation-body">
           <div class="mag-biz-name"  id="sibBizName">Business Name</div>
           <div class="mag-biz-cat"   id="sibBizCat">Category</div>
-          <div class="mag-stars" id="sibStars"></div>
-          <div class="mag-nap" id="sibNap"></div>
+          <div class="mag-stars"     id="sibStars"></div>
+          <div class="mag-nap"       id="sibNap"></div>
           <div class="mag-same-as-label">Also verified on</div>
           <div class="mag-same-as-chips" id="sibSameAs"></div>
-          <div class="mag-citation-id" id="sibCiteId"></div>
+          <div class="mag-citation-id"   id="sibCiteId"></div>
         </div>
       </div>
-
-      <!-- AWARD (conditional) -->
       <div class="mag-award-card" id="sibAward" style="display:none">
         <div class="mag-award-icon">🏆</div>
         <div>
-          <div class="mag-award-title"  id="sibAwardTitle"></div>
-          <div class="mag-award-desc"   id="sibAwardDesc"></div>
+          <div class="mag-award-title" id="sibAwardTitle"></div>
+          <div class="mag-award-desc"  id="sibAwardDesc"></div>
         </div>
       </div>
-
-      <!-- SCHEMA PREVIEW -->
       <div class="mag-schema-block">
         <div class="mag-schema-head">
           <span>Structured Data</span>
@@ -182,8 +154,6 @@
         </div>
         <div class="mag-schema-pre" id="schemaPre" style="display:none"></div>
       </div>
-
-      <!-- BADGE -->
       <div class="mag-badge-card">
         <svg viewBox="0 0 200 80" width="180" style="display:block;margin:0 auto 12px">
           <rect width="200" height="80" rx="3" fill="#0A0A0A"/>
@@ -196,28 +166,23 @@
           <text x="100" y="74" text-anchor="middle" font-family="Arial" font-size="7" fill="#444">newurbaninfluence.com</text>
         </svg>
         <div class="mag-badge-title">As Seen on NUI Magazine</div>
-        <div class="mag-badge-sub">Embed this badge on your site to display your feature and earn a verified backlink.</div>
+        <div class="mag-badge-sub">Embed this badge on your site to earn a verified dofollow backlink.</div>
         <button class="mag-badge-btn" id="embedBtn">Get Embed Code</button>
         <div class="mag-embed-code" id="embedCode" style="display:none"></div>
       </div>
-
-      <!-- SERVICES -->
       <div class="mag-services-wrap" id="sibServices">
         <div class="mag-services-label">Services</div>
         <div class="mag-services-pills" id="sibServicesPills"></div>
       </div>
-
     </aside>
   </div>
 
-  <!-- RELATED -->
   <div class="mag-related">
     <div class="mag-section-head">More from NUI Magazine</div>
     <div class="mag-grid" id="relatedGrid"></div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer class="mag-footer">
   <div class="mag-footer-inner">
     <div class="mag-footer-brand">
@@ -240,7 +205,7 @@
     </div>
   </div>
   <div class="mag-footer-bottom">
-    <span>© 2025 New Urban Influence · Detroit, MI</span>
+    <span>© 2026 New Urban Influence · Detroit, MI</span>
     <span id="footerCiteId"></span>
   </div>
 </footer>

@@ -185,6 +185,19 @@
     Cache-Control = "public, max-age=0, must-revalidate"
     X-Robots-Tag  = "index, follow"
 
+# Magazine sitemaps — always fresh
+[[headers]]
+  for = "/magazine/sitemap.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, s-maxage=3600"
+    Content-Type  = "application/xml; charset=UTF-8"
+
+[[headers]]
+  for = "/sitemap-index.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, s-maxage=3600"
+    Content-Type  = "application/xml; charset=UTF-8"
+
 # Badge SVGs — long cache, immutable
 [[headers]]
   for = "/images/badges/*"
