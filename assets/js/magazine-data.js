@@ -194,6 +194,8 @@ It's a long game. Faren Young has been playing it since 2007. He's not stopping.
       heroImage: '/images/about-story.png',
       profileImage: '/images/magazine/faren-young-profile.png',
       videoUrl: 'https://www.youtube.com/embed/tmQckAw4bFk',
+      podcastUrl: 'https://notebooklm.google.com/notebook/0c5dad06-32a7-44f9-92d3-c7229b7c00a8?artifactId=af5c6997-b17b-4c18-b849-31486378b0f5',
+      authorMode: true,
       profileBio: 'Author, creative director, and founder of New Urban Influence. Native Detroiter. Built Heavy is Faren Young\'s first book — a blueprint for turning pressure into purpose, hustle into legacy.',
       ownerBio: {
         label: 'Author — Built Heavy',
