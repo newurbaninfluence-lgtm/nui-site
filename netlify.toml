@@ -48,6 +48,12 @@
   to = "/magazine/submit.html"
   status = 200
 
+# Magazine network/directory
+[[redirects]]
+  from = "/network"
+  to = "/magazine/index.html"
+  status = 200
+
 # ── OG IMAGE FUNCTION CACHING ─────────────────────────────────
 
 # Service pages — serve actual HTML files
