@@ -148,16 +148,19 @@
         '</div>' +
         '<div class="mag-podcast-info">' +
           '<div class="mag-podcast-label">AI Audio Overview</div>' +
-          '<div class="mag-podcast-title">Built Heavy — Podcast Discussion</div>' +
-          '<div class="mag-podcast-sub">Powered by NotebookLM · Google AI</div>' +
+          '<div class="mag-podcast-title">Faren Young: From Juice Boy to CEO</div>' +
+          '<div class="mag-podcast-sub">Built Heavy Podcast · AI-Generated Discussion</div>' +
         '</div>' +
       '</div>' +
-      '<div class="mag-podcast-wave"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>' +
-      '<a href="' + url + '" target="_blank" rel="noopener" class="mag-podcast-btn">' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>' +
-        ' Listen to the AI Discussion' +
-      '</a>' +
-      '<div class="mag-podcast-note">Opens in NotebookLM — AI-generated audio discussion of Built Heavy</div>' +
+      '<audio id="builtHeavyAudio" preload="metadata"><source src="' + url + '" type="audio/mp4"></audio>' +
+      '<button class="mag-podcast-btn" id="podcastPlayBtn" onclick="(function(){' +
+        'var a=document.getElementById(\'builtHeavyAudio\');' +
+        'var b=document.getElementById(\'podcastPlayBtn\');' +
+        'if(a.paused){a.play();b.innerHTML=\'<svg width=&quot;14&quot; height=&quot;14&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;currentColor&quot;><rect x=&quot;6&quot; y=&quot;4&quot; width=&quot;4&quot; height=&quot;16&quot;/><rect x=&quot;14&quot; y=&quot;4&quot; width=&quot;4&quot; height=&quot;16&quot;/></svg> Pause\';}' +
+        'else{a.pause();b.innerHTML=\'<svg width=&quot;14&quot; height=&quot;14&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;currentColor&quot;><polygon points=&quot;5,3 19,12 5,21&quot;/></svg> Listen to the AI Discussion\';}' +
+      '})()">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Listen to the AI Discussion' +
+      '</button>' +
     '</div>';
   }
 
