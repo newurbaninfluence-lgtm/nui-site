@@ -188,6 +188,26 @@
     var ownerBlock = (a.ownerBio && a.profileImage) ? buildOwnerBlock(a) : '';
     setHtml('artBody', before + ownerBlock + after);
 
+    // YouTube embed — inject after body if videoUrl exists
+    if (a.videoUrl) {
+      var bodyEl = document.getElementById('artBody');
+      if (bodyEl) {
+        bodyEl.insertAdjacentHTML('beforeend',
+          '<div class="mag-video-wrap">' +
+            '<div class="mag-video-label">' +
+              '<span class="mag-video-rule"></span>Watch' +
+            '</div>' +
+            '<div class="mag-video-frame">' +
+              '<iframe src="' + a.videoUrl + '?rel=0&modestbranding=1" ' +
+                'title="' + a.title + '" frameborder="0" allowfullscreen ' +
+                'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">' +
+              '</iframe>' +
+            '</div>' +
+          '</div>'
+        );
+      }
+    }
+
     // Tags
     var tagsEl = document.getElementById('artTags');
     if (tagsEl) tagsEl.innerHTML = (a.tags || []).map(function(t) { return '<span class="mag-body-tag">' + t + '</span>'; }).join('');
