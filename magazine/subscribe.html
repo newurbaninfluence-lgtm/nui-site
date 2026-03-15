@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscribe — NUI Magazine | New Urban Influence</title>
+  <meta name="description" content="Subscribe to NUI Magazine and get Detroit's top creative businesses, awards, and features delivered to your inbox.">
+  <link rel="canonical" href="https://newurbaninfluence.com/magazine/subscribe">
+  <meta property="og:type"    content="website">
+  <meta property="og:title"   content="Subscribe to NUI Magazine">
+  <meta property="og:description" content="Detroit's top creative businesses, awards, and features — in your inbox.">
+  <meta property="og:image"   content="https://newurbaninfluence.com/images/og/magazine-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card"   content="summary_large_image">
+  <meta name="twitter:title"  content="Subscribe to NUI Magazine">
+  <meta name="twitter:image"  content="https://newurbaninfluence.com/images/og/magazine-cover.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/magazine.css">
+  <style>* { margin:0;padding:0;box-sizing:border-box; } body { background:#000;color:#fff;font-family:'Montserrat',sans-serif; }</style>
+</head>
+<body>
+<div class="mag-topbar">NUI Magazine — Detroit's Creative Authority</div>
+<header class="mag-masthead">
+  <div class="mag-masthead-inner">
+    <a class="mag-wordmark" href="/magazine"><span class="mag-wordmark-main">NUI</span><span class="mag-wordmark-sub">Magazine</span></a>
+    <nav class="mag-nav">
+      <a href="/magazine">Magazine</a><a href="/network">Directory</a>
+      <a href="/magazine/awards.html">Awards</a>
+    </nav>
+  </div>
+</header>
+<div style="max-width:560px;margin:100px auto;padding:0 24px;text-align:center">
+  <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#ff0000;margin-bottom:16px">Stay Connected</div>
+  <h1 style="font-family:'Syne',sans-serif;font-size:clamp(36px,6vw,64px);font-weight:700;text-transform:uppercase;line-height:.95;margin-bottom:18px">Subscribe to<br><span style="color:#ff0000">NUI Magazine</span></h1>
+  <p style="font-size:16px;color:#666;line-height:1.65;margin-bottom:40px">Detroit's top creative businesses, award announcements, and feature stories — delivered to your inbox. Available worldwide: US, Africa, Asia, Europe.</p>
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:400px;margin:0 auto">
+    <input type="text"  id="subName"  placeholder="Your Name"  style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;padding:14px 16px;font-family:'Montserrat',sans-serif;font-size:14px;width:100%">
+    <input type="email" id="subEmail" placeholder="Email Address" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;padding:14px 16px;font-family:'Montserrat',sans-serif;font-size:14px;width:100%">
+    <button onclick="handleSubscribe()" style="background:#ff0000;color:#fff;border:none;padding:14px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Subscribe Free →</button>
+    <p style="font-size:11px;color:#333">No spam. Unsubscribe anytime. Detroit's creative scene delivered worldwide.</p>
+  </div>
+</div>
+<script>
+function handleSubscribe() {
+  const name  = document.getElementById('subName').value;
+  const email = document.getElementById('subEmail').value;
+  if (!email) return;
+  // Wire to your existing send-email Netlify function
+  fetch('/.netlify/functions/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'magazine_subscribe', name, email })
+  }).then(() => {
+    document.querySelector('div[style*="flex-direction:column"]').innerHTML =
+      '<div style="padding:32px;border:1px solid rgba(16,185,129,.3);background:rgba(16,185,129,.08)"><div style="font-size:28px;margin-bottom:12px">✓</div><div style="font-family:Syne,sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:8px">You\'re in.</div><div style="font-size:14px;color:#666">Watch your inbox for the next NUI Magazine feature.</div></div>';
+  }).catch(() => alert('Subscribe error — please try again.'));
+}
+</script>
+</body>
+</html>

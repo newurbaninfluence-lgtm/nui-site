@@ -5,6 +5,11 @@
 [functions]
   node_bundler = "esbuild"
 
+# OG image function — needs satori + resvg-js
+# Run: npm install satori @resvg/resvg-js
+[functions."og-image"]
+  included_files = ["netlify/functions/fonts/**"]
+
 # Holiday drip email — runs daily at 9am EST (14:00 UTC)
 [functions."holiday-drip"]
   schedule = "0 14 * * *"
@@ -12,6 +17,38 @@
 # SMS drip campaign — runs every 30 min during business hours
 [functions."sms-drip"]
   schedule = "*/5 * * * *"
+
+# ── NUI MAGAZINE ROUTES ──────────────────────────────────────
+
+# Magazine index
+[[redirects]]
+  from = "/magazine"
+  to = "/magazine/index.html"
+  status = 200
+
+# Magazine article pages (query-string based, single HTML file)
+[[redirects]]
+  from = "/magazine/article"
+  to = "/magazine/article.html"
+  status = 200
+
+# Magazine sub-pages
+[[redirects]]
+  from = "/magazine/awards"
+  to = "/magazine/awards.html"
+  status = 200
+
+[[redirects]]
+  from = "/magazine/subscribe"
+  to = "/magazine/subscribe.html"
+  status = 200
+
+[[redirects]]
+  from = "/magazine/submit"
+  to = "/magazine/submit.html"
+  status = 200
+
+# ── OG IMAGE FUNCTION CACHING ─────────────────────────────────
 
 # Service pages — serve actual HTML files
 [[redirects]]
@@ -134,6 +171,25 @@
 # ---- OPTIONAL ----
 # GOOGLE_PLACES_API_KEY
 # PEXELS_API_KEY
+
+[[headers]]
+  for = "/.netlify/functions/og-image"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400"
+    Content-Type  = "image/png"
+
+# Magazine pages — indexable, short cache
+[[headers]]
+  for = "/magazine/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Robots-Tag  = "index, follow"
+
+# Badge SVGs — long cache, immutable
+[[headers]]
+  for = "/images/badges/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
 
 # Headers for security + performance
 [[headers]]

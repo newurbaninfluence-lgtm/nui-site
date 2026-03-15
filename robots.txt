@@ -3,8 +3,12 @@
 
 User-agent: *
 Allow: /
+Allow: /magazine/
+Allow: /network/
 Disallow: /api/
 Disallow: /netlify/
+Disallow: /app/
+Disallow: /portal/
 
 # Sitemap
 Sitemap: https://newurbaninfluence.com/sitemap.xml
