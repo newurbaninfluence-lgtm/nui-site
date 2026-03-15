@@ -36,6 +36,7 @@ const ARTICLES = {
     category: 'Storyteller & Speaker',
     business: 'Larry Castleberry',
     rating: 5.0, award: false, date: 'March 2026',
+    heroImage: '/images/magazine/larry-castleberry-mic-stage.jpg',
   },
 };
 
