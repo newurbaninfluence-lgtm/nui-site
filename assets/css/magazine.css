@@ -294,13 +294,13 @@
 
 /* -- ARTICLE HERO IMAGE -- */
 .mag-article-hero {
-  width: 100%; aspect-ratio: 21/8;
+  width: 100%; aspect-ratio: 16/7;
   background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: flex-start; justify-content: center;
   font-size: 13px; color: rgba(255,255,255,.2); margin-bottom: 48px;
   overflow: hidden;
 }
-.mag-article-hero img { width:100%;height:100%;object-fit:cover; }
+.mag-article-hero img { width:100%;height:100%;object-fit:cover;object-position:top center; }
 
 /* -- TWO-COLUMN LAYOUT -- */
 .mag-article-layout {
