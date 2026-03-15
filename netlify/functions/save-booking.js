@@ -39,11 +39,28 @@ exports.handler = async (event) => {
         `${SUPABASE_URL}/rest/v1/meetings?select=*&order=date.asc,time.asc`,
         { headers }
       );
-      const meetings = await resp.json();
+      const rows = await resp.json();
+      // Map snake_case DB → camelCase for the portal
+      const meetings = Array.isArray(rows) ? rows.map(m => ({
+        id:          m.id,
+        clientId:    m.client_id,
+        clientName:  m.client_name,
+        clientEmail: m.client_email,
+        clientPhone: m.client_phone,
+        service:     m.service,
+        type:        m.type,
+        date:        m.date,
+        time:        m.time,
+        status:      m.status,
+        source:      m.source,
+        outcome:     m.outcome,
+        notes:       m.notes,
+        createdAt:   m.created_at
+      })) : [];
       return {
         statusCode: 200,
         headers: CORS_HEADERS,
-        body: JSON.stringify({ success: true, meetings: meetings || [] })
+        body: JSON.stringify({ success: true, meetings })
       };
     }
 
@@ -70,17 +87,29 @@ exports.handler = async (event) => {
         }
       }
 
+      // Map camelCase portal fields → snake_case DB columns
+      const dbRecord = {
+        client_name:  meetingData.clientName  || meetingData.client_name  || null,
+        client_email: meetingData.clientEmail || meetingData.client_email || null,
+        client_phone: meetingData.clientPhone || meetingData.client_phone || null,
+        client_id:    meetingData.clientId    || meetingData.client_id    || null,
+        intake_id:    meetingData.intakeId    || meetingData.intake_id    || null,
+        service:      meetingData.service     || null,
+        type:         meetingData.type        || 'zoom',
+        date:         meetingData.date        || null,
+        time:         meetingData.time        || null,
+        notes:        meetingData.notes       || null,
+        status:       meetingData.status      || 'scheduled',
+        source:       meetingData.source      || 'manual',
+        outcome:      null,
+        created_at:   new Date().toISOString()
+      };
+
       // Insert meeting
       const resp = await fetch(`${SUPABASE_URL}/rest/v1/meetings`, {
         method: 'POST',
         headers: { ...headers, 'Prefer': 'return=representation' },
-        body: JSON.stringify({
-          ...meetingData,
-          status: meetingData.status || 'scheduled',
-          source: meetingData.source || 'manual',
-          outcome: null,
-          created_at: new Date().toISOString()
-        })
+        body: JSON.stringify(dbRecord)
       });
 
       if (!resp.ok) {
