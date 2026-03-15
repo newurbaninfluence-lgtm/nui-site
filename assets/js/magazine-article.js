@@ -290,7 +290,7 @@
     // Hero image — real photo if available
     const heroEl = document.getElementById('artHero');
     if (a.heroImage) {
-      heroEl.innerHTML = `<img src="${a.heroImage}" alt="${a.title}" style="width:100%;height:100%;object-fit:cover;object-position:top center">`;
+      heroEl.innerHTML = `<img src="${a.heroImage}" alt="${a.title}" style="width:100%;height:100%;object-fit:cover;object-position:center 20%">`;
     } else {
       document.getElementById('artHeroLabel').textContent = `${a.business.name} · ${a.business.city}, ${a.business.state}`;
     }

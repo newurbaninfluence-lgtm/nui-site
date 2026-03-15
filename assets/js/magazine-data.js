@@ -113,7 +113,7 @@ New Urban Influence is proud to feature AJ Photography Studio as a founding memb
       readTime: '5 min read',
       featured: true,
       award: null,
-      heroImage: '/images/magazine/larry-castleberry-mic-stage.jpg',
+      heroImage: '/images/magazine/larry-castleberry-hero.jpg',
       ogImage: null,
       tags: ['Detroit', 'Storytelling', 'Voice Actor', 'Speaker', 'Aikido', 'Author'],
       body: `Some professionals have a skill. Larry Castleberry has a gift — and it's one he's spent more than two decades refining, sharing, and teaching.
