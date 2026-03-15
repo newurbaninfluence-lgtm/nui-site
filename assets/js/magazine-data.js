@@ -176,7 +176,7 @@ New Urban Influence is honored to feature Larry Castleberry as a founding member
       id: 'faren-young-nui-2026',
       slug: 'faren-young-new-urban-influence-detroit',
       title: 'Faren Young Is Building Detroit\'s Creative Economy — One Brand at a Time',
-      dek: 'From Bravo Graphix on the Avenue of Fashion to a full-stack branding and AI automation agency, the founder of New Urban Influence has spent two decades doing what Detroit does best: building something real from nothing.',
+      dek: 'From co-founding Bravo Graphix on the Avenue of Fashion to running Detroit\'s most complete branding and AI automation agency, Faren Young has spent 20 years doing the one thing Detroit respects most: building something real.',
       category: 'agencies',
       categoryLabel: 'Agency Founder',
       author: 'NUI Editorial',
@@ -186,51 +186,63 @@ New Urban Influence is honored to feature Larry Castleberry as a founding member
       premium: true,
       award: 'NUI Detroit Founder Spotlight 2026',
       awardLabel: 'Detroit Creative Leader — NUI Magazine',
-      heroImage: '/images/magazine/faren-young-studio.png',
+      heroImage: '/images/about-story.png',
       profileImage: '/images/magazine/faren-young-profile.png',
-      profileBio: 'Native Detroiter. Creative Director. Founder of New Urban Influence. 20+ years building brands that compete. Obsessed with making small businesses look like Fortune 500 companies.',
+      profileBio: 'Native Detroiter. Creative Director & Founder of New Urban Influence. Co-founder of Bravo Graphix. 20+ years building brands across Michigan and nationwide. Obsessed with making small businesses look like Fortune 500 companies.',
       ownerBio: {
         label: 'Founder & Creative Director — New Urban Influence',
         headline: 'The Architect of Detroit\'s Next Brand Era',
-        body: 'Faren Young built New Urban Influence from a single storefront on Detroit\'s Avenue of Fashion into a full-stack branding and AI automation agency. Twenty years in, his work has been featured in Rolling Out, the Detroit Free Press, and Model D Media.',
+        body: 'Martez Hand — known creatively as Faren Young — grew up on Detroit\'s West Side where hustle wasn\'t a buzzword, it was survival. He co-founded Bravo Graphix in 2007, built it to a 1,700 sq ft studio on the Avenue of Fashion, got covered by Rolling Out, Model D Media, and the Detroit Free Press, then evolved the entire operation into New Urban Influence — Detroit\'s most complete branding and AI automation agency.',
         stats: [
-          { val: '20+', label: 'Years Experience' },
-          { val: '500+', label: 'Brands Built' },
-          { val: '4.9★', label: 'Google Rating' },
-          { val: '31+', label: 'Google Reviews' },
+          { val: '2007', label: 'Year Founded' },
+          { val: '50+', label: 'Brands Built' },
+          { val: '$2M+', label: 'Client Revenue' },
+          { val: '4.9★', label: '31 Google Reviews' },
         ],
-        tags: ['Branding', 'Web Design', 'AI Systems', 'Detroit Native', 'NUI Founder'],
+        tags: ['Branding', 'AI Automation', 'Detroit Native', 'Avenue of Fashion', 'NUI Founder'],
       },
-      tags: ['Detroit', 'Branding Agency', 'Founder', 'Creative Director', 'AI Automation', 'NUI'],
-      body: `Detroit has always produced people who build. Faren Young is one of those people.
+      tags: ['Detroit', 'Branding Agency', 'Founder', 'Bravo Graphix', 'Avenue of Fashion', 'NUI'],
+      body: `Martez Hand grew up on Detroit's West Side. Where hustle wasn't a buzzword — it was survival. It was culture. It was the blueprint. The world would come to know him as Faren Young: Creative Director, brand strategist, and the founder of one of Metro Detroit's most recognized creative agencies.
 
-As the founder and Creative Director of New Urban Influence, Young has spent more than two decades doing what most designers never do: running an actual business while building other people's businesses. Not a freelancer. Not a studio that just makes things pretty. A strategist who happens to design, and a builder who happens to understand brand.
+But before any of that, there was a designer with a vision bigger than any canvas could hold, and a city that would either sharpen him or break him. Detroit sharpened him.
 
-## How It Started
+## Bravo Graphix: Born on the West Side
 
-The story begins on Detroit's Avenue of Fashion — that stretch of Livernois that has been the city's creative backbone for generations. That's where Young opened Bravo Graphix, the print and design shop that became the foundation for everything that followed.
+In 2007, Faren co-founded Bravo Graphix alongside Donald Hand — a full-service multicultural advertising, creative marketing, design, and print agency. They started at Huntington and 7 Mile Rd. on Detroit's upper West Side, with nothing but talent, drive, and a deep understanding of what Detroit businesses actually needed.
 
-Rolling Out covered it. Model D Media covered it. The Detroit Free Press put it in the paper. Detroit noticed.
+Word traveled fast. By 2013, Bravo Graphix had outgrown its roots. The agency relocated to a completely renovated 1,700-square-foot studio at 19434 Livernois Avenue — right on Detroit's iconic Avenue of Fashion. The new space featured an open floor plan, a dedicated photography studio, and five new hires: two designers, two photographers, and a secretary.
 
-## What New Urban Influence Is Today
+The move didn't go unnoticed. Rolling Out covered it. Model D Media covered it — a feature by Nicole Rupersburg that put Bravo Graphix in front of Detroit's creative and business community. The Detroit Free Press put it in the paper.
 
-NUI has evolved far beyond a design shop. Today it's a full-service branding and AI automation agency — one of the few in Metro Detroit operating at the intersection of creative identity and intelligent systems.
+*"From postcard design to billboards — we offered everything it took to start, grow, and maintain a business."*
 
-The core is still brand identity: logo design, color systems, typography, packaging, brand guidelines. But wrapped around that core is an entire ecosystem: custom websites, email and SMS automation, AI phone assistants, geo-fencing, geo-grid tracking, Facebook and Google pixel campaigns, and Silent Visitor ID — a system that identifies anonymous website visitors by name and email before they ever fill out a form.
+## The Evolution to New Urban Influence
 
-It's the kind of stack that Fortune 500 companies pay ten times the price for. NUI delivers it to small businesses, coaches, creators, and entrepreneurs — at a price point designed to level the playing field.
+The creative landscape was shifting. Print was meeting digital. Logos were becoming brand ecosystems. Businesses didn't just need a designer — they needed a strategist, a builder, a partner who understood that branding is a revenue system, not just a pretty face.
 
-## The NUI Philosophy
+Faren saw the gap. And he filled it.
 
-*"We don't design. We influence."* That's not a slogan. It's a precise description of what NUI does. Design is the output. Influence — over perception, over reputation, over the decisions potential clients make before they ever pick up the phone — is the actual product.
+New Urban Influence was born — a full-spectrum creative agency built to do what Bravo Graphix pioneered, but at a completely different scale. Brand identity, packaging, print, web design, digital marketing, SEO, email and SMS automation, AI phone assistants, geo-fencing, geo-grid tracking, and Silent Visitor ID — a proprietary system that identifies anonymous website visitors by name, email, and LinkedIn before they ever fill out a form.
 
-## The Platform He's Building
+It's the kind of stack that Fortune 500 companies pay agencies ten times the price for. NUI delivers it to small businesses, coaches, creators, and entrepreneurs — at a price point designed to level the playing field.
 
-NUI isn't just an agency anymore. It's becoming a platform — client portals, proof approval workflows, automated marketing pipelines, AI systems that work while you sleep.
+## The Client List Speaks
+
+Over 50 brands elevated. Over $2 million in revenue generated for clients. The list reads like a cross-section of Detroit's most important institutions: UAW. Chrysler. The Office of the Governor of Michigan. Kash Doll. Rep. Leslie Love. Eric Sabree, Wayne County Treasurer. Beacon Park. Kiwanis International. Good Cakes and Bakes. Detroit Design Festival. TechTown SWOT City. Revolve Detroit.
+
+Restaurants, nonprofits, government agencies, political campaigns, product brands, artists, coaches — all transformed by the same West Side Detroit energy that started it all.
+
+## What NUI Is Today
+
+Today, New Urban Influence operates as a full platform — not just an agency. Client portals. Proof approval workflows. Automated marketing pipelines. AI systems that identify, nurture, and convert leads while you sleep.
 
 The NUI Magazine you're reading right now is part of that platform — a citation authority network designed to give Detroit's best creators and business owners the verified online presence they deserve.
 
-It's a long game. Young has been playing it for twenty years. He's not stopping.`,
+*"We don't design. We influence."*
+
+That's not a slogan. It's a precise description of what NUI does. Design is the output. Influence — over perception, over reputation, over the decisions potential clients make before they ever pick up the phone — is the actual product.
+
+It's a long game. Faren Young has been playing it since 2007. He's not stopping.`,
       business: {
         name: 'New Urban Influence',
         category: 'Branding & AI Automation Agency',
