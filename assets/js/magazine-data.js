@@ -32,7 +32,9 @@ const NUI_MAG = {
       featured: true,
       award: 'NUI Detroit Creative Award 2026',
       awardLabel: 'Best Photography Studio — Detroit Creator Network',
-      heroImage: 'https://static.wixstatic.com/media/e61fe6_af334fb1658b4aba9d55afd11efbd562~mv2.jpg/v1/fill/w_980,h_654,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMGL9318-XL.jpg',
+      heroImage: '/images/magazine/aj-photography-hero.jpg',
+      profileImage: '/images/magazine/aj-photography-profile.jpg',
+      profileBio: 'Detroit-based photographer and event specialist. Capturing families, couples, professionals, and milestones since 2012. Also offering throne chairs, photobooths, and full event rentals.',
       ogImage: null,
       tags: ['Detroit', 'Photography', 'Studio', 'Events', 'Weddings', 'Portraits'],
       body: `When AJ Photography Studio opened its doors in Detroit in 2012, the mission was simple: capture the moments that matter most. More than a decade later, that mission has grown into one of Detroit's most comprehensive full-service photography and event rental operations.
