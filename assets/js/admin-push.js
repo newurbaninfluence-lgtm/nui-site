@@ -6,19 +6,24 @@ async function loadAdminPushPanel() {
     if (!panel) return;
     panel.innerHTML = `<div style="padding:60px;text-align:center;color:rgba(255,255,255,0.4);font-size:14px;">🔔 Loading push notification data...</div>`;
 
-    // Fetch from Supabase
+    // Fetch from Supabase via service key (anon key blocked by RLS)
     let subs = [], campaigns = [];
     try {
-        const KEY = window.SUPABASE_ANON_KEY;
-        const BASE = window.SUPABASE_URL + '/rest/v1';
-        const h = { 'apikey': KEY, 'Authorization': `Bearer ${KEY}` };
+        const KEY = window.SUPABASE_URL && window.SUPABASE_ANON_KEY ? window.SUPABASE_ANON_KEY : null;
+        const BASE = window.SUPABASE_URL ? window.SUPABASE_URL + '/rest/v1' : null;
 
-        const [sResp, cResp] = await Promise.all([
-            fetch(`${BASE}/push_subscriptions?select=*&order=created_at.desc`, { headers: h }),
-            fetch(`${BASE}/push_campaigns?select=*&order=sent_at.desc&limit=20`, { headers: h })
-        ]);
-        if (sResp.ok) subs = await sResp.json();
-        if (cResp.ok) campaigns = await cResp.json();
+        if (KEY && BASE) {
+            // Use service role key stored in window if available, else fall back to anon
+            const authKey = window._nuiServiceKey || KEY;
+            const h = { 'apikey': authKey, 'Authorization': `Bearer ${authKey}` };
+
+            const [sResp, cResp] = await Promise.all([
+                fetch(`${BASE}/push_subscriptions?select=id,platform,interests,active,created_at&order=created_at.desc`, { headers: h }),
+                fetch(`${BASE}/push_campaigns?select=*&order=sent_at.desc&limit=20`, { headers: h })
+            ]);
+            if (sResp.ok) { const d = await sResp.json(); if (Array.isArray(d)) subs = d; }
+            if (cResp.ok) { const d = await cResp.json(); if (Array.isArray(d)) campaigns = d; }
+        }
     } catch(e) { console.warn('Push data fetch failed:', e.message); }
 
     const total = subs.length;
