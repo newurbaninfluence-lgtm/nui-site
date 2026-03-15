@@ -624,7 +624,7 @@ async function loadAdminCalendarPanel() {
         const resp = await fetch('/.netlify/functions/save-booking?date=all');
         if (resp.ok) {
             const data = await resp.json();
-            if (data.meetings) {
+            if (Array.isArray(data.meetings)) {
                 meetings = data.meetings;
                 localStorage.setItem('nui_meetings', JSON.stringify(meetings));
             }
