@@ -3430,83 +3430,63 @@ input:checked + .slider:before { transform: translateX(24px); }
 .tag-remove:hover { opacity: 1; }
 .tags-input input { flex: 1; min-width: 120px; border: none; background: transparent; color: #fff; font-size: 14px; outline: none; }
 @media (max-width: 768px) {
-    /* Fix header — no site nav on /app/ so drop to top:0 */
-    .admin-header {
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        padding: 12px 16px 12px 16px !important;
-        height: 56px;
-        z-index: 1000;
-    }
-    /* Container starts below fixed header only */
-    .admin-container {
-        padding-top: 56px !important;
-        display: block !important;
-    }
-    /* Sidebar: hidden off-screen, slides in when .open */
-    .admin-sidebar {
-        display: block !important;
-        position: fixed !important;
-        top: 56px !important;
-        left: 0 !important;
-        bottom: 0 !important;
-        width: 260px !important;
-        z-index: 10001 !important;
-        transform: translateX(-100%) !important;
-        transition: transform 0.28s cubic-bezier(0.4,0,0.2,1) !important;
-        overflow-y: auto !important;
-    }
-    .admin-sidebar.open {
-        transform: translateX(0) !important;
-    }
-    /* Main content full width */
-    .admin-main {
-        margin-left: 0 !important;
-        padding: 16px !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        overflow-x: hidden !important;
-    }
-    /* All fixed grids collapse */
-    .stat-cards { grid-template-columns: repeat(2, 1fr) !important; }
-    .admin-grid-4, .admin-grid-3, .admin-grid-2-1, .admin-grid-2 { grid-template-columns: 1fr !important; }
-    [style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
-    [style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
-    [style*="grid-template-columns: 2fr 1fr"] { grid-template-columns: 1fr !important; }
-    [style*="grid-template-columns: repeat(5"] { grid-template-columns: repeat(2, 1fr) !important; }
-    /* Dashboard bento grid */
-    #adminDashboardPanel > div > div[style*="grid-template-columns"] { grid-template-columns: 1fr 1fr !important; }
-    #adminDashboardPanel .dash-card[style*="grid-column: span 2"],
-    #adminDashboardPanel .dash-card-red[style*="grid-column: span 2"] { grid-column: span 2 !important; }
+    .admin-header { top:0!important;left:0!important;right:0!important;padding:12px 16px!important;height:56px;z-index:1000; }
+    .admin-container { padding-top:56px!important;display:block!important; }
+    .admin-sidebar { display:block!important;position:fixed!important;top:56px!important;left:0!important;bottom:0!important;width:260px!important;z-index:10001!important;transform:translateX(-100%)!important;transition:transform 0.28s cubic-bezier(0.4,0,0.2,1)!important;overflow-y:auto!important; }
+    .admin-sidebar.open { transform:translateX(0)!important; }
+    .admin-main { margin-left:0!important;padding:10px!important;width:100%!important;min-width:0!important;overflow-x:hidden!important;box-sizing:border-box!important; }
+    /* Cards — reduce padding */
+    .dash-card,.dash-card-red,.stat-card,.admin-card-dark,.admin-card-glass,.admin-card-sm { padding:12px!important; }
+    /* Dashboard banner shrink */
+    #adminDashboardPanel [style*="height: 160px"] { height:auto!important;min-height:80px!important; }
+    #adminDashboardPanel [style*="padding: 0 32px"] { padding:12px!important;flex-direction:column!important;gap:8px!important;align-items:flex-start!important; }
+    /* Grid collapses */
+    .stat-cards { grid-template-columns:1fr 1fr!important; }
+    .admin-grid-4,.admin-grid-3,.admin-grid-2-1,.admin-grid-2 { grid-template-columns:1fr!important; }
+    [style*="grid-template-columns: repeat(4"] { grid-template-columns:1fr 1fr!important; }
+    [style*="grid-template-columns: repeat(3"] { grid-template-columns:1fr!important; }
+    [style*="grid-template-columns: repeat(5"] { grid-template-columns:1fr 1fr!important; }
+    [style*="grid-template-columns: 2fr 1fr"] { grid-template-columns:1fr!important; }
+    [style*="grid-template-columns: 3fr 1fr"] { grid-template-columns:1fr!important; }
+    #adminDashboardPanel > div > div[style*="grid-template-columns"] { grid-template-columns:1fr 1fr!important;gap:10px!important; }
+    [style*="grid-column: span 2"] { grid-column:span 2!important; }
+    .dash-card [style*="grid-template-columns: repeat(3"] { grid-template-columns:1fr!important;gap:8px!important; }
+    .card-grid { grid-template-columns:1fr!important; }
     /* Form rows */
-    .form-row { grid-template-columns: 1fr !important; flex-direction: column !important; }
-    .form-row .form-group { width: 100% !important; }
+    .form-row { grid-template-columns:1fr!important;flex-direction:column!important; }
+    .form-row .form-group { width:100%!important; }
     /* Other panels */
-    .order-details { grid-template-columns: 1fr !important; }
-    .seo-grid { grid-template-columns: 1fr !important; }
-    .pipeline-board { flex-direction: column !important; }
-    .pipeline-column { min-width: 100% !important; }
-    /* Tables scroll */
-    .data-table, table { display: block !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; white-space: nowrap !important; }
+    .order-details { grid-template-columns:1fr!important; }
+    .seo-grid { grid-template-columns:1fr!important; }
+    .pipeline-board { flex-direction:column!important; }
+    .pipeline-column { min-width:100%!important; }
+    /* Tables */
+    .data-table,table { display:block!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch;white-space:nowrap!important; }
     /* Modals */
-    .modal { width: 95vw !important; max-width: 95vw !important; max-height: 85vh !important; overflow-y: auto !important; }
-    /* Panel headers */
-    .panel-header { margin-bottom: 20px !important; }
-    .panel-title { font-size: 20px !important; }
-    /* Flex wrapping */
-    .admin-row-between, .flex-between { flex-wrap: wrap !important; gap: 10px !important; }
-    .flex-gap-12, .flex-gap-16, .flex-gap-24 { flex-wrap: wrap !important; }
+    .modal { width:95vw!important;max-width:95vw!important;max-height:85vh!important;overflow-y:auto!important;margin:8px auto!important; }
+    /* Text */
+    .panel-header { margin-bottom:16px!important; }
+    .panel-title { font-size:20px!important; }
+    /* Flex */
+    .admin-row-between,.flex-between { flex-wrap:wrap!important;gap:8px!important; }
+    .flex-gap-12,.flex-gap-16,.flex-gap-24 { flex-wrap:wrap!important;gap:8px!important; }
+    /* Gap reduction on inline style elements */
+    [style*="gap: 24px"] { gap:10px!important; }
+    [style*="gap: 20px"] { gap:10px!important; }
+    [style*="padding: 24px"] { padding:12px!important; }
+    [style*="padding: 32px"] { padding:12px!important; }
+    [style*="font-size: 36px"] { font-size:22px!important; }
+    [style*="font-size: 48px"] { font-size:26px!important; }
+    [style*="font-size: 26px"] { font-size:18px!important; }
 }
 @media (max-width: 480px) {
-    .admin-header { padding: 10px 12px !important; }
-    .admin-main { padding: 10px !important; }
-    [style*="grid-template-columns: repeat(4"] { grid-template-columns: 1fr !important; }
-    [style*="grid-template-columns: repeat(2"] { grid-template-columns: 1fr !important; }
-    .stat-cards { grid-template-columns: 1fr !important; }
-    #adminDashboardPanel > div > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
-    #adminDashboardPanel .dash-card[style*="grid-column: span 2"],
-    #adminDashboardPanel .dash-card-red[style*="grid-column: span 2"] { grid-column: span 1 !important; }
+    .admin-main { padding:8px!important; }
+    .dash-card,.dash-card-red,.stat-card { padding:10px!important; }
+    [style*="grid-template-columns: repeat(4"] { grid-template-columns:1fr!important; }
+    [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns:1fr!important; }
+    .stat-cards { grid-template-columns:1fr 1fr!important; }
+    #adminDashboardPanel > div > div[style*="grid-template-columns"] { grid-template-columns:1fr!important; }
+    [style*="grid-column: span 2"] { grid-column:span 1!important; }
 }
 
 /* Timer Button Styles */
