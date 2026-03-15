@@ -369,16 +369,82 @@ function loadPortalView() {
 </div>
 </div>
     `;
-    // Reset state and show login
+    // Reset state then try to restore existing session before showing login
     currentUser = null;
     loginType = 'client';
-    setTimeout(() => {
+    setTimeout(async () => {
         const loginEl = document.getElementById('portalLogin');
         const adminEl = document.getElementById('adminDashboard');
         const clientEl = document.getElementById('clientPortal');
-        if (loginEl) loginEl.style.display = 'flex';
-        if (adminEl) adminEl.style.display = 'none';
-        if (clientEl) clientEl.style.display = 'none';
+        let sessionRestored = false;
+
+        // 1. Try Supabase session restore
+        if (window.NuiAuth && typeof NuiAuth.isAvailable === 'function' && NuiAuth.isAvailable()) {
+            try {
+                const session = await NuiAuth.getSession();
+                if (session && session.user) {
+                    const authUser = session.user;
+                    const role = authUser.user_metadata?.role || 'client';
+                    if (role === 'admin') {
+                        currentUser = { type: 'admin', email: authUser.email, name: authUser.user_metadata?.name || 'Admin', id: authUser.id };
+                        if (loginEl) loginEl.style.display = 'none';
+                        if (adminEl) adminEl.style.display = 'block';
+                        renderAdminSidebar();
+                        loadAdminDashboardPanel();
+                        setTimeout(function(){ if(typeof initAdminMobileNav==='function') initAdminMobileNav(); }, 100);
+                        sessionRestored = true;
+                        console.log('✅ Session restored: admin (Supabase)');
+                    } else if (role === 'manager') {
+                        currentUser = { type: 'manager', email: authUser.email, name: authUser.user_metadata?.name || 'Manager', id: authUser.id, ...authUser.user_metadata };
+                        if (loginEl) loginEl.style.display = 'none';
+                        if (adminEl) adminEl.style.display = 'block';
+                        renderAdminSidebar();
+                        loadAdminDashboardPanel();
+                        sessionRestored = true;
+                        console.log('✅ Session restored: manager (Supabase)');
+                    } else if (role === 'designer') {
+                        const meta = authUser.user_metadata || {};
+                        currentUser = { type: 'designer', email: authUser.email, name: meta.name || 'Designer', id: authUser.id, ...meta };
+                        if (meta.ndaSigned) {
+                            if (loginEl) loginEl.style.display = 'none';
+                            if (adminEl) adminEl.style.display = 'block';
+                            if (typeof loadDesignerDashboard === 'function') loadDesignerDashboard(currentUser);
+                            sessionRestored = true;
+                            console.log('✅ Session restored: designer (Supabase)');
+                        }
+                    }
+                }
+            } catch(err) { console.warn('Supabase session restore failed:', err.message); }
+        }
+
+        // 2. Try master admin localStorage session (7-day expiry)
+        if (!sessionRestored) {
+            try {
+                const savedSession = localStorage.getItem('nui_admin_session');
+                if (savedSession) {
+                    const sess = JSON.parse(savedSession);
+                    if (sess && sess.isMasterAdmin && sess.expires > Date.now()) {
+                        currentUser = { type: 'admin', email: sess.email, name: sess.name, isMasterAdmin: true };
+                        if (loginEl) loginEl.style.display = 'none';
+                        if (adminEl) adminEl.style.display = 'block';
+                        renderAdminSidebar();
+                        loadAdminDashboardPanel();
+                        setTimeout(function(){ if(typeof initAdminMobileNav==='function') initAdminMobileNav(); }, 100);
+                        sessionRestored = true;
+                        console.log('✅ Session restored: master admin (localStorage)');
+                    } else {
+                        localStorage.removeItem('nui_admin_session');
+                    }
+                }
+            } catch(err) { localStorage.removeItem('nui_admin_session'); }
+        }
+
+        // 3. No session — show login
+        if (!sessionRestored) {
+            if (loginEl) loginEl.style.display = 'flex';
+            if (adminEl) adminEl.style.display = 'none';
+            if (clientEl) clientEl.style.display = 'none';
+        }
     }, 10);
 }
 
@@ -939,6 +1005,8 @@ async function handlePortalLogin(e) {
     const masterPw = localStorage.getItem('nui_master_admin_pw') || _ma.defaultPassword || 'newurban';
     if (email === masterEmail.toLowerCase() && password === masterPw) {
         currentUser = { type: 'admin', email: masterEmail, name: masterName, isMasterAdmin: true };
+        // Persist master admin session for 7 days so refresh doesn't log out
+        try { localStorage.setItem('nui_admin_session', JSON.stringify({ isMasterAdmin: true, email: masterEmail, name: masterName, expires: Date.now() + 7*24*60*60*1000 })); } catch(e) {}
         document.getElementById('portalLogin').style.display = 'none';
         document.getElementById('adminDashboard').style.display = 'block';
         renderAdminSidebar();
@@ -1200,6 +1268,8 @@ async function forgotPassword() {
 }
 
 async function portalLogout() {
+    // Clear master admin localStorage session
+    try { localStorage.removeItem('nui_admin_session'); } catch(e) {}
     // Sign out from Supabase
     if (window.NuiAuth && NuiAuth.isAvailable()) {
         try {
