@@ -35,6 +35,18 @@ const NUI_MAG = {
       heroImage: '/images/magazine/aj-photography-hero.jpg',
       profileImage: '/images/magazine/aj-photography-profile.jpg',
       profileBio: 'Detroit-based photographer and event specialist. Capturing families, couples, professionals, and milestones since 2012. Also offering throne chairs, photobooths, and full event rentals.',
+      ownerBio: {
+        label: 'Photographer & Founder',
+        headline: 'The Eye Behind Detroit\'s Biggest Moments',
+        body: 'For over a decade, AJ Photography has been the trusted lens at Detroit\'s most important events — from intimate family portraits to large-scale corporate affairs. With 36K Instagram followers and a client list that spans every corner of Metro Detroit, the studio has earned its reputation not through marketing but through consistent, memorable work.',
+        stats: [
+          { val: '13+', label: 'Years in Business' },
+          { val: '36K', label: 'Instagram Followers' },
+          { val: '4.9★', label: 'Google Rating' },
+          { val: '229', label: 'Google Reviews' },
+        ],
+        tags: ['Photography', 'Event Rentals', 'Oak Park MI', 'Detroit'],
+      },
       ogImage: null,
       tags: ['Detroit', 'Photography', 'Studio', 'Events', 'Weddings', 'Portraits'],
       body: `When AJ Photography Studio opened its doors in Detroit in 2012, the mission was simple: capture the moments that matter most. More than a decade later, that mission has grown into one of Detroit's most comprehensive full-service photography and event rental operations.
@@ -112,6 +124,18 @@ New Urban Influence is proud to feature AJ Photography Studio as a founding memb
       heroImage: '/images/magazine/larry-castleberry-hero.jpg',
       profileImage: '/images/magazine/larry-castleberry-profile.jpg',
       profileBio: 'Detroit-based storyteller, speaker, and voice actor with 20+ years of experience. B.S. Electrical Engineering · M.S. Engineering Management · Aikido practitioner.',
+      ownerBio: {
+        label: 'Storyteller, Speaker & Voice Actor',
+        headline: 'The Voice Detroit Didn\'t Know It Needed',
+        body: 'Larry Castleberry spent years building systems as an engineer before discovering his real gift — making people feel something. Two decades later he\'s a sought-after corporate speaker, a Voices.com voice actor, and a recurring performer at the Secret Society of Twisted Storytellers. He brings the same precision to a keynote that he once brought to a circuit diagram.',
+        stats: [
+          { val: '20+', label: 'Years Experience' },
+          { val: 'B.S.', label: 'Electrical Engineering' },
+          { val: 'M.S.', label: 'Engineering Management' },
+          { val: 'Aikido', label: 'Conflict Resolution' },
+        ],
+        tags: ['Keynote Speaker', 'Voice Actor', 'Storytelling', 'Detroit'],
+      },
       ogImage: null,
       tags: ['Detroit', 'Storytelling', 'Voice Actor', 'Speaker', 'Aikido', 'Author'],
       body: `Some professionals have a skill. Larry Castleberry has a gift — and it's one he's spent more than two decades refining, sharing, and teaching.

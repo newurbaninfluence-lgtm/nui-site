@@ -276,6 +276,40 @@
     });
   }
 
+  // ── Owner portrait feature block ─────────────────
+  function buildOwnerBlock(a) {
+    const ob = a.ownerBio;
+    const statsHTML = (ob.stats || []).map(s => `
+      <div class="mag-owner-stat">
+        <div class="mag-owner-stat-val">${s.val}</div>
+        <div class="mag-owner-stat-label">${s.label}</div>
+      </div>`).join('');
+    const tagsHTML = (ob.tags || []).map(t =>
+      `<span class="mag-owner-bio-tag">${t}</span>`).join('');
+
+    return `
+      <div class="mag-owner-feature">
+        <div class="mag-owner-portrait">
+          <img src="${a.profileImage}" alt="${a.business.name} — ${ob.label}" loading="lazy">
+          <div class="mag-owner-verified-tag">
+            <div class="mag-owner-verified-dot"></div> NUI Verified
+          </div>
+          <div class="mag-owner-overlay">
+            <div class="mag-owner-overlay-label">NUI Creator Network</div>
+            <div class="mag-owner-overlay-name">${a.business.name}</div>
+            <div class="mag-owner-overlay-title">${ob.label}</div>
+          </div>
+        </div>
+        <div class="mag-owner-bio-side">
+          <div class="mag-owner-bio-eyebrow">Owner Profile</div>
+          <div class="mag-owner-bio-headline">${ob.headline}</div>
+          <div class="mag-owner-bio-body">${ob.body}</div>
+          <div class="mag-owner-bio-stats">${statsHTML}</div>
+          <div class="mag-owner-bio-tags">${tagsHTML}</div>
+        </div>
+      </div>`;
+  }
+
   // ── Render article body ───────────────────────────
   function renderBody(a) {
     const url = `${BASE}/magazine/article?slug=${a.slug}`;
@@ -317,8 +351,18 @@
       heroEl.parentNode.insertBefore(card, heroEl);
     }
 
-    // Body
-    setHtml('artBody', parseBody(a.body));
+    // Body — split after 2nd paragraph to inject owner feature card
+    const bodyHTML  = parseBody(a.body);
+    const bodyParts = bodyHTML.split('</p>');
+    let bodyBefore  = bodyParts.slice(0, 2).join('</p>') + '</p>';
+    let bodyAfter   = bodyParts.slice(2).join('</p>');
+
+    // Inject owner feature block between paragraphs (if ownerBio exists)
+    const ownerBlock = a.ownerBio && a.profileImage
+      ? buildOwnerBlock(a)
+      : '';
+
+    setHtml('artBody', bodyBefore + ownerBlock + bodyAfter);
 
     // Tags
     document.getElementById('artTags').innerHTML = (a.tags || [])

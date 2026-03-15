@@ -652,3 +652,235 @@
   border: 1px solid rgba(255,255,255,.08);
   padding: 3px 10px;
 }
+
+
+/* ═══════════════════════════════════════════════
+   OWNER PORTRAIT FEATURE BLOCK
+   40-over-40 / Forbes style — tall vertical card
+   with gradient bio overlay at the bottom
+   ═══════════════════════════════════════════════ */
+
+.mag-owner-feature {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 0;
+  margin: 48px 0;
+  border: 1px solid rgba(255,255,255,.08);
+  min-height: 520px;
+  overflow: hidden;
+}
+
+/* ── Portrait side ── */
+.mag-owner-portrait {
+  position: relative;
+  overflow: hidden;
+  background: #0a0a0a;
+  min-height: 520px;
+}
+
+.mag-owner-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Red top accent bar */
+.mag-owner-portrait::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: #ff0000;
+  z-index: 3;
+}
+
+/* Gradient overlay — bottom fade */
+.mag-owner-portrait::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 55%;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,.96) 0%,
+    rgba(0,0,0,.85) 30%,
+    rgba(0,0,0,.5) 60%,
+    transparent 100%
+  );
+  z-index: 2;
+}
+
+/* Name + title over gradient */
+.mag-owner-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 24px 20px;
+  z-index: 4;
+}
+
+.mag-owner-overlay-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #ff0000;
+  margin-bottom: 6px;
+}
+
+.mag-owner-overlay-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.mag-owner-overlay-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: rgba(255,255,255,.55);
+  text-transform: uppercase;
+}
+
+/* NUI verified badge on portrait */
+.mag-owner-verified-tag {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 4;
+  background: rgba(0,0,0,.8);
+  border: 1px solid rgba(16,185,129,.4);
+  color: #10b981;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.mag-owner-verified-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  flex-shrink: 0;
+}
+
+/* ── Bio side ── */
+.mag-owner-bio-side {
+  background: rgba(255,255,255,.02);
+  border-left: 1px solid rgba(255,255,255,.06);
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.mag-owner-bio-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #ff0000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mag-owner-bio-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 2px;
+  background: #ff0000;
+  display: inline-block;
+}
+
+.mag-owner-bio-headline {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.mag-owner-bio-body {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #888;
+  border-left: 2px solid #ff0000;
+  padding-left: 16px;
+}
+
+.mag-owner-bio-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.mag-owner-stat {
+  padding: 14px 16px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+.mag-owner-stat-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.mag-owner-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.mag-owner-bio-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.mag-owner-bio-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #555;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  padding: 5px 12px;
+}
+
+/* ── Mobile: stack portrait on top ── */
+@media (max-width: 768px) {
+  .mag-owner-feature {
+    grid-template-columns: 1fr;
+  }
+  .mag-owner-portrait {
+    min-height: 420px;
+  }
+  .mag-owner-bio-side {
+    border-left: none;
+    border-top: 1px solid rgba(255,255,255,.06);
+    padding: 28px 20px;
+  }
+}
