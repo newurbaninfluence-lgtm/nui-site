@@ -148,7 +148,7 @@
         '</div>' +
         '<div class="mag-podcast-info">' +
           '<div class="mag-podcast-label">AI Audio Overview</div>' +
-          '<div class="mag-podcast-title">Faren Young: From Juice Boy to CEO</div>' +
+          '<div class="mag-podcast-title">From Detroit Snack Hustler to Brand Architect</div>' +
           '<div class="mag-podcast-sub">Built Heavy Podcast · AI-Generated Discussion</div>' +
         '</div>' +
       '</div>' +
