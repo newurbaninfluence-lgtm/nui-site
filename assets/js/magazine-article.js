@@ -153,14 +153,14 @@
         '</div>' +
       '</div>' +
       '<audio id="builtHeavyAudio" preload="metadata"><source src="' + url + '" type="audio/mp4"></audio>' +
-      '<button class="mag-podcast-btn" id="podcastPlayBtn" onclick="(function(){' +
+      '<a class="mag-podcast-btn" id="podcastPlayBtn" href="#" onclick="event.preventDefault();(function(){' +
         'var a=document.getElementById(\'builtHeavyAudio\');' +
         'var b=document.getElementById(\'podcastPlayBtn\');' +
         'if(a.paused){a.play();b.innerHTML=\'<svg width=&quot;14&quot; height=&quot;14&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;currentColor&quot;><rect x=&quot;6&quot; y=&quot;4&quot; width=&quot;4&quot; height=&quot;16&quot;/><rect x=&quot;14&quot; y=&quot;4&quot; width=&quot;4&quot; height=&quot;16&quot;/></svg> Pause\';}' +
         'else{a.pause();b.innerHTML=\'<svg width=&quot;14&quot; height=&quot;14&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;currentColor&quot;><polygon points=&quot;5,3 19,12 5,21&quot;/></svg> Listen to the AI Discussion\';}' +
       '})()">' +
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Listen to the AI Discussion' +
-      '</button>' +
+      '</a>' +
     '</div>';
   }
 
