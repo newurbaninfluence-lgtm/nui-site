@@ -114,6 +114,8 @@ New Urban Influence is proud to feature AJ Photography Studio as a founding memb
       featured: true,
       award: null,
       heroImage: '/images/magazine/larry-castleberry-hero.jpg',
+      profileImage: '/images/magazine/larry-castleberry-profile.jpg',
+      profileBio: 'Detroit-based storyteller, speaker, and voice actor with 20+ years of experience. B.S. Electrical Engineering · M.S. Engineering Management · Aikido practitioner.',
       ogImage: null,
       tags: ['Detroit', 'Storytelling', 'Voice Actor', 'Speaker', 'Aikido', 'Author'],
       body: `Some professionals have a skill. Larry Castleberry has a gift — and it's one he's spent more than two decades refining, sharing, and teaching.

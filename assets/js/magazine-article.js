@@ -295,6 +295,28 @@
       document.getElementById('artHeroLabel').textContent = `${a.business.name} · ${a.business.city}, ${a.business.state}`;
     }
 
+    // Author profile card — inject between byline and hero
+    if (a.profileImage) {
+      const card = document.createElement('div');
+      card.className = 'mag-author-card';
+      card.innerHTML = `
+        <div class="mag-author-photo-wrap">
+          <div class="mag-author-circle">
+            <img src="${a.profileImage}" alt="${a.business.name}" loading="lazy">
+          </div>
+          <div class="mag-author-verified-ring" title="NUI Verified">✓</div>
+        </div>
+        <div class="mag-author-info">
+          <div class="mag-author-name">${a.business.name}</div>
+          <div class="mag-author-title">${a.categoryLabel}</div>
+          <div class="mag-author-bio">${a.profileBio || a.dek}</div>
+          <div class="mag-author-chips">
+            ${(a.business.services || []).slice(0,4).map(s => `<span class="mag-author-chip">${s}</span>`).join('')}
+          </div>
+        </div>`;
+      heroEl.parentNode.insertBefore(card, heroEl);
+    }
+
     // Body
     setHtml('artBody', parseBody(a.body));
 
