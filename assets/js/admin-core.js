@@ -140,6 +140,7 @@ function showAdminPanel(panel) {
         'gmb': loadAdminGmbPanel,
         'blog': loadAdminBlogPanel,
         'emailmarketing': loadAdminEmailMarketingPanel,
+        'push': loadAdminPushPanel,
         'retargeting': loadAdminRetargetingPanel,
         'loyalty': loadAdminLoyaltyPanel,
         'communications': loadAdminCommunicationsPanel,

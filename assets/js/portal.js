@@ -107,6 +107,7 @@ function loadPortalView() {
 <a onclick="showAdminPanel('blog')" class="admin-nav-link" data-panel="blog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Blog</a>
 <a onclick="showAdminPanel('emailmarketing')" class="admin-nav-link" data-panel="emailmarketing"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email</a>
 <a onclick="showAdminPanel('analytics')" class="admin-nav-link" data-panel="analytics"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics</a>
+<a onclick="showAdminPanel('push')" class="admin-nav-link" data-panel="push"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Push Notifications</a>
 <a onclick="showAdminPanel('retargeting')" class="admin-nav-link" data-panel="retargeting"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Retargeting</a>
 </div>
 <div class="admin-nav-group">
@@ -150,6 +151,7 @@ function loadPortalView() {
 <div id="adminCitationsPanel" class="admin-panel"></div>
 <div id="adminBlogPanel" class="admin-panel"></div>
 <div id="adminEmailmarketingPanel" class="admin-panel"></div>
+<div id="adminPushPanel" class="admin-panel"></div>
 <div id="adminRetargetingPanel" class="admin-panel"></div>
 <div id="adminLoyaltyPanel" class="admin-panel"></div>
 <div id="adminCommunicationsPanel" class="admin-panel"></div>
