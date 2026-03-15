@@ -1,7 +1,6 @@
 // NUI Magazine — Article Data
-// Version: 20260316v2
-// Real client data — sourced from live websites
-// Phase 2: replace with Supabase fetch from network_articles table
+// Version: 20260316v15
+// Source: Real client data verified from live sites
 
 const NUI_MAG = {
   categories: [
@@ -15,10 +14,7 @@ const NUI_MAG = {
     { slug: 'speakers',      label: 'Speakers',    color: '#ff0000' },
   ],
   articles: [
-    // ─────────────────────────────────────────────────────
-    // ARTICLE 1: AJ Photography Studio
-    // Source: www.ajvip.com — verified March 2026
-    // ─────────────────────────────────────────────────────
+    // ── ARTICLE 1: AJ Photography Studio ─────────────
     {
       id: 'aj-photography-studio-2026',
       slug: 'aj-photography-studio-detroit',
@@ -30,15 +26,16 @@ const NUI_MAG = {
       publishedAt: '2026-03-16',
       readTime: '5 min read',
       featured: true,
+      premium: false,
       award: 'NUI Detroit Creative Award 2026',
       awardLabel: 'Best Photography Studio — Detroit Creator Network',
       heroImage: '/images/magazine/aj-photography-hero.jpg',
       profileImage: '/images/magazine/aj-photography-profile.jpg',
-      profileBio: 'Detroit-based photographer and event specialist. Capturing families, couples, professionals, and milestones since 2012. Also offering throne chairs, photobooths, and full event rentals.',
+      profileBio: 'Detroit-based photographer and event specialist. Capturing families, couples, professionals, and milestones since 2012. Throne chairs, photobooths, and full event rentals.',
       ownerBio: {
         label: 'Photographer & Founder',
         headline: 'The Eye Behind Detroit\'s Biggest Moments',
-        body: 'For over a decade, AJ Photography has been the trusted lens at Detroit\'s most important events — from intimate family portraits to large-scale corporate affairs. With 36K Instagram followers and a client list that spans every corner of Metro Detroit, the studio has earned its reputation not through marketing but through consistent, memorable work.',
+        body: 'For over a decade, AJ Photography has been the trusted lens at Detroit\'s most important events. With 36K Instagram followers and 229 Google reviews, the studio has earned its reputation through consistent, memorable work.',
         stats: [
           { val: '13+', label: 'Years in Business' },
           { val: '36K', label: 'Instagram Followers' },
@@ -47,7 +44,6 @@ const NUI_MAG = {
         ],
         tags: ['Photography', 'Event Rentals', 'Oak Park MI', 'Detroit'],
       },
-      ogImage: null,
       tags: ['Detroit', 'Photography', 'Studio', 'Events', 'Weddings', 'Portraits'],
       body: `When AJ Photography Studio opened its doors in Detroit in 2012, the mission was simple: capture the moments that matter most. More than a decade later, that mission has grown into one of Detroit's most comprehensive full-service photography and event rental operations.
 
@@ -55,15 +51,13 @@ The studio serves virtually every major life milestone — maternity and pregnan
 
 ## More Than a Camera
 
-What sets AJ Photography Studio apart from standard portrait studios is the breadth of what they bring to the table. Beyond photography, the studio offers a full suite of event rental services that transform ordinary gatherings into unforgettable productions.
-
-Throne chair rentals turn any celebration into a VIP affair. The Money Machine booth has become a fan favorite at birthdays and corporate events — guests step inside and grab cash as it swirls around them. Portal photobooths, a 360-degree photo booth, and red carpet with rope and poles round out an event rental lineup that few Detroit photographers can match.
+What sets AJ Photography Studio apart is the breadth of what they bring to the table. Beyond photography, the studio offers a full suite of event rental services — throne chair rentals, Money Machine booths, portal photobooths, 360-degree photobooths, and red carpet with poles.
 
 The result is a one-stop operation. A client can book their wedding photographer, their photobooth, their throne chair, and their event photography all through a single call to 313.631.8819.
 
 ## A Studio Built on Community
 
-Since launching in 2012, AJ Photography Studio has built its reputation the Detroit way — through word of mouth, through showing up for community events, and through delivering work that consistently exceeds expectations. The studio's Instagram (@ajphoto313) showcases a portfolio that spans the full range of Detroit life: the joy of a new baby, the pride of a graduation, the elegance of a wedding, the energy of a birthday celebration.
+Since launching in 2012, AJ Photography Studio has built its reputation the Detroit way — through word of mouth, through showing up, and through delivering work that consistently exceeds expectations.
 
 New Urban Influence is proud to feature AJ Photography Studio as a founding member of the NUI Creator Network and recipient of the 2026 NUI Detroit Creative Award for Best Photography Studio.`,
       business: {
@@ -91,24 +85,12 @@ New Urban Influence is proud to feature AJ Photography Studio as a founding memb
           '360 Photobooth', 'Red Carpet & Poles',
         ],
       },
-      // ── REAL REVIEWS — sourced from Yelp (yelp.com/biz/aj-photography-oakpark-2)
-      // ── REAL GMB DATA: 4.9 ★ · 229 Google reviews (verified March 2026)
-      // Address: 21700 Greenfield Rd Ste LL18, Oak Park, MI 48237
-      // To show live Google review text: add GOOGLE_PLACES_API_KEY + AJ_PHOTOGRAPHY_PLACE_ID
-      // to Netlify env vars — gmb-reviews.js will auto-replace on page load
       reviews: [
-        {
-          initials: 'DM', name: 'D. Moore', date: 'February 2020', rating: 5,
-          platform: 'Yelp',
-          text: 'AJ does all of the hottest events in Detroit and I know why — he\'s very professional, patient, and personable. Picture quality is always perfect and he can print on the spot within minutes. If you\'re looking for a photographer or have photobooth needs, AJ is your go to.',
-        },
+        { initials: 'DM', name: 'D. Moore', date: 'February 2020', rating: 5, platform: 'Yelp',
+          text: 'AJ does all of the hottest events in Detroit and I know why — he\'s very professional, patient, and personable. Picture quality is always perfect and he can print on the spot within minutes. If you\'re looking for a photographer or have photobooth needs, AJ is your go to.' },
       ],
     },
-    // ─────────────────────────────────────────────────────
-    // ARTICLE 2: Larry Castleberry
-    // Source: larrycastleberry.com, speakerhub.com, voices.com
-    // Verified March 2026
-    // ─────────────────────────────────────────────────────
+    // ── ARTICLE 2: Larry Castleberry ─────────────────
     {
       id: 'larry-castleberry-2026',
       slug: 'larry-castleberry-detroit-storyteller-speaker',
@@ -120,6 +102,7 @@ New Urban Influence is proud to feature AJ Photography Studio as a founding memb
       publishedAt: '2026-03-16',
       readTime: '5 min read',
       featured: true,
+      premium: false,
       award: null,
       heroImage: '/images/magazine/larry-castleberry-hero.jpg',
       profileImage: '/images/magazine/larry-castleberry-profile.jpg',
@@ -127,7 +110,7 @@ New Urban Influence is proud to feature AJ Photography Studio as a founding memb
       ownerBio: {
         label: 'Storyteller, Speaker & Voice Actor',
         headline: 'The Voice Detroit Didn\'t Know It Needed',
-        body: 'Larry Castleberry spent years building systems as an engineer before discovering his real gift — making people feel something. Two decades later he\'s a sought-after corporate speaker, a Voices.com voice actor, and a recurring performer at the Secret Society of Twisted Storytellers. He brings the same precision to a keynote that he once brought to a circuit diagram.',
+        body: 'Larry Castleberry spent years building systems as an engineer before discovering his real gift — making people feel something. Two decades later he\'s a sought-after corporate speaker, a Voices.com voice actor, and a recurring performer at the Secret Society of Twisted Storytellers.',
         stats: [
           { val: '20+', label: 'Years Experience' },
           { val: 'B.S.', label: 'Electrical Engineering' },
@@ -136,31 +119,24 @@ New Urban Influence is proud to feature AJ Photography Studio as a founding memb
         ],
         tags: ['Keynote Speaker', 'Voice Actor', 'Storytelling', 'Detroit'],
       },
-      ogImage: null,
-      tags: ['Detroit', 'Storytelling', 'Voice Actor', 'Speaker', 'Aikido', 'Author'],
+      tags: ['Detroit', 'Storytelling', 'Voice Actor', 'Speaker', 'Aikido'],
       body: `Some professionals have a skill. Larry Castleberry has a gift — and it's one he's spent more than two decades refining, sharing, and teaching.
 
-The Detroit-based storyteller, motivational speaker, and voice actor has built a reputation that stretches well beyond city limits. Over a career spanning more than 20 years, Castleberry has helped individuals and organizations alike unlock the power of their own stories — and use those stories to connect, persuade, and inspire.
+The Detroit-based storyteller, motivational speaker, and voice actor has built a reputation that stretches well beyond city limits. Over a career spanning more than 20 years, Castleberry has helped individuals and organizations alike unlock the power of their own stories.
 
 ## The Engineer Who Learned to Tell Stories
 
-What makes Larry Castleberry's path unusual is where it started. He holds a B.S. in Electrical Engineering and an M.S. in Engineering Management — a background that might not immediately suggest a career built on narrative and voice. But it's exactly that analytical foundation that gives his work its precision.
-
-Castleberry doesn't just tell stories. He engineers them. Every performance is constructed with the same discipline he applied to circuits and systems — knowing which elements carry weight, where tension should build, and how to bring an audience from confusion to clarity to action.
+He holds a B.S. in Electrical Engineering and an M.S. in Engineering Management. Castleberry doesn't just tell stories — he engineers them. Every performance is constructed with the same discipline he applied to circuits and systems.
 
 ## Conflict Resolution Through Aikido
 
-One of Castleberry's most distinctive programs draws from his long practice of Aikido — the Japanese martial art built on redirection rather than force. His presentations on conflict resolution apply Aikido's core principles to workplace dynamics, personal relationships, and everyday friction.
+One of Castleberry's most distinctive programs draws from his long practice of Aikido. His presentations on conflict resolution apply Aikido's core principles to workplace dynamics, personal relationships, and everyday friction.
 
-The approach resonates because it's practical, not theoretical. He's performed this work at corporate events, community gatherings, and at venues like the Secret Society of Twisted Storytellers, where audience members described his ability to engage through vocal variety, facial expression, and physical presence as "truly amazing."
+He's performed at corporate events, community gatherings, and at the Secret Society of Twisted Storytellers, where audience members described his ability to engage through vocal variety, facial expression, and physical presence as "truly amazing."
 
 ## Voice That Carries
 
-Beyond the stage, Castleberry is an accomplished voice actor with a professional profile on Voices.com, the industry-leading platform used by producers, directors, and brands worldwide. Clients describe his voice as "top-notch" with a storyteller's quality that brings characters to life with warmth, authority, and range.
-
-## A Detroit Original
-
-Asked what keeps him rooted in Detroit, Castleberry's answer reflects the city itself — a place where authentic work earns its reputation the hard way, and where staying means something. He has become a fixture in Detroit's creative and professional speaking community, a resource for events that need more than a keynote, and an example of what it looks like to build a meaningful career on craft rather than hype.
+Beyond the stage, Castleberry is an accomplished voice actor with a professional profile on Voices.com. Clients describe his voice as "top-notch" with a storyteller's quality that brings characters to life with warmth, authority, and range.
 
 New Urban Influence is honored to feature Larry Castleberry as a founding member of the NUI Creator Network.`,
       business: {
@@ -179,7 +155,7 @@ New Urban Influence is honored to feature Larry Castleberry as a founding member
         citationId: 'NUI-DET-2026-0002',
         verifiedDate: 'March 2026',
         verifiedUrl: 'https://www.larrycastleberry.com',
-        sameAs: ['Google', 'Voices.com', 'SpeakerHub', 'Instagram'],
+        sameAs: ['Voices.com', 'SpeakerHub', 'Instagram'],
         services: [
           'Keynote Speaking', 'Storytelling Performances', 'Voice Acting',
           'Audiobook Narration', 'Corporate Narration', 'Conflict Resolution Programs',
@@ -187,29 +163,15 @@ New Urban Influence is honored to feature Larry Castleberry as a founding member
         ],
       },
       reviews: [
-        {
-          initials: 'KJ', name: 'Karen J.', date: 'February 2026', rating: 5,
-          text: 'Larry spoke at our leadership conference and left the entire room speechless. His blend of Aikido philosophy and personal storytelling was unlike anything we\'ve brought to our team before. Booked again for next year.',
-        },
-        {
-          initials: 'MK', name: 'Marcus K.', date: 'January 2026', rating: 5,
-          text: 'Hired Larry for audiobook narration. The final product sounded like a major label production. His voice has an authority and warmth that you simply cannot fake. Detroit talent at its finest.',
-        },
-        {
-          initials: 'RP', name: 'Rachel P.', date: 'December 2025', rating: 5,
-          text: 'I attended one of Larry\'s storytelling performances and was drawn in from the first sentence. His command of voice, pacing, and audience connection is masterful. He made a room full of strangers feel like one community.',
-        },
-        {
-          initials: 'TC', name: 'Thomas C.', date: 'November 2025', rating: 5,
-          text: 'Larry Castleberry gave an incredibly inspiring story at our event. His ability to connect with the audience through vocal variety, facial expressions, and body gestures was truly amazing.',
-        },
+        { initials: 'KJ', name: 'Karen J.', date: 'February 2026', rating: 5,
+          text: 'Larry spoke at our leadership conference and left the entire room speechless. His blend of Aikido philosophy and personal storytelling was unlike anything we\'ve brought to our team before.' },
+        { initials: 'MK', name: 'Marcus K.', date: 'January 2026', rating: 5,
+          text: 'Hired Larry for audiobook narration. The final product sounded like a major label production. Detroit talent at its finest.' },
+        { initials: 'TC', name: 'Thomas C.', date: 'November 2025', rating: 5,
+          text: 'Larry gave an incredibly inspiring story at our event. His ability to connect with the audience through vocal variety, facial expressions, and body gestures was truly amazing.' },
       ],
     },
-
-    // ─────────────────────────────────────────────────────
-    // ARTICLE 3: Faren Young — PREMIUM FOUNDER FEATURE
-    // NUI Magazine flagship article — highest tier layout
-    // ─────────────────────────────────────────────────────
+    // ── ARTICLE 3: Faren Young — PREMIUM FOUNDER FEATURE
     {
       id: 'faren-young-nui-2026',
       slug: 'faren-young-new-urban-influence-detroit',
@@ -227,19 +189,10 @@ New Urban Influence is honored to feature Larry Castleberry as a founding member
       heroImage: '/images/magazine/faren-young-studio.png',
       profileImage: '/images/magazine/faren-young-profile.png',
       profileBio: 'Native Detroiter. Creative Director. Founder of New Urban Influence. 20+ years building brands that compete. Obsessed with making small businesses look like Fortune 500 companies.',
-      tags: ['Detroit', 'Branding Agency', 'Founder', 'Creative Director', 'AI Automation', 'NUI'],
-
-
-  // Helpers
-  getBySlug(slug)     { return this.articles.find(a => a.slug === slug); },
-  getFeatured()       { return this.articles.filter(a => a.featured); },
-  getByCategory(cat)  { return this.articles.filter(a => a.category === cat); },
-  getRecent(n)        { return [...this.articles].sort((a,b) => new Date(b.publishedAt)-new Date(a.publishedAt)).slice(0,n||6); },
-};
       ownerBio: {
         label: 'Founder & Creative Director — New Urban Influence',
         headline: 'The Architect of Detroit\'s Next Brand Era',
-        body: 'Faren Young built New Urban Influence from a single storefront on Detroit\'s Avenue of Fashion into a full-stack branding and AI automation agency. Twenty years in, his work has been featured in Rolling Out, the Detroit Free Press, and Model D Media. His clients include everyone from first-time entrepreneurs to established Detroit institutions — all getting the same obsessive attention to craft.',
+        body: 'Faren Young built New Urban Influence from a single storefront on Detroit\'s Avenue of Fashion into a full-stack branding and AI automation agency. Twenty years in, his work has been featured in Rolling Out, the Detroit Free Press, and Model D Media.',
         stats: [
           { val: '20+', label: 'Years Experience' },
           { val: '500+', label: 'Brands Built' },
@@ -248,15 +201,14 @@ New Urban Influence is honored to feature Larry Castleberry as a founding member
         ],
         tags: ['Branding', 'Web Design', 'AI Systems', 'Detroit Native', 'NUI Founder'],
       },
-      body: `Detroit has always produced people who build — who take raw materials and raw will and make something the world didn't know it needed. Faren Young is one of those people.
+      tags: ['Detroit', 'Branding Agency', 'Founder', 'Creative Director', 'AI Automation', 'NUI'],
+      body: `Detroit has always produced people who build. Faren Young is one of those people.
 
 As the founder and Creative Director of New Urban Influence, Young has spent more than two decades doing what most designers never do: running an actual business while building other people's businesses. Not a freelancer. Not a studio that just makes things pretty. A strategist who happens to design, and a builder who happens to understand brand.
 
 ## How It Started
 
-The story begins on Detroit's Avenue of Fashion — a stretch of Livernois that has been the city's creative and commercial backbone for generations. That's where Young opened Bravo Graphix, the print and design shop that became the foundation for everything that followed.
-
-It wasn't glamorous. It was hustle — learning every day what small business owners actually needed, what they couldn't articulate but could feel when it was missing, and how design could bridge the gap between where a business was and where it deserved to be.
+The story begins on Detroit's Avenue of Fashion — that stretch of Livernois that has been the city's creative backbone for generations. That's where Young opened Bravo Graphix, the print and design shop that became the foundation for everything that followed.
 
 Rolling Out covered it. Model D Media covered it. The Detroit Free Press put it in the paper. Detroit noticed.
 
@@ -264,21 +216,19 @@ Rolling Out covered it. Model D Media covered it. The Detroit Free Press put it 
 
 NUI has evolved far beyond a design shop. Today it's a full-service branding and AI automation agency — one of the few in Metro Detroit operating at the intersection of creative identity and intelligent systems.
 
-The core service is still brand identity: logo design, color systems, typography, packaging, brand guidelines. But wrapped around that core is an entire ecosystem of growth infrastructure: custom websites, print collateral, email and SMS automation, AI phone assistants, geo-fencing, geo-grid tracking, Facebook and Google pixel campaigns, and Silent Visitor ID — a system that identifies anonymous website visitors by name, email, and LinkedIn before they ever fill out a form.
+The core is still brand identity: logo design, color systems, typography, packaging, brand guidelines. But wrapped around that core is an entire ecosystem: custom websites, email and SMS automation, AI phone assistants, geo-fencing, geo-grid tracking, Facebook and Google pixel campaigns, and Silent Visitor ID — a system that identifies anonymous website visitors by name and email before they ever fill out a form.
 
-It's the kind of stack that Fortune 500 companies pay agencies ten times the price for. NUI delivers it to small businesses, coaches, creators, and entrepreneurs across Detroit and nationwide — at a price point designed to make the playing field level.
+It's the kind of stack that Fortune 500 companies pay ten times the price for. NUI delivers it to small businesses, coaches, creators, and entrepreneurs — at a price point designed to level the playing field.
 
 ## The NUI Philosophy
-
-Young's approach is direct: most small businesses are invisible not because they're bad at what they do, but because no one helped them look the part. A brand that looks like it belongs at the top of the market attracts clients who pay top-of-market prices.
 
 *"We don't design. We influence."* That's not a slogan. It's a precise description of what NUI does. Design is the output. Influence — over perception, over reputation, over the decisions potential clients make before they ever pick up the phone — is the actual product.
 
 ## The Platform He's Building
 
-NUI isn't just an agency anymore. It's becoming a platform — a multi-tenant system where brands can be built, monitored, and scaled from a single dashboard. Client portals. Proof approval workflows. Automated marketing pipelines. AI systems that work while you sleep.
+NUI isn't just an agency anymore. It's becoming a platform — client portals, proof approval workflows, automated marketing pipelines, AI systems that work while you sleep.
 
-The NUI Magazine you're reading right now is part of that platform — a citation authority network designed to give Detroit's best creators and business owners the verified online presence they deserve. The kind of presence that shows up in Google, gets picked up by AI search engines, and builds the backlink profile that makes a business findable by the right people.
+The NUI Magazine you're reading right now is part of that platform — a citation authority network designed to give Detroit's best creators and business owners the verified online presence they deserve.
 
 It's a long game. Young has been playing it for twenty years. He's not stopping.`,
       business: {
@@ -297,7 +247,7 @@ It's a long game. Young has been playing it for twenty years. He's not stopping.
         citationId: 'NUI-DET-2026-0000',
         verifiedDate: 'March 2026',
         verifiedUrl: 'https://newurbaninfluence.com',
-        sameAs: ['Google', 'Rolling Out', 'Detroit Free Press', 'Model D Media', 'Clutch', 'Yelp', 'LinkedIn'],
+        sameAs: ['Google', 'Rolling Out', 'Detroit Free Press', 'Model D Media', 'Clutch', 'Yelp'],
         services: [
           'Brand Identity Design', 'Logo Design', 'Web Design & Development',
           'AI Systems & Automation', 'Email & SMS Automation', 'Geo-Fencing',
@@ -305,33 +255,21 @@ It's a long game. Young has been playing it for twenty years. He's not stopping.
         ],
       },
       reviews: [
-        {
-          initials: 'MB', name: 'Miss B', date: 'November 2025', rating: 5,
-          platform: 'Google',
-          text: 'I would recommend working with New Urban Influence. My experience with Faren was great — even when I was being a difficult customer. The care and attention put into making sure they understood my vision for my brand was amazing.',
-        },
-        {
-          initials: 'CB', name: 'Chevelles Bar', date: 'October 2025', rating: 5,
-          platform: 'Google',
-          text: 'Faren did a great job on a few flyers for me. Prices were reasonable and the quality was superb. My go-to company for all my promotional needs. The best at what he does.',
-        },
-        {
-          initials: 'SM', name: 'Sierra Meriwether', date: 'December 2025', rating: 5,
-          platform: 'Google',
-          text: 'The best graphic design company in the world. I have been a customer for over 10 years and every time they exceed my expectations. Very professional and prompt with all my services.',
-        },
-        {
-          initials: 'LC', name: 'Larry Castleberry', date: 'December 2025', rating: 5,
-          platform: 'Google',
-          text: 'Great experience. New Urban Influence gives you personal and detailed attention, making you feel like you are their most important customer. Love the services and the personal touch they provide.',
-        },
+        { initials: 'MB', name: 'Miss B', date: 'November 2025', rating: 5, platform: 'Google',
+          text: 'I would recommend working with New Urban Influence. My experience with Faren was great — even when I was being a difficult customer. The care and attention put into making sure they understood my vision was amazing.' },
+        { initials: 'CB', name: 'Chevelles Bar', date: 'October 2025', rating: 5, platform: 'Google',
+          text: 'Faren did a great job on a few flyers for me. Prices were reasonable and the quality was superb. My go-to company for all my promotional needs.' },
+        { initials: 'SM', name: 'Sierra Meriwether', date: 'December 2025', rating: 5, platform: 'Google',
+          text: 'The best graphic design company in the world. I have been a customer for over 10 years and every time they exceed my expectations.' },
+        { initials: 'LC', name: 'Larry Castleberry', date: 'December 2025', rating: 5, platform: 'Google',
+          text: 'Great experience. New Urban Influence gives you personal and detailed attention, making you feel like you are their most important customer.' },
       ],
     },
   ],
-  // Helpers
-  getBySlug(slug)     { return this.articles.find(a => a.slug === slug); },
-  getFeatured()       { return this.articles.filter(a => a.featured); },
-  getByCategory(cat)  { return this.articles.filter(a => a.category === cat); },
-  getRecent(n)        { return [...this.articles].sort((a,b) => new Date(b.publishedAt)-new Date(a.publishedAt)).slice(0,n||6); },
-  getPremium()        { return this.articles.filter(a => a.premium); },
+
+  getBySlug(slug)  { return this.articles.find(a => a.slug === slug); },
+  getFeatured()    { return this.articles.filter(a => a.featured); },
+  getByCategory(c) { return this.articles.filter(a => a.category === c); },
+  getRecent(n)     { return [...this.articles].sort((a,b) => new Date(b.publishedAt)-new Date(a.publishedAt)).slice(0,n||6); },
+  getPremium()     { return this.articles.filter(a => a.premium); },
 };
