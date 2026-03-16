@@ -275,17 +275,20 @@ async function spAICaption(type) {
   captionEl.disabled = true;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    // Route through Monty (Netlify function) to avoid CORS
+    const res = await fetch('/.netlify/functions/monty-admin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 300,
-        messages: [{ role: 'user', content: captions[type] }]
+        message: captions[type],
+        context: [],
+        _raw_caption: true  // flag to return raw AI text
       })
     });
     const data = await res.json();
-    captionEl.value = data.content?.[0]?.text || 'Could not generate caption.';
+    // monty-admin returns response field with the AI text
+    const text = data.response || data.content?.[0]?.text || '';
+    captionEl.value = text || 'Could not generate caption.';
     spUpdateCharCount();
   } catch(e) {
     captionEl.value = '';

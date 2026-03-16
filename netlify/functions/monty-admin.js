@@ -99,8 +99,20 @@ exports.handler = async (event) => {
   // Full token auth available via NuiAdminAuth if needed in future
 
   try {
-    const { message, context } = JSON.parse(event.body);
+    const { message, context, _raw_caption } = JSON.parse(event.body);
     const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+
+    // ── Raw caption mode: just return AI text directly, no action parsing ──
+    if (_raw_caption && ANTHROPIC_KEY) {
+      const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 400, messages: [{ role: 'user', content: message }] })
+      });
+      const aiData = await aiRes.json();
+      const text = aiData.content?.[0]?.text || 'Could not generate caption.';
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ response: text, actions: [], results: [], mode: 'ai' }) };
+    }
     const SB_URL = process.env.SUPABASE_URL;
     const SB_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 
