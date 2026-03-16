@@ -4,6 +4,7 @@
 
 [functions]
   node_bundler = "esbuild"
+  external_node_modules = ["web-push", "nodemailer"]
 
 # OG image function — needs satori + resvg-js
 # Run: npm install satori @resvg/resvg-js
