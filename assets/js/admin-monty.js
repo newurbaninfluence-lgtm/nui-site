@@ -165,9 +165,18 @@ async function montySend() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message: msg,
-        context: montyHistory.slice(-10) // last 10 messages for context
+        context: montyHistory.slice(-10)
       })
     });
+
+    // Handle non-OK responses
+    if (!res.ok) {
+      removeMontyTyping(typingId);
+      const errData = await res.json().catch(() => ({}));
+      appendMontyMsg('bot', `<span style="color:#ef4444;">⚠️ ${errData.error || 'Request failed (' + res.status + ')'}</span>`, true);
+      return;
+    }
+
     const data = await res.json();
 
     // Remove typing
@@ -180,6 +189,9 @@ async function montySend() {
 
     // Build response with action cards
     let html = formatMontyResponse(data.response);
+    if (!html && (!data.results || data.results.length === 0)) {
+      html = '<span style="color:rgba(255,255,255,0.4);">...</span>';
+    }
 
     if (data.results && data.results.length > 0) {
       for (const r of data.results) {
