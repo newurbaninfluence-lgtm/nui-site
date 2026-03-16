@@ -575,7 +575,7 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
 
             // Use Gemini Imagen 3 to generate image
             const genRes = await nfetch(
-              `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${GOOGLE_KEY}`,
+              `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${GOOGLE_KEY}`,
               {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
