@@ -38,6 +38,9 @@ function loadAdminMontyPanel() {
               <button onclick="montyQuick('Create a new branding job')" class="monty-chip">🎨 New Job</button>
               <button onclick="montyQuick('Show all jobs')" class="monty-chip">📋 My Jobs</button>
               <button onclick="montyQuick('Find client')" class="monty-chip">🔍 Find Client</button>
+              <button onclick="montyQuick('Create an image of')" class="monty-chip">🖼️ Generate Image</button>
+              <button onclick="montyQuick('Post to Facebook:')" class="monty-chip">📘 Post to Facebook</button>
+              <button onclick="montyQuick('Write a blog post about')" class="monty-chip">📝 Write Blog</button>
             </div>
           </div>
         </div>
@@ -215,6 +218,60 @@ async function montySend() {
       }
     }
 
+    // If generate_image returned an image, show preview
+    const imgResult = (data.results || []).find(r => r.action === 'generate_image' && r.success);
+    if (imgResult && imgResult.image_url) {
+      let imgHtml = `<div style="margin-top:12px;">
+        <img src="${imgResult.image_url}" alt="Generated image" style="width:100%;max-width:480px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);display:block;margin-bottom:12px;" />
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button onclick="montyQuick('Post this image to Facebook: ${imgResult.image_url}')" class="monty-chip">📘 Post to Facebook</button>
+          <button onclick="montyQuick('Post this image to Instagram: ${imgResult.image_url}')" class="monty-chip">📸 Post to Instagram</button>
+          <button onclick="montyQuick('Post this image to both Facebook and Instagram: ${imgResult.image_url}')" class="monty-chip">🚀 Post to Both</button>
+          <a href="${imgResult.image_url}" target="_blank" download class="monty-chip" style="text-decoration:none;">⬇️ Download</a>
+        </div>
+      </div>`;
+      appendMontyMsg('bot', imgHtml, true);
+    }
+
+    // If post_to_social returned results, show what was posted
+    const socialResult = (data.results || []).find(r => r.action === 'post_to_social');
+    if (socialResult) {
+      if (socialResult.success && socialResult.posted?.length > 0) {
+        let socialHtml = `<div style="margin-top:8px;">`;
+        for (const p of socialResult.posted) {
+          const icon = p.platform === 'facebook' ? '📘' : '📸';
+          const color = p.platform === 'facebook' ? '#1877f2' : '#e1306c';
+          socialHtml += `<div class="monty-action-card" style="border-color:${color}30;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:20px;">${icon}</span>
+              <div>
+                <div style="font-weight:700;color:#fff;">Posted to ${p.platform.charAt(0).toUpperCase()+p.platform.slice(1)}</div>
+                <div style="color:rgba(255,255,255,0.4);font-size:11px;">Post ID: ${p.post_id || 'N/A'}</div>
+              </div>
+              <span class="act-status act-success" style="margin-left:auto;">✓ Live</span>
+            </div>
+          </div>`;
+        }
+        if (socialResult.remaining_today !== undefined) {
+          socialHtml += `<div style="color:rgba(255,255,255,0.3);font-size:11px;margin-top:6px;text-align:right;">${socialResult.remaining_today} posts remaining today</div>`;
+        }
+        socialHtml += `</div>`;
+        appendMontyMsg('bot', socialHtml, true);
+      }
+    }
+
+    // If write_blog_post returned a post, show link
+    const blogResult = (data.results || []).find(r => r.action === 'write_blog_post' && r.success);
+    if (blogResult) {
+      let blogHtml = `<div class="monty-action-card" style="border-color:rgba(34,197,94,0.3);">
+        <div style="font-weight:700;color:#fff;margin-bottom:6px;">📝 Blog Post Published</div>
+        <div style="color:rgba(255,255,255,0.7);font-size:13px;margin-bottom:8px;">${blogResult.title || ''}</div>
+        <a href="${blogResult.url || '#'}" target="_blank" style="display:inline-block;padding:6px 16px;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#22c55e;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;">🔗 View Post</a>
+        <button onclick="montyQuick('Post to Facebook: Check out our latest blog post! ${blogResult.url || ''}')" class="monty-chip" style="margin-left:8px;">📘 Share on Facebook</button>
+      </div>`;
+      appendMontyMsg('bot', blogHtml, true);
+    }
+
     // If list_jobs returned jobs, show them
     const jobsResult = (data.results || []).find(r => r.action === 'list_jobs');
     if (jobsResult) {
@@ -330,7 +387,11 @@ function renderActionCard(result) {
     update_job_status: '🔄 Job Updated',
     add_note: '📝 Note Added',
     lookup_contact: '🔍 Search Complete',
-    list_jobs: '📋 Jobs Retrieved'
+    list_jobs: '📋 Jobs Retrieved',
+    write_blog_post: '📝 Blog Post Published',
+    post_to_social: '📣 Posted to Social',
+    generate_image: '🖼️ Image Generated',
+    update_cover_photo: '🖼️ Cover Photo Updated'
   };
   const label = labels[result.action] || result.action;
   const ok = result.success;
