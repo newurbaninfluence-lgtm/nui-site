@@ -480,8 +480,24 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
             const d = action.data;
             const PAGE_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
             const PAGE_ID = process.env.FB_PAGE_ID;
-            const IG_USER_ID = process.env.IG_USER_ID; // Instagram Business Account ID
+            const IG_USER_ID = process.env.IG_USER_ID;
             if (!PAGE_TOKEN || !PAGE_ID) throw new Error('FB_PAGE_ACCESS_TOKEN and FB_PAGE_ID not set in Netlify env vars');
+
+            // ── Rate limit: max 5 posts per day across all platforms ──
+            const DAILY_POST_LIMIT = 5;
+            const todayStart = new Date();
+            todayStart.setHours(0, 0, 0, 0);
+            const todayPostsRes = await sbFetch(
+              `activity_log?type=eq.social_post&created_at=gte.${todayStart.toISOString()}&select=id`
+            ).catch(() => []);
+            const todayCount = Array.isArray(todayPostsRes) ? todayPostsRes.length : 0;
+            if (todayCount >= DAILY_POST_LIMIT) {
+              results.push({
+                action: 'post_to_social', success: false,
+                error: `Daily post limit reached (${todayCount}/${DAILY_POST_LIMIT}). Try again tomorrow to keep your page in good standing.`
+              });
+              break;
+            }
 
             const platform = d.platform || 'facebook';
             const posted = [];
@@ -520,7 +536,21 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
               posted.push({ platform: 'instagram', skipped: true, reason: 'image_url required for Instagram' });
             }
 
-            results.push({ action: 'post_to_social', success: true, posted });
+            results.push({ action: 'post_to_social', success: true, posted, remaining_today: DAILY_POST_LIMIT - todayCount - 1 });
+
+            // Log to activity_log so rate limiter tracks it
+            await sbFetch('activity_log', {
+              method: 'POST',
+              prefer: 'return=minimal',
+              body: JSON.stringify({
+                type: 'social_post',
+                event_type: 'monty_social_post',
+                direction: 'outbound',
+                content: d.message?.slice(0, 200),
+                metadata: { platform: d.platform || 'facebook', posted, source: 'monty' },
+                created_at: new Date().toISOString()
+              })
+            }).catch(e => console.warn('Social post log failed:', e.message));
             break;
           }
         }
