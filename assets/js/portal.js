@@ -105,6 +105,7 @@ function loadPortalView() {
 <a onclick="showAdminPanel('gmb')" class="admin-nav-link" data-panel="gmb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Google Business</a>
 <a onclick="showAdminPanel('citations')" class="admin-nav-link" data-panel="citations"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Citations</a>
 <a onclick="showAdminPanel('blog')" class="admin-nav-link" data-panel="blog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Blog</a>
+<a onclick="showAdminPanel('socialplanner')" class="admin-nav-link" data-panel="socialplanner"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/><rect x="2" y="2" width="8" height="8" rx="1"/><rect x="14" y="14" width="8" height="8" rx="1"/></svg>Social Planner</a>
 <a onclick="showAdminPanel('emailmarketing')" class="admin-nav-link" data-panel="emailmarketing"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email</a>
 <a onclick="showAdminPanel('analytics')" class="admin-nav-link" data-panel="analytics"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics</a>
 <a onclick="showAdminPanel('push')" class="admin-nav-link" data-panel="push"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Push Notifications</a>
@@ -150,6 +151,7 @@ function loadPortalView() {
 <div id="adminGmbPanel" class="admin-panel"></div>
 <div id="adminCitationsPanel" class="admin-panel"></div>
 <div id="adminBlogPanel" class="admin-panel"></div>
+<div id="adminSocialplannerPanel" class="admin-panel"></div>
 <div id="adminEmailmarketingPanel" class="admin-panel"></div>
 <div id="adminPushPanel" class="admin-panel"></div>
 <div id="adminRetargetingPanel" class="admin-panel"></div>
