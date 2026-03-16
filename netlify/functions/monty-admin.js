@@ -65,6 +65,11 @@ AVAILABLE ACTIONS (return as JSON array):
     { "action": "post_to_social", "data": { "message": "...", "platform": "facebook|instagram|both", "image_url": "..." } }
     For Instagram, image_url is required. For Facebook, message-only posts are fine.
 
+14. generate_image — Generate an AI image using Leonardo.ai and show it to the admin
+    { "action": "generate_image", "data": { "prompt": "...", "style": "CINEMATIC|CREATIVE|VIBRANT|NONE", "width": 1024, "height": 1024, "post_to": "facebook|instagram|both|none", "caption": "..." } }
+    Generates the image, returns a preview URL to show the admin. If post_to is set, also posts it after generation.
+    For Facebook covers use width:1640, height:624. For Instagram posts use width:1024, height:1024. For feed posts width:1200, height:630.
+
 INDUSTRY OPTIONS: trades, marine, farming, manufacturing, bars, authors, apparel, tax, tech, events
 
 RULES:
@@ -551,6 +556,89 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
                 created_at: new Date().toISOString()
               })
             }).catch(e => console.warn('Social post log failed:', e.message));
+            break;
+          }
+
+          case 'generate_image': {
+            const d = action.data;
+            const LEONARDO_KEY = process.env.LEONARDO_API_KEY;
+            if (!LEONARDO_KEY) throw new Error('LEONARDO_API_KEY not set in Netlify env vars');
+
+            // Step 1: Submit generation request to Leonardo
+            const genRes = await fetch('https://cloud.leonardo.ai/api/rest/v1/generations', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${LEONARDO_KEY}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                prompt: d.prompt,
+                modelId: 'b24e16ff-06e3-43eb-8d33-4416c2d75876', // Leonardo Phoenix
+                width: d.width || 1024,
+                height: d.height || 1024,
+                num_images: 1,
+                presetStyle: d.style || 'CINEMATIC',
+                photoReal: false,
+                alchemy: true
+              })
+            });
+            const genData = await genRes.json();
+            if (!genRes.ok) throw new Error(`Leonardo generation failed: ${JSON.stringify(genData)}`);
+            const generationId = genData.sdGenerationJob?.generationId;
+            if (!generationId) throw new Error('No generation ID returned from Leonardo');
+
+            // Step 2: Poll for completion (up to 30s)
+            let imageUrl = null;
+            for (let i = 0; i < 10; i++) {
+              await new Promise(r => setTimeout(r, 3000));
+              const pollRes = await fetch(`https://cloud.leonardo.ai/api/rest/v1/generations/${generationId}`, {
+                headers: { 'Authorization': `Bearer ${LEONARDO_KEY}` }
+              });
+              const pollData = await pollRes.json();
+              const imgs = pollData.generations_by_pk?.generated_images;
+              if (imgs && imgs.length > 0) { imageUrl = imgs[0].url; break; }
+            }
+            if (!imageUrl) throw new Error('Image generation timed out — try again');
+
+            // Step 3: If post_to is set, post to social after generation
+            let posted = [];
+            if (d.post_to && d.post_to !== 'none') {
+              const PAGE_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
+              const PAGE_ID = process.env.FB_PAGE_ID;
+              const IG_USER_ID = process.env.IG_USER_ID;
+              const caption = d.caption || d.prompt;
+
+              if ((d.post_to === 'facebook' || d.post_to === 'both') && PAGE_TOKEN && PAGE_ID) {
+                const fbRes = await fetch(`https://graph.facebook.com/v19.0/${PAGE_ID}/photos`, {
+                  method: 'POST', headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ url: imageUrl, caption, access_token: PAGE_TOKEN })
+                });
+                const fbData = await fbRes.json();
+                if (fbRes.ok) posted.push({ platform: 'facebook', post_id: fbData.id });
+              }
+
+              if ((d.post_to === 'instagram' || d.post_to === 'both') && PAGE_TOKEN && IG_USER_ID) {
+                const cRes = await fetch(`https://graph.facebook.com/v19.0/${IG_USER_ID}/media`, {
+                  method: 'POST', headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ image_url: imageUrl, caption, access_token: PAGE_TOKEN })
+                });
+                const cData = await cRes.json();
+                if (cRes.ok) {
+                  const pRes = await fetch(`https://graph.facebook.com/v19.0/${IG_USER_ID}/media_publish`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ creation_id: cData.id, access_token: PAGE_TOKEN })
+                  });
+                  const pData = await pRes.json();
+                  if (pRes.ok) posted.push({ platform: 'instagram', post_id: pData.id });
+                }
+              }
+            }
+
+            results.push({
+              action: 'generate_image',
+              success: true,
+              image_url: imageUrl,
+              generation_id: generationId,
+              posted,
+              preview: imageUrl // admin UI uses this to show the image inline
+            });
             break;
           }
         }
