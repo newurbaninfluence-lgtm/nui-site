@@ -104,13 +104,13 @@ exports.handler = async (event) => {
 
     // ── Raw caption mode: just return AI text directly, no action parsing ──
     if (_raw_caption && ANTHROPIC_KEY) {
-      const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
+      const capRes = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: { 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
         body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 400, messages: [{ role: 'user', content: message }] })
       });
-      const aiData = await aiRes.json();
-      const text = aiData.content?.[0]?.text || 'Could not generate caption.';
+      const capData = await capRes.json();
+      const text = capData.content?.[0]?.text || 'Could not generate caption.';
       return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ response: text, actions: [], results: [], mode: 'ai' }) };
     }
     const SB_URL = process.env.SUPABASE_URL;
@@ -123,8 +123,8 @@ exports.handler = async (event) => {
     if (ANTHROPIC_KEY) {
       try {
         const fetchMod = await import('node-fetch');
-        const fetch = fetchMod.default;
-        const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
+        const nfetch = fetchMod.default;
+        const aiRes = await nfetch('https://api.anthropic.com/v1/messages', {
           method: 'POST',
           headers: {
             'x-api-key': ANTHROPIC_KEY,
@@ -187,12 +187,12 @@ exports.handler = async (event) => {
     // ═══ EXECUTE ACTIONS AGAINST SUPABASE ═══
     const results = [];
     const fetchMod = await import('node-fetch');
-    const fetch = fetchMod.default;
+    const nfetch = fetchMod.default;
 
     // Helper for Supabase calls
     const sbFetch = async (path, opts = {}) => {
       if (!SB_URL || !SB_KEY) throw new Error('Database not connected');
-      const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
+      const res = await nfetch(`${SB_URL}/rest/v1/${path}`, {
         ...opts,
         headers: {
           'apikey': SB_KEY,
@@ -364,7 +364,7 @@ exports.handler = async (event) => {
             const opKey = brand.openphone_key || keys.openphone || (!agencyId ? process.env.OPENPHONE_API_KEY : null);
             const fromNumber = brand.openphone_number || keys.openphone_number || (!agencyId ? process.env.OPENPHONE_NUMBER : null);
             if (!opKey || !fromNumber) throw new Error('OpenPhone not configured for this agency');
-            const smsRes = await fetch('https://api.openphone.com/v1/messages', {
+            const smsRes = await nfetch('https://api.openphone.com/v1/messages', {
               method: 'POST',
               headers: { 'Authorization': opKey, 'Content-Type': 'application/json' },
               body: JSON.stringify({ from: fromNumber, to: [d.to], content: d.message })
@@ -456,7 +456,7 @@ Format the response as JSON only:
 
 Content must be helpful, NUI-branded, and end with a soft CTA toward booking a strategy call.`;
 
-            const blogAI = await fetch('https://api.anthropic.com/v1/messages', {
+            const blogAI = await nfetch('https://api.anthropic.com/v1/messages', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
               body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 2000, messages: [{ role: 'user', content: blogPrompt }] })
@@ -520,7 +520,7 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
             if (platform === 'facebook' || platform === 'both') {
               const fbBody = { message: d.message, access_token: PAGE_TOKEN };
               if (d.link) fbBody.link = d.link;
-              const fbRes = await fetch(`https://graph.facebook.com/v19.0/${PAGE_ID}/feed`, {
+              const fbRes = await nfetch(`https://graph.facebook.com/v19.0/${PAGE_ID}/feed`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(fbBody)
               });
@@ -532,14 +532,14 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
             // Instagram post (requires image)
             if ((platform === 'instagram' || platform === 'both') && d.image_url && IG_USER_ID) {
               // Step 1: Create media container
-              const containerRes = await fetch(`https://graph.facebook.com/v19.0/${IG_USER_ID}/media`, {
+              const containerRes = await nfetch(`https://graph.facebook.com/v19.0/${IG_USER_ID}/media`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ image_url: d.image_url, caption: d.message, access_token: PAGE_TOKEN })
               });
               const containerData = await containerRes.json();
               if (!containerRes.ok) throw new Error(`Instagram container failed: ${containerData.error?.message}`);
               // Step 2: Publish container
-              const publishRes = await fetch(`https://graph.facebook.com/v19.0/${IG_USER_ID}/media_publish`, {
+              const publishRes = await nfetch(`https://graph.facebook.com/v19.0/${IG_USER_ID}/media_publish`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ creation_id: containerData.id, access_token: PAGE_TOKEN })
               });
@@ -574,7 +574,7 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
             if (!GOOGLE_KEY) throw new Error('GOOGLE_AI_API_KEY not set in Netlify env vars');
 
             // Use Gemini Imagen 3 to generate image
-            const genRes = await fetch(
+            const genRes = await nfetch(
               `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${GOOGLE_KEY}`,
               {
                 method: 'POST',
@@ -603,7 +603,7 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
             const fileName = `monty-gen-${Date.now()}.png`;
             const SB_URL = process.env.SUPABASE_URL;
             const SB_KEY = process.env.SUPABASE_SERVICE_KEY;
-            const uploadRes = await fetch(`${SB_URL}/storage/v1/object/generated-images/${fileName}`, {
+            const uploadRes = await nfetch(`${SB_URL}/storage/v1/object/generated-images/${fileName}`, {
               method: 'POST',
               headers: {
                 'Authorization': `Bearer ${SB_KEY}`,
@@ -628,7 +628,7 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
               const caption = d.caption || d.prompt;
 
               if ((d.post_to === 'facebook' || d.post_to === 'both') && PAGE_TOKEN && PAGE_ID) {
-                const fbRes = await fetch(`https://graph.facebook.com/v19.0/${PAGE_ID}/photos`, {
+                const fbRes = await nfetch(`https://graph.facebook.com/v19.0/${PAGE_ID}/photos`, {
                   method: 'POST', headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ url: imageUrl, caption, access_token: PAGE_TOKEN })
                 });
@@ -637,13 +637,13 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
               }
 
               if ((d.post_to === 'instagram' || d.post_to === 'both') && PAGE_TOKEN && IG_USER_ID) {
-                const cRes = await fetch(`https://graph.facebook.com/v19.0/${IG_USER_ID}/media`, {
+                const cRes = await nfetch(`https://graph.facebook.com/v19.0/${IG_USER_ID}/media`, {
                   method: 'POST', headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ image_url: imageUrl, caption, access_token: PAGE_TOKEN })
                 });
                 const cData = await cRes.json();
                 if (cRes.ok) {
-                  const pRes = await fetch(`https://graph.facebook.com/v19.0/${IG_USER_ID}/media_publish`, {
+                  const pRes = await nfetch(`https://graph.facebook.com/v19.0/${IG_USER_ID}/media_publish`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ creation_id: cData.id, access_token: PAGE_TOKEN })
                   });
@@ -657,9 +657,8 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
               action: 'generate_image',
               success: true,
               image_url: imageUrl,
-              generation_id: generationId,
               posted,
-              preview: imageUrl // admin UI uses this to show the image inline
+              preview: imageUrl
             });
             break;
           }
