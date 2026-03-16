@@ -65,8 +65,8 @@ AVAILABLE ACTIONS (return as JSON array):
     { "action": "post_to_social", "data": { "message": "...", "platform": "facebook|instagram|both", "image_url": "..." } }
     For Instagram, image_url is required. For Facebook, message-only posts are fine.
 
-14. generate_image — Generate an AI image using Leonardo.ai and show it to the admin
-    { "action": "generate_image", "data": { "prompt": "...", "style": "CINEMATIC|CREATIVE|VIBRANT|NONE", "width": 1024, "height": 1024, "post_to": "facebook|instagram|both|none", "caption": "..." } }
+14. generate_image — Generate an AI image using Google Imagen 3 and show it to the admin
+    { "action": "generate_image", "data": { "prompt": "...", "width": 1024, "height": 1024, "post_to": "facebook|instagram|both|none", "caption": "..." } }
     Generates the image, returns a preview URL to show the admin. If post_to is set, also posts it after generation.
     For Facebook covers use width:1640, height:624. For Instagram posts use width:1024, height:1024. For feed posts width:1200, height:630.
 
@@ -561,41 +561,54 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
 
           case 'generate_image': {
             const d = action.data;
-            const LEONARDO_KEY = process.env.LEONARDO_API_KEY;
-            if (!LEONARDO_KEY) throw new Error('LEONARDO_API_KEY not set in Netlify env vars');
+            const GOOGLE_KEY = process.env.GOOGLE_AI_API_KEY;
+            if (!GOOGLE_KEY) throw new Error('GOOGLE_AI_API_KEY not set in Netlify env vars');
 
-            // Step 1: Submit generation request to Leonardo
-            const genRes = await fetch('https://cloud.leonardo.ai/api/rest/v1/generations', {
-              method: 'POST',
-              headers: { 'Authorization': `Bearer ${LEONARDO_KEY}`, 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                prompt: d.prompt,
-                modelId: 'b24e16ff-06e3-43eb-8d33-4416c2d75876', // Leonardo Phoenix
-                width: d.width || 1024,
-                height: d.height || 1024,
-                num_images: 1,
-                presetStyle: d.style || 'CINEMATIC',
-                photoReal: false,
-                alchemy: true
-              })
-            });
+            // Use Gemini Imagen 3 to generate image
+            const genRes = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${GOOGLE_KEY}`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  instances: [{ prompt: d.prompt }],
+                  parameters: {
+                    sampleCount: 1,
+                    aspectRatio: d.width && d.height
+                      ? (d.width > d.height ? '16:9' : d.width === d.height ? '1:1' : '9:16')
+                      : '1:1',
+                    personGeneration: 'allow_adult'
+                  }
+                })
+              }
+            );
             const genData = await genRes.json();
-            if (!genRes.ok) throw new Error(`Leonardo generation failed: ${JSON.stringify(genData)}`);
-            const generationId = genData.sdGenerationJob?.generationId;
-            if (!generationId) throw new Error('No generation ID returned from Leonardo');
+            if (!genRes.ok) throw new Error(`Imagen generation failed: ${JSON.stringify(genData)}`);
 
-            // Step 2: Poll for completion (up to 30s)
-            let imageUrl = null;
-            for (let i = 0; i < 10; i++) {
-              await new Promise(r => setTimeout(r, 3000));
-              const pollRes = await fetch(`https://cloud.leonardo.ai/api/rest/v1/generations/${generationId}`, {
-                headers: { 'Authorization': `Bearer ${LEONARDO_KEY}` }
-              });
-              const pollData = await pollRes.json();
-              const imgs = pollData.generations_by_pk?.generated_images;
-              if (imgs && imgs.length > 0) { imageUrl = imgs[0].url; break; }
+            // Gemini returns base64 — upload to a temp host via Supabase storage
+            const b64 = genData.predictions?.[0]?.bytesBase64Encoded;
+            if (!b64) throw new Error('No image returned from Imagen');
+
+            // Save to Supabase storage so we get a public URL
+            const imgBuffer = Buffer.from(b64, 'base64');
+            const fileName = `monty-gen-${Date.now()}.png`;
+            const SB_URL = process.env.SUPABASE_URL;
+            const SB_KEY = process.env.SUPABASE_SERVICE_KEY;
+            const uploadRes = await fetch(`${SB_URL}/storage/v1/object/generated-images/${fileName}`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${SB_KEY}`,
+                'apikey': SB_KEY,
+                'Content-Type': 'image/png',
+                'x-upsert': 'true'
+              },
+              body: imgBuffer
+            });
+            if (!uploadRes.ok) {
+              const err = await uploadRes.text();
+              throw new Error(`Supabase upload failed: ${err}`);
             }
-            if (!imageUrl) throw new Error('Image generation timed out — try again');
+            const imageUrl = `${SB_URL}/storage/v1/object/public/generated-images/${fileName}`;
 
             // Step 3: If post_to is set, post to social after generation
             let posted = [];
