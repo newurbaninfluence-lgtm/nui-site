@@ -302,8 +302,58 @@ async function hydrateFromBackend() {
             hydrated++;
         }
 
-        _lastSyncTime = new Date().toISOString();
-        localStorage.setItem('nui_last_backend_sync', _lastSyncTime);
+        // Hydrate Monty-created jobs from Supabase jobs table → merge into projects
+        try {
+            const jobsRes = await fetch(`${window.SUPABASE_URL || ''}/rest/v1/jobs?order=created_at.desc&limit=100`, {
+                headers: {
+                    'apikey': window.SUPABASE_ANON_KEY || '',
+                    'Authorization': `Bearer ${window.SUPABASE_ANON_KEY || ''}`
+                }
+            });
+            if (jobsRes.ok) {
+                const jobs = await jobsRes.json();
+                if (Array.isArray(jobs) && jobs.length > 0) {
+                    let added = 0;
+                    jobs.forEach(job => {
+                        // Check if already in projects array (by id or title+client match)
+                        const exists = projects.find(p => p._jobId === job.id || p.id === job.id);
+                        if (!exists) {
+                            projects.push({
+                                id: job.id,
+                                _jobId: job.id,
+                                _source: 'monty',
+                                name: job.title || job.client_name,
+                                clientId: null,
+                                clientName: job.client_name,
+                                package: job.type || 'Custom',
+                                type: job.type || 'Custom',
+                                services: (job.services || []).map(s => ({ name: s, price: 0 })),
+                                paymentPlan: 'standard',
+                                totalAmount: parseFloat(job.price) || 0,
+                                paidInstallments: 0,
+                                stage: job.status === 'new' ? 'Discovery' :
+                                       job.status === 'inprogress' ? 'Design' :
+                                       job.status === 'review' ? 'Review' :
+                                       job.status === 'done' ? 'Complete' : 'Discovery',
+                                notes: job.notes || '',
+                                timeTracked: 0,
+                                timerRunning: false,
+                                activityLog: [{ action: 'Created by Monty', timestamp: job.created_at }],
+                                createdAt: job.created_at
+                            });
+                            added++;
+                        }
+                    });
+                    if (added > 0) {
+                        localStorage.setItem('nui_projects', JSON.stringify(projects));
+                        console.log(`✅ Hydrated ${added} Monty jobs into projects`);
+                        hydrated++;
+                    }
+                }
+            }
+        } catch(jobErr) {
+            console.warn('Jobs hydration skipped:', jobErr.message);
+        }
         console.log(`✅ Hydrated ${hydrated} data types from backend`);
         return hydrated > 0;
     } catch (err) {
