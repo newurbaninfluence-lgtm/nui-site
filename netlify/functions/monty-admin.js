@@ -573,42 +573,40 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
             const GOOGLE_KEY = process.env.GOOGLE_AI_API_KEY;
             if (!GOOGLE_KEY) throw new Error('GOOGLE_AI_API_KEY not set in Netlify env vars');
 
-            // Use Gemini Imagen 3 to generate image
+            // Use Nano Banana 2 (Gemini 3.1 Flash Image) via generateContent
+            const model = 'gemini-3.1-flash-image-preview';
             const genRes = await nfetch(
-              `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${GOOGLE_KEY}`,
+              `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GOOGLE_KEY}`,
               {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                  instances: [{ prompt: d.prompt }],
-                  parameters: {
-                    sampleCount: 1,
-                    aspectRatio: d.width && d.height
-                      ? (d.width > d.height ? '16:9' : d.width === d.height ? '1:1' : '9:16')
-                      : '1:1',
-                    personGeneration: 'allow_adult'
-                  }
+                  contents: [{ parts: [{ text: d.prompt }] }],
+                  generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
                 })
               }
             );
             const genData = await genRes.json();
-            if (!genRes.ok) throw new Error(`Imagen generation failed: ${JSON.stringify(genData)}`);
+            if (!genRes.ok) throw new Error(`Nano Banana generation failed: ${JSON.stringify(genData.error || genData)}`);
 
-            // Gemini returns base64 — upload to a temp host via Supabase storage
-            const b64 = genData.predictions?.[0]?.bytesBase64Encoded;
-            if (!b64) throw new Error('No image returned from Imagen');
+            // Extract base64 image from response
+            const parts = genData.candidates?.[0]?.content?.parts || [];
+            const imgPart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
+            if (!imgPart?.inlineData?.data) throw new Error('No image returned from Nano Banana');
 
-            // Save to Supabase storage so we get a public URL
-            const imgBuffer = Buffer.from(b64, 'base64');
-            const fileName = `monty-gen-${Date.now()}.png`;
+            const b64 = imgPart.inlineData.data;
+            const mimeType = imgPart.inlineData.mimeType || 'image/png';
+            const ext = mimeType.includes('jpeg') ? 'jpg' : 'png';
             const SB_URL = process.env.SUPABASE_URL;
             const SB_KEY = process.env.SUPABASE_SERVICE_KEY;
+            const imgBuffer = Buffer.from(b64, 'base64');
+            const fileName = `monty-gen-${Date.now()}.${ext}`;
             const uploadRes = await nfetch(`${SB_URL}/storage/v1/object/generated-images/${fileName}`, {
               method: 'POST',
               headers: {
                 'Authorization': `Bearer ${SB_KEY}`,
                 'apikey': SB_KEY,
-                'Content-Type': 'image/png',
+              'Content-Type': mimeType,
                 'x-upsert': 'true'
               },
               body: imgBuffer
