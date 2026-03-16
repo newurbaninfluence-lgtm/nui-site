@@ -57,6 +57,14 @@ AVAILABLE ACTIONS (return as JSON array):
 11. add_note — Add a note/activity to a contact
     { "action": "add_note", "data": { "contact_id": "...", "client_name": "...", "note": "...", "type": "note|payment|meeting|call" } }
 
+12. write_blog_post — Write and publish a blog post to the NUI site
+    { "action": "write_blog_post", "data": { "title": "...", "topic": "...", "category": "Branding|Marketing|Design|Business|Detroit", "keywords": ["..."], "tone": "professional|casual|educational", "length": "short|medium|long" } }
+    Monty will generate the full post content using AI and publish it to Supabase.
+
+13. post_to_social — Post content to Facebook Page and/or Instagram
+    { "action": "post_to_social", "data": { "message": "...", "platform": "facebook|instagram|both", "image_url": "..." } }
+    For Instagram, image_url is required. For Facebook, message-only posts are fine.
+
 INDUSTRY OPTIONS: trades, marine, farming, manufacturing, bars, authors, apparel, tax, tech, events
 
 RULES:
@@ -406,6 +414,113 @@ exports.handler = async (event) => {
               })
             });
             results.push({ action: 'add_note', success: true, note: d.note?.slice(0, 50) });
+            break;
+          }
+
+          case 'write_blog_post': {
+            const d = action.data;
+            const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+            if (!ANTHROPIC_KEY) throw new Error('ANTHROPIC_API_KEY not set');
+
+            // Step 1: Generate blog content via Claude
+            const wordCount = d.length === 'long' ? 1200 : d.length === 'short' ? 400 : 700;
+            const blogPrompt = `Write a ${d.tone || 'professional'} blog post for New Urban Influence, a Detroit branding agency.
+
+Title: "${d.title || d.topic}"
+Topic: ${d.topic || d.title}
+Category: ${d.category || 'Branding'}
+Target keywords: ${(d.keywords || []).join(', ') || 'branding, Detroit, small business'}
+Word count: ~${wordCount} words
+
+Format the response as JSON only:
+{
+  "title": "final SEO title",
+  "excerpt": "2-sentence summary under 160 chars",
+  "content": "full HTML blog content with <h2>, <p>, <ul> tags",
+  "read_time": "X min read"
+}
+
+Content must be helpful, NUI-branded, and end with a soft CTA toward booking a strategy call.`;
+
+            const blogAI = await fetch('https://api.anthropic.com/v1/messages', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
+              body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 2000, messages: [{ role: 'user', content: blogPrompt }] })
+            });
+            const blogData = await blogAI.json();
+            let blogText = blogData.content?.[0]?.text || '';
+            const jsonMatch = blogText.match(/```(?:json)?\s*([\s\S]*?)```/) || blogText.match(/(\{[\s\S]*\})/);
+            let blogPost;
+            try { blogPost = JSON.parse(jsonMatch ? jsonMatch[1] : blogText); }
+            catch(e) { throw new Error('Blog content generation failed: invalid JSON from AI'); }
+
+            // Step 2: Save to Supabase blog_posts
+            const slug = (blogPost.title || d.title || d.topic).toLowerCase()
+              .replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').slice(0, 80);
+            const postId = 'blog_' + Date.now();
+            const row = {
+              id: postId, slug, title: blogPost.title || d.title,
+              excerpt: blogPost.excerpt || '', category: d.category || 'Branding',
+              image: d.image || '', author: 'Faren Young',
+              author_image: '', date: new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }),
+              read_time: blogPost.read_time || '5 min read',
+              content: blogPost.content || '', published: true,
+              updated_at: new Date().toISOString()
+            };
+            await sbFetch('blog_posts?on_conflict=id', {
+              method: 'POST',
+              headers: { 'Prefer': 'resolution=merge-duplicates' },
+              body: JSON.stringify(row)
+            });
+            results.push({ action: 'write_blog_post', success: true, id: postId, slug, title: row.title, url: `https://newurbaninfluence.com/blog/${slug}` });
+            break;
+          }
+
+          case 'post_to_social': {
+            const d = action.data;
+            const PAGE_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
+            const PAGE_ID = process.env.FB_PAGE_ID;
+            const IG_USER_ID = process.env.IG_USER_ID; // Instagram Business Account ID
+            if (!PAGE_TOKEN || !PAGE_ID) throw new Error('FB_PAGE_ACCESS_TOKEN and FB_PAGE_ID not set in Netlify env vars');
+
+            const platform = d.platform || 'facebook';
+            const posted = [];
+
+            // Facebook post
+            if (platform === 'facebook' || platform === 'both') {
+              const fbBody = { message: d.message, access_token: PAGE_TOKEN };
+              if (d.link) fbBody.link = d.link;
+              const fbRes = await fetch(`https://graph.facebook.com/v19.0/${PAGE_ID}/feed`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(fbBody)
+              });
+              const fbData = await fbRes.json();
+              if (!fbRes.ok) throw new Error(`Facebook post failed: ${fbData.error?.message || fbRes.status}`);
+              posted.push({ platform: 'facebook', post_id: fbData.id });
+            }
+
+            // Instagram post (requires image)
+            if ((platform === 'instagram' || platform === 'both') && d.image_url && IG_USER_ID) {
+              // Step 1: Create media container
+              const containerRes = await fetch(`https://graph.facebook.com/v19.0/${IG_USER_ID}/media`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image_url: d.image_url, caption: d.message, access_token: PAGE_TOKEN })
+              });
+              const containerData = await containerRes.json();
+              if (!containerRes.ok) throw new Error(`Instagram container failed: ${containerData.error?.message}`);
+              // Step 2: Publish container
+              const publishRes = await fetch(`https://graph.facebook.com/v19.0/${IG_USER_ID}/media_publish`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ creation_id: containerData.id, access_token: PAGE_TOKEN })
+              });
+              const publishData = await publishRes.json();
+              if (!publishRes.ok) throw new Error(`Instagram publish failed: ${publishData.error?.message}`);
+              posted.push({ platform: 'instagram', post_id: publishData.id });
+            } else if (platform === 'instagram' && !d.image_url) {
+              posted.push({ platform: 'instagram', skipped: true, reason: 'image_url required for Instagram' });
+            }
+
+            results.push({ action: 'post_to_social', success: true, posted });
             break;
           }
         }
