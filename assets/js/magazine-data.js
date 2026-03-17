@@ -1,5 +1,5 @@
 // NUI Magazine — Article Data
-// Version: 20260316v18
+// Version: 20260316v19
 // Validate before commit: node -e "new Function(require('fs').readFileSync(FILE,'utf8'))"
 
 const NUI_MAG = {
@@ -249,6 +249,64 @@ Watch the Built Heavy story below — then read the book.`,
         { initials: 'KW', name: 'K. Williams', date: 'March 2026', rating: 5, text: 'Faren Young writes with the kind of clarity that only comes from experience. Built Heavy is the book Detroit needed. The legacy thinking section is something every entrepreneur should read.' },
         { initials: 'JB', name: 'J. Brooks', date: 'March 2026', rating: 5, text: 'I\'ve read a lot of business books. Built Heavy is the first one that felt like it was written for people like me — not Silicon Valley, not the Ivy League. Detroit. Real life. Real pressure. Real results.' },
       ],
+    },
+    // ── ARTICLE 5: Sonya Meadows — BOSSTRESS® Author Feature
+    {
+      id: 'sonya-meadows-bosstress-2026',
+      slug: 'sonya-meadows-bosstress-detroit-author',
+      title: 'Sonya Meadows: From Detroit\'s West Side to Magic City\'s Stage to the BOSSTRESS® Movement',
+      dek: 'Author of *Finding Platinum: A Magic City Memoir* and *Game Over: Last Dance*, motivational speaker, and founder of BOSSTRESS® — Sonya Meadows turned her most raw chapters into a platform that empowers women nationwide.',
+      category: 'authors', categoryLabel: 'Author · Detroit',
+      author: 'NUI Editorial', publishedAt: '2026-03-18', readTime: '6 min read',
+      featured: true, premium: false, award: null,
+      heroImage: '/images/magazine/sonya-meadows-hero.jpg',
+      profileImage: '/images/magazine/sonya-meadows-profile.jpg',
+      profileBio: 'Detroit-born author, motivational speaker, and founder of BOSSTRESS®. Author of *Finding Platinum: A Magic City Memoir* and *Game Over: Last Dance*. As seen on TMZ, Hip-Hop Wired, Bossip, and Madame Noire.',
+      ownerBio: {
+        label: 'Author, Speaker & Founder — BOSSTRESS®',
+        headline: 'She Wrote the Chapter Nobody Else Would',
+        body: 'Born in Mount Clemens and raised on the streets of Detroit, Sonya Meadows discovered writing at 12. Decades later she\'s the author of two books, the founder of a movement, and a voice that\'s been featured on TMZ, Hip-Hop Wired, Bossip, and Madame Noire. She didn\'t just survive her story — she turned it into a blueprint.',
+        stats: [{ val: '2', label: 'Books Published' },{ val: 'TMZ', label: 'Media Feature' },{ val: 'HHW', label: 'Hip-Hop Wired' },{ val: 'Detroit', label: 'Born & Built' }],
+        tags: ['BOSSTRESS®', 'Author', 'Motivational Speaker', 'Detroit', 'Finding Platinum'],
+      },
+      tags: ['Detroit', 'Author', 'BOSSTRESS', 'Finding Platinum', 'Game Over', 'Motivational Speaker', 'Women Empowerment'],
+      body: `Some stories are too real to stay buried. Sonya Meadows decided early that hers wouldn't be.
+
+Born in Mount Clemens, Michigan and raised in poverty on Detroit's streets, Sonya discovered something at age 12 that would change the trajectory of her life: the power of writing. In a world that didn't offer her many options, she found one she could control — her own voice on a page.
+
+## Finding Platinum: The Book That Started It All
+
+In her debut memoir, *Finding Platinum: A Magic City Memoir*, Sonya pulls back the curtain on an era that most people only know through rumors and rap lyrics. As one of the first dancers at Atlanta's legendary Magic City gentlemen's club in the late 1980s and early '90s, she lived at the intersection of glamour and danger — surrounded by money, power, and the kind of heartbreak that doesn't make it into the highlight reel.
+
+The book is raw, honest, and unrelenting. It's a love story — not a romantic one, but a story about the love of survival, the love of self, and the cost of chasing a life that looks good from the outside but is quietly breaking you from within. Readers called it a page-turner that had them laughing in one chapter and crying in the next. That emotional range isn't an accident. It's the work of a writer who understands that truth — told fully — lands harder than fiction ever could.
+
+*Finding Platinum* is the first book in a trilogy.
+
+## Game Over: Last Dance
+
+Her second book, *Game Over: Last Dance*, continues the journey. Where *Finding Platinum* opened the door, *Game Over* walks through it — deeper into the evolution of a woman who refused to be defined by any single chapter of her life.
+
+## BOSSTRESS®: The Movement
+
+Out of her story, Sonya built something bigger than a book. BOSSTRESS® is her brand, her platform, and her mission — a movement built for women who are done playing small. It's the natural extension of everything she lived and wrote: the idea that a woman's most powerful chapters are often the ones she had to fight to write.
+
+As a motivational speaker, Sonya brings that same unfiltered energy to every stage. She doesn't deliver polished platitudes. She delivers lived truth — the kind that hits an audience somewhere real and doesn't let go.
+
+## As Seen On
+
+TMZ. Hip-Hop Wired. Bossip. Madame Noire. Sonya's story has crossed every media lane because it speaks to something universal: the will to rise, reinvent, and refuse to be boxed in.
+
+New Urban Influence is proud to feature Sonya Meadows as a member of the NUI Creator Network — a Detroit original who turned pressure into a platform.`,
+      business: {
+        name: 'Sonya Meadows — BOSSTRESS®', category: 'Author & Motivational Speaker',
+        phone: '', address: 'Detroit', city: 'Detroit', state: 'MI', zip: '',
+        website: 'sonyameadows.com', email: '', instagram: '',
+        rating: 5.0, reviewCount: 0, citationId: 'NUI-DET-2026-0004',
+        verifiedDate: 'March 2026', verifiedUrl: 'https://sonyameadows.com',
+        sameAs: ['TMZ', 'Hip-Hop Wired', 'Bossip', 'Madame Noire', 'Amazon'],
+        services: ['Finding Platinum: A Magic City Memoir','Game Over: Last Dance','Motivational Speaking','BOSSTRESS® Brand','Women Empowerment Programs','Author Appearances'],
+      },
+      reviews: [],
     },
   ],
 
