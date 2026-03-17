@@ -1,5 +1,5 @@
 // NUI Magazine — Index Page JS
-// Version: 20260316v14
+// Version: 20260316v15
 
 (function() {
   'use strict';
@@ -66,8 +66,8 @@
 
   // ── Render article grids ─────────────────────────
   function renderGrids(cat) {
-    const featured = NUI_MAG.getFeatured().slice(0, 3);
-    const articles = cat === 'all' ? NUI_MAG.getRecent(6) : NUI_MAG.getByCategory(cat);
+    const featured = NUI_MAG.getFeatured().slice(0, 6);
+    const articles = cat === 'all' ? NUI_MAG.getRecent(24) : NUI_MAG.getByCategory(cat);
 
     const fg = document.getElementById('featuredGrid');
     const ag = document.getElementById('articlesGrid');
