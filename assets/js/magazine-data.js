@@ -1,5 +1,5 @@
 // NUI Magazine — Article Data
-// Version: 20260316v19
+// Version: 20260316v20
 // Validate before commit: node -e "new Function(require('fs').readFileSync(FILE,'utf8'))"
 
 const NUI_MAG = {
@@ -305,6 +305,60 @@ New Urban Influence is proud to feature Sonya Meadows as a member of the NUI Cre
         verifiedDate: 'March 2026', verifiedUrl: 'https://sonyameadows.com',
         sameAs: ['TMZ', 'Hip-Hop Wired', 'Bossip', 'Madame Noire', 'Amazon'],
         services: ['Finding Platinum: A Magic City Memoir','Game Over: Last Dance','Motivational Speaking','BOSSTRESS® Brand','Women Empowerment Programs','Author Appearances'],
+      },
+      reviews: [],
+    },
+    // ── ARTICLE 6: Keith Jackson — Deep Drama Design Lab
+    {
+      id: 'keith-jackson-deep-drama-design-2026',
+      slug: 'keith-jackson-deep-drama-design-detroit',
+      title: 'Keith Jackson Is the Set Doctor: Detroit\'s Master of Stage Design and Theatrical Production',
+      dek: 'For over a decade, O. Keith Jackson — dubbed "The Set Doctor" by the late Ron Milner — has built and transformed elaborate stage sets for some of the country\'s biggest touring theatre productions. Deep Drama Design Lab is his Detroit-born legacy.',
+      category: 'creators', categoryLabel: 'Stage Designer · Detroit',
+      author: 'NUI Editorial', publishedAt: '2026-03-18', readTime: '5 min read',
+      featured: true, premium: false, award: null,
+      heroImage: '/images/magazine/keith-jackson-hero.jpg',
+      profileImage: '/images/magazine/keith-jackson-profile.jpg',
+      profileBio: 'Detroit native. CEO and Creative Director of Deep Drama Design Lab. Stage and set designer for nationally touring theatre productions. Known as "The Set Doctor."',
+      ownerBio: {
+        label: 'CEO & Creative Director — Deep Drama Design Lab',
+        headline: 'The Set Doctor Detroit Built',
+        body: 'O. Keith Jackson has spent over a decade designing and building elaborately detailed sets for nationally touring theatre productions. Dubbed "The Set Doctor" by the late, internationally renowned playwright Ron Milner, Jackson has earned a reputation for not just building dynamic sets — but rescuing and elevating sets built by others.',
+        stats: [{ val: '10+', label: 'Years in Production' },{ val: 'T.D. Jakes', label: 'Enterprise Client' },{ val: 'Detroit', label: 'Born & Built' },{ val: 'Atlanta + Detroit', label: 'Markets Served' }],
+        tags: ['Stage Design', 'Set Design', 'Theatre', 'Detroit', 'Event Design', 'Deep Drama'],
+      },
+      tags: ['Detroit', 'Stage Design', 'Set Design', 'Theatre Production', 'Event Design', 'Keith Jackson'],
+      body: `There is a certain kind of creative who doesn't just make things look good — they make them unforgettable. O. Keith Jackson is that kind of creative. And Detroit built him.
+
+As the CEO and Creative Director of Deep Drama Design Lab, Jackson has spent more than a decade doing something most people don't even know is a profession: building the worlds that live theatre inhabits. The elaborate sets. The environments that make an audience forget they're sitting in a venue and believe they're somewhere else entirely.
+
+## The Set Doctor
+
+He didn't give himself that nickname. The late Ron Milner — internationally renowned playwright and one of the founding figures of Detroit's Black Arts Movement — called him that. "The Set Doctor." It stuck because it's accurate.
+
+Jackson doesn't just design sets from scratch. He diagnoses them. When a production's existing set isn't working — when something is off, when the world doesn't feel right — production teams call Jackson. He comes in, reads what's broken, and fixes it. His ability to improve sets built by others is as much his reputation as his original work.
+
+## The Productions
+
+The list speaks for itself. Jackson has designed and built sets for some of the country's most successful touring productions, including *Woman Thou Art Loosed* and productions under the banner of T.D. Jakes Enterprise and David E. Talbert Presents — names that represent the top tier of Black theatre in America.
+
+His style, according to those who've worked with him, is often imitated but never duplicated. That's not a boast — it's an industry observation.
+
+## Detroit to Atlanta and Back
+
+Deep Drama Design Lab operates across two markets — Detroit, MI and Atlanta, GA — which puts Jackson at the intersection of the two cities that drive Black theatrical production in America. His address on Detroit's Grand River Avenue keeps him rooted in the city that shaped his eye and his standard.
+
+The company's tagline says it plainly: *"We Can See It."* That's the gift. Before the lumber is cut or the paint is applied, Jackson sees the finished world. That's what makes him the Set Doctor — and that's what makes Deep Drama Design Lab one of Detroit's most singular creative enterprises.
+
+New Urban Influence is proud to feature Keith Jackson and Deep Drama Design Lab as a member of the NUI Creator Network.`,
+      business: {
+        name: 'Deep Drama Design Lab', category: 'Stage & Set Design / Event Design',
+        phone: '(248) 254-2513', address: '9955 Grand River Ave', city: 'Detroit', state: 'MI', zip: '48204',
+        website: 'deepdramadesigns.com', email: 'deepdramaevents@gmail.com', instagram: '@deepdramaevents',
+        rating: 5.0, reviewCount: 0, citationId: 'NUI-DET-2026-0005',
+        verifiedDate: 'March 2026', verifiedUrl: 'https://www.deepdramadesigns.com',
+        sameAs: ['Facebook', 'Instagram', 'Houzz'],
+        services: ['Stage Set Design','Set Construction','Set Restoration & Improvement','Event Design','Custom Furniture Rental','Theatrical Production Support','Corporate Event Design','Atlanta & Detroit Markets'],
       },
       reviews: [],
     },
