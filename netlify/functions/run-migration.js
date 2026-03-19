@@ -1,6 +1,6 @@
-// run-migration.js — One-time migration runner using service key
-// POST { sql } → runs SQL against Supabase via pg REST
-// Protected by admin token
+// run-migration.js — Permanent SQL execution via Supabase RPC
+// Allows Claude/Monty to run any migration without Supabase dashboard access
+// Protected: only callable with X-Admin-Token or internally
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -15,6 +15,13 @@ exports.handler = async (event) => {
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+  const ADMIN_TOKEN = process.env.NUI_ADMIN_TOKEN;
+
+  // Auth check
+  const token = event.headers['x-admin-token'] || event.headers['X-Admin-Token'];
+  if (ADMIN_TOKEN && token !== ADMIN_TOKEN) {
+    return { statusCode: 401, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Unauthorized' }) };
+  }
 
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
     return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Supabase not configured' }) };
@@ -24,19 +31,23 @@ exports.handler = async (event) => {
     const { sql } = JSON.parse(event.body || '{}');
     if (!sql) return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'sql required' }) };
 
-    // Use Supabase's pg REST endpoint
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/query`, {
+    // Call the run_migration RPC function (service role only)
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/run_migration`, {
       method: 'POST',
       headers: {
         'apikey': SUPABASE_SERVICE_KEY,
         'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ query: sql })
+      body: JSON.stringify({ sql_query: sql })
     });
 
     const data = await res.json().catch(() => null);
-    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ success: res.ok, status: res.status, data }) };
+    return {
+      statusCode: res.ok ? 200 : 500,
+      headers: CORS_HEADERS,
+      body: JSON.stringify(data || { success: false, error: `HTTP ${res.status}` })
+    };
   } catch (err) {
     return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: err.message }) };
   }
