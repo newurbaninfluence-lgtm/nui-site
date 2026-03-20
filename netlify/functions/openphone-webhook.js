@@ -69,6 +69,25 @@ async function logActivity(contactId, type, direction, content, metadata) {
   });
 }
 
+// Also write to communications table so CRM Conversations panel shows Quo data
+async function logCommunication(contactId, channel, direction, message, metadata) {
+  const internalTypes = ['sona_summary', 'transcript', 'recording', 'call_ringing'];
+  if (internalTypes.includes(channel)) return; // don't clutter comms with internal events
+  await fetch(`${SUPABASE_URL}/rest/v1/communications`, {
+    method: 'POST',
+    headers: { ...supaHeaders, 'Prefer': 'return=minimal' },
+    body: JSON.stringify({
+      channel,
+      direction,
+      message: message || '',
+      client_id: contactId,
+      metadata: metadata || {},
+      read: false,
+      created_at: new Date().toISOString(),
+    })
+  });
+}
+
 async function touchContact(contactId) {
   await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contactId}`, {
     method: 'PATCH',
@@ -169,14 +188,9 @@ async function handleMessageReceived(obj) {
   const contact = await ensureContact(phone, 'quo_text');
   if (!contact) return { action: 'message_received_no_phone' };
 
-  await logActivity(contact.id, 'text', 'inbound', obj.body || '', {
-    quo_message_id: obj.id,
-    from: obj.from,
-    to: obj.to,
-    media: obj.media || [],
-    conversation_id: obj.conversationId,
-    phone_number_id: obj.phoneNumberId,
-  });
+  const msgMeta = { quo_message_id: obj.id, from: obj.from, to: obj.to, media: obj.media || [], conversation_id: obj.conversationId, phone_number_id: obj.phoneNumberId };
+  await logActivity(contact.id, 'text', 'inbound', obj.body || '', msgMeta);
+  await logCommunication(contact.id, 'sms', 'inbound', obj.body || '', msgMeta);
   await touchContact(contact.id);
   return { action: 'message_received', contactId: contact.id };
 }
@@ -186,13 +200,9 @@ async function handleMessageDelivered(obj) {
   const contact = await ensureContact(phone, 'quo_text');
   if (!contact) return { action: 'message_delivered_no_phone' };
 
-  await logActivity(contact.id, 'text', 'outbound', obj.body || '', {
-    quo_message_id: obj.id,
-    from: obj.from,
-    to: obj.to,
-    status: obj.status,
-    conversation_id: obj.conversationId,
-  });
+  const delivMeta = { quo_message_id: obj.id, from: obj.from, to: obj.to, status: obj.status, conversation_id: obj.conversationId };
+  await logActivity(contact.id, 'text', 'outbound', obj.body || '', delivMeta);
+  await logCommunication(contact.id, 'sms', 'outbound', obj.body || '', delivMeta);
   await touchContact(contact.id);
   return { action: 'message_delivered', contactId: contact.id };
 }
@@ -229,20 +239,9 @@ async function handleCallCompleted(obj) {
     ? `${dirLabel} call — ${durationDisplay}`
     : `${dirLabel} call — missed/unanswered`;
 
-  await logActivity(contact.id, 'call', obj.direction === 'incoming' ? 'inbound' : 'outbound', content, {
-    quo_call_id: obj.id,
-    from: obj.from,
-    to: obj.to,
-    direction: obj.direction,
-    status: obj.status,
-    answered: wasAnswered,
-    duration_seconds: durationSec,
-    created_at: obj.createdAt,
-    answered_at: obj.answeredAt,
-    completed_at: obj.completedAt,
-    voicemail: obj.voicemail,
-    conversation_id: obj.conversationId,
-  });
+  const callMeta = { quo_call_id: obj.id, from: obj.from, to: obj.to, direction: obj.direction, status: obj.status, answered: wasAnswered, duration_seconds: durationSec, created_at: obj.createdAt, answered_at: obj.answeredAt, completed_at: obj.completedAt, voicemail: obj.voicemail, conversation_id: obj.conversationId };
+  await logActivity(contact.id, 'call', obj.direction === 'incoming' ? 'inbound' : 'outbound', content, callMeta);
+  await logCommunication(contact.id, 'call', obj.direction === 'incoming' ? 'inbound' : 'outbound', content, callMeta);
   await touchContact(contact.id);
   return { action: 'call_completed', contactId: contact.id, answered: wasAnswered, duration: durationSec };
 }
