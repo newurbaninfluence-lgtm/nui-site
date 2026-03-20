@@ -260,30 +260,27 @@ function getFilteredContacts() {
   return list;
 }
 
+// ── Shared helpers (module-level so both table and drawer can use them) ───────
+const _chStatusColors = {
+  new_lead:  { bg: '#f59e0b20', color: '#f59e0b', label: 'New Lead' },
+  contacted: { bg: '#3b82f620', color: '#3b82f6', label: 'Contacted' },
+  qualified: { bg: '#10b98120', color: '#10b981', label: 'Qualified' },
+  client:    { bg: '#8b5cf620', color: '#8b5cf6', label: 'Client' },
+  lost:      { bg: '#ef444420', color: '#ef4444', label: 'Lost' }
+};
+const sentimentColors = { excited: '#10b981', warm: '#f59e0b', neutral: '#6b7280', hesitant: '#f97316', frustrated: '#ef4444' };
+const sentimentEmoji  = { excited: '🔥', warm: '😊', neutral: '😐', hesitant: '🤔', frustrated: '😤' };
+function scoreBar(score) {
+  if (!score) return '<span style="color:rgba(255,255,255,0.2);font-size:11px;">—</span>';
+  const pct = (score / 10) * 100;
+  const color = score >= 7 ? '#10b981' : score >= 4 ? '#f59e0b' : '#ef4444';
+  return `<div style="display:flex;align-items:center;gap:5px;"><div style="width:50px;height:5px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;"><div style="width:${pct}%;height:100%;background:${color};border-radius:3px;"></div></div><span style="font-size:11px;color:${color};font-weight:700;">${score}/10</span></div>`;
+}
+
 // ── Table Renderer ───────────────────────────
 function renderContactTable(contacts) {
-  const statusColors = {
-    new_lead:  { bg: '#f59e0b20', color: '#f59e0b', label: 'New Lead' },
-    contacted: { bg: '#3b82f620', color: '#3b82f6', label: 'Contacted' },
-    qualified: { bg: '#10b98120', color: '#10b981', label: 'Qualified' },
-    client:    { bg: '#8b5cf620', color: '#8b5cf6', label: 'Client' },
-    lost:      { bg: '#ef444420', color: '#ef4444', label: 'Lost' }
-  };
+  const statusColors = _chStatusColors;
   const sourceIcons = { quo_call: '📞', quo_text: '💬', website_form: '🌐', manual: '✏️', referral: '🤝', csv_import: '📄', sona_chat: '🤖', monty_chat: '💬' };
-  const sentimentColors = { excited: '#10b981', warm: '#f59e0b', neutral: '#6b7280', hesitant: '#f97316', frustrated: '#ef4444' };
-  const sentimentEmoji  = { excited: '🔥', warm: '😊', neutral: '😐', hesitant: '🤔', frustrated: '😤' };
-
-  function scoreBar(score) {
-    if (!score) return '<span style="color:rgba(255,255,255,0.2);font-size:11px;">—</span>';
-    const pct = (score / 10) * 100;
-    const color = score >= 7 ? '#10b981' : score >= 4 ? '#f59e0b' : '#ef4444';
-    return `<div style="display:flex;align-items:center;gap:5px;">
-      <div style="width:50px;height:5px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;">
-        <div style="width:${pct}%;height:100%;background:${color};border-radius:3px;"></div>
-      </div>
-      <span style="font-size:11px;color:${color};font-weight:700;">${score}/10</span>
-    </div>`;
-  }
 
   return `<div style="overflow-x:auto;border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
 <table class="ch-table">
