@@ -19,6 +19,10 @@
 [functions."sms-drip"]
   schedule = "*/5 * * * *"
 
+# Monty follow-up + dormant reactivation — runs every hour
+[functions."monty-followup"]
+  schedule = "0 * * * *"
+
 # ── NUI MAGAZINE ROUTES ──────────────────────────────────────
 
 # Legal pages — required for Meta App Review

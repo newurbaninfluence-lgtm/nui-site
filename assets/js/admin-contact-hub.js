@@ -263,13 +263,27 @@ function getFilteredContacts() {
 // ── Table Renderer ───────────────────────────
 function renderContactTable(contacts) {
   const statusColors = {
-    new_lead: { bg: '#f59e0b20', color: '#f59e0b', label: 'New Lead' },
+    new_lead:  { bg: '#f59e0b20', color: '#f59e0b', label: 'New Lead' },
     contacted: { bg: '#3b82f620', color: '#3b82f6', label: 'Contacted' },
     qualified: { bg: '#10b98120', color: '#10b981', label: 'Qualified' },
-    client: { bg: '#8b5cf620', color: '#8b5cf6', label: 'Client' },
-    lost: { bg: '#ef444420', color: '#ef4444', label: 'Lost' }
+    client:    { bg: '#8b5cf620', color: '#8b5cf6', label: 'Client' },
+    lost:      { bg: '#ef444420', color: '#ef4444', label: 'Lost' }
   };
   const sourceIcons = { quo_call: '📞', quo_text: '💬', website_form: '🌐', manual: '✏️', referral: '🤝', csv_import: '📄', sona_chat: '🤖', monty_chat: '💬' };
+  const sentimentColors = { excited: '#10b981', warm: '#f59e0b', neutral: '#6b7280', hesitant: '#f97316', frustrated: '#ef4444' };
+  const sentimentEmoji  = { excited: '🔥', warm: '😊', neutral: '😐', hesitant: '🤔', frustrated: '😤' };
+
+  function scoreBar(score) {
+    if (!score) return '<span style="color:rgba(255,255,255,0.2);font-size:11px;">—</span>';
+    const pct = (score / 10) * 100;
+    const color = score >= 7 ? '#10b981' : score >= 4 ? '#f59e0b' : '#ef4444';
+    return `<div style="display:flex;align-items:center;gap:5px;">
+      <div style="width:50px;height:5px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;">
+        <div style="width:${pct}%;height:100%;background:${color};border-radius:3px;"></div>
+      </div>
+      <span style="font-size:11px;color:${color};font-weight:700;">${score}/10</span>
+    </div>`;
+  }
 
   return `<div style="overflow-x:auto;border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
 <table class="ch-table">
@@ -278,9 +292,10 @@ function renderContactTable(contacts) {
   <th>Business</th>
   <th>Phone</th>
   <th>Source</th>
+  <th>Score</th>
+  <th>Sentiment</th>
   <th>Status</th>
   <th>Last Activity</th>
-  <th>Sona</th>
   <th>Actions</th>
 </tr></thead>
 <tbody>
@@ -307,9 +322,10 @@ ${contacts.map(c => {
     <td style="font-size:13px;color:rgba(255,255,255,0.6);">${safeCompany || '<span style="color:rgba(255,255,255,0.15);">—</span>'}</td>
     <td style="font-size:13px;font-family:monospace;color:rgba(255,255,255,0.7);">${safePhone || '—'}</td>
     <td><span style="font-size:16px;" title="${_chEsc(c.source) || 'unknown'}">${sourceIcons[c.source] || '❓'}</span></td>
+    <td>${scoreBar(c.lead_score || 0)}</td>
+    <td>${c.sentiment ? `<span style="font-size:13px;" title="${c.sentiment}">${sentimentEmoji[c.sentiment] || '😐'} <span style="font-size:11px;color:${sentimentColors[c.sentiment] || '#6b7280'};">${c.sentiment}</span></span>` : '<span style="color:rgba(255,255,255,0.2);">—</span>'}</td>
     <td><span class="ch-badge" style="background:${st.bg};color:${st.color};">${st.label}</span></td>
     <td style="font-size:12px;color:rgba(255,255,255,0.45);">${lastAct ? formatHubTime(lastAct.created_at) : '—'}</td>
-    <td>${c.sona_qualified ? '<span style="color:#10b981;font-size:16px;" title="Sona qualified">✅</span>' : '<span style="color:rgba(255,255,255,0.2);">—</span>'}</td>
     <td>
       <div style="display:flex;gap:4px;" onclick="event.stopPropagation();">
         ${c.phone ? '<button onclick="hubQuickCall(\'' + safePhone + '\')" style="padding:4px 8px;background:#8b5cf620;border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="Call">📞</button>' : ''}
@@ -457,6 +473,39 @@ function renderContactDrawer(contactId) {
     </div>
     <button onclick="closeContactDrawer()" style="background:none;border:none;color:#fff;font-size:24px;cursor:pointer;padding:4px;">✕</button>
   </div>
+
+  <!-- Lead Score + Sentiment bar -->
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;padding:12px;background:#202020;border-radius:8px;">
+    <div style="flex:1;">
+      <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">Lead Score</div>
+      ${scoreBar(c.lead_score || 0)}
+    </div>
+    <div style="flex:1;">
+      <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">Sentiment</div>
+      <div style="font-size:13px;">${c.sentiment ? `${sentimentEmoji[c.sentiment] || '😐'} <span style="color:${sentimentColors[c.sentiment] || '#6b7280'};">${c.sentiment}</span>` : '<span style="color:rgba(255,255,255,0.2);">Not analyzed yet</span>'}</div>
+    </div>
+    <div style="flex:1;">
+      <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;">Follow-up Stage</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);">${c.followup_stage > 0 ? `Stage ${c.followup_stage}/3` : c.calendly_sent ? '📅 Calendly sent' : 'None yet'}</div>
+    </div>
+  </div>
+
+  <!-- BANT Intelligence -->
+  ${(c.bant_need || c.bant_budget || c.bant_authority || c.bant_timeline) ? `
+  <div style="background:#1a1a2e;border:1px solid rgba(59,130,246,0.2);border-radius:8px;padding:12px;margin-bottom:16px;">
+    <div style="font-size:11px;font-weight:700;color:#3b82f6;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">🎯 BANT Intelligence</div>
+    ${c.bant_need      ? `<div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px;"><strong style="color:rgba(255,255,255,0.4);">Need:</strong> ${_chEsc(c.bant_need)}</div>` : ''}
+    ${c.bant_budget    ? `<div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px;"><strong style="color:rgba(255,255,255,0.4);">Budget:</strong> ${_chEsc(c.bant_budget)}</div>` : ''}
+    ${c.bant_authority ? `<div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px;"><strong style="color:rgba(255,255,255,0.4);">Authority:</strong> ${_chEsc(c.bant_authority)}</div>` : ''}
+    ${c.bant_timeline  ? `<div style="font-size:12px;color:rgba(255,255,255,0.7);"><strong style="color:rgba(255,255,255,0.4);">Timeline:</strong> ${_chEsc(c.bant_timeline)}</div>` : ''}
+  </div>
+  ` : ''}
+
+  ${c.interest_tags?.length ? `
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+    ${c.interest_tags.map(t => `<span style="padding:3px 10px;background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);color:#ef4444;border-radius:100px;font-size:11px;font-weight:600;">#${_chEsc(t)}</span>`).join('')}
+  </div>
+  ` : ''}
 
   <!-- Status Bar -->
   <div style="display:flex;gap:6px;margin-bottom:16px;align-items:center;">
