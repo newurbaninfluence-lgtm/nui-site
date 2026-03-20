@@ -196,18 +196,50 @@ exports.handler = async function(event) {
       if (cleanPhone.length === 10) cleanPhone = '+1' + cleanPhone;
       else if (cleanPhone.length === 11 && cleanPhone.startsWith('1')) cleanPhone = '+' + cleanPhone;
 
-      // Look up contact
+      // Try to extract name from the SMS body (e.g. "Hey this is John Smith")
+      function extractNameFromText(text) {
+        if (!text) return null;
+        const patterns = [
+          /(?:this is|i'm|i am|my name is|name'?s|it's|its)\s+([A-Z][a-z]+(?: [A-Z][a-z]+)?)/i,
+          /^([A-Z][a-z]+(?: [A-Z][a-z]+)?)\s+(?:here|calling|texting)/i,
+        ];
+        for (const p of patterns) {
+          const m = text.match(p);
+          if (m) return m[1].trim();
+        }
+        return null;
+      }
+      const extractedName = extractNameFromText(incomingMessage);
+
+      // Look up contact — try multiple phone formats
+      const digits = cleanPhone.replace(/\D/g, '').slice(-10);
+      const formats = [cleanPhone, `+1${digits}`, digits, `1${digits}`];
+      const orFilter = formats.map(f => `phone.eq.${encodeURIComponent(f)}`).join(',');
       const contactRes = await fetch(
-        `${SUPABASE_URL}/rest/v1/crm_contacts?phone=eq.${encodeURIComponent(cleanPhone)}&limit=1`,
+        `${SUPABASE_URL}/rest/v1/crm_contacts?or=(${orFilter})&select=*&limit=1`,
         { headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}` } }
       );
       const contacts = await contactRes.json();
-      
+
       if (contacts && contacts.length > 0) {
         const c = contacts[0];
         contactId = c.id;
+
+        // If we extracted a name from this text and the contact has no name, update it
+        if (extractedName && !c.first_name) {
+          const parts = extractedName.split(' ');
+          const nameUpdate = { first_name: parts[0], last_name: parts.slice(1).join(' ') || null, last_activity_at: new Date().toISOString() };
+          await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${c.id}`, {
+            method: 'PATCH',
+            headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+            body: JSON.stringify(nameUpdate)
+          }).catch(() => {});
+          c.first_name = nameUpdate.first_name;
+          c.last_name = nameUpdate.last_name;
+        }
+
         clientContext = `CLIENT FOUND:
-- Name: ${c.first_name || ''} ${c.last_name || ''}
+- Name: ${[c.first_name, c.last_name].filter(Boolean).join(' ') || extractedName || 'Not on file'}
 - Company: ${c.company || 'Not specified'}
 - Email: ${c.email || 'Not on file'}
 - Status: ${c.status || 'unknown'}
@@ -242,6 +274,35 @@ exports.handler = async function(event) {
           prints.forEach(p => {
             clientContext += `\n- ${p.product || p.item || 'Print order'} — Status: ${p.status || 'pending'} (Qty: ${p.quantity || 'N/A'})`;
           });
+        }
+      } else {
+        // Unknown number — auto-create a new CRM contact
+        const nameParts = extractedName ? extractedName.split(' ') : [];
+        const newContact = {
+          phone: cleanPhone,
+          first_name: nameParts[0] || null,
+          last_name: nameParts.slice(1).join(' ') || null,
+          source: 'quo_text',
+          status: 'new_lead',
+          last_activity_at: new Date().toISOString(),
+        };
+        const createRes = await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts`, {
+          method: 'POST',
+          headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+          body: JSON.stringify(newContact)
+        }).catch(() => null);
+        const created = createRes ? await createRes.json() : null;
+        if (Array.isArray(created) && created[0]) {
+          contactId = created[0].id;
+          clientContext = `NEW CONTACT AUTO-CREATED:
+- Phone: ${cleanPhone}
+- Name: ${extractedName || 'Unknown — not provided yet'}
+- Source: Inbound SMS (Quo)
+- Status: new_lead
+This is their first message. Treat them as a fresh inquiry.`;
+          console.log(`[Monty] New contact created: ${cleanPhone} → ${contactId}`);
+        } else {
+          clientContext = 'NEW INQUIRY — Phone not in CRM yet. Treat as a fresh lead.';
         }
       }
 
