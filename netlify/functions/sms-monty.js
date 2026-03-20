@@ -241,6 +241,7 @@ exports.handler = async function(event) {
     let contact = null;
     let contactId = null;
     let clientContext = 'NEW INQUIRY — Treat as a fresh lead.';
+    let conversationHistory = '';
 
     if (SUPABASE_URL && SUPABASE_KEY) {
       const sbHeaders = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` };
@@ -311,7 +312,6 @@ exports.handler = async function(event) {
         { headers: sbHeaders }
       );
       const history = await hRes.json();
-      let conversationHistory = '';
       if (history?.length > 0) {
         conversationHistory = '\n\nRECENT SMS THREAD (chronological — read before replying):';
         history.reverse().forEach(h => {
