@@ -33,10 +33,12 @@ exports.handler = async (event) => {
   };
 
   try {
-    // --- GET: Return all bookings ---
+    // --- GET: Return bookings (all or by date) ---
     if (event.httpMethod === 'GET') {
+      const params = event.queryStringParameters || {};
+      const dateFilter = params.date && params.date !== 'all' ? `&date=eq.${params.date}` : '';
       const resp = await fetch(
-        `${SUPABASE_URL}/rest/v1/meetings?select=*&order=date.asc,time.asc`,
+        `${SUPABASE_URL}/rest/v1/meetings?select=*&order=date.asc,time.asc${dateFilter}`,
         { headers }
       );
       const rows = await resp.json();
@@ -118,6 +120,41 @@ exports.handler = async (event) => {
       }
 
       const [meeting] = await resp.json();
+
+      // Auto-create CRM contact if booked from public page
+      if (dbRecord.source === 'booking_page' && dbRecord.client_phone) {
+        const phone = dbRecord.client_phone.replace(/\D/g,'');
+        const cleanPhone = phone.length === 10 ? `+1${phone}` : phone.length === 11 ? `+${phone}` : dbRecord.client_phone;
+        const nameParts = (dbRecord.client_name || '').split(' ');
+        // Check existing
+        const existing = await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?phone=eq.${encodeURIComponent(cleanPhone)}&select=id&limit=1`, { headers });
+        const contacts = await existing.json();
+        if (!contacts?.length) {
+          await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts`, {
+            method: 'POST',
+            headers: { ...headers, 'Prefer': 'return=minimal' },
+            body: JSON.stringify({
+              phone: cleanPhone,
+              first_name: nameParts[0] || null,
+              last_name: nameParts.slice(1).join(' ') || null,
+              email: dbRecord.client_email || null,
+              source: 'booking_page',
+              status: 'qualified',
+              lead_score: 8,
+              bant_need: dbRecord.service || null,
+              last_activity_at: new Date().toISOString()
+            })
+          }).catch(() => {});
+        } else {
+          // Update existing contact
+          await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contacts[0].id}`, {
+            method: 'PATCH',
+            headers: { ...headers, 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ status: 'qualified', lead_score: 8, last_activity_at: new Date().toISOString() })
+          }).catch(() => {});
+        }
+      }
+
       return {
         statusCode: 200,
         headers: CORS_HEADERS,

@@ -25,6 +25,17 @@
 
 # ── NUI MAGAZINE ROUTES ──────────────────────────────────────
 
+# Booking page
+[[redirects]]
+  from = "/book"
+  to = "/book.html"
+  status = 200
+
+[[redirects]]
+  from = "/booking"
+  to = "/book.html"
+  status = 200
+
 # Legal pages — required for Meta App Review
 [[redirects]]
   from = "/privacy-policy"

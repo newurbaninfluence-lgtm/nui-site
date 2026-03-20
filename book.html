@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Strategy Call — New Urban Influence</title>
+<meta name="description" content="Book a free 15-minute strategy call with New Urban Influence. Detroit's elite branding and design agency.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/icons/icon-192.png">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --red: #dc2626;
+    --bg: #0a0a0a;
+    --card: #141414;
+    --border: rgba(255,255,255,0.08);
+    --text: #ffffff;
+    --muted: rgba(255,255,255,0.45);
+    --green: #10b981;
+  }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  /* Header */
+  .header { padding: 20px 24px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+  .header img { width: 36px; height: 36px; border-radius: 8px; }
+  .header-text h1 { font-size: 15px; font-weight: 700; }
+  .header-text p { font-size: 12px; color: var(--muted); }
+
+  /* Layout */
+  .page { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  .hero { text-align: center; margin-bottom: 48px; }
+  .hero h2 { font-size: clamp(24px, 5vw, 36px); font-weight: 800; margin-bottom: 12px; }
+  .hero p { font-size: 16px; color: var(--muted); max-width: 480px; margin: 0 auto; line-height: 1.6; }
+  .badge { display: inline-block; background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3); color: var(--red); padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 700; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* Steps */
+  .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media(max-width: 640px) { .steps { grid-template-columns: 1fr; } }
+
+  .step-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+  .step-label { font-size: 11px; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .step-num { width: 22px; height: 22px; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; }
+
+  /* Calendar */
+  .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .cal-month { font-size: 15px; font-weight: 700; }
+  .cal-nav { background: none; border: 1px solid var(--border); color: var(--text); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .cal-nav:hover { background: rgba(255,255,255,0.06); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-day-label { text-align: center; font-size: 11px; color: var(--muted); font-weight: 600; padding: 4px 0; }
+  .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; position: relative; }
+  .cal-day:hover:not(.disabled):not(.empty) { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+  .cal-day.selected { background: var(--red); color: #fff; font-weight: 700; }
+  .cal-day.today { border-color: var(--red); color: var(--red); }
+  .cal-day.disabled { color: rgba(255,255,255,0.15); cursor: default; }
+  .cal-day.empty { cursor: default; }
+
+  /* Time slots */
+  .slots-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+  @media(max-width: 400px) { .slots-grid { grid-template-columns: repeat(2, 1fr); } }
+  .slot { padding: 10px 6px; text-align: center; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; color: var(--text); background: none; }
+  .slot:hover:not(.booked) { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
+  .slot.selected { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; }
+  .slot.booked { color: rgba(255,255,255,0.2); cursor: default; text-decoration: line-through; font-size: 11px; }
+  .slot-loading { text-align: center; color: var(--muted); font-size: 13px; padding: 20px 0; }
+  .no-date-msg { text-align: center; color: var(--muted); font-size: 13px; padding: 20px 0; }
+
+  /* Form */
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+    font-size: 14px; font-family: inherit; transition: border-color 0.15s; outline: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: rgba(255,255,255,0.25); }
+  .form-select option { background: #1a1a1a; }
+  .form-textarea { resize: vertical; min-height: 80px; }
+
+  /* Submit */
+  .btn-book { width: 100%; padding: 16px; background: var(--red); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit; transition: opacity 0.15s; margin-top: 8px; }
+  .btn-book:hover { opacity: 0.9; }
+  .btn-book:disabled { opacity: 0.4; cursor: default; }
+
+  /* Selection summary */
+  .selection-summary { background: rgba(220,38,38,0.08); border: 1px solid rgba(220,38,38,0.2); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; font-size: 13px; color: rgba(255,255,255,0.8); display: none; }
+  .selection-summary.show { display: block; }
+
+  /* Success */
+  .success-screen { text-align: center; padding: 60px 20px; display: none; }
+  .success-screen.show { display: block; }
+  .success-icon { font-size: 64px; margin-bottom: 20px; }
+  .success-screen h2 { font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+  .success-screen p { color: var(--muted); font-size: 16px; line-height: 1.6; max-width: 420px; margin: 0 auto 24px; }
+  .success-detail { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; max-width: 380px; margin: 0 auto 24px; text-align: left; }
+  .success-detail .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .success-detail .row:last-child { border-bottom: none; }
+  .success-detail .row span:first-child { color: var(--muted); }
+
+  /* Trust strip */
+  .trust-strip { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
+  .trust-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="header">
+  <img src="/icons/icon-192.png" alt="NUI">
+  <div class="header-text">
+    <h1>New Urban Influence</h1>
+    <p>Detroit · Branding & Design Agency</p>
+  </div>
+</div>
+
+<div class="page" id="bookingPage">
+  <div class="hero">
+    <div class="badge">Free Strategy Call</div>
+    <h2>Book Your 15-Minute Call</h2>
+    <p>Pick a time that works for you. No pressure — just a quick conversation about your brand goals.</p>
+  </div>
+
+  <div class="steps">
+    <!-- Step 1: Date + Time -->
+    <div class="step-card">
+      <div class="step-label"><span class="step-num">1</span> Pick a Date & Time</div>
+      <div class="cal-header">
+        <button class="cal-nav" id="prevMonth">‹</button>
+        <div class="cal-month" id="calMonth"></div>
+        <button class="cal-nav" id="nextMonth">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div style="margin-top:20px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Available Times (EST)</div>
+        <div id="slotsContainer"><div class="no-date-msg">← Select a date first</div></div>
+      </div>
+    </div>
+
+    <!-- Step 2: Your Info -->
+    <div class="step-card">
+      <div class="step-label"><span class="step-num">2</span> Your Info</div>
+      <div class="selection-summary" id="selectionSummary"></div>
+      <div class="form-group">
+        <label class="form-label">Full Name *</label>
+        <input type="text" class="form-input" id="clientName" placeholder="John Smith" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone *</label>
+        <input type="tel" class="form-input" id="clientPhone" placeholder="(313) 555-1234" autocomplete="tel">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" id="clientEmail" placeholder="you@business.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">What do you need help with?</label>
+        <select class="form-select" id="clientService">
+          <option value="">— Select a service —</option>
+          <option value="Brand Kit">Brand Kit — Logo, Colors, Fonts ($1,500)</option>
+          <option value="Service Brand Identity">Service Brand Identity — Full Collateral ($4,500)</option>
+          <option value="Product Brand Identity">Product Brand Identity — Packaging ($5,500)</option>
+          <option value="Website — Landing Page">Website — Landing Page ($1,200)</option>
+          <option value="Website — Business Site">Website — Business Site ($3,500)</option>
+          <option value="Website — Online Store">Website — Online Store ($5,500)</option>
+          <option value="Marketing Bundle">Marketing Bundle — Brand Ready/Loaded/Heavy</option>
+          <option value="Print Design">Print Design — Cards, Signs, Wraps</option>
+          <option value="Not Sure Yet">Not Sure Yet — Let's Talk</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Business Name</label>
+        <input type="text" class="form-input" id="clientBusiness" placeholder="Your business name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Anything else we should know?</label>
+        <textarea class="form-textarea" id="clientNotes" placeholder="Brief description, goals, budget range..."></textarea>
+      </div>
+      <button class="btn-book" id="btnBook" disabled>Reserve My Spot →</button>
+      <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--muted);">No credit card required · Free 15-minute call</div>
+    </div>
+  </div>
+
+  <div class="trust-strip">
+    <div class="trust-item">✅ No spam — just your booking confirmation</div>
+    <div class="trust-item">📞 Zoom or phone call — your choice</div>
+    <div class="trust-item">🔒 Your info stays private</div>
+  </div>
+</div>
+
+<!-- Success Screen -->
+<div class="page success-screen" id="successScreen">
+  <div class="success-icon">🎉</div>
+  <h2>You're Booked!</h2>
+  <p>We'll send a confirmation to your phone. See you soon.</p>
+  <div class="success-detail" id="successDetail"></div>
+  <p style="font-size:13px;color:var(--muted);">Have questions before the call? Text us at <a href="tel:+12484878747" style="color:var(--red);text-decoration:none;">(248) 487-8747</a></p>
+</div>
+
+<script>
+// ── Config ────────────────────────────────────────────────────────────────────
+const TIME_SLOTS = [
+  '9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM',
+  '12:00 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM',
+  '3:30 PM','4:00 PM','4:30 PM'
+];
+// Blocked days: 0=Sun, 6=Sat
+const BLOCKED_DAYS = [0, 6];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let currentDate   = new Date();
+let selectedDate  = null;
+let selectedTime  = null;
+let bookedSlots   = {}; // { 'YYYY-MM-DD': ['9:00 AM', ...] }
+let calYear       = currentDate.getFullYear();
+let calMonth      = currentDate.getMonth();
+
+// ── Calendar ──────────────────────────────────────────────────────────────────
+function renderCalendar() {
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('calMonth').textContent = `${monthNames[calMonth]} ${calYear}`;
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+
+  // Day labels
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'cal-day-label';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  // Empty cells
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day';
+    el.textContent = d;
+    const thisDate = new Date(calYear, calMonth, d);
+    thisDate.setHours(0,0,0,0);
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+
+    const isPast    = thisDate < today;
+    const isBlocked = BLOCKED_DAYS.includes(thisDate.getDay());
+    const isToday   = thisDate.getTime() === today.getTime();
+    const isSelected= selectedDate === dateStr;
+
+    if (isPast || isBlocked) {
+      el.classList.add('disabled');
+    } else {
+      if (isToday)    el.classList.add('today');
+      if (isSelected) el.classList.add('selected');
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => selectDate(dateStr));
+    }
+    grid.appendChild(el);
+  }
+}
+
+document.getElementById('prevMonth').addEventListener('click', () => {
+  calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+});
+document.getElementById('nextMonth').addEventListener('click', () => {
+  calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+});
+
+// ── Date Selection ────────────────────────────────────────────────────────────
+async function selectDate(dateStr) {
+  selectedDate = dateStr;
+  selectedTime = null;
+  renderCalendar();
+  renderSlots(dateStr);
+  updateSummary();
+  updateBookBtn();
+}
+
+async function renderSlots(dateStr) {
+  const container = document.getElementById('slotsContainer');
+  container.innerHTML = '<div class="slot-loading">Loading times...</div>';
+
+  // Fetch booked slots for this date if not cached
+  if (!bookedSlots[dateStr]) {
+    try {
+      const res = await fetch(`/.netlify/functions/save-booking?date=${dateStr}`);
+      const data = await res.json();
+      bookedSlots[dateStr] = (data.meetings || [])
+        .filter(m => m.date === dateStr && m.status !== 'canceled')
+        .map(m => m.time);
+    } catch (e) {
+      bookedSlots[dateStr] = [];
+    }
+  }
+
+  const booked = bookedSlots[dateStr] || [];
+  const grid = document.createElement('div');
+  grid.className = 'slots-grid';
+
+  TIME_SLOTS.forEach(slot => {
+    const btn = document.createElement('button');
+    btn.className = 'slot' + (booked.includes(slot) ? ' booked' : '');
+    btn.textContent = slot;
+    if (!booked.includes(slot)) {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedTime = slot;
+        updateSummary();
+        updateBookBtn();
+      });
+    }
+    grid.appendChild(btn);
+  });
+
+  container.innerHTML = '';
+  container.appendChild(grid);
+}
+
+// ── Summary + Button ──────────────────────────────────────────────────────────
+function updateSummary() {
+  const el = document.getElementById('selectionSummary');
+  if (selectedDate && selectedTime) {
+    const d = new Date(selectedDate + 'T12:00:00');
+    const formatted = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    el.textContent = `📅 ${formatted} at ${selectedTime} EST`;
+    el.classList.add('show');
+  } else {
+    el.classList.remove('show');
+  }
+}
+
+function updateBookBtn() {
+  document.getElementById('btnBook').disabled = !(selectedDate && selectedTime);
+}
+
+// ── Booking Submit ────────────────────────────────────────────────────────────
+document.getElementById('btnBook').addEventListener('click', async () => {
+  const name    = document.getElementById('clientName').value.trim();
+  const phone   = document.getElementById('clientPhone').value.trim();
+  const email   = document.getElementById('clientEmail').value.trim();
+  const service = document.getElementById('clientService').value;
+  const biz     = document.getElementById('clientBusiness').value.trim();
+  const notes   = document.getElementById('clientNotes').value.trim();
+
+  if (!name)  { alert('Please enter your name.'); document.getElementById('clientName').focus(); return; }
+  if (!phone) { alert('Please enter your phone number.'); document.getElementById('clientPhone').focus(); return; }
+  if (!selectedDate || !selectedTime) { alert('Please select a date and time.'); return; }
+
+  const btn = document.getElementById('btnBook');
+  btn.disabled = true;
+  btn.textContent = 'Booking...';
+
+  try {
+    const res = await fetch('/.netlify/functions/save-booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        clientName:  name,
+        clientPhone: phone,
+        clientEmail: email || null,
+        service:     service || 'Not specified',
+        notes:       [biz ? `Business: ${biz}` : '', notes].filter(Boolean).join('\n') || null,
+        date:        selectedDate,
+        time:        selectedTime,
+        type:        'zoom',
+        status:      'scheduled',
+        source:      'booking_page'
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || data.error || 'Booking failed');
+
+    // Also create/update CRM contact
+    fetch('/.netlify/functions/openphone-webhook', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'booking.created',
+        data: { object: {
+          from: phone, name, email, service, business: biz,
+          date: selectedDate, time: selectedTime
+        }}
+      })
+    }).catch(() => {});
+
+    // Send confirmation SMS via Monty
+    fetch('/.netlify/functions/send-sms', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: phone,
+        message: `Hey ${name.split(' ')[0]}! ✅ You're booked with NUI on ${new Date(selectedDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})} at ${selectedTime} EST. We'll send a Zoom link before the call. Questions? Text back or call (248) 487-8747. — NUI Team`
+      })
+    }).catch(() => {});
+
+    showSuccess(name, selectedDate, selectedTime, service);
+
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Reserve My Spot →';
+    if (err.message.includes('conflict') || err.message.includes('already booked')) {
+      alert(`That time slot just got taken! Please pick another time.`);
+      bookedSlots[selectedDate] = null; // clear cache
+      selectedTime = null;
+      renderSlots(selectedDate);
+      updateSummary();
+      updateBookBtn();
+    } else {
+      alert('Something went wrong: ' + err.message);
+    }
+  }
+});
+
+function showSuccess(name, dateStr, time, service) {
+  document.getElementById('bookingPage').style.display = 'none';
+  const screen = document.getElementById('successScreen');
+  screen.classList.add('show');
+
+  const d = new Date(dateStr + 'T12:00:00');
+  const formatted = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+  document.getElementById('successDetail').innerHTML = `
+    <div class="row"><span>Name</span><span>${name}</span></div>
+    <div class="row"><span>Date</span><span>${formatted}</span></div>
+    <div class="row"><span>Time</span><span>${time} EST</span></div>
+    <div class="row"><span>Format</span><span>Zoom (link sent via SMS)</span></div>
+    ${service ? `<div class="row"><span>Service</span><span>${service}</span></div>` : ''}
+  `;
+  window.scrollTo(0, 0);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+renderCalendar();
+</script>
+</body>
+</html>
