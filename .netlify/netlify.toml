@@ -25,6 +25,9 @@ functions = "/Users/farenyoung/nui-site/netlify/functions"
 
 [functions]
 
+[functions.og-image]
+included_files = ["netlify/functions/fonts/**"]
+
 [functions.holiday-drip]
 schedule = "0 14 * * *"
 
@@ -32,7 +35,42 @@ schedule = "0 14 * * *"
 schedule = "*/5 * * * *"
 
 [functions."*"]
+external_node_modules = ["web-push", "nodemailer"]
 node_bundler = "esbuild"
+
+[[headers]]
+for = "/.netlify/functions/og-image"
+
+[headers.values]
+Cache-Control = "public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400"
+Content-Type = "image/png"
+
+[[headers]]
+for = "/magazine/*"
+
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index, follow"
+
+[[headers]]
+for = "/magazine/sitemap.xml"
+
+[headers.values]
+Cache-Control = "public, max-age=3600, s-maxage=3600"
+Content-Type = "application/xml; charset=UTF-8"
+
+[[headers]]
+for = "/sitemap-index.xml"
+
+[headers.values]
+Cache-Control = "public, max-age=3600, s-maxage=3600"
+Content-Type = "application/xml; charset=UTF-8"
+
+[[headers]]
+for = "/images/badges/*"
+
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
 for = "/*"
@@ -42,6 +80,8 @@ X-Frame-Options = "DENY"
 X-Content-Type-Options = "nosniff"
 Referrer-Policy = "strict-origin-when-cross-origin"
 X-XSS-Protection = "1; mode=block"
+Permissions-Policy = "camera=(), microphone=(), geolocation=(self), payment=(self)"
+Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://js.stripe.com https://www.googletagmanager.com https://t.rb2b.com https://d.rb2b.com https://ddwl4m2hdecbv.cloudfront.net https://accounts.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https: http:; connect-src 'self' https://*.supabase.co https://api.stripe.com https://api.openphone.com https://api.anthropic.com https://api.pexels.com https://pixabay.com https://api.unsplash.com https://t.rb2b.com https://d.rb2b.com https://ddwl4m2hdecbv.cloudfront.net; frame-src https://js.stripe.com https://hooks.stripe.com; object-src 'none'; base-uri 'self'"
 
 [[headers]]
 for = "/icons/*"
@@ -60,6 +100,18 @@ for = "/*.css"
 
 [headers.values]
 Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
+
+[[headers]]
+for = "/assets/css/*"
+
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+for = "/assets/js/*"
+
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
 for = "/sw.js"
@@ -91,6 +143,78 @@ Cache-Control = "public, max-age=0, must-revalidate"
 from = "/work/good-cakes"
 to = "/work/good-cakes-and-bakes"
 status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/magazine"
+to = "/magazine/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/magazine/article"
+to = "/magazine/article.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/magazine/awards"
+to = "/magazine/awards.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/magazine/subscribe"
+to = "/magazine/subscribe.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/magazine/submit"
+to = "/magazine/submit.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/network"
+to = "/magazine/index.html"
+status = 200.0
 force = false
 
 [redirects.query]
@@ -209,7 +333,19 @@ force = false
 
 [[redirects]]
 from = "/portal"
-to = "/app/index.html"
+to = "/portal/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/portal/"
+to = "/portal/index.html"
 status = 200.0
 force = false
 
@@ -221,7 +357,7 @@ force = false
 
 [[redirects]]
 from = "/portal/*"
-to = "/app/index.html"
+to = "/portal/index.html"
 status = 200.0
 force = false
 
