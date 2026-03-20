@@ -1,6 +1,5 @@
-// NUI Service Worker — CLEANUP MODE
-// This version clears all old caches and stops intercepting requests.
-// Once Safari/mobile downloads this, the stale cached pages are gone forever.
+// NUI Service Worker — Cache Cleanup + Push Notifications
+// v20260321
 
 self.addEventListener('install', function() {
     self.skipWaiting();
@@ -18,7 +17,6 @@ self.addEventListener('activate', function(event) {
         }).then(function() {
             return self.clients.matchAll();
         }).then(function(clients) {
-            // Tell all open tabs to reload so they get fresh content
             clients.forEach(function(client) {
                 client.postMessage({ type: 'NUI_SW_CLEARED' });
             });
@@ -26,5 +24,64 @@ self.addEventListener('activate', function(event) {
     );
 });
 
-// NO fetch handler — all requests go directly to the network.
-// This ensures Safari/mobile always gets fresh content from the server.
+// NO fetch handler — all requests go directly to network for fresh content.
+
+// ── Push Notification Handler ─────────────────────────────────────────────────
+self.addEventListener('push', function(event) {
+    let data = {};
+    try {
+        data = event.data ? event.data.json() : {};
+    } catch(e) {
+        data = { title: 'New Urban Influence', body: event.data ? event.data.text() : 'You have a new message.' };
+    }
+
+    const title   = data.title || 'New Urban Influence';
+    const options = {
+        body:    data.body  || 'Check out what\'s new at NUI.',
+        icon:    data.icon  || '/icons/icon-192.png',
+        badge:   data.badge || '/icons/icon-72.png',
+        image:   data.image || null,
+        tag:     data.tag   || 'nui-notification',
+        data:    { url: data.url || 'https://newurbaninfluence.com' },
+        actions: data.actions || [
+            { action: 'view',    title: 'View' },
+            { action: 'dismiss', title: 'Dismiss' }
+        ],
+        requireInteraction: false,
+        vibrate: [200, 100, 200]
+    };
+
+    // Remove null image to avoid display issues
+    if (!options.image) delete options.image;
+
+    event.waitUntil(
+        self.registration.showNotification(title, options)
+    );
+});
+
+// ── Notification Click Handler ────────────────────────────────────────────────
+self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
+
+    if (event.action === 'dismiss') return;
+
+    const targetUrl = event.notification.data && event.notification.data.url
+        ? event.notification.data.url
+        : 'https://newurbaninfluence.com';
+
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(windowClients) {
+            // If a window is already open on the target URL, focus it
+            for (let i = 0; i < windowClients.length; i++) {
+                const client = windowClients[i];
+                if (client.url === targetUrl && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            // Otherwise open a new window
+            if (clients.openWindow) {
+                return clients.openWindow(targetUrl);
+            }
+        })
+    );
+});

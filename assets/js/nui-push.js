@@ -6,7 +6,7 @@
     'use strict';
 
     // ── Config ───────────────────────────────────────────────────
-    const VAPID_PUBLIC_KEY = 'BMAqcFUu-F4jDsPcT_MH0kGxQFoidPwu8qzLebXLJM2DQHEa7W3MIsUu_wM4nvOF25s82mPyeuCHbZEW8-WFBT4';
+    const VAPID_PUBLIC_KEY = 'BHX1swSI56wudpcQ9npOWXg1bf7LMQnoF_L1YbQhouv4gNOQ0aEki7mcu0f7mc0R-nRKBP5Kz1yhxQzoya_bH8s';
     const SUBSCRIBE_ENDPOINT = '/.netlify/functions/push-subscribe';
     const PROMPT_DELAY = 15000; // Show opt-in after 15 seconds
     const PROMPT_COOKIE = 'nui_push_prompted';
