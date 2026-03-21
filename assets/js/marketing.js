@@ -2830,10 +2830,9 @@ let aboutData = JSON.parse(localStorage.getItem('nui_about')) || {
     storyImage: 'images/about-story.png',
     team: [
         { name: 'Faren Young', title: 'Creative Director & Founder', bio: 'Martez Hand — widely known as the creative Faren Young — is a native Detroiter with 20+ years guiding businesses to success through bold design and strategic branding. From Bravo Graphix on the Avenue of Fashion to New Urban Influence, he builds empires.', photo: '' },
-        { name: 'Creative Team', title: 'Design & Development', bio: 'A network of skilled designers, developers, and strategists ready to bring your vision to life.', photo: '/images/creative-team.png' },
-        { name: 'Matt', title: 'Mobile Developer', bio: 'Full-stack mobile developer crafting seamless iOS and Android experiences with pixel-perfect precision.', photo: '' },
-        { name: 'Michelle', title: 'UI/UX Designer', bio: 'Bringing warmth and intuition to every interface. Michelle turns complex workflows into delightful user experiences.', photo: '' },
-        { name: 'You?', title: 'Join Our Team', bio: 'We\'re always looking for talented creatives who share our passion for bold design.', photo: '' }
+        { name: 'AJ Grant', title: 'Lead Photographer & Visual Partner', bio: 'AJ Grant is the lens behind Detroit\'s most iconic moments. With 36K followers and 229 Google reviews, AJ Photography Studio has been NUI\'s trusted visual partner — capturing the brands we build in their fullest light.', photo: '/images/magazine/aj-photography-profile.jpg' },
+        { name: 'Irish Montes', title: 'Brand Strategist & Creative', bio: 'Irish brings sharp creative instincts and a deep understanding of brand storytelling to every project. Her eye for design and strategy helps NUI clients connect with their audiences on a deeper level.', photo: '' },
+        { name: 'Monty Young', title: 'AI Brand Assistant', bio: 'Monty is NUI\'s custom-built AI assistant — trained on brand strategy, client history, and Detroit culture. Available 24/7, Monty handles inquiries, guides prospects, and keeps the brand engine running around the clock.', photo: '/images/creative-team.png' }
     ]
 };
 function saveAbout() {
