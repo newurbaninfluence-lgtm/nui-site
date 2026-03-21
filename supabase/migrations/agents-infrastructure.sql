@@ -31,9 +31,9 @@ CREATE TABLE IF NOT EXISTS content_drafts (
 );
 CREATE INDEX IF NOT EXISTS content_drafts_status_idx ON content_drafts(status);
 
--- ── Add auto_replied columns to submissions if not exists ──
-ALTER TABLE submissions ADD COLUMN IF NOT EXISTS auto_replied     boolean DEFAULT false;
-ALTER TABLE submissions ADD COLUMN IF NOT EXISTS auto_replied_at  timestamptz;
+-- ── Add auto_replied columns to form_submissions if not exists ──
+ALTER TABLE form_submissions ADD COLUMN IF NOT EXISTS auto_replied     boolean DEFAULT false;
+ALTER TABLE form_submissions ADD COLUMN IF NOT EXISTS auto_replied_at  timestamptz;
 
 -- ── RLS: service role only ──
 ALTER TABLE agent_logs     ENABLE ROW LEVEL SECURITY;

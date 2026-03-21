@@ -94,7 +94,7 @@ async function respondToForms() {
   const cutoff = new Date(Date.now() - 60 * 60 * 1000).toISOString(); // last 1 hour
 
   const subs = await sbFetch(
-    `submissions?auto_replied=is.null&created_at=gte.${cutoff}&order=created_at.asc&limit=10`
+    `form_submissions?auto_replied=is.null&created_at=gte.${cutoff}&order=created_at.asc&limit=10`
   ).catch(() => []);
 
   for (const sub of (subs || [])) {
@@ -125,7 +125,7 @@ async function respondToForms() {
       }
 
       // Mark as replied
-      await sbFetch(`submissions?id=eq.${sub.id}`, {
+      await sbFetch(`form_submissions?id=eq.${sub.id}`, {
         method: 'PATCH',
         body: JSON.stringify({ auto_replied: true, auto_replied_at: new Date().toISOString() })
       });
