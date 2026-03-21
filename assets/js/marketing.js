@@ -5446,6 +5446,35 @@ let blogPosts = JSON.parse(localStorage.getItem('nui_blog_posts')) || [
 let currentBlogPost = null;
 let blogAuthorImage = localStorage.getItem('nui_blog_author_image') || '';
 
+// ── Supabase constants for blog fetching ──────────────────────────────────────
+const _BLOG_SB_URL  = 'https://jcgvkyizoimwbolhfpta.supabase.co';
+const _BLOG_SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpjZ3ZreWl6b2ltd2JvbGhmcHRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMDMwMjQsImV4cCI6MjA4NTg3OTAyNH0.a8gjkPoUHQ1kgROa2Lqaq3252opqg5CPMm6vR3t1NOk';
+
+async function fetchPublishedBlogPosts() {
+  try {
+    const r = await fetch(`${_BLOG_SB_URL}/rest/v1/blog_posts?published=eq.true&order=created_at.desc&limit=50`, {
+      headers: { 'apikey': _BLOG_SB_ANON, 'Authorization': `Bearer ${_BLOG_SB_ANON}` }
+    });
+    const data = await r.json();
+    return (data || []).map(p => ({
+      id: `sb_${p.id}`, // prefix to distinguish from localStorage posts
+      sbId: p.id,
+      slug: p.slug,
+      title: p.title,
+      excerpt: p.excerpt || p.meta_description || '',
+      category: p.category || 'Branding',
+      image: p.image || '',
+      author: p.author || 'Faren Young',
+      authorImage: p.author_image || 'icons/icon-192.png',
+      date: p.date || new Date(p.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+      readTime: p.read_time || '5 min read',
+      content: p.content || '',
+      audio_url: p.audio_url || null,
+      ai_generated: p.ai_generated || false
+    }));
+  } catch { return []; }
+}
+
 function saveBlogPosts() { localStorage.setItem('nui_blog_posts', JSON.stringify(blogPosts)); }
 
 // ==================== BLOG SYNC (via Netlify function → service_role) ====================
@@ -5492,7 +5521,16 @@ async function syncAllBlogPostsToSupabase() {
     alert(`✅ ${synced} posts synced to live blog!`);
 }
 
-function loadAdminBlogPanel() {
+async function loadAdminBlogPanel() {
+    // Fetch AI posts from Supabase (all, including drafts) for admin view
+    let sbAdminPosts = [];
+    try {
+        const r = await fetch(`${_BLOG_SB_URL}/rest/v1/blog_posts?ai_generated=eq.true&order=created_at.desc&limit=50`, {
+            headers: { 'apikey': _BLOG_SB_ANON, 'Authorization': `Bearer ${_BLOG_SB_ANON}` }
+        });
+        sbAdminPosts = (await r.json()) || [];
+    } catch {}
+
     document.getElementById('adminBlogPanel').innerHTML = `
 <div class="panel-header">
 <h2 class="panel-title">📝 Blog Manager</h2>
@@ -5545,6 +5583,35 @@ function loadAdminBlogPanel() {
 </div>
             `).join('')}
 </div>
+
+        <!-- AI-Generated Posts from Supabase -->
+${sbAdminPosts.length > 0 ? `
+<div style="margin-top:32px;">
+  <div class="admin-row-between" style="margin-bottom:16px;">
+    <h3 class="text-white">🤖 AI-Generated Posts (${sbAdminPosts.length})</h3>
+    <a href="/app" onclick="showAdminPanel('agents')" style="font-size:12px;color:#7B5CF5;cursor:pointer;">Manage in Agent Center →</a>
+  </div>
+  <div class="flex-col-gap-12">
+    ${sbAdminPosts.map(p => `
+    <div style="background:#0d0d1a;border:1px solid rgba(123,92,245,0.2);border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center;">
+      ${p.image ? `<div style="width:70px;height:45px;border-radius:6px;overflow:hidden;flex-shrink:0;"><img src="${p.image}" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>` : ''}
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:600;color:#fff;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.title}</div>
+        <div style="display:flex;gap:8px;margin-top:4px;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:10px;padding:2px 7px;border-radius:3px;background:rgba(123,92,245,0.15);color:#7B5CF5;font-weight:700;">AI</span>
+          <span style="font-size:11px;color:#666;">${p.category}</span>
+          <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:${p.published ? 'rgba(76,175,130,0.15)' : 'rgba(255,255,255,0.06)'};color:${p.published ? '#4CAF82' : '#666'};">${p.published ? '✓ Live' : 'Draft'}</span>
+          ${p.audio_url ? '<span style="font-size:11px;color:#D4A843;">🎙 Audio</span>' : ''}
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0;">
+        ${!p.published ? `<button onclick="adminPublishAIPost(${p.id})" style="padding:6px 10px;background:#4CAF82;border:none;color:#000;border-radius:5px;cursor:pointer;font-size:11px;font-weight:700;">Publish</button>` : ''}
+        <a href="/blog/${p.slug}" target="_blank" style="padding:6px 10px;background:#1a1a1a;border:1px solid #333;color:#888;border-radius:5px;cursor:pointer;font-size:11px;text-decoration:none;">View</a>
+        <button onclick="adminDeleteAIPost(${p.id}, this)" style="padding:6px 10px;background:rgba(239,68,68,0.1);border:none;color:#ef4444;border-radius:5px;cursor:pointer;font-size:11px;">✕</button>
+      </div>
+    </div>`).join('')}
+  </div>
+</div>` : ''}
     `;
 }
 
@@ -5570,6 +5637,31 @@ function setBlogAuthorFromUrl(url) {
     blogPosts.forEach(p => p.authorImage = blogAuthorImage);
     saveBlogPosts();
     loadAdminBlogPanel();
+}
+
+// ── Admin helpers for AI-generated Supabase blog posts ──────────────────────
+async function adminPublishAIPost(postId) {
+    try {
+        await fetch(`${_BLOG_SB_URL}/rest/v1/blog_posts?id=eq.${postId}`, {
+            method: 'PATCH',
+            headers: { 'apikey': _BLOG_SB_ANON, 'Authorization': `Bearer ${_BLOG_SB_ANON}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ published: true, updated_at: new Date().toISOString() })
+        });
+        alert('✅ Post published to live blog!');
+        loadAdminBlogPanel();
+    } catch (e) { alert('Error: ' + e.message); }
+}
+
+async function adminDeleteAIPost(postId, btn) {
+    if (!confirm('Delete this AI-generated blog post?')) return;
+    try {
+        if (btn) btn.textContent = '...';
+        await fetch(`${_BLOG_SB_URL}/rest/v1/blog_posts?id=eq.${postId}`, {
+            method: 'DELETE',
+            headers: { 'apikey': _BLOG_SB_ANON, 'Authorization': `Bearer ${_BLOG_SB_ANON}` }
+        });
+        loadAdminBlogPanel();
+    } catch (e) { alert('Error: ' + e.message); }
 }
 
 function showBlogEditor(postId) {
@@ -5695,7 +5787,25 @@ function deleteBlogPost(postId) {
     loadAdminBlogPanel();
 }
 
-function loadBlogView() {
+async function loadBlogView() {
+    // Show skeleton immediately while we fetch
+    document.getElementById('blogView').innerHTML = `<div style="padding:140px 24px 80px;text-align:center;color:#555;font-size:14px;">Loading posts...</div>`;
+
+    // Fetch AI-generated posts from Supabase in parallel with rendering
+    const sbPosts = await fetchPublishedBlogPosts();
+
+    // Merge: Supabase AI posts first (newest), then local posts (dedupe by slug)
+    const localSlugs = new Set(blogPosts.map(p => p.slug));
+    const mergedPosts = [...sbPosts.filter(p => !localSlugs.has(p.slug)), ...blogPosts]
+      .sort((a, b) => {
+        // Sort by date descending
+        const da = new Date(a.date || 0), db = new Date(b.date || 0);
+        return db - da;
+      });
+
+    // Add all categories from merged posts
+    const allCategories = ['all', ...new Set(mergedPosts.map(p => p.category).filter(Boolean))];
+
     document.getElementById('blogView').innerHTML = `
 <style>
             .blog-hero { padding: 140px 48px 80px; text-align: center; background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%); position: relative; }
@@ -5795,23 +5905,16 @@ function loadBlogView() {
 
 <div class="blog-categories">
 <button class="blog-category active" onclick="filterBlogPosts('all')">All Posts</button>
-<button class="blog-category" onclick="filterBlogPosts('Branding')">Branding</button>
-<button class="blog-category" onclick="filterBlogPosts('Personal Branding')">Personal Branding</button>
-<button class="blog-category" onclick="filterBlogPosts('Sales Strategy')">Sales</button>
-<button class="blog-category" onclick="filterBlogPosts('Business Strategy')">Business Strategy</button>
-<button class="blog-category" onclick="filterBlogPosts('Brand Strategy')">Brand Strategy</button>
-<button class="blog-category" onclick="filterBlogPosts('Web Design')">Web Design</button>
-<button class="blog-category" onclick="filterBlogPosts('Technology')">Technology</button>
-<button class="blog-category" onclick="filterBlogPosts('Social Media')">Social Media</button>
-<button class="blog-category" onclick="filterBlogPosts('Marketing')">Marketing</button>
+${allCategories.filter(c => c !== 'all').map(c => `<button class="blog-category" onclick="filterBlogPosts('${c}')">${c}</button>`).join('')}
 </div>
 
 <div class="blog-grid" id="blogGrid">
-                ${blogPosts.map(post => `
-<article class="blog-card" data-category="${post.category}" onclick="showBlogPost(${post.id})">
+                ${mergedPosts.map(post => `
+<article class="blog-card" data-category="${post.category}" onclick="showBlogPost('${post.id}')">
 <div class="blog-card-image">
 <img loading="lazy" src="${post.image}" alt="${post.title}">
 <span class="blog-card-category">${post.category}</span>
+${post.ai_generated ? '<span style="position:absolute;bottom:12px;left:12px;background:rgba(123,92,245,0.9);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;letter-spacing:.5px;z-index:2;">AI WRITTEN</span>' : ''}
 </div>
 <div class="blog-card-content">
 <h3 class="blog-card-title">${post.title}</h3>
@@ -5822,7 +5925,7 @@ function loadBlogView() {
 <div class="blog-card-author-name">${post.author}</div>
 <div class="blog-card-date">${post.date}</div>
 </div>
-<span class="blog-card-read">${post.readTime}</span>
+<span class="blog-card-read">${post.readTime || post.read_time}</span>
 </div>
 </div>
 </article>
@@ -5834,6 +5937,8 @@ function loadBlogView() {
 
         ${getFooterHTML()}
     `;
+    // Store merged posts so filter/show can access Supabase posts
+    window._mergedBlogPosts = mergedPosts;
 }
 
 function filterBlogPosts(category) {
@@ -5851,7 +5956,9 @@ function filterBlogPosts(category) {
 }
 
 function showBlogPost(postId) {
-    const post = blogPosts.find(p => p.id === postId);
+    // Check merged (Supabase + local) first, then fall back to local only
+    const allPosts = window._mergedBlogPosts || blogPosts;
+    const post = allPosts.find(p => String(p.id) === String(postId));
     if (!post) return;
 
     currentBlogPost = post;
