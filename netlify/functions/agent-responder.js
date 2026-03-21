@@ -1,6 +1,7 @@
 // agent-responder.js — The Responder Agent
-// Auto-replies to: new form submissions, GBP reviews, unresponded SMS (via Monty), contact inquiries
-// Runs every 30 minutes + can be triggered manually
+// Handles: GBP review replies (auto-responds to new Google reviews)
+// Runs every 30 min via cron
+// NOTE: Form submission replies are now handled directly in save-submission.js (event-triggered)
 //
 // Channels handled:
 //   1. Web form submissions (from save-submission.js) → auto-email reply via Hostinger SMTP
@@ -88,57 +89,7 @@ SMS only — under 160 chars. No hashtags. Include "- Faren" at the end.`
   return d.content?.[0]?.text?.trim() || '';
 }
 
-// ── Channel 1: Respond to new form submissions (not yet auto-replied) ──
-async function respondToForms() {
-  const results = [];
-  const cutoff = new Date(Date.now() - 60 * 60 * 1000).toISOString(); // last 1 hour
-
-  const subs = await sbFetch(
-    `form_submissions?auto_replied=is.null&created_at=gte.${cutoff}&order=created_at.asc&limit=5`
-  ).catch(() => []);
-
-  for (const sub of (subs || [])) {
-    try {
-      const context = `Name: ${sub.name || 'Unknown'}. Email: ${sub.email}. Phone: ${sub.phone || 'none'}. Service interest: ${sub.service || sub.message?.slice(0, 100) || 'general inquiry'}. Business: ${sub.business_name || 'not provided'}.`;
-
-      // Send email reply
-      if (sub.email) {
-        const emailBody = await generateResponse('form_reply', context);
-        const mailer = getMailer();
-        await mailer.sendMail({
-          from: `"Faren Young | NUI" <${process.env.SMTP_USER}>`,
-          to: sub.email,
-          subject: `Re: Your inquiry to New Urban Influence`,
-          text: emailBody,
-          html: `<div style="font-family: sans-serif; max-width: 600px; line-height: 1.6;">${emailBody.replace(/\n/g, '<br>')}<br><br><img src="https://newurbaninfluence.com/assets/images/nui-logo.png" alt="NUI" style="height:40px;"><br><a href="https://newurbaninfluence.com/book" style="background:#D4A843;color:#000;padding:10px 20px;text-decoration:none;border-radius:4px;display:inline-block;margin-top:10px;">Book a Free Strategy Call</a></div>`
-        });
-      }
-
-      // Send SMS if phone provided
-      if (sub.phone && OP_KEY) {
-        const smsText = await generateResponse('sms_followup', context);
-        await fetch('https://api.openphone.com/v1/messages', {
-          method: 'POST',
-          headers: { 'Authorization': OP_KEY, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: smsText, from: OP_FROM, to: [sub.phone] })
-        });
-      }
-
-      // Mark as replied
-      await sbFetch(`form_submissions?id=eq.${sub.id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ auto_replied: true, auto_replied_at: new Date().toISOString() })
-      });
-
-      results.push({ type: 'form', id: sub.id, email: !!sub.email, sms: !!sub.phone });
-    } catch (e) {
-      results.push({ type: 'form', id: sub.id, error: e.message });
-    }
-  }
-  return results;
-}
-
-// ── Channel 2: Respond to new/unanswered GBP reviews ──
+// ── Channel: Respond to new: Respond to new/unanswered GBP reviews ──
 async function respondToGBPReviews() {
   if (!GMB_TOKEN || !GMB_LOC) return [{ skipped: true, reason: 'no GBP credentials' }];
   const results = [];
@@ -176,25 +127,6 @@ async function respondToGBPReviews() {
 }
 
 
-// ── DAILY RATE LIMITER ─────────────────────────────────────────────────────
-// Max 3 Claude-calling runs per day to prevent runaway costs
-async function checkDailyLimit() {
-  try {
-    const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0);
-    const rows = await sbFetch(
-      `agent_logs?agent_id=eq.responder&created_at=gte.${todayStart.toISOString()}&select=id`
-    );
-    const runCount = (rows || []).length;
-    if (runCount >= 3) {
-      console.log(`[Responder] Daily limit reached (${runCount}/3 runs today). Skipping.`);
-      return false;
-    }
-    console.log(`[Responder] Run ${runCount + 1}/3 today.`);
-    return true;
-  } catch { return true; }
-}
-
 // ── Log agent run ──
 async function logRun(data) {
   try {
@@ -209,23 +141,13 @@ async function logRun(data) {
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
 
-  // Check daily run limit before doing any Claude work
-  const withinLimit = await checkDailyLimit();
-  if (!withinLimit) {
-    return { statusCode: 200, headers: CORS, body: JSON.stringify({ success: true, skipped: 'daily_limit_reached', message: 'Max 3 Claude runs per day' }) };
-  }
-
   try {
-    const [formResults, gbpResults] = await Promise.all([
-      respondToForms(),
-      respondToGBPReviews()
-    ]);
+    const gbpResults = await respondToGBPReviews();
 
     const result = {
       success: true,
-      forms_processed: formResults.length,
       reviews_processed: gbpResults.filter(r => !r.skipped).length,
-      details: { forms: formResults, reviews: gbpResults },
+      details: { reviews: gbpResults },
       ran_at: new Date().toISOString()
     };
 
