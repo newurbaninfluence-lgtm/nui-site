@@ -160,7 +160,8 @@ function showAdminPanel(panel) {
         'sites': loadAdminSitesPanel,
         'subaccounts': loadAdminSubAccountsPanel,
         'visitors': loadAdminVisitorsPanel,
-        'citations': loadAdminCitationsPanel
+        'citations': loadAdminCitationsPanel,
+        'agents': loadAdminAgentsPanel
     };
     if (panelLoaders[panel]) panelLoaders[panel]();
 
