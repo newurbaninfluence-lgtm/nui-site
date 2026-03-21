@@ -28,6 +28,14 @@ const AGENT_CONFIG = {
     endpoint: '/.netlify/functions/agent-creator',
     schedule: 'Sundays 8am + on-demand',
     color: '#7B5CF5'
+  },
+  blogger: {
+    label: 'The Blogger',
+    desc: 'Writes full SEO blog posts with Synthesys voice overview audio',
+    icon: '✍️',
+    endpoint: '/.netlify/functions/agent-blogger',
+    schedule: 'Wednesdays 7am + on-demand',
+    color: '#E05252'
   }
 };
 
@@ -77,6 +85,7 @@ async function loadAdminAgentsPanel() {
       <!-- Tabs -->
       <div class="agents-tabs">
         <button class="agents-tab active" onclick="agentsShowTab('drafts', this)">📝 Content Drafts</button>
+        <button class="agents-tab" onclick="agentsShowTab('blog', this)">✍️ Blog Posts</button>
         <button class="agents-tab" onclick="agentsShowTab('logs', this)">📋 Agent Logs</button>
         <button class="agents-tab" onclick="agentsShowTab('create', this)">✨ Create Content</button>
       </div>
@@ -96,6 +105,51 @@ async function loadAdminAgentsPanel() {
       <div id="agentsTab_logs" class="agents-tab-content" style="display:none">
         <div id="agentLogsList" class="logs-list">
           <div class="agents-loading">Loading logs...</div>
+        </div>
+      </div>
+
+      <!-- Blog Tab -->
+      <div id="agentsTab_blog" class="agents-tab-content" style="display:none">
+        <div class="drafts-toolbar">
+          <span class="drafts-count" id="blogPostsCount">Loading...</span>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-batch" style="background:#E05252" onclick="agentRunBlogBatch()">📚 Generate 4 Blog Posts</button>
+            <button class="btn-batch" onclick="agentRunSingleBlog()">✍️ Write One Post Now</button>
+          </div>
+        </div>
+
+        <!-- Custom blog topic form -->
+        <div class="create-form" style="margin-bottom:16px;">
+          <div class="create-form-grid">
+            <div class="form-group">
+              <label>Custom Blog Topic</label>
+              <textarea id="blogTopic" rows="2" placeholder="e.g. How Detroit restaurants use AI to fill tables on slow nights..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <select id="blogCategory">
+                <option>Branding</option>
+                <option>AI & Automation</option>
+                <option>Digital Marketing</option>
+                <option>Web Design</option>
+                <option>Business Strategy</option>
+                <option>Case Study</option>
+                <option>Entrepreneurship</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Auto-Publish?</label>
+              <select id="blogAutoPublish">
+                <option value="false">Save as Draft (review first)</option>
+                <option value="true">Publish Immediately</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-create-content" style="background:#E05252" onclick="agentRunCustomBlog()">✍️ Write Custom Post</button>
+        </div>
+
+        <div id="blogPostsList" class="drafts-list">
+          <div class="agents-loading">Loading blog posts...</div>
         </div>
       </div>
 
@@ -163,6 +217,7 @@ function agentsShowTab(tab, btn) {
   if (target) target.style.display = 'block';
   if (btn) btn.classList.add('active');
   if (tab === 'logs') agentsLoadLogs();
+  if (tab === 'blog') agentsLoadBlogPosts();
 }
 
 // ── Load drafts ──
@@ -243,7 +298,7 @@ async function agentsLoadLogs() {
       return;
     }
 
-    const agentColors = { promoter: '#D4A843', responder: '#4CAF82', creator: '#7B5CF5' };
+    const agentColors = { promoter: '#D4A843', responder: '#4CAF82', creator: '#7B5CF5', blogger: '#E05252' };
     list.innerHTML = `
       <table class="logs-table">
         <thead><tr><th>Agent</th><th>Status</th><th>Summary</th><th>Time</th></tr></thead>
@@ -256,6 +311,8 @@ async function agentsLoadLogs() {
               ? `Forms: ${m.forms_processed || 0} | Reviews: ${m.reviews_processed || 0}`
               : l.agent_id === 'creator'
               ? `Mode: ${m.mode || 'single'} | Drafts: ${m.drafts_created || (m.draft_id ? 1 : 0)}`
+              : l.agent_id === 'blogger'
+              ? `"${(m.title || m.results?.[0]?.title || 'untitled').slice(0,50)}" | Audio: ${m.has_audio || m.results?.filter(r=>r.has_audio).length ? '🎙' : '✗'} | ${m.published ? 'Published' : 'Draft'}`
               : m.error || '—';
             return `
               <tr>
@@ -272,7 +329,7 @@ async function agentsLoadLogs() {
   }
 }
 
-function agentsRefreshLogs() { agentsLoadLogs(); agentsLoadDrafts(); }
+function agentsRefreshLogs() { agentsLoadLogs(); agentsLoadDrafts(); agentsLoadBlogPosts(); }
 
 // ── Trigger agent manually ──
 async function agentTrigger(agentId) {
@@ -437,6 +494,128 @@ function showAgentToast(msg, type = 'info') {
   t.textContent = msg;
   document.body.appendChild(t);
   setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 4000);
+}
+
+// ── Blog tab functions ──
+async function agentsLoadBlogPosts() {
+  const list = document.getElementById('blogPostsList');
+  const count = document.getElementById('blogPostsCount');
+  if (!list) return;
+
+  try {
+    const res = await fetch(`${window.SUPABASE_URL}/rest/v1/blog_posts?ai_generated=eq.true&order=created_at.desc&limit=20`, {
+      headers: { 'apikey': window.SUPABASE_ANON_KEY, 'Authorization': `Bearer ${window.SUPABASE_ANON_KEY}` }
+    });
+    const posts = await res.json();
+    if (count) count.textContent = `${(posts||[]).length} AI-generated posts`;
+
+    if (!posts || !posts.length) {
+      list.innerHTML = `<div class="empty-state">No AI blog posts yet. Click "Write One Post Now" to generate your first.</div>`;
+      return;
+    }
+
+    list.innerHTML = posts.map(p => `
+      <div class="draft-card" id="blogPost_${p.id}">
+        <div class="draft-top">
+          <span class="draft-type" style="background:#E0525220;color:#E05252">${p.category || 'Blog'}</span>
+          <span class="draft-date">${new Date(p.created_at).toLocaleDateString()}</span>
+          <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:${p.published ? '#4CAF8220' : '#44444440'};color:${p.published ? '#4CAF82' : '#888'}">${p.published ? '✓ Published' : '⏳ Draft'}</span>
+        </div>
+        <div class="draft-topic">${p.title}</div>
+        <div class="draft-caption">${p.excerpt || ''}</div>
+        ${p.audio_url ? `
+          <div style="margin:10px 0;">
+            <div style="font-size:12px;color:#D4A843;margin-bottom:6px;">🎙 Voice Overview</div>
+            <audio controls src="${p.audio_url}" style="width:100%;height:36px;"></audio>
+          </div>` : `<div class="draft-no-audio">⚠️ No audio — Synthesys may have timed out</div>`}
+        ${p.image ? `<img src="${p.image}" class="draft-thumb" alt="hero">` : ''}
+        <div class="draft-actions" style="margin-top:12px;">
+          ${!p.published ? `<button class="btn-approve" onclick="agentPublishBlogPost(${p.id})">✓ Publish</button>` : ''}
+          <a href="https://newurbaninfluence.com/blog/${p.slug}" target="_blank" class="btn-reject" style="text-decoration:none;padding:8px 12px;">🔗 View Post</a>
+          <button class="btn-reject" onclick="agentDeleteBlogPost(${p.id})">✕ Delete</button>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {
+    list.innerHTML = `<div class="error-state">Error: ${e.message}</div>`;
+  }
+}
+
+async function agentPublishBlogPost(postId) {
+  try {
+    await fetch(`${window.SUPABASE_URL}/rest/v1/blog_posts?id=eq.${postId}`, {
+      method: 'PATCH',
+      headers: { 'apikey': window.SUPABASE_ANON_KEY, 'Authorization': `Bearer ${window.SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ published: true, updated_at: new Date().toISOString() })
+    });
+    showAgentToast('✅ Post published!', 'success');
+    agentsLoadBlogPosts();
+  } catch (e) { showAgentToast(`❌ ${e.message}`, 'error'); }
+}
+
+async function agentDeleteBlogPost(postId) {
+  if (!confirm('Delete this blog post?')) return;
+  try {
+    await fetch(`${window.SUPABASE_URL}/rest/v1/blog_posts?id=eq.${postId}`, {
+      method: 'DELETE',
+      headers: { 'apikey': window.SUPABASE_ANON_KEY, 'Authorization': `Bearer ${window.SUPABASE_ANON_KEY}` }
+    });
+    showAgentToast('Post deleted.', 'info');
+    document.getElementById(`blogPost_${postId}`)?.remove();
+  } catch (e) { showAgentToast(`❌ ${e.message}`, 'error'); }
+}
+
+async function agentRunSingleBlog() {
+  showAgentToast('✍️ The Blogger is writing a post + generating voiceover... (~30s)', 'info');
+  try {
+    const res = await fetch('/.netlify/functions/agent-blogger', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'single', auto_publish: false })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showAgentToast(`✅ Blog post created: "${data.title}" ${data.has_audio ? '🎙 with audio' : '(no audio)'}`, 'success');
+      setTimeout(agentsLoadBlogPosts, 1500);
+    } else {
+      showAgentToast(`⚠️ ${data.error}`, 'warning');
+    }
+  } catch (e) { showAgentToast(`❌ ${e.message}`, 'error'); }
+}
+
+async function agentRunCustomBlog() {
+  const topic = document.getElementById('blogTopic')?.value?.trim();
+  const category = document.getElementById('blogCategory')?.value || 'Branding';
+  const autoPublish = document.getElementById('blogAutoPublish')?.value === 'true';
+  if (!topic) { showAgentToast('Enter a blog topic first.', 'warning'); return; }
+
+  showAgentToast(`✍️ Writing "${topic.slice(0,50)}..."`, 'info');
+  try {
+    const res = await fetch('/.netlify/functions/agent-blogger', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'single', topic, category, auto_publish: autoPublish })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showAgentToast(`✅ Created: "${data.title}" ${data.has_audio ? '🎙' : ''}`, 'success');
+      document.getElementById('blogTopic').value = '';
+      setTimeout(agentsLoadBlogPosts, 1500);
+    } else {
+      showAgentToast(`⚠️ ${data.error}`, 'warning');
+    }
+  } catch (e) { showAgentToast(`❌ ${e.message}`, 'error'); }
+}
+
+async function agentRunBlogBatch() {
+  showAgentToast('📚 Generating 4 blog posts with voiceovers... this takes ~2 minutes', 'info');
+  try {
+    const res = await fetch('/.netlify/functions/agent-blogger', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'batch', count: 4 })
+    });
+    const data = await res.json();
+    showAgentToast(`✅ Created ${data.posts_created || 0} posts! ${data.results?.filter(r=>r.has_audio).length || 0} with audio.`, 'success');
+    setTimeout(agentsLoadBlogPosts, 1500);
+  } catch (e) { showAgentToast(`❌ ${e.message}`, 'error'); }
 }
 
 // ── Styles ──

@@ -35,6 +35,10 @@
 [functions."agent-creator"]
   schedule = "0 13 * * 0"
 
+# The Blogger — generates new blog post with voiceover (Wednesdays 7am CT = 12:00 UTC)
+[functions."agent-blogger"]
+  schedule = "0 12 * * 3"
+
 # ── NUI MAGAZINE ROUTES ──────────────────────────────────────
 
 # Booking page

@@ -161,7 +161,8 @@ function showAdminPanel(panel) {
         'subaccounts': loadAdminSubAccountsPanel,
         'visitors': loadAdminVisitorsPanel,
         'citations': loadAdminCitationsPanel,
-        'agents': loadAdminAgentsPanel
+        'agents': loadAdminAgentsPanel,
+        'blogger': loadAdminAgentsPanel
     };
     if (panelLoaders[panel]) panelLoaders[panel]();
 
