@@ -141,6 +141,22 @@ async function logRun(data) {
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
 
+  // Smart GBP pre-check — only call Claude if unanswered reviews actually exist
+  if (GMB_TOKEN && GMB_LOC) {
+    try {
+      const preCheck = await fetch(`https://mybusiness.googleapis.com/v4/${GMB_LOC}/reviews?pageSize=10`, {
+        headers: { 'Authorization': `Bearer ${GMB_TOKEN}` }
+      });
+      const preData = await preCheck.json();
+      const unanswered = (preData.reviews || []).filter(rv => !rv.reviewReply);
+      if (unanswered.length === 0) {
+        console.log('[Responder] No unanswered reviews — skipping');
+        return { statusCode: 200, headers: CORS, body: JSON.stringify({ success: true, skipped: 'no_unanswered_reviews' }) };
+      }
+      console.log(`[Responder] ${unanswered.length} unanswered review(s) — responding`);
+    } catch(e) { console.warn('[Responder] Pre-check failed, proceeding:', e.message); }
+  }
+
   try {
     const gbpResults = await respondToGBPReviews();
 

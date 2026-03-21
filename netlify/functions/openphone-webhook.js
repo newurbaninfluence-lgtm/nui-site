@@ -243,6 +243,11 @@ async function handleCallCompleted(obj) {
   await logActivity(contact.id, 'call', obj.direction === 'incoming' ? 'inbound' : 'outbound', content, callMeta);
   await logCommunication(contact.id, 'call', obj.direction === 'incoming' ? 'inbound' : 'outbound', content, callMeta);
   await touchContact(contact.id);
+  // Missed inbound call — send AI follow-up SMS
+  if (!wasAnswered && obj.direction === 'incoming') {
+    const contactName = [contact.first_name, contact.last_name].filter(Boolean).join(' ') || null;
+    triggerMissedCallSMS(phone, contactName).catch(e => console.warn('[OpenPhone] Missed call SMS error:', e.message));
+  }
   return { action: 'call_completed', contactId: contact.id, answered: wasAnswered, duration: durationSec };
 }
 
@@ -342,6 +347,31 @@ async function handleCallRecording(obj) {
   return { action: 'call_recording_logged', contactId };
 }
 
+
+// ── Missed inbound call — AI SMS follow-up ───────────────────────────────
+async function triggerMissedCallSMS(phone, contactName) {
+  const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+  const OP_KEY  = process.env.OPENPHONE_API_KEY;
+  const OP_FROM = process.env.OPENPHONE_PHONE_NUMBER;
+  if (!ANTHROPIC_KEY || !OP_KEY || !OP_FROM) return;
+  try {
+    const nameRef = contactName ? ('Hey ' + contactName.split(' ')[0]) : 'Hey';
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 80, messages: [{ role: 'user', content: 'Write a 1-sentence SMS from Faren Young at New Urban Influence (NUI Detroit branding agency). Someone called but no one answered. Sound human and warm. Offer to call back or have them reply. Name: ' + nameRef + '. Under 140 chars, end with "- Faren".' }] })
+    });
+    const d   = await res.json();
+    const sms = d.content?.[0]?.text?.trim();
+    if (!sms) return;
+    await fetch('https://api.openphone.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Authorization': OP_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: sms, from: OP_FROM, to: [phone] })
+    });
+    console.log('[OpenPhone] Missed call SMS sent to', phone);
+  } catch(e) { console.warn('[OpenPhone] Missed call SMS failed:', e.message); }
+}
 // ── Main Handler ──────────────────────────────────────────────────
 
 exports.handler = async (event) => {

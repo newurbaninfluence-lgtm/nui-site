@@ -10,6 +10,71 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS'
 };
 
+
+// ── Automation env vars ───────────────────────────────────────────────────
+const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+const SMTP_USER     = process.env.SMTP_USER;
+const SMTP_PASS     = process.env.SMTP_PASS;
+const SMTP_HOST     = process.env.SMTP_HOST || 'smtp.hostinger.com';
+const OP_KEY        = process.env.OPENPHONE_API_KEY;
+const OP_FROM       = process.env.OPENPHONE_PHONE_NUMBER;
+
+async function triggerBookingConfirmation(clientName, clientEmail, clientPhone, serviceInterest, meetingDate, meetingTime, zoomLink) {
+  if (!ANTHROPIC_KEY) return;
+  const firstName = clientName.split(' ')[0];
+  const context = 'Name: ' + clientName + '. Service: ' + (serviceInterest || 'branding consultation') + '. Date: ' + meetingDate + ' at ' + meetingTime + ' ET.';
+  if (clientEmail && SMTP_USER) {
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 250, messages: [{ role: 'user', content: 'You are Faren Young at NUI Detroit branding agency. Write a warm booking confirmation email body (no subject, no Dear). Thank them, confirm date/time, mention what to expect. Zoom: ' + (zoomLink||'will be sent separately') + '. Detroit energy. Context: ' + context + '. Under 120 words.' }] })
+      });
+      const d = await res.json();
+      const emailBody = d.content?.[0]?.text?.trim();
+      if (emailBody) {
+        const nodemailer = require('nodemailer');
+        const mailer = nodemailer.createTransport({ host: SMTP_HOST, port: 465, secure: true, auth: { user: SMTP_USER, pass: SMTP_PASS } });
+        await mailer.sendMail({
+          from: '"Faren Young | NUI" <' + SMTP_USER + '>',
+          to: clientEmail,
+          subject: "You're booked — NUI Strategy Call " + meetingDate,
+          text: emailBody,
+          html: '<div style="font-family:sans-serif;max-width:600px;line-height:1.7;">' + emailBody.replace(/\n/g,'<br>') + '<br><br><img src="https://newurbaninfluence.com/assets/images/nui-logo.png" alt="NUI" style="height:40px;"></div>'
+        });
+        console.log('[Calendly] Confirmation email sent to', clientEmail);
+      }
+    } catch(e) { console.warn('[Calendly] Confirm email failed:', e.message); }
+  }
+  if (clientPhone && OP_KEY && OP_FROM) {
+    try {
+      const sms = 'Hey ' + firstName + ", you're confirmed for your NUI strategy call on " + meetingDate + ' at ' + meetingTime + ' ET. See you then — Faren';
+      await fetch('https://api.openphone.com/v1/messages', { method: 'POST', headers: { 'Authorization': OP_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ content: sms, from: OP_FROM, to: [clientPhone] }) });
+      console.log('[Calendly] Confirmation SMS sent to', clientPhone);
+    } catch(e) { console.warn('[Calendly] Confirm SMS failed:', e.message); }
+  }
+}
+
+async function triggerCancellationNotice(clientName, clientEmail, clientPhone, meetingDate, meetingTime) {
+  const firstName = clientName.split(' ')[0];
+  if (clientEmail && SMTP_USER) {
+    try {
+      const nodemailer = require('nodemailer');
+      const mailer = nodemailer.createTransport({ host: SMTP_HOST, port: 465, secure: true, auth: { user: SMTP_USER, pass: SMTP_PASS } });
+      await mailer.sendMail({
+        from: '"Faren Young | NUI" <' + SMTP_USER + '>',
+        to: clientEmail,
+        subject: 'Your NUI call on ' + meetingDate + ' has been canceled',
+        html: '<div style="font-family:sans-serif;max-width:600px;"><p>Hey ' + firstName + ',</p><p>Your call on <strong>' + meetingDate + ' at ' + meetingTime + '</strong> was canceled.</p><p>Rebook anytime: <a href="https://newurbaninfluence.com/book">newurbaninfluence.com/book</a></p><p>— Faren</p></div>'
+      });
+    } catch(e) { console.warn('[Calendly] Cancel email failed:', e.message); }
+  }
+  if (clientPhone && OP_KEY && OP_FROM) {
+    try {
+      await fetch('https://api.openphone.com/v1/messages', { method: 'POST', headers: { 'Authorization': OP_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ content: 'Hey ' + firstName + ', your NUI call on ' + meetingDate + ' was canceled. Rebook: newurbaninfluence.com/book — Faren', from: OP_FROM, to: [clientPhone] }) });
+    } catch(e) { console.warn('[Calendly] Cancel SMS failed:', e.message); }
+  }
+}
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
@@ -117,6 +182,8 @@ exports.handler = async (event) => {
       });
 
       console.log(`Meeting saved: ${meeting.id}, Lead upserted for ${clientEmail}`);
+      const zoomLink = scheduledEvent.location?.join_url || scheduledEvent.location?.data?.url || '';
+      triggerBookingConfirmation(clientName, clientEmail, clientPhone, serviceInterest, meetingDate, meetingTime, zoomLink).catch(e => console.warn('[Calendly] Confirm failed:', e.message));
       return {
         statusCode: 200,
         headers: CORS_HEADERS,
@@ -141,7 +208,7 @@ exports.handler = async (event) => {
         });
         console.log(`Meeting ${matches[0].id} canceled`);
       }
-
+      triggerCancellationNotice(clientName, clientEmail, clientPhone, meetingDate, meetingTime).catch(e => console.warn('[Calendly] Cancel notice failed:', e.message));
       return {
         statusCode: 200,
         headers: CORS_HEADERS,

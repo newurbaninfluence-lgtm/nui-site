@@ -27,9 +27,9 @@
 [functions."agent-promoter"]
   schedule = "0 14 * * *"
 
-# The Responder — checks form submissions + GBP reviews every 30 min
+# The Responder — smart GBP review check every 4 hours (skips if no unanswered reviews)
 [functions."agent-responder"]
-  schedule = "*/30 * * * *"
+  schedule = "0 */4 * * *"
 
 # The Creator — generates weekly content batch (Sundays at 8am CT = 13:00 UTC)
 [functions."agent-creator"]
