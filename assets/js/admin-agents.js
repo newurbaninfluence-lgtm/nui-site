@@ -33,7 +33,7 @@ const AGENT_CONFIG = {
     label: 'The Blogger',
     desc: 'Writes full SEO blog posts with Synthesys voice overview audio',
     icon: '✍️',
-    endpoint: '/.netlify/functions/agent-blogger',
+    endpoint: '/.netlify/functions/agent-blogger-background',
     schedule: 'Wednesdays 7am + on-demand',
     color: '#E05252'
   }
@@ -566,19 +566,14 @@ async function agentDeleteBlogPost(postId) {
 }
 
 async function agentRunSingleBlog() {
-  showAgentToast('✍️ The Blogger is writing a post + generating voiceover... (~30s)', 'info');
+  showAgentToast('✍️ The Blogger is writing a post + generating voiceover... Check Agent Logs in ~45 seconds.', 'info');
   try {
-    const res = await fetch('/.netlify/functions/agent-blogger', {
+    await fetch('/.netlify/functions/agent-blogger-background', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ mode: 'single', auto_publish: false })
     });
-    const data = await res.json();
-    if (data.success) {
-      showAgentToast(`✅ Blog post created: "${data.title}" ${data.has_audio ? '🎙 with audio' : '(no audio)'}`, 'success');
-      setTimeout(agentsLoadBlogPosts, 1500);
-    } else {
-      showAgentToast(`⚠️ ${data.error}`, 'warning');
-    }
+    // Poll for completion
+    agentsPollForBlogCompletion();
   } catch (e) { showAgentToast(`❌ ${e.message}`, 'error'); }
 }
 
@@ -588,34 +583,50 @@ async function agentRunCustomBlog() {
   const autoPublish = document.getElementById('blogAutoPublish')?.value === 'true';
   if (!topic) { showAgentToast('Enter a blog topic first.', 'warning'); return; }
 
-  showAgentToast(`✍️ Writing "${topic.slice(0,50)}..."`, 'info');
+  showAgentToast(`✍️ Writing "${topic.slice(0,50)}..." — check Blog Posts tab in ~45 seconds.`, 'info');
   try {
-    const res = await fetch('/.netlify/functions/agent-blogger', {
+    await fetch('/.netlify/functions/agent-blogger-background', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ mode: 'single', topic, category, auto_publish: autoPublish })
     });
-    const data = await res.json();
-    if (data.success) {
-      showAgentToast(`✅ Created: "${data.title}" ${data.has_audio ? '🎙' : ''}`, 'success');
-      document.getElementById('blogTopic').value = '';
-      setTimeout(agentsLoadBlogPosts, 1500);
-    } else {
-      showAgentToast(`⚠️ ${data.error}`, 'warning');
-    }
+    document.getElementById('blogTopic').value = '';
+    agentsPollForBlogCompletion();
   } catch (e) { showAgentToast(`❌ ${e.message}`, 'error'); }
 }
 
 async function agentRunBlogBatch() {
-  showAgentToast('📚 Generating 4 blog posts with voiceovers... this takes ~2 minutes', 'info');
+  showAgentToast('📚 Generating 4 blog posts in background... check Agent Logs in ~3 minutes.', 'info');
   try {
-    const res = await fetch('/.netlify/functions/agent-blogger', {
+    await fetch('/.netlify/functions/agent-blogger-background', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ mode: 'batch', count: 4 })
     });
-    const data = await res.json();
-    showAgentToast(`✅ Created ${data.posts_created || 0} posts! ${data.results?.filter(r=>r.has_audio).length || 0} with audio.`, 'success');
-    setTimeout(agentsLoadBlogPosts, 1500);
+    agentsPollForBlogCompletion(180000); // 3 min poll for batch
   } catch (e) { showAgentToast(`❌ ${e.message}`, 'error'); }
+}
+
+// Poll agent_logs until blogger run appears, then refresh blog list
+function agentsPollForBlogCompletion(maxWait = 90000) {
+  const start = Date.now();
+  const interval = setInterval(async () => {
+    if (Date.now() - start > maxWait) { clearInterval(interval); return; }
+    try {
+      const res = await fetch(`${window.SUPABASE_URL}/rest/v1/agent_logs?agent_id=eq.blogger&order=created_at.desc&limit=1`, {
+        headers: { 'apikey': window.SUPABASE_ANON_KEY, 'Authorization': `Bearer ${window.SUPABASE_ANON_KEY}` }
+      });
+      const logs = await res.json();
+      const latest = logs?.[0];
+      if (latest && new Date(latest.created_at) > new Date(start)) {
+        clearInterval(interval);
+        const m = latest.metadata || {};
+        if (m.success) {
+          showAgentToast(`✅ Blog post ready: "${(m.title || '').slice(0,40)}" ${m.has_audio ? '🎙' : ''}`, 'success');
+        }
+        agentsLoadBlogPosts();
+        agentsLoadLogs();
+      }
+    } catch {}
+  }, 8000);
 }
 
 // ── Styles ──
