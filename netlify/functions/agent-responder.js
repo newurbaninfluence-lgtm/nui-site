@@ -94,7 +94,7 @@ async function respondToForms() {
   const cutoff = new Date(Date.now() - 60 * 60 * 1000).toISOString(); // last 1 hour
 
   const subs = await sbFetch(
-    `form_submissions?auto_replied=is.null&created_at=gte.${cutoff}&order=created_at.asc&limit=10`
+    `form_submissions?auto_replied=is.null&created_at=gte.${cutoff}&order=created_at.asc&limit=5`
   ).catch(() => []);
 
   for (const sub of (subs || [])) {
@@ -175,6 +175,26 @@ async function respondToGBPReviews() {
   return results;
 }
 
+
+// ── DAILY RATE LIMITER ─────────────────────────────────────────────────────
+// Max 3 Claude-calling runs per day to prevent runaway costs
+async function checkDailyLimit() {
+  try {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const rows = await sbFetch(
+      `agent_logs?agent_id=eq.responder&created_at=gte.${todayStart.toISOString()}&select=id`
+    );
+    const runCount = (rows || []).length;
+    if (runCount >= 3) {
+      console.log(`[Responder] Daily limit reached (${runCount}/3 runs today). Skipping.`);
+      return false;
+    }
+    console.log(`[Responder] Run ${runCount + 1}/3 today.`);
+    return true;
+  } catch { return true; }
+}
+
 // ── Log agent run ──
 async function logRun(data) {
   try {
@@ -188,6 +208,12 @@ async function logRun(data) {
 // ── Main handler ──
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
+
+  // Check daily run limit before doing any Claude work
+  const withinLimit = await checkDailyLimit();
+  if (!withinLimit) {
+    return { statusCode: 200, headers: CORS, body: JSON.stringify({ success: true, skipped: 'daily_limit_reached', message: 'Max 3 Claude runs per day' }) };
+  }
 
   try {
     const [formResults, gbpResults] = await Promise.all([

@@ -191,6 +191,19 @@ async function postGBP(caption) {
   return { success: r.ok, post_id: d.name, error: d.error?.message };
 }
 
+
+// ── DAILY RUN GUARD — only post once per day ──────────────────────────────
+async function alreadyRanToday() {
+  try {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const rows = await sbFetch(
+      `agent_logs?agent_id=eq.promoter&status=eq.success&created_at=gte.${todayStart.toISOString()}&select=id`
+    );
+    return (rows || []).length > 0;
+  } catch { return false; }
+}
+
 // ── Log agent run to Supabase ──
 async function logRun(data) {
   try {
@@ -212,6 +225,14 @@ exports.handler = async (event) => {
 
   // Allow manual trigger from admin panel
   const isManual = event.httpMethod === 'POST';
+
+  // Daily run guard — skip if already posted today (unless manual trigger)
+  if (!isManual) {
+    const alreadyRan = await alreadyRanToday();
+    if (alreadyRan) {
+      return { statusCode: 200, headers: CORS, body: JSON.stringify({ success: true, skipped: 'already_ran_today' }) };
+    }
+  }
   const body = isManual ? JSON.parse(event.body || '{}') : {};
   const forcePillar = body.pillar_id ? CONTENT_PILLARS.find(p => p.id === body.pillar_id) : null;
 

@@ -87,6 +87,23 @@ async function updateContact(contactId, updates) {
   }).catch(() => {});
 }
 
+
+// ── DAILY SMS CAP — max 15 AI-generated messages per day ─────────────────
+async function getDailySmsSent() {
+  try {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/communications?channel=eq.sms&direction=eq.outbound&metadata->>handler=eq.monty-followup&created_at=gte.${todayStart.toISOString()}&select=id`,
+      { headers: sbH() }
+    );
+    const rows = await res.json().catch(() => []);
+    return (rows || []).length;
+  } catch { return 0; }
+}
+
+const DAILY_SMS_CAP = 15;
+
 exports.handler = async function(event) {
   if (!SUPABASE_URL || !SUPABASE_KEY || !ANTHROPIC_API_KEY) {
     return { statusCode: 200, body: JSON.stringify({ skipped: 'missing env vars' }) };
@@ -94,6 +111,13 @@ exports.handler = async function(event) {
 
   const now = new Date();
   const results = { followups_sent: 0, reactivations_sent: 0, skipped: 0, errors: 0 };
+
+  // Daily SMS cap check
+  let dailySmsSent = await getDailySmsSent();
+  if (dailySmsSent >= DAILY_SMS_CAP) {
+    console.log(`[Followup] Daily SMS cap reached (${dailySmsSent}/${DAILY_SMS_CAP}). Skipping run.`);
+    return { statusCode: 200, body: JSON.stringify({ success: true, skipped: 'daily_sms_cap_reached', sent_today: dailySmsSent }) };
+  }
 
   // ── Part 1: Follow-up Sequences ───────────────────────────────────────────
   // Find contacts who Monty texted but haven't replied (followup_stage 0, 1, or 2)

@@ -91,8 +91,8 @@ Return ONLY valid JSON. No markdown fences.`;
     method: 'POST',
     headers: { 'x-api-key': CLAUDE, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 4000,
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }]
     })
   });
@@ -178,7 +178,7 @@ exports.handler = async (event) => {
     const autoPublish = body.auto_publish === true;
 
     if (mode === 'batch') {
-      const count = Math.min(body.count || 4, 6);
+      const count = Math.min(body.count || 1, 2);
       const logs = await sbFetch('agent_logs?agent_id=eq.blogger&order=created_at.desc&limit=20').catch(() => []);
       const used = (logs || []).map(l => l.metadata?.topic_slug).filter(Boolean);
       const available = BLOG_TOPICS.filter(t => !used.includes(slugify(t.topic)));
@@ -226,7 +226,7 @@ async function generateAndSave(topicObj, autoPublish = false) {
   const blog = await generateBlogPost(topic, category, keywords);
   if (!blog.title) throw new Error('Blog generation failed — no title returned');
 
-  const slug = slugify(blog.title);
+  const slug = slugify(blog.title) + '-' + now.getFullYear();
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
