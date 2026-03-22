@@ -1283,6 +1283,7 @@ function renderClientCard(c) {
 <div class="client-card-name">${clientName}</div>
 <div class="client-card-meta">${c.industry || 'No industry'} • ${c.servicePackageName || ''} ${c.assets ? Object.values(c.assets).flat().length : 0} assets</div>
 <div class="client-card-btns">
+<button onclick="openEditClientModal(${c.id})" style="background: #3b82f6; color: #fff;">✏️ Edit</button>
 <button onclick="quickOrder(${c.id})" style="background: #e11d48; color: #fff;">⚡ Order</button>
 <button onclick="viewClientAsAdmin(${c.id})" style="background: #000; color: #fff;">View Portal</button>
 <button onclick="currentAdminClient = clients.find(x => x.id === ${c.id}); showAdminPanel('assets');" style="background: #f5f5f5; color: #000;">Upload</button>
@@ -1290,6 +1291,78 @@ function renderClientCard(c) {
 </div>
 </div>
  </div>`;
+}
+
+// ==================== EDIT CLIENT MODAL ====================
+function openEditClientModal(clientId) {
+    const c = clients.find(x => x.id === clientId);
+    if (!c) { alert('Client not found'); return; }
+    let existing = document.getElementById('editClientModal');
+    if (existing) existing.remove();
+    const modal = document.createElement('div');
+    modal.id = 'editClientModal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:10000;display:flex;align-items:center;justify-content:center;';
+    modal.innerHTML = `<div style="background:#1a1a1a;border-radius:12px;padding:28px;width:90%;max-width:520px;max-height:85vh;overflow-y:auto;color:#fff;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+<h3 style="margin:0;font-size:18px;">✏️ Edit Client</h3>
+<button onclick="closeEditClientModal()" style="background:none;border:none;color:#888;font-size:22px;cursor:pointer;">&times;</button>
+</div>
+<input type="hidden" id="editClientId" value="${c.id}">
+<div style="display:grid;gap:12px;">
+<div><label style="font-size:12px;color:#888;display:block;margin-bottom:4px;">Name</label><input id="editClientName" value="${(c.name||'').replace(/"/g,'&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;box-sizing:border-box;"></div>
+<div><label style="font-size:12px;color:#888;display:block;margin-bottom:4px;">Email</label><input id="editClientEmail" value="${(c.email||'').replace(/"/g,'&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;box-sizing:border-box;"></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+<div><label style="font-size:12px;color:#888;display:block;margin-bottom:4px;">Phone</label><input id="editClientPhone" value="${(c.phone||'').replace(/"/g,'&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;box-sizing:border-box;"></div>
+<div><label style="font-size:12px;color:#888;display:block;margin-bottom:4px;">Industry</label><input id="editClientIndustry" value="${(c.industry||'').replace(/"/g,'&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;box-sizing:border-box;"></div>
+</div>
+<div><label style="font-size:12px;color:#888;display:block;margin-bottom:4px;">Website</label><input id="editClientWebsite" value="${(c.website||'').replace(/"/g,'&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;box-sizing:border-box;"></div>
+<div><label style="font-size:12px;color:#888;display:block;margin-bottom:4px;">Address</label><input id="editClientAddress" value="${(c.address||'').replace(/"/g,'&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;box-sizing:border-box;"></div>
+<div><label style="font-size:12px;color:#888;display:block;margin-bottom:4px;">Contact Person</label><input id="editClientContact" value="${(c.contact||'').replace(/"/g,'&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;box-sizing:border-box;"></div>
+<div><label style="font-size:12px;color:#888;display:block;margin-bottom:4px;">Social</label><input id="editClientSocial" value="${(c.social||'').replace(/"/g,'&quot;')}" style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;box-sizing:border-box;"></div>
+<div><label style="font-size:12px;color:#888;display:block;margin-bottom:4px;">Notes</label><textarea id="editClientNotes" rows="3" style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:6px;color:#fff;font-size:14px;resize:vertical;box-sizing:border-box;">${(c.notes||'').replace(/</g,'&lt;')}</textarea></div>
+</div>
+<div style="display:flex;gap:10px;margin-top:20px;">
+<button onclick="saveClientChanges()" style="flex:1;padding:12px;background:#3b82f6;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;">💾 Save Changes</button>
+<button onclick="closeEditClientModal()" style="flex:1;padding:12px;background:#333;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;">Cancel</button>
+</div>
+</div>`;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', function(e) { if (e.target === modal) closeEditClientModal(); });
+}
+
+function closeEditClientModal() {
+    const m = document.getElementById('editClientModal');
+    if (m) m.remove();
+}
+
+async function saveClientChanges() {
+    const id = parseInt(document.getElementById('editClientId').value);
+    const c = clients.find(x => x.id === id);
+    if (!c) { alert('Client not found'); return; }
+    c.name = document.getElementById('editClientName').value.trim();
+    c.email = document.getElementById('editClientEmail').value.trim();
+    c.phone = document.getElementById('editClientPhone').value.trim();
+    c.industry = document.getElementById('editClientIndustry').value.trim();
+    c.website = document.getElementById('editClientWebsite').value.trim();
+    c.address = document.getElementById('editClientAddress').value.trim();
+    c.contact = document.getElementById('editClientContact').value.trim();
+    c.social = document.getElementById('editClientSocial').value.trim();
+    c.notes = document.getElementById('editClientNotes').value.trim();
+    saveClients();
+    // Sync to Supabase
+    try {
+        const SB_URL = window.SUPABASE_URL || '';
+        const SB_KEY = window.SUPABASE_ANON_KEY || '';
+        if (SB_URL && SB_KEY && SB_URL !== 'YOUR_SUPABASE_URL') {
+            await fetch(`${SB_URL}/rest/v1/clients?id=eq.${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Prefer': 'return=minimal' },
+                body: JSON.stringify({ name: c.name, email: c.email, phone: c.phone, industry: c.industry, website: c.website, address: c.address, contact: c.contact, social: c.social, notes: c.notes })
+            });
+        }
+    } catch(err) { console.warn('Supabase sync failed:', err); }
+    closeEditClientModal();
+    if (typeof showAdminPanel === 'function') showAdminPanel('clients');
 }
 
 function renderOrderCard(o, showActions = false) {
