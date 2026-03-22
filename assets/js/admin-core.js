@@ -47,6 +47,11 @@ var _nuiBreadcrumbMap = {
         { label: 'Clients', action: "showAdminPanel('clients')" },
         { label: 'New Client', action: '' }
     ],
+    'migrateclient': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Clients', action: "showAdminPanel('clients')" },
+        { label: 'Migrate Existing Client', action: '' }
+    ],
     'contacthub': [
         { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
         { label: 'Contact Hub', action: '' }
@@ -149,6 +154,7 @@ function showAdminPanel(panel) {
         'sms': loadAdminSmsPanel,
         'siteimages': loadAdminSiteImagesPanel,
         'newclient': loadAdminNewClientPanel,
+        'migrateclient': loadAdminMigrateClientPanel,
         'assets': loadAdminAssetsPanel,
         'portfolio': loadAdminPortfolioPanel,
         'moodboard': loadAdminMoodboardPanel,

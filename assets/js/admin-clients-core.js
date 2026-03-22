@@ -22,6 +22,7 @@ function loadAdminClientsPanel(searchTerm = '') {
 <button onclick="showCsvImportModal()" style="padding: 10px 16px; background: #10b981; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">📥 Import CSV</button>
 <button onclick="exportClientsCSV()" style="padding: 10px 16px; background: #f3f4f6; border: 1px solid #e5e5e5; border-radius: 8px; cursor: pointer;">📤 Export CSV</button>
 <button onclick="showAdminPanel('newclient')" class="btn-cta">+ New Client</button>
+<button onclick="showAdminPanel('migrateclient')" class="btn-cta" style="background:#1a1a1a;border:1px solid #444;color:#aaa;margin-left:8px;">↩️ Migrate Existing</button>
 </div>
 <input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="handleCsvUpload(event)">
         ${filtered.length > 0 ? `

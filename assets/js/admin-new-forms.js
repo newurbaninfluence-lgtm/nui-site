@@ -304,3 +304,235 @@ ${servicePackages.map(p => '<option value="' + p.id + '">' + p.name + ' — $' +
     `;
 }
 
+
+// ═══════════════════════════════════════════════════════════
+// MIGRATE EXISTING CLIENT — All-in-one panel
+// Add existing clients with projects, invoices, subscriptions
+// ═══════════════════════════════════════════════════════════
+
+function loadAdminMigrateClientPanel() {
+    document.getElementById('adminMigrateclientPanel').innerHTML = `
+<h2 style="font-size:28px;font-weight:700;margin-bottom:8px;">↩️ Migrate Existing Client</h2>
+<p style="color:#888;margin-bottom:32px;">Add a client from your old system — include all their past projects, invoices, and subscriptions in one shot. No welcome email sent by default.</p>
+
+<form onsubmit="migrateClient(event)" class="form-section max-w-800">
+
+<!-- ── CONTACT INFO ── -->
+<div style="font-weight:600;font-size:16px;margin-bottom:16px;color:var(--red);">👤 Client Info</div>
+<div class="form-row">
+  <div class="form-group"><label class="form-label">Business / Client Name *</label><input type="text" id="migClientName" class="form-input" required placeholder="e.g., PenMindState"></div>
+  <div class="form-group"><label class="form-label">Contact Person</label><input type="text" id="migClientContact" class="form-input" placeholder="e.g., Damon Meadows"></div>
+</div>
+<div class="form-row">
+  <div class="form-group"><label class="form-label">Email *</label><input type="email" id="migClientEmail" class="form-input" required placeholder="client@email.com"></div>
+  <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="migClientPhone" class="form-input" placeholder="(313) 555-1234"></div>
+</div>
+<div class="form-row">
+  <div class="form-group"><label class="form-label">Portal Password *</label><input type="text" id="migClientPassword" class="form-input" required placeholder="Set their login password"></div>
+  <div class="form-group"><label class="form-label">Industry</label><input type="text" id="migClientIndustry" class="form-input" placeholder="e.g., Music, Retail, Food"></div>
+</div>
+<div class="form-row">
+  <div class="form-group"><label class="form-label">Website</label><input type="url" id="migClientWebsite" class="form-input" placeholder="https://"></div>
+  <div class="form-group"><label class="form-label">Notes</label><textarea id="migClientNotes" class="form-input" rows="2" placeholder="Anything important..."></textarea></div>
+</div>
+
+<!-- ── PROJECTS ── -->
+<div style="font-weight:600;font-size:16px;margin:28px 0 16px;color:var(--red);">📁 Past & Active Projects</div>
+<div id="migProjectsList"></div>
+<button type="button" onclick="addMigProject()" style="padding:10px 20px;background:#1a1a1a;border:1px dashed #444;color:#888;border-radius:8px;cursor:pointer;font-size:14px;margin-bottom:8px;">+ Add Project</button>
+
+<!-- ── INVOICES ── -->
+<div style="font-weight:600;font-size:16px;margin:28px 0 16px;color:var(--red);">🧾 Invoice History</div>
+<div id="migInvoicesList"></div>
+<button type="button" onclick="addMigInvoice()" style="padding:10px 20px;background:#1a1a1a;border:1px dashed #444;color:#888;border-radius:8px;cursor:pointer;font-size:14px;margin-bottom:8px;">+ Add Invoice</button>
+
+<!-- ── SUBSCRIPTIONS ── -->
+<div style="font-weight:600;font-size:16px;margin:28px 0 16px;color:var(--red);">🔄 Monthly Subscriptions</div>
+<div class="form-row">
+  <div class="form-group"><label class="form-label">Hosting Plan</label>
+    <select id="migHostingPlan" class="form-input">
+      <option value="">— None —</option>
+      <option value="basic-hosting">Basic Hosting — $27/mo</option>
+      <option value="hosting-funnels">Hosting + Funnels — $125/mo</option>
+    </select>
+  </div>
+  <div class="form-group"><label class="form-label">Design Subscription</label>
+    <select id="migDesignSub" class="form-input">
+      <option value="">— None —</option>
+      <option value="design-essentials">Brand Essentials — $297/mo</option>
+      <option value="design-growth">Growth Engine — $497/mo</option>
+      <option value="design-creative">Full Creative Team — $697/mo</option>
+    </select>
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group"><label class="form-label">Marketing Tech Plan</label>
+    <select id="migMarketingPlan" class="form-input">
+      <option value="">— None —</option>
+      <option value="brand-ready">Brand Ready — $497/mo</option>
+      <option value="brand-loaded">Brand Loaded — $1,497/mo</option>
+      <option value="brand-heavy">Brand Heavy — $2,497/mo</option>
+    </select>
+  </div>
+  <div class="form-group"><label class="form-label">Next Billing Date</label>
+    <input type="date" id="migBillingDate" class="form-input">
+  </div>
+</div>
+
+<!-- ── OPTIONS ── -->
+<div style="font-weight:600;font-size:16px;margin:28px 0 16px;color:var(--red);">⚙️ Options</div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;">
+  <label style="display:flex;align-items:center;gap:8px;padding:12px 16px;background:#242424;border:1px solid #333;border-radius:8px;cursor:pointer;">
+    <input type="checkbox" id="migSendPortalEmail"> <span class="fs-14">📧 Send Portal Access Email</span>
+  </label>
+  <label style="display:flex;align-items:center;gap:8px;padding:12px 16px;background:#242424;border:1px solid #333;border-radius:8px;cursor:pointer;">
+    <input type="checkbox" id="migAddPipeline" checked> <span class="fs-14">📊 Add to CRM Pipeline</span>
+  </label>
+  <label style="display:flex;align-items:center;gap:8px;padding:12px 16px;background:#242424;border:1px solid #333;border-radius:8px;cursor:pointer;">
+    <input type="checkbox" id="migMarkActive" checked> <span class="fs-14">✅ Mark as Active Client</span>
+  </label>
+</div>
+
+<button type="submit" class="btn-cta" style="width:100%;padding:16px;font-size:16px;">↩️ Migrate Client into System</button>
+</form>
+`;
+    // Add first project and invoice row by default
+    addMigProject();
+    addMigInvoice();
+}
+
+let migProjectCount = 0;
+function addMigProject() {
+    migProjectCount++;
+    const id = migProjectCount;
+    const div = document.createElement('div');
+    div.id = 'migProject_' + id;
+    div.style.cssText = 'background:#111;border:1px solid #222;border-radius:12px;padding:20px;margin-bottom:12px;position:relative;';
+    div.innerHTML = `
+<button type="button" onclick="document.getElementById('migProject_${id}').remove()" style="position:absolute;top:12px;right:12px;background:none;border:none;color:#666;cursor:pointer;font-size:18px;">✕</button>
+<div class="form-row">
+  <div class="form-group"><label class="form-label">Project Name *</label><input type="text" name="migProj_name_${id}" class="form-input" placeholder="e.g., Brand Identity Design" required></div>
+  <div class="form-group"><label class="form-label">Service Type</label>
+    <select name="migProj_type_${id}" class="form-input">
+      <option value="brand_identity">Brand Identity</option>
+      <option value="web_design">Web Design</option>
+      <option value="print">Print</option>
+      <option value="social_media">Social Media</option>
+      <option value="marketing">Marketing</option>
+      <option value="custom">Custom / Other</option>
+    </select>
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group"><label class="form-label">Status</label>
+    <select name="migProj_status_${id}" class="form-input">
+      <option value="done">✅ Completed</option>
+      <option value="in_progress">🔄 In Progress</option>
+      <option value="review">👁 In Review</option>
+      <option value="on_hold">⏸ On Hold</option>
+    </select>
+  </div>
+  <div class="form-group"><label class="form-label">Start Date</label><input type="date" name="migProj_date_${id}" class="form-input"></div>
+</div>
+<div class="form-group"><label class="form-label">Notes / Deliverables</label><input type="text" name="migProj_notes_${id}" class="form-input" placeholder="Logo, brand guide, business cards, etc."></div>`;
+    document.getElementById('migProjectsList').appendChild(div);
+}
+
+let migInvoiceCount = 0;
+function addMigInvoice() {
+    migInvoiceCount++;
+    const id = migInvoiceCount;
+    const div = document.createElement('div');
+    div.id = 'migInvoice_' + id;
+    div.style.cssText = 'background:#111;border:1px solid #222;border-radius:12px;padding:20px;margin-bottom:12px;position:relative;';
+    div.innerHTML = `
+<button type="button" onclick="document.getElementById('migInvoice_${id}').remove()" style="position:absolute;top:12px;right:12px;background:none;border:none;color:#666;cursor:pointer;font-size:18px;">✕</button>
+<div class="form-row">
+  <div class="form-group"><label class="form-label">Description</label><input type="text" name="migInv_desc_${id}" class="form-input" placeholder="e.g., Brand Kit — Full Payment"></div>
+  <div class="form-group"><label class="form-label">Amount *</label><input type="number" name="migInv_amount_${id}" class="form-input" placeholder="1500" min="0"></div>
+</div>
+<div class="form-row">
+  <div class="form-group"><label class="form-label">Date Paid / Invoiced</label><input type="date" name="migInv_date_${id}" class="form-input"></div>
+  <div class="form-group"><label class="form-label">Status</label>
+    <select name="migInv_status_${id}" class="form-input">
+      <option value="paid">✅ Paid</option>
+      <option value="partial">💛 Partial Payment</option>
+      <option value="unpaid">❌ Unpaid / Outstanding</option>
+    </select>
+  </div>
+</div>`;
+    document.getElementById('migInvoicesList').appendChild(div);
+}
+
+function migrateClient(e) {
+    e.preventDefault();
+
+    // Build client object
+    const newClient = {
+        id: Date.now(),
+        name: document.getElementById('migClientName').value.trim(),
+        contact: document.getElementById('migClientContact').value.trim(),
+        email: document.getElementById('migClientEmail').value.trim(),
+        phone: document.getElementById('migClientPhone').value.trim(),
+        password: document.getElementById('migClientPassword').value.trim(),
+        industry: document.getElementById('migClientIndustry').value.trim(),
+        website: document.getElementById('migClientWebsite').value.trim(),
+        notes: document.getElementById('migClientNotes').value.trim(),
+        hostingPlan: document.getElementById('migHostingPlan').value,
+        designSubscription: document.getElementById('migDesignSub').value,
+        marketingPlan: document.getElementById('migMarketingPlan').value,
+        billingDate: document.getElementById('migBillingDate').value,
+        status: document.getElementById('migMarkActive').checked ? 'active' : 'inactive',
+        source: 'migration',
+        createdAt: new Date().toISOString()
+    };
+
+    clients.push(newClient);
+    saveClients();
+
+    // Build projects
+    let projCount = 0;
+    for (let i = 1; i <= migProjectCount; i++) {
+        const nameEl = document.querySelector(`[name="migProj_name_${i}"]`);
+        if (!nameEl || !nameEl.closest(`#migProject_${i}`)) continue;
+        const proj = {
+            id: Date.now() + projCount++,
+            clientId: newClient.id,
+            projectName: nameEl.value,
+            type: document.querySelector(`[name="migProj_type_${i}"]`)?.value || 'custom',
+            status: document.querySelector(`[name="migProj_status_${i}"]`)?.value || 'done',
+            createdAt: document.querySelector(`[name="migProj_date_${i}"]`)?.value || new Date().toISOString(),
+            notes: document.querySelector(`[name="migProj_notes_${i}"]`)?.value || '',
+            migrated: true
+        };
+        orders.push(proj);
+    }
+    saveOrders();
+
+    // Build invoices
+    let invCount = 0;
+    for (let i = 1; i <= migInvoiceCount; i++) {
+        const descEl = document.querySelector(`[name="migInv_desc_${i}"]`);
+        if (!descEl || !descEl.closest(`#migInvoice_${i}`)) continue;
+        const amountVal = parseFloat(document.querySelector(`[name="migInv_amount_${i}"]`)?.value || 0);
+        if (!amountVal) continue;
+        const inv = {
+            id: Date.now() + 1000 + invCount++,
+            clientId: newClient.id,
+            invoiceNumber: 'MIG-' + (Date.now() + invCount),
+            description: descEl.value || 'Migrated Invoice',
+            total: amountVal,
+            amount: amountVal,
+            status: document.querySelector(`[name="migInv_status_${i}"]`)?.value || 'paid',
+            date: document.querySelector(`[name="migInv_date_${i}"]`)?.value || new Date().toISOString(),
+            paidAt: document.querySelector(`[name="migInv_status_${i}"]`)?.value === 'paid' ? (document.querySelector(`[name="migInv_date_${i}"]`)?.value || new Date().toISOString()) : null,
+            migrated: true,
+            createdAt: new Date().toISOString()
+        };
+        invoices.push(inv);
+    }
+    saveInvoices();
+
+    alert('✅ ' + newClient.name + ' migrated successfully!\n\nProjects, invoices and subscriptions have been added to their portal.');
+    showAdminPanel('clients');
+}

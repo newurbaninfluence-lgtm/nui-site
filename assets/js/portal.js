@@ -163,6 +163,7 @@ function loadPortalView() {
 <div id="adminSmsPanel" class="admin-panel"></div>
 <div id="adminSiteimagesPanel" class="admin-panel"></div>
 <div id="adminNewclientPanel" class="admin-panel"></div>
+<div id="adminMigrateclientPanel" class="admin-panel"></div>
 <div id="adminAssetsPanel" class="admin-panel"></div>
 <div id="adminPortfolioPanel" class="admin-panel"></div>
 <div id="adminMoodboardPanel" class="admin-panel"></div>
