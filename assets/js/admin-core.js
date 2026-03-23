@@ -1292,6 +1292,7 @@ function renderClientCard(c) {
 <button onclick="openEditClientModal(${c.id})" style="background: #3b82f6; color: #fff;">✏️ Edit</button>
 <button onclick="quickOrder(${c.id})" style="background: #e11d48; color: #fff;">⚡ Order</button>
 <button onclick="viewClientAsAdmin(${c.id})" style="background: #000; color: #fff;">View Portal</button>
+<button onclick="importHistoryForClient(${c.id})" style="background: #7c3aed; color: #fff;">📥 Import History</button>
 <button onclick="currentAdminClient = clients.find(x => x.id === ${c.id}); showAdminPanel('assets');" style="background: #f5f5f5; color: #000;">Upload</button>
 <button onclick="deleteClient(${c.id})" style="background: #fee2e2; color: #dc2626;">×</button>
 </div>

@@ -1724,7 +1724,8 @@ function saveEnhancedProof() {
         notes: notes,
         comments: [],
         createdAt: new Date().toISOString(),
-        notifyClient: notifyClient
+        notifyClient: notifyClient,
+        sentToClient: notifyClient   // ← Bug #1 fix: client-portal.js filters on sentToClient
     };
 
     proofs.push(proof);

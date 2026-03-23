@@ -57,6 +57,12 @@ function showClientPortal(client) {
     const clientOrders = orders.filter(o => o.clientId === client.id);
     const deliveredOrders = clientOrders.filter(o => o.status === 'delivered');
     const activeOrders = clientOrders.filter(o => o.status !== 'delivered');
+    // All projects for this client (supports both clientId and client_id field names)
+    const clientProjects = (typeof projects !== 'undefined' ? projects : []).filter(p => p.clientId == client.id || p.client_id == client.id);
+    // Standalone invoices: not tied to any order row
+    const clientStandaloneInvoices = (typeof invoices !== 'undefined' ? invoices : []).filter(i => i.clientId == client.id && !i.orderId);
+    // All proofs for this client
+    const clientAllProofs = (typeof proofs !== 'undefined' ? proofs : []).filter(pr => pr.clientId == client.id);
     const logos = client.assets?.logos || [];
     const videos = client.assets?.video || [];
     const mockups = client.assets?.mockups || [];
@@ -85,6 +91,7 @@ function showClientPortal(client) {
 <button onclick="switchPortalSection('dashboard', ${client.id})" class="portal-main-tab active" data-tab="dashboard" style="padding: 14px 24px; background: none; border: none; border-bottom: 2px solid #e11d48; color: #fff; font-weight: 600; font-size: 14px; cursor: pointer; white-space: nowrap; font-family: inherit;">📊 Dashboard</button>
 <button onclick="switchPortalSection('brand', ${client.id})" class="portal-main-tab" data-tab="brand" style="padding: 14px 24px; background: none; border: none; border-bottom: 2px solid transparent; color: #888; font-weight: 600; font-size: 14px; cursor: pointer; white-space: nowrap; font-family: inherit;">🎨 Brand Portal</button>
 <button onclick="switchPortalSection('orders', ${client.id})" class="portal-main-tab" data-tab="orders" style="padding: 14px 24px; background: none; border: none; border-bottom: 2px solid transparent; color: #888; font-weight: 600; font-size: 14px; cursor: pointer; white-space: nowrap; font-family: inherit;">📦 Orders & Invoices</button>
+<button onclick="switchPortalSection('projects', ${client.id})" class="portal-main-tab" data-tab="projects" style="padding: 14px 24px; background: none; border: none; border-bottom: 2px solid transparent; color: #888; font-weight: 600; font-size: 14px; cursor: pointer; white-space: nowrap; font-family: inherit;">📂 My Projects${clientProjects.length > 0 ? '<span style="background:#3b82f6;color:#fff;border-radius:100px;padding:2px 7px;font-size:11px;margin-left:6px;">' + clientProjects.length + '</span>' : ''}</button>
 <button onclick="switchPortalSection('info', ${client.id})" class="portal-main-tab" data-tab="info" style="padding: 14px 24px; background: none; border: none; border-bottom: 2px solid transparent; color: #888; font-weight: 600; font-size: 14px; cursor: pointer; white-space: nowrap; font-family: inherit;">👤 My Info</button>
 <button onclick="switchPortalSection('proofs', ${client.id})" class="portal-main-tab" data-tab="proofs" style="padding: 14px 24px; background: none; border: none; border-bottom: 2px solid transparent; color: #888; font-weight: 600; font-size: 14px; cursor: pointer; white-space: nowrap; font-family: inherit;">✅ Proofs ${proofs.filter(pr => pr.clientId == client.id && pr.sentToClient && pr.status === 'pending').length > 0 ? '<span style="background:#e11d48;color:#fff;border-radius:100px;padding:2px 8px;font-size:11px;margin-left:4px;">' + proofs.filter(pr => pr.clientId == client.id && pr.sentToClient && pr.status === 'pending').length + '</span>' : ''}</button>
 <button onclick="switchPortalSection('questionnaire', ${client.id})" class="portal-main-tab" data-tab="questionnaire" style="padding: 14px 24px; background: none; border: none; border-bottom: 2px solid transparent; color: #888; font-weight: 600; font-size: 14px; cursor: pointer; white-space: nowrap; font-family: inherit;">📋 Questionnaire</button>
@@ -94,22 +101,22 @@ function showClientPortal(client) {
 <!-- DASHBOARD SECTION -->
 <div id="portalSection-dashboard" class="portal-section p-32">
 <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 24px;">Welcome back, ${client.contact || client.name}!</h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px;">
-<div class="admin-card-dark-sm">
-<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Service</div>
-<div style="font-size: 18px; font-weight: 600; color: #fff;">${client.servicePackageName || 'Not set'}</div>
-</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px;">
 <div class="admin-card-dark-sm">
 <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Active Orders</div>
 <div style="font-size: 28px; font-weight: 700; color: #3b82f6;">${activeOrders.length}</div>
 </div>
 <div class="admin-card-dark-sm">
-<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Completed</div>
-<div style="font-size: 28px; font-weight: 700; color: #10b981;">${deliveredOrders.length}</div>
+<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Total Projects</div>
+<div style="font-size: 28px; font-weight: 700; color: #a855f7;">${clientProjects.length}</div>
 </div>
 <div class="admin-card-dark-sm">
-<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Brand Status</div>
-<div style="font-size: 18px; font-weight: 600; color: ${brandGuide.status === 'approved' ? '#10b981' : brandGuide.status === 'pending' ? '#f59e0b' : '#888'};">${brandGuide.status === 'approved' ? '✓ Approved' : brandGuide.status === 'pending' ? '⏳ Pending' : '📝 In Progress'}</div>
+<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Completed</div>
+<div style="font-size: 28px; font-weight: 700; color: #10b981;">${deliveredOrders.length + clientProjects.filter(p => p.stage === 'Complete' || p.stage === 'Delivery' || p.status === 'completed').length}</div>
+</div>
+<div class="admin-card-dark-sm">
+<div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Proofs Pending</div>
+<div style="font-size: 28px; font-weight: 700; color: ${clientAllProofs.filter(pr => pr.sentToClient && pr.status === 'pending').length > 0 ? '#f59e0b' : '#10b981'};">${clientAllProofs.filter(pr => pr.sentToClient && pr.status === 'pending').length > 0 ? '⏳ ' + clientAllProofs.filter(pr => pr.sentToClient && pr.status === 'pending').length : '✓ Clear'}</div>
 </div>
 </div>
 ${(() => {
@@ -154,10 +161,87 @@ ${activeOrders.length > 0 ? '<h3 style="font-size: 16px; font-weight: 600; margi
 <div id="portalSection-orders" class="portal-section" style="padding: 32px; display: none;">
 <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 24px;">Orders & Invoices</h2>
 ${clientOrders.length > 0 ? clientOrders.map(o => {
-    const inv = invoices.find(i => i.orderId === o.id);
+    const inv = invoices.find(i => i.orderId === o.id || i.orderId == o.id);
     const statusColors = { pending: '#f59e0b', 'in-progress': '#3b82f6', review: '#8b5cf6', delivered: '#10b981', cancelled: '#ef4444' };
-    return '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 16px;"><div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;"><div><h3 style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px;">' + o.projectName + '</h3><div class="text-muted-sm">' + (o.packageName || 'Custom') + ' • Created ' + new Date(o.createdAt).toLocaleDateString() + '</div></div><div style="display: flex; gap: 12px; align-items: center;"><span style="display: inline-block; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: ' + (statusColors[o.status] || '#888') + '20; color: ' + (statusColors[o.status] || '#888') + ';">' + (o.status || 'pending') + '</span>' + (o.estimate ? '<span style="font-size: 18px; font-weight: 700; color: #e11d48;">$' + o.estimate.toLocaleString() + '</span>' : '') + '</div></div>' + (o.turnaround ? '<div style="margin-top: 12px; font-size: 13px; color: #888;">⏱ Turnaround: ' + o.turnaround + (o.dueDate ? ' • Due: ' + new Date(o.dueDate).toLocaleDateString() : '') + '</div>' : '') + (inv ? '<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #222; display: flex; justify-content: space-between; align-items: center;"><span class="text-muted-sm">Invoice #' + (inv.invoiceNumber || inv.id) + '</span><span style="font-size: 13px; font-weight: 600; color: ' + (inv.status === 'paid' ? '#10b981' : '#f59e0b') + ';">' + (inv.status === 'paid' ? '✅ Paid' : '⏳ Unpaid — $' + (inv.total || inv.amount || 0).toLocaleString() + ' <span style="background:rgba(168,85,247,0.2);color:#a855f7;padding:3px 8px;border-radius:4px;font-size:11px;margin-left:8px;">Pay Later Available</span>') + '</span>' + (inv.status !== 'paid' ? '<button onclick="portalPayInvoice(' + inv.id + ')" style="padding:8px 20px;background:#e11d48;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;margin-left:12px;">Pay Now →</button>' : '') + '</div>' : '') + '</div>';
-}).join('') : '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 48px; text-align: center;"><div style="font-size: 48px; margin-bottom: 16px;">📦</div><div style="color: #888; font-size: 16px;">No orders yet</div><div style="color: #666; font-size: 14px; margin-top: 8px;">Your orders and invoices will appear here</div></div>'}
+    return '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 16px;"><div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;"><div><h3 style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px;">' + (o.projectName || o.packageName || 'Order #' + o.id) + '</h3><div class="text-muted-sm">' + (o.packageName || 'Custom') + ' • Created ' + new Date(o.createdAt).toLocaleDateString() + '</div></div><div style="display: flex; gap: 12px; align-items: center;"><span style="display: inline-block; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: ' + (statusColors[o.status] || '#888') + '20; color: ' + (statusColors[o.status] || '#888') + ';">' + (o.status || 'pending') + '</span>' + (o.total || o.estimate ? '<span style="font-size: 18px; font-weight: 700; color: #e11d48;">$' + (o.total || o.estimate || 0).toLocaleString() + '</span>' : '') + '</div></div>' + (o.turnaround ? '<div style="margin-top: 12px; font-size: 13px; color: #888;">⏱ Turnaround: ' + o.turnaround + (o.dueDate ? ' • Due: ' + new Date(o.dueDate).toLocaleDateString() : '') + '</div>' : '') + (inv ? '<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #222; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;"><span class="text-muted-sm">Invoice #' + (inv.invoiceNumber || inv.id) + '</span><div style="display:flex;align-items:center;gap:8px;"><span style="font-size: 13px; font-weight: 600; color: ' + (inv.status === 'paid' ? '#10b981' : '#f59e0b') + ';">' + (inv.status === 'paid' ? '✅ Paid in Full' : '⏳ Unpaid — $' + (inv.total || inv.amount || 0).toLocaleString()) + '</span>' + (inv.status !== 'paid' ? '<button onclick="portalPayInvoice(' + inv.id + ')" style="padding:8px 20px;background:#e11d48;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;">Pay Now →</button>' : '') + '</div></div>' : '') + '</div>';
+}).join('') : ''}
+${clientOrders.length === 0 && clientStandaloneInvoices.length === 0 ? '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 48px; text-align: center;"><div style="font-size: 48px; margin-bottom: 16px;">📦</div><div style="color: #888; font-size: 16px;">No orders yet</div><div style="color: #666; font-size: 14px; margin-top: 8px;">Your orders and invoices will appear here</div></div>' : ''}
+${clientStandaloneInvoices.length > 0 ? '<div style="margin-top: 24px;"><h3 style="font-size: 16px; font-weight: 600; color: #888; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; font-size: 12px;">Additional Invoices</h3>' + clientStandaloneInvoices.map(inv => '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;"><div><div style="font-weight: 600; color: #fff; font-size: 16px;">' + (inv.description || inv.projectName || 'Invoice') + '</div><div style="font-size: 13px; color: #888; margin-top: 4px;">Invoice #' + (inv.invoiceNumber || inv.id) + ' • ' + new Date(inv.createdAt).toLocaleDateString() + '</div></div><div style="display:flex;align-items:center;gap:12px;"><span style="font-size: 16px; font-weight: 700; color: #e11d48;">$' + (inv.total || inv.amount || 0).toLocaleString() + '</span><span style="padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; background: ' + (inv.status === 'paid' ? '#10b98120' : '#f59e0b20') + '; color: ' + (inv.status === 'paid' ? '#10b981' : '#f59e0b') + ';">' + (inv.status === 'paid' ? '✅ Paid' : '⏳ Unpaid') + '</span>' + (inv.status !== 'paid' ? '<button onclick="portalPayInvoice(' + inv.id + ')" style="padding:8px 20px;background:#e11d48;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;">Pay Now →</button>' : '') + '</div></div>').join('') + '</div>' : ''}
+</div>
+
+<!-- PROJECTS SECTION -->
+<div id="portalSection-projects" class="portal-section" style="padding: 32px; display: none;">
+<h2 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">My Projects</h2>
+<p class="text-muted mb-24">Every brand guide, website, logo, and one-off job — with proofs, feedback, and links.</p>
+${(() => {
+    if (clientProjects.length === 0) return '<div style="background:#111;border:1px solid #222;border-radius:12px;padding:48px;text-align:center;"><div style="font-size:48px;margin-bottom:16px;">📂</div><div style="color:#888;font-size:16px;">No projects yet</div><div style="color:#666;font-size:14px;margin-top:8px;">Projects will appear here once your designer sets them up.</div></div>';
+    const typeIcons = { 'brand-guide':'🎨', 'brandguide':'🎨', website:'🌐', logo:'✏️', social:'📱', print:'🖨️', video:'🎬', 'one-off':'⚡' };
+    const stageClr = { Delivery:'#10b981', Complete:'#10b981', complete:'#10b981', completed:'#10b981', Review:'#a855f7', Design:'#3b82f6', Discovery:'#f59e0b' };
+    return clientProjects.map(function(proj) {
+        var projProofs = clientAllProofs.filter(function(pr){ return pr.projectId == proj.id || pr.project_id == proj.id; });
+        var isWeb = proj.type === 'website';
+        var isBG  = proj.type === 'brand-guide' || proj.type === 'brandguide';
+        var sClr  = stageClr[proj.stage] || stageClr[proj.status] || '#888';
+        var icon  = typeIcons[proj.type] || '📁';
+        var webUrl = proj.websiteUrl || (isWeb ? client.websiteUrl : null);
+        var displayDate = proj.completedAt ? 'Completed ' + new Date(proj.completedAt).toLocaleDateString() : proj.createdAt ? new Date(proj.createdAt).toLocaleDateString() : '';
+        var typeName = (proj.type || 'Project').replace(/-/g,' ').replace(/\b\w/g, function(l){ return l.toUpperCase(); });
+        var pendingProofCount = projProofs.filter(function(pr){ return pr.status === 'pending' && pr.sentToClient; }).length;
+        var html = '<div style="background:#111;border:1px solid ' + (pendingProofCount > 0 ? '#f59e0b' : '#222') + ';border-radius:16px;padding:24px;margin-bottom:20px;">';
+        // Header
+        html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;">';
+        html += '<div><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><span style="font-size:22px;">' + icon + '</span>';
+        html += '<h3 style="font-size:18px;font-weight:700;color:#fff;margin:0;">' + (proj.name || 'Untitled Project') + '</h3></div>';
+        html += '<div style="font-size:13px;color:#888;">' + typeName + (displayDate ? ' • ' + displayDate : '') + (proj.notes ? '<br><span style="color:rgba(255,255,255,0.5);">' + proj.notes + '</span>' : '') + '</div></div>';
+        html += '<span style="padding:6px 16px;border-radius:100px;font-size:12px;font-weight:600;background:' + sClr + '20;color:' + sClr + ';">' + (proj.stage || proj.status || 'Complete') + '</span>';
+        html += '</div>';
+        // Pending proof alert
+        if (pendingProofCount > 0) {
+            html += '<div style="background:#f59e0b15;border:1px solid #f59e0b40;border-radius:8px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;"><span style="color:#f59e0b;font-weight:600;">⏳ ' + pendingProofCount + ' proof' + (pendingProofCount > 1 ? 's' : '') + ' waiting for your review</span><button onclick="switchPortalSection(\'proofs\',' + client.id + ')" style="padding:8px 16px;background:#f59e0b;color:#000;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;">Review Now →</button></div>';
+        }
+        // Website card
+        if (webUrl) {
+            html += '<div style="background:#0d1117;border:1px solid #1e3a5f;border-radius:10px;padding:16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">';
+            html += '<div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Live Website</div>';
+            html += '<a href="' + webUrl + '" target="_blank" style="color:#3b82f6;font-weight:600;font-size:15px;">' + webUrl.replace('https://','').replace('http://','') + '</a></div>';
+            html += '<div style="display:flex;gap:8px;">';
+            html += '<a href="' + webUrl + '" target="_blank" style="padding:10px 20px;background:#3b82f6;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">Visit Site →</a>';
+            html += '<button onclick="openProjectFeedback(' + proj.id + ',' + client.id + ')" style="padding:10px 20px;background:transparent;border:1px solid #333;color:#aaa;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;">💬 Leave Feedback</button>';
+            html += '</div></div>';
+        }
+        // Proofs linked to this project
+        if (projProofs.length > 0) {
+            html += '<div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Design Proofs (' + projProofs.length + ')</div>';
+            html += projProofs.map(function(pr) {
+                var pc = pr.status === 'approved' ? '#10b981' : pr.status === 'pending' ? '#f59e0b' : pr.status === 'revision' ? '#ef4444' : '#888';
+                var pl = pr.status === 'approved' ? '✅ Approved' : pr.status === 'pending' ? '⏳ Pending Review' : pr.status === 'revision' ? '🔄 Revising' : (pr.status || 'Draft');
+                var phtml = '<div style="background:#0a0a0a;border:1px solid ' + pc + '30;border-radius:8px;padding:14px 16px;margin-bottom:8px;">';
+                phtml += '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">';
+                phtml += '<div><div style="font-weight:600;color:#fff;font-size:14px;">' + (pr.title || pr.name || 'Design Proof') + '</div>';
+                phtml += '<div style="font-size:12px;color:#888;margin-top:2px;">' + (pr.proofTypeName || pr.category || pr.type || 'Proof') + ' • v' + (pr.version || 1) + (pr.createdAt ? ' • ' + new Date(pr.createdAt).toLocaleDateString() : '') + '</div></div>';
+                phtml += '<span style="padding:5px 12px;border-radius:100px;font-size:11px;font-weight:600;background:' + pc + '20;color:' + pc + ';">' + pl + '</span>';
+                phtml += '</div>';
+                if (pr.image || pr.fileData) {
+                    phtml += '<div style="margin-top:12px;border-radius:6px;overflow:hidden;max-height:200px;"><img src="' + (pr.image || pr.fileData) + '" style="width:100%;object-fit:contain;max-height:200px;" alt="Proof"></div>';
+                }
+                if (pr.notes) {
+                    phtml += '<div style="margin-top:10px;padding:10px 12px;background:#111;border-radius:6px;font-size:13px;color:rgba(255,255,255,0.6);">' + pr.notes + '</div>';
+                }
+                if (pr.status === 'pending' && pr.sentToClient) {
+                    phtml += '<div style="display:flex;gap:10px;margin-top:12px;">';
+                    phtml += '<button onclick="clientRequestProofRevision(' + pr.id + ',' + client.id + ')" style="flex:1;padding:12px;background:transparent;border:1px solid #ef4444;color:#ef4444;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;font-size:13px;">🔄 Request Changes</button>';
+                    phtml += '<button onclick="clientApproveProof(' + pr.id + ',' + client.id + ')" style="flex:1;padding:12px;background:#10b981;border:none;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;font-size:13px;">✅ Approve</button>';
+                    phtml += '</div>';
+                }
+                phtml += '</div>';
+                return phtml;
+            }).join('');
+            html += '</div>';
+        }
+        html += '</div>';
+        return html;
+    }).join('');
+})()}
 </div>
 
 <!-- MY INFO SECTION -->
@@ -909,7 +993,83 @@ function requestMoodboardChanges(clientId, moodboardId) {
     if (client) showClientPortal(client);
 }
 
-// --- Pay Invoice from Client Portal ---
+// ── Client approves a specific proof (from Projects tab) ───────────
+function clientApproveProof(proofId, clientId) {
+    const proof = (typeof proofs !== 'undefined') ? proofs.find(p => p.id == proofId) : null;
+    if (!proof) { alert('Proof not found.'); return; }
+    proof.status = 'approved';
+    proof.approvedAt = new Date().toISOString();
+    if (typeof saveProofs === 'function') saveProofs();
+    if (typeof approveProof === 'function') approveProof(proofId);
+    alert('✅ Proof approved! Your designer has been notified.');
+    const client = (typeof clients !== 'undefined') ? clients.find(c => c.id == clientId) : null;
+    if (client) showClientPortal(client);
+}
+
+// ── Client requests revision on a specific proof ───────────────────
+function clientRequestProofRevision(proofId, clientId) {
+    const comment = prompt('What changes would you like? Please describe:');
+    if (!comment || !comment.trim()) return;
+    const proof = (typeof proofs !== 'undefined') ? proofs.find(p => p.id == proofId) : null;
+    if (!proof) { alert('Proof not found.'); return; }
+    proof.status = 'revision';
+    proof.revisionCount = (proof.revisionCount || 0) + 1;
+    proof.comments = proof.comments || [];
+    proof.comments.push({ author: 'Client', text: comment.trim(), timestamp: new Date().toISOString() });
+    proof.updatedAt = new Date().toISOString();
+    if (typeof saveProofs === 'function') saveProofs();
+    if (typeof simulateEmailNotification === 'function') {
+        simulateEmailNotification('newurbaninfluence@gmail.com', '🔄 Revision Requested: ' + proof.name, 'Client requested revisions on "' + proof.name + '":\n\n' + comment.trim());
+    }
+    alert('Revision request sent! Your designer will make the updates.');
+    const client = (typeof clients !== 'undefined') ? clients.find(c => c.id == clientId) : null;
+    if (client) showClientPortal(client);
+}
+
+// ── Website feedback modal (from Projects tab) ─────────────────────
+function openProjectFeedback(projectId, clientId) {
+    const existing = document.getElementById('projectFeedbackModal');
+    if (existing) existing.remove();
+    const modal = document.createElement('div');
+    modal.id = 'projectFeedbackModal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;';
+    modal.innerHTML = '<div style="background:#111;border:1px solid #333;border-radius:20px;padding:32px;max-width:520px;width:100%;">'
+        + '<h3 style="font-size:20px;font-weight:700;margin-bottom:8px;color:#fff;">💬 Leave Feedback</h3>'
+        + '<p style="color:#888;font-size:14px;margin-bottom:20px;">Tell us what you love, what needs tweaking, or any requests for the site.</p>'
+        + '<select id="pfCategory" class="form-input" style="width:100%;margin-bottom:12px;">'
+        + '<option value="general">General Feedback</option>'
+        + '<option value="content">Content / Copy</option>'
+        + '<option value="design">Design / Visuals</option>'
+        + '<option value="functionality">Functionality / Feature Request</option>'
+        + '<option value="bug">Bug Report</option>'
+        + '</select>'
+        + '<textarea id="pfText" placeholder="Share your thoughts..." style="width:100%;min-height:120px;padding:14px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-family:inherit;font-size:14px;resize:vertical;margin-bottom:16px;"></textarea>'
+        + '<div style="display:flex;gap:12px;">'
+        + '<button onclick="document.getElementById(\'projectFeedbackModal\').remove()" style="flex:1;padding:14px;background:transparent;border:1px solid #333;color:#aaa;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;">Cancel</button>'
+        + '<button onclick="_submitProjectFeedback(' + projectId + ',' + clientId + ')" style="flex:1;padding:14px;background:#3b82f6;border:none;color:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-family:inherit;">Send Feedback</button>'
+        + '</div></div>';
+    document.body.appendChild(modal);
+}
+
+function _submitProjectFeedback(projectId, clientId) {
+    const text = (document.getElementById('pfText')?.value || '').trim();
+    const category = document.getElementById('pfCategory')?.value || 'general';
+    if (!text) { alert('Please enter your feedback.'); return; }
+    const project = (typeof projects !== 'undefined') ? projects.find(p => p.id == projectId) : null;
+    const client  = (typeof clients  !== 'undefined') ? clients.find(c => c.id == clientId)  : null;
+    if (project) {
+        project.activityLog = project.activityLog || [];
+        project.activityLog.push({ action: '[' + category + '] Client feedback: ' + text, timestamp: new Date().toISOString() });
+        if (typeof saveProjects === 'function') saveProjects();
+    }
+    if (typeof simulateEmailNotification === 'function') {
+        simulateEmailNotification('newurbaninfluence@gmail.com',
+            '💬 Website Feedback: ' + (project?.name || 'Project #' + projectId) + ' — ' + category,
+            'Client: ' + (client?.name || clientId) + '\nCategory: ' + category + '\n\n' + text);
+    }
+    document.getElementById('projectFeedbackModal').remove();
+    alert('✅ Feedback sent! We\'ll review it and follow up.');
+}
 async function portalPayInvoice(invoiceId) {
     try {
         // Find the invoice from global data
