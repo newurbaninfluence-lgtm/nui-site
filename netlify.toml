@@ -4,6 +4,8 @@
 
 [build.environment]
   CLOUDINARY_CLOUD_NAME = "dlc1yycrq"
+  CLOUDINARY_API_KEY = "298374161394417"
+  CLOUDINARY_API_SECRET = "gyQJJ1uI6RQYC5-tHZngdJ1C1is"
 
 [functions]
   node_bundler = "esbuild"
