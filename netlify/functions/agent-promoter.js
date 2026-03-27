@@ -20,38 +20,43 @@ const CORS = {
 const CONTENT_PILLARS = [
   {
     id: 'brand_tip',
-    angle: 'Share a practical branding tip Detroit business owners can act on today. Keep it punchy, 1-2 key insights. Relate it to local Detroit hustle culture.',
-    hashtags: '#DetroitBusiness #BrandingTips #NewUrbanInfluence #DetroitEntrepreneur #BrandStrategy'
+    angle: 'Share a practical branding tip Detroit business owners can act on TODAY. Be specific — give them one thing they can change or fix right now. Reference the Detroit hustle. Make them feel like they just got insider knowledge.',
+    hashtags: '#DetroitBusiness #BrandingTips #NewUrbanInfluence #DetroitEntrepreneur #BrandStrategy #Detroit313 #SmallBusiness #DetroitMade #NUI #BrandIdentity'
   },
   {
     id: 'nui_service',
-    angle: 'Highlight one specific NUI service (rotate: brand identity, web design, AI automation, social media, print design). Show the outcome/result, not just the service.',
-    hashtags: '#DetroitBranding #WebDesign #AIAutomation #DetroitAgency #BrandIdentity'
+    angle: 'Highlight ONE specific NUI service with a bold claim. Rotate through: Brand Identity ($1,500 — logo colors fonts guidelines), Web Design ($3,500 — built to convert not just look pretty), AI Automation (Monty SMS closer — texts leads back automatically), Geo-Fencing (your ad shows on phones near your competitors). Lead with the OUTCOME not the feature.',
+    hashtags: '#DetroitBranding #WebDesign #AIAutomation #DetroitAgency #BrandIdentity #GeoFencing #DigitalMarketing #Detroit #NewUrbanInfluence #LocalMarketing'
   },
   {
     id: 'built_heavy',
-    angle: 'Promote the Built Heavy podcast by Faren Young. Share a quick insight or quote from the book/podcast about being built by pressure, driven by purpose. Invite people to listen.',
-    hashtags: '#BuiltHeavy #FarenYoung #DetroitPodcast #Entrepreneurship #MindsetMatters'
+    angle: 'Drop a mindset hit from the Built Heavy podcast by Faren Young — about being built by pressure, resilience, Detroit grit, entrepreneurship. Make it feel like a real moment from the show. End with "Episode on Spotify/Apple — link in bio."',
+    hashtags: '#BuiltHeavy #FarenYoung #DetroitPodcast #Entrepreneurship #MindsetMatters #DetroitHustle #PodcastLife #BusinessMindset #313 #Detroit'
   },
   {
     id: 'client_win',
-    angle: 'Share a client success story or transformation (keep it general — "a Detroit restaurant client", "a local consultant"). Focus on the before/after result.',
-    hashtags: '#ClientWin #DetroitBusiness #BrandingResults #NUIAgency #DesignMatters'
+    angle: 'Tell a real-feeling client story (keep anonymous — "a Detroit barbershop", "a Metro Detroit consultant", "a Corktown restaurant"). Describe where they were BEFORE NUI and what changed AFTER. Specific numbers if possible. End with a CTA to book their free strategy call.',
+    hashtags: '#ClientWin #DetroitBusiness #BrandingResults #NewUrbanInfluence #DesignMatters #BeforeAfter #DetroitAgency #SmallBusinessOwner #BrandTransformation #313'
   },
   {
     id: 'did_you_know',
-    angle: 'Share a surprising fact or stat about digital marketing, AI automation, local SEO, or brand design — something that makes Detroit business owners say "I need to fix this."',
-    hashtags: '#DigitalMarketing #LocalSEO #AIMarketing #DetroitBusiness #MarketingFacts'
+    angle: 'Drop a stat or fact that HURTS — something that makes Detroit business owners realize they are losing money or customers RIGHT NOW because of something they are not doing. Examples: 70% of customers check a website before visiting a business. Consistent branding increases revenue 23%. Geo-fencing ads get 2x higher CTR than regular display ads. Make it feel urgent.',
+    hashtags: '#DigitalMarketing #LocalSEO #AIMarketing #DetroitBusiness #MarketingFacts #GrowthHacking #SmallBusiness #NewUrbanInfluence #BrandingROI #DetroitEntrepreneur'
   },
   {
     id: 'community',
-    angle: 'Post something that celebrates Detroit — a shoutout to the city, a local event, a Detroit business milestone, or a "Detroit is rising" type message that NUI aligns with.',
-    hashtags: '#Detroit #DetroitRising #313 #DetroitStrong #NewUrbanInfluence'
+    angle: 'Celebrate Detroit — the city, a local business win, an industry moment, Detroit resilience. NUI is PART of Detroit not just located here. Reference specific Detroit neighborhoods (Corktown, Midtown, Greektown, New Center, Livernois Ave of Fashion), Detroit culture (music, food, automotive, sports), or Detroit business news. Make it feel local and real.',
+    hashtags: '#Detroit #DetroitRising #313 #DetroitStrong #NewUrbanInfluence #DetroitMade #MotorCity #DetroitBusiness #MichiganBusiness #DetroitProud'
   },
   {
     id: 'free_value',
-    angle: 'Offer something free — a free brand audit, a free consultation, a tip sheet, a checklist. Make it feel exclusive and limited.',
-    hashtags: '#FreeResource #DetroitBusiness #BrandAudit #NUIAgency #FreeTips'
+    angle: 'Offer the FREE 15-minute Brand Strategy Session. Make it feel EXCLUSIVE and LIMITED. Paint the picture of what they will walk away with (clarity on their brand, a custom roadmap, knowing exactly what is hurting their growth). Address the objection that they think they cannot afford good branding. Hammer the free part.',
+    hashtags: '#FreeConsultation #DetroitBusiness #BrandAudit #NewUrbanInfluence #FreeTips #BrandStrategy #SmallBusiness #DetroitEntrepreneur #MarketingHelp #313'
+  },
+  {
+    id: 'street_team',
+    angle: 'Explain geo-fencing in Detroit terms — YOUR digital street team. When someone walks near your competitor, YOUR ad shows up on their phone within 60 seconds. Use a Detroit example: "Your competitor opens on 8 Mile? We put your ad in front of everyone who walks in." Make it feel like a secret weapon they have never heard of.',
+    hashtags: '#GeoFencing #StreetTeam #DetroitMarketing #NewUrbanInfluence #LocalMarketing #CompetitorTargeting #DigitalMarketing #DetroitBusiness #AIMarketing #313'
   }
 ];
 
@@ -91,20 +96,29 @@ async function getNextPillar() {
 
 // ── Generate post copy with Claude ──
 async function generatePost(pillar) {
-  const prompt = `You are the social media voice for New Urban Influence (NUI), a Detroit branding, design, and AI automation agency. Founded by Faren Young. Gritty, confident, Detroit-proud tone.
+  const prompt = `You are the social media voice for New Urban Influence (NUI) — Detroit's boldest branding, web design, and AI automation agency. Founded by Faren Young. The tone is gritty, confident, Detroit-proud, real. Like a sharp Detroit entrepreneur talking directly to other business owners.
 
-Write a social media post for this angle:
+Write a high-performing Instagram/Facebook post for this angle:
 ${pillar.angle}
 
-Requirements:
-- 150-250 characters max (fits FB + IG without truncation)
-- Strong opening hook (no "Hey" or "Are you")
-- 1 clear CTA at the end (e.g., "DM us", "Link in bio", "Book a free call")
-- Natural, authentic — sounds like a real person, not a bot
-- Do NOT include hashtags (added separately)
-- Do NOT use emojis excessively — max 2
+STRUCTURE (follow this exactly):
+Line 1: HOOK — Bold, punchy opening statement that stops the scroll. No questions. Make a declaration or drop a fact. Max 10 words. Can use 1 emoji.
+Line 2: blank line
+Lines 3-5: VALUE — 2-3 sentences expanding on the hook. Specific, real, relatable to Detroit small business owners. Reference real situations they deal with. Can name-drop Detroit or specific industries.
+Line 6: blank line
+Line 7: CTA — Clear, direct call to action. Examples: "DM us 'BRAND' to get started." / "Link in bio — book your free call today." / "Comment 'INFO' and we'll reach out." / "Tag a business owner who needs this."
+Line 8: blank line
+Line 9: SIGNATURE — Always end with: 🔴 New Urban Influence | Detroit
 
-Return ONLY the post text. No quotes, no explanation.`;
+RULES:
+- Sound like a REAL person, not a marketing bot
+- Use Detroit references naturally (313, Motor City, Detroit hustle, etc)
+- Be specific — "most agencies charge $5k for a logo and deliver nothing" is better than "we offer affordable branding"
+- Max 3 emojis total across entire post
+- Do NOT include hashtags (added separately)
+- Total length: 150-300 words
+
+Return ONLY the post text. No quotes, no explanation, no labels.`;
 
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -119,25 +133,50 @@ Return ONLY the post text. No quotes, no explanation.`;
 async function getPexelsImage(pillar) {
   if (!PEXELS_KEY) return null;
   const queries = {
-    brand_tip: 'brand identity design studio',
-    nui_service: 'modern agency creative workspace Detroit',
-    built_heavy: 'entrepreneur hustle motivation book',
-    client_win: 'business success celebration team',
-    did_you_know: 'digital marketing analytics data',
-    community: 'Detroit Michigan city skyline',
-    free_value: 'free resource checklist business'
+    brand_tip: 'brand identity design logo detroit',
+    nui_service: 'creative agency modern workspace detroit michigan',
+    built_heavy: 'entrepreneur hustle success detroit',
+    client_win: 'business success detroit celebration',
+    did_you_know: 'digital marketing analytics phone laptop',
+    community: 'Detroit Michigan skyline city',
+    free_value: 'business owner strategy planning detroit'
   };
-  const q = encodeURIComponent(queries[pillar.id] || 'branding design agency');
+  const q = encodeURIComponent(queries[pillar.id] || 'detroit branding agency');
   try {
-    const r = await fetch(`https://api.pexels.com/v1/search?query=${q}&per_page=5&orientation=square`, {
+    const r = await fetch(`https://api.pexels.com/v1/search?query=${q}&per_page=10&orientation=square`, {
       headers: { 'Authorization': PEXELS_KEY }
     });
     const d = await r.json();
     const photos = d.photos || [];
     if (!photos.length) return null;
     const pick = photos[Math.floor(Math.random() * photos.length)];
-    return pick.src?.large || pick.src?.original || null;
-  } catch { return null; }
+    const rawUrl = pick.src?.large2x || pick.src?.large || pick.src?.original || null;
+    if (!rawUrl) return null;
+
+    // ── Apply NUI branding overlay via Cloudinary ──
+    // This adds: dark overlay + NUI logo text + red bottom bar on every image
+    const CLOUDINARY_CLOUD = process.env.CLOUDINARY_CLOUD_NAME;
+    if (CLOUDINARY_CLOUD) {
+      const encodedUrl = encodeURIComponent(rawUrl);
+      // Cloudinary fetch + transform: dark overlay + NUI text + red bar
+      const transforms = [
+        'w_1080,h_1080,c_fill,g_center',           // square crop 1080x1080
+        'e_brightness:-20',                          // darken slightly
+        'l_text:Arial_52_bold:NEW%20URBAN%20INFLUENCE,co_white,g_south_west,x_40,y_80', // NUI name bottom left
+        'l_text:Arial_28:newurbaninfluence.com,co_rgb:e11d48,g_south_west,x_40,y_44',  // website in red
+        'l_text:Arial_32_bold:Detroit%20%E2%80%A2%20313,co_rgb:ffffff,g_south_east,x_40,y_80', // Detroit tag
+        'b_rgb:e11d48,h_6,w_1080,g_south',          // red bottom bar
+        'q_auto,f_auto'                              // optimize
+      ].join('/');
+      return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/fetch/${transforms}/${encodedUrl}`;
+    }
+
+    // Fallback: return raw image if no Cloudinary
+    return rawUrl;
+  } catch (e) {
+    console.warn('Pexels fetch failed:', e.message);
+    return null;
+  }
 }
 
 // ── Post to Facebook ──
