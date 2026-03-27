@@ -846,3 +846,46 @@ html{scroll-behavior:smooth;}
 .faq-grid .faq-card{margin-bottom:0 !important;}
 @media(max-width:968px){.services-white{padding:60px 24px;}.services-white .services-grid{grid-template-columns:1fr !important;}.faq-grid{grid-template-columns:1fr;}}
 @media(max-width:580px){.services-white{padding:48px 16px;}}
+
+/* ═══ MEGA DROPDOWN NAV v2 ═══ */
+.nav-links .has-mega{position:relative;}
+.mega-dropdown{display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);width:92vw;max-width:1200px;background:rgba(10,0,0,0.97);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--red);padding:40px 36px 32px;z-index:1100;margin-top:20px;box-shadow:0 24px 80px rgba(0,0,0,0.7);}
+.has-mega:hover .mega-dropdown,.mega-dropdown:hover{display:grid;}
+.mega-dropdown{grid-template-columns:repeat(3,1fr);gap:0;}
+.mega-col{padding:0 28px;border-right:1px solid rgba(255,255,255,0.06);}
+.mega-col:last-child{border-right:none;}
+.mega-col-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--red);margin-bottom:6px;}
+.mega-col-sub{font-family:'Montserrat',sans-serif;font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:20px;letter-spacing:0.5px;}
+.mega-item{display:block;padding:12px 14px;margin:0 -14px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.04);transition:all 0.25s ease;border-radius:4px;}
+.mega-item:last-child{border-bottom:none;}
+.mega-item:hover{background:rgba(255,255,255,0.06);padding-left:18px;box-shadow:0 0 20px rgba(255,255,255,0.04);}
+.mega-item-name{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;color:rgba(255,255,255,0.85);display:flex;justify-content:space-between;align-items:center;transition:color 0.25s ease;}
+.mega-item-name span.mega-price{font-weight:400;font-size:11px;color:rgba(255,255,255,0.35);transition:color 0.25s ease;}
+.mega-item-desc{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.5;font-family:'Montserrat',sans-serif;transition:color 0.25s ease;}
+.mega-item:hover .mega-item-name{color:#fff;text-shadow:0 0 12px rgba(255,255,255,0.15);}
+.mega-item:hover .mega-item-name span.mega-price{color:rgba(255,255,255,0.7);}
+.mega-item:hover .mega-item-desc{color:rgba(255,255,255,0.55);}
+.mega-bottom{grid-column:1/-1;display:flex;justify-content:center;margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);}
+.mega-cta{background:linear-gradient(135deg,#ff1a1a 0%,#dc2626 40%,#b91c1c 100%);color:#fff;padding:12px 36px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;text-decoration:none;letter-spacing:0.5px;transition:all 0.3s;display:inline-block;border-radius:2px;}
+.mega-cta:hover{box-shadow:0 6px 28px rgba(220,38,38,0.6);transform:translateY(-1px);}
+.mega-row2{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:0;padding-top:28px;border-top:1px solid rgba(255,255,255,0.06);grid-column:1/-1;}
+.mega-row2 .mega-col{padding:0 28px;}
+
+/* ═══ MEGA DROPDOWN — DESKTOP HIDE ═══ */
+@media(max-width:968px){
+.mega-dropdown{display:none !important;}
+.has-mega>a{pointer-events:auto;}
+}
+
+/* ═══ MOBILE SERVICES PANEL ═══ */
+.mobile-services-panel{display:none;background:rgba(10,0,0,0.95);padding:0 24px;overflow-y:auto;max-height:70vh;}
+.mobile-menu.active .mobile-services-panel.active{display:block;}
+.mobile-svc-cat{margin-bottom:20px;}
+.mobile-svc-cat-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--red);margin-bottom:4px;}
+.mobile-svc-cat-sub{font-family:'Montserrat',sans-serif;font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:12px;}
+.mobile-svc-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);text-decoration:none;}
+.mobile-svc-item:last-child{border-bottom:none;}
+.mobile-svc-name{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;color:#fff;}
+.mobile-svc-price{font-family:'Montserrat',sans-serif;font-size:11px;color:rgba(255,255,255,0.4);}
+.mobile-svc-toggle{color:var(--red);font-size:20px;text-decoration:none;display:block;text-align:center;padding:8px 0;font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;border:1px solid rgba(220,38,38,0.3);margin-bottom:16px;transition:all 0.2s;}
+.mobile-svc-toggle:hover{background:rgba(220,38,38,0.1);}
