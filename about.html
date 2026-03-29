@@ -132,6 +132,17 @@
         .related-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
         .related-grid a { display: inline-block; padding: 10px 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; font-size: 14px; color: rgba(255,255,255,0.7); transition: all 0.3s; }
         .related-grid a:hover { border-color: #dc2626; color: #fff; text-decoration: none; }
+        /* Team Grid */
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 24px; margin-top: 40px; }
+        .team-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px 16px; text-align: center; transition: all 0.3s; }
+        .team-card:hover { border-color: rgba(220,38,38,0.4); transform: translateY(-4px); }
+        .team-img { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto 16px; border: 2px solid rgba(220,38,38,0.5); }
+        .team-img img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+        .team-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+        .team-card .team-role { font-size: 11px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 1.5px; line-height: 1.4; }
+        .team-badge { display: inline-block; font-size: 10px; padding: 3px 10px; border-radius: 20px; margin-top: 10px; font-weight: 600; letter-spacing: 1px; }
+        .team-badge.ai { background: rgba(220,38,38,0.15); color: #dc2626; border: 1px solid rgba(220,38,38,0.3); }
+        .team-badge.human { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.1); }
         .cta { text-align: center; padding: 100px 24px; background: linear-gradient(180deg, transparent 0%, rgba(220,38,38,0.06) 100%); }
         .cta h2 { margin-bottom: 16px; }
         .cta p { color: rgba(255,255,255,0.6); margin-bottom: 36px; font-size: 17px; }
@@ -380,6 +391,57 @@
                 <a href="https://www.freep.com/story/entertainment/2014/09/09/detroit-design-festival-schedule-revealed/15364423/" target="_blank" rel="noopener noreferrer">Detroit Free Press</a>
                 <a href="https://clutch.co/profile/new-urban-influence" target="_blank" rel="noopener noreferrer">Clutch</a>
                 <a href="https://scottmax.com/connect/media-buying-agencies-in-detroit/" target="_blank" rel="noopener noreferrer">ScottMax</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Meet the Team Section -->
+    <section>
+        <div class="container">
+            <div class="section-label">The Team</div>
+            <h2>Meet The <span class="red">Crew</span></h2>
+            <p class="section-text">Detroit's creative infrastructure team — human talent and AI working together to build brands that hit different.</p>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-img">
+                        <img src="/images/Creative%20Staff/Faren%20young.png" alt="Faren Young - Founder" loading="lazy">
+                    </div>
+                    <h3>Faren Young</h3>
+                    <div class="team-role">Founder &amp; Creative Director</div>
+                    <span class="team-badge human">Detroit</span>
+                </div>
+                <div class="team-card">
+                    <div class="team-img">
+                        <img src="/images/Creative%20Staff/irish%20Montes.jpg" alt="Irish Montes - Brand Strategist" loading="lazy">
+                    </div>
+                    <h3>Irish Montes</h3>
+                    <div class="team-role">Brand Strategist</div>
+                    <span class="team-badge human">Strategy</span>
+                </div>
+                <div class="team-card">
+                    <div class="team-img">
+                        <img src="/images/Creative%20Staff/Aj%20Grant.png" alt="AJ Grant - Lead Photographer" loading="lazy">
+                    </div>
+                    <h3>AJ Grant</h3>
+                    <div class="team-role">Lead Photographer &amp; Visual Partner</div>
+                    <span class="team-badge human">Visual</span>
+                </div>
+                <div class="team-card">
+                    <div class="team-img">
+                        <img src="/images/Creative%20Staff/Monty.png" alt="Monty - AI Brand Assistant" loading="lazy">
+                    </div>
+                    <h3>Monty</h3>
+                    <div class="team-role">AI Brand Assistant</div>
+                    <span class="team-badge ai">AI Staff</span>
+                </div>
+                <div class="team-card">
+                    <div class="team-img">
+                        <img src="/images/Creative%20Staff/Sora.png" alt="Sora - AI Creative" loading="lazy">
+                    </div>
+                    <h3>Sora</h3>
+                    <div class="team-role">AI Creative</div>
+                    <span class="team-badge ai">AI Staff</span>
+                </div>
             </div>
         </div>
     </section>
