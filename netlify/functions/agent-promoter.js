@@ -332,21 +332,20 @@ exports.handler = async (event) => {
     };
     const imageUrl = BRANDED_IMAGES[pillar.id] || await getPexelsImage(pillar);
 
-    // 5. Post to all platforms — use carousel for Digital Staff pillar
-    const CAROUSEL_SLIDES = {
-      digital_staff: [
-        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-1.png',
-        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-2.png',
-        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-3.png',
-        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-4.png',
-        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-5.png',
-        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-6.png',
-        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-7.png',
-        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-8.png',
-        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-team.png',
-      ],
-    };
-    const carouselSlides = CAROUSEL_SLIDES[pillar.id];
+    // 5. Post — carousels only on Mon (1) and Thu (4), single posts every other day
+    const dayOfWeek = new Date().getDay(); // 0=Sun, 1=Mon, 4=Thu
+    const isCarouselDay = dayOfWeek === 1 || dayOfWeek === 4;
+
+    // Available carousels — will grow as we build more
+    const ALL_CAROUSELS = [
+      // Digital Staff carousel
+      [1,2,3,4,5,6,7,8].map(i => `https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-${i}.png`)
+        .concat(['https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-team.png']),
+    ];
+
+    // Pick carousel based on week number so it rotates
+    const weekNum = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000));
+    const carouselSlides = isCarouselDay ? ALL_CAROUSELS[weekNum % ALL_CAROUSELS.length] : null;
     const isCarousel = !!carouselSlides;
 
     const [fbResult, igResult, gbpResult] = await Promise.all([
