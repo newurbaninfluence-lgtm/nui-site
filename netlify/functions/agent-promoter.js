@@ -210,6 +210,41 @@ async function postInstagram(caption, imageUrl) {
   return { success: p.ok, post_id: pd.id, error: pd.error?.message };
 }
 
+// ── Post Instagram Carousel ──
+async function postInstagramCarousel(caption, imageUrls) {
+  if (!FB_TOKEN || !IG_ID || !imageUrls?.length) return { skipped: true, reason: 'no credentials or images' };
+  try {
+    // Create media containers for each slide
+    const containerIds = [];
+    for (const url of imageUrls) {
+      const r = await fetch(`https://graph.facebook.com/v19.0/${IG_ID}/media`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image_url: url, is_carousel_item: true, access_token: FB_TOKEN })
+      });
+      const d = await r.json();
+      if (!r.ok || !d.id) throw new Error(d.error?.message || 'Container failed');
+      containerIds.push(d.id);
+    }
+    // Create carousel container
+    const cr = await fetch(`https://graph.facebook.com/v19.0/${IG_ID}/media`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ media_type: 'CAROUSEL', children: containerIds.join(','), caption, access_token: FB_TOKEN })
+    });
+    const cd = await cr.json();
+    if (!cr.ok || !cd.id) throw new Error(cd.error?.message || 'Carousel container failed');
+    // Publish
+    const pr = await fetch(`https://graph.facebook.com/v19.0/${IG_ID}/media_publish`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ creation_id: cd.id, access_token: FB_TOKEN })
+    });
+    const pd = await pr.json();
+    return { success: pr.ok, post_id: pd.id, error: pd.error?.message };
+  } catch(e) { return { success: false, error: e.message }; }
+}
+
 // ── Post to Google Business Profile ──
 async function postGBP(caption) {
   if (!GMB_TOKEN || !GMB_LOCATION_ID) return { skipped: true, reason: 'no GBP credentials' };
@@ -284,14 +319,40 @@ exports.handler = async (event) => {
     // 3. Build full caption (copy + hashtags)
     const caption = `${rawCopy}\n\n${pillar.hashtags}`;
 
-    // 4. Get background image
-    const imageUrl = await getPexelsImage(pillar);
+    // 4. Get pre-rendered NUI branded image (Remotion-generated, uploaded to Cloudinary)
+    const BRANDED_IMAGES = {
+      digital_hq:       'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-social-post-1.png',
+      digital_street_team: 'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-social-post-2.png',
+      digital_staff:    'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-social-post-3.png',
+      blueprint:        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-social-post-4.png',
+      co_sign:          'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-social-post-5.png',
+      motion:           'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-social-post-1.png',
+      client_win:       'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-social-post-3.png',
+      ai_discovery:     'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-social-post-2.png',
+    };
+    const imageUrl = BRANDED_IMAGES[pillar.id] || await getPexelsImage(pillar);
 
-    // 5. Post to all platforms in parallel
+    // 5. Post to all platforms — use carousel for Digital Staff pillar
+    const CAROUSEL_SLIDES = {
+      digital_staff: [
+        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-1.png',
+        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-2.png',
+        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-3.png',
+        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-4.png',
+        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-5.png',
+        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-6.png',
+        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-7.png',
+        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-8.png',
+        'https://res.cloudinary.com/dlc1yycrq/image/upload/nui-carousel-digital-staff-team.png',
+      ],
+    };
+    const carouselSlides = CAROUSEL_SLIDES[pillar.id];
+    const isCarousel = !!carouselSlides;
+
     const [fbResult, igResult, gbpResult] = await Promise.all([
       postFacebook(caption, imageUrl),
-      postInstagram(caption, imageUrl),
-      postGBP(rawCopy) // GBP gets clean copy without hashtags
+      isCarousel ? postInstagramCarousel(caption, carouselSlides) : postInstagram(caption, imageUrl),
+      postGBP(rawCopy)
     ]);
 
     const result = {
