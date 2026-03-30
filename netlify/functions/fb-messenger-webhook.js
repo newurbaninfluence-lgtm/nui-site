@@ -24,7 +24,7 @@ YOUR GOAL:
 - Push warm leads toward booking a free strategy call
 
 SERVICES (brief):
-- Brand Kit: $1,500 | Service Brand Identity: $3,500+ | Product Brand Identity: $4,500+
+- Brand Kit: $1,500 | Service Brand Identity: $4,500+ | Product Brand Identity: $5,500+
 - Website: Landing Page $1,200 | Business Site $3,500 | Online Store $5,500
 - Marketing Tech: Silent Visitor ID $97/mo | Facebook/Google Ads Pixel $199/mo each | Email Automation $97/mo | SMS $79/mo | AI Phone $197/mo | Geo-Fencing $997/mo | Geo-Grid $297/mo
 - Bundles: Brand Ready $497/mo | Brand Loaded $1,497/mo | Brand Heavy $2,497/mo (all services)

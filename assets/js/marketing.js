@@ -297,7 +297,7 @@ function loadHomeView() {
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">New Urban Influence offers three main branding packages: Brand Kit ($1,500 flat rate) for startups and new businesses, Service Business Brand Identity ($3,500+) for consultants, agencies, and service providers, and Product Brand Identity ($4,500+) for businesses selling physical products. Additional services include logo design ($500), business card design ($150), social media templates ($300), print design and printing (banners, yard signs, business cards, vehicle magnets, postcards, acrylic signs, Dibond panels), packaging design ($600/SKU), and brand guidelines documentation ($400).</div>
+<div class="faq-answer-text">New Urban Influence offers three main branding packages: Brand Kit ($1,500 flat rate) for startups and new businesses, Service Business Brand Identity ($4,500+) for consultants, agencies, and service providers, and Product Brand Identity ($5,500+) for businesses selling physical products. Additional services include logo design ($500), business card design ($150), social media templates ($300), print design and printing (banners, yard signs, business cards, vehicle magnets, postcards, acrylic signs, Dibond panels), packaging design ($600/SKU), and brand guidelines documentation ($400).</div>
 </div>
 </div>
 
@@ -307,7 +307,7 @@ function loadHomeView() {
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">In Detroit, professional branding packages at New Urban Influence range from $1,500 to $6,000+. The Brand Kit starts at $1,500 (logo, colors, typography, social templates), Service Business Brand Identity starts at $3,500, and Product Brand Identity starts at $4,500. Individual services like logo design start at $500. Payment plans are available including pay-in-full (5% discount), 50/25/25 split, or 3 monthly payments.</div>
+<div class="faq-answer-text">In Detroit, professional branding packages at New Urban Influence range from $1,500 to $7,000+. The Brand Kit starts at $1,500 (logo, colors, typography, social templates), Service Business Brand Identity starts at $4,500, and Product Brand Identity starts at $5,500. Individual services like logo design start at $500. Payment plans are available including pay-in-full (5% discount), 50/25/25 split, or 3 monthly payments.</div>
 </div>
 </div>
 

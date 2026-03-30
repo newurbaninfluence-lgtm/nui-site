@@ -62,7 +62,7 @@ Includes: ALL 9 services. Everything in Brand Loaded + Geo-Fencing, AI Phone Ass
 Best for: Total market control.
 
 CORE BRANDING SERVICES:
-Brand Kit — $1,500 | Service Brand Identity — $3,500+ | Product Brand Identity — $4,500+
+Brand Kit — $1,500 | Service Brand Identity — $4,500+ | Product Brand Identity — $5,500+
 
 WEBSITE & DIGITAL:
 Landing Page — $1,200 | Business Website — $3,500 | Online Store — $5,500 | Web Apps — $7,500+ | Mobile Apps — $12,000+
