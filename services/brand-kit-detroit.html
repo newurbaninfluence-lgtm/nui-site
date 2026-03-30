@@ -36,7 +36,7 @@ a{text-decoration:none;color:inherit;}
 #pkg-nav{position:sticky;top:64px;z-index:100;background:#000;border-bottom:1px solid rgba(255,255,255,0.08);}
 #pkg-nav-inner{display:flex;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none;}
 #pkg-nav-inner::-webkit-scrollbar{display:none;}
-.pkg-nav-link{padding:14px 28px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .25s;background:none;border-left:none;border-right:none;border-top:none;}
+.pkg-nav-link{padding:14px 28px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;border-left:none;border-right:none;border-top:none;transition:all .25s;background:none;outline:none;}
 .pkg-nav-link:hover,.pkg-nav-link.active{color:#fff;border-bottom-color:var(--red);}
 /* HERO */
 .hero{padding:100px 48px 80px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.06);}
@@ -187,12 +187,12 @@ footer a:hover{color:var(--red);}
 <!-- SECTION NAV -->
 <div id="pkg-nav">
   <div id="pkg-nav-inner">
-    <button class="pkg-nav-link active" onclick="scrollTo('brand-kit')">Brand Kit — $1,500</button>
-    <button class="pkg-nav-link" onclick="scrollTo('service-brand')">Service Brand — $4,500</button>
-    <button class="pkg-nav-link" onclick="scrollTo('product-brand')">Product Brand — $5,500</button>
-    <button class="pkg-nav-link" onclick="scrollTo('compare')">Compare</button>
-    <button class="pkg-nav-link" onclick="scrollTo('faq')">FAQ</button>
-    <button class="pkg-nav-link" onclick="scrollTo('start')">Get Started</button>
+    <button class="pkg-nav-link active" onclick="jumpTo('brand-kit')">Brand Kit — $1,500</button>
+    <button class="pkg-nav-link" onclick="jumpTo('service-brand')">Service Brand — $4,500</button>
+    <button class="pkg-nav-link" onclick="jumpTo('product-brand')">Product Brand — $5,500</button>
+    <button class="pkg-nav-link" onclick="jumpTo('compare')">Compare</button>
+    <button class="pkg-nav-link" onclick="jumpTo('faq')">FAQ</button>
+    <button class="pkg-nav-link" onclick="jumpTo('start')">Get Started</button>
   </div>
 </div>
 
@@ -203,8 +203,8 @@ footer a:hover{color:var(--red);}
   <div class="hero-divider"></div>
   <p>Three complete brand systems for Detroit businesses — startups launching right, service companies closing premium clients, and product brands owning the shelf. Not a template. Built for you.</p>
   <div class="hero-btns">
-    <button class="btn-red" onclick="scrollTo('brand-kit')">See All Packages</button>
-    <button class="btn-out" onclick="scrollTo('compare')">Compare What's Included</button>
+    <button class="btn-red" onclick="jumpTo('brand-kit')">See All Packages</button>
+    <button class="btn-out" onclick="jumpTo('compare')">Compare What's Included</button>
   </div>
 </section>
 
@@ -335,7 +335,7 @@ footer a:hover{color:var(--red);}
 
     </div>
     <div class="package-cta">
-      <button class="btn-package" onclick="scrollTo('start')">Get Your Brand Kit →</button>
+      <button class="btn-package" onclick="jumpTo('start')">Get Your Brand Kit →</button>
     </div>
   </div>
 </section>
@@ -423,7 +423,7 @@ footer a:hover{color:var(--red);}
     </div>
 
     <div class="package-cta">
-      <button class="btn-package" onclick="scrollTo('start')">Build My Service Brand →</button>
+      <button class="btn-package" onclick="jumpTo('start')">Build My Service Brand →</button>
     </div>
   </div>
 </section>
@@ -511,7 +511,7 @@ footer a:hover{color:var(--red);}
     </div>
 
     <div class="package-cta">
-      <button class="btn-package" onclick="scrollTo('start')">Build My Product Brand →</button>
+      <button class="btn-package" onclick="jumpTo('start')">Build My Product Brand →</button>
     </div>
   </div>
 </section>
@@ -532,7 +532,7 @@ footer a:hover{color:var(--red);}
       <span class="chip">ATD Vendor</span><span class="chip">E-Commerce</span>
       <span class="chip">Clothing Brand</span><span class="chip">Food &amp; Beverage</span>
     </div>
-    <button class="btn-package" onclick="document.getElementById('start').scrollIntoView({behavior:'smooth'})">Start My Brand →</button>
+    <button class="btn-package" onclick="jumpTo('start')">Start My Brand →</button>
   </div>
 </section>
 
@@ -617,17 +617,17 @@ footer a:hover{color:var(--red);}
 </footer>
 
 <script>
-function scrollTo(id){
+function jumpTo(id){
   var el=document.getElementById(id);
   if(!el)return;
-  var offset=128;
+  var offset=130;
   var top=el.getBoundingClientRect().top+window.pageYOffset-offset;
   window.scrollTo({top:top,behavior:'smooth'});
-  document.querySelectorAll('.pkg-nav-link').forEach(function(l){l.classList.remove('active');});
   var map={'brand-kit':0,'service-brand':1,'product-brand':2,'compare':3,'faq':4,'start':5};
-  if(map[id]!==undefined){document.querySelectorAll('.pkg-nav-link')[map[id]].classList.add('active');}
+  document.querySelectorAll('.pkg-nav-link').forEach(function(l,i){
+    l.classList.toggle('active',i===map[id]);
+  });
 }
-// Auto-highlight nav on scroll
 window.addEventListener('scroll',function(){
   var ids=['brand-kit','service-brand','product-brand','compare','faq','start'];
   var active=0;
