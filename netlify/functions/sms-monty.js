@@ -16,6 +16,12 @@ const CORS_HEADERS = {
 const CALENDLY_URL = process.env.CALENDLY_URL || 'https://calendly.com/newurbaninfluence';
 const ADMIN_EMAIL  = process.env.ADMIN_EMAIL  || 'newurbaninfluence@gmail.com';
 
+// ── Internal team numbers — recognized contacts, no sales mode ──
+const INTERNAL_TEAM = {
+  [process.env.IRISH_PHONE || '+12485551234']: { name: 'Irish', role: 'wife', greeting: 'Oh hey Irish 👋' },
+  [process.env.FAREN_PHONE || '+12485550000']: { name: 'Faren', role: 'founder', greeting: 'Hey boss 🤙' },
+};
+
 const SMS_SYSTEM_PROMPT = `You are Monty, the AI representative for New Urban Influence (NUI) — a Detroit-based agency that builds Digital Headquarters, AI automation systems, and brand infrastructure for businesses.
 
 SELLING PHILOSOPHY — NEPQ (Neuro-Emotional Persuasion Questioning)
@@ -340,8 +346,30 @@ exports.handler = async function(event) {
       clientContext += conversationHistory;
     }
 
+    // ── Check if this is an internal team member ──────────────────────────────
+    let cleanPhone = fromNumber.replace(/[^\d+]/g, '');
+    if (cleanPhone.length === 10) cleanPhone = '+1' + cleanPhone;
+    else if (cleanPhone.length === 11 && cleanPhone.startsWith('1')) cleanPhone = '+' + cleanPhone;
+    const teamMember = INTERNAL_TEAM[cleanPhone];
+
+    // ── Check last Monty reply to avoid repeating ─────────────────────────────
+    const lastMontyMsg = (conversationHistory || '').split('\n')
+      .filter(l => l.startsWith('Monty (you):'))
+      .pop() || '';
+
     // ── Step 2: Run reply generation + intelligence in PARALLEL ──────────────
-    const userPrompt = `A client just texted NUI's business phone:\n\n"${incomingMessage}"\n\nClient phone: ${fromNumber}\n\n${clientContext}\n\nRespond as Monty via SMS. Keep it short (1-3 sentences). Be helpful and direct. If they're ready to talk/book, include the Calendly link.`;
+    let userPrompt;
+    if (teamMember) {
+      // Internal team member — casual mode, no sales
+      userPrompt = `${teamMember.greeting} This is a message from ${teamMember.name} (${teamMember.role} at NUI — internal team, NOT a prospect or client).
+
+Their message: "${incomingMessage}"
+
+Respond casually and helpfully as Monty. Short reply. No sales pitch. No NEPQ. Just be useful and human. If they're testing you or asking about a feature, answer directly.`;
+    } else {
+      // Regular prospect/client
+      userPrompt = `A contact just texted NUI's business phone:\n\n"${incomingMessage}"\n\nPhone: ${fromNumber}\n\n${clientContext}\n\nYour last reply was: "${lastMontyMsg.replace('Monty (you):', '').trim()}"\n\nIMPORTANT: Do NOT repeat or reword your last reply. Continue the conversation naturally from where it left off. Keep it 1-3 sentences. NEPQ style — ask one good question or move them forward. If ready to book, include Calendly link.`;
+    }
 
     const [aiResponse, intelResult] = await Promise.all([
       fetch('https://api.anthropic.com/v1/messages', {
