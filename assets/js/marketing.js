@@ -111,15 +111,15 @@ function loadHomeView() {
 <button class="btn-cta mt-32" onclick="showView('services')">Explore All Services</button>
 </div>
 <div class="services-grid home-services nui-stagger">
-<div class="service-card-simple" onclick="goToService('svc-branding')"><div class="arrow">↗</div><h3>Brand Identity Design</h3><p>Forge Your Legacy. Define Your Empire.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="goToService('svc-web')"><div class="arrow">↗</div><h3>Website Design & Dev</h3><p>Your Digital Headquarters. Built for Conversion.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="goToService('svc-marketing')"><div class="arrow">↗</div><h3>Social Media & Ads</h3><p>Command Attention. Drive Engagement.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="goToService('svc-marketing')"><div class="arrow">↗</div><h3>Motion & Video</h3><p>Bring Your Story to Life. Dynamically.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="goToService('svc-print')"><div class="arrow">↗</div><h3>Print & Packaging</h3><p>Tangible Brand Power. From Cards to Wraps.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="goToService('svc-marketing')"><div class="arrow">↗</div><h3>SEO & Digital Strategy</h3><p>Get Found. Get Chosen. Get Paid.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="goToService('svc-ai')"><div class="arrow">↗</div><h3>AI Systems & Automation</h3><p>Your Business. Always On. Always Working.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="goToService('svc-marketing')"><div class="arrow">↗</div><h3>Email & SMS Automation</h3><p>Capture Silent Visitors. Convert on Autopilot.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="goToService('svc-marketing')"><div class="arrow">↗</div><h3>Geo-Fencing & Geo-Gridding</h3><p>Target Competitors' Customers. Dominate Your Map.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="window.location.href='/services/brand-kit-detroit'"><div class="arrow">↗</div><h3>The Blueprint</h3><p>Your logo, colors, and vibe. Built to make people trust you before they call.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="window.location.href='/services/business-website-detroit'"><div class="arrow">↗</div><h3>Digital HQ</h3><p>Not just a website — the systems, payments, and infrastructure that keep your business open 24/7.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="window.location.href='/services/digital-staff-detroit'"><div class="arrow">↗</div><h3>Digital Staff</h3><p>Your always-on team. The Digital Secretary, Lead Catcher, and Street Announcer — working while you sleep.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="window.location.href='/services/social-media-management-detroit'"><div class="arrow">↗</div><h3>Digital Street Team</h3><p>The Content Crew, The Block Captain, and The Neighborhood Captain — owning every corner online.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="window.location.href='/services/press-feature-detroit'"><div class="arrow">↗</div><h3>The Publicist</h3><p>NUI Magazine feature. The difference between you saying you're the best and a publication proving it.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="window.location.href='/services/event-team-detroit'"><div class="arrow">↗</div><h3>The Event Team</h3><p>Day-rate staff for vendor shows and events. Capture every face, collect every contact, send every photo.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="goToService('svc-print')"><div class="arrow">↗</div><h3>Print & Packaging</h3><p>Banners, cards, signs, packaging — tangible brand power from design to your door.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="goToService('svc-marketing')"><div class="arrow">↗</div><h3>Motion</h3><p>Logo animations, brand commercials, and reels that stop the scroll.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="window.location.href='/services/vendor-launch-kit'"><div class="arrow">↗</div><h3>Vendor Launch Kit</h3><p>Logo, one-page site, Instagram setup, and email capture — everything a market vendor needs for $750.</p><div class="learn-more">LEARN MORE →</div></div>
 </div>
 </div>
 </section>
