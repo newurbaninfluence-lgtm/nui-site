@@ -19,44 +19,44 @@ const CORS = {
 // ── CONTENT PILLARS — rotate so we never repeat back-to-back ──
 const CONTENT_PILLARS = [
   {
-    id: 'brand_tip',
-    angle: 'Share a practical branding tip Detroit business owners can act on TODAY. Be specific — give them one thing they can change or fix right now. Reference the Detroit hustle. Make them feel like they just got insider knowledge.',
-    hashtags: '#DetroitBusiness #BrandingTips #NewUrbanInfluence #DetroitEntrepreneur #BrandStrategy #Detroit313 #SmallBusiness #DetroitMade #NUI #BrandIdentity'
+    id: 'ai_automation',
+    angle: 'Show how NUI uses AI to automate marketing and sales for Detroit businesses. Be SPECIFIC about what the AI actually does: Monty SMS automatically texts every lead back within 60 seconds, qualifies them, and books calls — while the business owner sleeps. This is not a chatbot. This is a full AI sales closer. Give a real scenario: "A Detroit restaurant gets 20 inquiries on Friday night. Monty texts every single one back, answers questions, and books reservations — automatically. Zero humans needed." Make them feel like they are missing out by NOT having this.',
+    hashtags: '#AIAutomation #ArtificialIntelligence #NewUrbanInfluence #DetroitBusiness #AIMarketing #SmallBusinessAI #AutomatedSales #AIForBusiness #DetroitTech #FutureBusiness'
   },
   {
-    id: 'nui_service',
-    angle: 'Highlight ONE specific NUI service with a bold claim. Rotate through: Brand Identity ($1,500 — logo colors fonts guidelines), Web Design ($3,500 — built to convert not just look pretty), AI Automation (Monty SMS closer — texts leads back automatically), Geo-Fencing (your ad shows on phones near your competitors). Lead with the OUTCOME not the feature.',
-    hashtags: '#DetroitBranding #WebDesign #AIAutomation #DetroitAgency #BrandIdentity #GeoFencing #DigitalMarketing #Detroit #NewUrbanInfluence #LocalMarketing'
+    id: 'ai_receptionist',
+    angle: 'NUI builds AI phone receptionists for Detroit businesses. The AI answers every call 24/7, qualifies leads, books appointments, and never puts anyone on hold. Use a Detroit example: "A Southfield law firm was missing 40% of calls after hours. We deployed an AI receptionist. Now every call gets answered, every lead gets qualified, every appointment gets booked — automatically." Focus on the MONEY they were leaving on the table. End with: our AI receptionist starts at $197/mo — less than one missed client.',
+    hashtags: '#AIReceptionist #AIPhone #NewUrbanInfluence #DetroitBusiness #NeverMissACall #AIAutomation #SmallBusiness #Detroit #BusinessAutomation #AIForSmallBusiness'
   },
   {
-    id: 'built_heavy',
-    angle: 'Drop a mindset hit from the Built Heavy podcast by Faren Young — about being built by pressure, resilience, Detroit grit, entrepreneurship. Make it feel like a real moment from the show. End with "Episode on Spotify/Apple — link in bio."',
-    hashtags: '#BuiltHeavy #FarenYoung #DetroitPodcast #Entrepreneurship #MindsetMatters #DetroitHustle #PodcastLife #BusinessMindset #313 #Detroit'
-  },
-  {
-    id: 'client_win',
-    angle: 'Tell a real-feeling client story (keep anonymous — "a Detroit barbershop", "a Metro Detroit consultant", "a Corktown restaurant"). Describe where they were BEFORE NUI and what changed AFTER. Specific numbers if possible. End with a CTA to book their free strategy call.',
-    hashtags: '#ClientWin #DetroitBusiness #BrandingResults #NewUrbanInfluence #DesignMatters #BeforeAfter #DetroitAgency #SmallBusinessOwner #BrandTransformation #313'
-  },
-  {
-    id: 'did_you_know',
-    angle: 'Drop a stat or fact that HURTS — something that makes Detroit business owners realize they are losing money or customers RIGHT NOW because of something they are not doing. Examples: 70% of customers check a website before visiting a business. Consistent branding increases revenue 23%. Geo-fencing ads get 2x higher CTR than regular display ads. Make it feel urgent.',
-    hashtags: '#DigitalMarketing #LocalSEO #AIMarketing #DetroitBusiness #MarketingFacts #GrowthHacking #SmallBusiness #NewUrbanInfluence #BrandingROI #DetroitEntrepreneur'
-  },
-  {
-    id: 'community',
-    angle: 'Celebrate Detroit — the city, a local business win, an industry moment, Detroit resilience. NUI is PART of Detroit not just located here. Reference specific Detroit neighborhoods (Corktown, Midtown, Greektown, New Center, Livernois Ave of Fashion), Detroit culture (music, food, automotive, sports), or Detroit business news. Make it feel local and real.',
-    hashtags: '#Detroit #DetroitRising #313 #DetroitStrong #NewUrbanInfluence #DetroitMade #MotorCity #DetroitBusiness #MichiganBusiness #DetroitProud'
-  },
-  {
-    id: 'free_value',
-    angle: 'Offer the FREE 15-minute Brand Strategy Session. Make it feel EXCLUSIVE and LIMITED. Paint the picture of what they will walk away with (clarity on their brand, a custom roadmap, knowing exactly what is hurting their growth). Address the objection that they think they cannot afford good branding. Hammer the free part.',
-    hashtags: '#FreeConsultation #DetroitBusiness #BrandAudit #NewUrbanInfluence #FreeTips #BrandStrategy #SmallBusiness #DetroitEntrepreneur #MarketingHelp #313'
+    id: 'ai_sms_closer',
+    angle: 'NUI built an AI SMS closer called Monty that follows up with every lead using Cardone/Hormozi sales psychology. Monty knows the client history, reads the conversation, and closes deals via text. Give a real scenario with numbers: "A Detroit HVAC company was manually following up with leads — closing maybe 20%. We deployed Monty SMS. Follow-up happens in 60 seconds every time. Closing rate went to 34% in 30 days." Make it feel like this is the unfair advantage other businesses dont have yet.',
+    hashtags: '#SMSMarketing #AICloser #NewUrbanInfluence #TextMarketing #LeadConversion #DetroitBusiness #SalesAutomation #AIMarketing #MontyAI #BusinessGrowth'
   },
   {
     id: 'street_team',
-    angle: 'Explain geo-fencing in Detroit terms — YOUR digital street team. When someone walks near your competitor, YOUR ad shows up on their phone within 60 seconds. Use a Detroit example: "Your competitor opens on 8 Mile? We put your ad in front of everyone who walks in." Make it feel like a secret weapon they have never heard of.',
-    hashtags: '#GeoFencing #StreetTeam #DetroitMarketing #NewUrbanInfluence #LocalMarketing #CompetitorTargeting #DigitalMarketing #DetroitBusiness #AIMarketing #313'
+    angle: 'Explain geo-fencing as "The Digital Street Team" — when someone walks near your competitor, YOUR ad shows on their phone within 60 seconds. Use a Detroit example: "Your competitor has a barbershop on 7 Mile. We draw a virtual fence around it. Every person who walks in sees YOUR shop ad for the next 30 days." This is what big brands pay $50k for. NUI does it starting at $997/mo. Make them feel like this is the secret weapon nobody in Detroit is talking about yet.',
+    hashtags: '#GeoFencing #DigitalStreetTeam #NewUrbanInfluence #DetroitMarketing #LocalMarketing #CompetitorTargeting #AIMarketing #DetroitBusiness #GeoTargeting #313'
+  },
+  {
+    id: 'ai_visitor_id',
+    angle: 'NUI gives Detroit businesses the ability to see WHO is visiting their website — name, email, company, LinkedIn — before they even contact you. This is called Silent Visitor ID. Use a scenario: "A Detroit B2B company had 800 website visitors last month. They followed up with the 12 who filled out a form. With our visitor ID tech, they could have followed up with all 800 — because we tell you exactly who they are." Make it feel like a superpower. $97/mo.',
+    hashtags: '#WebsiteVisitors #LeadGeneration #NewUrbanInfluence #B2BMarketing #DetroitBusiness #SilentVisitorID #MarketingAutomation #DetroitTech #AIMarketing #SalesIntelligence'
+  },
+  {
+    id: 'ai_email_automation',
+    angle: 'NUI builds behavior-based email sequences that send the right message at the right time based on what pages someone visited on your website. Not generic blasts — intelligent automation. Example: "A Detroit med spa visitor looked at Botox pricing 3 times. Our system automatically sent them a Botox special offer 2 hours later. They booked." This is the difference between blasting everyone the same email and actually closing sales. Starting at $97/mo.',
+    hashtags: '#EmailAutomation #BehaviorBasedEmail #NewUrbanInfluence #DetroitBusiness #EmailMarketing #MarketingAutomation #AIMarketing #SmallBusiness #DetroitEntrepreneur #ConversionOptimization'
+  },
+  {
+    id: 'client_win',
+    angle: 'Share a real AI-powered transformation story (keep client anonymous). Structure it as BEFORE/AFTER with specific numbers. Example format: "A Detroit [industry] was [pain point]. We deployed [NUI AI tool]. In [timeframe] they saw [specific result — leads, revenue, time saved, calls answered]. They now [current state]." Make it feel undeniable. End with: "DM us RESULTS to see what AI automation could do for your business."',
+    hashtags: '#ClientResults #AIAutomation #NewUrbanInfluence #DetroitBusiness #BeforeAfter #BrandTransformation #BusinessGrowth #DetroitEntrepreneur #AIForBusiness #Results'
+  },
+  {
+    id: 'ai_content_engine',
+    angle: 'NUI uses AI to create and auto-post branded social media content for clients — every single day. No social media manager needed. The AI writes the post, brands the image, picks the right hashtags, and posts at the optimal time — automatically. Use a scenario: "A Detroit restaurant owner was spending 3 hours a week on social media. We set up their AI content engine. Now branded posts go out daily — automatically. They spend zero time on it." This IS the future of marketing for small business.',
+    hashtags: '#SocialMediaAutomation #AIContent #NewUrbanInfluence #DetroitBusiness #ContentMarketing #AIMarketing #AutoPost #SmallBusiness #DetroitEntrepreneur #MarketingAutomation'
   }
 ];
 
