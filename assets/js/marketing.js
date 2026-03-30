@@ -1379,7 +1379,7 @@ function loadServicesView() {
 </div>
 <p style="color: #888; font-size: 14px; margin-bottom: 24px;">Video production and photography services available as add-ons for clients in the Detroit metro area. These require in-person sessions at your location.</p>
 
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
                         <!-- Motion & Video Add-On -->
 <div class="blog-overlay-dark">
 <div class="problem-meta">
@@ -1650,7 +1650,7 @@ function loadServicesView() {
 </div>
 <p style="color: #888; font-size: 14px; margin-bottom: 24px;">Video production and photography services available as add-ons for clients in the Detroit metro area. These require in-person sessions at your location.</p>
 
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
                         <!-- Motion & Video Add-On -->
 <div class="blog-overlay-dark">
 <div class="problem-meta">
@@ -2311,7 +2311,7 @@ function loadServicesView() {
 <div id="svc-marketing"></div>
 <section class="package-section" data-svc-filter="email-sms,geo,digital,established" style="background: #050505;">
 <div class="package-image">
-<img loading="lazy" width="1920" height="1200" src="https://images.unsplash.com/photo-1563986768609-322da13575f2?w=1920&q=80" alt="Marketing Technology Services" data-service-image="martech">
+<img loading="lazy" width="1920" height="1200" src="https://jcgvkyizoimwbolhfpta.supabase.co/storage/v1/object/public/nui-images/services/martech-hero.jpg" alt="Marketing Technology Services" data-service-image="martech">
 </div>
 <div class="container-lg">
 <div class="package-header">
