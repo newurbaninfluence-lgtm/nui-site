@@ -136,7 +136,7 @@ window.openNuiIntake = function(serviceId, price, label) {
   state.price = price;
   state.label = label || serviceId;
   state.step = 1;
-  state.data = {};
+  state.data = { optinEmail: false, optinSMS: true, optinPush: true }; // SMS+push default on
   state.bookingChoice = '';
   var steps = STEPS[serviceId] || STEPS['default'];
   state.totalSteps = steps.length;
@@ -208,6 +208,9 @@ function renderReview(steps) {
     { k:'Email', v: state.data.email || '—' },
     { k:'Phone', v: state.data.phone || '—' },
     { k:'Business', v: state.data.business || '—' },
+    { k:'Email Updates', v: state.data.optinEmail ? '✓ Yes' : 'No' },
+    { k:'SMS Deals', v: state.data.optinSMS ? '✓ Yes' : 'No' },
+    { k:'Push Alerts', v: state.data.optinPush ? '✓ Yes' : 'No' },
   ].filter(Boolean);
 
   var rowsHtml = rows.map(function(r) {
@@ -242,6 +245,7 @@ function getFields(svcId, step) {
     { id:'phone', type:'text', label:'Phone Number', req:true, placeholder:'(248) 000-0000' },
     { id:'business', type:'text', label:'Business Name', req:true, placeholder:'Your Business Name' },
     { id:'heard', type:'select', label:'How did you hear about us?', options:['Google Search','Instagram','Facebook','TikTok','Referral','Saw Our Work','Local Event','Other'] },
+    { id:'_optins', type:'optins' },
   ];
   var common2 = [
     { id:'website', type:'text', label:'Current Website (if any)', req:false, placeholder:'https://' },
@@ -286,6 +290,27 @@ function renderField(f) {
   var saved = state.data[f.id] || '';
   var lbl = '<label class="nui-label" for="nui_'+f.id+'">'+f.label+(f.req ? ' <span class="req">*</span>' : '')+'</label>';
 
+  if (f.type === 'optins') {
+    var eChecked = state.data.optinEmail ? 'checked' : '';
+    var sChecked = state.data.optinSMS !== false ? 'checked' : '';
+    var pChecked = state.data.optinPush !== false ? 'checked' : '';
+    return `<div class="nui-field" style="border:1px solid rgba(255,255,255,0.08);padding:20px;background:rgba(255,255,255,0.02);margin-top:8px;">
+<div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">Exclusive Access — Optional</div>
+<label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-bottom:12px;">
+<input type="checkbox" id="nui_optinEmail" onchange="window._nuiOptin('optinEmail',this.checked)" ${eChecked} style="margin-top:3px;accent-color:#D90429;width:16px;height:16px;flex-shrink:0;">
+<div><div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:2px;">📧 Send me tips &amp; exclusive discounts by email</div><div style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">Get first-access offers, brand-building tips, and Detroit business insights. Unsubscribe anytime.</div></div>
+</label>
+<label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-bottom:12px;">
+<input type="checkbox" id="nui_optinSMS" onchange="window._nuiOptin('optinSMS',this.checked)" ${sChecked} style="margin-top:3px;accent-color:#D90429;width:16px;height:16px;flex-shrink:0;">
+<div><div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:2px;">📱 Text me deals &amp; reminders directly to my phone</div><div style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">Get your first-order discount, seasonal promos, and updates via text. Reply STOP to opt out anytime. Msg &amp; data rates may apply.</div></div>
+</label>
+<label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;">
+<input type="checkbox" id="nui_optinPush" onchange="window._nuiOptin('optinPush',this.checked)" ${pChecked} style="margin-top:3px;accent-color:#D90429;width:16px;height:16px;flex-shrink:0;">
+<div><div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:2px;">🔔 Push alerts for flash drops &amp; new openings</div><div style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">Be first to know when new slots open or limited-time offers drop. Disable in browser settings anytime.</div></div>
+</label>
+<div style="margin-top:12px;font-size:10px;color:rgba(255,255,255,0.2);line-height:1.5;">By checking boxes above, you consent to receive marketing communications from New Urban Influence. We never sell your info. See our <a href="/privacy" style="color:rgba(255,255,255,0.3);">Privacy Policy</a>.</div>
+</div>`;
+  }
   if (f.type === 'select') {
     var opts = (f.options||[]).map(function(o){ return '<option value="'+o+'"'+(saved===o?' selected':'')+'>'+o+'</option>'; }).join('');
     return '<div class="nui-field">'+lbl+'<select id="nui_'+f.id+'" class="nui-input nui-select"><option value="">Select...</option>'+opts+'</select></div>';
@@ -305,6 +330,8 @@ function renderField(f) {
 }
 
 // ─── NAVIGATION ───────────────────────────────────────────────────────────────
+window._nuiOptin = function(field, val) { state.data[field] = val; };
+
 window._nuiRadio = function(el) {
   var field = el.getAttribute('data-field');
   var val = el.getAttribute('data-val');
@@ -325,6 +352,11 @@ function collectStep() {
   if (isReview) return true;
   var fields = getFields(state.serviceId, state.step);
   var ok = true;
+  // Capture checkbox opt-ins if visible
+  ['optinEmail','optinSMS','optinPush'].forEach(function(k){
+    var el = document.getElementById('nui_'+k);
+    if(el) state.data[k] = el.checked;
+  });
   fields.forEach(function(f) {
     if (f.type === 'radio') {
       // radio values set by _nuiRadio

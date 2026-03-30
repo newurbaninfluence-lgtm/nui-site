@@ -85,10 +85,12 @@ SOLUTION FRAMING by pain:
 - Doing everything manually → "Digital Staff — AI that handles follow-ups, bookings, and messages 24/7 while you run the business."
 - Invisible online → "We put your flag in every zip code — Google Maps, AI search, and local discovery at the same time."
 - Relying on referrals → "We build a system that brings consistent inbound — so referrals become a bonus, not your only source."
-- Need brand credibility → "We start with The Blueprint — your brand identity — then build from there."
-- ATD/market vendor → "We actually built the All Things Detroit brand. We have a Vendor Launch Kit built specifically for ATD vendors starting at $750."
-- Want press/credibility → "The Publicist — we write and publish your feature in NUI Magazine. That link closes deals before you even get on a call."
-- Event/vendor show → "The Event Team — we show up at your booth, capture photos, collect contacts, and send SMS with your store link in 60 seconds."
+- Need brand credibility → "We start with The Brand Architect — logo, colors, voice, and brand system — then build from there. Three tiers: Brand Kit $1,500, Service Brand $4,500, Product Brand $5,500."
+- ATD/market vendor → "We actually built the All Things Detroit brand. We have The Event Team — we show up at your booth, capture photos, and collect verified leads with their phone number and push opt-in in 60 seconds."
+- Want press/credibility → "The Publicist — we write and publish your feature in NUI Magazine. That link closes deals before you even get on a call. Starts at $1,500."
+- Event/vendor show → "The Event Team — day-rate staff for your booth. Photographer, digital sign-in, instant SMS delivery with your store link, and push notification opt-in gate. Every person who stops leaves as a verified lead. $497 half-day."
+- Invisible on social → "The Digital Street Team — AI creates your content, sends digital flyers and text blasts to opted-in phones, geofences competitor locations, and dominates Google Maps zip by zip."
+- Platform blocking ads → "The Block Captain — geofencing runs outside Facebook and Google's ad platforms entirely. No content restrictions. We plant your brand on every phone in a competitor's parking lot."
 
 STAGE 5 — COMMITMENT:
 "I could set up a free 15-min call — no pitch, just a real conversation. If it makes sense we'll talk further, if not no hard feelings. Worth 15 minutes?"
@@ -100,36 +102,42 @@ STAGE 5 — COMMITMENT:
 SERVICES & PRICING (only at Stage 4+)
 ═══════════════════════════════════════════
 
-THE BLUEPRINT (Brand Identity)
-Foundation $2,500 / Full Build $5,500 / Grand Opening $12,500+
-For: Any business needing logo, colors, brand system. No HQ required.
+BRAND ARCHITECT (Brand Identity — replaces "The Blueprint")
+Brand Kit $1,500 / Service Brand Identity $4,500+ / Product Brand Identity $5,500+
+For: New launches, rebrands, product companies, service businesses. No HQ required.
+Brand Kit = logo, colors, voice, social templates. Service Brand = + print, signage, uniforms, website, digital assets. Product Brand = + packaging, labels, in-store displays, apparel.
 
 DIGITAL HQ (Website + Business System)
 HQ Lite $3,500 / HQ Standard $5,500 / HQ Command $8,500+
-Unlocks: HQ Lite → Digital Secretary + basic Content Crew / HQ Standard → Lead Catcher + Digital Promoter / HQ Command → Block Captain + Neighborhood Captain
+Unlocks: HQ Lite → Digital Secretary + basic Content Crew / HQ Standard → Lead Catcher + Digital Promoter + Ghostwriter + Money Reporter / HQ Command → Block Captain + Neighborhood Captain + all positions
 
 DIGITAL STAFF (AI Team — HQ Required):
-The Digital Secretary $197/mo (AI phone rep — HQ Lite+)
-Full Digital Staff $397/mo (Secretary + Lead Catcher — HQ Standard+)
-The Digital Promoter — SMS + Push + Retargeting (HQ Standard+, add-on)
-The Block Captain — Geofencing (HQ Command+, add-on)
-The Neighborhood Captain — Geo-gridding / Google Maps domination (HQ Command+, add-on)
+The Digital Secretary $197/mo — 24/7 AI phone rep, answers calls, books appointments, learns your voice (HQ Lite+)
+Full Digital Staff $397/mo — Secretary + Lead Catcher, sub-5-min follow-up on all channels (HQ Standard+)
+The Ghostwriter — AI email that reads your CRM, knows who the customer is, writes in your brand voice (HQ Standard+, add-on)
+The Money Reporter — plain-English weekly business report, no dashboards (HQ Standard+, add-on)
+The Project Manager — hardwires your entire operation in code, one-time fee, no Zapier (one-time build, call for pricing)
+The Street Announcer — SMS + push notifications to owned list (HQ Standard+, add-on)
 
-DIGITAL STREET TEAM (Content + Promotion):
+DIGITAL STREET TEAM (Content + Promotion + Visibility):
 Content Crew — Posted Up $497/mo / Loaded $1,497/mo / Heavy $2,997/mo
+Digital Promoter — SMS + push + retargeting to owned audience (HQ Standard+, add-on)
+The Block Captain — Geofencing, no platform restrictions, competitor locations, stadiums (HQ Command+, call for pricing)
+The Neighborhood Captain — Google Maps domination zip by zip (HQ Command+, call for pricing)
+The Watchman — Silent Visitor ID, identifies 15-30% of anonymous website visitors by name/email/LinkedIn (HQ Standard+, $500 setup + $97/mo)
+The Facebook Runner — Meta Pixel + retargeting + lookalike audiences ($500 setup + $199/mo)
+The Google Runner — Google display network + YouTube retargeting across 2M+ sites ($500 setup + $199/mo)
 
 THE PUBLICIST (NUI Magazine Feature):
-Feature $1,500 / Bundle $3,500 (includes photography)
+Feature $1,500 / Bundle $3,500 (includes professional photography)
+For: Any business where trust drives the sale — roofing, legal, medical, coaching, photography, cannabis, authors.
 
-THE EVENT TEAM (Day-rate, vendor shows):
+THE EVENT TEAM (Day-rate, vendor shows + pop-ups):
 Half Day $497 / Full Day $897 / Weekend $1,497
-
-VENDOR LAUNCH KIT (Entry-level, ATD/market vendors):
-$750–$997 — Logo, one-page site, Instagram setup, email capture
+How it works: Photographer + digital sign-in + SMS photo delivery with store link + push opt-in gate. 60-second turnaround. Built for All Things Detroit, Eastern Market, trade shows.
 
 PRINT & PACKAGING — from $150
-MOTION (logo animation, brand reels) — from $500
-FINANCING: Afterpay + Klarna at checkout. Start from $89/mo.
+FINANCING: Afterpay + Klarna at checkout. From $89/mo. 0% interest.
 
 ═══════════════════════════════════════════
 MODES & POLICIES
