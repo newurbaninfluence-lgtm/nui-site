@@ -22,6 +22,7 @@ function loadHomeView() {
 <a href="/contact" class="btn-cta" onclick="event.preventDefault(); showView('intake');">Book Strategy Call</a>
 <a href="/portfolio" class="btn-outline" onclick="event.preventDefault(); showView('portfolio');">View Our Work</a>
 </div>
+<div style="margin-top:16px;font-size:13px;color:rgba(255,255,255,0.5);">💳 Start for as low as <strong style="color:#C9A227;">$89/mo</strong> — 0% financing through Afterpay &amp; Klarna &nbsp;·&nbsp; <a href="/services/brand-kit-detroit" style="color:#C9A227;font-weight:600;">See plans →</a></div>
 </div>
 <div class="scroll-indicator">Scroll</div>
 </section>
@@ -1101,6 +1102,7 @@ function loadServicesView() {
 </section>
 
 <!-- Sticky Service Navigator -->
+<div style="background:#D90429;color:#fff;text-align:center;padding:9px 24px;font-size:13px;font-weight:600;letter-spacing:0.3px;">💳 Packages from <strong>$89/mo</strong> — 0% interest financing through Afterpay &amp; Klarna. <a onclick="svcScrollTo('svc-financing')" style="color:#fff;text-decoration:underline;cursor:pointer;">See financing options ↓</a></div>
 <div id="svcNav" style="position:sticky;top:64px;z-index:90;background:rgba(10,10,10,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0;transition:box-shadow 0.3s;">
 <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding:0 16px;">
 <a onclick="svcScrollTo('svc-branding')" class="svc-nav-link active" data-svc-nav="svc-branding" style="padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);cursor:pointer;white-space:nowrap;border-bottom:2px solid var(--red);text-decoration:none;transition:all 0.3s;">Branding</a>
