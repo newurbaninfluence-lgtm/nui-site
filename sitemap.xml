@@ -48,6 +48,50 @@
         <priority>0.8</priority>
     </url>
 
+    <!-- ==================== NUI PACKAGE PAGES (NEW) ==================== -->
+    <url>
+        <loc>https://newurbaninfluence.com/services/brand-kit-detroit</loc>
+        <lastmod>2026-03-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.95</priority>
+    </url>
+    <url>
+        <loc>https://newurbaninfluence.com/services/business-website-detroit</loc>
+        <lastmod>2026-03-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.95</priority>
+    </url>
+    <url>
+        <loc>https://newurbaninfluence.com/services/digital-staff-detroit</loc>
+        <lastmod>2026-03-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.95</priority>
+    </url>
+    <url>
+        <loc>https://newurbaninfluence.com/services/social-media-management-detroit</loc>
+        <lastmod>2026-03-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.95</priority>
+    </url>
+    <url>
+        <loc>https://newurbaninfluence.com/services/press-feature-detroit</loc>
+        <lastmod>2026-03-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://newurbaninfluence.com/services/event-team-detroit</loc>
+        <lastmod>2026-03-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://newurbaninfluence.com/services/vendor-launch-kit</loc>
+        <lastmod>2026-03-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
     <!-- ==================== SERVICE PAGES ==================== -->
     <url>
         <loc>https://newurbaninfluence.com/services/brand-identity-packages-detroit</loc>
