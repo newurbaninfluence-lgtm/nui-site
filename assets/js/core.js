@@ -288,10 +288,16 @@ async function hydrateFromBackend() {
             hydrated++;
         }
 
-        // Hydrate about page data from backend
+        // Hydrate about page data from backend (Supabase only — no localStorage)
         if (sd.about?.data && typeof sd.about.data === 'object' && (sd.about.data.team || sd.about.data.storyImage)) {
+            // Always enforce Supabase photo URLs — never let stale localStorage photos in
+            if (sd.about.data.team && Array.isArray(sd.about.data.team)) {
+                sd.about.data.team = sd.about.data.team.map((m, i) => ({
+                    ...m,
+                    photo: (typeof NUI_TEAM_DEFAULT !== 'undefined' && NUI_TEAM_DEFAULT[i]) ? NUI_TEAM_DEFAULT[i].photo : m.photo
+                }));
+            }
             aboutData = sd.about.data;
-            localStorage.setItem('nui_about_v2', JSON.stringify(aboutData));
             hydrated++;
         }
 

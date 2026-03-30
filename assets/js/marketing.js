@@ -2826,18 +2826,21 @@ function savePortfolio() {
 }
 
 // ==================== ABOUT PAGE DATA ====================
-let aboutData = JSON.parse(localStorage.getItem('nui_about_v2')) || {
+// Team photos stored in Supabase — NOT localStorage
+const NUI_TEAM_SUPABASE_BASE = 'https://jcgvkyizoimwbolhfpta.supabase.co/storage/v1/object/public/nui-images/team';
+const NUI_TEAM_DEFAULT = [
+    { name: 'Faren Young', title: 'Creative Director & Founder', bio: 'Martez Hand — widely known as the creative Faren Young — is a native Detroiter with 20+ years guiding businesses to success through bold design and strategic branding. From Bravo Graphix on the Avenue of Fashion to New Urban Influence, he builds empires.', photo: `${NUI_TEAM_SUPABASE_BASE}/team-faren-young.png` },
+    { name: 'AJ Grant', title: 'Lead Photographer & Visual Partner', bio: 'AJ Grant is the lens behind Detroit\'s most iconic moments. With 36K followers and 229 Google reviews, AJ Photography Studio has been NUI\'s trusted visual partner — capturing the brands we build in their fullest light.', photo: `${NUI_TEAM_SUPABASE_BASE}/team-aj-grant.png` },
+    { name: 'Irish Montes', title: 'Brand Strategist & Creative', bio: 'Irish brings sharp creative instincts and a deep understanding of brand storytelling to every project. Her eye for design and strategy helps NUI clients connect with their audiences on a deeper level.', photo: `${NUI_TEAM_SUPABASE_BASE}/team-irish-montes.jpg` },
+    { name: 'Monty', title: 'AI Brand Assistant', bio: 'Monty is NUI\'s custom-built AI assistant — trained on brand strategy, client history, and Detroit culture. Available 24/7, Monty handles inquiries, guides prospects, and keeps the brand engine running around the clock.', photo: `${NUI_TEAM_SUPABASE_BASE}/team-monty.png` },
+    { name: 'Sora', title: 'AI Creative', bio: 'Sora is NUI\'s AI creative engine — generating visuals, concepts, and motion assets that keep the brand moving at the speed of culture.', photo: `${NUI_TEAM_SUPABASE_BASE}/team-sora.png` }
+];
+let aboutData = {
     storyImage: 'images/about-story.png',
-    team: [
-        { name: 'Faren Young', title: 'Creative Director & Founder', bio: 'Martez Hand — widely known as the creative Faren Young — is a native Detroiter with 20+ years guiding businesses to success through bold design and strategic branding. From Bravo Graphix on the Avenue of Fashion to New Urban Influence, he builds empires.', photo: '/images/Creative%20Staff/Faren%20young.png' },
-        { name: 'AJ Grant', title: 'Lead Photographer & Visual Partner', bio: 'AJ Grant is the lens behind Detroit\'s most iconic moments. With 36K followers and 229 Google reviews, AJ Photography Studio has been NUI\'s trusted visual partner — capturing the brands we build in their fullest light.', photo: '/images/Creative%20Staff/Aj%20Grant.png' },
-        { name: 'Irish Montes', title: 'Brand Strategist & Creative', bio: 'Irish brings sharp creative instincts and a deep understanding of brand storytelling to every project. Her eye for design and strategy helps NUI clients connect with their audiences on a deeper level.', photo: '/images/Creative%20Staff/irish%20Montes.jpg' },
-        { name: 'Monty', title: 'AI Brand Assistant', bio: 'Monty is NUI\'s custom-built AI assistant — trained on brand strategy, client history, and Detroit culture. Available 24/7, Monty handles inquiries, guides prospects, and keeps the brand engine running around the clock.', photo: '/images/Creative%20Staff/Monty.png' },
-        { name: 'Sora', title: 'AI Creative', bio: 'Sora is NUI\'s AI creative engine — generating visuals, concepts, and motion assets that keep the brand moving at the speed of culture.', photo: '/images/Creative%20Staff/Sora.png' }
-    ]
+    team: NUI_TEAM_DEFAULT
 };
+// Hydrate from Supabase backend (never from localStorage)
 function saveAbout() {
-    localStorage.setItem('nui_about_v2', JSON.stringify(aboutData));
     _pushToBackend('about', aboutData);
 }
 
