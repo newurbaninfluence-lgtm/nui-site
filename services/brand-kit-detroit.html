@@ -192,7 +192,7 @@ footer a:hover{color:var(--red);}
     <button class="pkg-nav-link" onclick="jumpTo('product-brand')">Product Brand — $5,500</button>
     <button class="pkg-nav-link" onclick="jumpTo('compare')">Compare</button>
     <button class="pkg-nav-link" onclick="jumpTo('faq')">FAQ</button>
-    <button class="pkg-nav-link" onclick="jumpTo('start')">Get Started</button>
+    <button class="pkg-nav-link" data-intake="brand-kit" data-price="1500" data-label="Brand Kit">Get Started</button>
   </div>
 </div>
 
@@ -335,7 +335,7 @@ footer a:hover{color:var(--red);}
 
     </div>
     <div class="package-cta">
-      <button class="btn-package" onclick="jumpTo('start')">Get Your Brand Kit →</button>
+      <button class="btn-package" data-intake="brand-kit" data-price="1500" data-label="Brand Kit">Get Your Brand Kit →</button>
     </div>
   </div>
 </section>
@@ -423,7 +423,7 @@ footer a:hover{color:var(--red);}
     </div>
 
     <div class="package-cta">
-      <button class="btn-package" onclick="jumpTo('start')">Build My Service Brand →</button>
+      <button class="btn-package" data-intake="service-brand" data-price="4500" data-label="Service Brand Identity">Build My Service Brand →</button>
     </div>
   </div>
 </section>
@@ -511,7 +511,7 @@ footer a:hover{color:var(--red);}
     </div>
 
     <div class="package-cta">
-      <button class="btn-package" onclick="jumpTo('start')">Build My Product Brand →</button>
+      <button class="btn-package" data-intake="product-brand" data-price="5500" data-label="Product Brand Identity">Build My Product Brand →</button>
     </div>
   </div>
 </section>
@@ -532,7 +532,7 @@ footer a:hover{color:var(--red);}
       <span class="chip">ATD Vendor</span><span class="chip">E-Commerce</span>
       <span class="chip">Clothing Brand</span><span class="chip">Food &amp; Beverage</span>
     </div>
-    <button class="btn-package" onclick="jumpTo('start')">Start My Brand →</button>
+    <button class="btn-package" data-intake="brand-kit" data-price="1500" data-label="Brand Kit">Start My Brand →</button>
   </div>
 </section>
 
@@ -621,5 +621,6 @@ function sub(e){e.preventDefault();
 </script>
 
 <div id="page-bottom"></div>
+<script src="/assets/js/service-intake-embed.js"></script>
 <script src="/assets/js/shared-page-bottom.js"></script>
 </body></html>

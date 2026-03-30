@@ -15,7 +15,7 @@
     <h2 style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(32px,5vw,64px);text-transform:uppercase;color:#fff;line-height:1;margin-bottom:20px;letter-spacing:-0.5px;">Have Questions?<br><span style="color:#D90429;">Book a Free Call.</span></h2>
     <p style="font-size:17px;color:rgba(255,255,255,0.55);max-width:560px;margin:0 auto 40px;line-height:1.75;">Book a free 15-minute strategy call. We'll look at your business, your goals, and tell you exactly what we'd build — no pitch, no obligation. Just Detroit-to-Detroit.</p>
     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
-      <a href="${intakeURL}" style="display:inline-flex;align-items:center;background:#D90429;color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;padding:18px 48px;text-decoration:none;transition:background .2s;" onmouseover="this.style.background='#b5001f'" onmouseout="this.style.background='#D90429'">Book Free Strategy Call →</a>
+      <button data-intake="${svc}" data-label="${svc}" style="display:inline-flex;align-items:center;background:#D90429;color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;padding:18px 48px;border:none;cursor:pointer;transition:background .2s;" onmouseover="this.style.background='#b5001f'" onmouseout="this.style.background='#D90429'">Book Free Strategy Call →</button>
       <a href="tel:2484878747" style="display:inline-flex;align-items:center;background:transparent;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;padding:18px 48px;text-decoration:none;border:1.5px solid rgba(255,255,255,0.25);transition:border-color .2s;" onmouseover="this.style.borderColor='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.25)'">(248) 487-8747</a>
     </div>
     <p style="font-size:12px;color:rgba(255,255,255,0.2);letter-spacing:0.5px;">Response within 24 hours · Mon–Fri 9AM–6PM · Detroit, Michigan</p>
@@ -133,5 +133,13 @@
 </style>`;
 
   var el = document.getElementById('page-bottom');
-  if (el) el.innerHTML = html;
+  el.innerHTML = html;
+  // Wire the booking button with correct service
+  setTimeout(function(){
+    if(window.wireButtons) window.wireButtons();
+    else if(window.openNuiIntake){
+      var btn = el.querySelector('[data-intake]');
+      if(btn && !btn._nuiWired){ btn._nuiWired=true; btn.addEventListener('click',function(e){ e.preventDefault(); window.openNuiIntake(svc,btn.getAttribute('data-price')||'',btn.getAttribute('data-label')||svc); }); }
+    }
+  }, 200);
 })();
