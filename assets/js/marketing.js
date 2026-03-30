@@ -2833,7 +2833,8 @@ const NUI_TEAM_DEFAULT = [
     { name: 'AJ Grant', title: 'Lead Photographer & Visual Partner', bio: 'AJ Grant is the lens behind Detroit\'s most iconic moments. With 36K followers and 229 Google reviews, AJ Photography Studio has been NUI\'s trusted visual partner — capturing the brands we build in their fullest light.', photo: `${NUI_TEAM_SUPABASE_BASE}/team-aj-grant.png` },
     { name: 'Irish Montes', title: 'Brand Strategist & Creative', bio: 'Irish brings sharp creative instincts and a deep understanding of brand storytelling to every project. Her eye for design and strategy helps NUI clients connect with their audiences on a deeper level.', photo: `${NUI_TEAM_SUPABASE_BASE}/team-irish-montes.jpg` },
     { name: 'Monty', title: 'AI Brand Assistant', bio: 'Monty is NUI\'s custom-built AI assistant — trained on brand strategy, client history, and Detroit culture. Available 24/7, Monty handles inquiries, guides prospects, and keeps the brand engine running around the clock.', photo: `${NUI_TEAM_SUPABASE_BASE}/team-monty.png` },
-    { name: 'Sora', title: 'AI Creative', bio: 'Sora is NUI\'s AI creative engine — generating visuals, concepts, and motion assets that keep the brand moving at the speed of culture.', photo: `${NUI_TEAM_SUPABASE_BASE}/team-sora.png` }
+    { name: 'Sora', title: 'AI Creative', bio: 'Sora is NUI\'s AI creative engine — generating visuals, concepts, and motion assets that keep the brand moving at the speed of culture.', photo: `${NUI_TEAM_SUPABASE_BASE}/team-sora.png` },
+    { name: 'Alykhan Hashim', title: 'Graphic Designer', bio: 'Alykhan brings sharp design execution and a clean visual eye to every NUI project. From brand assets to digital layouts, he delivers with precision and Detroit edge.', photo: `${NUI_TEAM_SUPABASE_BASE}/team-alykhan-hashim.png` }
 ];
 let aboutData = {
     storyImage: 'images/about-story.png',
