@@ -19,44 +19,44 @@ const CORS = {
 // ── CONTENT PILLARS — rotate so we never repeat back-to-back ──
 const CONTENT_PILLARS = [
   {
-    id: 'brand_tip',
-    angle: 'Share a practical branding tip Detroit business owners can act on TODAY. Be specific — give them one thing they can change or fix right now. Reference the Detroit hustle. Make them feel like they just got insider knowledge.',
-    hashtags: '#DetroitBusiness #BrandingTips #NewUrbanInfluence #DetroitEntrepreneur #BrandStrategy #Detroit313 #SmallBusiness #DetroitMade #NUI #BrandIdentity'
+    id: 'digital_hq',
+    angle: 'NUI builds Digital Headquarters for Detroit businesses — not just a website, a full command center. A Digital HQ is your brand, your automation, your AI staff, your lead engine, and your reputation — all running together in one system. Use a scenario: "A Detroit consultant had a website nobody could find, no follow-up system, and no brand that stood out. We built their Digital HQ — now they show up on Google, their AI staff follows up every lead automatically, and their brand looks like a $10M company." Position this as the future. Digital HQ starts at $3,500.',
+    hashtags: '#DigitalHeadquarters #DigitalHQ #NewUrbanInfluence #DetroitBusiness #AIAutomation #BusinessInfrastructure #DetroitTech #SmallBusiness #BrandStrategy #NUI'
   },
   {
-    id: 'nui_service',
-    angle: 'Highlight ONE specific NUI service with a bold claim. Rotate through: Brand Identity ($1,500 — logo colors fonts guidelines), Web Design ($3,500 — built to convert not just look pretty), AI Automation (Monty SMS closer — texts leads back automatically), Geo-Fencing (your ad shows on phones near your competitors). Lead with the OUTCOME not the feature.',
-    hashtags: '#DetroitBranding #WebDesign #AIAutomation #DetroitAgency #BrandIdentity #GeoFencing #DigitalMarketing #Detroit #NewUrbanInfluence #LocalMarketing'
+    id: 'digital_staff',
+    angle: 'NUI deploys Digital Staff — AI-powered team members that work 24/7 without payroll. The AI Phone answers every call, qualifies leads, and books appointments. The AI SMS closer follows up with every lead in 60 seconds using NEPQ sales psychology. The AI receptionist never sleeps, never calls in sick, never misses a message. Use a Detroit scenario: "A Southfield med spa was missing 40% of after-hours calls. We deployed their Digital Staff. Now every call gets answered, every lead gets followed up. $397/mo — less than one days pay for a part-time employee." Make them feel crazy for NOT having this.',
+    hashtags: '#DigitalStaff #AIAutomation #AIReceptionist #NewUrbanInfluence #DetroitBusiness #NeverMissACall #AIPhone #SmallBusiness #BusinessAutomation #DetroitTech'
   },
   {
-    id: 'built_heavy',
-    angle: 'Drop a mindset hit from the Built Heavy podcast by Faren Young — about being built by pressure, resilience, Detroit grit, entrepreneurship. Make it feel like a real moment from the show. End with "Episode on Spotify/Apple — link in bio."',
-    hashtags: '#BuiltHeavy #FarenYoung #DetroitPodcast #Entrepreneurship #MindsetMatters #DetroitHustle #PodcastLife #BusinessMindset #313 #Detroit'
+    id: 'digital_street_team',
+    angle: 'NUI runs your Digital Street Team — AI-powered geo-fencing that puts your brand in front of people near your competitors. When someone walks into a competitor location, YOUR ad shows on their phone within 60 seconds. They see your brand for the next 30 days. Use a Detroit example: "A Detroit barbershop on 7 Mile was losing clients to the new shop that opened nearby. We deployed their Digital Street Team — drew a virtual fence around the competition. Every customer who walked in there saw our clients ads. They got 23 new bookings in the first month." Posted Up plan starts at $497/mo.',
+    hashtags: '#DigitalStreetTeam #GeoFencing #NewUrbanInfluence #DetroitMarketing #DetroitBusiness #CompetitorTargeting #LocalMarketing #AIMarketing #313 #DetroitHustle'
+  },
+  {
+    id: 'blueprint',
+    angle: 'The Blueprint is NUI\'s brand identity system — your logo, colors, fonts, guidelines, and digital presence built as a complete foundation. Not just a logo. A system. Use a scenario with ROI: "A Detroit food truck owner had a handmade logo and no real brand. We built their Blueprint — logo, brand system, packaging, social templates. They started getting booked for corporate events they could never land before. One booking paid for the entire Blueprint." Foundation starts at $2,500. The brand that looks like a real business closes deals the business card logo never could.',
+    hashtags: '#TheBlueprint #BrandIdentity #NewUrbanInfluence #DetroitBusiness #LogoDesign #BrandStrategy #DetroitDesign #SmallBusiness #313 #DetroitEntrepreneur'
+  },
+  {
+    id: 'co_sign',
+    angle: 'NUI Co-Sign is how Detroit businesses get featured as a verified, award-winning brand. A Co-Sign feature includes an editorial article in the NUI Detroit Creative Network, a citation ID (NUI-DET-2026-XXXX), an award badge, and schema markup that Google recognizes. Use a scenario: "A Detroit photographer had no press coverage and no credibility signals. We gave them a Co-Sign feature. Now they show up in Google with a recognized citation, an award, and a full editorial profile — before a competitor with twice the reviews." Feature starts at $1,500.',
+    hashtags: '#CoSign #NUIDetroit #DetroitCreativeNetwork #NewUrbanInfluence #DetroitBusiness #LocalAuthority #BrandCredibility #SEO #DetroitBusiness #313'
   },
   {
     id: 'client_win',
-    angle: 'Tell a real-feeling client story (keep anonymous — "a Detroit barbershop", "a Metro Detroit consultant", "a Corktown restaurant"). Describe where they were BEFORE NUI and what changed AFTER. Specific numbers if possible. End with a CTA to book their free strategy call.',
-    hashtags: '#ClientWin #DetroitBusiness #BrandingResults #NewUrbanInfluence #DesignMatters #BeforeAfter #DetroitAgency #SmallBusinessOwner #BrandTransformation #313'
+    angle: 'Share a real transformation story using NUI branded services (keep client anonymous). Use this structure — PROBLEM: "A Detroit [business type] was [specific pain — invisible on Google, missing calls, losing clients to competitors, no follow-up system]." SOLUTION: "We deployed their [Digital HQ / Digital Staff / Digital Street Team / Blueprint]." RESULT: "[Specific outcome in 30-90 days — new leads, bookings, calls answered, revenue]." CTA: "DM us your biggest business challenge right now."',
+    hashtags: '#ClientResults #NewUrbanInfluence #DetroitBusiness #DigitalHeadquarters #AIAutomation #BeforeAfter #BusinessGrowth #Detroit #313 #DigitalStreetTeam'
   },
   {
-    id: 'did_you_know',
-    angle: 'Drop a stat or fact that HURTS — something that makes Detroit business owners realize they are losing money or customers RIGHT NOW because of something they are not doing. Examples: 70% of customers check a website before visiting a business. Consistent branding increases revenue 23%. Geo-fencing ads get 2x higher CTR than regular display ads. Make it feel urgent.',
-    hashtags: '#DigitalMarketing #LocalSEO #AIMarketing #DetroitBusiness #MarketingFacts #GrowthHacking #SmallBusiness #NewUrbanInfluence #BrandingROI #DetroitEntrepreneur'
+    id: 'motion',
+    angle: 'NUI Motion — AI-generated brand videos, social reels, and animated content for Detroit businesses. Not stock footage. Not templates. Custom branded motion content built on your brand colors, fonts, and messaging — generated automatically. Use a scenario: "A Detroit real estate agent wanted video content but couldnt afford a production team. We set up their Motion system — now they get 4 branded video posts per week, automatically, starting at $500." Video gets 3x more engagement than static posts. Most Detroit businesses have zero video. This is the edge.',
+    hashtags: '#NUIMotion #BrandedVideo #NewUrbanInfluence #DetroitBusiness #VideoMarketing #AIVideo #ContentCreation #DetroitTech #SocialMedia #AIMarketing'
   },
   {
-    id: 'community',
-    angle: 'Celebrate Detroit — the city, a local business win, an industry moment, Detroit resilience. NUI is PART of Detroit not just located here. Reference specific Detroit neighborhoods (Corktown, Midtown, Greektown, New Center, Livernois Ave of Fashion), Detroit culture (music, food, automotive, sports), or Detroit business news. Make it feel local and real.',
-    hashtags: '#Detroit #DetroitRising #313 #DetroitStrong #NewUrbanInfluence #DetroitMade #MotorCity #DetroitBusiness #MichiganBusiness #DetroitProud'
-  },
-  {
-    id: 'free_value',
-    angle: 'Offer the FREE 15-minute Brand Strategy Session. Make it feel EXCLUSIVE and LIMITED. Paint the picture of what they will walk away with (clarity on their brand, a custom roadmap, knowing exactly what is hurting their growth). Address the objection that they think they cannot afford good branding. Hammer the free part.',
-    hashtags: '#FreeConsultation #DetroitBusiness #BrandAudit #NewUrbanInfluence #FreeTips #BrandStrategy #SmallBusiness #DetroitEntrepreneur #MarketingHelp #313'
-  },
-  {
-    id: 'street_team',
-    angle: 'Explain geo-fencing in Detroit terms — YOUR digital street team. When someone walks near your competitor, YOUR ad shows up on their phone within 60 seconds. Use a Detroit example: "Your competitor opens on 8 Mile? We put your ad in front of everyone who walks in." Make it feel like a secret weapon they have never heard of.',
-    hashtags: '#GeoFencing #StreetTeam #DetroitMarketing #NewUrbanInfluence #LocalMarketing #CompetitorTargeting #DigitalMarketing #DetroitBusiness #AIMarketing #313'
+    id: 'ai_discovery',
+    angle: 'NUI builds Discovery Engines — systems that make Detroit businesses show up everywhere people search: Google Maps, Google Search, AI search tools like ChatGPT and Perplexity, and local directories. Use a scenario: "A Detroit plumber was invisible online. Competitors with worse reviews were showing up first. We built their Discovery Engine — 50 citation submissions, Google Business optimization, AI-search optimization. They went from page 3 to top 3 in 60 days." If people cannot find you, you do not exist. Discovery Engine is included in every Digital HQ build.',
+    hashtags: '#DiscoveryEngine #LocalSEO #NewUrbanInfluence #DetroitBusiness #GoogleMaps #AISearch #DetroitMarketing #SmallBusiness #LocalBusiness #Detroit313'
   }
 ];
 
@@ -154,24 +154,22 @@ async function getPexelsImage(pillar) {
     if (!rawUrl) return null;
 
     // ── Apply NUI branding overlay via Cloudinary ──
-    // This adds: dark overlay + NUI logo text + red bottom bar on every image
     const CLOUDINARY_CLOUD = process.env.CLOUDINARY_CLOUD_NAME;
     if (CLOUDINARY_CLOUD) {
       const encodedUrl = encodeURIComponent(rawUrl);
-      // Cloudinary fetch + transform: dark overlay + NUI text + red bar
-      const transforms = [
-        'w_1080,h_1080,c_fill,g_center',           // square crop 1080x1080
-        'e_brightness:-20',                          // darken slightly
-        'l_text:Arial_52_bold:NEW%20URBAN%20INFLUENCE,co_white,g_south_west,x_40,y_80', // NUI name bottom left
-        'l_text:Arial_28:newurbaninfluence.com,co_rgb:e11d48,g_south_west,x_40,y_44',  // website in red
-        'l_text:Arial_32_bold:Detroit%20%E2%80%A2%20313,co_rgb:ffffff,g_south_east,x_40,y_80', // Detroit tag
-        'b_rgb:e11d48,h_6,w_1080,g_south',          // red bottom bar
-        'q_auto,f_auto'                              // optimize
+      // Simple reliable transforms — tested and working
+      const t = [
+        'w_1080,h_1080,c_fill,g_center',          // square crop
+        'e_brightness:-20',                         // darken for readability
+        `l_nui-logo,w_160,g_south_west,x_30,y_64`, // NUI logo bottom left
+        `l_text:Arial_36_bold:NEW%20URBAN%20INFLUENCE,co_white,g_south_west,x_210,y_90`, // name
+        `l_text:Arial_22:newurbaninfluence.com,co_rgb:e11d48,g_south_west,x_210,y_52`,   // website red
+        `l_text:Arial_24_bold:Detroit%20%7C%20313,co_white,g_south_east,x_30,y_60`,     // Detroit tag
+        'q_auto,f_jpg'
       ].join('/');
-      return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/fetch/${transforms}/${encodedUrl}`;
+      return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/fetch/${t}/${encodedUrl}`;
     }
 
-    // Fallback: return raw image if no Cloudinary
     return rawUrl;
   } catch (e) {
     console.warn('Pexels fetch failed:', e.message);
