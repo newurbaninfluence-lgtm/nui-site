@@ -154,24 +154,22 @@ async function getPexelsImage(pillar) {
     if (!rawUrl) return null;
 
     // ── Apply NUI branding overlay via Cloudinary ──
-    // This adds: dark overlay + NUI logo text + red bottom bar on every image
     const CLOUDINARY_CLOUD = process.env.CLOUDINARY_CLOUD_NAME;
     if (CLOUDINARY_CLOUD) {
       const encodedUrl = encodeURIComponent(rawUrl);
-      // Cloudinary fetch + transform: dark overlay + NUI text + red bar
-      const transforms = [
-        'w_1080,h_1080,c_fill,g_center',           // square crop 1080x1080
-        'e_brightness:-20',                          // darken slightly
-        'l_text:Arial_52_bold:NEW%20URBAN%20INFLUENCE,co_white,g_south_west,x_40,y_80', // NUI name bottom left
-        'l_text:Arial_28:newurbaninfluence.com,co_rgb:e11d48,g_south_west,x_40,y_44',  // website in red
-        'l_text:Arial_32_bold:Detroit%20%E2%80%A2%20313,co_rgb:ffffff,g_south_east,x_40,y_80', // Detroit tag
-        'b_rgb:e11d48,h_6,w_1080,g_south',          // red bottom bar
-        'q_auto,f_auto'                              // optimize
+      // Simple reliable transforms — tested and working
+      const t = [
+        'w_1080,h_1080,c_fill,g_center',          // square crop
+        'e_brightness:-20',                         // darken for readability
+        `l_nui-logo,w_160,g_south_west,x_30,y_64`, // NUI logo bottom left
+        `l_text:Arial_36_bold:NEW%20URBAN%20INFLUENCE,co_white,g_south_west,x_210,y_90`, // name
+        `l_text:Arial_22:newurbaninfluence.com,co_rgb:e11d48,g_south_west,x_210,y_52`,   // website red
+        `l_text:Arial_24_bold:Detroit%20%7C%20313,co_white,g_south_east,x_30,y_60`,     // Detroit tag
+        'q_auto,f_jpg'
       ].join('/');
-      return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/fetch/${transforms}/${encodedUrl}`;
+      return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/fetch/${t}/${encodedUrl}`;
     }
 
-    // Fallback: return raw image if no Cloudinary
     return rawUrl;
   } catch (e) {
     console.warn('Pexels fetch failed:', e.message);
