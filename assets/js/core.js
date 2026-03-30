@@ -291,7 +291,7 @@ async function hydrateFromBackend() {
         // Hydrate about page data from backend
         if (sd.about?.data && typeof sd.about.data === 'object' && (sd.about.data.team || sd.about.data.storyImage)) {
             aboutData = sd.about.data;
-            localStorage.setItem('nui_about', JSON.stringify(aboutData));
+            localStorage.setItem('nui_about_v2', JSON.stringify(aboutData));
             hydrated++;
         }
 
