@@ -44,10 +44,10 @@ p{font-size:15px;line-height:1.8;color:rgba(255,255,255,0.6);}
 .hero .lead{margin:0 auto 40px;}
 .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
 /* PACKAGE CARDS */
-.pkg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1px;margin-top:0;}
+.pkg-grid{display:flex;flex-direction:column;gap:2px;margin-top:0;}
 .pkg{background:#0a0a0a;padding:0;}
 .pkg.hot{background:#000;border:1px solid #D90429;}
-.pkg-header{padding:52px 44px 40px;}
+.pkg-header{padding:52px 48px 40px;max-width:100%;}
 .pkg-tag{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#D90429;margin-bottom:12px;}
 .pkg.hot .pkg-tag{color:#D90429;}
 .pkg-name{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:10px;}
@@ -55,11 +55,11 @@ p{font-size:15px;line-height:1.8;color:rgba(255,255,255,0.6);}
 .pkg-price{font-family:'Syne',sans-serif;font-size:46px;font-weight:800;color:#fff;margin-bottom:8px;}
 .pkg-price-note{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;margin-bottom:32px;}
 .pkg-divider{height:1px;background:rgba(255,255,255,0.06);margin:0 44px;}
-.pkg-body{padding:36px 44px 52px;}
+.pkg-body{padding:36px 48px 52px;}
 /* CATEGORY inside pkg */
 .cat-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#D90429;margin:32px 0 16px;}
 .cat-label:first-child{margin-top:0;}
-.item-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px;}
+.item-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:8px;}
 .item{background:rgba(255,255,255,0.04);padding:20px 22px;}
 .item h4{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;margin-bottom:4px;}
 .item p{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;margin:0;}
