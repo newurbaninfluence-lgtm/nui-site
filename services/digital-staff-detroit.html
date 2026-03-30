@@ -125,7 +125,7 @@ footer a:hover{color:#D90429;}
   footer{flex-direction:column;text-align:center;padding:24px;}
 }
 </style>
-</head><body>
+</head><body data-service="Digital Staff">
 <nav class="nav"><a href="/" class="nav-brand">New Urban <span>Influence</span></a><div class="nav-links"><a href="/services/brand-kit-detroit" >The Blueprint</a><a href="/services/business-website-detroit" >Digital HQ</a><a href="/services/digital-staff-detroit" class=active>Digital Staff</a><a href="/services/social-media-management-detroit" >Digital Street Team</a><a href="/services/press-feature-detroit" >The Publicist</a><a href="/services/event-team-detroit" >The Event Team</a></div><div class="ham" onclick="document.getElementById('m').classList.toggle('open')"><span></span><span></span><span></span></div></nav>
 <div class="mob" id="m"><button class="mob-x" onclick="document.getElementById('m').classList.remove('open')">✕</button><a href="/services/brand-kit-detroit">The Blueprint</a><a href="/services/business-website-detroit">Digital HQ</a><a href="/services/digital-staff-detroit">Digital Staff</a><a href="/services/social-media-management-detroit">Digital Street Team</a><a href="/services/press-feature-detroit">The Publicist</a><a href="/services/event-team-detroit">The Event Team</a></div>
 
@@ -393,33 +393,11 @@ footer a:hover{color:#D90429;}
 <p class="price-note">Financing available · Afterpay &amp; Klarna · Requires Digital HQ</p>
 </div>
 </section>
-<section class="sec black" style="text-align:center;border-top:1px solid rgba(255,255,255,0.06);" id="start">
-<div class="inner">
-<div class="lbl">Get Started</div>
-<h2>Let's Program<br><span class="rw">Your Staff.</span></h2>
-<p style="max-width:520px;margin:0 auto 12px;">We'll start with a discovery call — understanding your business, your tone, your customer flow. Then we build the staff and run test conversations until it sounds exactly right. 15 minutes to start.</p>
-<div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:32px 0;">
-<a href="tel:2484878747" class="btn btn-red">Call (248) 487-8747</a>
-<a href="mailto:info@newurbaninfluence.com" class="btn btn-out">Email Us</a>
-</div>
-<div class="form-box">
-<div class="form-row"><input type="text" id="fn" placeholder="Your Name" required><input type="tel" id="fp" placeholder="Phone"></div>
-<input type="email" id="fe" placeholder="Email Address" required>
-<input type="text" id="fb" placeholder="Business Name &amp; Industry" required>
-<select id="fk"><option value="">Select a package</option><option>Digital Secretary — $197/mo</option><option>Full Digital Staff — $397/mo</option><option>Add Street Announcer to my plan</option><option>Not sure — help me figure out what I need</option></select>
-<button class="btn btn-red" onclick="sub(event)">Submit →</button>
-<p class="form-sub">Response within 24 hours · Financing from $89/mo · Afterpay &amp; Klarna</p>
-</div>
-</div>
-</section>
 
-<footer><p>© 2026 New Urban Influence · Detroit, Michigan</p><p><a href="/">Home</a> · <a href="/services/brand-kit-detroit">Services</a> · <a href="tel:2484878747">(248) 487-8747</a> · <a href="mailto:info@newurbaninfluence.com">Email</a></p></footer>
-<script>
-function sub(e){e.preventDefault();
-var d={name:document.getElementById('fn').value,phone:document.getElementById('fp').value,email:document.getElementById('fe').value,business:document.getElementById('fb').value,package:document.getElementById('fk').value,service:'digital-staff',source:window.location.pathname,timestamp:new Date().toISOString()};
-if(!d.name||!d.email){alert('Name and email required.');return;}
-fetch('/.netlify/functions/submit-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)})
-.then(()=>{document.querySelector('.form-box').innerHTML='<div style="padding:40px 0;text-align:center;"><p style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:8px;">We'll be in touch within 24 hours.</p><p style="color:rgba(255,255,255,0.4);font-size:14px;">Or call (248) 487-8747.</p></div>';})
-.catch(()=>{window.location.href='mailto:info@newurbaninfluence.com?subject=Digital Staff — '+d.business;});}
-</script>
+
+
+
+
+<div id="page-bottom"></div>
+<script src="/assets/js/shared-page-bottom.js"></script>
 </body></html>

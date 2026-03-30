@@ -149,7 +149,7 @@ footer a:hover{color:#D90429;}
   footer{flex-direction:column;text-align:center;padding:24px;}
 }
 </style>
-</head><body>
+</head><body data-service="Digital Street Team">
 <nav class="nav"><a href="/" class="nav-brand">New Urban <span>Influence</span></a><div class="nav-links"><a href="/services/brand-kit-detroit" >The Blueprint</a><a href="/services/business-website-detroit" >Digital HQ</a><a href="/services/digital-staff-detroit" >Digital Staff</a><a href="/services/social-media-management-detroit" class=active>Digital Street Team</a><a href="/services/press-feature-detroit" >The Publicist</a><a href="/services/event-team-detroit" >The Event Team</a></div><div class="ham" onclick="document.getElementById('m').classList.toggle('open')"><span></span><span></span><span></span></div></nav>
 <div class="mob" id="m"><button class="mob-x" onclick="document.getElementById('m').classList.remove('open')">✕</button><a href="/services/brand-kit-detroit">The Blueprint</a><a href="/services/business-website-detroit">Digital HQ</a><a href="/services/digital-staff-detroit">Digital Staff</a><a href="/services/social-media-management-detroit">Digital Street Team</a><a href="/services/press-feature-detroit">The Publicist</a><a href="/services/event-team-detroit">The Event Team</a></div>
 <section class="hero black">
@@ -327,26 +327,8 @@ footer a:hover{color:#D90429;}
 </div>
 </section>
 
-<section class="sec black" style="text-align:center;border-top:1px solid rgba(255,255,255,0.06);" id="start">
-<div class="inner">
-<div class="lbl">Get Started</div>
-<h2>Book a Free<br><span class="rw">Strategy Call.</span></h2>
-<p style="max-width:520px;margin:0 auto 12px;">No pitch. No obligation. We'll look at your current situation and tell you exactly what we'd do. 15 minutes.</p>
-<div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:32px 0;">
-<a href="tel:2484878747" class="btn btn-red">Call (248) 487-8747</a>
-<a href="mailto:info@newurbaninfluence.com" class="btn btn-out">Email Us</a>
-</div>
-<div class="form-box">
-<div class="form-row"><input type="text" id="fn" placeholder="Your Name" required><input type="tel" id="fp" placeholder="Phone"></div>
-<input type="email" id="fe" placeholder="Email Address" required>
-<input type="text" id="fb" placeholder="Business Name &amp; Industry" required>
-<select id="fk"><option value="">Select a package</option><option>Content Crew — Posted Up ($497/mo)</option><option>Content Crew — Loaded ($1,497/mo)</option><option>Content Crew — Heavy ($2,997/mo)</option><option>Digital Promoter (SMS + push + retargeting)</option><option>Block Captain (geofencing) — call for pricing</option><option>Neighborhood Captain (geo-gridding) — call for pricing</option><option>The Watchman (visitor ID) — $500 + $97/mo</option><option>The Facebook Runner (retargeting) — $500 + $199/mo</option><option>The Google Runner (Google retargeting) — $500 + $199/mo</option><option>Full Street Team — all seven positions</option></select>
-<button class="btn btn-red" onclick="sub(event,'street-team','Digital Street Team')">Submit →</button>
-<p class="form-sub">Financing from $89/mo · Afterpay &amp; Klarna</p>
-</div>
-</div>
-</section>
-<footer><p>© 2026 New Urban Influence · Detroit, Michigan</p><p><a href="/">Home</a> · <a href="/services/brand-kit-detroit">Services</a> · <a href="tel:2484878747">(248) 487-8747</a> · <a href="mailto:info@newurbaninfluence.com">Email</a></p></footer><script>
+
+<script>
 function sub(e,id,nm){e.preventDefault();
 var d={name:document.getElementById('fn').value,phone:document.getElementById('fp').value,email:document.getElementById('fe').value,business:document.getElementById('fb').value,package:document.getElementById('fk').value,service:id,source:window.location.pathname,timestamp:new Date().toISOString()};
 if(!d.name||!d.email){alert('Name and email required.');return;}
@@ -354,4 +336,7 @@ fetch('/.netlify/functions/submit-lead',{method:'POST',headers:{'Content-Type':'
 .then(()=>{document.querySelector('.form-box').innerHTML='<div style="padding:40px 0;text-align:center;"><p style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:8px;">We'll be in touch within 24 hours.</p><p style="color:rgba(255,255,255,0.4);font-size:14px;">Or call us at (248) 487-8747.</p></div>';})
 .catch(()=>{window.location.href='mailto:info@newurbaninfluence.com?subject='+encodeURIComponent(nm+' — '+d.business);});}
 </script>
+
+<div id="page-bottom"></div>
+<script src="/assets/js/shared-page-bottom.js"></script>
 </body></html>

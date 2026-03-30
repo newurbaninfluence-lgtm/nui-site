@@ -159,7 +159,7 @@ footer a:hover{color:var(--red);}
   footer{flex-direction:column;text-align:center;padding:24px;}
 }
 </style>
-</head><body>
+</head><body data-service="Brand Architect">
 
 <!-- TOP NAV -->
 <nav class="nav">
@@ -585,36 +585,9 @@ footer a:hover{color:var(--red);}
 </section>
 
 <!-- FORM -->
-<section class="sec" style="background:#000;text-align:center;border-top:1px solid rgba(255,255,255,0.06);" id="start">
-  <div class="inner">
-    <div class="sec-lbl">Get Started</div>
-    <h2>Let's Build<br><span class="rw">Your Brand.</span></h2>
-    <div class="divider" style="margin:0 auto 32px;"></div>
-    <p style="max-width:500px;margin:0 auto 12px;font-size:16px;color:rgba(255,255,255,0.6);line-height:1.8;">Free strategy call. We'll look at your current brand, your market, and your goals — and tell you exactly which package makes the most sense. 15 minutes.</p>
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:32px 0;">
-      <a href="tel:2484878747" class="btn-red" style="display:inline-flex;align-items:center;">Call (248) 487-8747</a>
-      <a href="mailto:info@newurbaninfluence.com" class="btn-out" style="display:inline-flex;align-items:center;">Email Us</a>
-    </div>
-    <div class="form-box">
-      <div class="form-row"><input type="text" id="fn" placeholder="Your Name" required><input type="tel" id="fp" placeholder="Phone"></div>
-      <input type="email" id="fe" placeholder="Email Address" required>
-      <input type="text" id="fb" placeholder="Business Name &amp; Industry" required>
-      <select id="fk"><option value="">Which package fits you?</option>
-        <option>Brand Kit — $1,500</option>
-        <option>Service Brand Identity — $4,500+</option>
-        <option>Product Brand Identity — $5,500+</option>
-        <option>Not sure — help me decide</option>
-      </select>
-      <button class="btn-package" style="width:100%;border-radius:0;" onclick="sub(event)">Submit →</button>
-      <p class="form-sub">Response within 24 hours · Financing from $375/quarter · Afterpay &amp; Klarna</p>
-    </div>
-  </div>
-</section>
 
-<footer>
-  <p>© 2026 New Urban Influence · Detroit, Michigan</p>
-  <p><a href="/">Home</a> · <a href="/services/brand-kit-detroit">Branding</a> · <a href="/services/business-website-detroit">Digital HQ</a> · <a href="tel:2484878747">(248) 487-8747</a></p>
-</footer>
+
+
 
 <script>
 function jumpTo(id){
@@ -646,4 +619,7 @@ function sub(e){e.preventDefault();
   .then(function(){document.querySelector('.form-box').innerHTML='<div style="padding:40px 0;"><p style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:8px;">We\'ll be in touch within 24 hours.</p><p style="color:rgba(255,255,255,0.4);font-size:14px;">Or call (248) 487-8747.</p></div>';})
   .catch(function(){window.location.href='mailto:info@newurbaninfluence.com?subject=Brand Architect — '+d.business;});}
 </script>
+
+<div id="page-bottom"></div>
+<script src="/assets/js/shared-page-bottom.js"></script>
 </body></html>
