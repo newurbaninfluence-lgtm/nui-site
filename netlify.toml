@@ -20,22 +20,22 @@
 [functions."holiday-drip"]
   schedule = "0 14 * * *"
 
-# SMS drip campaign — runs every 30 min during business hours
+# SMS drip — every 30 min (reduced from every 5 min — 288→48 runs/day)
 [functions."sms-drip"]
-  schedule = "*/5 * * * *"
+  schedule = "*/30 * * * *"
 
-# Monty follow-up + dormant reactivation — runs every hour
+# Monty follow-up — 3x/day at 8am, 12pm, 5pm ET (24 runs/day → 3)
 [functions."monty-followup"]
-  schedule = "0 * * * *"
+  schedule = "0 13,17,22 * * *"
 
 # The Promoter — posts to FB, IG, GBP daily at 9am + 5pm CT (14:00 + 22:00 UTC)
+# The Promoter — twice daily: 9am + 5pm CT — unpaused, upgraded to Sonnet
 [functions."agent-promoter"]
-  # PAUSED 2026-03-31 — Instagram flag, resume tomorrow
-  # schedule = "0 14 * * *"
+  schedule = "0 14,22 * * *"
 
-# The Responder — smart GBP review check every 4 hours (skips if no unanswered reviews)
+# The Responder — once/day 9am ET (reviews don't need 4-hour response)
 [functions."agent-responder"]
-  schedule = "0 */4 * * *"
+  schedule = "0 14 * * *"
 
 # The Creator — generates weekly content batch (Sundays at 8am CT = 13:00 UTC)
 [functions."agent-creator"]
@@ -323,6 +323,10 @@
   for = "/"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# Client email broadcast — Tue + Thu 10am ET (value emails to client list)
+[functions."client-email-broadcast"]
+  schedule = "0 15 * * 2,4"
 
 # 90-day upsell trigger — runs daily at 10am ET (15:00 UTC)
 [functions."upsell-trigger"]
