@@ -30,7 +30,7 @@ const CONTENT_PILLARS = [
   },
   {
     id: 'digital_street_team',
-    angle: 'NUI runs your Digital Street Team — AI-powered geo-fencing that puts your brand in front of people near your competitors. When someone walks into a competitor location, YOUR ad shows on their phone within 60 seconds. They see your brand for the next 30 days. Use a Detroit example: "A Detroit barbershop on 7 Mile was losing clients to the new shop that opened nearby. We deployed their Digital Street Team — drew a virtual fence around the competition. Every customer who walked in there saw our clients ads. They got 23 new bookings in the first month." Posted Up plan starts at $497/mo.',
+    angle: 'NUI runs your Digital Promotion Team — AI-powered geo-fencing that puts your brand in front of people near your competitors. When someone walks into a competitor location, YOUR ad shows on their phone within 60 seconds. They see your brand for the next 30 days. Use a Detroit example: "A Detroit barbershop on 7 Mile was losing clients to the new shop that opened nearby. We deployed their Digital Promotion Team — drew a virtual fence around the competition. Every customer who walked in there saw our clients ads. They got 23 new bookings in the first month." Posted Up plan starts at $497/mo.',
     hashtags: '#DigitalStreetTeam #GeoFencing #NewUrbanInfluence #DetroitMarketing #DetroitBusiness #CompetitorTargeting #LocalMarketing #AIMarketing #313 #DetroitHustle'
   },
   {
@@ -45,7 +45,7 @@ const CONTENT_PILLARS = [
   },
   {
     id: 'client_win',
-    angle: 'Share a real transformation story using NUI branded services (keep client anonymous). Use this structure — PROBLEM: "A Detroit [business type] was [specific pain — invisible on Google, missing calls, losing clients to competitors, no follow-up system]." SOLUTION: "We deployed their [Digital HQ / Digital Staff / Digital Street Team / Blueprint]." RESULT: "[Specific outcome in 30-90 days — new leads, bookings, calls answered, revenue]." CTA: "DM us your biggest business challenge right now."',
+    angle: 'Share a real transformation story using NUI branded services (keep client anonymous). Use this structure — PROBLEM: "A Detroit [business type] was [specific pain — invisible on Google, missing calls, losing clients to competitors, no follow-up system]." SOLUTION: "We deployed their [Digital HQ / Digital Staff / Digital Promotion Team / Blueprint]." RESULT: "[Specific outcome in 30-90 days — new leads, bookings, calls answered, revenue]." CTA: "DM us your biggest business challenge right now."',
     hashtags: '#ClientResults #NewUrbanInfluence #DetroitBusiness #DigitalHeadquarters #AIAutomation #BeforeAfter #BusinessGrowth #Detroit #313 #DigitalStreetTeam'
   },
   {

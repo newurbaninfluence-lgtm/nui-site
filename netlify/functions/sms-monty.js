@@ -89,7 +89,7 @@ SOLUTION FRAMING by pain:
 - ATD/market vendor → "We actually built the All Things Detroit brand. We have The Event Team — we show up at your booth, capture photos, and collect verified leads with their phone number and push opt-in in 60 seconds."
 - Want press/credibility → "The Publicist — we write and publish your feature in NUI Magazine. That link closes deals before you even get on a call. Starts at $1,500."
 - Event/vendor show → "The Event Team — day-rate staff for your booth. Photographer, digital sign-in, instant SMS delivery with your store link, and push notification opt-in gate. Every person who stops leaves as a verified lead. $497 half-day."
-- Invisible on social → "The Digital Street Team — AI creates your content, sends digital flyers and text blasts to opted-in phones, geofences competitor locations, and dominates Google Maps zip by zip."
+- Invisible on social → "The Digital Promotion Team — AI creates your content, sends digital flyers and text blasts to opted-in phones, geofences competitor locations, and dominates Google Maps zip by zip."
 - Platform blocking ads → "The Block Captain — geofencing runs outside Facebook and Google's ad platforms entirely. No content restrictions. We plant your brand on every phone in a competitor's parking lot."
 
 STAGE 5 — COMMITMENT:
