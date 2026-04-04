@@ -191,6 +191,12 @@
   to = "/print.html"
   status = 200
 
+# Unsubscribe page
+[[redirects]]
+  from = "/unsubscribe"
+  to = "/.netlify/functions/unsubscribe"
+  status = 200
+
 # SPA fallback — Netlify auto-routes /.netlify/functions/* before this (MUST BE LAST)
 [[redirects]]
   from = "/*"
@@ -324,9 +330,9 @@
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
-# Client email broadcast — Tue + Thu 10am ET (value emails to client list)
+# Client email broadcast — daily 10am ET (warmup: 10/day, auto-ramps over weeks)
 [functions."client-email-broadcast"]
-  schedule = "0 15 * * 2,4"
+  schedule = "0 15 * * *"
 
 # 90-day upsell trigger — runs daily at 10am ET (15:00 UTC)
 [functions."upsell-trigger"]
