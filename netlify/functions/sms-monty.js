@@ -315,15 +315,50 @@ exports.handler = async function(event) {
     const fromNumber = payload.data?.object?.from || payload.from || payload.sender;
     const direction  = payload.data?.object?.direction || payload.direction || 'incoming';
 
-    // Outbound team message — log it and exit so Monty sees it in history
+    // Outbound team message (Faren or team manually replying from OpenPhone)
+    // Critical: we look up the client_id so this message appears in Monty's
+    // history query (which filters by client_id). Without this, Monty is blind
+    // to every human reply and loses context of the full conversation.
     if (direction === 'outgoing' || direction === 'outbound') {
-      if (SUPABASE_URL && SUPABASE_KEY && incomingMessage && fromNumber) {
-        const toNumber = payload.data?.object?.to || payload.to || fromNumber;
+      if (SUPABASE_URL && SUPABASE_KEY && incomingMessage) {
+        // For outbound: 'from' = NUI number, 'to' = client's number
+        const rawTo   = payload.data?.object?.to   || payload.to   || null;
+        const rawFrom = payload.data?.object?.from || payload.from || fromNumber;
+        const clientPhone = normalizePhone(rawTo || rawFrom);
+        const sbHOut = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` };
+
+        // Look up client_id by the client's phone number
+        let outboundClientId = null;
+        try {
+          const digits = clientPhone.replace(/\D/g, '').slice(-10);
+          const formats = [clientPhone, `+1${digits}`, digits, `1${digits}`];
+          const orFilter = formats.map(f => `phone.eq.${encodeURIComponent(f)}`).join(',');
+          const cRes = await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?or=(${orFilter})&select=id&limit=1`, { headers: sbHOut });
+          const rows = await cRes.json();
+          outboundClientId = rows?.[0]?.id || null;
+        } catch(e) { console.warn('[Monty] Outbound client lookup failed:', e.message); }
+
         await fetch(`${SUPABASE_URL}/rest/v1/communications`, {
           method: 'POST',
-          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-          body: JSON.stringify({ channel: 'sms', direction: 'outbound', message: incomingMessage, metadata: { to: toNumber, handler: 'team_manual' }, created_at: new Date().toISOString() })
+          headers: { ...sbHOut, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+          body: JSON.stringify({
+            channel: 'sms',
+            direction: 'outbound',
+            message: incomingMessage,
+            client_id: outboundClientId,
+            metadata: { to: clientPhone, from: normalizePhone(rawFrom), handler: 'team_manual' },
+            created_at: new Date().toISOString()
+          })
         }).catch(() => {});
+
+        // Also update last_activity_at on the contact
+        if (outboundClientId) {
+          await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${outboundClientId}`, {
+            method: 'PATCH',
+            headers: { ...sbHOut, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ last_activity_at: new Date().toISOString() })
+          }).catch(() => {});
+        }
       }
       return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ logged: 'team_outbound' }) };
     }
@@ -423,15 +458,20 @@ exports.handler = async function(event) {
       const hRes = await fetch(historyUrl, { headers: sbHeaders });
       const history = await hRes.json();
       if (history?.length > 0) {
-        conversationHistory = '\n\nRECENT SMS THREAD (chronological — read before replying):';
+        conversationHistory = '\n\nRECENT SMS THREAD (read every line before replying — this is the full conversation):';
         history.reverse().forEach(h => {
           const handler = h.metadata?.handler || '';
-          let who = h.direction === 'outbound'
-            ? (handler === 'team_manual' ? 'NUI Team (human)' : 'Monty (you)')
-            : 'Client';
+          let who;
+          if (h.direction === 'inbound') {
+            who = 'Client';
+          } else if (handler === 'team_manual') {
+            who = 'Faren (human — NUI founder jumped in)';
+          } else {
+            who = 'Monty (you — AI)';
+          }
           conversationHistory += `\n${who}: ${h.message || '(no content)'}`;
         });
-        conversationHistory += '\n\n[Continue naturally — do NOT repeat what was already said.]';
+        conversationHistory += '\n\n[IMPORTANT: If Faren recently replied, pick up where he left off. Do NOT repeat what was already said by either Faren or Monty. Continue naturally as Monty.]';
       }
       clientContext += conversationHistory;
     }
