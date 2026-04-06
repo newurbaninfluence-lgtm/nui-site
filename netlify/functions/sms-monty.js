@@ -17,10 +17,11 @@ const CALENDLY_URL = process.env.CALENDLY_URL || 'https://calendly.com/newurbani
 const ADMIN_EMAIL  = process.env.ADMIN_EMAIL  || 'newurbaninfluence@gmail.com';
 
 // ── Internal team numbers — recognized contacts, no sales mode ──
-const INTERNAL_TEAM = {
-  [process.env.IRISH_PHONE || '+12485551234']: { name: 'Irish', role: 'wife', greeting: 'Oh hey Irish 👋' },
-  [process.env.FAREN_PHONE || '+12485550000']: { name: 'Faren', role: 'founder', greeting: 'Hey boss 🤙' },
-};
+// FAREN_PHONE and IRISH_PHONE must be set in Netlify env vars (personal mobile numbers).
+// If not set, internal-team detection is disabled (falls through to prospect flow).
+const INTERNAL_TEAM = {};
+if (process.env.FAREN_PHONE) INTERNAL_TEAM[process.env.FAREN_PHONE] = { name: 'Faren', role: 'founder', greeting: 'Hey boss 🤙' };
+if (process.env.IRISH_PHONE) INTERNAL_TEAM[process.env.IRISH_PHONE] = { name: 'Irish', role: 'wife', greeting: 'Oh hey Irish 👋' };
 
 const SMS_SYSTEM_PROMPT = `You are Monty, the AI representative for New Urban Influence (NUI) — a Detroit-based agency that builds Digital Headquarters, AI automation systems, and brand infrastructure for businesses. You are the first conversation. You qualify leads, book calls, and set up Faren to close.
 
@@ -304,7 +305,9 @@ exports.handler = async function(event) {
   let agencyId = null;
   try { const b = JSON.parse(event.body || '{}'); agencyId = b.agency_id || null; } catch(e){}
   const brand = await getBrand(agencyId);
-  const AGENCY_SYSTEM_PROMPT = buildSmsSystemPrompt(brand) || SMS_SYSTEM_PROMPT;
+  // NUI (no sub-agency) always uses the full NEPQ prompt with all industry routing,
+  // stage logic, and personality. buildSmsSystemPrompt is for white-label sub-accounts only.
+  const AGENCY_SYSTEM_PROMPT = agencyId ? (buildSmsSystemPrompt(brand) || SMS_SYSTEM_PROMPT) : SMS_SYSTEM_PROMPT;
 
   try {
     const payload = JSON.parse(event.body || '{}');
@@ -392,7 +395,16 @@ exports.handler = async function(event) {
         const createRes = await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts`, {
           method: 'POST',
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
-          body: JSON.stringify({ phone: cleanPhone, first_name: nameParts[0] || null, last_name: nameParts.slice(1).join(' ') || null, source: 'quo_text', status: 'new_lead', lead_score: 3, last_activity_at: new Date().toISOString() })
+          body: JSON.stringify({
+            phone: cleanPhone,
+            first_name: nameParts[0] || null,
+            last_name: nameParts.slice(1).join(' ') || null,
+            source: 'inbound_sms',
+            status: 'new_lead',
+            lead_score: 3,
+            last_activity_at: new Date().toISOString(),
+            created_at: new Date().toISOString()
+          })
         }).catch(() => null);
         const created = createRes ? await createRes.json() : null;
         if (Array.isArray(created) && created[0]) {
@@ -404,10 +416,11 @@ exports.handler = async function(event) {
       }
 
       // ── Fetch conversation history ────────────────────────────────────────
-      const hRes = await fetch(
-        `${SUPABASE_URL}/rest/v1/communications?channel=eq.sms&or=(metadata->>to.eq.${encodeURIComponent(cleanPhone)},metadata->>from.eq.${encodeURIComponent(cleanPhone)})&order=created_at.desc&limit=8`,
-        { headers: sbHeaders }
-      );
+      // Prefer querying by client_id (reliable). Fall back to phone-based JSONB filter.
+      const historyUrl = contactId
+        ? `${SUPABASE_URL}/rest/v1/communications?channel=eq.sms&client_id=eq.${contactId}&order=created_at.desc&limit=10`
+        : `${SUPABASE_URL}/rest/v1/communications?channel=eq.sms&or=(metadata->>from.eq.${encodeURIComponent(cleanPhone)},metadata->>to.eq.${encodeURIComponent(cleanPhone)})&order=created_at.desc&limit=10`;
+      const hRes = await fetch(historyUrl, { headers: sbHeaders });
       const history = await hRes.json();
       if (history?.length > 0) {
         conversationHistory = '\n\nRECENT SMS THREAD (chronological — read before replying):';
