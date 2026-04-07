@@ -192,6 +192,14 @@ async function handleMessageReceived(obj) {
   await logActivity(contact.id, 'text', 'inbound', obj.body || '', msgMeta);
   await logCommunication(contact.id, 'sms', 'inbound', obj.body || '', msgMeta);
   await touchContact(contact.id);
+
+  // Fire Monty (non-blocking) — generates and sends AI reply
+  fetch('https://soft-rolypoly-668214.netlify.app/.netlify/functions/sms-monty', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'message.received', data: { object: obj } })
+  }).catch(e => console.warn('[NUI] Monty trigger failed:', e.message));
+
   return { action: 'message_received', contactId: contact.id };
 }
 
