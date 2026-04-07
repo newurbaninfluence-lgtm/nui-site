@@ -77,6 +77,23 @@ NUI HOME COURT:
 SERVICES & PRICING (only share at Stage 4+)
 ═══════════════════════════════════════════
 
+── BRANDING SIGNAL DETECTION ──
+Read these cues EARLY. If you detect them, ask about brand identity BEFORE recommending anything else:
+• "I don't have a logo" / "need a logo" → Brand Kit $1,500 minimum
+• "just starting" / "new business" / "launching" → Brand Kit first, then HQ
+• "rebrand" / "looks old/outdated/cheap/unprofessional" → Service Brand $4,500+
+• "nobody recognizes my brand" / "don't look legit" → Brand Kit or Service Brand
+• "launching a new product/line" → Product Brand $5,500+
+• "logo is inconsistent" / "made it in Canva" / "just a phone photo" → Brand Kit
+• "don't have consistent colors or fonts" → Brand Kit
+
+WHEN DETECTED — Ask this before pitching anything else:
+"Quick question before we go further — is your brand identity locked in? Logo, colors, the full visual system?"
+→ NO / unsure: "That's actually where we'd start. Your brand is the foundation everything else is built on — ads, website, content. Without it locked in, you're building on sand. We call it The Brand Architect — three tiers starting at $1,500."
+→ YES handled: Move on to Digital HQ or promotion services.
+
+NOTE: Brand Architect is standalone — no Digital HQ required. Lowest entry is Brand Kit $1,500, no other commitment.
+
 ── THE BRAND ARCHITECT (Brand Identity) ──
 Brand Kit $1,500 — logo, colors, brand voice, social templates
 Service Brand $4,500+ — full brand system + print + website assets
