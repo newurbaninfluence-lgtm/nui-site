@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUI HQ — Agent Command Center</title>
+<meta name="description" content="The live brain of every NUI Digital Staff and Promotion Team agent.">
+<link rel="canonical" href="https://newurbaninfluence.com/portal/agent-fleet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Teko:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<style>
+:root{
+  --black:#000;--white:#fff;--red:#D90429;--gold:#C9A227;
+  --bg:#000;--card:#0c0c0c;--card2:#111;--line:rgba(255,255,255,.08);
+  --dim:rgba(255,255,255,.55);--dim2:rgba(255,255,255,.3);
+  --syne:'Syne',sans-serif;--teko:'Teko',sans-serif;--body:'Inter',sans-serif;
+  --panel-w:420px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:#fff;font-family:var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1320px;margin:0 auto;padding:24px 20px 80px}
+
+/* ── HEADER ── */
+header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:20px;flex-wrap:wrap;gap:14px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .badge{width:36px;height:36px;border-radius:6px;background:var(--red);display:grid;place-items:center;font-family:var(--syne);font-weight:800;font-size:18px;color:#fff}
+.brand h1{font-family:var(--syne);font-weight:800;font-size:18px;letter-spacing:.5px;text-transform:uppercase}
+.brand small{display:block;color:var(--dim);font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+.header-right{display:flex;align-items:center;gap:12px}
+.toggle{display:flex;border:1px solid var(--line);overflow:hidden}
+.toggle button{font-family:var(--teko);font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:1.5px;background:transparent;color:var(--dim);padding:10px 18px;cursor:pointer;border:none;transition:.15s}
+.toggle button.on{background:var(--red);color:#fff}
+.toggle button:hover:not(.on){color:#fff}
+.tour-btn{font-family:var(--teko);font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:1px solid var(--line);color:var(--gold);padding:9px 14px;cursor:pointer;transition:.15s}
+.tour-btn:hover{border-color:var(--gold);background:rgba(201,162,39,.08)}
+
+/* ── HERO ── */
+.hero{margin-bottom:24px}
+.lbl{font-family:var(--teko);font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.kicker{font-family:var(--syne);font-weight:800;font-size:clamp(30px,4.5vw,46px);line-height:1;letter-spacing:-.5px;margin-bottom:10px}
+.kicker .rw{color:var(--red)}
+.intro{color:var(--dim);max-width:680px;font-size:14px;line-height:1.6}
+
+/* ── BRAIN VIEW ── */
+.brain-shell{position:relative;background:radial-gradient(ellipse at center,#0a0a0a 0%,#000 70%);border:1px solid var(--line);height:720px;overflow:hidden}
+.brain-shell svg{width:100%;height:100%;display:block;cursor:grab}
+.brain-shell svg:active{cursor:grabbing}
+.legend-overlay{position:absolute;top:18px;left:18px;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);padding:14px 16px;border:1px solid var(--line);font-size:11px;max-width:220px}
+.legend-overlay h4{font-family:var(--teko);font-weight:600;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.legend-overlay .row{display:flex;align-items:center;gap:8px;margin-bottom:5px;color:var(--dim)}
+.legend-overlay .swatch{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.brain-hint{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);font-family:var(--teko);font-size:12px;letter-spacing:1.5px;color:var(--dim2);text-transform:uppercase;pointer-events:none;opacity:.7}
+.tooltip{position:absolute;background:rgba(0,0,0,.92);border:1px solid var(--red);padding:14px 16px;pointer-events:none;opacity:0;transition:opacity .15s;max-width:280px;z-index:50}
+.tooltip h5{font-family:var(--syne);font-weight:800;font-size:15px;color:#fff;margin-bottom:4px}
+.tooltip .role{font-family:var(--teko);font-weight:600;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.tooltip .desc{font-size:11px;color:var(--dim);line-height:1.5;margin-bottom:8px}
+.tooltip .stat{display:flex;justify-content:space-between;font-size:10px;color:var(--dim);padding-top:6px;border-top:1px solid var(--line)}
+.tooltip .stat strong{color:#fff;font-family:var(--teko);font-size:12px}
+.brain-stats{position:absolute;bottom:18px;right:18px;display:flex;gap:10px;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);padding:12px 16px;border:1px solid var(--line)}
+.brain-stats div{text-align:center;min-width:60px}
+.brain-stats .v{font-family:var(--syne);font-weight:800;font-size:22px;color:#fff;line-height:1}
+.brain-stats .l{font-family:var(--teko);font-weight:600;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-top:3px}
+
+/* ── FLEET VIEW ── */
+.fleet-shell{display:none}
+.fleet-shell.on{display:block}
+.brain-shell.off{display:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:36px}
+.stat{background:var(--card);border:1px solid var(--line);padding:18px 20px;position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red)}
+.stat .v{font-family:var(--syne);font-weight:800;font-size:32px;line-height:1}
+.stat .l{font-family:var(--teko);font-weight:600;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);margin-top:6px}
+.dept{margin-top:38px}
+.dept h2{font-family:var(--syne);font-weight:800;font-size:22px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.dept .sub{color:var(--dim);font-size:12px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.agent{background:var(--card);border:1px solid var(--line);padding:18px;position:relative;transition:.2s;display:flex;flex-direction:column;min-height:220px;cursor:pointer}
+.agent:hover{border-color:rgba(217,4,41,.5);transform:translateY(-2px)}
+.agent .top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.agent .pos{font-family:var(--teko);font-weight:600;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold)}
+.agent .status{font-family:var(--teko);font-weight:600;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px}
+.s-live{background:rgba(73,222,120,.12);color:#49de78;border:1px solid rgba(73,222,120,.4)}
+.s-planned{background:rgba(255,255,255,.05);color:var(--dim);border:1px solid var(--line)}
+.agent h3{font-family:var(--syne);font-weight:800;font-size:19px;line-height:1.15;margin-bottom:8px;letter-spacing:-.3px}
+.agent .role{color:var(--dim);font-size:12px;line-height:1.55;margin-bottom:12px;flex:1}
+.agent .meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;border-top:1px solid var(--line);padding-top:10px;font-size:11px}
+.agent .meta div{color:var(--dim)}
+.agent .meta strong{color:#fff;font-family:var(--teko);font-weight:600;font-size:13px;letter-spacing:.5px;display:block}
+.agent .fn{font-family:'SF Mono',Menlo,monospace;font-size:10px;color:var(--gold);background:rgba(201,162,39,.08);padding:2px 6px;border-radius:2px;display:inline-block;margin-top:8px}
+.agent-open-hint{font-family:var(--teko);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--red);opacity:0;transition:.2s;margin-top:8px}
+.agent:hover .agent-open-hint{opacity:1}
+
+/* ── HQ VIEW ── */
+.hq-shell{display:none}
+.hq-shell.on{display:flex;gap:16px;min-height:720px}
+.hq-left{width:200px;flex-shrink:0;background:var(--card);border:1px solid var(--line);padding:16px}
+.hq-left h4{font-family:var(--teko);font-weight:600;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.ws-item{font-family:var(--teko);font-weight:600;font-size:14px;letter-spacing:.5px;text-transform:uppercase;padding:10px 12px;cursor:pointer;border:1px solid transparent;transition:.15s;margin-bottom:4px;color:var(--dim);display:flex;align-items:center;gap:8px}
+.ws-item:hover,.ws-item.active{border-color:var(--red);color:#fff;background:rgba(217,4,41,.08)}
+.ws-item .ws-dot{width:7px;height:7px;border-radius:50%;background:var(--dim);flex-shrink:0}
+.ws-item.active .ws-dot{background:var(--red)}
+.ws-item .ws-status{font-size:9px;letter-spacing:1px;color:var(--gold);margin-left:auto}
+.ws-divider{border-top:1px solid var(--line);margin:12px 0}
+.ws-add{font-family:var(--teko);font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--dim2);padding:8px 12px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:6px}
+.ws-add:hover{color:var(--gold)}
+.hq-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:16px}
+.hq-top{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hq-panel{background:var(--card);border:1px solid var(--line);padding:16px;display:flex;flex-direction:column}
+.hq-panel-title{font-family:var(--teko);font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.hq-panel-title .live-dot{width:6px;height:6px;border-radius:50%;background:#49de78;animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.activity-feed{flex:1;overflow-y:auto;max-height:280px}
+.activity-feed::-webkit-scrollbar{width:4px}
+.activity-feed::-webkit-scrollbar-track{background:transparent}
+.activity-feed::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px}
+.feed-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px}
+.feed-item:last-child{border-bottom:none}
+.feed-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.feed-agent{font-family:var(--teko);font-weight:600;font-size:12px;letter-spacing:.5px;color:#fff;text-transform:uppercase}
+.feed-msg{color:var(--dim);flex:1}
+.feed-time{color:var(--dim2);font-size:10px;flex-shrink:0}
+.feed-empty{color:var(--dim2);font-size:12px;text-align:center;padding:30px 0}
+
+/* Inbox */
+.inbox-item{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--card2);border:1px solid var(--line);margin-bottom:8px;cursor:pointer;transition:.15s}
+.inbox-item:hover{border-color:rgba(217,4,41,.4)}
+.inbox-icon{width:32px;height:32px;background:rgba(217,4,41,.15);border:1px solid rgba(217,4,41,.3);display:grid;place-items:center;flex-shrink:0;font-size:12px}
+.inbox-content{flex:1;min-width:0}
+.inbox-title{font-family:var(--teko);font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.5px;color:#fff}
+.inbox-sub{font-size:11px;color:var(--dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inbox-actions{display:flex;gap:6px}
+.btn-approve{font-family:var(--teko);font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;background:rgba(73,222,120,.15);border:1px solid rgba(73,222,120,.4);color:#49de78;padding:5px 10px;cursor:pointer;transition:.15s}
+.btn-approve:hover{background:rgba(73,222,120,.25)}
+.btn-reject{font-family:var(--teko);font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;background:transparent;border:1px solid var(--line);color:var(--dim);padding:5px 10px;cursor:pointer;transition:.15s}
+.btn-reject:hover{border-color:var(--red);color:var(--red)}
+.inbox-empty{color:var(--dim2);font-size:12px;text-align:center;padding:30px 0}
+
+/* Agent quick grid in HQ */
+.hq-agents{background:var(--card);border:1px solid var(--line);padding:16px}
+.hq-agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-top:14px}
+.hq-agent-btn{background:var(--card2);border:1px solid var(--line);padding:12px;cursor:pointer;transition:.2s;text-align:left}
+.hq-agent-btn:hover{border-color:rgba(217,4,41,.5);background:rgba(217,4,41,.05)}
+.hq-agent-btn .ab-name{font-family:var(--teko);font-weight:600;font-size:14px;letter-spacing:.5px;text-transform:uppercase;color:#fff;line-height:1.2;margin-bottom:4px}
+.hq-agent-btn .ab-dept{font-size:10px;color:var(--dim);letter-spacing:.5px}
+.hq-agent-btn .ab-status{font-family:var(--teko);font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-top:8px}
+.ab-live{color:#49de78}
+.ab-planned{color:var(--dim2)}
+
+/* ── SLIDE-OVER PANEL ── */
+.panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+.panel-overlay.open{opacity:1;pointer-events:all}
+.slide-panel{position:fixed;top:0;right:0;width:var(--panel-w);height:100vh;background:#0c0c0c;border-left:1px solid var(--line);z-index:201;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.slide-panel.open{transform:translateX(0)}
+.panel-header{padding:20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0}
+.panel-header .ph-meta{flex:1}
+.panel-pos{font-family:var(--teko);font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.panel-name{font-family:var(--syne);font-weight:800;font-size:22px;line-height:1.1}
+.panel-dept{font-family:var(--teko);font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-top:4px}
+.panel-close{background:transparent;border:1px solid var(--line);color:var(--dim);width:32px;height:32px;cursor:pointer;display:grid;place-items:center;font-size:18px;transition:.15s;flex-shrink:0}
+.panel-close:hover{border-color:var(--red);color:#fff}
+.panel-status-bar{padding:12px 20px;border-bottom:1px solid var(--line);display:flex;gap:16px;flex-shrink:0}
+.psb-item{display:flex;flex-direction:column;gap:2px}
+.psb-label{font-family:var(--teko);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim2)}
+.psb-value{font-family:var(--teko);font-weight:600;font-size:14px;letter-spacing:.5px;color:#fff}
+.panel-tabs{display:flex;border-bottom:1px solid var(--line);flex-shrink:0}
+.panel-tab{font-family:var(--teko);font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 16px;cursor:pointer;border:none;background:transparent;color:var(--dim);border-bottom:2px solid transparent;transition:.15s}
+.panel-tab.on{color:#fff;border-bottom-color:var(--red)}
+.panel-tab:hover:not(.on){color:#fff}
+.panel-body{flex:1;overflow-y:auto;padding:16px 20px}
+.panel-body::-webkit-scrollbar{width:4px}
+.panel-body::-webkit-scrollbar-thumb{background:var(--line)}
+
+/* Panel — Overview tab */
+.panel-desc{font-size:13px;color:var(--dim);line-height:1.65;margin-bottom:16px}
+.panel-sources{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.psrc{font-family:'SF Mono',Menlo,monospace;font-size:10px;color:var(--gold);background:rgba(201,162,39,.08);padding:3px 8px;border-radius:2px;border:1px solid rgba(201,162,39,.2)}
+.panel-run-btn{width:100%;font-family:var(--teko);font-weight:600;font-size:14px;letter-spacing:2px;text-transform:uppercase;background:var(--red);color:#fff;border:none;padding:12px;cursor:pointer;transition:.15s;margin-top:8px}
+.panel-run-btn:hover{background:#b0021e}
+.panel-run-btn:disabled{background:#333;color:var(--dim);cursor:not-allowed}
+.panel-planned-note{background:rgba(255,255,255,.04);border:1px solid var(--line);padding:14px;font-size:12px;color:var(--dim);line-height:1.6;margin-top:8px}
+.panel-planned-note strong{color:var(--gold);font-family:var(--teko)}
+
+/* Panel — Chat tab */
+.chat-messages{min-height:200px;display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.chat-msg{max-width:92%;font-size:13px;line-height:1.6;padding:10px 14px}
+.chat-msg.user{background:rgba(217,4,41,.12);border:1px solid rgba(217,4,41,.25);align-self:flex-end;color:#fff}
+.chat-msg.agent{background:var(--card2);border:1px solid var(--line);align-self:flex-start;color:var(--dim)}
+.chat-msg.agent strong{color:#fff;font-family:var(--teko);font-size:11px;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:4px}
+.chat-msg.thinking{opacity:.6;font-style:italic}
+.chat-input-wrap{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:14px;flex-shrink:0;padding:14px 20px;background:#0c0c0c}
+.chat-input{flex:1;background:var(--card2);border:1px solid var(--line);color:#fff;font-family:var(--body);font-size:13px;padding:10px 12px;resize:none;outline:none;min-height:38px;max-height:100px;transition:.15s}
+.chat-input:focus{border-color:rgba(217,4,41,.4)}
+.chat-input::placeholder{color:var(--dim2)}
+.chat-send{font-family:var(--teko);font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;background:var(--red);color:#fff;border:none;padding:10px 16px;cursor:pointer;transition:.15s;white-space:nowrap}
+.chat-send:hover{background:#b0021e}
+.chat-send:disabled{background:#333;color:var(--dim);cursor:not-allowed}
+.chat-coming-soon{background:rgba(201,162,39,.06);border:1px solid rgba(201,162,39,.2);padding:14px;font-size:12px;color:var(--dim);line-height:1.6;margin-bottom:12px}
+.chat-coming-soon strong{color:var(--gold);font-family:var(--teko);display:block;margin-bottom:4px}
+
+/* Panel — Logs tab */
+.log-item{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;display:flex;align-items:flex-start;gap:10px}
+.log-status{font-family:var(--teko);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border-radius:2px;flex-shrink:0}
+.log-ok{background:rgba(73,222,120,.1);color:#49de78;border:1px solid rgba(73,222,120,.3)}
+.log-err{background:rgba(217,4,41,.1);color:var(--red);border:1px solid rgba(217,4,41,.3)}
+.log-info{background:rgba(255,255,255,.05);color:var(--dim);border:1px solid var(--line)}
+.log-msg{color:var(--dim);flex:1}
+.log-time{color:var(--dim2);font-size:10px;flex-shrink:0}
+.logs-empty{color:var(--dim2);font-size:12px;text-align:center;padding:30px 0}
+
+/* ── TOUR OVERLAY ── */
+.tour-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;display:none;align-items:center;justify-content:center}
+.tour-backdrop.open{display:flex}
+.tour-card{background:#0e0e0e;border:1px solid var(--red);width:480px;max-width:90vw;padding:32px;position:relative}
+.tour-step-label{font-family:var(--teko);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.tour-title{font-family:var(--syne);font-weight:800;font-size:28px;line-height:1.1;margin-bottom:14px}
+.tour-title span{color:var(--red)}
+.tour-body{font-size:14px;color:var(--dim);line-height:1.7;margin-bottom:24px}
+.tour-body strong{color:#fff}
+.tour-footer{display:flex;align-items:center;justify-content:space-between}
+.tour-dots{display:flex;gap:6px}
+.tour-dot{width:8px;height:8px;border-radius:50%;background:var(--line);transition:.2s;cursor:pointer}
+.tour-dot.active{background:var(--red)}
+.tour-actions{display:flex;gap:10px}
+.tour-skip{font-family:var(--teko);font-size:12px;letter-spacing:1px;text-transform:uppercase;background:transparent;border:none;color:var(--dim);cursor:pointer;padding:8px}
+.tour-skip:hover{color:#fff}
+.tour-next{font-family:var(--teko);font-weight:600;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;background:var(--red);color:#fff;border:none;padding:10px 24px;cursor:pointer;transition:.15s}
+.tour-next:hover{background:#b0021e}
+.tour-icon{font-size:42px;margin-bottom:16px;display:block}
+
+/* ── NODES ── */
+.node circle{cursor:pointer;transition:r .2s,stroke-width .2s}
+.node:hover circle{stroke-width:3px}
+.node text{font-family:var(--teko);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;fill:#fff;pointer-events:none;text-anchor:middle;text-shadow:0 1px 3px rgba(0,0,0,.9)}
+.node.core text{font-family:var(--syne);font-weight:800;font-size:16px;fill:#fff}
+.node.live circle{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{filter:drop-shadow(0 0 6px rgba(217,4,41,.6))}50%{filter:drop-shadow(0 0 14px rgba(217,4,41,.95))}}
+.link{stroke:rgba(255,255,255,.12);stroke-width:1px;transition:stroke .15s,stroke-width .15s}
+.link.active{stroke:rgba(217,4,41,.6);stroke-width:1.8px}
+
+footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);text-align:center;color:var(--dim);font-size:11px;letter-spacing:1px;text-transform:uppercase;font-family:var(--teko)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand">
+    <div class="badge">N</div>
+    <div>
+      <h1>NUI Agent Fleet</h1>
+      <small>The Brain · The Operation · The Map</small>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="tour-btn" onclick="startTour()">? How This Works</button>
+    <div class="toggle">
+      <button id="btn-brain" class="on" onclick="show('brain')">⌬ Brain</button>
+      <button id="btn-fleet" onclick="show('fleet')">▦ Fleet</button>
+      <button id="btn-hq" onclick="show('hq')">⌂ HQ</button>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="lbl">The Operation</div>
+  <div class="kicker">15 Agents.<br><span class="rw">One Brain.</span></div>
+  <p class="intro">Every named position in the NUI operating system, mapped to the data sources, models, and channels that power them. The same fleet that runs every Digital HQ we ship.</p>
+</div>
+
+<!-- ══ BRAIN VIEW ══ -->
+<div id="brain" class="brain-shell">
+  <div class="legend-overlay">
+    <h4>Departments</h4>
+    <div class="row"><span class="swatch" style="background:#D90429"></span>Front Office</div>
+    <div class="row"><span class="swatch" style="background:#C9A227"></span>Marketing Wing</div>
+    <div class="row"><span class="swatch" style="background:#49de78"></span>Audience Activation</div>
+    <div class="row"><span class="swatch" style="background:#3a9eff"></span>Street Team</div>
+    <div class="row"><span class="swatch" style="background:#a855f7"></span>Intelligence</div>
+    <div class="row"><span class="swatch" style="background:#ff7849"></span>Retargeting</div>
+    <div class="row"><span class="swatch" style="background:#fff"></span>Sales</div>
+    <div class="row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--line)">
+      <span class="swatch" style="background:#222;border:1px solid var(--gold)"></span>Data source / API
+    </div>
+  </div>
+  <svg id="brain-svg"></svg>
+  <div class="brain-hint">Click any agent node to open its control panel</div>
+  <div class="brain-stats">
+    <div><div class="v" id="bs-live">7</div><div class="l">Live</div></div>
+    <div><div class="v" id="bs-plan">8</div><div class="l">Planned</div></div>
+    <div><div class="v" id="bs-runs">—</div><div class="l">Runs 7d</div></div>
+  </div>
+</div>
+<div class="tooltip" id="tip"></div>
+
+<!-- ══ FLEET VIEW ══ -->
+<div id="fleet" class="fleet-shell">
+  <div class="stats">
+    <div class="stat"><div class="v" id="s-live">7</div><div class="l">Active Agents</div></div>
+    <div class="stat"><div class="v" id="s-planned">8</div><div class="l">Planned</div></div>
+    <div class="stat"><div class="v" id="s-runs">—</div><div class="l">Runs (7d)</div></div>
+    <div class="stat"><div class="v" id="s-drafts">—</div><div class="l">Pending Drafts</div></div>
+  </div>
+  <div id="fleet-grid"></div>
+</div>
+
+<!-- ══ HQ VIEW ══ -->
+<div id="hq" class="hq-shell">
+  <div class="hq-left">
+    <h4>Workspaces</h4>
+    <div class="ws-item active" onclick="switchWS(this,'nui')">
+      <span class="ws-dot"></span>NUI<span class="ws-status">LIVE</span>
+    </div>
+    <div class="ws-divider"></div>
+    <h4 style="margin-bottom:8px">Clients</h4>
+    <div class="ws-item" onclick="switchWS(this,'shootos')">
+      <span class="ws-dot"></span>ShootOS
+    </div>
+    <div class="ws-item" onclick="switchWS(this,'bcb')">
+      <span class="ws-dot"></span>Backyard Comedy
+    </div>
+    <div class="ws-item" onclick="switchWS(this,'vividverse')">
+      <span class="ws-dot"></span>VividVerse
+    </div>
+    <div class="ws-item" onclick="switchWS(this,'larry')">
+      <span class="ws-dot"></span>L. Castleberry
+    </div>
+    <div class="ws-divider"></div>
+    <div class="ws-add" onclick="alert('Client deployment coming in v2 — wire new client from admin panel')">+ Deploy to Client</div>
+  </div>
+  <div class="hq-main">
+    <div class="hq-top">
+      <!-- Activity Feed -->
+      <div class="hq-panel">
+        <div class="hq-panel-title">Live Activity <span class="live-dot"></span></div>
+        <div class="activity-feed" id="hq-feed">
+          <div class="feed-empty">Loading activity...</div>
+        </div>
+      </div>
+      <!-- Approval Inbox -->
+      <div class="hq-panel">
+        <div class="hq-panel-title">Approval Inbox <span id="inbox-count" style="font-size:10px;color:var(--red)"></span></div>
+        <div id="hq-inbox">
+          <div class="inbox-empty">Loading drafts...</div>
+        </div>
+      </div>
+    </div>
+    <!-- Quick Agent Access -->
+    <div class="hq-agents">
+      <div class="hq-panel-title" style="margin:0 0 4px">Quick Access — Click to Open Agent Panel</div>
+      <div class="hq-agents-grid" id="hq-agents-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE-OVER PANEL ══ -->
+<div class="panel-overlay" id="panel-overlay" onclick="closePanel()"></div>
+<div class="slide-panel" id="slide-panel">
+  <div class="panel-header">
+    <div class="ph-meta">
+      <div class="panel-pos" id="panel-pos">Position 00</div>
+      <div class="panel-name" id="panel-name">Agent Name</div>
+      <div class="panel-dept" id="panel-dept">Department</div>
+    </div>
+    <button class="panel-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="panel-status-bar" id="panel-status-bar">
+    <div class="psb-item"><div class="psb-label">Status</div><div class="psb-value" id="psb-status">—</div></div>
+    <div class="psb-item"><div class="psb-label">Last Run</div><div class="psb-value" id="psb-last">—</div></div>
+    <div class="psb-item"><div class="psb-label">Schedule</div><div class="psb-value" id="psb-schedule">—</div></div>
+    <div class="psb-item"><div class="psb-label">7d Runs</div><div class="psb-value" id="psb-runs">—</div></div>
+  </div>
+  <div class="panel-tabs">
+    <button class="panel-tab on" onclick="panelTab('overview',this)">Overview</button>
+    <button class="panel-tab" onclick="panelTab('chat',this)">Chat</button>
+    <button class="panel-tab" onclick="panelTab('logs',this)">Logs</button>
+  </div>
+  <!-- Overview tab -->
+  <div class="panel-body" id="ptab-overview">
+    <div class="panel-desc" id="panel-desc"></div>
+    <div style="font-family:var(--teko);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim2);margin-bottom:8px">Data Sources</div>
+    <div class="panel-sources" id="panel-sources"></div>
+    <div id="panel-actions"></div>
+  </div>
+  <!-- Chat tab -->
+  <div class="panel-body" id="ptab-chat" style="display:none">
+    <div class="chat-messages" id="chat-messages"></div>
+  </div>
+  <div class="chat-input-wrap" id="chat-input-wrap" style="display:none">
+    <textarea class="chat-input" id="chat-input" rows="1" placeholder="Ask this agent something or give it a task..." onkeydown="chatKeydown(event)"></textarea>
+    <button class="chat-send" id="chat-send" onclick="sendChat()">Send</button>
+  </div>
+  <!-- Logs tab -->
+  <div class="panel-body" id="ptab-logs" style="display:none">
+    <div id="panel-logs-list"></div>
+  </div>
+</div>
+
+<!-- ══ TOUR OVERLAY ══ -->
+<div class="tour-backdrop" id="tour">
+  <div class="tour-card">
+    <div class="tour-step-label" id="tour-step-label">Step 1 of 5</div>
+    <span class="tour-icon" id="tour-icon">🧠</span>
+    <div class="tour-title" id="tour-title">Welcome to <span>NUI HQ</span></div>
+    <div class="tour-body" id="tour-body"></div>
+    <div class="tour-footer">
+      <div class="tour-dots" id="tour-dots"></div>
+      <div class="tour-actions">
+        <button class="tour-skip" onclick="closeTour()">Skip</button>
+        <button class="tour-next" id="tour-next-btn" onclick="nextTour()">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>New Urban Influence · Designing Culture. Building Influence. · v2.0 HQ · agent_logs · supabase</footer>
+</div>
+
+<script>
+// ════════════════════════════════════════════
+// DATA — single source of truth (unchanged)
+// ════════════════════════════════════════════
+const DEPTS = {
+  'Front Office':       { color:'#D90429' },
+  'Marketing Wing':     { color:'#C9A227' },
+  'Audience Activation':{ color:'#49de78' },
+  'Street Team':        { color:'#3a9eff' },
+  'Intelligence':       { color:'#a855f7' },
+  'Retargeting':        { color:'#ff7849' },
+  'Sales':              { color:'#ffffff' }
+};
+const AGENTS = [
+  { id:'responder', pos:'01', name:'The Digital Secretary', dept:'Front Office', live:true,
+    role:'24/7 phone, email, SMS, chat. Picks up every call, books appointments, answers in your voice.',
+    fn:'agent-responder.js', endpoint:'/.netlify/functions/agent-responder', schedule:'daily 9am ET',
+    sources:['supabase','claude','gmb','openphone','sendgrid'] },
+  { id:'lead-catcher', pos:'02', name:'The Lead Catcher', dept:'Front Office', live:false,
+    role:'Sub-5-minute response on every channel. Engages, qualifies, books before you see the lead.',
+    fn:'— not yet wired —', endpoint:null, schedule:'',
+    sources:['supabase','claude','meta-api','sms','sendgrid'] },
+  { id:'sms-drip', pos:'03', name:'The Street Announcer', dept:'Audience Activation', live:true,
+    role:'SMS, push, and email campaigns to your owned audience. Segmented and timed for max opens.',
+    fn:'sms-drip.js', endpoint:'/.netlify/functions/sms-drip', schedule:'every 30m',
+    sources:['supabase','sms','push','sendgrid'] },
+  { id:'ghostwriter', pos:'04', name:'The Ghostwriter', dept:'Audience Activation', live:false,
+    role:'Reads your CRM before writing. Personalized emails in your voice from real customer context.',
+    fn:'— not yet wired —', endpoint:null, schedule:'',
+    sources:['supabase','claude','sendgrid'] },
+  { id:'creator', pos:'05', name:'The Content Crew', dept:'Marketing Wing', live:true,
+    role:'Generates the weekly content batch. Captions, hashtags, voiceovers, images.',
+    fn:'agent-creator.js', endpoint:'/.netlify/functions/agent-creator', schedule:'Sun 8am CT',
+    sources:['supabase','claude','synthesys','pexels'] },
+  { id:'promoter', pos:'06', name:'The Digital Promoter', dept:'Marketing Wing', live:true,
+    role:'Posts approved drafts to FB, IG, GBP daily. Rotates through brand pillars.',
+    fn:'agent-promoter.js', endpoint:'/.netlify/functions/agent-promoter', schedule:'9am + 5pm CT',
+    sources:['supabase','meta-api','gmb','claude'] },
+  { id:'blogger', pos:'07', name:'The Blogger', dept:'Marketing Wing', live:true,
+    role:'Generates SEO blog posts with voiceover, structured topic rotation, background processing.',
+    fn:'agent-blogger.js', endpoint:'/.netlify/functions/agent-blogger-background', schedule:'Wed 7am CT',
+    sources:['supabase','claude','synthesys','pexels'] },
+  { id:'block-captain', pos:'08', name:'The Block Captain', dept:'Street Team', live:false,
+    role:'Geofencing — virtual boundaries around competitor lots, stadiums, neighborhoods.',
+    fn:'— not yet wired —', endpoint:null, schedule:'',
+    sources:['supabase','geo-api'] },
+  { id:'neighborhood', pos:'09', name:'The Neighborhood Captain', dept:'Street Team', live:false,
+    role:'Google Maps domination zip by zip. Builds GBP presence across your entire territory.',
+    fn:'— not yet wired —', endpoint:null, schedule:'',
+    sources:['supabase','gmb','google-api'] },
+  { id:'rb2b', pos:'10', name:'The Watchman', dept:'Intelligence', live:true,
+    role:'Identifies 15–30% of anonymous web visitors — full name, email, company, LinkedIn.',
+    fn:'rb2b-webhook.js', endpoint:null, schedule:'event-driven',
+    sources:['supabase','rb2b','sendgrid'] },
+  { id:'money-reporter', pos:'11', name:'The Money Reporter', dept:'Intelligence', live:false,
+    role:'Weekly plain-English business report. Revenue, leads, conversions, where you lose people.',
+    fn:'— not yet wired —', endpoint:null, schedule:'',
+    sources:['supabase','stripe','ga4','claude'] },
+  { id:'fb-runner', pos:'12', name:'The Facebook Runner', dept:'Retargeting', live:false,
+    role:'Pixel + retargeting + lookalikes. Stop paying to reach strangers.',
+    fn:'— not yet wired —', endpoint:null, schedule:'',
+    sources:['meta-api','supabase'] },
+  { id:'google-runner', pos:'13', name:'The Google Runner', dept:'Retargeting', live:false,
+    role:'Tags every visitor with Google remarketing. Follows them across 2M+ sites for 90 days.',
+    fn:'— not yet wired —', endpoint:null, schedule:'',
+    sources:['google-api','supabase'] },
+  { id:'monty', pos:'14', name:'Monty', dept:'Sales', live:true,
+    role:'Sales follow-up. Runs 3x/day chasing warm leads. SMS and full conversation memory.',
+    fn:'monty-followup.js', endpoint:'/.netlify/functions/monty-followup', schedule:'8am, 12pm, 5pm ET',
+    sources:['supabase','claude','sms','sendgrid'] },
+  { id:'upsell', pos:'15', name:'The Upsell Trigger', dept:'Sales', live:true,
+    role:'After 90 days, fires the right upsell at the right moment based on usage and milestones.',
+    fn:'upsell-trigger.js', endpoint:'/.netlify/functions/upsell-trigger', schedule:'daily 10am ET',
+    sources:['supabase','stripe','sendgrid'] }
+];
+const SOURCES = {
+  supabase:  { label:'Supabase',  icon:'DB' },
+  claude:    { label:'Claude',    icon:'AI' },
+  'meta-api':{ label:'Meta API',  icon:'fb' },
+  gmb:       { label:'Google Biz',icon:'gb' },
+  'google-api':{label:'Google Ads',icon:'g'},
+  openphone: { label:'OpenPhone', icon:'☎' },
+  sendgrid:  { label:'SendGrid',  icon:'✉' },
+  sms:       { label:'SMS',       icon:'sm' },
+  push:      { label:'Push',      icon:'pn' },
+  synthesys: { label:'Synthesys', icon:'va' },
+  pexels:    { label:'Pexels',    icon:'px' },
+  rb2b:      { label:'RB2B',      icon:'id' },
+  stripe:    { label:'Stripe',    icon:'$'  },
+  ga4:       { label:'GA4',       icon:'ga' },
+  'geo-api': { label:'Geo API',   icon:'geo'}
+};
+
+// ════════════════════════════════════════════
+// VIEW TOGGLE
+// ════════════════════════════════════════════
+function show(view){
+  const brain = document.getElementById('brain');
+  const fleet = document.getElementById('fleet');
+  const hq    = document.getElementById('hq');
+  const bb = document.getElementById('btn-brain');
+  const bf = document.getElementById('btn-fleet');
+  const bh = document.getElementById('btn-hq');
+  brain.classList.toggle('off', view!=='brain');
+  fleet.classList.toggle('on',  view==='fleet');
+  hq.classList.toggle('on',     view==='hq');
+  bb.classList.toggle('on', view==='brain');
+  bf.classList.toggle('on', view==='fleet');
+  bh.classList.toggle('on', view==='hq');
+  if (view==='hq') { loadActivityFeed(); loadInbox(); }
+}
+
+// ════════════════════════════════════════════
+// BRAIN VIEW — D3 (unchanged + click to open)
+// ════════════════════════════════════════════
+function buildBrain(){
+  const svg = d3.select('#brain-svg');
+  const shell = document.getElementById('brain');
+  const W = shell.clientWidth, H = shell.clientHeight;
+  svg.attr('viewBox',`0 0 ${W} ${H}`);
+  const nodes = [{ id:'NUI', label:'NUI', kind:'core', r:42 }];
+  const links = [];
+  AGENTS.forEach(a => {
+    nodes.push({ id:a.id, label:a.name.replace(/^The /,''), kind:'agent', dept:a.dept, live:a.live, agent:a, r: a.live?22:16 });
+    links.push({ source:'NUI', target:a.id, kind:'core' });
+  });
+  const sourceSet = new Set();
+  AGENTS.forEach(a => a.sources.forEach(s => sourceSet.add(s)));
+  sourceSet.forEach(s => { nodes.push({ id:s, label:SOURCES[s]?.label||s, kind:'source', r:11 }); });
+  AGENTS.forEach(a => { a.sources.forEach(s => links.push({ source:a.id, target:s, kind:'data' })); });
+  svg.append('defs').html(`
+    <radialGradient id="core-grad"><stop offset="0%" stop-color="#D90429"/><stop offset="100%" stop-color="#5a0010"/></radialGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  `);
+  const link = svg.append('g').selectAll('line').data(links).join('line').attr('class','link');
+  const node = svg.append('g').selectAll('g').data(nodes).join('g')
+    .attr('class', d => `node ${d.kind} ${d.live?'live':''}`)
+    .call(d3.drag()
+      .on('start',(e,d)=>{ if(!e.active) sim.alphaTarget(.3).restart(); d.fx=d.x; d.fy=d.y; })
+      .on('drag',(e,d)=>{ d.fx=e.x; d.fy=e.y; })
+      .on('end',(e,d)=>{ if(!e.active) sim.alphaTarget(0); d.fx=null; d.fy=null; }));
+  node.append('circle')
+    .attr('r', d=>d.r)
+    .attr('fill', d=>{ if(d.kind==='core') return 'url(#core-grad)'; if(d.kind==='source') return '#1a1a1a'; const c=DEPTS[d.dept]?.color||'#666'; return d.live?c:'#1a1a1a'; })
+    .attr('stroke', d=>{ if(d.kind==='core') return '#fff'; if(d.kind==='source') return '#C9A227'; return DEPTS[d.dept]?.color||'#666'; })
+    .attr('stroke-width', d=>d.kind==='core'?2:1.5)
+    .attr('opacity', d=>d.kind==='source'?.85:1);
+  node.append('text').attr('dy', d=> d.kind==='core'?4:d.r+14).text(d=>d.label);
+  const tip = document.getElementById('tip');
+  node.filter(d=>d.kind==='agent')
+    .on('mouseover',(e,d)=>{
+      const a=d.agent;
+      tip.innerHTML=`<h5>${a.name}</h5><div class="role">Position ${a.pos} · ${a.dept}</div><div class="desc">${a.role}</div><div class="stat"><span>${a.fn}</span><strong>${a.live?'LIVE':'PLANNED'}</strong></div>${a.schedule?`<div class="stat"><span>Schedule</span><strong>${a.schedule}</strong></div>`:''}`;
+      tip.style.opacity=1;
+      link.classed('active', l=>l.source.id===d.id||l.target.id===d.id);
+    })
+    .on('mousemove',(e)=>{ const r=shell.getBoundingClientRect(); tip.style.left=(e.clientX-r.left+14)+'px'; tip.style.top=(e.clientY-r.top+14)+'px'; })
+    .on('mouseout',()=>{ tip.style.opacity=0; link.classed('active',false); })
+    .on('click',(e,d)=>{ e.stopPropagation(); openPanel(d.agent.id); });
+  const sim = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d=>d.id).distance(l=>l.kind==='core'?140:60).strength(.4))
+    .force('charge', d3.forceManyBody().strength(-280))
+    .force('center', d3.forceCenter(W/2, H/2))
+    .force('collide', d3.forceCollide().radius(d=>d.r+8))
+    .on('tick', ()=>{ link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y); node.attr('transform',d=>`translate(${d.x},${d.y})`); });
+}
+
+// ════════════════════════════════════════════
+// FLEET VIEW (unchanged + click to open)
+// ════════════════════════════════════════════
+function buildFleet(){
+  const grid = document.getElementById('fleet-grid');
+  const byDept = {};
+  AGENTS.forEach(a => { (byDept[a.dept]||=[]).push(a); });
+  let html = '';
+  Object.keys(byDept).forEach(d => {
+    html += `<div class="dept"><h2>${d}</h2><p class="sub">${byDept[d].length} position${byDept[d].length>1?'s':''}</p><div class="grid">`;
+    byDept[d].forEach(a => {
+      html += `<div class="agent" onclick="openPanel('${a.id}')">
+        <div class="top"><div class="pos">Position ${a.pos}</div><div class="status ${a.live?'s-live':'s-planned'}">${a.live?'● Live':'○ Planned'}</div></div>
+        <h3>${a.name}</h3>
+        <div class="role">${a.role}</div>
+        <div class="meta">
+          <div><strong id="m-${a.id}-last">—</strong>Last Run</div>
+          <div><strong id="m-${a.id}-runs">—</strong>Runs / 7d</div>
+        </div>
+        <span class="fn">${a.fn}${a.schedule?' · '+a.schedule:''}</span>
+        <div class="agent-open-hint">→ Open Control Panel</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  grid.innerHTML = html;
+}
+
+// ════════════════════════════════════════════
+// HQ VIEW
+// ════════════════════════════════════════════
+function buildHQAgents(){
+  const grid = document.getElementById('hq-agents-grid');
+  let html = '';
+  AGENTS.forEach(a => {
+    html += `<button class="hq-agent-btn" onclick="openPanel('${a.id}')">
+      <div class="ab-name">${a.name.replace(/^The /,'')}</div>
+      <div class="ab-dept">${a.dept}</div>
+      <div class="ab-status ${a.live?'ab-live':'ab-planned'}">${a.live?'● Live':'○ Planned'}</div>
+    </button>`;
+  });
+  grid.innerHTML = html;
+}
+
+function switchWS(el, ws){
+  document.querySelectorAll('.ws-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  const feed = document.getElementById('hq-feed');
+  if (ws !== 'nui') {
+    feed.innerHTML = `<div class="feed-empty" style="color:var(--gold)">Client workspace deployments coming in v2.<br><br>When ready, this will show live agent activity for this client's Digital HQ.</div>`;
+    document.getElementById('hq-inbox').innerHTML = `<div class="inbox-empty">No inbox for this workspace yet.</div>`;
+  } else {
+    loadActivityFeed();
+    loadInbox();
+  }
+}
+
+async function loadActivityFeed(){
+  const feed = document.getElementById('hq-feed');
+  try {
+    if (typeof window.SUPABASE_URL === 'undefined') {
+      feed.innerHTML = mockFeedHTML();
+      return;
+    }
+    const SB = window.SUPABASE_URL, KEY = window.SUPABASE_ANON_KEY;
+    const r = await fetch(`${SB}/rest/v1/agent_logs?order=created_at.desc&limit=20&select=agent_id,status,message,created_at`, {
+      headers:{ apikey:KEY, Authorization:`Bearer ${KEY}` }
+    });
+    if (!r.ok) { feed.innerHTML = mockFeedHTML(); return; }
+    const logs = await r.json();
+    if (!logs.length) { feed.innerHTML = `<div class="feed-empty">No activity yet. Run an agent to see the feed.</div>`; return; }
+    const fmt = iso => { const h=Math.floor((Date.now()-new Date(iso))/36e5); if(h<1) return 'just now'; if(h<24) return h+'h ago'; return Math.floor(h/24)+'d ago'; };
+    feed.innerHTML = logs.map(l => {
+      const a = AGENTS.find(x=>x.id===l.agent_id)||{name:l.agent_id,dept:'—'};
+      const col = DEPTS[a.dept]?.color||'#666';
+      return `<div class="feed-item">
+        <span class="feed-dot" style="background:${col}"></span>
+        <div><div class="feed-agent">${a.name.replace(/^The /,'')}</div><div class="feed-msg">${l.message||l.status||'ran'}</div></div>
+        <div class="feed-time">${fmt(l.created_at)}</div>
+      </div>`;
+    }).join('');
+  } catch(e) { feed.innerHTML = mockFeedHTML(); }
+}
+
+function mockFeedHTML(){
+  const items = [
+    {agent:'Blogger',msg:'Published "Detroit Branding Trends 2026" — 847 words, voiceover attached',time:'2h ago',col:'#C9A227'},
+    {agent:'Monty',msg:'Followed up with 3 warm leads — 1 responded, moving to qualified',time:'4h ago',col:'#fff'},
+    {agent:'Digital Promoter',msg:'Posted to Facebook + Instagram — 2 content pieces published',time:'6h ago',col:'#C9A227'},
+    {agent:'Watchman',msg:'Identified 4 new anonymous visitors — emails queued',time:'8h ago',col:'#a855f7'},
+    {agent:'Content Crew',msg:'Weekly batch complete — 12 drafts queued for approval',time:'1d ago',col:'#C9A227'},
+  ];
+  return items.map(i=>`<div class="feed-item"><span class="feed-dot" style="background:${i.col}"></span><div><div class="feed-agent">${i.agent}</div><div class="feed-msg">${i.msg}</div></div><div class="feed-time">${i.time}</div></div>`).join('');
+}
+
+async function loadInbox(){
+  const inbox = document.getElementById('hq-inbox');
+  const ct = document.getElementById('inbox-count');
+  try {
+    if (typeof window.SUPABASE_URL === 'undefined') {
+      inbox.innerHTML = mockInboxHTML();
+      ct.textContent = '3 pending';
+      return;
+    }
+    const SB=window.SUPABASE_URL, KEY=window.SUPABASE_ANON_KEY;
+    const r = await fetch(`${SB}/rest/v1/content_drafts?status=eq.pending_approval&order=created_at.desc&select=id,title,type,created_at,agent_id`, {
+      headers:{ apikey:KEY, Authorization:`Bearer ${KEY}`, Prefer:'count=exact' }
+    });
+    if (!r.ok){ inbox.innerHTML=mockInboxHTML(); ct.textContent='3 pending'; return; }
+    const drafts = await r.json();
+    ct.textContent = drafts.length ? `${drafts.length} pending` : '';
+    if (!drafts.length){ inbox.innerHTML=`<div class="inbox-empty">All clear — no pending approvals.</div>`; return; }
+    inbox.innerHTML = drafts.map(d=>`
+      <div class="inbox-item">
+        <div class="inbox-icon">📝</div>
+        <div class="inbox-content"><div class="inbox-title">${d.title||'Draft #'+d.id}</div><div class="inbox-sub">${d.type||'content'} · ${d.agent_id||'agent'}</div></div>
+        <div class="inbox-actions">
+          <button class="btn-approve" onclick="approveDraft(${d.id},this)">✓ OK</button>
+          <button class="btn-reject" onclick="rejectDraft(${d.id},this)">✕</button>
+        </div>
+      </div>`).join('');
+  } catch(e){ inbox.innerHTML=mockInboxHTML(); ct.textContent='3 pending'; }
+}
+
+function mockInboxHTML(){
+  return [
+    {title:'Instagram Post — "The Power of Brand Identity"',sub:'creator · ready to schedule'},
+    {title:'Blog Draft — "Why Detroit Businesses Need AI in 2026"',sub:'blogger · voiceover attached'},
+    {title:'Facebook Post — Service Spotlight: Digital HQ',sub:'promoter · 2 variations'},
+  ].map(i=>`<div class="inbox-item"><div class="inbox-icon">📝</div><div class="inbox-content"><div class="inbox-title">${i.title}</div><div class="inbox-sub">${i.sub}</div></div><div class="inbox-actions"><button class="btn-approve" onclick="this.closest('.inbox-item').style.opacity='.4';this.textContent='✓'">✓ OK</button><button class="btn-reject" onclick="this.closest('.inbox-item').remove()">✕</button></div></div>`).join('');
+}
+
+async function approveDraft(id, btn){
+  btn.disabled=true; btn.textContent='...';
+  try {
+    const SB=window.SUPABASE_URL, KEY=window.SUPABASE_ANON_KEY;
+    await fetch(`${SB}/rest/v1/content_drafts?id=eq.${id}`, {
+      method:'PATCH', headers:{ apikey:KEY, Authorization:`Bearer ${KEY}`, 'Content-Type':'application/json' },
+      body:JSON.stringify({status:'approved'})
+    });
+    btn.closest('.inbox-item').style.opacity='.3';
+    btn.textContent='✓ Done';
+  } catch(e){ btn.disabled=false; btn.textContent='✓ OK'; }
+}
+
+async function rejectDraft(id, btn){
+  btn.closest('.inbox-item').remove();
+}
+
+// ════════════════════════════════════════════
+// SLIDE-OVER AGENT PANEL
+// ════════════════════════════════════════════
+let _currentAgent = null;
+let _panelStats = {};
+
+function openPanel(agentId){
+  const a = AGENTS.find(x=>x.id===agentId);
+  if (!a) return;
+  _currentAgent = a;
+  document.getElementById('panel-pos').textContent = 'Position '+a.pos;
+  document.getElementById('panel-name').textContent = a.name;
+  document.getElementById('panel-dept').textContent = a.dept;
+  document.getElementById('psb-status').textContent = a.live ? '● LIVE' : '○ PLANNED';
+  document.getElementById('psb-status').style.color = a.live ? '#49de78' : 'var(--dim)';
+  document.getElementById('psb-schedule').textContent = a.schedule||'—';
+  document.getElementById('psb-last').textContent = _panelStats[a.id]?.last||'—';
+  document.getElementById('psb-runs').textContent = _panelStats[a.id]?.runs||'—';
+  document.getElementById('panel-desc').textContent = a.role;
+  document.getElementById('panel-sources').innerHTML = a.sources.map(s=>`<span class="psrc">${SOURCES[s]?.label||s}</span>`).join('');
+  const actions = document.getElementById('panel-actions');
+  if (a.live && a.endpoint) {
+    actions.innerHTML = `<button class="panel-run-btn" id="run-btn-${a.id}" onclick="runAgent('${a.id}')">▶ Run ${a.name.replace(/^The /,'')} Now</button>`;
+  } else if (!a.live) {
+    actions.innerHTML = `<div class="panel-planned-note"><strong>In Development</strong><br>This agent is on the roadmap. When wired, it will appear here with a Run Now button and full chat support.</div>`;
+  }
+  // reset to overview tab
+  panelTab('overview', document.querySelector('.panel-tab.on'));
+  document.querySelectorAll('.panel-tab').forEach((t,i)=>{ t.classList.toggle('on',i===0); });
+  document.getElementById('panel-overlay').classList.add('open');
+  document.getElementById('slide-panel').classList.add('open');
+  loadPanelLogs(a.id);
+}
+
+function closePanel(){
+  document.getElementById('panel-overlay').classList.remove('open');
+  document.getElementById('slide-panel').classList.remove('open');
+  _currentAgent = null;
+}
+
+function panelTab(tab, btn){
+  ['overview','chat','logs'].forEach(t=>{
+    document.getElementById('ptab-'+t).style.display = t===tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.panel-tab').forEach(b=>b.classList.remove('on'));
+  if (btn) btn.classList.add('on');
+  const chatWrap = document.getElementById('chat-input-wrap');
+  chatWrap.style.display = tab==='chat' ? 'flex' : 'none';
+  if (tab==='chat') initChat();
+}
+
+function initChat(){
+  const msgs = document.getElementById('chat-messages');
+  if (msgs.innerHTML) return;
+  const a = _currentAgent;
+  if (!a) return;
+  msgs.innerHTML = `<div class="chat-msg agent"><strong>${a.name}</strong>I'm ${a.name}. ${a.live?"I'm currently active and running on schedule. What do you need?":"I'm not wired yet, but you can ask me what I'll do when I'm live."}</div>`;
+}
+
+async function runAgent(agentId){
+  const a = AGENTS.find(x=>x.id===agentId);
+  if (!a || !a.endpoint) return;
+  const btn = document.getElementById('run-btn-'+agentId);
+  if (!btn) return;
+  btn.disabled=true; btn.textContent='Running...';
+  try {
+    const r = await fetch(a.endpoint, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-Admin-Token': window.ADMIN_TOKEN||''},
+      body:JSON.stringify({manual:true})
+    });
+    const data = await r.json().catch(()=>({success:r.ok}));
+    btn.textContent = r.ok ? '✓ Triggered — check logs' : '⚠ Error — check console';
+    btn.style.background = r.ok ? '#1a5c2a' : '#5c1a1a';
+    setTimeout(()=>{ btn.disabled=false; btn.textContent=`▶ Run ${a.name.replace(/^The /,'')} Now`; btn.style.background=''; }, 4000);
+    if (r.ok) { setTimeout(()=>loadPanelLogs(agentId), 3000); }
+  } catch(e){
+    btn.textContent='⚠ Network Error'; btn.disabled=false;
+    setTimeout(()=>{ btn.textContent=`▶ Run ${a.name.replace(/^The /,'')} Now`; }, 3000);
+  }
+}
+
+async function sendChat(){
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg || !_currentAgent) return;
+  input.value='';
+  const msgs = document.getElementById('chat-messages');
+  msgs.innerHTML += `<div class="chat-msg user">${msg}</div>`;
+  msgs.innerHTML += `<div class="chat-msg agent thinking" id="thinking-msg"><strong>${_currentAgent.name}</strong>Thinking...</div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  document.getElementById('chat-send').disabled = true;
+  try {
+    const r = await fetch('/.netlify/functions/agent-hq-chat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ agent_id:_currentAgent.id, message:msg, agent_name:_currentAgent.name, agent_role:_currentAgent.role })
+    });
+    const data = await r.json().catch(()=>({reply:'Connection error. Chat function not deployed yet.'}));
+    document.getElementById('thinking-msg').remove();
+    msgs.innerHTML += `<div class="chat-msg agent"><strong>${_currentAgent.name}</strong>${data.reply||data.message||'No response.'}</div>`;
+  } catch(e){
+    document.getElementById('thinking-msg').remove();
+    msgs.innerHTML += `<div class="chat-msg agent"><strong>${_currentAgent.name}</strong>Chat function not deployed yet. Add <code>agent-hq-chat.js</code> to netlify/functions/ to enable this.</div>`;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+  document.getElementById('chat-send').disabled = false;
+}
+
+function chatKeydown(e){
+  if (e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendChat(); }
+}
+
+async function loadPanelLogs(agentId){
+  const list = document.getElementById('panel-logs-list');
+  list.innerHTML = '<div class="logs-empty">Loading logs...</div>';
+  try {
+    if (typeof window.SUPABASE_URL === 'undefined'){
+      list.innerHTML = mockLogsHTML();
+      return;
+    }
+    const SB=window.SUPABASE_URL, KEY=window.SUPABASE_ANON_KEY;
+    const r = await fetch(`${SB}/rest/v1/agent_logs?agent_id=eq.${agentId}&order=created_at.desc&limit=15&select=status,message,created_at`, {
+      headers:{ apikey:KEY, Authorization:`Bearer ${KEY}` }
+    });
+    if (!r.ok){ list.innerHTML=mockLogsHTML(); return; }
+    const logs = await r.json();
+    const fmt = iso => new Date(iso).toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    list.innerHTML = logs.length
+      ? logs.map(l=>`<div class="log-item"><span class="log-status ${l.status==='success'?'log-ok':l.status==='error'?'log-err':'log-info'}">${l.status||'info'}</span><div class="log-msg">${l.message||'Agent ran'}</div><div class="log-time">${fmt(l.created_at)}</div></div>`).join('')
+      : `<div class="logs-empty">No logs yet for this agent.</div>`;
+  } catch(e){ list.innerHTML=mockLogsHTML(); }
+}
+
+function mockLogsHTML(){
+  return [
+    {s:'success',m:'Agent ran successfully — 1 post generated and queued',t:'Today 9:03am'},
+    {s:'success',m:'Agent ran successfully — 2 posts generated',t:'Yesterday 9:01am'},
+    {s:'error',m:'API rate limit hit — will retry next scheduled run',t:'Apr 7 9:04am'},
+    {s:'success',m:'Agent ran successfully',t:'Apr 6 9:00am'},
+  ].map(l=>`<div class="log-item"><span class="log-status ${l.s==='success'?'log-ok':'log-err'}">${l.s}</span><div class="log-msg">${l.m}</div><div class="log-time">${l.t}</div></div>`).join('');
+}
+
+// ════════════════════════════════════════════
+// ONBOARDING TOUR
+// ════════════════════════════════════════════
+const TOUR_STEPS = [
+  { icon:'🧠', title:'Welcome to <span>NUI HQ</span>', body:'This is your entire AI operation in one screen. <strong>15 agents</strong> mapped, tracked, and controlled from here. No more jumping between Netlify, Supabase, and Claude windows.' },
+  { icon:'⌬', title:'The <span>Brain View</span>', body:'Every agent and data connection mapped as a living network. <strong>Red nodes = active right now.</strong> Hover any agent node to see what it does. <strong>Click it</strong> to open the full control panel.' },
+  { icon:'▦', title:'The <span>Fleet View</span>', body:'All 15 agents organized by department — Marketing Wing, Front Office, Sales, and more. <strong>Click any card</strong> to open the agent panel with Run Now, chat, and logs.' },
+  { icon:'⌂', title:'The <span>HQ Mode</span>', body:'Switch to HQ to see the live activity feed, your <strong>approval inbox</strong> (content waiting on you), and quick access to every agent. Left rail shows your workspace — NUI plus all client deployments.' },
+  { icon:'→', title:'The <span>Agent Panel</span>', body:'Click any agent anywhere to open its control panel. You get: <strong>Overview</strong> with a Run Now button, <strong>Chat</strong> to talk directly to the agent, and <strong>Logs</strong> to see every run. You\'re in control.' },
+];
+let _tourIdx = 0;
+
+function startTour(){
+  _tourIdx = 0;
+  renderTour();
+  document.getElementById('tour').classList.add('open');
+}
+
+function renderTour(){
+  const s = TOUR_STEPS[_tourIdx];
+  document.getElementById('tour-step-label').textContent = `Step ${_tourIdx+1} of ${TOUR_STEPS.length}`;
+  document.getElementById('tour-icon').textContent = s.icon;
+  document.getElementById('tour-title').innerHTML = s.title;
+  document.getElementById('tour-body').innerHTML = s.body;
+  document.getElementById('tour-next-btn').textContent = _tourIdx===TOUR_STEPS.length-1 ? "Let's Go →" : "Next →";
+  const dots = document.getElementById('tour-dots');
+  dots.innerHTML = TOUR_STEPS.map((_, i)=>`<div class="tour-dot ${i===_tourIdx?'active':''}" onclick="jumpTour(${i})"></div>`).join('');
+}
+
+function nextTour(){
+  if (_tourIdx < TOUR_STEPS.length-1){ _tourIdx++; renderTour(); }
+  else closeTour();
+}
+
+function jumpTour(i){ _tourIdx=i; renderTour(); }
+
+function closeTour(){
+  document.getElementById('tour').classList.remove('open');
+  localStorage.setItem('nui-hq-toured','1');
+}
+
+// ════════════════════════════════════════════
+// LIVE DATA — Supabase stats
+// ════════════════════════════════════════════
+async function loadStats(){
+  try {
+    if (typeof window.SUPABASE_URL === 'undefined') return;
+    const SB=window.SUPABASE_URL, KEY=window.SUPABASE_ANON_KEY;
+    const since = new Date(Date.now()-7*864e5).toISOString();
+    const r = await fetch(`${SB}/rest/v1/agent_logs?created_at=gte.${since}&select=agent_id,status,created_at`, {
+      headers:{ apikey:KEY, Authorization:`Bearer ${KEY}` }
+    });
+    if (!r.ok) return;
+    const logs = await r.json();
+    document.getElementById('s-runs').textContent = logs.length;
+    document.getElementById('bs-runs').textContent = logs.length;
+    const by = {};
+    logs.forEach(l=>{ (by[l.agent_id]||={count:0,last:null}); by[l.agent_id].count++; if(!by[l.agent_id].last||l.created_at>by[l.agent_id].last) by[l.agent_id].last=l.created_at; });
+    const fmt = iso => { if(!iso) return '—'; const h=Math.floor((Date.now()-new Date(iso))/36e5); if(h<1) return 'just now'; if(h<24) return h+'h ago'; return Math.floor(h/24)+'d ago'; };
+    _panelStats = {};
+    AGENTS.forEach(a=>{ const d=by[a.id]||{count:0,last:null}; _panelStats[a.id]={last:fmt(d.last),runs:d.count}; const last=document.getElementById(`m-${a.id}-last`); const runs=document.getElementById(`m-${a.id}-runs`); if(last) last.textContent=fmt(d.last); if(runs) runs.textContent=d.count; });
+    const dr = await fetch(`${SB}/rest/v1/content_drafts?status=eq.pending_approval&select=id`, { headers:{ apikey:KEY, Authorization:`Bearer ${KEY}`, Prefer:'count=exact' } });
+    if (dr.ok){ const ct=dr.headers.get('content-range'); if(ct) document.getElementById('s-drafts').textContent=ct.split('/')[1]||'0'; }
+  } catch(e){ console.warn('stats load failed',e); }
+}
+
+// ════════════════════════════════════════════
+// BOOT
+// ════════════════════════════════════════════
+buildFleet();
+buildBrain();
+buildHQAgents();
+window.addEventListener('load', ()=>{
+  loadStats();
+  if (!localStorage.getItem('nui-hq-toured')) setTimeout(startTour, 800);
+});
+window.addEventListener('resize', ()=>{ document.getElementById('brain-svg').innerHTML=''; buildBrain(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closePanel(); closeTour(); } });
+</script>
+</body></html>
