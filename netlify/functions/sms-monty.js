@@ -386,6 +386,27 @@ exports.handler = async function(event) {
     }
     if (!ANTHROPIC_API_KEY) return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'API key not configured' }) };
 
+    // ── Block automated/system messages — do NOT fire AI on these ────────────
+    const AUTOMATED_PATTERNS = [
+      /stripe/i,
+      /reply\s+stop\s+to\s+cancel/i,
+      /msg&data\s+rates/i,
+      /msg\s+frequency\s+varies/i,
+      /support\.stripe\.com/i,
+      /paypal/i,
+      /twilio/i,
+      /this\s+is\s+an?\s+automated/i,
+      /do\s+not\s+reply/i,
+      /no[\s-]?reply/i,
+      /verification\s+code/i,
+      /your\s+(otp|code)\s+is/i,
+    ];
+    const isAutomated = AUTOMATED_PATTERNS.some(p => p.test(incomingMessage));
+    if (isAutomated) {
+      console.log(`[Monty] Blocked automated message from ${fromNumber}: "${incomingMessage.slice(0,60)}"`);
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'automated_message_blocked' }) };
+    }
+
     console.log(`📱 SMS from ${fromNumber}: "${incomingMessage}"`);
     const cleanPhone = normalizePhone(fromNumber);
     const extractedName = extractNameFromText(incomingMessage);
