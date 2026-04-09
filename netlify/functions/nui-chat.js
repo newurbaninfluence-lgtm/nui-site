@@ -1,5 +1,5 @@
-// nui-chat.js — Sona AI Web Chat for New Urban Influence
-// Sona is the website-facing AI. Monty handles SMS. They share the same CRM.
+// nui-chat.js — Monty AI Web Chat for New Urban Influence
+// Monty handles both the website chatbox and SMS. Same brain, same CRM.
 // Env vars: ANTHROPIC_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_KEY,
 //           OPENPHONE_API_KEY, OPENPHONE_PHONE_NUMBER
 
@@ -9,9 +9,9 @@ const CALENDLY_URL = 'https://calendly.com/newurbaninfluence';
 const BOOKING_URL  = 'https://newurbaninfluence.com/#book';
 const PAYMENT_URL  = 'https://newurbaninfluence.com/app/#portal';
 
-const SYSTEM_PROMPT = `You are Sona, the AI representative for New Urban Influence (NUI) — a Detroit-based agency that builds Digital Headquarters, AI automation systems, and brand infrastructure for urban entrepreneurs and businesses. You live on the NUI website and handle incoming visitors: qualifying leads, answering questions, booking calls, and processing orders.
+const SYSTEM_PROMPT = `You are Monty, the AI representative for New Urban Influence (NUI) — a Detroit-based agency that builds Digital Headquarters, AI automation systems, and brand infrastructure for urban entrepreneurs and businesses. You live on the NUI website and handle incoming visitors: qualifying leads, answering questions, booking calls, and processing orders.
 
-You work alongside Monty — NUI's SMS AI. When a visitor shares their phone number, let them know Monty will follow up via text. You and Monty share the same CRM so the team always has full context.
+You are the same Monty that follows up via SMS. When a visitor shares their phone number, let them know you'll follow up via text too.
 
 ═══════════════════════════════════════════
 PERSONALITY & VOICE
@@ -30,7 +30,7 @@ SELLING PHILOSOPHY — NEPQ
 You are a problem finder, not a pusher. Help visitors discover their own pain. Be curious, calm, and detached from the outcome. One question per message. Always wait for their reply before moving forward.
 
 STAGE 1 — CONNECTION (first message):
-"Hey! This is Sona with New Urban Influence. Good to see you here — what brings you by today?"
+"Hey! This is Monty with New Urban Influence. Good to see you here — what brings you by today?"
 → STOP. Wait for reply. Do NOT mention services yet.
 
 STAGE 2 — SITUATIONAL (after they respond):
@@ -187,16 +187,16 @@ WHAT HAPPENS AFTER PAYMENT (share this when relevant):
 5. Everything is logged in your client portal at ${PAYMENT_URL}
 
 ═══════════════════════════════════════════
-WORKING WITH MONTY
+HANDLING YOUR PHONE NUMBER
 ═══════════════════════════════════════════
-Monty is NUI's SMS AI. When a visitor shares their phone number:
-"Perfect — I've got that. Our SMS assistant Monty will follow up with you on that number. He'll have full context of our conversation so you won't have to repeat yourself."
+When a visitor shares their phone number:
+"Perfect — I've got that. I'll follow up with you on that number via text too so you have everything in one place."
 
 If someone says they already texted NUI:
-"Yes — that's Monty, our SMS rep. I'm Sona, his counterpart on the website. We share the same notes so I already have context on your conversation."
+"Yeah that's me — same Monty. I'm on the website and on SMS. I already have the thread so you don't have to repeat yourself."
 
 If they prefer to continue via text:
-"Totally — text (248) 487-8747 and Monty will pick right up. He already knows what we talked about."
+"Totally — text (248) 487-8747 and I'll pick right up where we left off."
 
 ═══════════════════════════════════════════
 LEAD CAPTURE
@@ -231,7 +231,7 @@ Location: Detroit, Michigan. Serve businesses nationwide.
 Slogan: "Designing Culture. Building Influence."`;
 
 // ── Lead extraction prompt ──
-const EXTRACT_PROMPT = `Analyze this conversation between a website visitor and Sona (NUI's web AI). Extract any contact information and assess lead quality.
+const EXTRACT_PROMPT = `Analyze this conversation between a website visitor and Monty (NUI's web AI). Extract any contact information and assess lead quality.
 
 Return ONLY valid JSON, no markdown:
 {
@@ -280,7 +280,7 @@ exports.handler = async function(event) {
       return { statusCode: 500, headers: corsHeaders(), body: JSON.stringify({ error: 'API key not configured' }) };
     }
 
-    // Generate Sona's reply
+    // Generate Monty's reply
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -298,7 +298,7 @@ exports.handler = async function(event) {
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error('[Sona] Claude API error:', response.status, errText);
+      console.error('[Monty] Claude API error:', response.status, errText);
       return { statusCode: 502, headers: corsHeaders(), body: JSON.stringify({ error: 'AI service unavailable' }) };
     }
 
@@ -307,11 +307,11 @@ exports.handler = async function(event) {
 
     // Non-blocking: log + extract lead
     const fullMessages = [...messages, { role: 'assistant', content: reply }];
-    logChat(sessionId, messages, reply).catch(e => console.warn('[Sona] Chat log failed:', e));
+    logChat(sessionId, messages, reply).catch(e => console.warn('[Monty] Chat log failed:', e));
 
     const userMsgCount = messages.filter(m => m.role === 'user').length;
     if (userMsgCount >= 2) {
-      extractAndSaveLead(apiKey, fullMessages, sessionId).catch(e => console.warn('[Sona] Lead extract failed:', e));
+      extractAndSaveLead(apiKey, fullMessages, sessionId).catch(e => console.warn('[Monty] Lead extract failed:', e));
     }
 
     return {
@@ -321,7 +321,7 @@ exports.handler = async function(event) {
     };
 
   } catch (err) {
-    console.error('[Sona] Function error:', err);
+    console.error('[Monty] Function error:', err);
     return { statusCode: 500, headers: corsHeaders(), body: JSON.stringify({ error: 'Internal error' }) };
   }
 };
@@ -336,7 +336,7 @@ async function extractAndSaveLead(apiKey, messages, sessionId) {
 
   const convoText = messages
     .filter(m => m.role === 'user' || m.role === 'assistant')
-    .map(m => `${m.role === 'user' ? 'Visitor' : 'Sona'}: ${m.content}`)
+    .map(m => `${m.role === 'user' ? 'Visitor' : 'Monty'}: ${m.content}`)
     .join('\n');
 
   const extractRes = await fetch('https://api.anthropic.com/v1/messages', {
@@ -398,7 +398,7 @@ async function extractAndSaveLead(apiKey, messages, sessionId) {
     if (lead.budget_range)                          updates.budget_range    = lead.budget_range;
     if (lead.timeline)                              updates.timeline        = lead.timeline;
     if (lead.intent_score > (existing.lead_score || 0)) updates.lead_score = lead.intent_score;
-    if (lead.qualified && !existing.sona_qualified) updates.sona_qualified  = true;
+    if (lead.qualified && !existing.monty_qualified) updates.monty_qualified  = true;
     if (lead.qualified && existing.status === 'new_lead') updates.status    = 'qualified';
     updates.last_activity_at = new Date().toISOString();
 
@@ -413,9 +413,9 @@ async function extractAndSaveLead(apiKey, messages, sessionId) {
       phone:            phone           || null,
       company:          lead.company    || null,
       industry:         lead.industry   || null,
-      source:           'sona_chat',
+      source:           'monty_chat',
       status:           lead.qualified ? 'qualified' : 'new_lead',
-      sona_qualified:   lead.qualified  || false,
+      monty_qualified:   lead.qualified  || false,
       lead_score:       lead.intent_score || 3,
       service_interest: lead.service_interest || null,
       budget_range:     lead.budget_range    || null,
@@ -427,18 +427,18 @@ async function extractAndSaveLead(apiKey, messages, sessionId) {
 
     if (created) {
       contactId = created.id;
-      console.log('[Sona] New lead created:', created.id, lead.first_name);
+      console.log('[Monty] New lead created:', created.id, lead.first_name);
     }
-    if (error) console.warn('[Sona] Lead insert error:', error.message);
+    if (error) console.warn('[Monty] Lead insert error:', error.message);
   }
 
   // Log activity
   if (contactId) {
     await supabase.from('activity_log').insert({
       contact_id: contactId,
-      type:       'sona_chat',
+      type:       'monty_chat',
       direction:  'inbound',
-      content:    lead.summary || 'Chat via Sona web AI',
+      content:    lead.summary || 'Chat via Monty web AI',
       metadata: {
         session_id:       sessionId,
         qualified:        lead.qualified,
@@ -460,7 +460,7 @@ async function extractAndSaveLead(apiKey, messages, sessionId) {
       client_id:  contactId,
       metadata: {
         session_id:   sessionId,
-        handler:      'sona_chat',
+        handler:      'monty_chat',
         intent_score: lead.intent_score,
         wants_call:   lead.wants_call,
         wants_order:  lead.wants_order
