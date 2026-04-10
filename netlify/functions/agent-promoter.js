@@ -57,28 +57,31 @@ let _fontDataInter = null;
 let _logoBase64 = null;
 
 async function loadAssets() {
-  const fs = await import('fs');
-  const path = await import('path');
-  const { default: nodeFetch } = await import('node-fetch');
+  const fs = (await import('fs')).default || (await import('fs'));
+  const path = (await import('path')).default || (await import('path'));
 
-  // Load NUI logo from filesystem
-  const logoPath = path.join(process.cwd(), 'logo-nav-cropped.png');
-  if (fs.existsSync(logoPath)) {
-    const buf = fs.readFileSync(logoPath);
-    _logoBase64 = `data:image/png;base64,${buf.toString('base64')}`;
+  // Logo — try NUI_LOGO_URL env first, fall back to bundled file
+  const logoUrl = process.env.NUI_LOGO_URL;
+  if (logoUrl && !_logoBase64) {
+    try {
+      const { default: nodeFetch } = await import('node-fetch');
+      const r = await nodeFetch(logoUrl);
+      const buf = Buffer.from(await r.arrayBuffer());
+      _logoBase64 = 'data:image/png;base64,' + buf.toString('base64');
+    } catch(e) { console.warn('Logo fetch failed:', e.message); }
   }
 
-  // Load fonts from Google Fonts
+  // Fonts — load from bundled woff2 files in functions/fonts/
   if (!_fontDataSyne) {
     try {
-      const r = await nodeFetch('https://fonts.gstatic.com/s/syne/v22/8vIS7w4qzmVxsWxjBZRjr0FKM_04uQ.woff');
-      _fontDataSyne = await r.arrayBuffer();
+      const fontPath = path.join(__dirname, 'fonts', 'syne-800.woff2');
+      _fontDataSyne = fs.readFileSync(fontPath).buffer;
     } catch(e) { console.warn('Syne font load failed:', e.message); }
   }
   if (!_fontDataInter) {
     try {
-      const r = await nodeFetch('https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2');
-      _fontDataInter = await r.arrayBuffer();
+      const fontPath = path.join(__dirname, 'fonts', 'inter-400.woff2');
+      _fontDataInter = fs.readFileSync(fontPath).buffer;
     } catch(e) { console.warn('Inter font load failed:', e.message); }
   }
 }
