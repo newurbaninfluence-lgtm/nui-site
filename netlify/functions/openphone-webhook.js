@@ -183,7 +183,7 @@ async function ensureContact(phone, source) {
 
 // ── Event Handlers ────────────────────────────────────────────────
 
-async function handleMessageReceived(obj, rawPayload) {
+async function handleMessageReceived(obj) {
   const phone = obj.from;
   const contact = await ensureContact(phone, 'quo_text');
   if (!contact) return { action: 'message_received_no_phone' };
@@ -193,14 +193,7 @@ async function handleMessageReceived(obj, rawPayload) {
   await logCommunication(contact.id, 'sms', 'inbound', obj.body || '', msgMeta);
   await touchContact(contact.id);
 
-  // Fire Monty AI reply — async, don't await so we return 200 to OpenPhone fast
-  const siteUrl = process.env.URL || 'https://newurbaninfluence.com';
-  fetch(`${siteUrl}/.netlify/functions/sms-monty`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: rawPayload
-  }).catch(e => console.warn('[NUI] sms-monty trigger failed:', e.message));
-
+  // NOTE: Monty reply is handled by monty-sms webhook only — do NOT fire here
   return { action: 'message_received', contactId: contact.id };
 }
 
@@ -406,7 +399,7 @@ exports.handler = async (event) => {
 
     switch (eventType) {
       case 'message.received':
-        result = await handleMessageReceived(obj, event.body);
+        result = await handleMessageReceived(obj);
         break;
       case 'message.delivered':
         result = await handleMessageDelivered(obj);
