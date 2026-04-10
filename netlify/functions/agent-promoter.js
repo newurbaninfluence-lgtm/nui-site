@@ -233,24 +233,27 @@ async function generateCarouselBuffers(data, pillar, fonts) {
   return buffers;
 }
 
-// ── CLOUDINARY UPLOADER ──────────────────────────────────────
-async function uploadToCloudinary(buffer, filename) {
+// -- SUPABASE STORAGE UPLOADER --
+async function uploadToStorage(buffer, filename) {
   const { default: nodeFetch } = await import('node-fetch');
-  const FormData = (await import('form-data')).default;
-  const cloud = process.env.CLOUDINARY_CLOUD_NAME;
-  const preset = process.env.CLOUDINARY_UPLOAD_PRESET || 'nui_carousel';
-  if (!cloud) throw new Error('CLOUDINARY_CLOUD_NAME not set');
-
-  const form = new FormData();
-  form.append('file', buffer, { filename: `${filename}.png`, contentType: 'image/png' });
-  form.append('upload_preset', preset);
-  form.append('folder', 'nui-carousel');
-
-  const r = await nodeFetch(`https://api.cloudinary.com/v1_1/${cloud}/image/upload`, { method: 'POST', body: form });
-  const d = await r.json();
-  if (!r.ok) throw new Error(d.error?.message || 'Cloudinary upload failed');
-  return d.secure_url;
+  const SB_URL = process.env.SUPABASE_URL;
+  const SB_KEY = process.env.SUPABASE_SERVICE_KEY;
+  const bucket = 'carousel-images';
+  const path   = filename + '.png';
+  const r = await nodeFetch(SB_URL + '/storage/v1/object/' + bucket + '/' + path, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Content-Type': 'image/png',
+      'x-upsert': 'true',
+    },
+    body: buffer,
+  });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || d.message || 'Storage upload failed: ' + r.status);
+  return SB_URL + '/storage/v1/object/public/' + bucket + '/' + path;
 }
+
 
 // ── INSTAGRAM CAROUSEL POSTER ────────────────────────────────
 async function postInstagramCarousel(caption, imageUrls) {
@@ -404,11 +407,11 @@ exports.handler = async (event) => {
     // 3. Render all 10 slides to PNG buffers
     const buffers = await generateCarouselBuffers(carouselData, pillar, fonts);
 
-    // 4. Upload all slides to Cloudinary
+    // 4. Upload all slides to Supabase Storage
     const timestamp = Date.now();
     const imageUrls = [];
     for (let i = 0; i < buffers.length; i++) {
-      const url = await uploadToCloudinary(buffers[i], `nui-carousel-${timestamp}-slide-${i+1}`);
+      const url = await uploadToStorage(buffers[i], `nui-carousel-${timestamp}-slide-${i+1}`);
       imageUrls.push(url);
     }
 
