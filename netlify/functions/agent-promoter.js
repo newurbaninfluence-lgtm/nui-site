@@ -132,46 +132,62 @@ Return ONLY the post text. No labels, no quotes, no explanation.`;
 }
 
 
-async function getPexelsImages(pillar, count = 4) {
-  if (!PEXELS_KEY) return [];
-  const queries = {
-    digital_hq: 'modern office digital workspace detroit entrepreneur',
-    digital_staff: 'AI technology phone business automation',
-    digital_promotion_team: 'city marketing billboard detroit urban',
-    blueprint: 'brand identity logo design creative agency',
-    publicist: 'press feature magazine editorial detroit',
-    event_team: 'vendor market detroit event crowd',
-    client_win: 'business success growth detroit entrepreneur',
-    truth_bomb: 'detroit skyline urban entrepreneur hustle'
-  };
-  const q = encodeURIComponent(queries[pillar.id] || 'detroit business branding');
-  try {
-    const r = await fetch(`https://api.pexels.com/v1/search?query=${q}&per_page=15&orientation=square`, {
-      headers: { 'Authorization': PEXELS_KEY }
-    });
-    const d = await r.json();
-    const photos = (d.photos || []).slice(0, 15);
-    if (!photos.length) return [];
-    const CLOUDINARY_CLOUD = process.env.CLOUDINARY_CLOUD_NAME;
-    // Pick unique photos for each slide
-    const picked = [];
-    const used = new Set();
-    while (picked.length < count && used.size < photos.length) {
-      const idx = Math.floor(Math.random() * photos.length);
-      if (used.has(idx)) continue;
-      used.add(idx);
-      const rawUrl = photos[idx].src?.large2x || photos[idx].src?.large;
-      if (!rawUrl) continue;
-      if (CLOUDINARY_CLOUD) {
-        const encodedUrl = encodeURIComponent(rawUrl);
-        const t = ['w_1080,h_1080,c_fill,g_center','e_brightness:-25','l_text:Arial_36_bold:NEW%20URBAN%20INFLUENCE,co_white,g_south_west,x_210,y_90','l_text:Arial_22:newurbaninfluence.com,co_rgb:D90429,g_south_west,x_210,y_52','l_text:Arial_24_bold:Detroit%20%7C%20313,co_white,g_south_east,x_30,y_60','q_auto,f_jpg'].join('/');
-        picked.push(`https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/fetch/${t}/${encodedUrl}`);
-      } else {
-        picked.push(rawUrl);
-      }
+// Generate text-only branded carousel slides via Cloudinary
+// Each slide = solid dark background + NUI branding + post copy chunk
+function buildTextSlides(rawCopy, pillar) {
+  const CLOUD = process.env.CLOUDINARY_CLOUD_NAME;
+  if (!CLOUD) return [];
+
+  // Split the post into logical chunks for slides
+  const lines = rawCopy.split('\n').map(l => l.trim()).filter(Boolean);
+
+  // Slide 1: Hook (first line) — large, bold, centered
+  // Slide 2-3: Body (middle lines grouped)
+  // Slide 4: CTA + branding
+
+  const chunks = [];
+  if (lines.length > 0) chunks.push(lines[0]); // hook
+  if (lines.length > 1) {
+    const mid = lines.slice(1, -2);
+    if (mid.length > 0) {
+      // Group middle lines into 1-2 slides of ~3 lines each
+      chunks.push(mid.slice(0, 3).join(' '));
+      if (mid.length > 3) chunks.push(mid.slice(3, 6).join(' '));
     }
-    return picked;
-  } catch (e) { console.warn('Pexels failed:', e.message); return []; }
+  }
+  // Last slide: CTA line + "newurbaninfluence.com"
+  const ctaLine = lines[lines.length - 1] || 'Build Different. Detroit.';
+  chunks.push(ctaLine);
+
+  return chunks.slice(0, 4).map((chunk, i) => {
+    const isHook = i === 0;
+    const isCTA = i === chunks.length - 1;
+
+    // Encode text safely for Cloudinary URL
+    const safeText = chunk
+      .replace(/[,\/]/g, ' ')
+      .replace(/[^a-zA-Z0-9 !?.'\-]/g, '')
+      .trim()
+      .slice(0, 120);
+
+    const encodedText = encodeURIComponent(safeText);
+    const fontSize = isHook ? 52 : 42;
+    const textColor = isCTA ? 'rgb:D90429' : 'white';
+
+    // Build Cloudinary transformation:
+    // solid black 1080x1080 base → NUI red accent bar → slide text → footer branding
+    const transforms = [
+      'w_1080,h_1080,c_fill,b_rgb:0a0a0a', // black canvas
+      'l_fetch:aHR0cHM6Ly9uZXd1cmJhbmluZmx1ZW5jZS5jb20vaWNvbnMvaWNvbi0xOTIucG5n,w_80,g_north_west,x_40,y_40', // NUI icon top-left
+      `l_text:Arial_${fontSize}_bold:${encodedText},co_${textColor},w_940,c_fit,g_center`, // main text
+      'l_text:Arial_26_bold:NEW%20URBAN%20INFLUENCE,co_white,g_south_west,x_40,y_72',
+      'l_text:Arial_20:newurbaninfluence.com,co_rgb:D90429,g_south_west,x_40,y_42',
+      'l_text:Arial_22:Detroit%20%7C%20313,co_rgb:888888,g_south_east,x_40,y_42',
+      'q_auto,f_jpg'
+    ].join('/');
+
+    return `https://res.cloudinary.com/${CLOUD}/image/upload/${transforms}/sample`; // 'sample' is a base public ID placeholder — Cloudinary renders text on it
+  });
 }
 
 async function postFacebook(caption, imageUrl) {
@@ -275,9 +291,9 @@ exports.handler = async (event) => {
     const rawCopy = await generatePost(pillar);
     if (!rawCopy) throw new Error('Sonnet returned empty content');
     const caption = `${rawCopy}\n\n${pillar.hashtags}`;
-    const images = await getPexelsImages(pillar, 4);
-    const imageUrl = images[0] || null;
-    const extraImages = images.slice(1);
+    const slides = buildTextSlides(rawCopy, pillar);
+    const imageUrl = slides[0] || null;
+    const extraImages = slides.slice(1);
     const [fbResult, igResult, gbpResult] = await Promise.all([
       postFacebook(caption, imageUrl),
       postInstagram(caption, imageUrl, extraImages),
