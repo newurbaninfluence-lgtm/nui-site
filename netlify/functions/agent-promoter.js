@@ -132,8 +132,8 @@ Return ONLY the post text. No labels, no quotes, no explanation.`;
 }
 
 
-async function getPexelsImage(pillar) {
-  if (!PEXELS_KEY) return null;
+async function getPexelsImages(pillar, count = 4) {
+  if (!PEXELS_KEY) return [];
   const queries = {
     digital_hq: 'modern office digital workspace detroit entrepreneur',
     digital_staff: 'AI technology phone business automation',
@@ -150,19 +150,28 @@ async function getPexelsImage(pillar) {
       headers: { 'Authorization': PEXELS_KEY }
     });
     const d = await r.json();
-    const photos = d.photos || [];
-    if (!photos.length) return null;
-    const pick = photos[Math.floor(Math.random() * Math.min(photos.length, 8))];
-    const rawUrl = pick.src?.large2x || pick.src?.large || null;
-    if (!rawUrl) return null;
+    const photos = (d.photos || []).slice(0, 15);
+    if (!photos.length) return [];
     const CLOUDINARY_CLOUD = process.env.CLOUDINARY_CLOUD_NAME;
-    if (CLOUDINARY_CLOUD) {
-      const encodedUrl = encodeURIComponent(rawUrl);
-      const t = ['w_1080,h_1080,c_fill,g_center','e_brightness:-25','l_nui-logo,w_160,g_south_west,x_30,y_64','l_text:Arial_36_bold:NEW%20URBAN%20INFLUENCE,co_white,g_south_west,x_210,y_90','l_text:Arial_22:newurbaninfluence.com,co_rgb:D90429,g_south_west,x_210,y_52','l_text:Arial_24_bold:Detroit%20%7C%20313,co_white,g_south_east,x_30,y_60','q_auto,f_jpg'].join('/');
-      return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/fetch/${t}/${encodedUrl}`;
+    // Pick unique photos for each slide
+    const picked = [];
+    const used = new Set();
+    while (picked.length < count && used.size < photos.length) {
+      const idx = Math.floor(Math.random() * photos.length);
+      if (used.has(idx)) continue;
+      used.add(idx);
+      const rawUrl = photos[idx].src?.large2x || photos[idx].src?.large;
+      if (!rawUrl) continue;
+      if (CLOUDINARY_CLOUD) {
+        const encodedUrl = encodeURIComponent(rawUrl);
+        const t = ['w_1080,h_1080,c_fill,g_center','e_brightness:-25','l_text:Arial_36_bold:NEW%20URBAN%20INFLUENCE,co_white,g_south_west,x_210,y_90','l_text:Arial_22:newurbaninfluence.com,co_rgb:D90429,g_south_west,x_210,y_52','l_text:Arial_24_bold:Detroit%20%7C%20313,co_white,g_south_east,x_30,y_60','q_auto,f_jpg'].join('/');
+        picked.push(`https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/fetch/${t}/${encodedUrl}`);
+      } else {
+        picked.push(rawUrl);
+      }
     }
-    return rawUrl;
-  } catch (e) { console.warn('Pexels failed:', e.message); return null; }
+    return picked;
+  } catch (e) { console.warn('Pexels failed:', e.message); return []; }
 }
 
 async function postFacebook(caption, imageUrl) {
@@ -177,8 +186,43 @@ async function postFacebook(caption, imageUrl) {
   return { success: r.ok, post_id: d.id, error: d.error?.message };
 }
 
-async function postInstagram(caption, imageUrl) {
+async function postInstagram(caption, imageUrl, extraImages = []) {
   if (!FB_TOKEN || !IG_ID || !imageUrl) return { skipped: true, reason: imageUrl ? 'no credentials' : 'no image' };
+
+  const allImages = [imageUrl, ...extraImages].filter(Boolean);
+
+  // Use carousel if we have multiple images, single post otherwise
+  if (allImages.length > 1) {
+    // Step 1: Create a media container for each image
+    const childIds = [];
+    for (const imgUrl of allImages.slice(0, 10)) { // IG max 10 slides
+      const c = await fetch(`https://graph.facebook.com/v19.0/${IG_ID}/media`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image_url: imgUrl, is_carousel_item: true, access_token: FB_TOKEN })
+      });
+      const cd = await c.json();
+      if (c.ok && cd.id) childIds.push(cd.id);
+    }
+    if (childIds.length < 2) return { success: false, error: 'Not enough carousel items created' };
+
+    // Step 2: Create carousel container
+    const car = await fetch(`https://graph.facebook.com/v19.0/${IG_ID}/media`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ media_type: 'CAROUSEL', children: childIds.join(','), caption, access_token: FB_TOKEN })
+    });
+    const card = await car.json();
+    if (!car.ok || !card.id) return { success: false, error: card.error?.message || 'carousel container failed' };
+
+    // Step 3: Publish
+    const p = await fetch(`https://graph.facebook.com/v19.0/${IG_ID}/media_publish`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ creation_id: card.id, access_token: FB_TOKEN })
+    });
+    const pd = await p.json();
+    return { success: p.ok, post_id: pd.id, type: 'carousel', slides: childIds.length, error: pd.error?.message };
+  }
+
+  // Single image fallback
   const c = await fetch(`https://graph.facebook.com/v19.0/${IG_ID}/media`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ image_url: imageUrl, caption, access_token: FB_TOKEN })
@@ -190,7 +234,7 @@ async function postInstagram(caption, imageUrl) {
     body: JSON.stringify({ creation_id: cd.id, access_token: FB_TOKEN })
   });
   const pd = await p.json();
-  return { success: p.ok, post_id: pd.id, error: pd.error?.message };
+  return { success: p.ok, post_id: pd.id, type: 'single', error: pd.error?.message };
 }
 
 async function postGBP(caption) {
@@ -231,10 +275,12 @@ exports.handler = async (event) => {
     const rawCopy = await generatePost(pillar);
     if (!rawCopy) throw new Error('Sonnet returned empty content');
     const caption = `${rawCopy}\n\n${pillar.hashtags}`;
-    const imageUrl = await getPexelsImage(pillar);
+    const images = await getPexelsImages(pillar, 4);
+    const imageUrl = images[0] || null;
+    const extraImages = images.slice(1);
     const [fbResult, igResult, gbpResult] = await Promise.all([
       postFacebook(caption, imageUrl),
-      postInstagram(caption, imageUrl),
+      postInstagram(caption, imageUrl, extraImages),
       postGBP(rawCopy)
     ]);
     const result = { success: true, pillar_id: pillar.id, caption_preview: rawCopy.slice(0, 100) + '...', image_url: imageUrl, facebook: fbResult, instagram: igResult, google_business: gbpResult, posted_at: new Date().toISOString() };

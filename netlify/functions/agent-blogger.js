@@ -146,7 +146,7 @@ exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
   try {
     const body = event.httpMethod === 'POST' ? JSON.parse(event.body || '{}') : {};
-    const autoPublish = body.auto_publish === true;
+    const autoPublish = body.auto_publish !== false; // default TRUE — always publish to site
     let topicObj = body.topic ? { topic: body.topic, category: body.category || 'Branding', keywords: body.keywords || ['Detroit branding', 'NUI agency', 'brand strategy'] } : await getNextTopic();
     const result = await generateAndSave(topicObj, autoPublish);
     await logRun(result);
