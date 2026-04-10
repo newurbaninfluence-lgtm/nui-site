@@ -20,22 +20,22 @@
 [functions."holiday-drip"]
   schedule = "0 14 * * *"
 
-# SMS drip — every 30 min (reduced from every 5 min — 288→48 runs/day)
+# SMS drip campaign — runs every 30 min during business hours
 [functions."sms-drip"]
-  schedule = "*/30 * * * *"
+  schedule = "*/5 * * * *"
 
-# Monty follow-up — 3x/day at 8am, 12pm, 5pm ET (24 runs/day → 3)
+# Monty follow-up + dormant reactivation — runs every hour
 [functions."monty-followup"]
-  schedule = "0 13,17,22 * * *"
+  schedule = "0 * * * *"
 
 # The Promoter — posts to FB, IG, GBP daily at 9am + 5pm CT (14:00 + 22:00 UTC)
-# The Promoter — twice daily: 9am + 5pm CT — unpaused, upgraded to Sonnet
 [functions."agent-promoter"]
-  schedule = "0 14,22 * * *"
+  # PAUSED 2026-03-31 — Instagram flag, resume tomorrow
+  # schedule = "0 14 * * *"
 
-# The Responder — once/day 9am ET (reviews don't need 4-hour response)
+# The Responder — smart GBP review check every 4 hours (skips if no unanswered reviews)
 [functions."agent-responder"]
-  schedule = "0 14 * * *"
+  schedule = "0 */4 * * *"
 
 # The Creator — generates weekly content batch (Sundays at 8am CT = 13:00 UTC)
 [functions."agent-creator"]
@@ -191,12 +191,6 @@
   to = "/print.html"
   status = 200
 
-# Unsubscribe page
-[[redirects]]
-  from = "/unsubscribe"
-  to = "/.netlify/functions/unsubscribe"
-  status = 200
-
 # SPA fallback — Netlify auto-routes /.netlify/functions/* before this (MUST BE LAST)
 [[redirects]]
   from = "/*"
@@ -274,7 +268,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-XSS-Protection = "1; mode=block"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(self), payment=(self)"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://js.stripe.com https://www.googletagmanager.com https://t.rb2b.com https://d.rb2b.com https://ddwl4m2hdecbv.cloudfront.net https://accounts.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https: http:; connect-src 'self' https://*.supabase.co https://api.stripe.com https://api.openphone.com https://api.anthropic.com https://api.pexels.com https://pixabay.com https://api.unsplash.com https://t.rb2b.com https://d.rb2b.com https://ddwl4m2hdecbv.cloudfront.net; frame-src https://js.stripe.com https://hooks.stripe.com; media-src 'self' blob:; object-src 'none'; base-uri 'self'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://js.stripe.com https://www.googletagmanager.com https://t.rb2b.com https://d.rb2b.com https://ddwl4m2hdecbv.cloudfront.net https://accounts.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https: http:; connect-src 'self' https://*.supabase.co https://api.stripe.com https://api.openphone.com https://api.anthropic.com https://api.pexels.com https://pixabay.com https://api.unsplash.com https://t.rb2b.com https://d.rb2b.com https://ddwl4m2hdecbv.cloudfront.net; frame-src https://js.stripe.com https://hooks.stripe.com; object-src 'none'; base-uri 'self'"
 
 # Cache static assets aggressively
 [[headers]]
@@ -329,10 +323,6 @@
   for = "/"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
-
-# Client email broadcast — daily 10am ET (warmup: 10/day, auto-ramps over weeks)
-[functions."client-email-broadcast"]
-  schedule = "0 15 * * *"
 
 # 90-day upsell trigger — runs daily at 10am ET (15:00 UTC)
 [functions."upsell-trigger"]

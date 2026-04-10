@@ -192,8 +192,6 @@ async function handleMessageReceived(obj) {
   await logActivity(contact.id, 'text', 'inbound', obj.body || '', msgMeta);
   await logCommunication(contact.id, 'sms', 'inbound', obj.body || '', msgMeta);
   await touchContact(contact.id);
-
-  // NOTE: Monty reply is handled by monty-sms webhook only — do NOT fire here
   return { action: 'message_received', contactId: contact.id };
 }
 

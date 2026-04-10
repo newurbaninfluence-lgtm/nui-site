@@ -17,11 +17,10 @@ const CALENDLY_URL = process.env.CALENDLY_URL || 'https://calendly.com/newurbani
 const ADMIN_EMAIL  = process.env.ADMIN_EMAIL  || 'newurbaninfluence@gmail.com';
 
 // ── Internal team numbers — recognized contacts, no sales mode ──
-// FAREN_PHONE and IRISH_PHONE must be set in Netlify env vars (personal mobile numbers).
-// If not set, internal-team detection is disabled (falls through to prospect flow).
-const INTERNAL_TEAM = {};
-if (process.env.FAREN_PHONE) INTERNAL_TEAM[process.env.FAREN_PHONE] = { name: 'Faren', role: 'founder', greeting: 'Hey boss 🤙' };
-if (process.env.IRISH_PHONE) INTERNAL_TEAM[process.env.IRISH_PHONE] = { name: 'Irish', role: 'wife', greeting: 'Oh hey Irish 👋' };
+const INTERNAL_TEAM = {
+  [process.env.IRISH_PHONE || '+12485551234']: { name: 'Irish', role: 'wife', greeting: 'Oh hey Irish 👋' },
+  [process.env.FAREN_PHONE || '+12485550000']: { name: 'Faren', role: 'founder', greeting: 'Hey boss 🤙' },
+};
 
 const SMS_SYSTEM_PROMPT = `You are Monty, the AI representative for New Urban Influence (NUI) — a Detroit-based agency that builds Digital Headquarters, AI automation systems, and brand infrastructure for businesses. You are the first conversation. You qualify leads, book calls, and set up Faren to close.
 
@@ -102,24 +101,6 @@ STAGE 5 — COMMITMENT:
 ═══════════════════════════════════════════
 SERVICES & PRICING (only at Stage 4+)
 ═══════════════════════════════════════════
-
-BRANDING SIGNAL DETECTION — Read these cues EARLY in conversation:
-If the visitor says ANY of these, they likely need Brand Architect FIRST before anything else:
-• "I don't have a logo" / "need a logo" → They need Brand Kit $1,500 minimum
-• "just starting my business" / "new business" / "launching soon" → Brand Kit first, then HQ
-• "I need a rebrand" / "my brand looks old/outdated/cheap" → Service Brand $4,500+
-• "nobody recognizes my brand" / "I don't look professional" → Brand Kit or Service Brand
-• "launching a new product" / "new product line" → Product Brand $5,500+
-• "I have a logo but..." (inconsistent, doesn't match, looks off) → Service Brand
-• "don't have consistent colors/fonts/look" → Brand Kit
-• "just a phone photo for my logo" / "made my logo in Canva" → Brand Kit
-
-WHEN YOU DETECT BRANDING SIGNALS:
-Ask: "Before we talk about getting you more visibility — do you feel like your brand identity is solid right now? Logo, colors, the full look?"
-→ If NO or uncertain: "That's actually the first thing we'd want to lock in. Your brand is what makes everything else work — ads, website, content. Without it, you're building on sand. We start with The Brand Architect."
-→ If YES and they have it handled: Move to Digital HQ or promotion.
-
-IMPORTANT: Brand Architect does NOT require a Digital HQ. It's a standalone service. A client can start with just a Brand Kit for $1,500 with no other commitment.
 
 BRAND ARCHITECT (Brand Identity — replaces "The Blueprint")
 Brand Kit $1,500 / Service Brand Identity $4,500+ / Product Brand Identity $5,500+
@@ -323,9 +304,7 @@ exports.handler = async function(event) {
   let agencyId = null;
   try { const b = JSON.parse(event.body || '{}'); agencyId = b.agency_id || null; } catch(e){}
   const brand = await getBrand(agencyId);
-  // NUI (no sub-agency) always uses the full NEPQ prompt with all industry routing,
-  // stage logic, and personality. buildSmsSystemPrompt is for white-label sub-accounts only.
-  const AGENCY_SYSTEM_PROMPT = agencyId ? (buildSmsSystemPrompt(brand) || SMS_SYSTEM_PROMPT) : SMS_SYSTEM_PROMPT;
+  const AGENCY_SYSTEM_PROMPT = buildSmsSystemPrompt(brand) || SMS_SYSTEM_PROMPT;
 
   try {
     const payload = JSON.parse(event.body || '{}');
@@ -333,50 +312,15 @@ exports.handler = async function(event) {
     const fromNumber = payload.data?.object?.from || payload.from || payload.sender;
     const direction  = payload.data?.object?.direction || payload.direction || 'incoming';
 
-    // Outbound team message (Faren or team manually replying from OpenPhone)
-    // Critical: we look up the client_id so this message appears in Monty's
-    // history query (which filters by client_id). Without this, Monty is blind
-    // to every human reply and loses context of the full conversation.
+    // Outbound team message — log it and exit so Monty sees it in history
     if (direction === 'outgoing' || direction === 'outbound') {
-      if (SUPABASE_URL && SUPABASE_KEY && incomingMessage) {
-        // For outbound: 'from' = NUI number, 'to' = client's number
-        const rawTo   = payload.data?.object?.to   || payload.to   || null;
-        const rawFrom = payload.data?.object?.from || payload.from || fromNumber;
-        const clientPhone = normalizePhone(rawTo || rawFrom);
-        const sbHOut = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` };
-
-        // Look up client_id by the client's phone number
-        let outboundClientId = null;
-        try {
-          const digits = clientPhone.replace(/\D/g, '').slice(-10);
-          const formats = [clientPhone, `+1${digits}`, digits, `1${digits}`];
-          const orFilter = formats.map(f => `phone.eq.${encodeURIComponent(f)}`).join(',');
-          const cRes = await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?or=(${orFilter})&select=id&limit=1`, { headers: sbHOut });
-          const rows = await cRes.json();
-          outboundClientId = rows?.[0]?.id || null;
-        } catch(e) { console.warn('[Monty] Outbound client lookup failed:', e.message); }
-
+      if (SUPABASE_URL && SUPABASE_KEY && incomingMessage && fromNumber) {
+        const toNumber = payload.data?.object?.to || payload.to || fromNumber;
         await fetch(`${SUPABASE_URL}/rest/v1/communications`, {
           method: 'POST',
-          headers: { ...sbHOut, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-          body: JSON.stringify({
-            channel: 'sms',
-            direction: 'outbound',
-            message: incomingMessage,
-            client_id: outboundClientId,
-            metadata: { to: clientPhone, from: normalizePhone(rawFrom), handler: 'team_manual' },
-            created_at: new Date().toISOString()
-          })
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ channel: 'sms', direction: 'outbound', message: incomingMessage, metadata: { to: toNumber, handler: 'team_manual' }, created_at: new Date().toISOString() })
         }).catch(() => {});
-
-        // Also update last_activity_at on the contact
-        if (outboundClientId) {
-          await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${outboundClientId}`, {
-            method: 'PATCH',
-            headers: { ...sbHOut, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-            body: JSON.stringify({ last_activity_at: new Date().toISOString() })
-          }).catch(() => {});
-        }
       }
       return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ logged: 'team_outbound' }) };
     }
@@ -385,27 +329,6 @@ exports.handler = async function(event) {
       return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Missing message or sender' }) };
     }
     if (!ANTHROPIC_API_KEY) return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'API key not configured' }) };
-
-    // ── Block automated/system messages — do NOT fire AI on these ────────────
-    const AUTOMATED_PATTERNS = [
-      /stripe/i,
-      /reply\s+stop\s+to\s+cancel/i,
-      /msg&data\s+rates/i,
-      /msg\s+frequency\s+varies/i,
-      /support\.stripe\.com/i,
-      /paypal/i,
-      /twilio/i,
-      /this\s+is\s+an?\s+automated/i,
-      /do\s+not\s+reply/i,
-      /no[\s-]?reply/i,
-      /verification\s+code/i,
-      /your\s+(otp|code)\s+is/i,
-    ];
-    const isAutomated = AUTOMATED_PATTERNS.some(p => p.test(incomingMessage));
-    if (isAutomated) {
-      console.log(`[Monty] Blocked automated message from ${fromNumber}: "${incomingMessage.slice(0,60)}"`);
-      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'automated_message_blocked' }) };
-    }
 
     console.log(`📱 SMS from ${fromNumber}: "${incomingMessage}"`);
     const cleanPhone = normalizePhone(fromNumber);
@@ -469,16 +392,7 @@ exports.handler = async function(event) {
         const createRes = await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts`, {
           method: 'POST',
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
-          body: JSON.stringify({
-            phone: cleanPhone,
-            first_name: nameParts[0] || null,
-            last_name: nameParts.slice(1).join(' ') || null,
-            source: 'inbound_sms',
-            status: 'new_lead',
-            lead_score: 3,
-            last_activity_at: new Date().toISOString(),
-            created_at: new Date().toISOString()
-          })
+          body: JSON.stringify({ phone: cleanPhone, first_name: nameParts[0] || null, last_name: nameParts.slice(1).join(' ') || null, source: 'quo_text', status: 'new_lead', lead_score: 3, last_activity_at: new Date().toISOString() })
         }).catch(() => null);
         const created = createRes ? await createRes.json() : null;
         if (Array.isArray(created) && created[0]) {
@@ -490,27 +404,21 @@ exports.handler = async function(event) {
       }
 
       // ── Fetch conversation history ────────────────────────────────────────
-      // Prefer querying by client_id (reliable). Fall back to phone-based JSONB filter.
-      const historyUrl = contactId
-        ? `${SUPABASE_URL}/rest/v1/communications?channel=eq.sms&client_id=eq.${contactId}&order=created_at.desc&limit=10`
-        : `${SUPABASE_URL}/rest/v1/communications?channel=eq.sms&or=(metadata->>from.eq.${encodeURIComponent(cleanPhone)},metadata->>to.eq.${encodeURIComponent(cleanPhone)})&order=created_at.desc&limit=10`;
-      const hRes = await fetch(historyUrl, { headers: sbHeaders });
+      const hRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/communications?channel=eq.sms&or=(metadata->>to.eq.${encodeURIComponent(cleanPhone)},metadata->>from.eq.${encodeURIComponent(cleanPhone)})&order=created_at.desc&limit=8`,
+        { headers: sbHeaders }
+      );
       const history = await hRes.json();
       if (history?.length > 0) {
-        conversationHistory = '\n\nRECENT SMS THREAD (read every line before replying — this is the full conversation):';
+        conversationHistory = '\n\nRECENT SMS THREAD (chronological — read before replying):';
         history.reverse().forEach(h => {
           const handler = h.metadata?.handler || '';
-          let who;
-          if (h.direction === 'inbound') {
-            who = 'Client';
-          } else if (handler === 'team_manual') {
-            who = 'Faren (human — NUI founder jumped in)';
-          } else {
-            who = 'Monty (you — AI)';
-          }
+          let who = h.direction === 'outbound'
+            ? (handler === 'team_manual' ? 'NUI Team (human)' : 'Monty (you)')
+            : 'Client';
           conversationHistory += `\n${who}: ${h.message || '(no content)'}`;
         });
-        conversationHistory += '\n\n[IMPORTANT: If Faren recently replied, pick up where he left off. Do NOT repeat what was already said by either Faren or Monty. Continue naturally as Monty.]';
+        conversationHistory += '\n\n[Continue naturally — do NOT repeat what was already said.]';
       }
       clientContext += conversationHistory;
     }

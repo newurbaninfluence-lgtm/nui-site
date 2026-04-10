@@ -1,5 +1,5 @@
 // stripe-webhook.js — Netlify Function
-// Handles Stripe webhook events (payments, subscriptions, failures, payment links)
+// Handles Stripe webhook events (payments, subscriptions, failures)
 // Env vars: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUPABASE_URL, SUPABASE_SERVICE_KEY
 // Email: HOSTINGER_EMAIL, HOSTINGER_PASSWORD, MAIL_FROM
 // SMS: OPENPHONE_API_KEY, OPENPHONE_PHONE_NUMBER
@@ -7,13 +7,20 @@
 const crypto = require('crypto');
 
 function verifyStripeSignature(payload, sigHeader, secret) {
-  if (!secret) { console.error('STRIPE_WEBHOOK_SECRET not configured'); return false; }
+  if (!secret) {
+    console.error('STRIPE_WEBHOOK_SECRET not configured — rejecting webhook');
+    return false;  // FAIL CLOSED: reject if no secret configured
+  }
   const parts = sigHeader.split(',').reduce((acc, part) => {
-    const [key, val] = part.split('='); acc[key] = val; return acc;
+    const [key, val] = part.split('=');
+    acc[key] = val;
+    return acc;
   }, {});
-  const signedPayload = `${parts.t}.${payload}`;
+  const timestamp = parts.t;
+  const signature = parts.v1;
+  const signedPayload = `${timestamp}.${payload}`;
   const expected = crypto.createHmac('sha256', secret).update(signedPayload).digest('hex');
-  return crypto.timingSafeEqual(Buffer.from(parts.v1 || ''), Buffer.from(expected));
+  return crypto.timingSafeEqual(Buffer.from(signature || ''), Buffer.from(expected));
 }
 
 async function supabaseUpdate(url, serviceKey, table, match, data) {
@@ -77,21 +84,21 @@ exports.handler = async (event) => {
     }
     const stripeEvent = JSON.parse(event.body);
     const eventType = stripeEvent.type;
-    const obj = stripeEvent.data && stripeEvent.data.object;
-    console.log('Stripe webhook:', eventType);
+    const obj = stripeEvent.data?.object;
+    console.log(`Stripe webhook: ${eventType}`);
 
     const hasDB = SUPABASE_URL && SUPABASE_SERVICE_KEY;
 
     switch (eventType) {
 
-      // ── Payment intent succeeded ──
+      // ── Payment succeeded ──
       case 'payment_intent.succeeded': {
         if (hasDB) {
           await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'payments',
             { stripe_payment_intent_id: obj.id },
             { status: 'paid', paid_at: new Date().toISOString() }
           );
-          if (obj.metadata && obj.metadata.invoiceId) {
+          if (obj.metadata?.invoiceId) {
             await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'invoices',
               { id: obj.metadata.invoiceId },
               { status: 'paid', paid_at: new Date().toISOString() }
@@ -101,18 +108,18 @@ exports.handler = async (event) => {
         break;
       }
 
-      // ── Payment intent failed ──
+      // ── Payment failed ──
       case 'payment_intent.payment_failed': {
         if (hasDB) {
           await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'payments',
             { stripe_payment_intent_id: obj.id },
-            { status: 'failed' }
+            { status: 'failed', metadata: { failure_message: obj.last_payment_error?.message } }
           );
         }
         break;
       }
 
-      // ── Invoice paid (recurring) ──
+      // ── Invoice paid (recurring subscription) ──
       case 'invoice.paid': {
         if (hasDB) {
           await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'invoices',
@@ -123,7 +130,7 @@ exports.handler = async (event) => {
         break;
       }
 
-      // ── Subscription payment failed ──
+      // ── Subscription payment failed — AUTO EMAIL + SMS ──
       case 'invoice.payment_failed': {
         const customerEmail = obj.customer_email;
         const customerName = obj.customer_name || '';
@@ -133,104 +140,52 @@ exports.handler = async (event) => {
           );
         }
         if (obj.subscription && customerEmail) {
+          // Email client
           await sendNotifyEmail(customerEmail,
-            'Payment Failed - Your Subscription Has Been Paused',
-            '<div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;border-radius:12px;">' +
-            '<h2 style="color:#ef4444;">Payment Failed</h2>' +
-            '<p style="color:#ccc;line-height:1.7;">Hi' + (customerName ? ' ' + customerName : '') + ', we were unable to process your subscription payment.</p>' +
-            '<div style="text-align:center;margin:24px 0;"><a href="' + PORTAL_URL + '" style="display:inline-block;padding:14px 40px;background:#e63946;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;">Update Payment</a></div>' +
-            '<p style="color:#666;font-size:13px;">Call (248) 487-8747 for help.</p></div>'
+            '⚠️ Payment Failed — Your Subscription Has Been Paused',
+            `<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;border-radius:12px;">
+<h2 style="color:#ef4444;">⚠️ Payment Failed</h2>
+<p style="color:#ccc;line-height:1.7;">Hi${customerName ? ' ' + customerName : ''}, we were unable to process your subscription payment. Your account has been paused and all active orders are on hold.</p>
+<div style="background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:20px;margin:24px 0;">
+<p style="color:#f59e0b;font-weight:600;margin:0 0 8px;">What this means:</p>
+<p style="color:#999;font-size:14px;line-height:1.6;margin:0;">• All design orders are on hold<br>• No new orders accepted<br>• Files retained for 90 days<br>• After 90 days, files permanently deleted</p>
+</div>
+<div style="text-align:center;margin:24px 0;"><a href="${PORTAL_URL}" style="display:inline-block;padding:14px 40px;background:#e63946;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;">Update Payment →</a></div>
+<p style="color:#666;font-size:13px;">Call (248) 487-8747 for help.</p>
+<div style="border-top:1px solid #222;margin-top:24px;padding-top:16px;text-align:center;color:#555;font-size:12px;">New Urban Influence • Detroit, MI</div></div>`
           );
+          // Alert admin
           await sendNotifyEmail(ADMIN_EMAIL(),
-            'Subscription Payment FAILED - ' + customerEmail,
-            '<h2 style="color:red;">Payment Failed</h2><p>Client: ' + customerEmail + ' (' + customerName + ')</p><p>Invoice: ' + obj.id + '</p>'
+            '🚨 Subscription Payment FAILED — ' + customerEmail,
+            `<h2 style="color:red;">Payment Failed</h2><p>Client: ${customerEmail} (${customerName})</p><p>Invoice: ${obj.id}</p><p><strong>Pause their subscription in admin panel and follow up.</strong></p>`
           );
         }
         break;
       }
 
-      // ── Checkout session completed (payment links + subscriptions) ──
+      // ── Checkout completed — subscription activated ──
       case 'checkout.session.completed': {
         const meta = obj.metadata || {};
-        const clientEmail = obj.customer_email || (obj.customer_details && obj.customer_details.email);
-        const now = new Date().toISOString();
-        const nextMonth = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-
-        // ── PAYMENT LINK: one-time payment ──
-        if (obj.mode === 'payment' && meta.site) {
-          // Update client_sites
-          if (hasDB) {
-            await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'client_sites',
-              { site_id: meta.site },
-              { last_payment_date: now, next_payment_due: nextMonth, status: 'active' }
-            );
-          }
-          // Update crm_contacts
-          if (hasDB && clientEmail) {
-            await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'crm_contacts',
-              { email: clientEmail },
-              { status: 'client', last_contacted: now, last_activity_at: now }
-            );
-          }
-          const amountPaid = obj.amount_total ? '$' + (obj.amount_total / 100).toFixed(2) : '';
-          const clientFirst = meta.client ? meta.client.split(' ')[0] : '';
-          // Notify Faren
-          await sendNotifyEmail(ADMIN_EMAIL(),
-            'Payment Received - ' + (meta.client || clientEmail) + ' (' + amountPaid + ')',
-            '<div style="font-family:sans-serif;background:#0a0a0a;color:#fff;padding:32px;max-width:600px;border-radius:10px;">' +
-            '<h2 style="color:#10b981;">Payment Received</h2>' +
-            '<p><strong>Client:</strong> ' + (meta.client || 'N/A') + '</p>' +
-            '<p><strong>Email:</strong> ' + (clientEmail || 'N/A') + '</p>' +
-            '<p><strong>Service:</strong> ' + (meta.service || 'N/A') + '</p>' +
-            '<p><strong>Site:</strong> ' + (meta.site || 'N/A') + '</p>' +
-            '<p><strong>Amount:</strong> ' + amountPaid + '</p>' +
-            '<p style="color:#10b981;font-weight:700;">Client record and site status auto-updated in backend.</p>' +
-            '</div>'
-          );
-          // Confirm to client
-          if (clientEmail) {
-            await sendNotifyEmail(clientEmail,
-              'Payment Confirmed - Your Digital HQ is Being Activated',
-              '<div style="font-family:sans-serif;background:#0a0a0a;color:#fff;padding:40px;max-width:600px;border-radius:10px;border-top:4px solid #D90429;">' +
-              '<div style="text-align:center;margin-bottom:24px;">' +
-              '<div style="font-size:18px;font-weight:900;letter-spacing:2px;">NEW URBAN INFLUENCE</div>' +
-              '<div style="color:#C9A227;font-size:11px;letter-spacing:3px;margin-top:4px;">DESIGNING CULTURE. BUILDING INFLUENCE.</div></div>' +
-              '<h2 style="color:#10b981;text-align:center;">Payment Confirmed!</h2>' +
-              '<p style="color:rgba(255,255,255,0.7);text-align:center;">Thank you ' + clientFirst + '! We received your payment of <strong style="color:#fff;">' + amountPaid + '</strong>.</p>' +
-              '<div style="background:#111;border:1px solid #222;border-radius:8px;padding:24px;margin:24px 0;">' +
-              '<p style="color:#C9A227;font-size:11px;font-weight:700;letter-spacing:2px;margin:0 0 12px;">WHAT HAPPENS NOW</p>' +
-              '<p style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.8;margin:0;">' +
-              'Your Digital HQ is being activated<br>' +
-              'CRM, ticket system and AI chatbox setup within 24hrs<br>' +
-              'You will receive onboarding details shortly<br>' +
-              'Your site: <a href="https://backyard-comedy-battle.netlify.app" style="color:#D90429;">backyard-comedy-battle.netlify.app</a></p></div>' +
-              '<p style="color:rgba(255,255,255,0.4);font-size:13px;text-align:center;">Questions? Reply to this email or text (248) 487-8747</p>' +
-              '<div style="border-top:1px solid #222;margin-top:24px;padding-top:16px;text-align:center;">' +
-              '<a href="https://newurbaninfluence.com" style="color:#C9A227;font-size:12px;text-decoration:none;">newurbaninfluence.com</a></div></div>'
-            );
-          }
-          break;
-        }
-
-        // ── Invoice checkout ──
+        const clientEmail = obj.customer_email || obj.customer_details?.email;
         if (hasDB && meta.invoiceId) {
           await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'invoices',
-            { id: meta.invoiceId }, { status: 'paid', paid_at: now }
+            { id: meta.invoiceId }, { status: 'paid', paid_at: new Date().toISOString() }
           );
         }
-        // ── Subscription checkout ──
         if (clientEmail && obj.mode === 'subscription') {
           await sendNotifyEmail(clientEmail,
-            'Subscription Activated - Welcome!',
-            '<div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;border-radius:12px;">' +
-            '<h2 style="color:#10b981;">You are All Set!</h2>' +
-            '<p style="color:#ccc;line-height:1.7;">Your subscription is now active. Payment confirmed.</p>' +
-            '<div style="text-align:center;margin:24px 0;"><a href="' + PORTAL_URL + '" style="display:inline-block;padding:14px 40px;background:#e63946;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:16px;">Open Client Portal</a></div>' +
-            '<p style="color:#666;font-size:13px;">Questions? Call (248) 487-8747.</p></div>'
+            '✅ Subscription Activated — Welcome!',
+            `<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;border-radius:12px;">
+<h2 style="color:#10b981;">✅ You're All Set!</h2>
+<p style="color:#ccc;line-height:1.7;">Your design subscription is now active. Payment confirmed.</p>
+<p style="color:#ccc;line-height:1.7;">Log in to your client portal to submit your first design order:</p>
+<div style="text-align:center;margin:24px 0;"><a href="${PORTAL_URL}" style="display:inline-block;padding:14px 40px;background:#e63946;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:16px;">Open Client Portal →</a></div>
+<p style="color:#666;font-size:13px;">Questions? Call (248) 487-8747.</p>
+<div style="border-top:1px solid #222;margin-top:24px;padding-top:16px;text-align:center;color:#555;font-size:12px;">New Urban Influence • Detroit, MI</div></div>`
           );
           await sendNotifyEmail(ADMIN_EMAIL(),
-            'New Subscription Payment - ' + clientEmail,
-            '<h2>Subscription Activated</h2><p>Client: ' + clientEmail + '</p><p>Client ID: ' + (meta.clientId || 'N/A') + '</p>'
+            '💰 New Subscription Payment — ' + clientEmail,
+            `<h2>Subscription Activated</h2><p>Client: ${clientEmail}</p><p>Client ID: ${meta.clientId || 'N/A'}</p><p><strong>Set their status to Active in admin panel.</strong></p>`
           );
         }
         break;
@@ -259,7 +214,7 @@ exports.handler = async (event) => {
       }
 
       default:
-        console.log('Unhandled Stripe event:', eventType);
+        console.log(`Unhandled Stripe event: ${eventType}`);
     }
 
     return { statusCode: 200, body: JSON.stringify({ received: true, type: eventType }) };
