@@ -5,7 +5,7 @@ window.SUPABASE_URL = 'https://jcgvkyizoimwbolhfpta.supabase.co';
 window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpjZ3ZreWl6b2ltd2JvbGhmcHRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMDMwMjQsImV4cCI6MjA4NTg3OTAyNH0.a8gjkPoUHQ1kgROa2Lqaq3252opqg5CPMm6vR3t1NOk';
 
 // TODO: Replace with your real Stripe publishable key from https://dashboard.stripe.com/apikeys
-window.STRIPE_PUBLISHABLE_KEY = 'YOUR_STRIPE_PUBLISHABLE_KEY';
+window.STRIPE_PUBLISHABLE_KEY = ''; // TODO: Set pk_live_... from stripe.com/dashboard → API Keys
 
 // Social OAuth app IDs (client-safe, set in Netlify Dashboard or here)
 window.INSTAGRAM_APP_ID = '';

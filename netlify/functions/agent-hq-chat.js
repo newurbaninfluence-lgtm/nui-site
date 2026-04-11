@@ -93,7 +93,12 @@ const DEFAULT_PERSONA = (name, role) => ({
 You're not yet deployed but you can explain what you'll do, how you'll work, and what data you'll need. When Faren asks what you can do, be specific and practical. Keep responses under 150 words.`
 });
 
+const { checkRateLimit, getClientIP, rateLimitResponse } = require('./rate-limiter');
+const { sanitizeText } = require('./sanitizer');
+
 exports.handler = async (event) => {
+  const _rl = checkRateLimit('hq-chat:' + getClientIP(event), 30, 60000);
+  if (!_rl.allowed) return rateLimitResponse(_rl.resetIn);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers: CORS, body: '' };
   if (event.httpMethod !== 'POST') return { statusCode: 405, headers: CORS, body: JSON.stringify({ error: 'Method not allowed' }) };
 

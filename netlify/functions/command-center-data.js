@@ -1,6 +1,9 @@
 // command-center-data.js — Live data API for NUI Agent Command Center
 // Returns: logs, schedule, Monty queue, Promoter queue, misfires, stats
 
+const { checkRateLimit, getClientIP, rateLimitResponse } = require('./rate-limiter');
+const { sanitizeText, sanitizeUUID } = require('./sanitizer');
+const ADMIN_SECRET = process.env.ADMIN_SECRET;
 const SB_URL = process.env.SUPABASE_URL;
 const SB_KEY = process.env.SUPABASE_SERVICE_KEY;
 const CORS = {
@@ -52,6 +55,18 @@ const PROMOTER_PILLARS = [
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
 
+  // Rate limit: 60 requests per IP per minute
+  const _rl = checkRateLimit('cmd-center:' + getClientIP(event), 60, 60000);
+  if (!_rl.allowed) return { ...rateLimitResponse(_rl.resetIn), headers: { ...CORS } };
+
+  // Admin token check for POST mutations
+  if (event.httpMethod === 'POST') {
+    const token = event.headers?.['x-admin-token'] || event.headers?.['authorization']?.replace('Bearer ','');
+    if (!ADMIN_SECRET || token !== ADMIN_SECRET) {
+      return { statusCode: 401, headers: CORS, body: JSON.stringify({ error: 'Unauthorized' }) };
+    }
+  }
+
   const action = event.queryStringParameters?.action || 'all';
 
   // ── SKIP CONTACT (POST) ───────────────────────────────────
@@ -59,6 +74,8 @@ exports.handler = async (event) => {
     const body = JSON.parse(event.body || '{}');
 
     if (body.action === 'skip_contact') {
+      body.contact_id = sanitizeUUID(body.contact_id) || '';
+      body.reason = sanitizeText(body.reason || '', 300);
       const ok = await sbPatch(`crm_contacts?id=eq.${body.contact_id}`, {
         status: 'do_not_contact',
         notes: body.reason ? `[SKIPPED by Faren: ${body.reason}]` : '[SKIPPED by Faren via Command Center]',

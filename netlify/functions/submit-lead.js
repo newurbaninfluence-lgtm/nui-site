@@ -1,7 +1,10 @@
 // netlify/functions/submit-lead.js
 // Handles all service intake form submissions from standalone service pages
 // Stores lead + opt-ins to Supabase, tags in OpenPhone, routes email campaign
+// Security: rate limiting, input sanitization, required field validation
 
+const { checkRateLimit, getClientIP, rateLimitResponse } = require('./rate-limiter');
+const { sanitizeText, sanitizeEmail, sanitizePhone } = require('./sanitizer');
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const OPENPHONE_KEY = process.env.OPENPHONE_API_KEY;
@@ -36,22 +39,42 @@ exports.handler = async function(event) {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 200, body: '' };
   if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
 
-  let data;
-  try { data = JSON.parse(event.body); }
-  catch { return { statusCode: 400, body: 'Invalid JSON' }; }
+  // Rate limit: 5 submissions per IP per minute
+  const ip = getClientIP(event);
+  const rl = checkRateLimit(`submit-lead:${ip}`, 5, 60000);
+  if (!rl.allowed) return rateLimitResponse(rl.resetIn);
+
+  let raw;
+  try { raw = JSON.parse(event.body); }
+  catch { return { statusCode: 400, body: JSON.stringify({ error: 'Invalid request' }) }; }
+
+  // Sanitize all inputs
+  const data = {
+    name:          sanitizeText(raw.name, 100),
+    email:         sanitizeEmail(raw.email),
+    phone:         sanitizePhone(raw.phone),
+    business:      sanitizeText(raw.business, 150),
+    service:       sanitizeText(raw.service, 50),
+    serviceName:   sanitizeText(raw.serviceName, 100),
+    price:         sanitizeText(raw.price, 50),
+    bookingChoice: sanitizeText(raw.bookingChoice, 20),
+    optinEmail:    Boolean(raw.optinEmail),
+    optinSMS:      Boolean(raw.optinSMS),
+    optinPush:     Boolean(raw.optinPush),
+    source:        sanitizeText(raw.source, 100),
+    timestamp:     raw.timestamp,
+  };
 
   const {
     name, email, phone, business,
     service, serviceName, price,
     bookingChoice,
-    // opt-ins
     optinEmail, optinSMS, optinPush,
-    // extra fields
     source, timestamp,
-    ...extras
   } = data;
+  const extras = {};
 
-  if (!email && !phone) return { statusCode: 400, body: 'Email or phone required' };
+  if (!email && !phone) return { statusCode: 400, body: JSON.stringify({ error: 'Email or phone required' }) };
 
   const svcInfo = SERVICE_MAP[service] || { tag: serviceName || service, seq: 'general', industry: 'general' };
   const now = new Date().toISOString();

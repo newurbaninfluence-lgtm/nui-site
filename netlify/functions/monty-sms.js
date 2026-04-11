@@ -1,3 +1,5 @@
+const { checkRateLimit, rateLimitResponse } = require('./rate-limiter');
+const { sanitizePhone, sanitizeText } = require('./sanitizer');
 // monty-sms.js — Legacy webhook alias (OpenPhone "monty" webhook Feb 27)
 // Guards: blocks automated/Stripe messages + drops outbound to prevent loops
 const { handler } = require('./sms-monty');

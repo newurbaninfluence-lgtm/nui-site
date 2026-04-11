@@ -327,8 +327,9 @@ input,textarea{font-family:var(--body)}
 
 <script>
 const SB='https://jcgvkyizoimwbolhfpta.supabase.co';
-const SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpjZ3ZreWl6b2ltd2JvbGhmcHRhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MDMwMzAyNCwiZXhwIjoyMDg1ODc5MDI0fQ.MxG7RovaEDo24xm7a13WGvPzFAQyv30Nxvrh2Nnlc_U';
+const SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpjZ3ZreWl6b2ltd2JvbGhmcHRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzMDMwMjQsImV4cCI6MjA4NTg3OTAyNH0.a8gjkPoUHQ1kgROa2Lqaq3252opqg5CPMm6vR3t1NOk'; // anon key — safe for client
 const API='/.netlify/functions/command-center-data';
+const ADMIN_TOKEN='NUI-c88ec6057df27a94f661b0541ae42d8b';
 const AMETA=[
   {id:'promoter',name:'Digital Promoter',pos:'06',dept:'Marketing Wing',color:'#D90429',schedule:'9am CT daily',endpoint:'/.netlify/functions/agent-promoter',fn:'agent-promoter.js'},
   {id:'responder',name:'Digital Secretary',pos:'01',dept:'Front Office',color:'#3a9eff',schedule:'Every 4hrs',endpoint:'/.netlify/functions/agent-responder',fn:'agent-responder.js'},
@@ -599,13 +600,13 @@ function prioritize(id,name){openModal('Move '+name+' to Front?','Monty will tex
 
 async function saveNote(id){
   const n=document.getElementById('ni-'+id)?.value?.trim();if(!n)return;
-  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'add_note',contact_id:id,note:n})});
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Token':ADMIN_TOKEN},body:JSON.stringify({action:'add_note',contact_id:id,note:n})});
   const d=await r.json();
   if(d.success){toast('Note saved to CRM');document.getElementById('note-'+id).classList.remove('open');loadData();}else toast('Failed to save',1);
 }
 
 async function skipPillar(id){
-  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'skip_pillar',pillar_id:id})});
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Token':ADMIN_TOKEN},body:JSON.stringify({action:'skip_pillar',pillar_id:id})});
   const d=await r.json();if(d.success){toast('Pillar skipped — Promoter will skip next run');loadData();}
 }
 
