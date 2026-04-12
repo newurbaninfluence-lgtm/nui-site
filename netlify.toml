@@ -191,6 +191,18 @@
   to = "/print.html"
   status = 200
 
+# The Black Book — standalone creative journal PWA
+[[redirects]]
+  from = "/blackbook"
+  to = "/blackbook.html"
+  status = 200
+
+# Agent Fleet dashboard
+[[redirects]]
+  from = "/agent-fleet"
+  to = "/portal/agent-fleet.html"
+  status = 200
+
 # SPA fallback — Netlify auto-routes /.netlify/functions/* before this (MUST BE LAST)
 [[redirects]]
   from = "/*"
