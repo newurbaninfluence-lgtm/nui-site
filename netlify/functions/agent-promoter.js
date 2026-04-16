@@ -386,12 +386,14 @@ exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
 
   const isManual = event.httpMethod === 'POST';
-  if (!isManual && await alreadyRanToday()) {
-    return { statusCode: 200, headers: CORS, body: JSON.stringify({ success: true, skipped: 'already_ran_today' }) };
-  }
-
   const body = isManual ? JSON.parse(event.body || '{}') : {};
   const forcePillar = body.pillar_id ? CONTENT_PILLARS.find(p => p.id === body.pillar_id) : null;
+  
+  // Check if already ran today (applies to both manual and scheduled)
+  // Override only if force=true is explicitly passed
+  if (!body.force && await alreadyRanToday()) {
+    return { statusCode: 200, headers: CORS, body: JSON.stringify({ success: true, skipped: 'already_ran_today' }) };
+  }
 
   try {
     const pillar = forcePillar || await getNextPillar();
