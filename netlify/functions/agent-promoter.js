@@ -418,13 +418,14 @@ exports.handler = async (event) => {
       imageUrls.push(url);
     }
 
-    // 5. Build caption
-    const caption = `${carouselData.caption}\n\n${pillar.hashtags}`;
+    // 5. Build platform-specific captions
+    const igCaption = `${carouselData.caption}\n\n${pillar.hashtags}`;
+    const fbCaption = `${carouselData.caption}\n\nLearn more: newurbaninfluence.com`;
 
     // 6. Post — IG carousel, FB cover image, GBP text
     const [igResult, fbResult, gbpResult] = await Promise.all([
-      postInstagramCarousel(caption, imageUrls),
-      postFacebook(caption, imageUrls[0]),
+      postInstagramCarousel(igCaption, imageUrls),
+      postFacebook(fbCaption, imageUrls[0]),
       postGBP(carouselData.caption),
     ]);
 
