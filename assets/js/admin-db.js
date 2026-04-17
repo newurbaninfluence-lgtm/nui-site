@@ -18,10 +18,10 @@
 // ========================================================================
 
 (function() {
-  if (!window.SUPABASE_URL) {
-    console.warn('[admin-db] SUPABASE_URL not set, skipping fetch patch');
-    return;
-  }
+  // NUI Supabase project — hardcoded because env.js is deferred and may not
+  // have run yet when this file executes. Using a fallback lets us patch
+  // fetch immediately regardless of script-load order.
+  var SUPABASE_URL = window.SUPABASE_URL || 'https://jcgvkyizoimwbolhfpta.supabase.co';
 
   const ADMIN_TABLES = new Set([
     'crm_contacts', 'agent_logs', 'communications', 'client_sites', 'site_config',
@@ -30,7 +30,7 @@
     'visitor_auto_emails', 'visitor_page_views'
   ]);
 
-  const SUPABASE_REST_PREFIX = window.SUPABASE_URL.replace(/\/$/, '') + '/rest/v1/';
+  const SUPABASE_REST_PREFIX = SUPABASE_URL.replace(/\/$/, '') + '/rest/v1/';
   const PROXY_ENDPOINT = '/.netlify/functions/admin-query';
   const _originalFetch = window.fetch.bind(window);
 
