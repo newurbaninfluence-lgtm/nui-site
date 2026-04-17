@@ -1,5 +1,6 @@
 -- push_subscriptions — Web Push notification subscribers
--- Stores browser push endpoints, VAPID keys, platform, and interests
+-- push_campaigns      — Sent push notification campaigns
+-- Idempotent and RLS-safe.
 
 CREATE TABLE IF NOT EXISTS push_subscriptions (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -14,11 +15,10 @@ CREATE TABLE IF NOT EXISTS push_subscriptions (
     updated_at TIMESTAMPTZ DEFAULT now()
 );
 
-CREATE INDEX idx_push_subs_active ON push_subscriptions(active);
-CREATE INDEX idx_push_subs_platform ON push_subscriptions(platform);
-CREATE INDEX idx_push_subs_interests ON push_subscriptions USING gin(interests);
+CREATE INDEX IF NOT EXISTS idx_push_subs_active    ON push_subscriptions(active);
+CREATE INDEX IF NOT EXISTS idx_push_subs_platform  ON push_subscriptions(platform);
+CREATE INDEX IF NOT EXISTS idx_push_subs_interests ON push_subscriptions USING gin(interests);
 
--- push_campaigns — Log of sent push notification campaigns
 CREATE TABLE IF NOT EXISTS push_campaigns (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     title TEXT NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS push_campaigns (
 );
 
 ALTER TABLE push_subscriptions ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Service role full access" ON push_subscriptions FOR ALL USING (true) WITH CHECK (true);
+ALTER TABLE push_campaigns     ENABLE ROW LEVEL SECURITY;
 
-ALTER TABLE push_campaigns ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Service role full access" ON push_campaigns FOR ALL USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Service role full access" ON push_subscriptions;
+DROP POLICY IF EXISTS "Service role full access" ON push_campaigns;

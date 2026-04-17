@@ -1,5 +1,5 @@
 -- RB2B Identified Visitors table
--- Run this in Supabase SQL Editor
+-- Idempotent and RLS-safe.
 
 CREATE TABLE IF NOT EXISTS identified_visitors (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -31,7 +31,6 @@ CREATE TABLE IF NOT EXISTS identified_visitors (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Page views log for tracking visitor journey
 CREATE TABLE IF NOT EXISTS visitor_page_views (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     visitor_id UUID REFERENCES identified_visitors(id),
@@ -40,17 +39,16 @@ CREATE TABLE IF NOT EXISTS visitor_page_views (
     seen_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Indexes for fast lookups
 CREATE INDEX IF NOT EXISTS idx_visitors_linkedin ON identified_visitors(linkedin_url);
-CREATE INDEX IF NOT EXISTS idx_visitors_email ON identified_visitors(business_email);
-CREATE INDEX IF NOT EXISTS idx_visitors_status ON identified_visitors(status);
-CREATE INDEX IF NOT EXISTS idx_visitors_seen ON identified_visitors(seen_at DESC);
+CREATE INDEX IF NOT EXISTS idx_visitors_email    ON identified_visitors(business_email);
+CREATE INDEX IF NOT EXISTS idx_visitors_status   ON identified_visitors(status);
+CREATE INDEX IF NOT EXISTS idx_visitors_seen     ON identified_visitors(seen_at DESC);
 CREATE INDEX IF NOT EXISTS idx_pageviews_visitor ON visitor_page_views(visitor_id);
 
--- Enable RLS
+-- Enable RLS. service_role bypasses; anon/authenticated are denied.
 ALTER TABLE identified_visitors ENABLE ROW LEVEL SECURITY;
-ALTER TABLE visitor_page_views ENABLE ROW LEVEL SECURITY;
+ALTER TABLE visitor_page_views  ENABLE ROW LEVEL SECURITY;
 
--- Allow service role full access (for webhook)
-CREATE POLICY "Service role full access" ON identified_visitors FOR ALL USING (true);
-CREATE POLICY "Service role full access" ON visitor_page_views FOR ALL USING (true);
+-- Drop any pre-existing permissive policies; no new policies needed.
+DROP POLICY IF EXISTS "Service role full access" ON identified_visitors;
+DROP POLICY IF EXISTS "Service role full access" ON visitor_page_views;
