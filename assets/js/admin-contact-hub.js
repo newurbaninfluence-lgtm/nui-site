@@ -18,6 +18,8 @@ function _chEsc(str) {
 }
 
 let contactHubData = { contacts: [], activities: [], emails: [], smsMessages: [], loading: true };
+// Expose to window so other modules (admin-smart-lists.js) can read it
+if (typeof window !== 'undefined') window.contactHubData = contactHubData;
 let contactHubFilter = 'all';
 let contactHubView = 'contacts'; // 'contacts' | 'campaigns' | 'smartlists'
 let contactHubSearch = '';
@@ -69,6 +71,8 @@ async function fetchContactHubData() {
     contactHubData.emails = (emailsRes.error ? [] : emailsRes.data) || [];
     contactHubData.smsMessages = (smsRes.error ? [] : smsRes.data) || [];
     contactHubData.loading = false;
+    // Re-expose to window (arrays get replaced, reference stays the same but be explicit)
+    if (typeof window !== 'undefined') window.contactHubData = contactHubData;
     console.log('✅ Contact Hub: ' + contactHubData.contacts.length + ' contacts, ' + contactHubData.activities.length + ' activities, ' + contactHubData.emails.length + ' emails, ' + contactHubData.smsMessages.length + ' sms');
   } catch (err) {
     console.warn('Contact Hub fetch failed:', err.message);
@@ -79,6 +83,8 @@ async function fetchContactHubData() {
     contactHubData.smsMessages = [];
   }
 }
+// Expose to window so admin-smart-lists.js can trigger reloads
+if (typeof window !== 'undefined') window.fetchContactHubData = fetchContactHubData;
 
 // ── Main Panel Loader ────────────────────────
 async function loadAdminContactHubPanel() {
