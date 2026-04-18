@@ -51,6 +51,21 @@
     } catch (e) { return null; }
   }
 
+  window.startDripRamp = async function () {
+    if (!confirm('Start the domain warmup ramp?\n\n• Week 1-2: 10 emails/day\n• Week 3-4: 18 emails/day\n• Week 5-8: 25 emails/day\n• Week 9+: 30 emails/day\n\nOnce started, this timestamp anchors your send schedule.')) return;
+    try {
+      const r = await fetch('/.netlify/functions/drip-enroll', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'start_ramp' })
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error);
+      alert('✅ Ramp started. Sending begins at 10/day for 2 weeks, then scales.');
+      state.stats = await fetchStats();
+      window.renderSmartListsTab();
+    } catch (e) { alert('Failed: ' + e.message); }
+  };
+
   function computeBuckets() {
     const all = getAllContacts();
     const buckets = {};
@@ -84,6 +99,17 @@
     const sortedBuckets = Object.entries(summary.buckets)
       .sort((a, b) => b[1].contacts.length - a[1].contacts.length);
 
+    const rampStarted = dripStats.config && dripStats.config.ramp_started_at;
+    const weekNum = rampStarted
+      ? Math.max(1, Math.floor((Date.now() - new Date(rampStarted).getTime()) / (7*24*3600*1000)) + 1)
+      : null;
+    const currentCap = weekNum ? (function(){
+      const ramp = (dripStats.config?.ramp_schedule) || [];
+      let t = { email: 10, sms: 5 };
+      for (const x of ramp) if (weekNum >= x.week) t = x;
+      return t;
+    })() : null;
+
     container.innerHTML = `
       <div style="padding:24px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
@@ -92,10 +118,28 @@
             <div style="font-size:13px;color:rgba(255,255,255,0.5);">Auto-grouped by category. Click Start Drip to queue 5-email sequence (spaced with daily caps).</div>
           </div>
           <div style="display:flex;gap:8px;">
+            ${!rampStarted ? `<button onclick="startDripRamp()" style="padding:10px 18px;background:#f59e0b;border:none;border-radius:8px;color:#000;font-weight:700;cursor:pointer;font-family:inherit;font-size:13px;">⚡ Start Ramp</button>` : ''}
             <button onclick="openAiClassifier()" style="padding:10px 18px;background:var(--red,#dc2626);border:none;border-radius:8px;color:#fff;font-weight:600;cursor:pointer;font-family:inherit;font-size:13px;">🤖 AI Classify</button>
             <button onclick="renderSmartListsTab()" style="padding:10px 14px;background:#1c1c1c;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;cursor:pointer;font-family:inherit;font-size:13px;">🔄 Refresh</button>
           </div>
         </div>
+
+        ${rampStarted ? `
+          <div style="background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.3);border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">
+            <div style="font-size:20px;">⚡</div>
+            <div style="flex:1;font-size:13px;color:#fff;">
+              <strong>Ramp active — Week ${weekNum}</strong> · Sending up to ${currentCap.email} emails + ${currentCap.sms} SMS/day
+            </div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.5);">Started ${new Date(rampStarted).toLocaleDateString()}</div>
+          </div>
+        ` : `
+          <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">
+            <div style="font-size:20px;">⚠️</div>
+            <div style="flex:1;font-size:13px;color:#fff;">
+              <strong>Ramp not started.</strong> Nothing sends until you click <strong>Start Ramp</strong>. Good time to enroll contacts and preview sequences first.
+            </div>
+          </div>
+        `}
 
         <!-- Drip health banner -->
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:20px;">
