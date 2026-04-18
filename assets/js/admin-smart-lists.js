@@ -26,7 +26,9 @@
     flooring:      { label: 'Flooring',            emoji: '🪵', color: '#78350f' },
     lawn_care:     { label: 'Lawn Care',           emoji: '🌱', color: '#15803d' },
     nonprofit:     { label: 'Nonprofits',          emoji: '❤️', color: '#be123c' },
-    tech:          { label: 'Tech',                emoji: '💻', color: '#4338ca' }
+    tech:          { label: 'Tech',                emoji: '💻', color: '#4338ca' },
+    uaw_workers:   { label: 'UAW Workers',         emoji: '🔧', color: '#1d4ed8' },
+    political_campaign: { label: 'Political Campaigns', emoji: '🗳️', color: '#991b1b' }
   };
 
   const CATEGORIES_WITH_DRIPS = new Set([
@@ -38,6 +40,17 @@
 
   function getAllContacts() {
     return (window.contactHubData && contactHubData.contacts) || [];
+  }
+
+  // Force-load Contact Hub data if it hasn't been loaded yet (e.g., user landed on Smart Lists first)
+  async function ensureContactsLoaded() {
+    if (window.contactHubData && Array.isArray(contactHubData.contacts) && contactHubData.contacts.length > 0) {
+      return; // already loaded
+    }
+    if (typeof window.fetchContactHubData === 'function') {
+      console.log('[smart-lists] Forcing contact hub data load...');
+      await window.fetchContactHubData();
+    }
   }
 
   async function fetchStats() {
@@ -91,6 +104,10 @@
     const container = document.getElementById('smartListsTabContent');
     if (!container) return;
 
+    // Show loading state first
+    container.innerHTML = `<div style="padding:60px;text-align:center;color:rgba(255,255,255,0.5);"><div style="font-size:32px;margin-bottom:12px;">⏳</div><div>Loading contacts…</div></div>`;
+
+    await ensureContactsLoaded();
     if (!state.stats) state.stats = await fetchStats();
     const summary = computeBuckets();
     const pct = summary.withCompany > 0 ? Math.round(summary.classified / summary.withCompany * 100) : 0;

@@ -417,8 +417,13 @@ async function saveHubContactClassification(contactId) {
       business_category: bizCat || null,
       updated_at: new Date().toISOString()
     }).eq('id', contactId);
+    // Update in-memory contactHubData so Smart Lists sees the change immediately
     const c = contactHubData.contacts.find(x => x.id === contactId);
     if (c) { c.business_type = bizType; c.business_category = bizCat; }
+    // If Smart Lists tab is currently open, re-render it to reflect the new classification
+    if (contactHubView === 'smartlists' && typeof window.renderSmartListsTab === 'function') {
+      window.renderSmartListsTab();
+    }
     if (feedbackEl) {
       feedbackEl.textContent = '✓ Saved';
       setTimeout(() => { if (feedbackEl) feedbackEl.textContent = ''; }, 1500);
@@ -610,6 +615,7 @@ function renderContactDrawer(contactId) {
           <option value="consulting" ${c.business_category === 'consulting' ? 'selected' : ''}>🧠 Consulting</option>
           <option value="education" ${c.business_category === 'education' ? 'selected' : ''}>🎓 Education</option>
           <option value="event_planning" ${c.business_category === 'event_planning' ? 'selected' : ''}>🎉 Event Planning</option>
+          <option value="events" ${c.business_category === 'events' ? 'selected' : ''}>🎤 Event Shows / Promoters</option>
           <option value="catering" ${c.business_category === 'catering' ? 'selected' : ''}>🍱 Catering</option>
           <option value="music" ${c.business_category === 'music' ? 'selected' : ''}>🎵 Music</option>
           <option value="fashion" ${c.business_category === 'fashion' ? 'selected' : ''}>👗 Fashion</option>
@@ -619,6 +625,8 @@ function renderContactDrawer(contactId) {
           <option value="landscaping" ${c.business_category === 'landscaping' ? 'selected' : ''}>🌱 Landscaping</option>
           <option value="financial" ${c.business_category === 'financial' ? 'selected' : ''}>💰 Financial</option>
           <option value="accounting" ${c.business_category === 'accounting' ? 'selected' : ''}>📊 Accounting</option>
+          <option value="uaw_workers" ${c.business_category === 'uaw_workers' ? 'selected' : ''}>🔧 UAW Workers</option>
+          <option value="political_campaign" ${c.business_category === 'political_campaign' ? 'selected' : ''}>🗳️ Political Campaign</option>
           <option value="other" ${c.business_category === 'other' ? 'selected' : ''}>📌 Other</option>
         </select>
       </div>

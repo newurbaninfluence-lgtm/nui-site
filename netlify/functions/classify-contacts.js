@@ -185,6 +185,16 @@ const CATEGORY_PAIN_LIBRARY = {
   other: [
     'weak digital presence', 'no follow-up system',
     'dependent on referrals', 'inconsistent brand'
+  ],
+  uaw_workers: [
+    'campaign materials on short timelines', 'need union-approved design',
+    'rally/event signage needs', 'member communication materials',
+    'solidarity merch and apparel', 'contract negotiation materials'
+  ],
+  political_campaign: [
+    'tight deadline yard signs', 'mailer + door hanger print runs',
+    'campaign signage and rally materials', 'fundraiser event collateral',
+    'volunteer t-shirts and merch', 'candidate brand consistency across materials'
   ]
 };
 
