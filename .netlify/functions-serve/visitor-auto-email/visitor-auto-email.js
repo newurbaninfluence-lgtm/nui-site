@@ -1,1 +1,0 @@
-module.exports = require('./netlify/functions/visitor-auto-email.js')

@@ -9,3 +9,6 @@ node_modules/
 .netlify/cache/
 .netlify/functions/
 *.zip
+.claude/worktrees/
+.netlify/functions-serve/
+.netlify/edge-functions-serve/
