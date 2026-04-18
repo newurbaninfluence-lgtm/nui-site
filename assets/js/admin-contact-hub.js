@@ -19,7 +19,7 @@ function _chEsc(str) {
 
 let contactHubData = { contacts: [], activities: [], emails: [], smsMessages: [], loading: true };
 let contactHubFilter = 'all';
-let contactHubView = 'contacts'; // 'contacts' or 'campaigns'
+let contactHubView = 'contacts'; // 'contacts' | 'campaigns' | 'smartlists'
 let contactHubSearch = '';
 let contactHubSelected = null;
 let contactHubSort = 'newest';
@@ -152,7 +152,9 @@ function renderContactHub() {
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
     <h2 style="font-size:24px;font-weight:800;">📡 Contact Hub</h2>
     <div style="display:flex;gap:8px;">
+      <button onclick="contactHubView='smartlists'; renderContactHub();" class="ch-filter-btn" style="${contactHubView === 'smartlists' ? 'background:#dc2626;border-color:#dc2626;color:#fff;' : 'background:#1c1c1c;'}">🎯 Smart Lists</button>
       <button onclick="contactHubView = contactHubView === 'campaigns' ? 'contacts' : 'campaigns'; renderContactHub();" class="ch-filter-btn" style="${contactHubView === 'campaigns' ? 'background:#7c3aed;border-color:#7c3aed;color:#fff;' : 'background:#1c1c1c;'}">📲 Campaigns</button>
+      <button onclick="contactHubView='contacts'; renderContactHub();" class="ch-filter-btn" style="${contactHubView === 'contacts' ? 'background:#1c1c1c;border-color:rgba(255,255,255,0.3);color:#fff;' : 'background:#1c1c1c;'}">📡 Contacts</button>
       <button onclick="fetchContactHubData().then(renderContactHub)" class="ch-filter-btn" style="background:#1c1c1c;">🔄 Refresh</button>
       <button onclick="showCsvUploadModal()" class="ch-filter-btn" style="background:#1a5c2a;border-color:#1a5c2a;color:#fff;">📄 Import CSV</button>
       <button onclick="showAddHubContactModal()" class="ch-filter-btn" style="background:var(--red);border-color:var(--red);color:#fff;">+ Add Contact</button>
@@ -172,6 +174,9 @@ function renderContactHub() {
 ${contactHubView === 'campaigns' ? `
 <!-- Campaigns View -->
 <div id="smsCampaignsTab"></div>
+` : contactHubView === 'smartlists' ? `
+<!-- Smart Lists View -->
+<div id="smartListsTabContent"></div>
 ` : `
 <!-- Source pills -->
 <div class="ch-source-pills">
@@ -223,6 +228,11 @@ ${contacts.length > 0 ? renderContactTable(contacts) : '<div class="ch-empty"><d
       id: c.id, name: hubDisplayName(c), phone: c.phone, email: c.email, status: c.status
     }));
     setTimeout(() => renderSmsCampaignsTab(), 50);
+  }
+
+  // If smart lists view, trigger render
+  if (contactHubView === 'smartlists' && typeof renderSmartListsTab === 'function') {
+    setTimeout(() => renderSmartListsTab(), 50);
   }
 
   } catch (renderErr) {
@@ -396,6 +406,28 @@ async function saveHubContactNotes(contactId) {
   } catch (err) { alert('Save failed: ' + err.message); }
 }
 
+async function saveHubContactClassification(contactId) {
+  const bizType = document.getElementById('hubBizType_' + contactId)?.value || null;
+  const bizCat  = document.getElementById('hubBizCat_'  + contactId)?.value || null;
+  const feedbackEl = document.getElementById('hubClassifySaved_' + contactId);
+  if (!db) return;
+  try {
+    await db.from('crm_contacts').update({
+      business_type: bizType || null,
+      business_category: bizCat || null,
+      updated_at: new Date().toISOString()
+    }).eq('id', contactId);
+    const c = contactHubData.contacts.find(x => x.id === contactId);
+    if (c) { c.business_type = bizType; c.business_category = bizCat; }
+    if (feedbackEl) {
+      feedbackEl.textContent = '✓ Saved';
+      setTimeout(() => { if (feedbackEl) feedbackEl.textContent = ''; }, 1500);
+    }
+  } catch (err) {
+    if (feedbackEl) feedbackEl.textContent = '✗ ' + err.message;
+  }
+}
+
 function hubQuickCall(phone) {
   window.open('tel:' + phone, '_self');
 }
@@ -537,6 +569,62 @@ function renderContactDrawer(contactId) {
   ${tab === 'sms' ? renderDrawerSms(c, allSms) : ''}
   ${tab === 'email' ? renderDrawerEmail(c, allEmails) : ''}
   ${tab === 'calls' ? renderDrawerCalls(c) : ''}
+
+  <!-- Classification -->
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">
+    <h4 style="font-size:13px;font-weight:600;margin-bottom:8px;">🏷️ Classification</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;">
+      <div>
+        <label style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Business Type</label>
+        <select id="hubBizType_${c.id}" onchange="saveHubContactClassification('${c.id}')" style="width:100%;padding:7px 9px;background:#202020;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:inherit;font-size:12px;">
+          <option value="" ${!c.business_type ? 'selected' : ''}>— Not set —</option>
+          <option value="service" ${c.business_type === 'service' ? 'selected' : ''}>Service</option>
+          <option value="product" ${c.business_type === 'product' ? 'selected' : ''}>Product</option>
+          <option value="both" ${c.business_type === 'both' ? 'selected' : ''}>Both</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Category</label>
+        <select id="hubBizCat_${c.id}" onchange="saveHubContactClassification('${c.id}')" style="width:100%;padding:7px 9px;background:#202020;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:inherit;font-size:12px;">
+          <option value="" ${!c.business_category ? 'selected' : ''}>— Not set —</option>
+          <option value="restaurant" ${c.business_category === 'restaurant' ? 'selected' : ''}>🍽️ Restaurant</option>
+          <option value="cafe" ${c.business_category === 'cafe' ? 'selected' : ''}>☕ Cafe</option>
+          <option value="salon" ${c.business_category === 'salon' ? 'selected' : ''}>💇 Salon</option>
+          <option value="barbershop" ${c.business_category === 'barbershop' ? 'selected' : ''}>💈 Barbershop</option>
+          <option value="retail" ${c.business_category === 'retail' ? 'selected' : ''}>🛍️ Retail</option>
+          <option value="ecommerce" ${c.business_category === 'ecommerce' ? 'selected' : ''}>📦 E-commerce</option>
+          <option value="photography" ${c.business_category === 'photography' ? 'selected' : ''}>📸 Photography</option>
+          <option value="videography" ${c.business_category === 'videography' ? 'selected' : ''}>🎥 Videography</option>
+          <option value="law" ${c.business_category === 'law' ? 'selected' : ''}>⚖️ Law</option>
+          <option value="real_estate" ${c.business_category === 'real_estate' ? 'selected' : ''}>🏠 Real Estate</option>
+          <option value="healthcare" ${c.business_category === 'healthcare' ? 'selected' : ''}>🏥 Healthcare</option>
+          <option value="dental" ${c.business_category === 'dental' ? 'selected' : ''}>🦷 Dental</option>
+          <option value="fitness" ${c.business_category === 'fitness' ? 'selected' : ''}>💪 Fitness</option>
+          <option value="trades" ${c.business_category === 'trades' ? 'selected' : ''}>🔧 Trades</option>
+          <option value="construction" ${c.business_category === 'construction' ? 'selected' : ''}>🏗️ Construction</option>
+          <option value="automotive" ${c.business_category === 'automotive' ? 'selected' : ''}>🚗 Automotive</option>
+          <option value="nonprofit" ${c.business_category === 'nonprofit' ? 'selected' : ''}>❤️ Nonprofit</option>
+          <option value="tech" ${c.business_category === 'tech' ? 'selected' : ''}>💻 Tech</option>
+          <option value="saas" ${c.business_category === 'saas' ? 'selected' : ''}>☁️ SaaS</option>
+          <option value="agency" ${c.business_category === 'agency' ? 'selected' : ''}>🎨 Agency</option>
+          <option value="consulting" ${c.business_category === 'consulting' ? 'selected' : ''}>🧠 Consulting</option>
+          <option value="education" ${c.business_category === 'education' ? 'selected' : ''}>🎓 Education</option>
+          <option value="event_planning" ${c.business_category === 'event_planning' ? 'selected' : ''}>🎉 Event Planning</option>
+          <option value="catering" ${c.business_category === 'catering' ? 'selected' : ''}>🍱 Catering</option>
+          <option value="music" ${c.business_category === 'music' ? 'selected' : ''}>🎵 Music</option>
+          <option value="fashion" ${c.business_category === 'fashion' ? 'selected' : ''}>👗 Fashion</option>
+          <option value="beauty" ${c.business_category === 'beauty' ? 'selected' : ''}>💄 Beauty</option>
+          <option value="home_services" ${c.business_category === 'home_services' ? 'selected' : ''}>🏠 Home Services</option>
+          <option value="cleaning" ${c.business_category === 'cleaning' ? 'selected' : ''}>🧹 Cleaning</option>
+          <option value="landscaping" ${c.business_category === 'landscaping' ? 'selected' : ''}>🌱 Landscaping</option>
+          <option value="financial" ${c.business_category === 'financial' ? 'selected' : ''}>💰 Financial</option>
+          <option value="accounting" ${c.business_category === 'accounting' ? 'selected' : ''}>📊 Accounting</option>
+          <option value="other" ${c.business_category === 'other' ? 'selected' : ''}>📌 Other</option>
+        </select>
+      </div>
+    </div>
+    <div id="hubClassifySaved_${c.id}" style="font-size:10px;color:#10b981;height:12px;"></div>
+  </div>
 
   <!-- Notes (always visible) -->
   <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">

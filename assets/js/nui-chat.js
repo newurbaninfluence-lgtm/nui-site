@@ -145,7 +145,7 @@
 
   // ── Welcome message ────────────────────────────────────────
   function showWelcome() {
-    addBotMessage("Hey! I'm Monty, NUI's AI assistant. I can help you find the right branding, marketing, or tech service for your business. What are you looking for?");
+    addBotMessage("Hey! I'm Sona, NUI's AI assistant. I can help you find the right branding, marketing, or tech service for your business. What are you looking for?");
   }
 
   // ── Toggle chat ────────────────────────────────────────────

@@ -10,6 +10,9 @@ publishOrigin = "config"
 functions = "/Users/farenyoung/nui-site/netlify/functions"
 
 [build.environment]
+CLOUDINARY_CLOUD_NAME = "dlc1yycrq"
+CLOUDINARY_API_KEY = "298374161394417"
+CLOUDINARY_API_SECRET = "gyQJJ1uI6RQYC5-tHZngdJ1C1is"
 
 [build.processing]
 
@@ -33,6 +36,23 @@ schedule = "0 14 * * *"
 
 [functions.sms-drip]
 schedule = "*/5 * * * *"
+
+[functions.monty-followup]
+schedule = "0 * * * *"
+
+[functions.agent-promoter]
+
+[functions.agent-responder]
+schedule = "0 */4 * * *"
+
+[functions.agent-creator]
+schedule = "0 13 * * 0"
+
+[functions.agent-blogger]
+schedule = "0 12 * * 3"
+
+[functions.upsell-trigger]
+schedule = "0 15 * * *"
 
 [functions."*"]
 external_node_modules = ["web-push", "nodemailer"]
@@ -143,6 +163,54 @@ Cache-Control = "public, max-age=0, must-revalidate"
 from = "/work/good-cakes"
 to = "/work/good-cakes-and-bakes"
 status = 301.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/book"
+to = "/book.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/booking"
+to = "/book.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/privacy-policy"
+to = "/privacy-policy.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/terms-of-service"
+to = "/terms-of-service.html"
+status = 200.0
 force = false
 
 [redirects.query]
@@ -394,6 +462,30 @@ force = false
 [[redirects]]
 from = "/print"
 to = "/print.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/blackbook"
+to = "/blackbook.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/agent-fleet"
+to = "/portal/agent-fleet.html"
 status = 200.0
 force = false
 

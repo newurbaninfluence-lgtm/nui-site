@@ -1,3 +1,21 @@
 {
-	"siteId": "33bd6d24-40c8-4d1f-a636-81ad47ae996c"
+	"siteId": "33bd6d24-40c8-4d1f-a636-81ad47ae996c",
+	"geolocation": {
+		"data": {
+			"city": "Manila",
+			"country": {
+				"code": "PH",
+				"name": "Philippines"
+			},
+			"subdivision": {
+				"code": "00",
+				"name": "Metro Manila"
+			},
+			"timezone": "Asia/Manila",
+			"latitude": 14.5413,
+			"longitude": 121.0184,
+			"postalCode": "1229"
+		},
+		"timestamp": 1775678133381
+	}
 }
