@@ -38,8 +38,8 @@ self.addEventListener('push', function(event) {
     const title   = data.title || 'New Urban Influence';
     const options = {
         body:    data.body  || 'Check out what\'s new at NUI.',
-        icon:    data.icon  || '/icons/icon-192.png',
-        badge:   data.badge || '/icons/icon-72.png',
+        icon:    data.icon  || '/icons/icon-192.png?v=20260418',
+        badge:   data.badge || '/icons/icon-72.png?v=20260418',
         image:   data.image || null,
         tag:     data.tag   || 'nui-notification',
         data:    { url: data.url || 'https://newurbaninfluence.com' },
