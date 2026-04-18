@@ -20,6 +20,10 @@
 [functions."holiday-drip"]
   schedule = "0 14 * * *"
 
+# Drip scheduler — runs every 15 min, sends queued drip emails/SMS with caps + ramp + timezone window
+[functions."drip-scheduler"]
+  schedule = "*/15 * * * *"
+
 # SMS drip campaign — runs every 30 min during business hours
 [functions."sms-drip"]
   schedule = "*/5 * * * *"

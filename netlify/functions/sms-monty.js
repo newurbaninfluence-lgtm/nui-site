@@ -366,18 +366,34 @@ exports.handler = async function(event) {
         }
 
         const name = [contact.first_name, contact.last_name].filter(Boolean).join(' ') || 'Unknown';
-        clientContext = `CLIENT FOUND:
-- Name: ${name}
-- Company: ${contact.company || 'Not specified'}
-- Email: ${contact.email || 'Not on file'}
-- Status: ${contact.status || 'new_lead'}
-- Lead Score: ${contact.lead_score || 'Not scored yet'}/10
-- Sentiment: ${contact.sentiment || 'Unknown'}
-- Service Interest: ${contact.bant_need || contact.service_interest || 'Not specified'}
-- Budget: ${contact.bant_budget || 'Not mentioned'}
-- Timeline: ${contact.bant_timeline || 'Not mentioned'}
-- Industry: ${contact.industry || 'Not specified'}
-- Calendly Sent: ${contact.calendly_sent ? 'YES — already sent' : 'No'}`;
+        const bizTypeLabel = contact.business_type ? contact.business_type + ' business' : null;
+        const categoryLabel = contact.business_category || null;
+        const funnelStage = contact.funnel_stage || contact.status || 'new';
+        const painList = Array.isArray(contact.pain_points) && contact.pain_points.length
+          ? contact.pain_points.join(', ') : null;
+        const lastTouch = contact.last_touch_summary || null;
+        const lastTouchTime = contact.last_touch_at
+          ? `${Math.floor((Date.now() - new Date(contact.last_touch_at).getTime()) / 86400000)} days ago`
+          : null;
+
+        clientContext = `CONTACT: ${name}${contact.company ? ' — ' + contact.company : ''}
+${categoryLabel ? '📂 Category: ' + categoryLabel + (bizTypeLabel ? ' (' + bizTypeLabel + ')' : '') : ''}
+📍 Funnel Stage: ${funnelStage}
+📧 Email: ${contact.email || 'Not on file'}
+📊 Lead Score: ${contact.lead_score || 'Not scored'}/10 · Sentiment: ${contact.sentiment || 'Unknown'}
+${painList ? '🎯 LIKELY PAIN POINTS (based on their category): ' + painList : ''}
+${contact.bant_need ? '💬 What they want: ' + contact.bant_need : ''}
+${contact.bant_budget ? '💰 Budget signal: ' + contact.bant_budget : ''}
+${contact.bant_timeline ? '⏰ Timeline signal: ' + contact.bant_timeline : ''}
+${lastTouch ? '🕐 Last touch' + (lastTouchTime ? ' (' + lastTouchTime + ')' : '') + ': ' + lastTouch : ''}
+${contact.source_campaign ? '📣 Campaign: ' + contact.source_campaign : ''}
+${contact.calendly_sent ? '📅 Calendly link: ALREADY SENT — do not send again' : ''}
+
+COACHING:
+- If you see pain points above, DON'T list them at the person. Let them surface one organically via your question. Use it as a mental map only.
+- If funnel_stage is "cold" or "warm_lead", keep curiosity high and stay out of pitch mode.
+- If funnel_stage is "hot_lead" or "in_convo", it's OK to reference specifics and move toward booking.
+- If last_touch was recent (under 3 days), acknowledge the continuity without awkwardly re-introducing yourself.`;
 
         // Pull their jobs
         const jRes = await fetch(`${SUPABASE_URL}/rest/v1/jobs?client_id=eq.${contactId}&order=created_at.desc&limit=5`, { headers: sbHeaders });
