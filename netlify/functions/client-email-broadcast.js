@@ -74,9 +74,11 @@ async function getContactBatch(limit) {
 }
 
 
-// ── Build tracked HTML email (V1 Bold Signature) ─────────────────────────
-// Gold stripe · black hero · NUI lockup · per-angle pull-quote · dual CTA · black footer
-function buildEmail(contactId, sendId, angleId, firstName, company) {
+// ── Build tracked HTML email ──────────────────────────────────────────────
+// Two templates available:
+//   'bold'  — V1 Bold Signature  (branded hero, dual CTA, Promotions-tab optimized)
+//   'plain' — V3 Hybrid Plain    (looks like a 1:1 email, Primary-tab optimized)
+function buildEmail(contactId, sendId, angleId, firstName, company, template = 'bold') {
   const trackBase = `${SITE_URL}/.netlify/functions/email-track`;
   const pixelUrl = `${trackBase}?cid=${contactId}&id=${sendId}`;
   const unsubUrl = `${SITE_URL}/.netlify/functions/unsubscribe?cid=${contactId}`;
@@ -88,70 +90,122 @@ function buildEmail(contactId, sendId, angleId, firstName, company) {
   const learnUrl = trackLink(SITE_URL);
   const co = company || 'your business';
 
-  const bodyMap = {
+  // Each angle has two variants:
+  //   bold  — branded, HTML-heavy, longer, formal subject
+  //   plain — conversational, short, lowercase subject, single link
+  const angles = {
     reconnect: {
-      subject: `${firstName}, it's been a minute — Faren here`,
-      body: `<p>Hey ${firstName},</p>
+      bold: {
+        subject: `${firstName}, it's been a minute — Faren here`,
+        body: `<p>Hey ${firstName},</p>
 <p>It's Faren Young — you worked with me when I was running Bravo Graphix. Wanted to reach out and reconnect.</p>
 <p>A lot has changed. We rebranded to <strong>New Urban Influence</strong> and now build full digital infrastructure for Detroit businesses — websites, AI phone staff, brand strategy, and marketing automation.</p>
 <p>If ${co} is still going strong, I'd love to hear about it and see if there's anything we can help with. No pitch — just a real conversation.</p>`,
-      pullQuote: 'Stop renting attention. Own your system.',
-      ctaText: 'Book my free audit'
+        pullQuote: 'Stop renting attention. Own your system.',
+        ctaText: 'Book my free audit'
+      },
+      plain: {
+        subject: `quick hello, ${firstName.toLowerCase()}`,
+        body: `Hey ${firstName},\n\nFaren Young here — small world, we used to work together when I ran Bravo Graphix.\n\nI'm not selling anything today. Just running free 15-minute audits for a handful of Detroit businesses this week. Looking at your site, your Google profile, your social — telling you what's working and what's leaking money.\n\nWorth 15 minutes if it shows you one thing you didn't know about ${co}?`,
+        linkText: "Here's my calendar"
+      }
     },
     value_tip: {
-      subject: `${firstName} — 3 things hurting Detroit businesses right now`,
-      body: `<p>Hey ${firstName},</p>
+      bold: {
+        subject: `${firstName} — 3 things hurting Detroit businesses right now`,
+        body: `<p>Hey ${firstName},</p>
 <p>Three things I keep seeing hurt Detroit businesses:</p>
 <p><strong>1. Outdated Google Business Profile.</strong> Set it up once and never touched it. Maps ranking drops fast when it looks abandoned.</p>
 <p><strong>2. No follow-up system.</strong> Lead contacts you, you're busy, 24 hours pass. They already booked someone else.</p>
 <p><strong>3. Inconsistent brand.</strong> Instagram looks nothing like the website. Customers don't trust inconsistency.</p>
 <p>Any of these sound familiar for ${co}? Reply and I'll tell you the fastest fix.</p>`,
-      pullQuote: 'Small fixes. Big leverage.',
-      ctaText: 'Show me the fix'
+        pullQuote: 'Small fixes. Big leverage.',
+        ctaText: 'Show me the fix'
+      },
+      plain: {
+        subject: `3 things hurting detroit businesses`,
+        body: `Hey ${firstName},\n\nThree patterns I keep seeing hurt Detroit businesses:\n\n1. Google Business Profile set up once and forgotten. Ranking drops fast.\n2. No follow-up system. Lead comes in, 24 hours pass, they book someone else.\n3. Brand looks one way on Instagram, another way on the website. Customers don't trust inconsistency.\n\nAny of these sound familiar at ${co}? Reply and I'll tell you the fastest fix.`,
+        linkText: 'Or book 15 minutes'
+      }
     },
     social_proof: {
-      subject: `What changed for a Detroit business in 90 days`,
-      body: `<p>Hey ${firstName},</p>
+      bold: {
+        subject: `What changed for a Detroit business in 90 days`,
+        body: `<p>Hey ${firstName},</p>
 <p>Quick story — a Detroit service business came to us earlier this year. Invisible on Google, missing after-hours calls, no consistent presence.</p>
 <p>We built them a Digital HQ: lead capture website, AI phone staff that answers and books 24/7, daily social content on autopilot.</p>
 <p>90 days later: top 3 on Google Maps, zero missed leads, brand looks like a real company.</p>
 <p>That's what we do for Detroit businesses now. If ${co} needs any of this, I'm one reply away.</p>`,
-      pullQuote: '90 days. Same city. Different results.',
-      ctaText: 'See how we did it'
+        pullQuote: '90 days. Same city. Different results.',
+        ctaText: 'See how we did it'
+      },
+      plain: {
+        subject: `90 days, detroit business, big shift`,
+        body: `Hey ${firstName},\n\nQuick story. Detroit service business came to us earlier this year — invisible on Google, missing after-hours calls, no consistent presence.\n\nWe built them a Digital HQ: lead capture site, AI phone staff answering 24/7, social on autopilot.\n\n90 days later — top 3 on Google Maps, zero missed leads, brand looks real.\n\nIf ${co} needs any of that, I'm one reply away.`,
+        linkText: 'See what we built them'
+      }
     },
     ai_angle: {
-      subject: `${firstName} — AI is answering calls for Detroit businesses right now`,
-      body: `<p>Hey ${firstName},</p>
+      bold: {
+        subject: `${firstName} — AI is answering calls for Detroit businesses right now`,
+        body: `<p>Hey ${firstName},</p>
 <p>We built something called Digital Staff for Detroit businesses — an AI that picks up your phone 24/7, knows your business, answers questions, books appointments. $197/month.</p>
 <p>Less than one day of part-time payroll. Never calls in sick.</p>
 <p>Most owners are shocked by how many leads they were losing after hours. That's fixable now.</p>
 <p>Would that solve a real problem for ${co}? Reply and I'll show you exactly how it works.</p>`,
-      pullQuote: 'Answers every call. Never sleeps. $197 a month.',
-      ctaText: 'See Monty in action'
+        pullQuote: 'Answers every call. Never sleeps. $197 a month.',
+        ctaText: 'See Monty in action'
+      },
+      plain: {
+        subject: `ai answering your phones`,
+        body: `Hey ${firstName},\n\nBuilt an AI that picks up the phone 24/7 — knows your business, answers questions, books appointments. $197/month.\n\nLess than one day of part-time payroll. Never calls in sick. Most owners are shocked how many leads they were losing after hours.\n\nWould that fix a real problem at ${co}?`,
+        linkText: 'Watch it take a call'
+      }
     },
     free_audit: {
-      subject: `${firstName} — free brand audit for Detroit businesses this week`,
-      body: `<p>Hey ${firstName},</p>
+      bold: {
+        subject: `${firstName} — free brand audit for Detroit businesses this week`,
+        body: `<p>Hey ${firstName},</p>
 <p>This week I'm doing free brand and digital audits for a handful of Detroit businesses — no strings attached.</p>
 <p>I look at your branding, website, Google presence, and social media and tell you what's working, what's hurting you, and the fastest fix. 15 minutes on a call.</p>
 <p>I'd love to take a look at ${co}. Reply or grab a time below.</p>`,
-      pullQuote: '15 minutes. Zero pitch. Real answers.',
-      ctaText: 'Claim my audit'
+        pullQuote: '15 minutes. Zero pitch. Real answers.',
+        ctaText: 'Claim my audit'
+      },
+      plain: {
+        subject: `free audit this week, ${firstName.toLowerCase()}?`,
+        body: `Hey ${firstName},\n\nRunning free brand + digital audits for a handful of Detroit businesses this week. No strings.\n\nI look at your branding, website, Google presence, social — tell you what's working, what's leaking money, fastest fix. 15 minutes.\n\nWant me to look at ${co}?`,
+        linkText: 'Grab a spot'
+      }
     },
     detroit_pride: {
-      subject: `Detroit businesses are winning right now — are you?`,
-      body: `<p>Hey ${firstName},</p>
+      bold: {
+        subject: `Detroit businesses are winning right now — are you?`,
+        body: `<p>Hey ${firstName},</p>
 <p>The Detroit businesses growing fastest right now built strong brands and digital infrastructure coming out of the rough years.</p>
 <p>The ones struggling still rely on word of mouth, have a website nobody can find, and haven't figured out how to use technology without it taking over their life.</p>
 <p>We help close that gap — branding, websites, AI automation, Google Maps visibility. Built for businesses like ${co}.</p>
 <p>If now is the time to level up, I want to help.</p>`,
-      pullQuote: 'Detroit is building. Are you?',
-      ctaText: 'Build with us'
+        pullQuote: 'Detroit is building. Are you?',
+        ctaText: 'Build with us'
+      },
+      plain: {
+        subject: `detroit is building`,
+        body: `Hey ${firstName},\n\nThe Detroit businesses winning right now built real brands and real digital infrastructure coming out of the rough years. The ones struggling still rely on word of mouth and a website nobody can find.\n\nWe close that gap — branding, websites, AI automation, Maps visibility. Built for businesses like ${co}.\n\nIf now's the time to level up, I want to help.`,
+        linkText: 'Let me help'
+      }
     }
   };
 
-  const angle = bodyMap[angleId] || bodyMap.reconnect;
+  const angleSet = angles[angleId] || angles.reconnect;
 
+  if (template === 'plain') {
+    return renderPlain(angleSet.plain, { ctaUrl, unsubUrl, pixelUrl });
+  }
+  return renderBold(angleSet.bold, { ctaUrl, learnUrl, unsubUrl, pixelUrl });
+}
+
+function renderBold(a, ctx) {
   const html = `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a;line-height:1.65;background:#fff;">
 <div style="height:4px;background:#C9A227;"></div>
 <div style="background:#000;padding:28px 24px;">
@@ -159,11 +213,11 @@ function buildEmail(contactId, sendId, angleId, firstName, company) {
 <div style="font-size:22px;color:#fff;font-weight:800;line-height:1.25;letter-spacing:-0.5px;">Designing culture.<br><span style="color:#D90429;">Building influence.</span></div>
 </div>
 <div style="padding:30px 26px;font-size:15px;">
-${angle.body}
-<p style="margin:18px 0 22px;padding:14px 16px;background:#f8f6ef;border-left:3px solid #C9A227;font-style:italic;font-size:14px;color:#1a1a1a;">&ldquo;${angle.pullQuote}&rdquo;</p>
+${a.body}
+<p style="margin:18px 0 22px;padding:14px 16px;background:#f8f6ef;border-left:3px solid #C9A227;font-style:italic;font-size:14px;color:#1a1a1a;">&ldquo;${a.pullQuote}&rdquo;</p>
 <div style="margin:22px 0;">
-<a href="${ctaUrl}" style="background:#D90429;color:#fff;padding:13px 26px;border-radius:6px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;letter-spacing:0.3px;">${angle.ctaText} &rarr;</a>
-<a href="${learnUrl}" style="color:#000;padding:13px 8px;text-decoration:none;font-weight:600;font-size:14px;display:inline-block;border-bottom:2px solid #000;margin-left:8px;">See what we built &rarr;</a>
+<a href="${ctx.ctaUrl}" style="background:#D90429;color:#fff;padding:13px 26px;border-radius:6px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;letter-spacing:0.3px;">${a.ctaText} &rarr;</a>
+<a href="${ctx.learnUrl}" style="color:#000;padding:13px 8px;text-decoration:none;font-weight:600;font-size:14px;display:inline-block;border-bottom:2px solid #000;margin-left:8px;">See what we built &rarr;</a>
 </div>
 <p style="font-size:13px;color:#666;margin:8px 0 0;">15 minutes. No pitch. Just a real look at what's hurting your pipeline.</p>
 <div style="border-top:1px solid #eee;margin-top:26px;padding-top:18px;">
@@ -175,13 +229,33 @@ ${angle.body}
 <div style="color:#C9A227;font-weight:700;letter-spacing:2px;font-size:10px;margin-bottom:6px;">NUI HQ</div>
 <div>New Urban Influence &middot; Detroit, MI 48201 &middot; (248) 487-8747</div>
 <div style="margin-top:10px;">
-<a href="${unsubUrl}" style="color:#fff;text-decoration:underline;">Unsubscribe</a>
+<a href="${ctx.unsubUrl}" style="color:#fff;text-decoration:underline;">Unsubscribe</a>
 </div>
 </div>
-<img src="${pixelUrl}" width="1" height="1" style="display:none;" alt="" />
+<img src="${ctx.pixelUrl}" width="1" height="1" style="display:none;" alt="" />
 </div>`;
+  return { subject: a.subject, html };
+}
 
-  return { subject: angle.subject, html };
+function renderPlain(a, ctx) {
+  // Paragraph-wrap body: \n\n -> paragraph break, single \n -> <br>
+  const paragraphs = a.body.split(/\n\n+/).map(p => {
+    const lines = p.split(/\n/).map(l => l.trim()).filter(Boolean);
+    return '<p style="margin:0 0 14px;">' + lines.join('<br>') + '</p>';
+  }).join('');
+
+  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;color:#222;line-height:1.75;font-size:15px;padding:20px 4px;">
+${paragraphs}
+<p style="margin:0 0 22px;"><a href="${ctx.ctaUrl}" style="color:#D90429;text-decoration:underline;font-weight:600;">${a.linkText} &rarr;</a></p>
+<p style="margin:0 0 4px;">&mdash; Faren</p>
+<p style="margin:0;font-size:13px;color:#888;">New Urban Influence &middot; Detroit<br>(248) 487-8747</p>
+<div style="margin-top:28px;padding-top:14px;border-top:1px solid #eee;font-size:11px;color:#999;line-height:1.6;">
+New Urban Influence &middot; Detroit, MI 48201 &middot; (248) 487-8747<br>
+<a href="${ctx.unsubUrl}" style="color:#999;text-decoration:underline;">Unsubscribe</a>
+</div>
+<img src="${ctx.pixelUrl}" width="1" height="1" style="display:none;" alt="" />
+</div>`;
+  return { subject: a.subject, html };
 }
 
 
