@@ -10,15 +10,21 @@ const CORS = {
 };
 
 // ── CONTENT PILLARS ──────────────────────────────────────────
+// 10-pillar rotation for Promoter's carousel format (Topic A vs Topic B).
+// Distinct from admin-agents.js CONTENT_PILLARS which drives the Creator's
+// single-topic content (brand_tip, client_win, etc.) — different format,
+// different purpose. Keep these two lists intentionally separate.
 const CONTENT_PILLARS = [
-  { id: 'branding_vs_logo',      topicA: 'Brand Identity',    topicB: 'Just a Logo',       hashtags: '#BrandStrategy #NewUrbanInfluence #DetroitBusiness #BrandIdentity #LogoDesign #313 #Detroit #SmallBusiness #UrbanEntrepreneur #Branding' },
-  { id: 'ai_vs_human',           topicA: 'AI Marketing',      topicB: 'Human Marketing',   hashtags: '#AIMarketing #NewUrbanInfluence #DetroitBusiness #AIAutomation #Marketing #313 #SmallBusiness #DigitalMarketing #Detroit #MarketingStrategy' },
-  { id: 'website_vs_social',     topicA: 'A Real Website',    topicB: 'A Social Page',     hashtags: '#DigitalHQ #NewUrbanInfluence #DetroitBusiness #WebDesign #SmallBusiness #313 #Detroit #DigitalHeadquarters #OnlinePresence #BusinessInfrastructure' },
-  { id: 'personal_vs_corporate', topicA: 'Personal Branding', topicB: 'Corporate Branding',hashtags: '#PersonalBranding #NewUrbanInfluence #DetroitBusiness #Branding #313 #Detroit #UrbanEntrepreneur #BrandStrategy #SmallBusiness #CreatorEconomy' },
-  { id: 'followers_vs_community',topicA: 'Real Community',    topicB: 'Follower Count',    hashtags: '#CommunityBuilding #NewUrbanInfluence #DetroitBusiness #SocialMedia #313 #Detroit #SmallBusiness #ContentCreator #Engagement #DigitalMarketing' },
-  { id: 'strategy_vs_posting',   topicA: 'Content Strategy',  topicB: 'Random Posting',    hashtags: '#ContentStrategy #NewUrbanInfluence #DetroitBusiness #ContentMarketing #313 #Detroit #SmallBusiness #SocialMediaMarketing #ContentCreation #Marketing' },
-  { id: 'organic_vs_paid',       topicA: 'Organic Growth',    topicB: 'Paid Ads Only',     hashtags: '#OrganicGrowth #NewUrbanInfluence #DetroitBusiness #DigitalMarketing #PaidAds #313 #Detroit #SmallBusiness #MarketingStrategy #SEO' },
-  { id: 'automation_vs_manual',  topicA: 'Business Automation',topicB: 'Manual Everything',hashtags: '#Automation #NewUrbanInfluence #DetroitBusiness #AIAutomation #DigitalStaff #313 #Detroit #SmallBusiness #BusinessGrowth #Efficiency' },
+  { id: 'branding_vs_logo',       topicA: 'Brand Identity',     topicB: 'Just a Logo',        hashtags: '#BrandStrategy #NewUrbanInfluence #DetroitBusiness #BrandIdentity #LogoDesign #313 #Detroit #SmallBusiness #UrbanEntrepreneur #Branding' },
+  { id: 'ai_vs_human',            topicA: 'AI Marketing',       topicB: 'Human Marketing',    hashtags: '#AIMarketing #NewUrbanInfluence #DetroitBusiness #AIAutomation #Marketing #313 #SmallBusiness #DigitalMarketing #Detroit #MarketingStrategy' },
+  { id: 'website_vs_social',      topicA: 'A Real Website',     topicB: 'A Social Page',      hashtags: '#DigitalHQ #NewUrbanInfluence #DetroitBusiness #WebDesign #SmallBusiness #313 #Detroit #DigitalHeadquarters #OnlinePresence #BusinessInfrastructure' },
+  { id: 'personal_vs_corporate',  topicA: 'Personal Branding',  topicB: 'Corporate Branding', hashtags: '#PersonalBranding #NewUrbanInfluence #DetroitBusiness #Branding #313 #Detroit #UrbanEntrepreneur #BrandStrategy #SmallBusiness #CreatorEconomy' },
+  { id: 'followers_vs_community', topicA: 'Real Community',     topicB: 'Follower Count',     hashtags: '#CommunityBuilding #NewUrbanInfluence #DetroitBusiness #SocialMedia #313 #Detroit #SmallBusiness #ContentCreator #Engagement #DigitalMarketing' },
+  { id: 'strategy_vs_posting',    topicA: 'Content Strategy',   topicB: 'Random Posting',     hashtags: '#ContentStrategy #NewUrbanInfluence #DetroitBusiness #ContentMarketing #313 #Detroit #SmallBusiness #SocialMediaMarketing #ContentCreation #Marketing' },
+  { id: 'organic_vs_paid',        topicA: 'Organic Growth',     topicB: 'Paid Ads Only',      hashtags: '#OrganicGrowth #NewUrbanInfluence #DetroitBusiness #DigitalMarketing #PaidAds #313 #Detroit #SmallBusiness #MarketingStrategy #SEO' },
+  { id: 'automation_vs_manual',   topicA: 'Business Automation',topicB: 'Manual Everything',  hashtags: '#Automation #NewUrbanInfluence #DetroitBusiness #AIAutomation #DigitalStaff #313 #Detroit #SmallBusiness #BusinessGrowth #Efficiency' },
+  { id: 'systems_vs_hustle',      topicA: 'Built Systems',      topicB: 'Constant Hustle',    hashtags: '#BusinessSystems #NewUrbanInfluence #DetroitBusiness #Entrepreneurship #Hustle #313 #Detroit #SmallBusiness #BusinessGrowth #Leverage' },
+  { id: 'reputation_vs_discount', topicA: 'Earned Reputation',  topicB: 'Price War',          hashtags: '#Reputation #NewUrbanInfluence #DetroitBusiness #BrandValue #Pricing #313 #Detroit #SmallBusiness #Authority #TrustBuilding' },
 ];
 
 // ── CAROUSEL SYSTEM PROMPT ───────────────────────────────────
@@ -340,11 +346,35 @@ const sbFetch = async (path, opts = {}) => {
 };
 
 async function getNextPillar() {
+  // Look at enough recent history to cover ALL pillars minus one, so there's
+  // always at least one unused pillar in the recent window. Previously this
+  // was hardcoded to limit=8 with 8 pillars, causing wrap-around to always
+  // default to CONTENT_PILLARS[0] = duplicate posts.
+  const historyWindow = Math.max(CONTENT_PILLARS.length - 1, 1);
   try {
-    const rows = await sbFetch('agent_logs?agent_id=eq.promoter&order=created_at.desc&limit=8');
-    const used = (rows || []).map(r => r.metadata?.pillar_id).filter(Boolean);
-    return CONTENT_PILLARS.find(p => !used.includes(p.id)) || CONTENT_PILLARS[0];
-  } catch { return CONTENT_PILLARS[Math.floor(Math.random() * CONTENT_PILLARS.length)]; }
+    const rows = await sbFetch(`agent_logs?agent_id=eq.promoter&status=eq.success&order=created_at.desc&limit=${CONTENT_PILLARS.length}`);
+    const usedRecent = (rows || []).slice(0, historyWindow).map(r => r.metadata?.pillar_id).filter(Boolean);
+
+    // Preferred: any pillar not used in the last N-1 runs
+    const fresh = CONTENT_PILLARS.find(p => !usedRecent.includes(p.id));
+    if (fresh) return fresh;
+
+    // Fallback: if ALL pillars were used recently (shouldn't happen with
+    // N-1 window, but guards against log gaps), pick the OLDEST-used one
+    // based on full history, not CONTENT_PILLARS[0].
+    const allUsed = (rows || []).map(r => r.metadata?.pillar_id).filter(Boolean);
+    const oldestFirst = [...CONTENT_PILLARS].sort((a, b) => {
+      const aIdx = allUsed.indexOf(a.id);
+      const bIdx = allUsed.indexOf(b.id);
+      // Pillars not in history get -1 and should come first
+      const aScore = aIdx === -1 ? -Infinity : aIdx;
+      const bScore = bIdx === -1 ? -Infinity : bIdx;
+      return bScore - aScore; // higher index = older = pick first
+    });
+    return oldestFirst[0];
+  } catch {
+    return CONTENT_PILLARS[Math.floor(Math.random() * CONTENT_PILLARS.length)];
+  }
 }
 
 async function alreadyRanToday() {
