@@ -49,10 +49,12 @@ const NuiAdminAuth = {
 
     const response = await fetch(url, { ...options, headers });
 
-    // If 401/403, clear token and prompt re-auth
+    // If 401/403, clear token — admin-login.js will intercept and re-show the login screen
     if (response.status === 401 || response.status === 403) {
       this.clear();
-      alert('🔒 Authentication required. Please refresh and enter your admin token.');
+      if (window.NuiAdminLogin && typeof window.NuiAdminLogin.show === 'function') {
+        window.NuiAdminLogin.show();
+      }
       return response;
     }
 

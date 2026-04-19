@@ -73,13 +73,13 @@
 
   <!-- Security: Supabase admin-table fetch proxy (must load AFTER admin-auth.js) -->
   <script src="/assets/js/admin-db.js?v=20260418v2"></script>
+  <script src="/assets/js/admin-login.js?v=20260419v1"></script>
   <script>
-    // Prompt for admin token on /app/ load if not already set.
-    // Token is persisted in localStorage by NuiAdminAuth.
+    // Gate /app/ behind admin token. Validates on submit (no browser prompt).
     (function() {
       function gate() {
-        if (window.NuiAdminAuth && !window.NuiAdminAuth.isAuthenticated()) {
-          window.NuiAdminAuth.promptIfNeeded();
+        if (window.NuiAdminLogin) {
+          window.NuiAdminLogin.requireAuth();
         }
       }
       if (document.readyState === 'loading') {
