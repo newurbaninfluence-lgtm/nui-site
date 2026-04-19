@@ -85,6 +85,7 @@ function respectsSpacing(lastBroadcastAt) {
 // ── Get sequence batch — ongoing first, new enrollments fill capacity ────
 async function getSequenceBatch(limit) {
   const batch = [];
+  const seenEmails = new Set(); // Dedupe across parts A + B (CRM has dup emails)
 
   // Part A: contacts already in sequence, due for next touch
   const rOngoing = await fetch(
@@ -99,9 +100,12 @@ async function getSequenceBatch(limit) {
   const ongoing = (await rOngoing.json()) || [];
 
   for (const c of ongoing) {
+    const emailKey = (c.email || '').toLowerCase().trim();
+    if (seenEmails.has(emailKey)) continue;
     if (!respectsSpacing(c.last_broadcast_at)) continue;
     const step = nextStepDue(c.sequence_position, c.sequence_start_date);
     if (step) {
+      seenEmails.add(emailKey);
       batch.push({ ...c, _step: step, _isNew: false });
       if (batch.length >= limit) return batch;
     }
@@ -110,18 +114,23 @@ async function getSequenceBatch(limit) {
   // Part B: fill remaining capacity with new enrollments (day-1 touch)
   const remaining = limit - batch.length;
   if (remaining > 0) {
+    // Fetch extra to account for dupes we'll skip
     const rNew = await fetch(
       `${SUPABASE_URL}/rest/v1/crm_contacts` +
       `?email=not.is.null&email_unsubscribed=eq.false&email_bounced=eq.false` +
       `&sequence_position=eq.0&status=in.(cold_lead,new_lead,warm_lead)` +
       `&select=id,first_name,last_name,company,email` +
-      `&order=created_at.asc.nullslast&limit=${remaining}`,
+      `&order=created_at.asc.nullslast&limit=${remaining * 3}`,
       { headers: sbH }
     );
     const newContacts = (await rNew.json()) || [];
     const day1 = SEQUENCE_SCHEDULE[0];
     for (const c of newContacts) {
+      const emailKey = (c.email || '').toLowerCase().trim();
+      if (seenEmails.has(emailKey)) continue;
+      seenEmails.add(emailKey);
       batch.push({ ...c, _step: day1, _isNew: true });
+      if (batch.length >= limit) break;
     }
   }
 
@@ -420,16 +429,21 @@ exports.handler = async (event) => {
         results.push({ email, status: 'sent', angle: step.angle, position: step.position, isNew: contact._isNew });
         console.log(`[Broadcast] ✓ ${email} — ${step.angle} (day ${step.day}, pos ${step.position}${contact._isNew ? ', NEW' : ''})`);
       } catch (e) {
-        const isBounce = /bounce|reject|invalid|no such|does not exist|unavailable/i.test(e.message);
-        if (isBounce) {
+        // Only flag as HARD bounce on definitive permanent-failure signals.
+        // "temporarily unavailable", "try again", "deferred" are SOFT bounces.
+        const msg = e.message || '';
+        const isHardBounce =
+          /550|551|552|553|554/.test(msg) ||                               // SMTP permanent error codes
+          /user unknown|no such user|no such address|does not exist|mailbox (?:unavailable|not found)|address (?:rejected|not found)|recipient rejected|invalid recipient/i.test(msg);
+        if (isHardBounce) {
           await markContact(contact.id, subject, null, false, true, 'hard');
           bounced++;
-          results.push({ email, status: 'bounced', error: e.message.slice(0, 80) });
+          results.push({ email, status: 'bounced', error: msg.slice(0, 80) });
         } else {
           failed++;
-          results.push({ email, status: 'failed', error: e.message.slice(0, 80) });
+          results.push({ email, status: 'failed', error: msg.slice(0, 80) });
         }
-        console.warn(`[Broadcast] ✗ ${email}:`, e.message.slice(0, 80));
+        console.warn(`[Broadcast] ✗ ${email}:`, msg.slice(0, 80));
       }
 
       // Natural delay — don't blast Hostinger

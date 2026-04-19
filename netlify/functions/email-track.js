@@ -55,6 +55,27 @@ exports.handler = async (event) => {
     await logEvent('email_clicked', { clickedUrl: target });
     console.log('🖱️  Email clicked — trackId:', id, 'contactId:', cid, '→', target);
 
+    // ── HOT-LEAD OFF-RAMP ──────────────────────────────────────────────
+    // A click = genuine interest. Pause the 30-day sequence so Faren can
+    // pick up the thread personally, and elevate status so the contact
+    // surfaces in the hot-leads queue.
+    if (cid && SUPABASE_URL && SUPABASE_SERVICE_KEY) {
+      await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${cid}&sequence_paused_at=is.null`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPABASE_SERVICE_KEY,
+          'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+          sequence_paused_at: new Date().toISOString(),
+          status: 'hot_lead'
+        })
+      }).then(() => console.log('🔥 Sequence paused, contact elevated to hot_lead:', cid))
+        .catch(err => console.warn('[email-track] pause sequence failed:', err.message));
+    }
+
     return {
       statusCode: 302,
       headers: {
