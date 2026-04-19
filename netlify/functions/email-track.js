@@ -43,6 +43,15 @@ exports.handler = async (event) => {
       if (/^https?:\/\//i.test(decoded)) target = decoded;
     } catch (_) { /* fall through to SAFE_FALLBACK */ }
 
+    // Defeat Netlify's auto-forwarding of incoming query params onto the
+    // Location header — it only kicks in when the target has no query string.
+    // Adding ?src=email gives a clean redirect AND an attribution param.
+    try {
+      const urlObj = new URL(target);
+      if (!urlObj.searchParams.has('src')) urlObj.searchParams.set('src', 'email');
+      target = urlObj.toString();
+    } catch (_) { /* target unparseable, use as-is */ }
+
     await logEvent('email_clicked', { clickedUrl: target });
     console.log('🖱️  Email clicked — trackId:', id, 'contactId:', cid, '→', target);
 
