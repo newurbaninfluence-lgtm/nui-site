@@ -74,7 +74,8 @@ async function getContactBatch(limit) {
 }
 
 
-// ── Build tracked HTML email ──────────────────────────────────────────────
+// ── Build tracked HTML email (V1 Bold Signature) ─────────────────────────
+// Gold stripe · black hero · NUI lockup · per-angle pull-quote · dual CTA · black footer
 function buildEmail(contactId, sendId, angleId, firstName, company) {
   const trackBase = `${SITE_URL}/.netlify/functions/email-track`;
   const pixelUrl = `${trackBase}?cid=${contactId}&id=${sendId}`;
@@ -83,7 +84,8 @@ function buildEmail(contactId, sendId, angleId, firstName, company) {
   const trackLink = (url) =>
     `${trackBase}?cid=${contactId}&id=${sendId}&url=${encodeURIComponent(url)}`;
 
-  const ctaUrl = trackLink(`${SITE_URL}/contact`);
+  const ctaUrl   = trackLink(`${SITE_URL}/contact`);
+  const learnUrl = trackLink(SITE_URL);
   const co = company || 'your business';
 
   const bodyMap = {
@@ -92,7 +94,9 @@ function buildEmail(contactId, sendId, angleId, firstName, company) {
       body: `<p>Hey ${firstName},</p>
 <p>It's Faren Young — you worked with me when I was running Bravo Graphix. Wanted to reach out and reconnect.</p>
 <p>A lot has changed. We rebranded to <strong>New Urban Influence</strong> and now build full digital infrastructure for Detroit businesses — websites, AI phone staff, brand strategy, and marketing automation.</p>
-<p>If ${co} is still going strong, I'd love to hear about it and see if there's anything we can help with. No pitch — just a real conversation.</p>`
+<p>If ${co} is still going strong, I'd love to hear about it and see if there's anything we can help with. No pitch — just a real conversation.</p>`,
+      pullQuote: 'Stop renting attention. Own your system.',
+      ctaText: 'Book my free audit'
     },
     value_tip: {
       subject: `${firstName} — 3 things hurting Detroit businesses right now`,
@@ -101,7 +105,9 @@ function buildEmail(contactId, sendId, angleId, firstName, company) {
 <p><strong>1. Outdated Google Business Profile.</strong> Set it up once and never touched it. Maps ranking drops fast when it looks abandoned.</p>
 <p><strong>2. No follow-up system.</strong> Lead contacts you, you're busy, 24 hours pass. They already booked someone else.</p>
 <p><strong>3. Inconsistent brand.</strong> Instagram looks nothing like the website. Customers don't trust inconsistency.</p>
-<p>Any of these sound familiar for ${co}? Reply and I'll tell you the fastest fix.</p>`
+<p>Any of these sound familiar for ${co}? Reply and I'll tell you the fastest fix.</p>`,
+      pullQuote: 'Small fixes. Big leverage.',
+      ctaText: 'Show me the fix'
     },
     social_proof: {
       subject: `What changed for a Detroit business in 90 days`,
@@ -109,7 +115,9 @@ function buildEmail(contactId, sendId, angleId, firstName, company) {
 <p>Quick story — a Detroit service business came to us earlier this year. Invisible on Google, missing after-hours calls, no consistent presence.</p>
 <p>We built them a Digital HQ: lead capture website, AI phone staff that answers and books 24/7, daily social content on autopilot.</p>
 <p>90 days later: top 3 on Google Maps, zero missed leads, brand looks like a real company.</p>
-<p>That's what we do for Detroit businesses now. If ${co} needs any of this, I'm one reply away.</p>`
+<p>That's what we do for Detroit businesses now. If ${co} needs any of this, I'm one reply away.</p>`,
+      pullQuote: '90 days. Same city. Different results.',
+      ctaText: 'See how we did it'
     },
     ai_angle: {
       subject: `${firstName} — AI is answering calls for Detroit businesses right now`,
@@ -117,14 +125,18 @@ function buildEmail(contactId, sendId, angleId, firstName, company) {
 <p>We built something called Digital Staff for Detroit businesses — an AI that picks up your phone 24/7, knows your business, answers questions, books appointments. $197/month.</p>
 <p>Less than one day of part-time payroll. Never calls in sick.</p>
 <p>Most owners are shocked by how many leads they were losing after hours. That's fixable now.</p>
-<p>Would that solve a real problem for ${co}? Reply and I'll show you exactly how it works.</p>`
+<p>Would that solve a real problem for ${co}? Reply and I'll show you exactly how it works.</p>`,
+      pullQuote: 'Answers every call. Never sleeps. $197 a month.',
+      ctaText: 'See Monty in action'
     },
     free_audit: {
       subject: `${firstName} — free brand audit for Detroit businesses this week`,
       body: `<p>Hey ${firstName},</p>
 <p>This week I'm doing free brand and digital audits for a handful of Detroit businesses — no strings attached.</p>
 <p>I look at your branding, website, Google presence, and social media and tell you what's working, what's hurting you, and the fastest fix. 15 minutes on a call.</p>
-<p>I'd love to take a look at ${co}. Reply or grab a time below.</p>`
+<p>I'd love to take a look at ${co}. Reply or grab a time below.</p>`,
+      pullQuote: '15 minutes. Zero pitch. Real answers.',
+      ctaText: 'Claim my audit'
     },
     detroit_pride: {
       subject: `Detroit businesses are winning right now — are you?`,
@@ -132,26 +144,39 @@ function buildEmail(contactId, sendId, angleId, firstName, company) {
 <p>The Detroit businesses growing fastest right now built strong brands and digital infrastructure coming out of the rough years.</p>
 <p>The ones struggling still rely on word of mouth, have a website nobody can find, and haven't figured out how to use technology without it taking over their life.</p>
 <p>We help close that gap — branding, websites, AI automation, Google Maps visibility. Built for businesses like ${co}.</p>
-<p>If now is the time to level up, I want to help.</p>`
+<p>If now is the time to level up, I want to help.</p>`,
+      pullQuote: 'Detroit is building. Are you?',
+      ctaText: 'Build with us'
     }
   };
 
   const angle = bodyMap[angleId] || bodyMap.reconnect;
 
-  const html = `<div style="font-family:Arial,sans-serif;max-width:580px;margin:0 auto;color:#1a1a1a;line-height:1.75;">
-<div style="background:#111;padding:24px;text-align:center;">
-<span style="font-size:18px;font-weight:700;color:#fff;letter-spacing:2px;">NEW URBAN <span style="color:#D90429;">INFLUENCE</span></span>
+  const html = `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a;line-height:1.65;background:#fff;">
+<div style="height:4px;background:#C9A227;"></div>
+<div style="background:#000;padding:28px 24px;">
+<div style="font-size:10px;color:#C9A227;letter-spacing:3px;font-weight:700;margin-bottom:8px;">NEW URBAN INFLUENCE &middot; DETROIT</div>
+<div style="font-size:22px;color:#fff;font-weight:800;line-height:1.25;letter-spacing:-0.5px;">Designing culture.<br><span style="color:#D90429;">Building influence.</span></div>
 </div>
-<div style="padding:32px 24px;">
+<div style="padding:30px 26px;font-size:15px;">
 ${angle.body}
-<div style="text-align:center;margin:28px 0;">
-<a href="${ctaUrl}" style="background:#D90429;color:#fff;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:700;font-size:14px;">Book a Free Call →</a>
+<p style="margin:18px 0 22px;padding:14px 16px;background:#f8f6ef;border-left:3px solid #C9A227;font-style:italic;font-size:14px;color:#1a1a1a;">&ldquo;${angle.pullQuote}&rdquo;</p>
+<div style="margin:22px 0;">
+<a href="${ctaUrl}" style="background:#D90429;color:#fff;padding:13px 26px;border-radius:6px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;letter-spacing:0.3px;">${angle.ctaText} &rarr;</a>
+<a href="${learnUrl}" style="color:#000;padding:13px 8px;text-decoration:none;font-weight:600;font-size:14px;display:inline-block;border-bottom:2px solid #000;margin-left:8px;">See what we built &rarr;</a>
 </div>
-<p style="color:#555;font-size:14px;margin-top:24px;">— Faren Young<br>New Urban Influence<br>Detroit, MI · (248) 487-8747</p>
+<p style="font-size:13px;color:#666;margin:8px 0 0;">15 minutes. No pitch. Just a real look at what's hurting your pipeline.</p>
+<div style="border-top:1px solid #eee;margin-top:26px;padding-top:18px;">
+<p style="margin:0;font-weight:700;font-size:14px;">Faren Young</p>
+<p style="margin:0;font-size:13px;color:#666;">Founder, New Urban Influence<br>(248) 487-8747 &middot; newurbaninfluence.com</p>
 </div>
-<div style="background:#f5f5f5;padding:12px 24px;text-align:center;font-size:11px;color:#999;border-top:1px solid #e0e0e0;">
-New Urban Influence · Detroit, MI · <a href="${trackLink(SITE_URL)}" style="color:#D90429;">newurbaninfluence.com</a><br>
-<a href="${unsubUrl}" style="color:#999;">Unsubscribe</a>
+</div>
+<div style="background:#111;padding:18px 22px;font-size:11px;color:#888;line-height:1.7;">
+<div style="color:#C9A227;font-weight:700;letter-spacing:2px;font-size:10px;margin-bottom:6px;">NUI HQ</div>
+<div>New Urban Influence &middot; Detroit, MI 48201 &middot; (248) 487-8747</div>
+<div style="margin-top:10px;">
+<a href="${unsubUrl}" style="color:#fff;text-decoration:underline;">Unsubscribe</a>
+</div>
 </div>
 <img src="${pixelUrl}" width="1" height="1" style="display:none;" alt="" />
 </div>`;
