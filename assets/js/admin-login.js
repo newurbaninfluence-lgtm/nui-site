@@ -179,7 +179,7 @@
       submit.disabled = true;
       submit.innerHTML = '<span class="nui-login-spinner"></span>Verifying...';
       hint.classList.remove('error');
-      hint.classList.add('');
+      hint.classList.remove('success');
       hint.textContent = 'Checking token...';
 
       try {
