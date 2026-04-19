@@ -51,26 +51,81 @@ async function verifyEmailDomain(email) {
   } catch { return false; }
 }
 
-// ── Get next angle (rotate through 6 before repeating) ───────────────────
-const ANGLE_IDS = ['reconnect', 'value_tip', 'social_proof', 'ai_angle', 'free_audit', 'detroit_pride'];
-async function getNextAngle() {
-  try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/agent_logs?agent_id=eq.email_broadcast&order=created_at.desc&limit=6`, { headers: sbH });
-    const logs = await r.json();
-    const used = (logs || []).map(l => l.metadata?.angle_id).filter(Boolean);
-    return ANGLE_IDS.find(id => !used.includes(id)) || ANGLE_IDS[0];
-  } catch { return 'reconnect'; }
+// ── 30-DAY SEQUENCE SCHEDULE ─────────────────────────────────────────────
+// Each contact marches through these 6 touches on their own timeline.
+// Template alternates bold/plain so inbox doesn't look templated.
+const SEQUENCE_SCHEDULE = [
+  { position: 1, day: 1,  angle: 'reconnect',     template: 'bold'  },
+  { position: 2, day: 4,  angle: 'value_tip',     template: 'plain' },
+  { position: 3, day: 8,  angle: 'social_proof',  template: 'bold'  },
+  { position: 4, day: 14, angle: 'ai_angle',      template: 'plain' },
+  { position: 5, day: 21, angle: 'free_audit',    template: 'bold'  },
+  { position: 6, day: 30, angle: 'detroit_pride', template: 'plain' }
+];
+const FINAL_POSITION = 6;
+const MIN_DAYS_BETWEEN_TOUCHES = 3; // Safety: matches shortest schedule gap
+
+// Given current position + start date, return next step if due, else null
+function nextStepDue(currentPosition, sequenceStartDate) {
+  const step = SEQUENCE_SCHEDULE.find(s => s.position === currentPosition + 1);
+  if (!step) return null; // sequence complete
+  const daysSinceStart = Math.floor(
+    (Date.now() - new Date(sequenceStartDate).getTime()) / (24 * 60 * 60 * 1000)
+  );
+  return daysSinceStart >= step.day ? step : null;
 }
 
-// ── Get next batch of contacts ────────────────────────────────────────────
-async function getContactBatch(limit) {
-  const cooldown = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-  const r = await fetch(
-    `${SUPABASE_URL}/rest/v1/crm_contacts?email=not.is.null&email_unsubscribed=eq.false&email_bounced=eq.false&status=in.(cold_lead,new_lead,warm_lead)&select=id,first_name,last_name,company,email,last_broadcast_at&order=last_broadcast_at.asc.nullsfirst&limit=${limit * 3}`,
+// Returns true if enough time has passed since last send (prevents spam on backfill catchup)
+function respectsSpacing(lastBroadcastAt) {
+  if (!lastBroadcastAt) return true;
+  const daysSinceLast = (Date.now() - new Date(lastBroadcastAt).getTime()) / (24 * 60 * 60 * 1000);
+  return daysSinceLast >= MIN_DAYS_BETWEEN_TOUCHES;
+}
+
+// ── Get sequence batch — ongoing first, new enrollments fill capacity ────
+async function getSequenceBatch(limit) {
+  const batch = [];
+
+  // Part A: contacts already in sequence, due for next touch
+  const rOngoing = await fetch(
+    `${SUPABASE_URL}/rest/v1/crm_contacts` +
+    `?email=not.is.null&email_unsubscribed=eq.false&email_bounced=eq.false` +
+    `&sequence_position=gte.1&sequence_position=lte.${FINAL_POSITION - 1}` +
+    `&sequence_completed_at=is.null&sequence_paused_at=is.null` +
+    `&select=id,first_name,last_name,company,email,sequence_position,sequence_start_date,last_broadcast_at` +
+    `&order=sequence_start_date.asc&limit=${limit * 5}`,
     { headers: sbH }
   );
-  const all = await r.json();
-  return (all || []).filter(c => !c.last_broadcast_at || new Date(c.last_broadcast_at) < new Date(cooldown)).slice(0, limit);
+  const ongoing = (await rOngoing.json()) || [];
+
+  for (const c of ongoing) {
+    if (!respectsSpacing(c.last_broadcast_at)) continue;
+    const step = nextStepDue(c.sequence_position, c.sequence_start_date);
+    if (step) {
+      batch.push({ ...c, _step: step, _isNew: false });
+      if (batch.length >= limit) return batch;
+    }
+  }
+
+  // Part B: fill remaining capacity with new enrollments (day-1 touch)
+  const remaining = limit - batch.length;
+  if (remaining > 0) {
+    const rNew = await fetch(
+      `${SUPABASE_URL}/rest/v1/crm_contacts` +
+      `?email=not.is.null&email_unsubscribed=eq.false&email_bounced=eq.false` +
+      `&sequence_position=eq.0&status=in.(cold_lead,new_lead,warm_lead)` +
+      `&select=id,first_name,last_name,company,email` +
+      `&order=created_at.asc.nullslast&limit=${remaining}`,
+      { headers: sbH }
+    );
+    const newContacts = (await rNew.json()) || [];
+    const day1 = SEQUENCE_SCHEDULE[0];
+    for (const c of newContacts) {
+      batch.push({ ...c, _step: day1, _isNew: true });
+    }
+  }
+
+  return batch;
 }
 
 
@@ -270,10 +325,20 @@ async function logSend(contactId, subject, angleId) {
   return rows?.[0]?.id || null;
 }
 
-async function markContact(contactId, subject, bounced = false, bounceType = null) {
+async function markContact(contactId, subject, step = null, isNew = false, bounced = false, bounceType = null) {
   const updates = { last_broadcast_at: new Date().toISOString(), last_broadcast_subject: subject };
-  if (bounced) { updates.email_bounced = true; updates.email_bounce_type = bounceType || 'hard'; }
-  else { updates.email_send_count = { _increment: 1 }; }
+  if (bounced) {
+    updates.email_bounced = true;
+    updates.email_bounce_type = bounceType || 'hard';
+  } else {
+    updates.email_send_count = { _increment: 1 };
+    // Sequence bookkeeping
+    if (step) {
+      updates.sequence_position = step.position;
+      if (isNew) updates.sequence_start_date = new Date().toISOString();
+      if (step.position >= FINAL_POSITION) updates.sequence_completed_at = new Date().toISOString();
+    }
+  }
   await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contactId}`, {
     method: 'PATCH', headers: { ...sbH, 'Prefer': 'return=minimal' },
     body: JSON.stringify(updates)
@@ -289,12 +354,11 @@ exports.handler = async (event) => {
 
   const body = isManual ? JSON.parse(event.body || '{}') : {};
   const dailyLimit = body.limit || await getDailyLimit();
-  const angleId = body.angle || await getNextAngle();
 
-  console.log(`[Broadcast] Starting — limit: ${dailyLimit}, angle: ${angleId}`);
+  console.log(`[Broadcast] Starting 30-day sequence run — limit: ${dailyLimit}`);
 
   try {
-    const contacts = await getContactBatch(dailyLimit);
+    const contacts = await getSequenceBatch(dailyLimit);
     if (contacts.length === 0) {
       console.log('[Broadcast] No eligible contacts');
       return { statusCode: 200, body: JSON.stringify({ success: true, sent: 0, reason: 'no_eligible_contacts' }) };
@@ -305,26 +369,28 @@ exports.handler = async (event) => {
       auth: { user: SMTP_USER, pass: SMTP_PASS }
     });
 
-    let sent = 0, bounced = 0, skipped = 0, failed = 0;
+    let sent = 0, bounced = 0, skipped = 0, failed = 0, newEnrolled = 0, completed = 0;
     const results = [];
+    const angleTally = {};
 
     for (const contact of contacts) {
       const email = contact.email?.trim().toLowerCase();
+      const step = contact._step;
       if (!email || !email.includes('@')) { skipped++; continue; }
 
       // Verify domain MX records
       const valid = await verifyEmailDomain(email);
       if (!valid) {
         console.log(`[Broadcast] Bad MX: ${email} — marking bounced`);
-        await markContact(contact.id, 'MX_VERIFY_FAILED', true, 'mx_invalid');
+        await markContact(contact.id, 'MX_VERIFY_FAILED', null, false, true, 'mx_invalid');
         bounced++;
         results.push({ email, status: 'mx_invalid' });
         continue;
       }
 
-      const sendId = await logSend(contact.id, 'pending', angleId);
+      const sendId = await logSend(contact.id, 'pending', step.angle);
       const firstName = contact.first_name || 'there';
-      const { subject, html } = buildEmail(contact.id, sendId, angleId, firstName, contact.company);
+      const { subject, html } = buildEmail(contact.id, sendId, step.angle, firstName, contact.company, step.template);
 
       // Update subject in communications row
       if (sendId) {
@@ -346,14 +412,17 @@ exports.handler = async (event) => {
             'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'
           }
         });
-        await markContact(contact.id, subject);
+        await markContact(contact.id, subject, step, contact._isNew);
         sent++;
-        results.push({ email, status: 'sent', angle: angleId });
-        console.log(`[Broadcast] ✓ ${email}`);
+        angleTally[step.angle] = (angleTally[step.angle] || 0) + 1;
+        if (contact._isNew) newEnrolled++;
+        if (step.position >= FINAL_POSITION) completed++;
+        results.push({ email, status: 'sent', angle: step.angle, position: step.position, isNew: contact._isNew });
+        console.log(`[Broadcast] ✓ ${email} — ${step.angle} (day ${step.day}, pos ${step.position}${contact._isNew ? ', NEW' : ''})`);
       } catch (e) {
         const isBounce = /bounce|reject|invalid|no such|does not exist|unavailable/i.test(e.message);
         if (isBounce) {
-          await markContact(contact.id, subject, true, 'hard');
+          await markContact(contact.id, subject, null, false, true, 'hard');
           bounced++;
           results.push({ email, status: 'bounced', error: e.message.slice(0, 80) });
         } else {
@@ -367,14 +436,14 @@ exports.handler = async (event) => {
       await new Promise(r => setTimeout(r, 2000));
     }
 
-    // Log run for rotation + ramp tracking
+    // Log run for ramp tracking + visibility
     await fetch(`${SUPABASE_URL}/rest/v1/agent_logs`, {
       method: 'POST', headers: { ...sbH, 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ agent_id: 'email_broadcast', status: 'success', metadata: { angle_id: angleId, limit: dailyLimit, sent, bounced, skipped, failed, total_eligible: contacts.length }, created_at: new Date().toISOString() })
+      body: JSON.stringify({ agent_id: 'email_broadcast', status: 'success', metadata: { mode: '30day_sequence', limit: dailyLimit, sent, bounced, skipped, failed, new_enrolled: newEnrolled, completed, angle_tally: angleTally, total_eligible: contacts.length }, created_at: new Date().toISOString() })
     }).catch(() => {});
 
-    console.log(`[Broadcast] Done — sent:${sent} bounced:${bounced} skipped:${skipped} failed:${failed}`);
-    return { statusCode: 200, body: JSON.stringify({ success: true, sent, bounced, skipped, failed, angle: angleId, daily_limit: dailyLimit }) };
+    console.log(`[Broadcast] Done — sent:${sent} (new:${newEnrolled}, completed:${completed}) bounced:${bounced} skipped:${skipped} failed:${failed}`);
+    return { statusCode: 200, body: JSON.stringify({ success: true, sent, bounced, skipped, failed, new_enrolled: newEnrolled, completed, angle_tally: angleTally, daily_limit: dailyLimit }) };
 
   } catch (err) {
     console.error('[Broadcast] Error:', err);
