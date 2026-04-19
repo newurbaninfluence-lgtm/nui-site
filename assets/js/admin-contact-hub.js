@@ -598,42 +598,7 @@ function renderContactDrawer(contactId) {
         <label style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Category</label>
         <select id="hubBizCat_${c.id}" onchange="saveHubContactClassification('${c.id}')" style="width:100%;padding:7px 9px;background:#202020;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:inherit;font-size:12px;">
           <option value="" ${!c.business_category ? 'selected' : ''}>— Not set —</option>
-          <option value="restaurant" ${c.business_category === 'restaurant' ? 'selected' : ''}>🍽️ Restaurant</option>
-          <option value="cafe" ${c.business_category === 'cafe' ? 'selected' : ''}>☕ Cafe</option>
-          <option value="salon" ${c.business_category === 'salon' ? 'selected' : ''}>💇 Salon</option>
-          <option value="barbershop" ${c.business_category === 'barbershop' ? 'selected' : ''}>💈 Barbershop</option>
-          <option value="retail" ${c.business_category === 'retail' ? 'selected' : ''}>🛍️ Retail</option>
-          <option value="ecommerce" ${c.business_category === 'ecommerce' ? 'selected' : ''}>📦 E-commerce</option>
-          <option value="photography" ${c.business_category === 'photography' ? 'selected' : ''}>📸 Photography</option>
-          <option value="videography" ${c.business_category === 'videography' ? 'selected' : ''}>🎥 Videography</option>
-          <option value="law" ${c.business_category === 'law' ? 'selected' : ''}>⚖️ Law</option>
-          <option value="real_estate" ${c.business_category === 'real_estate' ? 'selected' : ''}>🏠 Real Estate</option>
-          <option value="healthcare" ${c.business_category === 'healthcare' ? 'selected' : ''}>🏥 Healthcare</option>
-          <option value="dental" ${c.business_category === 'dental' ? 'selected' : ''}>🦷 Dental</option>
-          <option value="fitness" ${c.business_category === 'fitness' ? 'selected' : ''}>💪 Fitness</option>
-          <option value="trades" ${c.business_category === 'trades' ? 'selected' : ''}>🔧 Trades</option>
-          <option value="construction" ${c.business_category === 'construction' ? 'selected' : ''}>🏗️ Construction</option>
-          <option value="automotive" ${c.business_category === 'automotive' ? 'selected' : ''}>🚗 Automotive</option>
-          <option value="nonprofit" ${c.business_category === 'nonprofit' ? 'selected' : ''}>❤️ Nonprofit</option>
-          <option value="tech" ${c.business_category === 'tech' ? 'selected' : ''}>💻 Tech</option>
-          <option value="saas" ${c.business_category === 'saas' ? 'selected' : ''}>☁️ SaaS</option>
-          <option value="agency" ${c.business_category === 'agency' ? 'selected' : ''}>🎨 Agency</option>
-          <option value="consulting" ${c.business_category === 'consulting' ? 'selected' : ''}>🧠 Consulting</option>
-          <option value="education" ${c.business_category === 'education' ? 'selected' : ''}>🎓 Education</option>
-          <option value="event_planning" ${c.business_category === 'event_planning' ? 'selected' : ''}>🎉 Event Planning</option>
-          <option value="events" ${c.business_category === 'events' ? 'selected' : ''}>🎤 Event Shows / Promoters</option>
-          <option value="catering" ${c.business_category === 'catering' ? 'selected' : ''}>🍱 Catering</option>
-          <option value="music" ${c.business_category === 'music' ? 'selected' : ''}>🎵 Music</option>
-          <option value="fashion" ${c.business_category === 'fashion' ? 'selected' : ''}>👗 Fashion</option>
-          <option value="beauty" ${c.business_category === 'beauty' ? 'selected' : ''}>💄 Beauty</option>
-          <option value="home_services" ${c.business_category === 'home_services' ? 'selected' : ''}>🏠 Home Services</option>
-          <option value="cleaning" ${c.business_category === 'cleaning' ? 'selected' : ''}>🧹 Cleaning</option>
-          <option value="landscaping" ${c.business_category === 'landscaping' ? 'selected' : ''}>🌱 Landscaping</option>
-          <option value="financial" ${c.business_category === 'financial' ? 'selected' : ''}>💰 Financial</option>
-          <option value="accounting" ${c.business_category === 'accounting' ? 'selected' : ''}>📊 Accounting</option>
-          <option value="uaw_workers" ${c.business_category === 'uaw_workers' ? 'selected' : ''}>🔧 UAW Workers</option>
-          <option value="political_campaign" ${c.business_category === 'political_campaign' ? 'selected' : ''}>🗳️ Political Campaign</option>
-          <option value="other" ${c.business_category === 'other' ? 'selected' : ''}>📌 Other</option>
+          ${(window.NuiCategories ? window.NuiCategories.renderOptions(c.business_category) : '<option>Loading categories...</option>')}
         </select>
       </div>
     </div>

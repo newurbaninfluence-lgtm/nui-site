@@ -1,11 +1,13 @@
-// client-email-broadcast.js — Email Warmup + Outreach v2
-// EMAIL WARMUP MODE: 10 emails/day max. Slow ramp to build sender reputation.
-// Tracks opens, clicks, bounces. Working unsubscribe. Verifies email format.
-// Uses Hostinger SMTP — no new services needed.
-// Schedule: daily 10am ET (netlify.toml)
+// client-email-broadcast.js — Industry-Routed Closing Machine v3
+// Each contact walks the sequence for their business_category.
+// Tagged contacts → drip_emails industry sequence (nightlife, hvac, etc.)
+// Untagged contacts → generic 6-touch fallback (reconnect → value_tip → ...)
+// Hot-lead off-ramp: click pauses sequence + SMS alerts Faren.
+// EMAIL WARMUP: auto-ramping cap based on successful run count.
 
 const nodemailer = require('nodemailer');
 const dns = require('dns').promises;
+const categories = require('../../assets/js/business-categories.js');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -65,14 +67,69 @@ const SEQUENCE_SCHEDULE = [
 const FINAL_POSITION = 6;
 const MIN_DAYS_BETWEEN_TOUCHES = 3; // Safety: matches shortest schedule gap
 
-// Given current position + start date, return next step if due, else null
-function nextStepDue(currentPosition, sequenceStartDate) {
-  const step = SEQUENCE_SCHEDULE.find(s => s.position === currentPosition + 1);
-  if (!step) return null; // sequence complete
-  const daysSinceStart = Math.floor(
-    (Date.now() - new Date(sequenceStartDate).getTime()) / (24 * 60 * 60 * 1000)
+// ── Industry sequence cache (loaded once per invocation) ──────────────────
+let _dripCache = null;
+async function loadIndustrySequences() {
+  if (_dripCache) return _dripCache;
+  const r = await fetch(
+    `${SUPABASE_URL}/rest/v1/drip_emails?active=eq.true&select=sequence_id,position,delay_days,subject,body_html,body_text,cta_text,cta_url&order=sequence_id,position`,
+    { headers: sbH }
   );
-  return daysSinceStart >= step.day ? step : null;
+  const all = (await r.json()) || [];
+  const bySeq = {};
+  for (const row of all) {
+    if (!bySeq[row.sequence_id]) bySeq[row.sequence_id] = [];
+    bySeq[row.sequence_id].push(row);
+  }
+  _dripCache = bySeq;
+  console.log(`[Broadcast] Loaded ${Object.keys(bySeq).length} industry sequences from drip_emails`);
+  return bySeq;
+}
+
+// Resolve the next due step for a contact. Returns null if not due or sequence complete.
+// Shape: { position, delay_days, isFinal, isIndustry, sequenceKey, subject?, bodyText?, bodyHtml?, ctaText?, ctaUrl? }
+// For generic fallback, includes: angle, template
+function resolveNextStep(contact, dripCache) {
+  const currentPos = contact.sequence_position || 0;
+  const elapsed = contact.sequence_start_date
+    ? Math.floor((Date.now() - new Date(contact.sequence_start_date).getTime()) / 86400000)
+    : 0;
+
+  // Path A: industry-specific sequence via business_category
+  const sequenceId = contact.business_category ? categories.sequenceFor(contact.business_category) : null;
+  if (sequenceId && dripCache[sequenceId] && dripCache[sequenceId].length) {
+    const schedule = dripCache[sequenceId];
+    const next = schedule.find(s => s.position === currentPos + 1);
+    if (!next) return null; // sequence complete
+    if (currentPos > 0 && elapsed < next.delay_days) return null; // not due yet
+    const isFinal = !schedule.find(s => s.position === next.position + 1);
+    return {
+      position: next.position,
+      delay_days: next.delay_days,
+      isFinal,
+      isIndustry: true,
+      sequenceKey: sequenceId,
+      subject: next.subject,
+      bodyText: next.body_text,
+      bodyHtml: next.body_html,
+      ctaText: next.cta_text || 'Let\'s talk',
+      ctaUrl: next.cta_url || `${SITE_URL}/contact`
+    };
+  }
+
+  // Path B: generic fallback (hardcoded 6-touch)
+  const step = SEQUENCE_SCHEDULE.find(s => s.position === currentPos + 1);
+  if (!step) return null;
+  if (currentPos > 0 && elapsed < step.day) return null;
+  return {
+    position: step.position,
+    delay_days: step.day,
+    isFinal: step.position >= FINAL_POSITION,
+    isIndustry: false,
+    sequenceKey: 'generic',
+    angle: step.angle,
+    template: step.template
+  };
 }
 
 // Returns true if enough time has passed since last send (prevents spam on backfill catchup)
@@ -83,17 +140,17 @@ function respectsSpacing(lastBroadcastAt) {
 }
 
 // ── Get sequence batch — ongoing first, new enrollments fill capacity ────
-async function getSequenceBatch(limit) {
+async function getSequenceBatch(limit, dripCache) {
   const batch = [];
-  const seenEmails = new Set(); // Dedupe across parts A + B (CRM has dup emails)
+  const seenEmails = new Set(); // Dedupe across parts A + B (CRM could have dup emails)
 
-  // Part A: contacts already in sequence, due for next touch
+  // Part A: contacts already in sequence, due for next touch (any sequence type)
   const rOngoing = await fetch(
     `${SUPABASE_URL}/rest/v1/crm_contacts` +
     `?email=not.is.null&email_unsubscribed=eq.false&email_bounced=eq.false` +
-    `&sequence_position=gte.1&sequence_position=lte.${FINAL_POSITION - 1}` +
+    `&sequence_position=gte.1` +
     `&sequence_completed_at=is.null&sequence_paused_at=is.null` +
-    `&select=id,first_name,last_name,company,email,sequence_position,sequence_start_date,last_broadcast_at` +
+    `&select=id,first_name,last_name,company,email,business_category,sequence_position,sequence_start_date,last_broadcast_at` +
     `&order=sequence_start_date.asc&limit=${limit * 5}`,
     { headers: sbH }
   );
@@ -103,7 +160,7 @@ async function getSequenceBatch(limit) {
     const emailKey = (c.email || '').toLowerCase().trim();
     if (seenEmails.has(emailKey)) continue;
     if (!respectsSpacing(c.last_broadcast_at)) continue;
-    const step = nextStepDue(c.sequence_position, c.sequence_start_date);
+    const step = resolveNextStep(c, dripCache);
     if (step) {
       seenEmails.add(emailKey);
       batch.push({ ...c, _step: step, _isNew: false });
@@ -111,25 +168,26 @@ async function getSequenceBatch(limit) {
     }
   }
 
-  // Part B: fill remaining capacity with new enrollments (day-1 touch)
+  // Part B: fill remaining capacity with new enrollments (day-1 touch in their sequence)
   const remaining = limit - batch.length;
   if (remaining > 0) {
-    // Fetch extra to account for dupes we'll skip
     const rNew = await fetch(
       `${SUPABASE_URL}/rest/v1/crm_contacts` +
       `?email=not.is.null&email_unsubscribed=eq.false&email_bounced=eq.false` +
       `&sequence_position=eq.0&status=in.(cold_lead,new_lead,warm_lead)` +
-      `&select=id,first_name,last_name,company,email` +
+      `&select=id,first_name,last_name,company,email,business_category` +
       `&order=created_at.asc.nullslast&limit=${remaining * 3}`,
       { headers: sbH }
     );
     const newContacts = (await rNew.json()) || [];
-    const day1 = SEQUENCE_SCHEDULE[0];
     for (const c of newContacts) {
       const emailKey = (c.email || '').toLowerCase().trim();
       if (seenEmails.has(emailKey)) continue;
+      // Resolve their day-1 step (position 0 → next is position 1 of their sequence)
+      const step = resolveNextStep({ ...c, sequence_position: 0, sequence_start_date: null }, dripCache);
+      if (!step) continue;
       seenEmails.add(emailKey);
-      batch.push({ ...c, _step: day1, _isNew: true });
+      batch.push({ ...c, _step: step, _isNew: true });
       if (batch.length >= limit) break;
     }
   }
@@ -138,10 +196,39 @@ async function getSequenceBatch(limit) {
 }
 
 
-// ── Build tracked HTML email ──────────────────────────────────────────────
-// Two templates available:
-//   'bold'  — V1 Bold Signature  (branded hero, dual CTA, Promotions-tab optimized)
-//   'plain' — V3 Hybrid Plain    (looks like a 1:1 email, Primary-tab optimized)
+// ── Build email for a resolved step (industry or generic) ────────────────
+function buildEmailForStep(contactId, sendId, step, firstName, company) {
+  const trackBase = `${SITE_URL}/.netlify/functions/email-track`;
+  const pixelUrl = `${trackBase}?cid=${contactId}&id=${sendId}`;
+  const unsubUrl = `${SITE_URL}/.netlify/functions/unsubscribe?cid=${contactId}`;
+  const trackLink = (url) => `${trackBase}?cid=${contactId}&id=${sendId}&url=${encodeURIComponent(url)}`;
+
+  // Path A: industry sequence — render drip_emails content in plain template
+  if (step.isIndustry) {
+    // Authors don't have a company; use sensible fallback. Other industries use company name.
+    const isAuthorSeq = step.sequenceKey === 'authors';
+    const co = company || (isAuthorSeq ? 'your author platform' : 'your business');
+    // Support BOTH single-brace ({first_name}) and double-brace ({{first_name}}) placeholder formats.
+    // drip_emails uses {{double_braces}}, legacy templates use {single_braces}.
+    const fill = (txt) => (txt || '')
+      .replace(/\{\{\s*first_name\s*\}\}|\{\s*firstName\s*\}|\{\s*first_name\s*\}/gi, firstName)
+      .replace(/\{\{\s*company\s*\}\}|\{\s*company\s*\}/gi, co)
+      .replace(/\{\{\s*last_name\s*\}\}|\{\s*last_name\s*\}/gi, '')
+      .trim();
+    const subject = fill(step.subject) || `Quick note for ${firstName}`;
+    const body = fill(step.bodyText);
+    const ctaUrl = trackLink(step.ctaUrl || `${SITE_URL}/contact`);
+    return renderPlain(
+      { subject, body, linkText: step.ctaText || "Let's talk" },
+      { ctaUrl, unsubUrl, pixelUrl }
+    );
+  }
+
+  // Path B: generic 6-touch fallback
+  return buildEmail(contactId, sendId, step.angle, firstName, company, step.template);
+}
+
+// ── Generic fallback email builder (legacy angles) ───────────────────────
 function buildEmail(contactId, sendId, angleId, firstName, company, template = 'bold') {
   const trackBase = `${SITE_URL}/.netlify/functions/email-track`;
   const pixelUrl = `${trackBase}?cid=${contactId}&id=${sendId}`;
@@ -345,7 +432,7 @@ async function markContact(contactId, subject, step = null, isNew = false, bounc
     if (step) {
       updates.sequence_position = step.position;
       if (isNew) updates.sequence_start_date = new Date().toISOString();
-      if (step.position >= FINAL_POSITION) updates.sequence_completed_at = new Date().toISOString();
+      if (step.isFinal) updates.sequence_completed_at = new Date().toISOString();
     }
   }
   await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contactId}`, {
@@ -364,10 +451,11 @@ exports.handler = async (event) => {
   const body = isManual ? JSON.parse(event.body || '{}') : {};
   const dailyLimit = body.limit || await getDailyLimit();
 
-  console.log(`[Broadcast] Starting 30-day sequence run — limit: ${dailyLimit}`);
+  console.log(`[Broadcast] Starting industry-routed sequence run — limit: ${dailyLimit}`);
 
   try {
-    const contacts = await getSequenceBatch(dailyLimit);
+    const dripCache = await loadIndustrySequences();
+    const contacts = await getSequenceBatch(dailyLimit, dripCache);
     if (contacts.length === 0) {
       console.log('[Broadcast] No eligible contacts');
       return { statusCode: 200, body: JSON.stringify({ success: true, sent: 0, reason: 'no_eligible_contacts' }) };
@@ -380,12 +468,13 @@ exports.handler = async (event) => {
 
     let sent = 0, bounced = 0, skipped = 0, failed = 0, newEnrolled = 0, completed = 0;
     const results = [];
-    const angleTally = {};
+    const sequenceTally = {}; // track sends by sequence_key + position
 
     for (const contact of contacts) {
       const email = contact.email?.trim().toLowerCase();
       const step = contact._step;
       if (!email || !email.includes('@')) { skipped++; continue; }
+      const stepLabel = step.isIndustry ? `${step.sequenceKey}#${step.position}` : (step.angle || 'generic');
 
       // Verify domain MX records
       const valid = await verifyEmailDomain(email);
@@ -397,9 +486,9 @@ exports.handler = async (event) => {
         continue;
       }
 
-      const sendId = await logSend(contact.id, 'pending', step.angle);
+      const sendId = await logSend(contact.id, 'pending', stepLabel);
       const firstName = contact.first_name || 'there';
-      const { subject, html } = buildEmail(contact.id, sendId, step.angle, firstName, contact.company, step.template);
+      const { subject, html } = buildEmailForStep(contact.id, sendId, step, firstName, contact.company);
 
       // Update subject in communications row
       if (sendId) {
@@ -423,11 +512,11 @@ exports.handler = async (event) => {
         });
         await markContact(contact.id, subject, step, contact._isNew);
         sent++;
-        angleTally[step.angle] = (angleTally[step.angle] || 0) + 1;
+        sequenceTally[stepLabel] = (sequenceTally[stepLabel] || 0) + 1;
         if (contact._isNew) newEnrolled++;
-        if (step.position >= FINAL_POSITION) completed++;
-        results.push({ email, status: 'sent', angle: step.angle, position: step.position, isNew: contact._isNew });
-        console.log(`[Broadcast] ✓ ${email} — ${step.angle} (day ${step.day}, pos ${step.position}${contact._isNew ? ', NEW' : ''})`);
+        if (step.isFinal) completed++;
+        results.push({ email, status: 'sent', sequence: step.sequenceKey, position: step.position, isNew: contact._isNew, industry: step.isIndustry });
+        console.log(`[Broadcast] ✓ ${email} — ${stepLabel} (day ${step.delay_days}${contact._isNew ? ', NEW' : ''})`);
       } catch (e) {
         // Only flag as HARD bounce on definitive permanent-failure signals.
         // "temporarily unavailable", "try again", "deferred" are SOFT bounces.
@@ -453,11 +542,11 @@ exports.handler = async (event) => {
     // Log run for ramp tracking + visibility
     await fetch(`${SUPABASE_URL}/rest/v1/agent_logs`, {
       method: 'POST', headers: { ...sbH, 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ agent_id: 'email_broadcast', status: 'success', metadata: { mode: '30day_sequence', limit: dailyLimit, sent, bounced, skipped, failed, new_enrolled: newEnrolled, completed, angle_tally: angleTally, total_eligible: contacts.length }, created_at: new Date().toISOString() })
+      body: JSON.stringify({ agent_id: 'email_broadcast', status: 'success', metadata: { mode: 'industry_routed', limit: dailyLimit, sent, bounced, skipped, failed, new_enrolled: newEnrolled, completed, sequence_tally: sequenceTally, total_eligible: contacts.length }, created_at: new Date().toISOString() })
     }).catch(() => {});
 
     console.log(`[Broadcast] Done — sent:${sent} (new:${newEnrolled}, completed:${completed}) bounced:${bounced} skipped:${skipped} failed:${failed}`);
-    return { statusCode: 200, body: JSON.stringify({ success: true, sent, bounced, skipped, failed, new_enrolled: newEnrolled, completed, angle_tally: angleTally, daily_limit: dailyLimit }) };
+    return { statusCode: 200, body: JSON.stringify({ success: true, sent, bounced, skipped, failed, new_enrolled: newEnrolled, completed, sequence_tally: sequenceTally, daily_limit: dailyLimit }) };
 
   } catch (err) {
     console.error('[Broadcast] Error:', err);
