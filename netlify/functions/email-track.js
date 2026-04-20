@@ -25,15 +25,15 @@ exports.handler = async (event) => {
       method: 'POST',
       headers: { ...sbH, 'Prefer': 'return=minimal' },
       body: JSON.stringify({
-        contact_id: parseInt(cid) || null,
+        contact_id: cid, // UUID string — activity_log.contact_id is UUID, not int
         type,
-        details: JSON.stringify({
+        metadata: {
           trackId: id,
           at: new Date().toISOString(),
           ip: event.headers['x-forwarded-for'] || 'unknown',
           ua: event.headers['user-agent'] || 'unknown',
           ...extra
-        }),
+        },
         created_at: new Date().toISOString()
       })
     }).catch(err => console.warn(`[email-track] ${type} log failed:`, err.message));
@@ -99,7 +99,7 @@ exports.handler = async (event) => {
 
     // Stamp the communications row so Contact Hub shows the click state
     if (id && sbH) {
-      fetch(`${SUPABASE_URL}/rest/v1/communications?id=eq.${id}`, {
+      await fetch(`${SUPABASE_URL}/rest/v1/communications?id=eq.${id}`, {
         method: 'PATCH',
         headers: { ...sbH, 'Prefer': 'return=minimal' },
         body: JSON.stringify({ clicked_at: new Date().toISOString(), read: true })
@@ -150,13 +150,13 @@ exports.handler = async (event) => {
   }
 
   // ── OPEN TRACKING ──────────────────────────────────────────────────
-  logEvent('email_opened');
+  await logEvent('email_opened');
   console.log('📧 Email opened — trackId:', id, 'contactId:', cid);
 
   // Stamp the open on crm_contacts so downstream triggers (SMS non-opener
   // sequence, lead scoring) can filter by `last_email_open_at IS NULL`.
   if (cid && SUPABASE_URL && sbH) {
-    fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${cid}`, {
+    await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${cid}`, {
       method: 'PATCH',
       headers: { ...sbH, 'Prefer': 'return=minimal' },
       body: JSON.stringify({ last_email_open_at: new Date().toISOString() })
@@ -165,7 +165,7 @@ exports.handler = async (event) => {
 
   // Stamp the communications row so Contact Hub shows the open state
   if (id && sbH) {
-    fetch(`${SUPABASE_URL}/rest/v1/communications?id=eq.${id}`, {
+    await fetch(`${SUPABASE_URL}/rest/v1/communications?id=eq.${id}`, {
       method: 'PATCH',
       headers: { ...sbH, 'Prefer': 'return=minimal' },
       body: JSON.stringify({ opened_at: new Date().toISOString(), read: true })
