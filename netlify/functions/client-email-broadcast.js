@@ -491,12 +491,14 @@ exports.handler = async (event) => {
   const body = isManual ? JSON.parse(event.body || '{}') : {};
   const dailyLimit = body.limit ?? await getDailyLimit();
 
-  // PER-INVOCATION CAP: 1 email per run.
+  // PER-INVOCATION CAP: 3 emails per run.
   // Netlify sync functions have a 26s hard timeout. One send = SMTP handshake
-  // (~3s) + Supabase writes (~1s) + MX check (~0.1s) ≈ 5s. Tons of headroom.
-  // Cron fires hourly 10am–7pm ET (10 invocations) → up to 10 sends/day,
-  // and dailyLimit (warmup ramp) gates the global total.
-  const MAX_PER_RUN = 1;
+  // (~3s) + Supabase writes (~1s) + MX check (~0.1s) ≈ 5s. 3 sends ≈ 15s,
+  // still well under 26s. Cron fires hourly 10am–7pm ET (10 invocations),
+  // so ceiling is 30/day. Actual daily volume is gated by dailyLimit
+  // (warmup ramp: 10/20/40) via the Math.min below — this cap just keeps
+  // any single invocation from timing out.
+  const MAX_PER_RUN = 3;
   const effectiveLimit = Math.min(dailyLimit, MAX_PER_RUN);
 
   console.log(`[Broadcast] Starting industry-routed sequence run — daily:${dailyLimit} per-run:${effectiveLimit}`);
