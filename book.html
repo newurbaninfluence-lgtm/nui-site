@@ -100,6 +100,46 @@
   /* Trust strip */
   .trust-strip { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
   .trust-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+
+  /* Client showcase */
+  .clients-section { margin: 56px auto 40px; max-width: 900px; padding: 0 20px; }
+  .clients-header { text-align: center; margin-bottom: 32px; }
+  .clients-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--red); text-transform: uppercase; margin-bottom: 12px; }
+  .clients-title { font-size: clamp(22px, 4vw, 30px); font-weight: 800; margin-bottom: 10px; }
+  .clients-sub { font-size: 15px; color: var(--muted); max-width: 520px; margin: 0 auto; line-height: 1.55; }
+  .clients-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (max-width: 640px) { .clients-grid { grid-template-columns: 1fr; } }
+  .client-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+  .client-card:hover { transform: translateY(-2px); border-color: rgba(220,38,38,0.35); }
+  .client-thumb {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: #1a1a1a center/cover no-repeat;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .client-thumb-fallback {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+    font-size: 38px; font-weight: 900; letter-spacing: -1px; color: rgba(255,255,255,0.15);
+  }
+  .client-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
+  .client-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .client-role { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .client-what { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.5; margin-bottom: 14px; flex: 1; }
+  .client-link { font-size: 12px; font-weight: 700; color: var(--red); letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 6px; }
+  .client-link::after { content: "→"; transition: transform 0.2s ease; }
+  .client-card:hover .client-link::after { transform: translateX(3px); }
 </style>
 </head>
 <body>
@@ -184,6 +224,65 @@
     <div class="trust-item">🔒 Your info stays private</div>
   </div>
 </div>
+
+<!-- Client Showcase -->
+<section class="clients-section">
+  <div class="clients-header">
+    <div class="clients-eyebrow">Recent Client Builds</div>
+    <h3 class="clients-title">What we've built for people like you</h3>
+    <p class="clients-sub">Real platforms we run for real clients. Every one has a working booking flow, email capture, and a reason for visitors to come back.</p>
+  </div>
+
+  <div class="clients-grid">
+    <a href="https://sonyameadows.com" target="_blank" rel="noopener" class="client-card">
+      <div class="client-thumb" style="background-image:url('https://s.wordpress.com/mshots/v1/https%3A%2F%2Fsonyameadows.com?w=800&h=500');">
+        <div class="client-thumb-fallback">SM</div>
+      </div>
+      <div class="client-body">
+        <div class="client-name">Sonya Meadows</div>
+        <div class="client-role">Author · Memoirist</div>
+        <p class="client-what">Full author platform — editorial site, book pages, reader funnel, press kit, and post-purchase drip. Two memoirs and running.</p>
+        <span class="client-link">sonyameadows.com</span>
+      </div>
+    </a>
+
+    <a href="https://larrycastleberry.com" target="_blank" rel="noopener" class="client-card">
+      <div class="client-thumb" style="background-image:url('https://s.wordpress.com/mshots/v1/https%3A%2F%2Flarrycastleberry.com?w=800&h=500');">
+        <div class="client-thumb-fallback">LC</div>
+      </div>
+      <div class="client-body">
+        <div class="client-name">Larry Castleberry</div>
+        <div class="client-role">Motivational Speaker</div>
+        <p class="client-what">Speaker platform with 11 geo-targeted pages, booking flow, blog engine, and SEO built page-by-page for every city he speaks in.</p>
+        <span class="client-link">larrycastleberry.com</span>
+      </div>
+    </a>
+
+    <a href="https://smile-for-me-photography.netlify.app" target="_blank" rel="noopener" class="client-card">
+      <div class="client-thumb" style="background-image:url('https://s.wordpress.com/mshots/v1/https%3A%2F%2Fsmile-for-me-photography.netlify.app?w=800&h=500');">
+        <div class="client-thumb-fallback">SP</div>
+      </div>
+      <div class="client-body">
+        <div class="client-name">Smile For Me Photography</div>
+        <div class="client-role">Photographer · Booth Rentals</div>
+        <p class="client-what">Editorial photography site with 5-step booking, Stripe payments, client gallery proofing, and a full admin panel to run it all.</p>
+        <span class="client-link">Visit site</span>
+      </div>
+    </a>
+
+    <a href="https://backyard-comedy-battle.netlify.app" target="_blank" rel="noopener" class="client-card">
+      <div class="client-thumb" style="background-image:url('https://s.wordpress.com/mshots/v1/https%3A%2F%2Fbackyard-comedy-battle.netlify.app?w=800&h=500');">
+        <div class="client-thumb-fallback">BC</div>
+      </div>
+      <div class="client-body">
+        <div class="client-name">Backyard Comedy Battle</div>
+        <div class="client-role">Live Event · Ticketing</div>
+        <p class="client-what">Event ticketing platform with Stripe checkout, CRM backend, AI chatbox, and 10-panel admin so Ashley can run the whole show solo.</p>
+        <span class="client-link">backyardcomedybattle.com</span>
+      </div>
+    </a>
+  </div>
+</section>
 
 <!-- Success Screen -->
 <div class="page success-screen" id="successScreen">
