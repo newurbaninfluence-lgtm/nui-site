@@ -477,13 +477,21 @@ exports.handler = async (event) => {
   if (!SUPABASE_URL || !SUPABASE_KEY) return { statusCode: 500, body: JSON.stringify({ error: 'Supabase not configured' }) };
 
   const body = isManual ? JSON.parse(event.body || '{}') : {};
-  const dailyLimit = body.limit || await getDailyLimit();
+  const dailyLimit = body.limit ?? await getDailyLimit();
 
-  console.log(`[Broadcast] Starting industry-routed sequence run — limit: ${dailyLimit}`);
+  // PER-INVOCATION CAP: 1 email per run.
+  // Netlify sync functions have a 26s hard timeout. One send = SMTP handshake
+  // (~3s) + Supabase writes (~1s) + MX check (~0.1s) ≈ 5s. Tons of headroom.
+  // Cron fires hourly 10am–7pm ET (10 invocations) → up to 10 sends/day,
+  // and dailyLimit (warmup ramp) gates the global total.
+  const MAX_PER_RUN = 1;
+  const effectiveLimit = Math.min(dailyLimit, MAX_PER_RUN);
+
+  console.log(`[Broadcast] Starting industry-routed sequence run — daily:${dailyLimit} per-run:${effectiveLimit}`);
 
   try {
     const dripCache = await loadIndustrySequences();
-    const contacts = await getSequenceBatch(dailyLimit, dripCache);
+    const contacts = await getSequenceBatch(effectiveLimit, dripCache);
     if (contacts.length === 0) {
       console.log('[Broadcast] No eligible contacts');
       return { statusCode: 200, body: JSON.stringify({ success: true, sent: 0, reason: 'no_eligible_contacts' }) };

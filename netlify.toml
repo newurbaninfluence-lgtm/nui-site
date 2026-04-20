@@ -21,10 +21,11 @@
   schedule = "0 14 * * *"
 
 # Email broadcast — industry-routed closing machine, 10/day warmup cap.
-# Fires once daily at 10am ET (14:00 UTC). Handler picks eligible contacts,
-# routes by business_category → drip_emails sequence, tracks opens/clicks.
+# Fires hourly 10am–7pm ET (14:00–23:00 UTC) = 10 invocations/day, 1 send each.
+# Sync functions have a 26s hard timeout; single-send keeps runs ~5s. Warmup
+# ramp in the handler still gates the global daily total.
 [functions."client-email-broadcast"]
-  schedule = "0 14 * * *"
+  schedule = "0 14-23 * * *"
 
 # SMS drip campaign — runs every 30 min during business hours
 [functions."sms-drip"]
