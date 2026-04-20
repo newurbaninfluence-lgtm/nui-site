@@ -5,7 +5,7 @@ const path = require('path');
 
 const TARGETS = [
   { url: 'https://sonyameadows.com', out: 'assets/img/case-studies/sonya-meadows.jpg' },
-  { url: 'https://larrycastleberry.com', out: 'assets/img/case-studies/larry-castleberry.jpg' },
+  { url: 'https://larrycastleberry.netlify.app', out: 'assets/img/case-studies/larry-castleberry.jpg' },
 ];
 
 const CHROME_PATH = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';

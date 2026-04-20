@@ -99,19 +99,23 @@ p{font-size:16px;line-height:1.8;color:rgba(255,255,255,0.6);}
 .feat p{font-size:14px;}
 
 /* CASE STUDIES */
-.case-study{display:grid;grid-template-columns:5fr 7fr;gap:0;margin-top:48px;background:#0a0a0a;border-top:3px solid #D90429;}
-.case-study.flip{grid-template-columns:7fr 5fr;}
-.case-thumb{position:relative;background:#1a1a1a center top/cover no-repeat;min-height:360px;display:block;overflow:hidden;}
-.case-thumb-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:96px;font-weight:800;color:rgba(255,255,255,0.08);letter-spacing:-4px;}
-.case-body{padding:48px 44px;display:flex;flex-direction:column;justify-content:center;}
+.case-study{display:block;margin-top:48px;background:#0a0a0a;border-top:3px solid #D90429;text-decoration:none;color:inherit;overflow:hidden;transition:transform 0.2s ease;}
+.case-study:hover{transform:translateY(-2px);}
+.case-thumb{position:relative;width:100%;aspect-ratio:16/9;background:#1a1a1a center top/cover no-repeat;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;}
+.case-thumb-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:112px;font-weight:800;color:rgba(255,255,255,0.08);letter-spacing:-4px;z-index:0;}
+.case-thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 0%,transparent 70%,rgba(10,10,10,0.4) 100%);pointer-events:none;}
+.case-body{padding:44px 48px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+.case-body-left{display:flex;flex-direction:column;}
 .case-role{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#D90429;margin-bottom:14px;}
-.case-name{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-0.5px;line-height:1;margin-bottom:18px;color:#fff;}
+.case-name{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;letter-spacing:-0.5px;line-height:1;margin-bottom:22px;color:#fff;}
 .case-desc{font-size:15px;line-height:1.7;color:rgba(255,255,255,0.6);margin-bottom:22px;}
-.case-systems{list-style:none;padding:0;margin:0 0 28px;}
-.case-systems li{font-size:13px;color:rgba(255,255,255,0.55);padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.case-link{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#D90429;display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding-top:12px;}
+.case-study:hover .case-link{color:#fff;}
+.case-systems{list-style:none;padding:0;margin:0;}
+.case-systems-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:14px;}
+.case-systems li{font-size:13px;color:rgba(255,255,255,0.6);padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
 .case-systems li::before{content:'— ';color:#D90429;}
-.case-link{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#D90429;display:inline-flex;align-items:center;gap:8px;}
-.case-link:hover{color:#fff;}
+.case-systems li:last-child{border-bottom:none;}
 
 /* HOW IT WORKS */
 .steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;margin-top:48px;}
@@ -150,9 +154,8 @@ footer a:hover{color:#D90429;}
 @media(max-width:768px){
   .nav{padding:0 20px;}.nav-links{display:none;}.ham{display:flex;}
   .sec{padding:64px 24px;}.hero{padding:72px 24px 56px;}
-  .case-study,.case-study.flip{grid-template-columns:1fr;}
-  .case-thumb{min-height:260px;}
-  .case-body{padding:32px 28px;}
+  .case-body{grid-template-columns:1fr;gap:32px;padding:32px 28px 36px;}
+  .case-name{font-size:28px;}
   .final-cta{padding:64px 24px;}
   footer{flex-direction:column;text-align:center;padding:24px;}
 }
@@ -282,39 +285,49 @@ footer a:hover{color:#D90429;}
         <div class="case-thumb-fallback">SM</div>
       </div>
       <div class="case-body">
-        <div class="case-role">Memoirist · Author</div>
-        <div class="case-name">Sonya Meadows</div>
-        <p class="case-desc">Two memoirs — <em>Finding Platinum</em> and <em>Game Over</em>. Built the whole platform from the ground up: editorial site, book pages, reader funnel, press kit, and the post-purchase sequence that keeps selling while she's touring or writing the next one.</p>
-        <ul class="case-systems">
-          <li>Editorial author site on sonyameadows.com</li>
-          <li>Individual book pages with buy links + sample chapters</li>
-          <li>Reader club email capture + automated welcome drip</li>
-          <li>Post-purchase review + pre-order sequence</li>
-          <li>Press kit with downloadable headshots and interview topics</li>
-          <li>NUI system status so we can update or support remotely</li>
-        </ul>
-        <span class="case-link">View sonyameadows.com &nbsp;→</span>
+        <div class="case-body-left">
+          <div class="case-role">Memoirist · Author</div>
+          <div class="case-name">Sonya Meadows</div>
+          <p class="case-desc">Two memoirs — <em>Finding Platinum</em> and <em>Game Over</em>. Built the whole platform from the ground up: editorial site, book pages, reader funnel, press kit, and the post-purchase sequence that keeps selling while she's touring or writing the next one.</p>
+          <span class="case-link">View sonyameadows.com &nbsp;→</span>
+        </div>
+        <div>
+          <div class="case-systems-label">Systems Built</div>
+          <ul class="case-systems">
+            <li>Editorial author site on sonyameadows.com</li>
+            <li>Individual book pages with buy links + sample chapters</li>
+            <li>Reader club email capture + automated welcome drip</li>
+            <li>Post-purchase review + pre-order sequence</li>
+            <li>Press kit with downloadable headshots and interview topics</li>
+            <li>NUI system status so we can update or support remotely</li>
+          </ul>
+        </div>
       </div>
     </a>
 
     <!-- Larry Castleberry -->
-    <a href="https://larrycastleberry.com" target="_blank" rel="noopener" class="case-study flip">
-      <div class="case-body">
-        <div class="case-role">Motivational Speaker · Storyteller · Book Author</div>
-        <div class="case-name">Larry Castleberry</div>
-        <p class="case-desc">Michigan-based motivational speaker, storyteller, and author. Larry's platform handles three different audiences — event bookers, readers, and corporate HR teams — on one connected system that shows up wherever he speaks.</p>
-        <ul class="case-systems">
-          <li>Speaker booking + storytelling sessions on a unified calendar</li>
-          <li>11 geo-targeted pages built page-by-page for every city he works</li>
-          <li>Blog engine for thought leadership + SEO compounding</li>
-          <li>Dynamic sitemap that search engines read on every deploy</li>
-          <li>Book sales flow connected to the same platform</li>
-          <li>PWA install so repeat visitors get an app-like experience</li>
-        </ul>
-        <span class="case-link">View larrycastleberry.com &nbsp;→</span>
-      </div>
+    <a href="https://larrycastleberry.netlify.app" target="_blank" rel="noopener" class="case-study">
       <div class="case-thumb" style="background-image:url('/assets/img/case-studies/larry-castleberry.jpg');">
         <div class="case-thumb-fallback">LC</div>
+      </div>
+      <div class="case-body">
+        <div class="case-body-left">
+          <div class="case-role">Motivational Speaker · Storyteller · Book Author</div>
+          <div class="case-name">Larry Castleberry</div>
+          <p class="case-desc">Michigan-based motivational speaker, storyteller, and author. Larry's platform handles three different audiences — event bookers, readers, and corporate HR teams — on one connected system that shows up wherever he speaks.</p>
+          <span class="case-link">View the build &nbsp;→</span>
+        </div>
+        <div>
+          <div class="case-systems-label">Systems Built</div>
+          <ul class="case-systems">
+            <li>Speaker booking + storytelling sessions on a unified calendar</li>
+            <li>11 geo-targeted pages built page-by-page for every city he works</li>
+            <li>Blog engine for thought leadership + SEO compounding</li>
+            <li>Dynamic sitemap that search engines read on every deploy</li>
+            <li>Book sales flow connected to the same platform</li>
+            <li>PWA install so repeat visitors get an app-like experience</li>
+          </ul>
+        </div>
       </div>
     </a>
   </div>
