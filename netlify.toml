@@ -28,6 +28,11 @@
 [functions."sms-drip"]
   schedule = "*/5 * * * *"
 
+# SMS sequence — NEPQ drip to non-opener email contacts. Runs every 30 min;
+# handler self-gates to 9am-6pm ET + 10/day cap (1 send per invocation)
+[functions."sms-sequence"]
+  schedule = "*/30 * * * *"
+
 # Monty follow-up + dormant reactivation — runs every hour
 [functions."monty-followup"]
   schedule = "0 * * * *"

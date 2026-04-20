@@ -192,6 +192,46 @@ async function handleMessageReceived(obj) {
   await logActivity(contact.id, 'text', 'inbound', obj.body || '', msgMeta);
   await logCommunication(contact.id, 'sms', 'inbound', obj.body || '', msgMeta);
   await touchContact(contact.id);
+
+  // ── TCPA opt-out detection ────────────────────────────────────────
+  // If the inbound body is a STOP/UNSUB/CANCEL keyword, mark contact as
+  // opted out AND insert into sms_suppression so no future sends fire.
+  // OpenPhone also blocks at platform level but belt-and-suspenders here.
+  const body = (obj.body || '').trim().toUpperCase();
+  const STOP_KEYWORDS = /^(STOP|STOPALL|UNSUBSCRIBE|CANCEL|END|QUIT|OPTOUT|OPT\s*OUT|REMOVE)(\s|$|\.|!)/;
+  if (STOP_KEYWORDS.test(body)) {
+    console.log(`🛑 STOP keyword from ${phone} — opting out contact ${contact.id}`);
+    await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contact.id}`, {
+      method: 'PATCH',
+      headers: { ...supaHeaders, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({
+        sms_optout: true,
+        sms_sequence_paused_at: new Date().toISOString(),
+        status: 'unsubscribed'
+      })
+    }).catch(() => {});
+    await fetch(`${SUPABASE_URL}/rest/v1/sms_suppression`, {
+      method: 'POST',
+      headers: { ...supaHeaders, 'Prefer': 'return=minimal,resolution=ignore-duplicates' },
+      body: JSON.stringify({ phone, reason: 'user_replied_stop' })
+    }).catch(() => {});
+    return { action: 'message_received_optout', contactId: contact.id };
+  }
+
+  // ── Sequence pause on any other inbound ──────────────────────────
+  // A reply = human engagement. Pause the SMS sequence so Monty can
+  // take over the conversation without the scheduled drip talking over him.
+  // Filter ensures we only PATCH once (idempotent, only fires the first time).
+  fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contact.id}&sms_sequence_position=gte.1&sms_sequence_paused_at=is.null`, {
+    method: 'PATCH',
+    headers: { ...supaHeaders, 'Prefer': 'return=minimal' },
+    body: JSON.stringify({
+      sms_sequence_paused_at: new Date().toISOString(),
+      status: 'hot_lead'
+    })
+  }).then(() => console.log(`🔥 SMS sequence paused (reply) — contact ${contact.id}`))
+    .catch(() => {});
+
   return { action: 'message_received', contactId: contact.id };
 }
 

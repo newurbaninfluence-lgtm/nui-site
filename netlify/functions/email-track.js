@@ -144,6 +144,16 @@ exports.handler = async (event) => {
   logEvent('email_opened');
   console.log('📧 Email opened — trackId:', id, 'contactId:', cid);
 
+  // Stamp the open on crm_contacts so downstream triggers (SMS non-opener
+  // sequence, lead scoring) can filter by `last_email_open_at IS NULL`.
+  if (cid && SUPABASE_URL && sbH) {
+    fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${cid}`, {
+      method: 'PATCH',
+      headers: { ...sbH, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ last_email_open_at: new Date().toISOString() })
+    }).catch(err => console.warn('[email-track] last_email_open_at update failed:', err.message));
+  }
+
   const pixel = Buffer.from(
     'R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
     'base64'
