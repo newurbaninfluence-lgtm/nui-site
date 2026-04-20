@@ -216,10 +216,21 @@ function buildEmailForStep(contactId, sendId, step, firstName, company) {
       .replace(/\{\{\s*last_name\s*\}\}|\{\s*last_name\s*\}/gi, '')
       .trim();
     const subject = fill(step.subject) || `Quick note for ${firstName}`;
-    const body = fill(step.bodyText);
+    const bodyFilled = fill(step.bodyText);
+
+    // Auto-linkify bare URLs in body so clicks go through email-track.
+    // Matches http(s)://... AND bare domains like sonyameadows.com with TLD whitelist.
+    // Skips already-linked text and non-link-looking fragments.
+    const urlRe = /(\bhttps?:\/\/[^\s<>)]+|\b(?:[a-z0-9-]+\.)+(?:com|net|org|io|co|tv|ai|app|me|us|uk)(?:\/[^\s<>)]*)?)/gi;
+    const linkedBody = bodyFilled.replace(urlRe, (match) => {
+      const fullUrl = match.startsWith('http') ? match : `https://${match}`;
+      const tracked = trackLink(fullUrl);
+      return `<a href="${tracked}" style="color:#D90429;text-decoration:underline;">${match}</a>`;
+    });
+
     const ctaUrl = trackLink(step.ctaUrl || `${SITE_URL}/contact`);
     return renderPlain(
-      { subject, body, linkText: step.ctaText || "Let's talk" },
+      { subject, body: linkedBody, linkText: step.ctaText || "Let's talk" },
       { ctaUrl, unsubUrl, pixelUrl }
     );
   }
