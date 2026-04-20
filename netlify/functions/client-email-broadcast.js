@@ -422,13 +422,30 @@ New Urban Influence &middot; Detroit, MI 48201 &middot; (248) 487-8747<br>
 
 
 // ── Log send to Supabase, get send ID back ───────────────────────────────
-async function logSend(contactId, subject, angleId) {
+// Contact Hub renders emails from this table. Match logic there:
+//   metadata.to === contact.email  OR  client_id === contact.id
+// So we stamp both email + contact.id, plus full metadata (handler, sequence_key,
+// position) so sent emails surface in the per-contact thread correctly.
+async function logSend(contactId, subject, stepLabel, email) {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/communications`, {
     method: 'POST',
     headers: { ...sbH, 'Prefer': 'return=representation' },
-    body: JSON.stringify({ channel: 'email', direction: 'outbound', subject, client_id: contactId, metadata: { handler: 'client-email-broadcast', angle_id: angleId }, created_at: new Date().toISOString() })
+    body: JSON.stringify({
+      channel: 'email',
+      direction: 'outbound',
+      subject,
+      message: subject, // plain-text fallback for previews
+      client_id: contactId,
+      status: 'sent',
+      metadata: {
+        handler: 'client-email-broadcast',
+        step: stepLabel,
+        to: email
+      },
+      created_at: new Date().toISOString()
+    })
   });
-  const rows = await r.json();
+  const rows = await r.json().catch(() => []);
   return rows?.[0]?.id || null;
 }
 
@@ -497,7 +514,7 @@ exports.handler = async (event) => {
         continue;
       }
 
-      const sendId = await logSend(contact.id, 'pending', stepLabel);
+      const sendId = await logSend(contact.id, 'pending', stepLabel, email);
       const firstName = contact.first_name || 'there';
       const { subject, html } = buildEmailForStep(contact.id, sendId, step, firstName, contact.company);
 
@@ -537,9 +554,22 @@ exports.handler = async (event) => {
           /user unknown|no such user|no such address|does not exist|mailbox (?:unavailable|not found)|address (?:rejected|not found)|recipient rejected|invalid recipient/i.test(msg);
         if (isHardBounce) {
           await markContact(contact.id, subject, null, false, true, 'hard');
+          // Stamp the communications row so Contact Hub shows the bounce
+          if (sendId) {
+            await fetch(`${SUPABASE_URL}/rest/v1/communications?id=eq.${sendId}`, {
+              method: 'PATCH', headers: { ...sbH, 'Prefer': 'return=minimal' },
+              body: JSON.stringify({ status: 'bounced', bounced: true, bounce_type: 'hard' })
+            }).catch(() => {});
+          }
           bounced++;
           results.push({ email, status: 'bounced', error: msg.slice(0, 80) });
         } else {
+          if (sendId) {
+            await fetch(`${SUPABASE_URL}/rest/v1/communications?id=eq.${sendId}`, {
+              method: 'PATCH', headers: { ...sbH, 'Prefer': 'return=minimal' },
+              body: JSON.stringify({ status: 'failed' })
+            }).catch(() => {});
+          }
           failed++;
           results.push({ email, status: 'failed', error: msg.slice(0, 80) });
         }

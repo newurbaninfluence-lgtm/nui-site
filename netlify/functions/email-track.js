@@ -97,6 +97,15 @@ exports.handler = async (event) => {
     await logEvent('email_clicked', { clickedUrl: target });
     console.log('🖱️  Email clicked — trackId:', id, 'contactId:', cid, '→', target);
 
+    // Stamp the communications row so Contact Hub shows the click state
+    if (id && sbH) {
+      fetch(`${SUPABASE_URL}/rest/v1/communications?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: { ...sbH, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ clicked_at: new Date().toISOString(), read: true })
+      }).catch(err => console.warn('[email-track] clicked_at update failed:', err.message));
+    }
+
     // ── HOT-LEAD OFF-RAMP (first click only) ───────────────────────────
     // PATCH with `sequence_paused_at=is.null` filter means update only fires
     // the FIRST time a contact clicks. `Prefer: return=representation` lets us
@@ -152,6 +161,15 @@ exports.handler = async (event) => {
       headers: { ...sbH, 'Prefer': 'return=minimal' },
       body: JSON.stringify({ last_email_open_at: new Date().toISOString() })
     }).catch(err => console.warn('[email-track] last_email_open_at update failed:', err.message));
+  }
+
+  // Stamp the communications row so Contact Hub shows the open state
+  if (id && sbH) {
+    fetch(`${SUPABASE_URL}/rest/v1/communications?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: { ...sbH, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ opened_at: new Date().toISOString(), read: true })
+    }).catch(err => console.warn('[email-track] comm open stamp failed:', err.message));
   }
 
   const pixel = Buffer.from(

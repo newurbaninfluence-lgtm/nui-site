@@ -148,21 +148,11 @@ exports.handler = async function(event) {
     created_at: now
   }).catch(() => {});
 
-  // 5. Start the right drip email sequence based on cold vs warm
-  if (optinEmail === true || optinEmail === 'yes') {
-    // Cold leads get warm-up NEPQ-style questions first
-    // Warm leads go straight into service-specific drip
-    const dripSeq = isCold ? `cold_warmup` : svcInfo.seq;
-    await supabase('drip_enrollments', {
-      email: email || '',
-      name: name || '',
-      sequence_id: dripSeq,
-      service: service || '',
-      enrolled_at: now,
-      status: 'active',
-      site_id: 'newurbaninfluence'
-    }).catch(() => {});
-  }
+  // 5. Lead is now in crm_contacts with status='new_lead'. The daily
+  // client-email-broadcast cron (10am ET) auto-enrolls them into the
+  // industry-routed sequence based on business_category. Cold leads with
+  // no matching category fall through to the generic 6-touch warmup.
+  // (Legacy drip_enrollments insert removed — old system retired.)
 
   // 6. Send internal notification SMS via OpenPhone
   if (OPENPHONE_KEY && phone) {

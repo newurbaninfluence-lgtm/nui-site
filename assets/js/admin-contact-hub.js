@@ -469,11 +469,13 @@ function renderContactDrawer(contactId) {
   });
   const allSms = [...smsFromActivity, ...smsComms].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
 
-  // Get email messages
+  // Get email messages (match by email address OR by contact id on client_id)
+  // client-email-broadcast.js writes communications.client_id = contact.id
   const contactEmails = contactHubData.emails.filter(e => {
     if (!c.email && !c.phone) return false;
     const emailTo = e.metadata?.to || '';
     return (c.email && emailTo.toLowerCase() === c.email.toLowerCase()) ||
+           (e.client_id === c.id) ||
            (c.client_id && e.client_id === c.client_id);
   }).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
   

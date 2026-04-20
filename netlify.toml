@@ -20,9 +20,11 @@
 [functions."holiday-drip"]
   schedule = "0 14 * * *"
 
-# Drip scheduler — runs every 15 min, sends queued drip emails/SMS with caps + ramp + timezone window
-[functions."drip-scheduler"]
-  schedule = "*/15 * * * *"
+# Email broadcast — industry-routed closing machine, 10/day warmup cap.
+# Fires once daily at 10am ET (14:00 UTC). Handler picks eligible contacts,
+# routes by business_category → drip_emails sequence, tracks opens/clicks.
+[functions."client-email-broadcast"]
+  schedule = "0 14 * * *"
 
 # SMS drip campaign — runs every 30 min during business hours
 [functions."sms-drip"]
