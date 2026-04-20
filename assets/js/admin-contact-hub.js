@@ -470,11 +470,13 @@ function renderContactDrawer(contactId) {
   const allSms = [...smsFromActivity, ...smsComms].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
 
   // Get email messages (match by email address OR by contact id on client_id)
-  // client-email-broadcast.js writes communications.client_id = contact.id
+  // client-email-broadcast.js stashes crm_contacts.id in metadata.contact_id
+  // because communications.client_id FKs to `clients` not `crm_contacts`.
   const contactEmails = contactHubData.emails.filter(e => {
     if (!c.email && !c.phone) return false;
     const emailTo = e.metadata?.to || '';
     return (c.email && emailTo.toLowerCase() === c.email.toLowerCase()) ||
+           (e.metadata?.contact_id === c.id) ||
            (e.client_id === c.id) ||
            (c.client_id && e.client_id === c.client_id);
   }).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));

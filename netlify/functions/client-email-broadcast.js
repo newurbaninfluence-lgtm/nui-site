@@ -422,10 +422,11 @@ New Urban Influence &middot; Detroit, MI 48201 &middot; (248) 487-8747<br>
 
 
 // ── Log send to Supabase, get send ID back ───────────────────────────────
-// Contact Hub renders emails from this table. Match logic there:
-//   metadata.to === contact.email  OR  client_id === contact.id
-// So we stamp both email + contact.id, plus full metadata (handler, sequence_key,
-// position) so sent emails surface in the per-contact thread correctly.
+// Contact Hub renders emails from communications where:
+//   metadata.to (case-insensitive) === contact.email
+// NOTE: communications.client_id FKs to `clients`, NOT `crm_contacts`. Passing
+// a crm_contacts.id here causes a 409 FK violation. We leave client_id null
+// and stash the contact UUID in metadata.contact_id for downstream lookup.
 async function logSend(contactId, subject, stepLabel, email) {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/communications`, {
     method: 'POST',
@@ -435,16 +436,21 @@ async function logSend(contactId, subject, stepLabel, email) {
       direction: 'outbound',
       subject,
       message: subject, // plain-text fallback for previews
-      client_id: contactId,
       status: 'sent',
       metadata: {
         handler: 'client-email-broadcast',
         step: stepLabel,
-        to: email
+        to: email,
+        contact_id: contactId
       },
       created_at: new Date().toISOString()
     })
   });
+  if (!r.ok) {
+    const errText = await r.text().catch(() => '');
+    console.warn('[Broadcast] logSend failed:', r.status, errText.slice(0, 200));
+    return null;
+  }
   const rows = await r.json().catch(() => []);
   return rows?.[0]?.id || null;
 }
@@ -455,7 +461,9 @@ async function markContact(contactId, subject, step = null, isNew = false, bounc
     updates.email_bounced = true;
     updates.email_bounce_type = bounceType || 'hard';
   } else {
-    updates.email_send_count = { _increment: 1 };
+    // NOTE: PostgREST doesn't support { _increment: 1 } operators — whole PATCH
+    // would 400 and silently kill every other field in this body. Skipping the
+    // counter here; reinstate via RPC or DB trigger if we actually need it.
     // Sequence bookkeeping
     if (step) {
       updates.sequence_position = step.position;
@@ -463,10 +471,14 @@ async function markContact(contactId, subject, step = null, isNew = false, bounc
       if (step.isFinal) updates.sequence_completed_at = new Date().toISOString();
     }
   }
-  await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contactId}`, {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contactId}`, {
     method: 'PATCH', headers: { ...sbH, 'Prefer': 'return=minimal' },
     body: JSON.stringify(updates)
-  }).catch(() => {});
+  });
+  if (!r.ok) {
+    const errText = await r.text().catch(() => '');
+    console.warn('[Broadcast] markContact failed:', r.status, errText.slice(0, 200));
+  }
 }
 
 // ── Main handler ──────────────────────────────────────────────────────────
