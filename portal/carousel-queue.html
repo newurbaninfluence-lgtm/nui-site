@@ -38,6 +38,7 @@ main{max-width:1200px;margin:0 auto;padding:24px}
 .status.posted{background:rgba(16,185,129,.15);color:var(--green)}
 .status.failed{background:rgba(220,38,38,.15);color:var(--red)}
 .status.skipped{background:rgba(107,114,128,.15);color:var(--gray)}
+.status.posting{background:rgba(59,130,246,.15);color:#3b82f6}
 .cover{aspect-ratio:3/4;overflow:hidden;background:#000;position:relative;cursor:pointer}
 .cover img{width:100%;height:100%;object-fit:cover;display:block}
 .cover .count{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px}
@@ -74,6 +75,7 @@ main{max-width:1200px;margin:0 auto;padding:24px}
   <div class="filter-bar" id="filters">
     <div class="chip active" data-f="all">All</div>
     <div class="chip" data-f="queued">Queued</div>
+    <div class="chip" data-f="posting">Posting</div>
     <div class="chip" data-f="posted">Posted</div>
     <div class="chip" data-f="failed">Failed</div>
     <div class="chip" data-f="skipped">Skipped</div>
@@ -168,13 +170,23 @@ function closeModal(){ document.getElementById('modal').classList.remove('open')
 
 async function postNow(id){
   if(!confirm('Post this carousel to Instagram + Facebook now?')) return;
-  toast('Posting…');
+  toast('Posting started — this takes ~45 seconds...');
   try{
-    const r = await fetch(ENDPOINT + '?action=post&id=' + id, { method:'POST' });
-    const j = await r.json();
-    if(j.ok){ toast('Posted. IG: '+(j.ig_post_id||'?')); load(); }
-    else { toast('Failed: '+(j.error||'unknown')); }
-  }catch(e){ toast('Error: '+e.message); }
+    // Fire the background function (returns 202 immediately)
+    fetch('/.netlify/functions/carousel-queue-post-background?id=' + id, { method:'POST' });
+  }catch(e){}
+  // Poll the row every 5s to see when it posts
+  let tries = 0;
+  const poll = setInterval(async () => {
+    tries++;
+    await load();
+    const r = ALL.find(x=>x.id===id);
+    if(!r) return;
+    if(r.status === 'posted'){ clearInterval(poll); toast('Posted to IG + FB.'); }
+    else if(r.status === 'failed'){ clearInterval(poll); toast('Failed: '+(r.error_message||'unknown')); }
+    else if(r.status === 'posting'){ toast('Still posting... ('+(tries*5)+'s)'); }
+    if(tries > 24){ clearInterval(poll); toast('Timeout — check queue for latest status.'); }
+  }, 5000);
 }
 
 async function skip(id){
