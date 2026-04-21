@@ -34,6 +34,17 @@ const ROUTE_MAP = {
   '/sitemap.xml': '/magazine/sitemap.xml',
 };
 
+// .html-suffix variants → 301 to the clean URL (no .html).
+// Covers legacy links like /magazine/article.html that get stripped
+// to /article.html and would otherwise hit the unknown-path fallback.
+const HTML_SUFFIX_REDIRECT = {
+  '/index.html': '/',
+  '/article.html': '/article',
+  '/awards.html': '/awards',
+  '/subscribe.html': '/subscribe',
+  '/submit.html': '/submit',
+};
+
 const ASSET_PREFIXES = [
   '/assets/',
   '/images/',
@@ -69,7 +80,15 @@ export default async (request, context) => {
     );
   }
 
-  // 2) Known clean routes → rewrite (URL stays intact in browser)
+  // 2) .html-suffix paths → 301 to clean URL (cleans legacy links)
+  if (HTML_SUFFIX_REDIRECT[path]) {
+    return Response.redirect(
+      `https://${host}${HTML_SUFFIX_REDIRECT[path]}${url.search}`,
+      301,
+    );
+  }
+
+  // 3) Known clean routes → rewrite (URL stays intact in browser)
   if (ROUTE_MAP[path]) {
     const rewriteUrl = new URL(url);
     rewriteUrl.pathname = ROUTE_MAP[path];
