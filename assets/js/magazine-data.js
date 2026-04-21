@@ -362,6 +362,66 @@ New Urban Influence is proud to feature Keith Jackson and Deep Drama Design Lab 
       },
       reviews: [],
     },
+    // ── ARTICLE 7: Ashley Mathaw — Backyard Comedy Battle
+    {
+      id: 'ashley-mathaw-backyard-comedy-battle-2026',
+      slug: 'ashley-mathaw-backyard-comedy-battle-detroit',
+      title: 'Ashley Mathaw and the Backyard Comedy Battle: The Host Turning Every Show Into an Event',
+      dek: 'Host, producer, and on-stage MC of California\'s Backyard Comedy Battle — Ashley Mathaw built a live comedy night where every punchline is a fight and every show is a different story.',
+      category: 'creators', categoryLabel: 'Host & Producer · California',
+      author: 'NUI Editorial', publishedAt: '2026-04-21', readTime: '5 min read',
+      featured: true, premium: false, award: null,
+      heroImage: '/images/magazine/ashley-mathaw-hero.png',
+      profileImage: '/images/magazine/ashley-mathaw-profile.png',
+      profileBio: 'Host and producer of the Backyard Comedy Battle — a monthly live comedy night in California where comedians clash on stage, the audience votes, and the energy never drops. Known for keeping the room at a 10 from open to close.',
+      ownerBio: {
+        label: 'Host & Producer — Backyard Comedy Battle',
+        headline: 'She Keeps the Room at a 10',
+        body: 'Ashley Mathaw hosts the Backyard Comedy Battle — a live comedy show built around one rule: every comic has to earn the room. No polite applause, no soft sets. Every last Saturday in California, Ashley steps on stage and runs the show from open to close — open bar, DJ Dirty Ghost on the ones and twos, comedians clashing in real-time battles, and an audience that decides who survives the night.',
+        stats: [{ val: 'Monthly', label: 'Live Show' },{ val: 'California', label: 'Home Market' },{ val: 'Every Last Sat', label: 'Show Night' },{ val: '10/10', label: 'Energy Level' }],
+        tags: ['Comedy', 'Live Shows', 'Host', 'Producer', 'California', 'Backyard Comedy Battle'],
+      },
+      tags: ['California', 'Comedy', 'Backyard Comedy Battle', 'Host', 'Live Events', 'Ashley Mathaw'],
+      body: `Most comedy shows give you a comic, a mic, and a polite round of applause. The Backyard Comedy Battle doesn't do polite.
+
+At the center of the format is Ashley Mathaw — the host, the producer, and the voice who sets the tone the second the doors open. She didn't walk into comedy. She built a show around it.
+
+## The Format
+
+The Backyard Comedy Battle is an electrifying live show where comedians clash in hilarious battles, engaging the audience and creating unforgettable moments every single show. It's not a traditional lineup night. It's a competition. Comics come in knowing they have to land — not just on paper, not just with a tight five, but in the room, in real-time, against another comedian whose only job that night is to beat them.
+
+The audience decides. The room decides. And Ashley keeps the whole thing moving.
+
+## The Night
+
+Every last Saturday, California. Open bar. DJ Dirty Ghost running the sound. A rotating roster of comedians who step up knowing the format doesn't hand out easy wins. Every show is different. Every show is wild. That's not marketing language — that's the design.
+
+Most hosts manage a show. Ashley *is* the show. From the moment she walks on stage, the temperature in the room changes. She's the producer, the MC, the hype person, and the crowd's anchor all at once — and she makes it look easy, which is usually the surest sign that someone has put in the work to get there.
+
+## Why This Show Works
+
+Live comedy is one of the hardest rooms to book, promote, and sustain. Most nights die quietly after three or four shows. The Backyard Comedy Battle keeps coming back for one reason: Ashley Mathaw treats every single date like it's the first one and the last one at the same time.
+
+The battle format gives the audience a stake in the outcome. The open bar and the DJ turn it into a full night out, not a 90-minute comedy set. And the consistency — every last Saturday, no exceptions — turns occasional attendees into regulars who bring friends who bring friends.
+
+That's how a show becomes a brand. And Ashley built it from the host chair.
+
+## What's Next
+
+The Backyard Comedy Battle is one of those shows that scales naturally — more cities, bigger rooms, bigger names. Ashley's already doing the hardest part: running a repeatable, sold-out format that makes the audience feel like part of the act. Everything else is logistics.
+
+New Urban Influence is proud to feature Ashley Mathaw and the Backyard Comedy Battle as a member of the NUI Creator Network — a host who understands that a great show isn't just comics on a stage. It's the person holding the whole night together.`,
+      business: {
+        name: 'Backyard Comedy Battle', category: 'Live Comedy Show / Event Production',
+        phone: '', address: '', city: '', state: 'CA', zip: '',
+        website: 'backyardcomedybattle.com', email: '', instagram: '',
+        rating: 5.0, reviewCount: 0, citationId: 'NUI-CA-2026-0007',
+        verifiedDate: 'April 2026', verifiedUrl: 'https://backyardcomedybattle.com',
+        sameAs: ['Instagram', 'Facebook', 'Eventbrite'],
+        services: ['Live Comedy Show','Monthly Event — Every Last Saturday','Open Bar','DJ Entertainment (DJ Dirty Ghost)','Comedian Battle Format','Audience-Voted Competition','California Market','Host & MC Services'],
+      },
+      reviews: [],
+    },
   ],
 
   getBySlug(slug)  { return this.articles.find(function(a) { return a.slug === slug; }); },
