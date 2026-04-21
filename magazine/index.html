@@ -66,7 +66,7 @@
   <!-- ══ FONTS ══ -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- ══ STYLES ══ -->
   <link rel="stylesheet" href="/assets/css/magazine.css">
@@ -74,6 +74,153 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:#000; color:#fff; font-family:'Montserrat',sans-serif; }
+
+    /* ── EXHIBITION-STYLE MASTHEAD ─────────────────────── */
+    .mag-masthead-exhibition {
+      background: #000;
+      padding: 28px 40px 0;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .mag-masthead-title {
+      font-family: 'Bebas Neue', 'Impact', sans-serif;
+      font-size: clamp(64px, 15vw, 240px);
+      font-weight: 400;
+      line-height: 0.85;
+      letter-spacing: -0.02em;
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      margin: 0;
+      padding: 0;
+      /* Fluid fit-to-width behavior */
+      width: 100%;
+      display: block;
+    }
+    .mag-masthead-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0 18px;
+      margin-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      max-width: 1600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .mag-masthead-nav a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      transition: color .15s;
+      padding: 4px 0;
+    }
+    .mag-masthead-nav a:hover { color: #ff0000; }
+    .mag-masthead-nav a.is-active { color: #ff0000; }
+
+    /* ── FULL-BLEED PHOTO HERO ─────────────────────── */
+    .mag-photo-hero {
+      position: relative;
+      width: 100%;
+      height: clamp(420px, 65vh, 720px);
+      overflow: hidden;
+      background: #000;
+    }
+    .mag-photo-hero-img {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+    }
+    .mag-photo-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.25) 0%,
+        rgba(0,0,0,0.35) 50%,
+        rgba(0,0,0,0.75) 100%
+      );
+      z-index: 2;
+    }
+    .mag-photo-hero-content {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 48px 40px 56px;
+      z-index: 3;
+      max-width: 1600px;
+      margin: 0 auto;
+      color: #fff;
+    }
+    .mag-photo-hero-kicker {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #ff3a3a;
+      margin-bottom: 16px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+    }
+    .mag-photo-hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 5vw, 64px);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      color: #fff;
+      text-transform: uppercase;
+      margin: 0 0 18px;
+      max-width: 900px;
+      text-shadow: 0 2px 18px rgba(0,0,0,0.55);
+    }
+    .mag-photo-hero-dek {
+      font-size: 16px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.88);
+      max-width: 580px;
+      margin: 0 0 24px;
+      text-shadow: 0 1px 10px rgba(0,0,0,0.5);
+    }
+    .mag-photo-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 22px;
+      letter-spacing: 0.04em;
+    }
+    .mag-photo-hero-meta strong { color: #fff; font-weight: 700; }
+    .mag-photo-hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ff0000;
+      color: #fff;
+      padding: 14px 28px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: transform .15s, opacity .15s;
+    }
+    .mag-photo-hero-btn:hover { opacity: .92; transform: translateY(-1px); }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .mag-masthead-exhibition { padding: 20px 16px 0; }
+      .mag-masthead-nav { gap: 8px; padding: 14px 0 12px; flex-wrap: wrap; justify-content: center; }
+      .mag-masthead-nav a { font-size: 10px; padding: 2px 6px; }
+      .mag-photo-hero-content { padding: 32px 20px 32px; }
+    }
   </style>
 </head>
 <body>
@@ -84,43 +231,34 @@
   <a href="/magazine/awards.html">Nominate a Business →</a>
 </div>
 
-<!-- MASTHEAD -->
-<header class="mag-masthead">
-  <div class="mag-masthead-inner">
-    <a class="mag-wordmark" href="/magazine">
-      <span class="mag-wordmark-main">NUI</span>
-      <span class="mag-wordmark-sub">Magazine</span>
-    </a>
-    <nav class="mag-nav">
-      <a href="/magazine">Home</a>
-      <a href="/network">Directory</a>
-      <a href="/magazine/awards.html">Awards</a>
-      <a href="/magazine/submit.html">Submit a Business</a>
-      <a href="/magazine/subscribe.html" class="mag-nav-cta">Subscribe</a>
-    </nav>
-  </div>
+<!-- EXHIBITION-STYLE MASTHEAD -->
+<header class="mag-masthead-exhibition">
+  <h1 class="mag-masthead-title">NUI MAGAZINE</h1>
+  <nav class="mag-masthead-nav">
+    <a href="/magazine" class="is-active">Home</a>
+    <a href="/network">Directory</a>
+    <a href="/magazine/awards.html">Awards</a>
+    <a href="/magazine/submit.html">Submit</a>
+    <a href="/magazine/subscribe.html">Subscribe</a>
+  </nav>
 </header>
 
-<!-- HERO COVER STORY -->
-<section class="mag-hero" id="heroSection">
-  <div class="mag-hero-inner">
-    <div>
-      <div class="mag-hero-kicker">Cover Story</div>
-      <h1 class="mag-hero-title" id="heroTitle">Loading...</h1>
-      <p class="mag-hero-dek" id="heroDek"></p>
-      <div class="mag-hero-meta">
-        <strong id="heroAuthor">NUI Editorial</strong>
-        <span>·</span>
-        <span id="heroDate"></span>
-        <span>·</span>
-        <span id="heroRead"></span>
-      </div>
-      <a class="mag-hero-btn" id="heroBtn" href="#">Read Feature →</a>
+<!-- FULL-BLEED PHOTO HERO (cover story) -->
+<section class="mag-photo-hero" id="heroSection">
+  <div class="mag-photo-hero-img" id="heroImg"></div>
+  <div class="mag-photo-hero-overlay"></div>
+  <div class="mag-photo-hero-content">
+    <div class="mag-photo-hero-kicker">Cover Story</div>
+    <h2 class="mag-photo-hero-title" id="heroTitle">Loading...</h2>
+    <p class="mag-photo-hero-dek" id="heroDek"></p>
+    <div class="mag-photo-hero-meta">
+      <strong id="heroAuthor">NUI Editorial</strong>
+      <span>·</span>
+      <span id="heroDate"></span>
+      <span>·</span>
+      <span id="heroRead"></span>
     </div>
-    <div class="mag-hero-img" id="heroImg">
-      <span id="heroImgLabel">Detroit, MI</span>
-      <div class="mag-hero-award" id="heroAward">🏆 Award Winner</div>
-    </div>
+    <a class="mag-photo-hero-btn" id="heroBtn" href="#">Read Feature →</a>
   </div>
 </section>
 
@@ -190,6 +328,19 @@
 
 <script src="/assets/js/magazine-data.js"></script>
 <script src="/assets/js/magazine.js"></script>
+<script>
+  // Override cover-story hero background with the Detroit urban art photo.
+  // The featured article content (title, dek, byline, read-feature CTA) still
+  // comes from magazine-data.js — only the backdrop is swapped.
+  document.addEventListener('DOMContentLoaded', function() {
+    var heroImg = document.getElementById('heroImg');
+    if (heroImg) {
+      heroImg.style.backgroundImage = "url('/images/magazine/hero-feature-photo.jpg')";
+      heroImg.style.backgroundSize = 'cover';
+      heroImg.style.backgroundPosition = 'center 45%';
+    }
+  });
+</script>
   <script src="/assets/js/push-opt-in.js?v=20260418v1" defer></script>
 </body>
 </html>
