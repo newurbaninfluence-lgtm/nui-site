@@ -56,76 +56,7 @@
 [functions."agent-blogger"]
   schedule = "0 12 * * 3"
 
-# ════════════════════════════════════════════════════════════
-# ── newurbanmagazine.com — BRANDED SUBDOMAIN ──
-# ════════════════════════════════════════════════════════════
-# Domain aliased to nui-site on Netlify. These host-scoped rules
-# serve /magazine/ content at the root on newurbanmagazine.com
-# with clean URLs. Main site (newurbaninfluence.com) untouched.
-
-# 1) Strip legacy /magazine/ prefix → 301 to clean URL on mag host
-#    e.g. /magazine/article?slug=x → /article?slug=x
-[[redirects]]
-  from = "/magazine/*"
-  to = "/:splat"
-  status = 301
-  force = true
-  conditions = {Host = ["newurbanmagazine.com", "www.newurbanmagazine.com"]}
-
-# 2) Root → magazine index
-[[redirects]]
-  from = "/"
-  to = "/magazine/index.html"
-  status = 200
-  conditions = {Host = ["newurbanmagazine.com", "www.newurbanmagazine.com"]}
-
-# 3) Article (query-string based, single HTML file)
-[[redirects]]
-  from = "/article"
-  to = "/magazine/article.html"
-  status = 200
-  conditions = {Host = ["newurbanmagazine.com", "www.newurbanmagazine.com"]}
-
-# 4) Awards
-[[redirects]]
-  from = "/awards"
-  to = "/magazine/awards.html"
-  status = 200
-  conditions = {Host = ["newurbanmagazine.com", "www.newurbanmagazine.com"]}
-
-# 5) Subscribe
-[[redirects]]
-  from = "/subscribe"
-  to = "/magazine/subscribe.html"
-  status = 200
-  conditions = {Host = ["newurbanmagazine.com", "www.newurbanmagazine.com"]}
-
-# 6) Submit
-[[redirects]]
-  from = "/submit"
-  to = "/magazine/submit.html"
-  status = 200
-  conditions = {Host = ["newurbanmagazine.com", "www.newurbanmagazine.com"]}
-
-# 7) Sitemap
-[[redirects]]
-  from = "/sitemap.xml"
-  to = "/magazine/sitemap.xml"
-  status = 200
-  conditions = {Host = ["newurbanmagazine.com", "www.newurbanmagazine.com"]}
-
-# 8) Catch-all for unmatched mag-host paths → magazine index
-#    force = false preserves static assets (/assets/*, /favicon.ico, etc.)
-[[redirects]]
-  from = "/*"
-  to = "/magazine/index.html"
-  status = 200
-  force = false
-  conditions = {Host = ["newurbanmagazine.com", "www.newurbanmagazine.com"]}
-
-# ════════════════════════════════════════════════════════════
-# ── NUI MAGAZINE ROUTES (main domain) ──
-# ════════════════════════════════════════════════════════════
+# ── NUI MAGAZINE ROUTES ──────────────────────────────────────
 
 # Booking page
 [[redirects]]
