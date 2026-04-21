@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carousel Queue · NUI</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--surface:#141414;--surface2:#1f1f1f;--border:#2a2a2a;--text:#fff;--muted:#a6a6a6;--red:#dc2626;--red-dark:#991b1b;--green:#10b981;--yellow:#f59e0b;--gray:#6b7280}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;font-size:15px;line-height:1.5;min-height:100vh;padding-bottom:120px}
+header{position:sticky;top:0;z-index:50;background:rgba(10,10,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center}
+h1{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;letter-spacing:0.5px}
+h1 span{color:var(--red)}
+.sub{color:var(--muted);font-size:12px;margin-top:4px;letter-spacing:1px;text-transform:uppercase}
+.actions{display:flex;gap:8px}
+button{font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s}
+button:hover{background:var(--surface2)}
+button.primary{background:var(--red);border-color:var(--red)}
+button.primary:hover{background:var(--red-dark)}
+button.ghost{background:transparent}
+main{max-width:1200px;margin:0 auto;padding:24px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px}
+.stat .n{font-family:'Syne',sans-serif;font-weight:800;font-size:32px;line-height:1}
+.stat .l{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:8px}
+.filter-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.chip{padding:8px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--border);font-size:12px;font-weight:600;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px}
+.chip.active{background:var(--red);border-color:var(--red)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.card-head{padding:16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:1px solid var(--border)}
+.card-q{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;line-height:1.35;flex:1}
+.status{font-size:10px;font-weight:700;padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+.status.queued{background:rgba(245,158,11,.15);color:var(--yellow)}
+.status.posted{background:rgba(16,185,129,.15);color:var(--green)}
+.status.failed{background:rgba(220,38,38,.15);color:var(--red)}
+.status.skipped{background:rgba(107,114,128,.15);color:var(--gray)}
+.cover{aspect-ratio:3/4;overflow:hidden;background:#000;position:relative;cursor:pointer}
+.cover img{width:100%;height:100%;object-fit:cover;display:block}
+.cover .count{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px}
+.card-meta{padding:14px 16px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border)}
+.card-actions{padding:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid var(--border)}
+.card-actions button{padding:10px 8px;font-size:11px;letter-spacing:0.5px;text-transform:uppercase}
+.loading{text-align:center;padding:60px;color:var(--muted)}
+.empty{text-align:center;padding:80px 20px;color:var(--muted)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal-body{background:var(--surface);border-radius:20px;max-width:440px;width:100%;max-height:92vh;overflow:hidden;display:flex;flex-direction:column}
+.modal-head{padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.modal-scroll{padding:20px;overflow:auto;display:flex;flex-direction:column;gap:16px}
+.modal-scroll img{width:100%;border-radius:12px;display:block}
+.modal-caption{background:var(--surface2);padding:14px;border-radius:10px;font-size:12px;color:var(--muted);white-space:pre-wrap;font-family:monospace}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);padding:14px 22px;border-radius:999px;font-size:13px;z-index:200;display:none}
+.toast.show{display:block}
+@media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Carousel <span>Queue</span></h1>
+    <div class="sub" id="sub">loading…</div>
+  </div>
+  <div class="actions">
+    <button class="ghost" onclick="load()">↻ Refresh</button>
+  </div>
+</header>
+
+<main>
+  <div class="stats" id="stats"></div>
+  <div class="filter-bar" id="filters">
+    <div class="chip active" data-f="all">All</div>
+    <div class="chip" data-f="queued">Queued</div>
+    <div class="chip" data-f="posted">Posted</div>
+    <div class="chip" data-f="failed">Failed</div>
+    <div class="chip" data-f="skipped">Skipped</div>
+  </div>
+  <div class="grid" id="grid"><div class="loading">Loading queue…</div></div>
+</main>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-body">
+    <div class="modal-head">
+      <div style="flex:1;font-family:Syne;font-weight:700;font-size:14px;" id="modalTitle"></div>
+      <button class="ghost" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-scroll" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ENDPOINT = '/.netlify/functions/carousel-queue';
+let ALL = [];
+let FILTER = 'all';
+
+async function load(){
+  try {
+    const r = await fetch(ENDPOINT + '?action=list');
+    const data = await r.json();
+    ALL = data.rows || [];
+    render();
+  } catch(e){ toast('Load failed: ' + e.message); }
+}
+
+function render(){
+  const stats = {total:ALL.length, queued:0, posted:0, failed:0, skipped:0};
+  ALL.forEach(r => stats[r.status] = (stats[r.status]||0)+1);
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><div class="n">${stats.total}</div><div class="l">Total</div></div>
+    <div class="stat"><div class="n" style="color:var(--yellow)">${stats.queued||0}</div><div class="l">Queued</div></div>
+    <div class="stat"><div class="n" style="color:var(--green)">${stats.posted||0}</div><div class="l">Posted</div></div>
+    <div class="stat"><div class="n" style="color:var(--red)">${stats.failed||0}</div><div class="l">Failed</div></div>`;
+  document.getElementById('sub').textContent = `${stats.total} carousels · ${stats.queued||0} queued`;
+
+  const rows = FILTER === 'all' ? ALL : ALL.filter(r => r.status === FILTER);
+  const grid = document.getElementById('grid');
+  if (rows.length === 0){
+    grid.innerHTML = '<div class="empty">No carousels match this filter.</div>';
+    return;
+  }
+  grid.innerHTML = rows.map(r => {
+    const date = r.scheduled_for ? new Date(r.scheduled_for).toLocaleDateString(undefined,{month:'short',day:'numeric'}) : '—';
+    const cover = r.slide_urls?.[0] || '';
+    const pillar = r.pillar_label || 'Tips';
+    const canAct = r.status === 'queued';
+    return `<div class="card">
+      <div class="card-head">
+        <div class="card-q">${escapeHtml(r.question)}</div>
+        <div class="status ${r.status}">${r.status}</div>
+      </div>
+      <div class="cover" onclick="openModal('${r.id}')">
+        ${cover ? `<img src="${cover}" loading="lazy">` : ''}
+        <div class="count">${r.slide_urls?.length || 0} slides</div>
+      </div>
+      <div class="card-meta">
+        <span>${pillar}</span>
+        <span>${date}</span>
+      </div>
+      <div class="card-actions">
+        <button onclick="openModal('${r.id}')">Preview</button>
+        ${canAct
+          ? `<button class="primary" onclick="postNow('${r.id}')">Post Now</button>
+             <button onclick="skip('${r.id}')">Skip</button>`
+          : `<button disabled style="opacity:.4">—</button><button disabled style="opacity:.4">—</button>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function escapeHtml(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+function openModal(id){
+  const r = ALL.find(x=>x.id===id); if(!r) return;
+  document.getElementById('modalTitle').textContent = r.question;
+  const html = [
+    ...(r.slide_urls||[]).map(u => `<img src="${u}" loading="lazy">`),
+    `<div class="modal-caption">${escapeHtml(r.caption||'')}</div>`,
+  ].join('');
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){ document.getElementById('modal').classList.remove('open'); }
+
+async function postNow(id){
+  if(!confirm('Post this carousel to Instagram + Facebook now?')) return;
+  toast('Posting…');
+  try{
+    const r = await fetch(ENDPOINT + '?action=post&id=' + id, { method:'POST' });
+    const j = await r.json();
+    if(j.ok){ toast('Posted. IG: '+(j.ig_post_id||'?')); load(); }
+    else { toast('Failed: '+(j.error||'unknown')); }
+  }catch(e){ toast('Error: '+e.message); }
+}
+
+async function skip(id){
+  if(!confirm('Mark this carousel as skipped? It will not post.')) return;
+  try{
+    const r = await fetch(ENDPOINT + '?action=skip&id=' + id, { method:'POST' });
+    const j = await r.json();
+    if(j.ok){ toast('Skipped.'); load(); }
+    else { toast('Failed: '+(j.error||'unknown')); }
+  }catch(e){ toast('Error: '+e.message); }
+}
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+  c.classList.add('active');
+  FILTER = c.dataset.f; render();
+}));
+
+load();
+</script>
+</body>
+</html>
