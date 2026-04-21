@@ -93,25 +93,9 @@ exports.handler = async (event) => {
     }
 
     if (action === 'post') {
-      if (!id) throw new Error('id required');
-      const rows = await supaSelect(`select=*&id=eq.${id}`);
-      const row = rows[0];
-      if (!row) throw new Error('row not found');
-      if (row.status !== 'queued') throw new Error(`row is ${row.status}, cannot post`);
-
-      let ig_post_id = null, fb_post_id = null, error_message = null;
-      let final_status = 'posted';
-      try { ig_post_id = await postToIG(row.slide_urls, row.caption); }
-      catch (e) { error_message = `IG: ${e.message}`; final_status = 'failed'; }
-      try { fb_post_id = await postToFB(row.slide_urls[0], row.caption); }
-      catch (e) { error_message = (error_message ? error_message + ' | ' : '') + `FB: ${e.message}`; }
-
-      await supaUpdate(id, {
-        status: final_status,
-        posted_at: new Date().toISOString(),
-        ig_post_id, fb_post_id, error_message,
-      });
-      return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: final_status === 'posted', ig_post_id, fb_post_id, error: error_message }) };
+      // This sync action is deprecated — posts now go through the background function
+      // to avoid proxy timeouts and double-post races. Return 410 to any old callers.
+      return { statusCode: 410, headers: CORS, body: JSON.stringify({ error: 'Use /.netlify/functions/carousel-queue-post-background?id=UUID instead' }) };
     }
 
     return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'unknown action' }) };

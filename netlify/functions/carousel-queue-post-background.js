@@ -1,6 +1,6 @@
-// carousel-queue-post-background.js — Netlify background function (up to 15 min runtime)
-// Filename ending with "-background" tells Netlify to run async — returns 202 immediately.
-// The page polls the row's status from /carousel-queue?action=list to see when it's posted.
+// carousel-queue-post-background.js — Background Netlify fn (~15min runtime).
+// Atomic guard: flip status queued -> posting via conditional PATCH. If the
+// PATCH returns no rows, someone else won the race and we exit silently.
 
 const SB_URL   = 'https://jcgvkyizoimwbolhfpta.supabase.co';
 const SB_KEY   = process.env.SUPABASE_SERVICE_KEY;
@@ -14,8 +14,11 @@ async function supaSelect(q){
   const r = await fetch(`${SB_URL}/rest/v1/scheduled_carousels?${q}`, { headers: supaHeaders });
   return r.json();
 }
-async function supaUpdate(id, patch){
-  const r = await fetch(`${SB_URL}/rest/v1/scheduled_carousels?id=eq.${id}`, {
+
+// Conditional patch: only update rows that match every condition in whereQuery.
+// Returns the updated rows (empty array = we lost the race, someone else got there first).
+async function supaUpdateWhere(whereQuery, patch){
+  const r = await fetch(`${SB_URL}/rest/v1/scheduled_carousels?${whereQuery}`, {
     method: 'PATCH',
     headers: { ...supaHeaders, Prefer: 'return=representation' },
     body: JSON.stringify(patch),
@@ -63,12 +66,16 @@ exports.handler = async (event) => {
   const id = (event.queryStringParameters || {}).id;
   if (!id) return { statusCode: 400 };
 
-  const rows = await supaSelect(`select=*&id=eq.${id}`);
-  const row = rows[0];
-  if (!row || row.status !== 'queued') return { statusCode: 200 };
-
-  // Mark as posting so UI shows progress
-  await supaUpdate(id, { status: 'posting' });
+  // Atomic claim: flip status queued -> posting. If no rows updated, someone else claimed it.
+  const claimed = await supaUpdateWhere(
+    `id=eq.${id}&status=eq.queued`,
+    { status: 'posting' }
+  );
+  if (!Array.isArray(claimed) || claimed.length === 0){
+    console.log(`Row ${id} already claimed by another run — exiting to prevent double post.`);
+    return { statusCode: 200 };
+  }
+  const row = claimed[0];
 
   let ig_post_id = null, fb_post_id = null, error_message = null, final_status = 'posted';
   try { ig_post_id = await postToIG(row.slide_urls, row.caption); }
@@ -76,7 +83,7 @@ exports.handler = async (event) => {
   try { fb_post_id = await postToFB(row.slide_urls[0], row.caption); }
   catch (e) { error_message = (error_message ? error_message + ' | ' : '') + `FB: ${e.message}`; }
 
-  await supaUpdate(id, {
+  await supaUpdateWhere(`id=eq.${id}`, {
     status: final_status,
     posted_at: new Date().toISOString(),
     ig_post_id, fb_post_id, error_message,
