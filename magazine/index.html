@@ -88,14 +88,43 @@
       font-weight: 400;
       line-height: 0.85;
       letter-spacing: -0.02em;
-      color: #fff;
       text-align: center;
       white-space: nowrap;
       margin: 0;
       padding: 0;
-      /* Fluid fit-to-width behavior */
       width: 100%;
       display: block;
+
+      /* Red gradient with moving shimmer highlight */
+      background: linear-gradient(
+        90deg,
+        #8b0000 0%,
+        #ff0000 20%,
+        #ff3a3a 40%,
+        #ffffff 50%,
+        #ff3a3a 60%,
+        #ff0000 80%,
+        #8b0000 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: nuiShimmer 6s linear infinite;
+    }
+    @keyframes nuiShimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    /* Fallback for browsers without background-clip:text */
+    @supports not (-webkit-background-clip: text) {
+      .mag-masthead-title {
+        color: #ff0000;
+        background: none;
+        -webkit-text-fill-color: initial;
+        animation: none;
+      }
     }
     .mag-masthead-nav {
       display: flex;
@@ -166,6 +195,52 @@
       max-width: 1600px;
       margin: 0 auto;
       color: #fff;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 48px;
+      align-items: center;
+    }
+    .mag-photo-hero-text { min-width: 0; }
+    .mag-photo-hero-feature-box {
+      position: relative;
+      width: 340px;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      border: 2px solid #ff0000;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,0,0,0.3);
+      background: #111;
+    }
+    .mag-photo-hero-feature-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .mag-photo-hero-feature-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #ff0000;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      padding: 5px 11px;
+      text-transform: uppercase;
+    }
+    .mag-photo-hero-feature-caption {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 14px 14px 12px;
+      background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 60%, transparent 100%);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
     }
     .mag-photo-hero-kicker {
       font-family: 'Montserrat', sans-serif;
@@ -222,12 +297,23 @@
     .mag-photo-hero-btn:hover { opacity: .92; transform: translateY(-1px); }
 
     /* Responsive */
+    @media (max-width: 900px) {
+      .mag-photo-hero-content {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .mag-photo-hero-feature-box {
+        width: 240px;
+        justify-self: start;
+      }
+    }
     @media (max-width: 700px) {
       .mag-masthead-exhibition { padding: 20px 16px 0; }
       .mag-masthead-nav { gap: 8px; padding: 14px 0 12px; flex-wrap: wrap; justify-content: center; }
       .mag-masthead-nav a { font-size: 10px; padding: 2px 6px; }
-      .mag-photo-hero { height: clamp(480px, 85vh, 700px); }
-      .mag-photo-hero-panel { padding: 80px 20px 28px; }
+      .mag-photo-hero { height: auto; min-height: 640px; }
+      .mag-photo-hero-panel { padding: 70px 20px 28px; }
+      .mag-photo-hero-feature-box { width: 200px; }
     }
   </style>
 </head>
@@ -257,17 +343,24 @@
   <div class="mag-photo-hero-overlay"></div>
   <div class="mag-photo-hero-panel">
     <div class="mag-photo-hero-content">
-      <div class="mag-photo-hero-kicker">Cover Story</div>
-      <h2 class="mag-photo-hero-title" id="heroTitle">Loading...</h2>
-      <p class="mag-photo-hero-dek" id="heroDek"></p>
-      <div class="mag-photo-hero-meta">
-        <strong id="heroAuthor">NUI Editorial</strong>
-        <span>·</span>
-        <span id="heroDate"></span>
-        <span>·</span>
-        <span id="heroRead"></span>
+      <div class="mag-photo-hero-text">
+        <div class="mag-photo-hero-kicker">Cover Story</div>
+        <h2 class="mag-photo-hero-title" id="heroTitle">Loading...</h2>
+        <p class="mag-photo-hero-dek" id="heroDek"></p>
+        <div class="mag-photo-hero-meta">
+          <strong id="heroAuthor">NUI Editorial</strong>
+          <span>·</span>
+          <span id="heroDate"></span>
+          <span>·</span>
+          <span id="heroRead"></span>
+        </div>
+        <a class="mag-photo-hero-btn" id="heroBtn" href="#">Read Feature →</a>
       </div>
-      <a class="mag-photo-hero-btn" id="heroBtn" href="#">Read Feature →</a>
+      <div class="mag-photo-hero-feature-box" id="heroFeatureBox">
+        <div class="mag-photo-hero-feature-tag">Featured</div>
+        <img id="heroFeatureImg" src="" alt="">
+        <div class="mag-photo-hero-feature-caption" id="heroFeatureCaption">Detroit, MI</div>
+      </div>
     </div>
   </div>
 </section>
@@ -339,9 +432,8 @@
 <script src="/assets/js/magazine-data.js"></script>
 <script src="/assets/js/magazine.js"></script>
 <script>
-  // Override cover-story hero background with the Detroit urban art photo.
-  // The featured article content (title, dek, byline, read-feature CTA) still
-  // comes from magazine-data.js — only the backdrop is swapped.
+  // Override hero backdrop with Detroit urban art photo, and populate
+  // the right-side feature image box from the cover article's portrait.
   document.addEventListener('DOMContentLoaded', function() {
     var heroImg = document.getElementById('heroImg');
     if (heroImg) {
@@ -349,6 +441,18 @@
       heroImg.style.backgroundSize = 'cover';
       heroImg.style.backgroundPosition = 'center 45%';
     }
+
+    // Populate feature image box with cover article's profile/owner image
+    try {
+      var hero = (window.NUI_MAG && (NUI_MAG.getPremium?.() || []).concat(NUI_MAG.getFeatured()))[0];
+      if (hero) {
+        var src = hero.ownerImage || hero.profileImage || hero.heroImage || '';
+        var img = document.getElementById('heroFeatureImg');
+        var cap = document.getElementById('heroFeatureCaption');
+        if (img && src) img.src = src;
+        if (cap) cap.textContent = (hero.location || 'Detroit, MI');
+      }
+    } catch (e) { /* non-fatal */ }
   });
 </script>
   <script src="/assets/js/push-opt-in.js?v=20260418v1" defer></script>
