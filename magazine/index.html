@@ -126,7 +126,7 @@
     .mag-photo-hero {
       position: relative;
       width: 100%;
-      height: clamp(420px, 65vh, 720px);
+      height: clamp(520px, 78vh, 820px);
       overflow: hidden;
       background: #000;
     }
@@ -142,17 +142,27 @@
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(0,0,0,0.25) 0%,
-        rgba(0,0,0,0.35) 50%,
-        rgba(0,0,0,0.75) 100%
+        rgba(0,0,0,0.15) 0%,
+        rgba(0,0,0,0.25) 35%,
+        rgba(0,0,0,0.75) 70%,
+        rgba(0,0,0,0.95) 100%
       );
       z-index: 2;
     }
-    .mag-photo-hero-content {
+    /* Solid bottom panel so copy sits on pure black — no murals competing */
+    .mag-photo-hero-panel {
       position: absolute;
       left: 0; right: 0; bottom: 0;
-      padding: 48px 40px 56px;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.98) 0%,
+        rgba(0,0,0,0.92) 60%,
+        transparent 100%
+      );
+      padding: 100px 40px 48px;
       z-index: 3;
+    }
+    .mag-photo-hero-content {
       max-width: 1600px;
       margin: 0 auto;
       color: #fff;
@@ -164,36 +174,33 @@
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: #ff3a3a;
-      margin-bottom: 16px;
-      text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+      margin-bottom: 14px;
     }
     .mag-photo-hero-title {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(32px, 5vw, 64px);
+      font-size: clamp(28px, 3.6vw, 48px);
       font-weight: 800;
-      line-height: 0.95;
+      line-height: 1.05;
       letter-spacing: -0.01em;
       color: #fff;
       text-transform: uppercase;
-      margin: 0 0 18px;
+      margin: 0 0 14px;
       max-width: 900px;
-      text-shadow: 0 2px 18px rgba(0,0,0,0.55);
     }
     .mag-photo-hero-dek {
-      font-size: 16px;
-      line-height: 1.6;
-      color: rgba(255,255,255,0.88);
-      max-width: 580px;
-      margin: 0 0 24px;
-      text-shadow: 0 1px 10px rgba(0,0,0,0.5);
+      font-size: 15px;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.82);
+      max-width: 620px;
+      margin: 0 0 18px;
     }
     .mag-photo-hero-meta {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       font-size: 12px;
-      color: rgba(255,255,255,0.75);
-      margin-bottom: 22px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 20px;
       letter-spacing: 0.04em;
     }
     .mag-photo-hero-meta strong { color: #fff; font-weight: 700; }
@@ -203,7 +210,7 @@
       gap: 10px;
       background: #ff0000;
       color: #fff;
-      padding: 14px 28px;
+      padding: 13px 26px;
       font-family: 'Montserrat', sans-serif;
       font-size: 11px;
       font-weight: 700;
@@ -219,7 +226,8 @@
       .mag-masthead-exhibition { padding: 20px 16px 0; }
       .mag-masthead-nav { gap: 8px; padding: 14px 0 12px; flex-wrap: wrap; justify-content: center; }
       .mag-masthead-nav a { font-size: 10px; padding: 2px 6px; }
-      .mag-photo-hero-content { padding: 32px 20px 32px; }
+      .mag-photo-hero { height: clamp(480px, 85vh, 700px); }
+      .mag-photo-hero-panel { padding: 80px 20px 28px; }
     }
   </style>
 </head>
@@ -247,18 +255,20 @@
 <section class="mag-photo-hero" id="heroSection">
   <div class="mag-photo-hero-img" id="heroImg"></div>
   <div class="mag-photo-hero-overlay"></div>
-  <div class="mag-photo-hero-content">
-    <div class="mag-photo-hero-kicker">Cover Story</div>
-    <h2 class="mag-photo-hero-title" id="heroTitle">Loading...</h2>
-    <p class="mag-photo-hero-dek" id="heroDek"></p>
-    <div class="mag-photo-hero-meta">
-      <strong id="heroAuthor">NUI Editorial</strong>
-      <span>·</span>
-      <span id="heroDate"></span>
-      <span>·</span>
-      <span id="heroRead"></span>
+  <div class="mag-photo-hero-panel">
+    <div class="mag-photo-hero-content">
+      <div class="mag-photo-hero-kicker">Cover Story</div>
+      <h2 class="mag-photo-hero-title" id="heroTitle">Loading...</h2>
+      <p class="mag-photo-hero-dek" id="heroDek"></p>
+      <div class="mag-photo-hero-meta">
+        <strong id="heroAuthor">NUI Editorial</strong>
+        <span>·</span>
+        <span id="heroDate"></span>
+        <span>·</span>
+        <span id="heroRead"></span>
+      </div>
+      <a class="mag-photo-hero-btn" id="heroBtn" href="#">Read Feature →</a>
     </div>
-    <a class="mag-photo-hero-btn" id="heroBtn" href="#">Read Feature →</a>
   </div>
 </section>
 
