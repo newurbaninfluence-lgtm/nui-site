@@ -114,6 +114,7 @@ function loadPortalView() {
 <div class="admin-nav-group">
 <span class="admin-nav-label">CONTENT</span>
 <a onclick="showAdminPanel('assets')" class="admin-nav-link" data-panel="assets"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Assets</a>
+<a onclick="showAdminPanel('media')" class="admin-nav-link" data-panel="media"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Media Manager</a>
 <a onclick="showAdminPanel('moodboard')" class="admin-nav-link" data-panel="moodboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Moodboards</a>
 </div>
 <div class="admin-nav-group">
@@ -165,6 +166,7 @@ function loadPortalView() {
 <div id="adminNewclientPanel" class="admin-panel"></div>
 <div id="adminMigrateclientPanel" class="admin-panel"></div>
 <div id="adminAssetsPanel" class="admin-panel"></div>
+<div id="adminMediaPanel" class="admin-panel"></div>
 <div id="adminPortfolioPanel" class="admin-panel"></div>
 <div id="adminMoodboardPanel" class="admin-panel"></div>
 <div id="adminAboutPanel" class="admin-panel"></div>

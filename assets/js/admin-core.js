@@ -156,6 +156,7 @@ function showAdminPanel(panel) {
         'newclient': loadAdminNewClientPanel,
         'migrateclient': loadAdminMigrateClientPanel,
         'assets': loadAdminAssetsPanel,
+        'media': loadAdminMediaPanel,
         'portfolio': loadAdminPortfolioPanel,
         'moodboard': loadAdminMoodboardPanel,
         'about': loadAdminAboutPanel,
