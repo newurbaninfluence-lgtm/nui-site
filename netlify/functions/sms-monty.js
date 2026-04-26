@@ -179,7 +179,7 @@ ${clientContext}
 
 Return this exact JSON structure:
 {
-  "intent_score": <integer 1-10, where 1=no interest, 5=curious/exploring, 8=ready to buy, 10=urgent hot lead>,
+  "intent_score": <integer 1-10, where 1=no interest, 5=curious/exploring, 8=ready to buy, 10=urgent hot lead. BOOST by +2 if referred by someone. BOOST by +2 if they explicitly asked to schedule a call or meeting. BOOST by +1 if they gave their full name unprompted. BOOST by +1 if they mentioned an operations manager, business partner, or team. Never go below 4 if the person gave their name AND a specific service need>,
   "sentiment": "<one of: excited | warm | neutral | hesitant | frustrated>",
   "calendly_ready": <true ONLY if Monty has already offered a call/meeting in the conversation history AND the prospect is responding YES or confirming they want to book — NOT just because they mentioned wanting to meet on their opening message. First contact "I want to set up a time" = false. Confirmed yes after Monty's offer = true>,
   "is_hot": <true if intent_score >= 7>,
@@ -464,10 +464,22 @@ COACHING:
       } else {
         // Unknown number — auto-create contact
         const nameParts = extractedName ? extractedName.split(' ') : [];
+        // Score the first message quality: referral + booking intent + gave name = warmer start
+        const msgLower = (incomingMessage || '').toLowerCase();
+        const hasReferral   = /referred|referral|told me|sent me|recommended|ajay|aj\b/i.test(incomingMessage);
+        const hasBooking    = /schedule|call|meeting|book|set up a time|talk|zoom/i.test(incomingMessage);
+        const hasName       = !!extractedName;
+        const hasSpecific   = /website|brand|logo|app|marketing|design|seo|social/i.test(incomingMessage);
+        let initialScore = 3;
+        if (hasReferral)  initialScore += 3;
+        if (hasBooking)   initialScore += 2;
+        if (hasName)      initialScore += 1;
+        if (hasSpecific)  initialScore += 1;
+        initialScore = Math.min(initialScore, 9); // cap at 9 — AI sets final score after analysis
         const createRes = await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts`, {
           method: 'POST',
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
-          body: JSON.stringify({ phone: cleanPhone, first_name: nameParts[0] || null, last_name: nameParts.slice(1).join(' ') || null, source: 'quo_text', status: 'new_lead', lead_score: 3, last_activity_at: new Date().toISOString() })
+          body: JSON.stringify({ phone: cleanPhone, first_name: nameParts[0] || null, last_name: nameParts.slice(1).join(' ') || null, source: 'quo_text', status: 'new_lead', lead_score: initialScore, last_activity_at: new Date().toISOString() })
         }).catch(() => null);
         const created = createRes ? await createRes.json() : null;
         if (Array.isArray(created) && created[0]) {
