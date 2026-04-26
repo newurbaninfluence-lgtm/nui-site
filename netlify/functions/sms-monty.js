@@ -308,9 +308,24 @@ exports.handler = async function(event) {
 
   try {
     const payload = JSON.parse(event.body || '{}');
+
+    // ── Gate #1: Only process inbound SMS events — ignore message.sent, call events, etc ──
+    const eventType = payload.type || payload.event || '';
+    if (eventType && eventType !== 'message.received') {
+      console.log(`[Monty] Ignored event type: ${eventType}`);
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'non_inbound_event', type: eventType }) };
+    }
+
     const incomingMessage = payload.data?.object?.text || payload.data?.object?.body || payload.content || payload.message || payload.text;
     const fromNumber = payload.data?.object?.from || payload.from || payload.sender;
     const messageId   = payload.data?.object?.id || null;
+
+    // ── Gate #2: Direction must be incoming — belt-and-suspenders after event type check ──
+    const directionEarly = payload.data?.object?.direction || payload.direction || '';
+    if (directionEarly && directionEarly !== 'incoming') {
+      console.log(`[Monty] Ignored direction: ${directionEarly}`);
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'outbound_direction' }) };
+    }
 
     // ── Deduplication — OpenPhone retries webhooks on slow responses ──────────
     // If we've already logged this exact messageId, return 200 immediately.
