@@ -232,6 +232,10 @@ async function handleMessageReceived(obj) {
   }).then(() => console.log(`🔥 SMS sequence paused (reply) — contact ${contact.id}`))
     .catch(() => {});
 
+  // ── Trigger Monty auto-reply ──────────────────────────────────────
+  // Fire-and-forget — don't let Monty failures block the webhook 200 response
+  triggerMontyReply(obj).catch(e => console.warn('[OpenPhone] Monty trigger failed:', e.message));
+
   return { action: 'message_received', contactId: contact.id };
 }
 
@@ -387,6 +391,26 @@ async function handleCallRecording(obj) {
   return { action: 'call_recording_logged', contactId };
 }
 
+
+// ── Monty auto-reply trigger ─────────────────────────────────────────────
+// Forwards the inbound SMS payload to the sms-monty function so Monty
+// can engage the lead with NEPQ qualifying questions via OpenPhone.
+async function triggerMontyReply(obj) {
+  const SITE_URL = process.env.URL || 'https://newurbaninfluence.com';
+  const res = await fetch(`${SITE_URL}/.netlify/functions/sms-monty`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    // sms-monty expects: payload.data.object.body (or .text), payload.data.object.from
+    body: JSON.stringify({ data: { object: obj } })
+  });
+  if (!res.ok) {
+    const errText = await res.text();
+    console.warn(`[OpenPhone] sms-monty returned ${res.status}: ${errText.slice(0, 200)}`);
+  } else {
+    const result = await res.json();
+    console.log(`[OpenPhone] Monty replied → score:${result?.intelligence?.intent_score} sentiment:${result?.intelligence?.sentiment}`);
+  }
+}
 
 // ── Missed inbound call — AI SMS follow-up ───────────────────────────────
 async function triggerMissedCallSMS(phone, contactName) {
