@@ -158,7 +158,7 @@ POLICIES (cite firmly, never waive):
 - Revisions: 2 rounds included, $75/hr after.
 - Disputes: hello@newurbaninfluence.com
 
-TONE: 1-3 sentences max. SMS only. Direct. Detroit energy. Sound human. Never sound like a bot or a pitch deck.`;
+TONE: 1-3 sentences max. SMS only. Direct. Confident. Sound like a sharp professional from Detroit — not corporate, not sloppy. Clean English always. No broken phrases, no awkward constructions. Real and human, but grammatically tight. Never sound like a bot or a pitch deck. Read your reply out loud before sending — if it sounds off, rewrite it.`;
 
 // ── Intelligence Analysis (runs in parallel with reply generation) ────────────
 async function analyzeIntelligence(message, history, clientContext, apiKey) {
@@ -176,7 +176,7 @@ Return this exact JSON structure:
 {
   "intent_score": <integer 1-10, where 1=no interest, 5=curious/exploring, 8=ready to buy, 10=urgent hot lead>,
   "sentiment": "<one of: excited | warm | neutral | hesitant | frustrated>",
-  "calendly_ready": <true if they want to talk/meet/call/book, false otherwise>,
+  "calendly_ready": <true ONLY if Monty has already offered a call/meeting in the conversation history AND the prospect is responding YES or confirming they want to book — NOT just because they mentioned wanting to meet on their opening message. First contact "I want to set up a time" = false. Confirmed yes after Monty's offer = true>,
   "is_hot": <true if intent_score >= 7>,
   "bant": {
     "budget": "<what they said about budget/price/cost, or null>",
@@ -533,8 +533,9 @@ Respond casually and helpfully as Monty. Short reply. No sales pitch. No NEPQ. J
     const aiData = await aiResponse.json();
     let replyText = aiData.content[0]?.text || "Got your message! Let me check and get back to you shortly.";
 
-    // Inject Calendly if AI didn't include it but intelligence says they're ready
-    if (intelResult.calendly_ready && !contact?.calendly_sent && !replyText.includes('calendly')) {
+    // Inject Calendly only if: intelligence confirmed ready AND conversation has history (not first message) AND not already sent
+    const hasHistory = conversationHistory && conversationHistory.includes('Monty (you):');
+    if (intelResult.calendly_ready && hasHistory && !contact?.calendly_sent && !replyText.includes('calendly')) {
       replyText += `\n\n📅 Book a free 15-min strategy call: ${CALENDLY_URL}`;
     }
 
