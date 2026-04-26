@@ -310,6 +310,27 @@ exports.handler = async function(event) {
     const payload = JSON.parse(event.body || '{}');
     const incomingMessage = payload.data?.object?.text || payload.data?.object?.body || payload.content || payload.message || payload.text;
     const fromNumber = payload.data?.object?.from || payload.from || payload.sender;
+
+    // ── Block automated/system messages — never let Monty reply to bots ──────
+    const AUTOMATED_PATTERNS = [
+      /stripe/i,
+      /paypal/i,
+      /reply\s+stop\s+to\s+cancel/i,
+      /msg\s*&\s*data\s+rates/i,
+      /msg\s+frequency\s+varies/i,
+      /do\s+not\s+reply/i,
+      /no[\s-]?reply/i,
+      /verification\s+code/i,
+      /your\s+(otp|code)\s+is/i,
+      /this\s+is\s+an?\s+automated/i,
+      /twilio/i,
+      /openphone/i,
+    ];
+    if (incomingMessage && AUTOMATED_PATTERNS.some(p => p.test(incomingMessage))) {
+      console.log('[Monty] Blocked automated message:', (incomingMessage || '').slice(0, 80));
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'automated_blocked' }) };
+    }
+
     const direction  = payload.data?.object?.direction || payload.direction || 'incoming';
 
     // Outbound team message — log it and exit so Monty sees it in history
