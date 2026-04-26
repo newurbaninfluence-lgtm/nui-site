@@ -401,6 +401,60 @@ function updateHubContactStatus(contactId) {
   setHubContactStatus(contactId, next);
 }
 
+function showEditContactModal(contactId) {
+  const c = contactHubData.contacts.find(x => x.id === contactId);
+  if (!c) return;
+  const existing = document.getElementById('editContactModal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'editContactModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:99999;display:flex;align-items:center;justify-content:center;';
+  modal.innerHTML = `
+    <div style="background:#1c1c1c;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:28px;width:420px;max-width:95vw;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <h3 style="margin:0;font-size:18px;font-weight:700;">Edit Contact</h3>
+        <button onclick="document.getElementById('editContactModal').remove()" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer;">✕</button>
+      </div>
+      <div style="display:flex;gap:12px;margin-bottom:14px;">
+        <div style="flex:1;"><label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;text-transform:uppercase;">First Name</label>
+          <input id="ecFirstName" value="${c.first_name || ''}" style="width:100%;background:#111;border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:#fff;padding:10px;font-size:14px;box-sizing:border-box;"></div>
+        <div style="flex:1;"><label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;text-transform:uppercase;">Last Name</label>
+          <input id="ecLastName" value="${c.last_name || ''}" style="width:100%;background:#111;border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:#fff;padding:10px;font-size:14px;box-sizing:border-box;"></div>
+      </div>
+      <div style="margin-bottom:14px;"><label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;text-transform:uppercase;">Company</label>
+        <input id="ecCompany" value="${c.company || ''}" style="width:100%;background:#111;border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:#fff;padding:10px;font-size:14px;box-sizing:border-box;"></div>
+      <div style="margin-bottom:14px;"><label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;text-transform:uppercase;">Phone</label>
+        <input id="ecPhone" value="${c.phone || ''}" style="width:100%;background:#111;border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:#fff;padding:10px;font-size:14px;box-sizing:border-box;"></div>
+      <div style="margin-bottom:20px;"><label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;text-transform:uppercase;">Email</label>
+        <input id="ecEmail" value="${c.email || ''}" style="width:100%;background:#111;border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:#fff;padding:10px;font-size:14px;box-sizing:border-box;"></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button onclick="document.getElementById('editContactModal').remove()" style="background:#333;border:none;color:#fff;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px;">Cancel</button>
+        <button onclick="saveEditContact('${contactId}')" style="background:var(--red);border:none;color:#fff;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;">Save</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  document.getElementById('ecFirstName').focus();
+}
+
+async function saveEditContact(contactId) {
+  const updates = {
+    first_name: document.getElementById('ecFirstName')?.value.trim() || null,
+    last_name:  document.getElementById('ecLastName')?.value.trim()  || null,
+    company:    document.getElementById('ecCompany')?.value.trim()   || null,
+    phone:      document.getElementById('ecPhone')?.value.trim()     || null,
+    email:      document.getElementById('ecEmail')?.value.trim()     || null,
+    updated_at: new Date().toISOString()
+  };
+  if (!db) return alert('Database not connected');
+  try {
+    await db.from('crm_contacts').update(updates).eq('id', contactId);
+    const c = contactHubData.contacts.find(x => x.id === contactId);
+    if (c) Object.assign(c, updates);
+    document.getElementById('editContactModal')?.remove();
+    renderContactHub();
+  } catch (err) { alert('Save failed: ' + err.message); }
+}
+
 async function saveHubContactNotes(contactId) {
   const notes = document.getElementById('hubContactNotes')?.value || '';
   if (!db) return;
@@ -510,7 +564,10 @@ function renderContactDrawer(contactId) {
     <div style="display:flex;gap:14px;align-items:center;">
       <div class="ch-avatar" style="width:52px;height:52px;font-size:22px;background:var(--red);color:#fff;">${hubDisplayName(c).charAt(0).toUpperCase()}</div>
       <div>
-        <h3 style="font-size:20px;font-weight:700;margin-bottom:2px;">${hubDisplayName(c)}</h3>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+          <h3 style="font-size:20px;font-weight:700;margin:0;">${hubDisplayName(c)}</h3>
+          <button onclick="showEditContactModal('${c.id}')" title="Edit contact" style="background:none;border:none;color:rgba(255,255,255,0.35);cursor:pointer;padding:2px 4px;font-size:14px;line-height:1;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">✏️</button>
+        </div>
         <div style="font-size:13px;color:rgba(255,255,255,0.45);">${c.company || ''}</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px;">${c.phone || ''} ${c.phone && c.email ? '·' : ''} ${c.email || ''}</div>
       </div>
