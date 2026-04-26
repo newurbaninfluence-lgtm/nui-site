@@ -310,6 +310,22 @@ exports.handler = async function(event) {
     const payload = JSON.parse(event.body || '{}');
     const incomingMessage = payload.data?.object?.text || payload.data?.object?.body || payload.content || payload.message || payload.text;
     const fromNumber = payload.data?.object?.from || payload.from || payload.sender;
+    const messageId   = payload.data?.object?.id || null;
+
+    // ── Deduplication — OpenPhone retries webhooks on slow responses ──────────
+    // If we've already logged this exact messageId, return 200 immediately.
+    // This stops duplicate Monty replies when Anthropic takes > OpenPhone timeout.
+    if (messageId && SUPABASE_URL && SUPABASE_KEY) {
+      const dedupRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/communications?metadata->>quo_message_id=eq.${messageId}&limit=1&select=id`,
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+      );
+      const existing = await dedupRes.json();
+      if (Array.isArray(existing) && existing.length > 0) {
+        console.log(`[Monty] Duplicate webhook for message ${messageId} — skipping`);
+        return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'duplicate' }) };
+      }
+    }
 
     // ── Block automated/system messages — never let Monty reply to bots ──────
     const AUTOMATED_PATTERNS = [
@@ -535,7 +551,7 @@ Respond casually and helpfully as Monty. Short reply. No sales pitch. No NEPQ. J
         // Log inbound message
         fetch(`${SUPABASE_URL}/rest/v1/communications`, {
           method: 'POST', headers: sbH,
-          body: JSON.stringify({ channel: 'sms', direction: 'inbound', message: incomingMessage, client_id: contactId, metadata: { from: cleanPhone, handler: 'sms-monty' }, created_at: now })
+          body: JSON.stringify({ channel: 'sms', direction: 'inbound', message: incomingMessage, client_id: contactId, metadata: { from: cleanPhone, handler: 'sms-monty', quo_message_id: messageId }, created_at: now })
         }).catch(() => {}),
 
         // Log outbound reply
