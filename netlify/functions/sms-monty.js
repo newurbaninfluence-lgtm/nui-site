@@ -263,13 +263,15 @@ function normalizePhone(raw) {
 
 function extractNameFromText(text) {
   if (!text) return null;
+  // Words that look like names after "this is / it's / its" but aren't
+  const NOT_A_NAME = /^(sunday|monday|tuesday|wednesday|thursday|friday|saturday|today|tomorrow|yesterday|just|not|good|great|ok|okay|fine|closed|open|available|ready|done|here|back|busy|out|gone|sorry|thanks|hey|hi|hello|monty|sona|nui|urban|new|the|a|an|my|me|us|we|you|he|she|they|it|so|but|and|or|if|when|that|this|those|these)/i;
   const patterns = [
-    /(?:this is|i'm|i am|my name is|name'?s|it's|its|hey,? it's)\s+([A-Z][a-z]+(?: [A-Z][a-z]+)?)/i,
+    /(?:my name is|name'?s)\s+([A-Z][a-z]+(?: [A-Z][a-z]+)?)/i,  // only explicit name introductions
     /^([A-Z][a-z]+(?: [A-Z][a-z]+)?)\s+(?:here|calling|texting)/i,
   ];
   for (const p of patterns) {
     const m = text.match(p);
-    if (m && !/monty|sona|nui|urban/i.test(m[1])) return m[1].trim();
+    if (m && !NOT_A_NAME.test(m[1])) return m[1].trim();
   }
   return null;
 }
