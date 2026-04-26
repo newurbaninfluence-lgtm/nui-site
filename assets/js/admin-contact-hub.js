@@ -194,8 +194,8 @@ ${contactHubView === 'campaigns' ? `
   ${contactHubData.emails.length > 0 ? (() => {
     const sent = contactHubData.emails.filter(e => e.direction === 'outbound').length;
     const opened = contactHubData.emails.filter(e => e.read).length;
-    return '<span class="ch-source-pill" style="background:#3b82f620;color:#3b82f6;">📧 Emails Sent: ' + sent + '</span>' +
-           (opened > 0 ? '<span class="ch-source-pill" style="background:#10b98120;color:#10b981;">👁️ Opened: ' + opened + '</span>' : '');
+    return '<span class="ch-source-pill" style="background:#3b82f620;color:#3b82f6;cursor:pointer;" onclick="showEmailLog(\'all\')">📧 Emails Sent: ' + sent + '</span>' +
+           (opened > 0 ? '<span class="ch-source-pill" style="background:#10b98120;color:#10b981;cursor:pointer;" onclick="showEmailLog(\'opened\')">👁️ Opened: ' + opened + '</span>' : '');
   })() : ''}
 </div>
 
@@ -399,6 +399,64 @@ function updateHubContactStatus(contactId) {
   const current = statuses.indexOf(c.status);
   const next = statuses[(current + 1) % statuses.length];
   setHubContactStatus(contactId, next);
+}
+
+function showEmailLog(filter) {
+  const existing = document.getElementById('emailLogModal');
+  if (existing) existing.remove();
+
+  const allEmails = (contactHubData.emails || []).filter(e => e.direction === 'outbound');
+  const emails = filter === 'opened' ? allEmails.filter(e => e.read) : allEmails;
+  emails.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+  const rows = emails.map(e => {
+    const contact = contactHubData.contacts.find(c =>
+      c.id === e.client_id ||
+      (c.email && e.metadata?.to && c.email.toLowerCase() === e.metadata.to.toLowerCase()) ||
+      c.id === e.metadata?.contact_id
+    );
+    const name = contact ? [contact.first_name, contact.last_name].filter(Boolean).join(' ') || contact.phone || '—' : '—';
+    const to = e.metadata?.to || '—';
+    const subject = e.metadata?.subject || e.subject || '(no subject)';
+    const date = e.created_at ? new Date(e.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+    const opened = e.read ? '<span style="color:#10b981;font-size:11px;">✅ Opened</span>' : '<span style="color:rgba(255,255,255,0.3);font-size:11px;">Not opened</span>';
+    const contactLink = contact ? `<span style="color:#3b82f6;cursor:pointer;" onclick="document.getElementById('emailLogModal').remove();openContactDrawer('${contact.id}')">${name}</span>` : name;
+    return `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+      <td style="padding:10px 12px;font-size:13px;">${contactLink}</td>
+      <td style="padding:10px 12px;font-size:12px;color:rgba(255,255,255,0.5);">${to}</td>
+      <td style="padding:10px 12px;font-size:13px;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${subject}">${subject}</td>
+      <td style="padding:10px 12px;font-size:12px;color:rgba(255,255,255,0.4);">${date}</td>
+      <td style="padding:10px 12px;">${opened}</td>
+    </tr>`;
+  }).join('');
+
+  const modal = document.createElement('div');
+  modal.id = 'emailLogModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  modal.innerHTML = `
+    <div style="background:#1c1c1c;border:1px solid rgba(255,255,255,0.1);border-radius:12px;width:100%;max-width:860px;max-height:85vh;display:flex;flex-direction:column;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid rgba(255,255,255,0.08);">
+        <div>
+          <h3 style="margin:0;font-size:18px;font-weight:700;">${filter === 'opened' ? '👁️ Opened Emails' : '📧 Emails Sent'}</h3>
+          <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:3px;">${emails.length} email${emails.length !== 1 ? 's' : ''} · click a name to open their contact</div>
+        </div>
+        <button onclick="document.getElementById('emailLogModal').remove()" style="background:none;border:none;color:#fff;font-size:22px;cursor:pointer;">✕</button>
+      </div>
+      <div style="overflow-y:auto;flex:1;">
+        ${emails.length === 0 ? '<div style="padding:40px;text-align:center;color:rgba(255,255,255,0.3);">No emails found</div>' : `
+        <table style="width:100%;border-collapse:collapse;">
+          <thead><tr style="background:rgba(255,255,255,0.04);">
+            <th style="padding:10px 12px;text-align:left;font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Contact</th>
+            <th style="padding:10px 12px;text-align:left;font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Sent To</th>
+            <th style="padding:10px 12px;text-align:left;font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Subject</th>
+            <th style="padding:10px 12px;text-align:left;font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Date</th>
+            <th style="padding:10px 12px;text-align:left;font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Status</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`}
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
 }
 
 function showEditContactModal(contactId) {
