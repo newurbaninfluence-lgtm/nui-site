@@ -802,7 +802,7 @@ function renderDrawerEmail(c, allEmails) {
   let content = '';
 
   // Email thread
-  content += '<div style="max-height:260px;overflow-y:auto;margin-bottom:12px;">';
+  content += '<div style="max-height:500px;overflow-y:auto;margin-bottom:12px;">';
   if (allEmails.length === 0) {
     content += '<div style="text-align:center;padding:30px;color:rgba(255,255,255,0.2);font-size:12px;">No emails yet</div>';
   } else {
@@ -817,7 +817,7 @@ function renderDrawerEmail(c, allEmails) {
           '<div style="font-size:13px;font-weight:600;">' + (isOutbound ? '📤' : '📥') + ' ' + subject + '</div>' +
           (opened ? '<span style="font-size:10px;color:#10b981;white-space:nowrap;">✅ Read</span>' : '<span style="font-size:10px;color:rgba(255,255,255,0.3);white-space:nowrap;">Unread</span>') +
         '</div>' +
-        (preview ? '<div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;max-height:40px;overflow:hidden;">' + preview + '</div>' : '') +
+        (preview ? '<div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;white-space:pre-wrap;line-height:1.5;">' + preview + '</div>' : '') +
         '<div style="font-size:10px;color:rgba(255,255,255,0.3);">' + (isOutbound ? 'Sent' : 'Received') + ' · ' + time + '</div>' +
       '</div>';
     });

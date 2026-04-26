@@ -540,11 +540,19 @@ exports.handler = async (event) => {
       const firstName = contact.first_name || 'there';
       const { subject, html } = buildEmailForStep(contact.id, sendId, step, firstName, contact.company);
 
-      // Update subject in communications row
+      // Strip HTML to get plain-text preview for the Contact Hub drawer
+      const plainPreview = html
+        .replace(/<style[\s\S]*?<\/style>/gi, '')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s{2,}/g, ' ')
+        .trim()
+        .slice(0, 600);
+
+      // Update subject + body preview in communications row
       if (sendId) {
         await fetch(`${SUPABASE_URL}/rest/v1/communications?id=eq.${sendId}`, {
           method: 'PATCH', headers: { ...sbH, 'Prefer': 'return=minimal' },
-          body: JSON.stringify({ subject })
+          body: JSON.stringify({ subject, message: plainPreview })
         }).catch(() => {});
       }
 

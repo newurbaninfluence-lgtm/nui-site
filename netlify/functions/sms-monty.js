@@ -334,26 +334,43 @@ exports.handler = async function(event) {
       return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'outbound_direction' }) };
     }
 
-    // ── Deduplication — write lock BEFORE Anthropic call to prevent race condition ──
-    // OpenPhone retries at ~5s. If we only check after saving, two requests can both
-    // pass the check before either saves. Fix: try to INSERT the record now as a lock.
-    // On retry the INSERT will find the existing row and we bail immediately.
+    // ── Gate #3: Block toll-free / known spam number ranges ─────────────────────
+    // Toll-free numbers (800/888/877/866/855/844/833) are almost never real leads.
+    // They're marketing blasts, automated dialers, or robocalls. Skip them entirely.
+    if (fromNumber) {
+      const clean = fromNumber.replace(/\D/g, '');
+      const prefix3 = clean.slice(-10, -7); // area code of last 10 digits
+      const TOLLFREE_PREFIXES = ['800','888','877','866','855','844','833'];
+      if (TOLLFREE_PREFIXES.includes(prefix3)) {
+        console.log(`[Monty] Blocked toll-free number: ${fromNumber}`);
+        return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'toll_free_blocked' }) };
+      }
+    }
+
+    // ── Deduplication — ATOMIC lock via sms_dedup PRIMARY KEY ────────────────
+    // Uses INSERT ... ON CONFLICT DO NOTHING (resolution=ignore-duplicates).
+    // First request: INSERT succeeds → row returned → proceed.
+    // Any retry:     INSERT conflicts  → empty array  → bail immediately.
+    // No check-then-write window. Guaranteed exactly-once delivery.
     let inboundCommId = null;
     if (messageId && SUPABASE_URL && SUPABASE_KEY) {
-      const sbH0 = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
-      // Check first
-      const dedupRes = await fetch(
-        `${SUPABASE_URL}/rest/v1/communications?metadata->>quo_message_id=eq.${messageId}&limit=1&select=id`,
-        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
-      );
-      const existing = await dedupRes.json();
-      if (Array.isArray(existing) && existing.length > 0) {
-        console.log(`[Monty] Duplicate webhook for message ${messageId} — skipping`);
-        return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'duplicate' }) };
-      }
-      // Write lock immediately — before any slow operations
-      const lockRes = await fetch(`${SUPABASE_URL}/rest/v1/communications`, {
+      const sbH0 = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation,resolution=ignore-duplicates' };
+      const lockRes = await fetch(`${SUPABASE_URL}/rest/v1/sms_dedup`, {
         method: 'POST', headers: sbH0,
+        body: JSON.stringify({ message_id: messageId })
+      }).catch(() => null);
+      if (lockRes) {
+        const lockBody = await lockRes.json().catch(() => []);
+        if (!Array.isArray(lockBody) || lockBody.length === 0) {
+          // Conflict — another request already claimed this message_id
+          console.log(`[Monty] Atomic dedup: duplicate webhook for ${messageId} — skipping`);
+          return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'duplicate' }) };
+        }
+      }
+      // Now write the communications log entry (non-blocking lock already held above)
+      const sbH1 = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
+      const commRes = await fetch(`${SUPABASE_URL}/rest/v1/communications`, {
+        method: 'POST', headers: sbH1,
         body: JSON.stringify({
           channel: 'sms', direction: 'inbound',
           message: incomingMessage || '', status: 'processing',
@@ -361,9 +378,9 @@ exports.handler = async function(event) {
           created_at: new Date().toISOString()
         })
       }).catch(() => null);
-      if (lockRes?.ok) {
-        const lockRow = await lockRes.json().catch(() => []);
-        inboundCommId = Array.isArray(lockRow) ? lockRow[0]?.id : lockRow?.id;
+      if (commRes?.ok) {
+        const commRow = await commRes.json().catch(() => []);
+        inboundCommId = Array.isArray(commRow) ? commRow[0]?.id : commRow?.id;
       }
     }
 
@@ -371,6 +388,7 @@ exports.handler = async function(event) {
     const AUTOMATED_PATTERNS = [
       /stripe/i,
       /paypal/i,
+      /please\s+reply\s+with/i,
       /reply\s+stop\s+to\s+cancel/i,
       /msg\s*&\s*data\s+rates/i,
       /msg\s+frequency\s+varies/i,
@@ -379,6 +397,7 @@ exports.handler = async function(event) {
       /verification\s+code/i,
       /your\s+(otp|code)\s+is/i,
       /this\s+is\s+an?\s+automated/i,
+      /start\s+free\s+trial/i,
       /twilio/i,
       /openphone/i,
     ];

@@ -244,7 +244,7 @@ async function handleMessageDelivered(obj) {
   const contact = await ensureContact(phone, 'quo_text');
   if (!contact) return { action: 'message_delivered_no_phone' };
 
-  const delivMeta = { quo_message_id: obj.id, from: obj.from, to: obj.to, status: obj.status, conversation_id: obj.conversationId };
+  const delivMeta = { quo_message_id: obj.id, from: obj.from, to: obj.to, status: obj.status, conversation_id: obj.conversationId, handler: 'team_manual' };
   await logActivity(contact.id, 'text', 'outbound', obj.body || '', delivMeta);
   await logCommunication(contact.id, 'sms', 'outbound', obj.body || '', delivMeta);
   await touchContact(contact.id);
@@ -463,6 +463,7 @@ exports.handler = async (event) => {
       case 'message.received':
         result = await handleMessageReceived(obj);
         break;
+      case 'message.sent':
       case 'message.delivered':
         result = await handleMessageDelivered(obj);
         break;
