@@ -334,10 +334,14 @@ exports.handler = async function(event) {
       return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'outbound_direction' }) };
     }
 
-    // ── Deduplication — OpenPhone retries webhooks on slow responses ──────────
-    // If we've already logged this exact messageId, return 200 immediately.
-    // This stops duplicate Monty replies when Anthropic takes > OpenPhone timeout.
+    // ── Deduplication — write lock BEFORE Anthropic call to prevent race condition ──
+    // OpenPhone retries at ~5s. If we only check after saving, two requests can both
+    // pass the check before either saves. Fix: try to INSERT the record now as a lock.
+    // On retry the INSERT will find the existing row and we bail immediately.
+    let inboundCommId = null;
     if (messageId && SUPABASE_URL && SUPABASE_KEY) {
+      const sbH0 = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
+      // Check first
       const dedupRes = await fetch(
         `${SUPABASE_URL}/rest/v1/communications?metadata->>quo_message_id=eq.${messageId}&limit=1&select=id`,
         { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
@@ -346,6 +350,20 @@ exports.handler = async function(event) {
       if (Array.isArray(existing) && existing.length > 0) {
         console.log(`[Monty] Duplicate webhook for message ${messageId} — skipping`);
         return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'duplicate' }) };
+      }
+      // Write lock immediately — before any slow operations
+      const lockRes = await fetch(`${SUPABASE_URL}/rest/v1/communications`, {
+        method: 'POST', headers: sbH0,
+        body: JSON.stringify({
+          channel: 'sms', direction: 'inbound',
+          message: incomingMessage || '', status: 'processing',
+          metadata: { from: fromNumber, handler: 'sms-monty', quo_message_id: messageId },
+          created_at: new Date().toISOString()
+        })
+      }).catch(() => null);
+      if (lockRes?.ok) {
+        const lockRow = await lockRes.json().catch(() => []);
+        inboundCommId = Array.isArray(lockRow) ? lockRow[0]?.id : lockRow?.id;
       }
     }
 
@@ -386,6 +404,22 @@ exports.handler = async function(event) {
 
     if (!incomingMessage || !fromNumber) {
       return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Missing message or sender' }) };
+    }
+
+    // ── Gate: skip numbers already flagged as undeliverable ──────────────────
+    if (SUPABASE_URL && SUPABASE_KEY) {
+      const cleanForCheck = normalizePhone(fromNumber);
+      const flagRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/crm_contacts?phone=eq.${encodeURIComponent(cleanForCheck)}&sms_undeliverable=eq.true&select=id&limit=1`,
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+      ).catch(() => null);
+      if (flagRes?.ok) {
+        const flagged = await flagRes.json().catch(() => []);
+        if (Array.isArray(flagged) && flagged.length > 0) {
+          console.log(`[Monty] Skipping undeliverable number: ${cleanForCheck}`);
+          return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'sms_undeliverable' }) };
+        }
+      }
     }
     if (!ANTHROPIC_API_KEY) return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'API key not configured' }) };
 
@@ -568,8 +602,28 @@ Respond casually and helpfully as Monty. Short reply. No sales pitch. No NEPQ. J
         body: JSON.stringify({ content: replyText, to: [fromNumber], from: FROM_NUMBER_ID })
       });
       if (!sendRes.ok) {
-        const err = await sendRes.json();
+        const err = await sendRes.json().catch(() => ({}));
         console.error('[Monty] OpenPhone send error:', err);
+        // Mark the lock row as failed so we don't retry and don't count as sent
+        if (inboundCommId && SUPABASE_URL && SUPABASE_KEY) {
+          await fetch(`${SUPABASE_URL}/rest/v1/communications?id=eq.${inboundCommId}`, {
+            method: 'PATCH',
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ status: 'failed', metadata: { from: cleanPhone, handler: 'sms-monty', quo_message_id: messageId, send_error: err?.message || err?.error || 'unknown' } })
+          }).catch(() => {});
+        }
+        // Mark contact phone as potentially bad if OpenPhone rejects it
+        const errMsg = JSON.stringify(err).toLowerCase();
+        const isBadNumber = /invalid|undeliverable|no route|not a valid|landline|unreachable/i.test(errMsg);
+        if (isBadNumber && contactId && SUPABASE_URL && SUPABASE_KEY) {
+          await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contactId}`, {
+            method: 'PATCH',
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ sms_undeliverable: true, notes: `SMS failed: ${err?.message || 'bad number'}` })
+          }).catch(() => {});
+          console.log(`[Monty] Marked ${cleanPhone} as sms_undeliverable`);
+        }
+        return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ sent: false, reason: 'openphone_send_failed', error: err }) };
       } else {
         console.log('✅ SMS reply sent via OpenPhone');
       }
@@ -583,11 +637,16 @@ Respond casually and helpfully as Monty. Short reply. No sales pitch. No NEPQ. J
       const calendaryWasSent = intelResult.calendly_ready && !contact?.calendly_sent;
 
       await Promise.all([
-        // Log inbound message
-        fetch(`${SUPABASE_URL}/rest/v1/communications`, {
-          method: 'POST', headers: sbH,
-          body: JSON.stringify({ channel: 'sms', direction: 'inbound', message: incomingMessage, client_id: contactId, metadata: { from: cleanPhone, handler: 'sms-monty', quo_message_id: messageId }, created_at: now })
-        }).catch(() => {}),
+        // Update the lock row we already wrote — add contactId + mark sent
+        inboundCommId
+          ? fetch(`${SUPABASE_URL}/rest/v1/communications?id=eq.${inboundCommId}`, {
+              method: 'PATCH', headers: { ...sbH, 'Prefer': 'return=minimal' },
+              body: JSON.stringify({ client_id: contactId, status: 'sent', message: incomingMessage, metadata: { from: cleanPhone, handler: 'sms-monty', quo_message_id: messageId } })
+            }).catch(() => {})
+          : fetch(`${SUPABASE_URL}/rest/v1/communications`, {
+              method: 'POST', headers: sbH,
+              body: JSON.stringify({ channel: 'sms', direction: 'inbound', message: incomingMessage, client_id: contactId, metadata: { from: cleanPhone, handler: 'sms-monty', quo_message_id: messageId }, created_at: now })
+            }).catch(() => {}),
 
         // Log outbound reply
         fetch(`${SUPABASE_URL}/rest/v1/communications`, {
