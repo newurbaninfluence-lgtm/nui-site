@@ -342,9 +342,9 @@ ${contacts.map(c => {
     <td>
       <div style="display:flex;gap:4px;" onclick="event.stopPropagation();">
         ${c.phone ? '<button onclick="hubQuickCall(\'' + safePhone + '\')" style="padding:4px 8px;background:#8b5cf620;border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="Call">📞</button>' : ''}
-        ${c.phone ? '<button onclick="hubQuickSms(\'' + safeId + '\')" style="padding:4px 8px;background:#10b98120;border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="SMS">💬</button>' : ''}
-        ${c.email ? '<button onclick="hubQuickEmail(\'' + safeId + '\')" style="padding:4px 8px;background:#3b82f620;border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="Email">📧</button>' : ''}
-        <button onclick="updateHubContactStatus(\'' + safeId + '\')" style="padding:4px 8px;background:rgba(255,255,255,0.06);border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="Update status">⚡</button>
+        ${c.phone ? `<button onclick="hubQuickSms('${safeId}')" style="padding:4px 8px;background:#10b98120;border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="SMS">💬</button>` : ''}
+        ${c.email ? `<button onclick="hubQuickEmail('${safeId}')" style="padding:4px 8px;background:#3b82f620;border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="Email">📧</button>` : ''}
+        <button onclick="updateHubContactStatus('${safeId}')" style="padding:4px 8px;background:rgba(255,255,255,0.06);border:none;border-radius:4px;cursor:pointer;font-size:14px;" title="Update status">⚡</button>
       </div>
     </td>
   </tr>`;
