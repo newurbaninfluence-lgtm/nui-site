@@ -360,11 +360,15 @@ exports.handler = async function(event) {
         body: JSON.stringify({ message_id: messageId })
       }).catch(() => null);
       if (lockRes) {
-        const lockBody = await lockRes.json().catch(() => []);
-        if (!Array.isArray(lockBody) || lockBody.length === 0) {
-          // Conflict — another request already claimed this message_id
+        const lockBody = await lockRes.json().catch(() => null);
+        if (lockRes.status === 201 && Array.isArray(lockBody) && lockBody.length === 0) {
+          // Real ON CONFLICT DO NOTHING — HTTP 201 with empty array = duplicate
           console.log(`[Monty] Atomic dedup: duplicate webhook for ${messageId} — skipping`);
           return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'duplicate' }) };
+        }
+        if (!lockRes.ok) {
+          // Supabase error (auth, table missing, RLS, etc.) — log but do NOT skip the message
+          console.log(`[Monty] Dedup table error (${lockRes.status}) — proceeding anyway:`, JSON.stringify(lockBody || {}).slice(0, 200));
         }
       }
       // Now write the communications log entry (non-blocking lock already held above)
