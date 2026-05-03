@@ -63,6 +63,9 @@ async function postToFB(coverUrl, caption){
 }
 
 exports.handler = async (event) => {
+  // ── PAUSED — do not remove until token names are standardized ──
+  return { statusCode: 200 };
+
   const id = (event.queryStringParameters || {}).id;
   if (!id) return { statusCode: 400 };
 

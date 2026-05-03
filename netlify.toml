@@ -40,9 +40,8 @@
 [functions."monty-followup"]
   schedule = "0 * * * *"
 
-# The Promoter — posts to FB, IG, GBP daily at 9am + 5pm CT (14:00 + 22:00 UTC)
+# The Promoter — PAUSED (cover bugs being fixed)
 [functions."agent-promoter"]
-  schedule = "0 14,22 * * *"
 
 # The Responder — smart GBP review check every 4 hours (skips if no unanswered reviews)
 [functions."agent-responder"]

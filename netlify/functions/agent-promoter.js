@@ -413,6 +413,9 @@ async function generateCarouselContent(pillar) {
 
 // ── MAIN HANDLER ─────────────────────────────────────────────
 exports.handler = async (event) => {
+  // ── PAUSED — do not remove this guard until cover bugs are fixed ──
+  return { statusCode: 200, headers: CORS, body: JSON.stringify({ paused: true }) };
+
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
 
   const isManual = event.httpMethod === 'POST';
