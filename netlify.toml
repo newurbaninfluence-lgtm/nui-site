@@ -28,17 +28,20 @@
   schedule = "0 14-23 * * *"
 
 # SMS drip campaign — runs every 30 min during business hours
-[functions."sms-drip"]
-  schedule = "*/5 * * * *"
+# PAUSED: sms-drip — no active campaigns, running on empty queue
+# [functions."sms-drip"]
+#   schedule = "*/5 * * * *"
 
 # SMS sequence — NEPQ drip to non-opener email contacts. Runs every 30 min;
 # handler self-gates to 9am-6pm ET + 10/day cap (1 send per invocation)
-[functions."sms-sequence"]
-  schedule = "*/30 * * * *"
+# PAUSED: sms-sequence — no active campaigns, running on empty queue
+# [functions."sms-sequence"]
+#   schedule = "*/30 * * * *"
 
 # Monty follow-up + dormant reactivation — runs every hour
+# Monty follow-up — 3x/day at 8am, 12pm, 5pm ET (was running every hour — fixed)
 [functions."monty-followup"]
-  schedule = "0 * * * *"
+  schedule = "0 13,17,22 * * *"
 
 # The Promoter — PAUSED (cover bugs being fixed)
 [functions."agent-promoter"]
