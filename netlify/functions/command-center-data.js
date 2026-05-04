@@ -40,7 +40,7 @@ const SCHEDULES = [
 
 // ── PROMOTER PILLARS ──────────────────────────────────────────
 const PROMOTER_PILLARS = [
-  { id:'online_sales_tips',    label:'5 Things Killing Your Online Sales',  fmt:'list' },
+  // REMOVED: online_sales_tips — duplicate post issue, never use again
   { id:'reach_customers',      label:'5 Ways to Reach Customers (No Ads)',  fmt:'list' },
   { id:'website_vs_social',    label:'Real Website vs Social Page',         fmt:'comparison' },
   { id:'why_leads_go_cold',    label:'Why Leads Go Cold',                   fmt:'problem_aware' },
