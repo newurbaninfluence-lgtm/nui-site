@@ -97,8 +97,6 @@ exports.handler = async function(event) {
     source:         source || 'cannabis-intake-form',
     status:         'new',
     site_id:        'newurbaninfluence',
-    optin_email:    optinEmail,
-    optin_sms:      optinSMS,
     optin_push:     optinPush,
     booking_choice: bookingChoice || extra.contact_pref || 'call',
     is_cold:        true,
