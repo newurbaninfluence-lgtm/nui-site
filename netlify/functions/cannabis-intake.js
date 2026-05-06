@@ -120,7 +120,6 @@ exports.handler = async function(event) {
     budget_range:    price || extra.budget || '',
     timeline:        extra.timeline || '',
     industry:        'cannabis',
-    business_type:   extra.biz_type || '',
     notes:           summary,
     metadata:        extra,
     created_at:      now,
