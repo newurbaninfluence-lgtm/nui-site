@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cannabis Brand Intake — New Urban Influence</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #000;
+    --white: #fff;
+    --red: #D90429;
+    --gold: #C9A227;
+    --gray: #111;
+    --border: #222;
+    --muted: #666;
+  }
+  body { background: var(--black); color: var(--white); font-family: 'Helvetica Neue', Arial, sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 16px 80px; }
+  .logo { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 40px; }
+  .card { background: #0a0a0a; border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 640px; padding: 40px 36px; }
+  .progress { display: flex; gap: 6px; margin-bottom: 36px; }
+  .prog-dot { flex: 1; height: 3px; background: var(--border); border-radius: 2px; transition: background .3s; }
+  .prog-dot.active { background: var(--gold); }
+  .prog-dot.done { background: var(--red); }
+  .step-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  h2 { font-size: 24px; font-weight: 700; line-height: 1.25; margin-bottom: 8px; }
+  .sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+  .field { margin-bottom: 18px; }
+  label { display: block; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  input[type=text], input[type=email], input[type=tel], select, textarea {
+    width: 100%; background: #111; border: 1px solid var(--border); border-radius: 8px;
+    color: var(--white); font-size: 15px; padding: 13px 16px; outline: none;
+    transition: border .2s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+  select option { background: #111; }
+  textarea { resize: vertical; min-height: 90px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .tile-group { display: grid; gap: 10px; }
+  .tile-group.col2 { grid-template-columns: 1fr 1fr; }
+  .tile-group.col3 { grid-template-columns: 1fr 1fr 1fr; }
+  .tile {
+    border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px;
+    cursor: pointer; transition: border .2s, background .2s; font-size: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .tile:hover { border-color: var(--gold); }
+  .tile.selected { border-color: var(--gold); background: rgba(201,162,39,.1); }
+  .tile .icon { font-size: 18px; flex-shrink: 0; }
+  .tile .text { line-height: 1.3; }
+  .tile .text small { display: block; color: var(--muted); font-size: 11px; margin-top: 2px; }
+  .error-box { background: rgba(217,4,41,.1); border: 1px solid rgba(217,4,41,.4); border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #ff6b6b; margin-bottom: 20px; display: none; }
+  .btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; gap: 12px; }
+  .btn-back { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 13px 24px; font-size: 14px; cursor: pointer; transition: border .2s; }
+  .btn-back:hover { border-color: var(--white); color: var(--white); }
+  .btn-next { background: var(--red); border: none; color: var(--white); border-radius: 8px; padding: 13px 32px; font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: .5px; transition: background .2s; margin-left: auto; }
+  .btn-next:hover { background: #b8001f; }
+  .step { display: none; }
+  .step.active { display: block; }
+  /* Thank you */
+  .ty { text-align: center; padding: 20px 0; }
+  .ty .check { font-size: 52px; margin-bottom: 20px; }
+  .ty h2 { font-size: 28px; margin-bottom: 12px; }
+  .ty p { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 32px; }
+  .ty .steps-list { text-align: left; display: flex; flex-direction: column; gap: 14px; }
+  .ty .next-step { display: flex; gap: 14px; align-items: flex-start; background: #111; border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .ty .next-step .num { background: var(--gold); color: var(--black); font-weight: 700; font-size: 13px; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .ty .next-step .info strong { display: block; font-size: 14px; margin-bottom: 2px; }
+  .ty .next-step .info span { font-size: 12px; color: var(--muted); }
+  @media(max-width:480px) { .card{padding:28px 20px;} .tile-group.col3{grid-template-columns:1fr 1fr;} .row2{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<div class="logo">New Urban Influence</div>
+
+<div class="card">
+  <!-- Progress -->
+  <div class="progress" id="progress"></div>
+
+  <!-- Error box -->
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- STEP 1: Contact -->
+  <div class="step active" id="step-1">
+    <div class="step-label">Step 1 of 6</div>
+    <h2>Let's start with you.</h2>
+    <p class="sub">Basic info so we know who we're building for.</p>
+    <div class="row2">
+      <div class="field"><label>First Name *</label><input type="text" id="firstName" placeholder="Marcus"></div>
+      <div class="field"><label>Last Name *</label><input type="text" id="lastName" placeholder="Reed"></div>
+    </div>
+    <div class="field"><label>Business Name *</label><input type="text" id="businessName" placeholder="Green Label Co."></div>
+    <div class="field"><label>Email *</label><input type="email" id="email" placeholder="you@yourbrand.com"></div>
+    <div class="field"><label>Phone</label><input type="tel" id="phone" placeholder="+1 (313) 000-0000"></div>
+    <div class="btn-row"><button class="btn-next" onclick="nextStep(1)">Continue →</button></div>
+  </div>
+
+  <!-- STEP 2: Business -->
+  <div class="step" id="step-2">
+    <div class="step-label">Step 2 of 6</div>
+    <h2>Tell us about your cannabis business.</h2>
+    <p class="sub">What type of operation are you running?</p>
+    <div class="field">
+      <label>Business Type *</label>
+      <div class="tile-group col2" id="bizType">
+        <div class="tile" onclick="selectTile(this,'bizType')"><div class="icon">🌿</div><div class="text">Dispensary<small>Retail storefront</small></div></div>
+        <div class="tile" onclick="selectTile(this,'bizType')"><div class="icon">🏭</div><div class="text">Cultivator<small>Grow operation</small></div></div>
+        <div class="tile" onclick="selectTile(this,'bizType')"><div class="icon">🧪</div><div class="text">Processor / Extractor<small>Concentrates, edibles</small></div></div>
+        <div class="tile" onclick="selectTile(this,'bizType')"><div class="icon">📦</div><div class="text">Product Brand<small>CPG / packaged goods</small></div></div>
+        <div class="tile" onclick="selectTile(this,'bizType')"><div class="icon">🤝</div><div class="text">Delivery Service<small>Cannabis delivery</small></div></div>
+        <div class="tile" onclick="selectTile(this,'bizType')"><div class="icon">💼</div><div class="text">Cannabis Consultant<small>B2B advisory</small></div></div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Current Status *</label>
+      <div class="tile-group col3" id="bizStatus">
+        <div class="tile" onclick="selectTile(this,'bizStatus')"><div class="text">Pre-launch<small>Not open yet</small></div></div>
+        <div class="tile" onclick="selectTile(this,'bizStatus')"><div class="text">Early Stage<small>Under 1 year</small></div></div>
+        <div class="tile" onclick="selectTile(this,'bizStatus')"><div class="text">Established<small>1+ years</small></div></div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Where are you licensed / operating? *</label>
+      <input type="text" id="location" placeholder="Detroit, MI / Michigan">
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(2)">← Back</button>
+      <button class="btn-next" onclick="nextStep(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Brand -->
+  <div class="step" id="step-3">
+    <div class="step-label">Step 3 of 6</div>
+    <h2>What's your brand situation?</h2>
+    <p class="sub">Be honest — no judgment either way.</p>
+    <div class="field">
+      <label>Do you have existing branding? *</label>
+      <div class="tile-group col3" id="hasBrand">
+        <div class="tile" onclick="selectTile(this,'hasBrand')"><div class="text">Yes<small>Logo, colors, etc.</small></div></div>
+        <div class="tile" onclick="selectTile(this,'hasBrand')"><div class="text">Partial<small>Some pieces</small></div></div>
+        <div class="tile" onclick="selectTile(this,'hasBrand')"><div class="text">No<small>Starting from zero</small></div></div>
+      </div>
+    </div>
+    <div class="field">
+      <label>What aesthetic fits your vision? (pick all that apply) *</label>
+      <div class="tile-group col2" id="aesthetic">
+        <div class="tile multi" onclick="toggleTile(this,'aesthetic')"><div class="icon">🖤</div><div class="text">Luxury / High-end<small>Premium, clean, bold</small></div></div>
+        <div class="tile multi" onclick="toggleTile(this,'aesthetic')"><div class="icon">🌿</div><div class="text">Earthy / Organic<small>Natural, grounded</small></div></div>
+        <div class="tile multi" onclick="toggleTile(this,'aesthetic')"><div class="icon">🔥</div><div class="text">Street / Cultural<small>Urban, raw, authentic</small></div></div>
+        <div class="tile multi" onclick="toggleTile(this,'aesthetic')"><div class="icon">🧬</div><div class="text">Scientific / Clinical<small>Clean, data-forward</small></div></div>
+        <div class="tile multi" onclick="toggleTile(this,'aesthetic')"><div class="icon">🎨</div><div class="text">Artistic / Expressive<small>Creative, bold visuals</small></div></div>
+        <div class="tile multi" onclick="toggleTile(this,'aesthetic')"><div class="icon">😎</div><div class="text">Lifestyle / Wellness<small>Chill, elevated living</small></div></div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(3)">← Back</button>
+      <button class="btn-next" onclick="nextStep(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Services -->
+  <div class="step" id="step-4">
+    <div class="step-label">Step 4 of 6</div>
+    <h2>What do you need built?</h2>
+    <p class="sub">Select everything that applies to your situation.</p>
+    <div class="tile-group col2" id="services">
+      <div class="tile multi" onclick="toggleTile(this,'services')"><div class="icon">🌐</div><div class="text">Digital HQ<small>Website / web app</small></div></div>
+      <div class="tile multi" onclick="toggleTile(this,'services')"><div class="icon">🎨</div><div class="text">Brand Identity<small>Logo, colors, fonts</small></div></div>
+      <div class="tile multi" onclick="toggleTile(this,'services')"><div class="icon">📱</div><div class="text">Social Media Content<small>Posts, reels, strategy</small></div></div>
+      <div class="tile multi" onclick="toggleTile(this,'services')"><div class="icon">🤖</div><div class="text">AI Staff<small>Chatbot, automation</small></div></div>
+      <div class="tile multi" onclick="toggleTile(this,'services')"><div class="icon">📣</div><div class="text">Digital Street Team<small>Paid ads, outreach</small></div></div>
+      <div class="tile multi" onclick="toggleTile(this,'services')"><div class="icon">📰</div><div class="text">Press / PR<small>Media placements</small></div></div>
+      <div class="tile multi" onclick="toggleTile(this,'services')"><div class="icon">🎬</div><div class="text">Motion / Video<small>Promo, brand films</small></div></div>
+      <div class="tile multi" onclick="toggleTile(this,'services')"><div class="icon">📦</div><div class="text">Packaging Design<small>Labels, boxes</small></div></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(4)">← Back</button>
+      <button class="btn-next" onclick="nextStep(4)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: Goals & Challenges -->
+  <div class="step" id="step-5">
+    <div class="step-label">Step 5 of 6</div>
+    <h2>Goals & timeline.</h2>
+    <p class="sub">Help us understand what's driving this for you.</p>
+    <div class="field">
+      <label>When do you need to be live / launch? *</label>
+      <div class="tile-group col3" id="timeline">
+        <div class="tile" onclick="selectTile(this,'timeline')"><div class="text">ASAP<small>Now or this month</small></div></div>
+        <div class="tile" onclick="selectTile(this,'timeline')"><div class="text">1–3 Months<small>Planned launch</small></div></div>
+        <div class="tile" onclick="selectTile(this,'timeline')"><div class="text">3–6 Months<small>Building toward it</small></div></div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Biggest challenge right now? (pick all that apply) *</label>
+      <div class="tile-group col2" id="challenges">
+        <div class="tile multi" onclick="toggleTile(this,'challenges')"><div class="text">No online presence</div></div>
+        <div class="tile multi" onclick="toggleTile(this,'challenges')"><div class="text">Brand looks amateur</div></div>
+        <div class="tile multi" onclick="toggleTile(this,'challenges')"><div class="text">Can't run paid ads</div></div>
+        <div class="tile multi" onclick="toggleTile(this,'challenges')"><div class="text">Hard to stand out</div></div>
+        <div class="tile multi" onclick="toggleTile(this,'challenges')"><div class="text">No consistent content</div></div>
+        <div class="tile multi" onclick="toggleTile(this,'challenges')"><div class="text">Compliance restrictions</div></div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Anything else we should know?</label>
+      <textarea id="notes" placeholder="Tell us about your vision, who your competitors are, or anything specific you want us to know..."></textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(5)">← Back</button>
+      <button class="btn-next" onclick="nextStep(5)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 6: Budget -->
+  <div class="step" id="step-6">
+    <div class="step-label">Step 6 of 6</div>
+    <h2>What's your investment range?</h2>
+    <p class="sub">Be real with us so we can match you to the right package.</p>
+    <div class="tile-group" id="budget">
+      <div class="tile" onclick="selectTile(this,'budget')"><div class="icon">🌱</div><div class="text">Under $2,500<small>Entry level — we'll find a fit</small></div></div>
+      <div class="tile" onclick="selectTile(this,'budget')"><div class="icon">📈</div><div class="text">$2,500 – $5,000<small>Blueprint or Digital HQ Starter</small></div></div>
+      <div class="tile" onclick="selectTile(this,'budget')"><div class="icon">🔥</div><div class="text">$5,000 – $12,500<small>Full Digital HQ or Blueprint Pro</small></div></div>
+      <div class="tile" onclick="selectTile(this,'budget')"><div class="icon">👑</div><div class="text">$12,500+<small>Enterprise / full buildout</small></div></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevStep(6)">← Back</button>
+      <button class="btn-next" id="submitBtn" onclick="submitForm()">Submit →</button>
+    </div>
+  </div>
+
+  <!-- THANK YOU -->
+  <div class="step" id="step-7">
+    <div class="ty">
+      <div class="check">✅</div>
+      <h2>You're in the system.</h2>
+      <p>We received your intake. Expect to hear from us within 1 business day.</p>
+      <div class="steps-list">
+        <div class="next-step"><div class="num">1</div><div class="info"><strong>Review</strong><span>We review your intake and match you to the right package.</span></div></div>
+        <div class="next-step"><div class="num">2</div><div class="info"><strong>Strategy Call</strong><span>We schedule a 30-min call to walk through the plan.</span></div></div>
+        <div class="next-step"><div class="num">3</div><div class="info"><strong>Proposal</strong><span>You receive a custom scope + investment breakdown.</span></div></div>
+        <div class="next-step"><div class="num">4</div><div class="info"><strong>Build</strong><span>You sign off, we get to work. No fluff, just execution.</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOTAL_STEPS = 6;
+let current = 1;
+
+function renderProgress() {
+  const p = document.getElementById('progress');
+  p.innerHTML = '';
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
+    const d = document.createElement('div');
+    d.className = 'prog-dot' + (i < current ? ' done' : i === current ? ' active' : '');
+    p.appendChild(d);
+  }
+}
+renderProgress();
+
+function showError(msg) {
+  const b = document.getElementById('errorBox');
+  b.textContent = msg;
+  b.style.display = 'block';
+  b.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function clearError() {
+  document.getElementById('errorBox').style.display = 'none';
+}
+
+function selectTile(el, groupId) {
+  document.querySelectorAll(`#${groupId} .tile`).forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function toggleTile(el, groupId) {
+  el.classList.toggle('selected');
+}
+
+function getSelected(groupId) {
+  return [...document.querySelectorAll(`#${groupId} .tile.selected`)].map(t => t.querySelector('.text').childNodes[0].textContent.trim());
+}
+
+function validate(step) {
+  clearError();
+  if (step === 1) {
+    if (!document.getElementById('firstName').value.trim()) return 'First name is required.';
+    if (!document.getElementById('lastName').value.trim()) return 'Last name is required.';
+    if (!document.getElementById('businessName').value.trim()) return 'Business name is required.';
+    const em = document.getElementById('email').value.trim();
+    if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return 'A valid email is required.';
+  }
+  if (step === 2) {
+    if (!getSelected('bizType').length) return 'Select your business type.';
+    if (!getSelected('bizStatus').length) return 'Select your current status.';
+    if (!document.getElementById('location').value.trim()) return 'Enter your operating location.';
+  }
+  if (step === 3) {
+    if (!getSelected('hasBrand').length) return 'Tell us about your existing branding.';
+    if (!getSelected('aesthetic').length) return 'Select at least one aesthetic.';
+  }
+  if (step === 4) {
+    if (!getSelected('services').length) return 'Select at least one service you need.';
+  }
+  if (step === 5) {
+    if (!getSelected('timeline').length) return 'Select your launch timeline.';
+    if (!getSelected('challenges').length) return 'Select at least one challenge.';
+  }
+  if (step === 6) {
+    if (!getSelected('budget').length) return 'Select your investment range.';
+  }
+  return null;
+}
+
+function nextStep(step) {
+  const err = validate(step);
+  if (err) { showError(err); return; }
+  document.getElementById(`step-${step}`).classList.remove('active');
+  current = step + 1;
+  document.getElementById(`step-${current}`).classList.add('active');
+  renderProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function prevStep(step) {
+  document.getElementById(`step-${step}`).classList.remove('active');
+  current = step - 1;
+  document.getElementById(`step-${current}`).classList.add('active');
+  renderProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function submitForm() {
+  const err = validate(6);
+  if (err) { showError(err); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName  = document.getElementById('lastName').value.trim();
+
+  const payload = {
+    name:        `${firstName} ${lastName}`,
+    email:       document.getElementById('email').value.trim(),
+    phone:       document.getElementById('phone').value.trim(),
+    business:    document.getElementById('businessName').value.trim(),
+    service:     'cannabis-intake',
+    serviceName: 'Cannabis Brand Intake',
+    price:       getSelected('budget')[0] || '',
+    bookingChoice: 'call',
+    optinEmail:  true,
+    optinSMS:    false,
+    optinPush:   false,
+    source:      window.location.href,
+    timestamp:   new Date().toISOString(),
+    // All extra intake data packed in extra_data via the function
+    extra: {
+      biz_type:    getSelected('bizType')[0] || '',
+      biz_status:  getSelected('bizStatus')[0] || '',
+      location:    document.getElementById('location').value.trim(),
+      has_brand:   getSelected('hasBrand')[0] || '',
+      aesthetic:   getSelected('aesthetic').join(', '),
+      services:    getSelected('services').join(', '),
+      timeline:    getSelected('timeline')[0] || '',
+      challenges:  getSelected('challenges').join(', '),
+      notes:       document.getElementById('notes').value.trim(),
+      budget:      getSelected('budget')[0] || '',
+    }
+  };
+
+  try {
+    const res = await fetch('/.netlify/functions/cannabis-intake', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('step-6').classList.remove('active');
+      document.getElementById('step-7').classList.add('active');
+      document.getElementById('progress').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showError('Something went wrong. Please try again.');
+      btn.textContent = 'Submit →';
+      btn.disabled = false;
+    }
+  } catch(e) {
+    showError('Network error. Please check your connection and try again.');
+    btn.textContent = 'Submit →';
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
