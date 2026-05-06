@@ -50,6 +50,10 @@ textarea{resize:vertical;min-height:100px;}
 .btn-next:hover{background:#b8001f;}
 .btn-next:disabled{opacity:.5;cursor:not-allowed;}
 .step{display:none;}
+.biz-panel{display:none;margin-top:20px;}
+.biz-panel.active{display:block;}
+.panel-divider{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.35);border-top:1px solid rgba(255,255,255,.07);padding-top:18px;margin:0 0 18px;}
+
 .step.active{display:block;}
 .ty{text-align:center;padding:16px 0;}
 .ty .check{font-size:54px;margin-bottom:22px;}
@@ -106,46 +110,251 @@ textarea{resize:vertical;min-height:100px;}
   <div class="step" id="step-2">
     <div class="step-tag">Step 2 of 9</div>
     <div class="divider"></div>
-    <h2>About Your Business</h2>
-    <p class="sub">Tell us what you're running and who you're selling to.</p>
+    <h2>What's Your Operation?</h2>
+    <p class="sub">Pick your business type — the next questions will be specific to your situation.</p>
+
     <div class="field">
       <label>Business Type *</label>
       <div class="tile-group col2" id="bizType">
-        <div class="tile" onclick="selectTile(this,'bizType')"><div class="icon">🌿</div><div class="txt"><strong>Dispensary</strong><small>Retail storefront</small></div></div>
-        <div class="tile" onclick="selectTile(this,'bizType')"><div class="icon">🏭</div><div class="txt"><strong>Cultivator</strong><small>Grow operation</small></div></div>
-        <div class="tile" onclick="selectTile(this,'bizType')"><div class="icon">🧪</div><div class="txt"><strong>Processor / Extractor</strong><small>Concentrates, edibles</small></div></div>
-        <div class="tile" onclick="selectTile(this,'bizType')"><div class="icon">📦</div><div class="txt"><strong>Product Brand</strong><small>CPG / packaged goods</small></div></div>
-        <div class="tile" onclick="selectTile(this,'bizType')"><div class="icon">🚗</div><div class="txt"><strong>Delivery Service</strong><small>Cannabis delivery</small></div></div>
-        <div class="tile" onclick="selectTile(this,'bizType')"><div class="icon">💼</div><div class="txt"><strong>Consultant / B2B</strong><small>Advisory, wholesale</small></div></div>
+        <div class="tile" onclick="selectBizType(this,'dispensary')"><div class="icon">🏪</div><div class="txt"><strong>Dispensary</strong><small>Licensed retail storefront</small></div></div>
+        <div class="tile" onclick="selectBizType(this,'delivery')"><div class="icon">🚗</div><div class="txt"><strong>Delivery Service</strong><small>Cannabis delivery operator</small></div></div>
+        <div class="tile" onclick="selectBizType(this,'product')"><div class="icon">📦</div><div class="txt"><strong>Product / CPG Brand</strong><small>Packaged goods on shelves</small></div></div>
+        <div class="tile" onclick="selectBizType(this,'cultivator')"><div class="icon">🌱</div><div class="txt"><strong>Cultivator / Grower</strong><small>Licensed grow operation</small></div></div>
+        <div class="tile" onclick="selectBizType(this,'processor')"><div class="icon">🧪</div><div class="txt"><strong>Processor / Extractor</strong><small>Concentrates, edibles, vapes</small></div></div>
+        <div class="tile" onclick="selectBizType(this,'other')"><div class="icon">💼</div><div class="txt"><strong>Consultant / Other</strong><small>B2B, advisory, ancillary</small></div></div>
       </div>
     </div>
-    <div class="field">
-      <label>Current Status *</label>
+
+    <!-- ── DISPENSARY QUESTIONS ── -->
+    <div class="biz-panel" id="panel-dispensary">
+      <div class="panel-divider">🏪 Dispensary Details</div>
+      <div class="field">
+        <label>What State Are You Licensed In? *</label>
+        <div class="tile-group col3" id="dispState">
+          <div class="tile" onclick="selectTile(this,'dispState');toggleNY(this)"><div class="txt"><strong>New York</strong><small>OCM / CAURD</small></div></div>
+          <div class="tile" onclick="selectTile(this,'dispState');toggleNY(null)"><div class="txt"><strong>Michigan</strong><small>MRA licensed</small></div></div>
+          <div class="tile" onclick="selectTile(this,'dispState');toggleNY(null)"><div class="txt"><strong>Illinois</strong></div></div>
+          <div class="tile" onclick="selectTile(this,'dispState');toggleNY(null)"><div class="txt"><strong>California</strong></div></div>
+          <div class="tile" onclick="selectTile(this,'dispState');toggleNY(null)"><div class="txt"><strong>New Jersey</strong></div></div>
+          <div class="tile" onclick="selectTile(this,'dispState');toggleNY(null)"><div class="txt"><strong>Other State</strong></div></div>
+        </div>
+      </div>
+      <!-- NY-specific -->
+      <div class="ny-only" id="nyBlock" style="display:none;">
+        <div class="field">
+          <label>NY License Type *</label>
+          <div class="tile-group col2" id="nyLicense">
+            <div class="tile" onclick="selectTile(this,'nyLicense')"><div class="txt"><strong>CAURD License</strong><small>Conditional Adult Use Retail</small></div></div>
+            <div class="tile" onclick="selectTile(this,'nyLicense')"><div class="txt"><strong>Adult Use Retail</strong><small>Full OCM license</small></div></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>What Borough / City? *</label>
+          <div class="tile-group col3" id="nyLocation">
+            <div class="tile" onclick="selectTile(this,'nyLocation')"><div class="txt"><strong>Manhattan</strong></div></div>
+            <div class="tile" onclick="selectTile(this,'nyLocation')"><div class="txt"><strong>Brooklyn</strong></div></div>
+            <div class="tile" onclick="selectTile(this,'nyLocation')"><div class="txt"><strong>The Bronx</strong></div></div>
+            <div class="tile" onclick="selectTile(this,'nyLocation')"><div class="txt"><strong>Queens</strong></div></div>
+            <div class="tile" onclick="selectTile(this,'nyLocation')"><div class="txt"><strong>Staten Island</strong></div></div>
+            <div class="tile" onclick="selectTile(this,'nyLocation')"><div class="txt"><strong>Upstate NY</strong></div></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Biggest NY-Specific Challenge? *</label>
+          <div class="tile-group col2" id="nyChallenge">
+            <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Unlicensed shops stealing customers</strong><small>Competing with illegal market</small></div></div>
+            <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Can't run ads anywhere</strong><small>Google, Meta, TikTok all reject us</small></div></div>
+            <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>No one knows we exist</strong><small>Zero foot traffic, no discovery</small></div></div>
+            <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>OCM compliance restrictions</strong><small>Marketing rules are strict</small></div></div>
+          </div>
+        </div>
+      </div>
+      <!-- All dispensaries -->
+      <div class="field">
+        <label>How Are Customers Finding You Right Now? *</label>
+        <div class="tile-group col2" id="dispDiscovery">
+          <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🗺️</div><div class="txt"><strong>Weedmaps</strong><small>Most of our traffic</small></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🍃</div><div class="txt"><strong>Leafly</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="icon">📱</div><div class="txt"><strong>Instagram / Social</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🔍</div><div class="txt"><strong>Google Search</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🤝</div><div class="txt"><strong>Word of Mouth Only</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="icon">😐</div><div class="txt"><strong>Honestly Not Sure</strong></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>What's Your Current Online Menu Setup? *</label>
+        <div class="tile-group col2" id="dispMenu">
+          <div class="tile" onclick="selectTile(this,'dispMenu')"><div class="txt"><strong>Dutchie</strong><small>Embedded on our site</small></div></div>
+          <div class="tile" onclick="selectTile(this,'dispMenu')"><div class="txt"><strong>Jane Technologies</strong></div></div>
+          <div class="tile" onclick="selectTile(this,'dispMenu')"><div class="txt"><strong>Weedmaps Only</strong><small>No standalone menu</small></div></div>
+          <div class="tile" onclick="selectTile(this,'dispMenu')"><div class="txt"><strong>No Online Menu Yet</strong></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>How Many Licensed Competitors Are Nearby? *</label>
+        <div class="tile-group col3" id="dispCompetitors">
+          <div class="tile" onclick="selectTile(this,'dispCompetitors')"><div class="txt"><strong>Just Me</strong><small>Only shop around</small></div></div>
+          <div class="tile" onclick="selectTile(this,'dispCompetitors')"><div class="txt"><strong>2–5 Nearby</strong><small>Some competition</small></div></div>
+          <div class="tile" onclick="selectTile(this,'dispCompetitors')"><div class="txt"><strong>6+ Nearby</strong><small>Very crowded market</small></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>What Does Your Store Look Like Right Now? *</label>
+        <div class="tile-group col2" id="dispStorefront">
+          <div class="tile" onclick="selectTile(this,'dispStorefront')"><div class="txt"><strong>Open & Operational</strong><small>Doing business now</small></div></div>
+          <div class="tile" onclick="selectTile(this,'dispStorefront')"><div class="txt"><strong>Under Construction</strong><small>Buildout in progress</small></div></div>
+          <div class="tile" onclick="selectTile(this,'dispStorefront')"><div class="txt"><strong>Location Secured</strong><small>Not open yet</small></div></div>
+          <div class="tile" onclick="selectTile(this,'dispStorefront')"><div class="txt"><strong>Still Looking</strong><small>No location yet</small></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DELIVERY QUESTIONS ── -->
+    <div class="biz-panel" id="panel-delivery">
+      <div class="panel-divider">🚗 Delivery Operation Details</div>
+      <div class="field">
+        <label>What State? *</label>
+        <div class="tile-group col3" id="delivState">
+          <div class="tile" onclick="selectTile(this,'delivState')"><div class="txt"><strong>New York</strong></div></div>
+          <div class="tile" onclick="selectTile(this,'delivState')"><div class="txt"><strong>California</strong></div></div>
+          <div class="tile" onclick="selectTile(this,'delivState')"><div class="txt"><strong>Michigan</strong></div></div>
+          <div class="tile" onclick="selectTile(this,'delivState')"><div class="txt"><strong>New Jersey</strong></div></div>
+          <div class="tile" onclick="selectTile(this,'delivState')"><div class="txt"><strong>Illinois</strong></div></div>
+          <div class="tile" onclick="selectTile(this,'delivState')"><div class="txt"><strong>Other</strong></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>How Are Customers Ordering Right Now? *</label>
+        <div class="tile-group col2" id="delivOrdering">
+          <div class="tile" onclick="selectTile(this,'delivOrdering')"><div class="txt"><strong>Weedmaps Delivery</strong><small>Listed on the platform</small></div></div>
+          <div class="tile" onclick="selectTile(this,'delivOrdering')"><div class="txt"><strong>Our Own Website</strong></div></div>
+          <div class="tile" onclick="selectTile(this,'delivOrdering')"><div class="txt"><strong>DM / Text Only</strong><small>No formal system</small></div></div>
+          <div class="tile" onclick="selectTile(this,'delivOrdering')"><div class="txt"><strong>Not Taking Orders Yet</strong></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>What's Your Biggest Problem Right Now? *</label>
+        <div class="tile-group col2" id="delivProblem">
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>No brand identity</strong><small>Customers don't recognize us</small></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Hard to compete with unlicensed</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>No website or tracking system</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Can't advertise anywhere legally</strong></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PRODUCT BRAND QUESTIONS ── -->
+    <div class="biz-panel" id="panel-product">
+      <div class="panel-divider">📦 Product Brand Details</div>
+      <div class="field">
+        <label>What Are You Selling? *</label>
+        <div class="tile-group col2" id="productType">
+          <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🌿</div><div class="txt"><strong>Flower / Pre-rolls</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="icon">💨</div><div class="txt"><strong>Vapes / Carts</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🍫</div><div class="txt"><strong>Edibles</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🧪</div><div class="txt"><strong>Concentrates / Extracts</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🧴</div><div class="txt"><strong>Tinctures / Topicals</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🎁</div><div class="txt"><strong>Accessories / Merch</strong></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Where Are You Currently Selling? *</label>
+        <div class="tile-group col2" id="productWhere">
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>In Dispensaries</strong><small>On retail shelves</small></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Direct to Consumer</strong><small>Delivery or pickup</small></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Online (where legal)</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Not on Market Yet</strong><small>Still in production</small></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>What's Holding You Back on Shelves? *</label>
+        <div class="tile-group col2" id="productBlock">
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Packaging doesn't stand out</strong><small>Gets lost next to competitors</small></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>No brand story buyers connect with</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>No sales rep materials</strong><small>Nothing to pitch buyers with</small></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Compliance issues with current labels</strong></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>How Many SKUs Do You Have? *</label>
+        <div class="tile-group col3" id="productSKUs">
+          <div class="tile" onclick="selectTile(this,'productSKUs')"><div class="txt"><strong>1–5</strong><small>Small line</small></div></div>
+          <div class="tile" onclick="selectTile(this,'productSKUs')"><div class="txt"><strong>6–15</strong><small>Growing catalog</small></div></div>
+          <div class="tile" onclick="selectTile(this,'productSKUs')"><div class="txt"><strong>15+</strong><small>Full catalog</small></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CULTIVATOR QUESTIONS ── -->
+    <div class="biz-panel" id="panel-cultivator">
+      <div class="panel-divider">🌱 Cultivator Details</div>
+      <div class="field">
+        <label>How Are You Selling Your Product? *</label>
+        <div class="tile-group col2" id="cultivSelling">
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Wholesale to Dispensaries</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Building Our Own Brand</strong><small>Want to sell direct</small></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Both</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Still Pre-Harvest</strong><small>Not selling yet</small></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>What's the Biggest Gap Right Now? *</label>
+        <div class="tile-group col2" id="cultivGap">
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>No brand — we just sell biomass</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Buyers don't know who we are</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Need packaging for our strains</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>No online presence at all</strong></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROCESSOR QUESTIONS ── -->
+    <div class="biz-panel" id="panel-processor">
+      <div class="panel-divider">🧪 Processor / Extractor Details</div>
+      <div class="field">
+        <label>What Are You Producing? *</label>
+        <div class="tile-group col2" id="procType">
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Concentrates / Live Resin</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Vape Cartridges</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Edibles / Infused Products</strong></div></div>
+          <div class="tile multi" onclick="toggleTile(this)"><div class="txt"><strong>Tinctures / Topicals</strong></div></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Are You White-Labeling or Building Your Own Brand? *</label>
+        <div class="tile-group col3" id="procBrand">
+          <div class="tile" onclick="selectTile(this,'procBrand')"><div class="txt"><strong>White Label Only</strong><small>Other brands sell our product</small></div></div>
+          <div class="tile" onclick="selectTile(this,'procBrand')"><div class="txt"><strong>Our Own Brand</strong><small>Building under our name</small></div></div>
+          <div class="tile" onclick="selectTile(this,'procBrand')"><div class="txt"><strong>Both</strong></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── OTHER/CONSULTANT QUESTIONS ── -->
+    <div class="biz-panel" id="panel-other">
+      <div class="panel-divider">💼 Tell Us More</div>
+      <div class="field">
+        <label>What Do You Do in the Industry? *</label>
+        <input type="text" id="otherRole" placeholder="e.g. Cannabis attorney, compliance consultant, cannabis events, etc.">
+      </div>
+    </div>
+
+    <!-- ── SHARED: Status + Location ── -->
+    <div class="field" style="margin-top:24px;">
+      <label>Current Business Status *</label>
       <div class="tile-group col3" id="bizStatus">
-        <div class="tile" onclick="selectTile(this,'bizStatus')"><div class="txt"><strong>Pre-Launch</strong><small>Not open yet</small></div></div>
-        <div class="tile" onclick="selectTile(this,'bizStatus')"><div class="txt"><strong>Early Stage</strong><small>Under 1 year</small></div></div>
-        <div class="tile" onclick="selectTile(this,'bizStatus')"><div class="txt"><strong>Established</strong><small>1+ years operating</small></div></div>
+        <div class="tile" onclick="selectTile(this,'bizStatus')"><div class="txt"><strong>Pre-Launch</strong><small>License approved, not open</small></div></div>
+        <div class="tile" onclick="selectTile(this,'bizStatus')"><div class="txt"><strong>Early Stage</strong><small>Under 1 year in business</small></div></div>
+        <div class="tile" onclick="selectTile(this,'bizStatus')"><div class="txt"><strong>Established</strong><small>1+ years, need to level up</small></div></div>
       </div>
     </div>
-    <div class="field">
-      <label>Target Audience (select all that apply) *</label>
-      <div class="tile-group col2" id="targetAudience">
-        <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🏙️</div><div class="txt"><strong>Urban Consumers</strong><small>City-based, culture-driven</small></div></div>
-        <div class="tile multi" onclick="toggleTile(this)"><div class="icon">💊</div><div class="txt"><strong>Medical Patients</strong><small>Health & wellness focus</small></div></div>
-        <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🎉</div><div class="txt"><strong>Recreational Users</strong><small>Lifestyle, social</small></div></div>
-        <div class="tile multi" onclick="toggleTile(this)"><div class="icon">👑</div><div class="txt"><strong>Luxury Buyers</strong><small>Premium, high-end</small></div></div>
-        <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🌱</div><div class="txt"><strong>Wellness Community</strong><small>CBD, holistic health</small></div></div>
-        <div class="tile multi" onclick="toggleTile(this)"><div class="icon">🏢</div><div class="txt"><strong>B2B / Industry</strong><small>Operators, retailers</small></div></div>
-      </div>
-    </div>
-    <div class="field"><label>Where Are You Licensed / Operating? *</label><input type="text" id="location" placeholder="Detroit, MI / Michigan statewide"></div>
+
     <div class="btn-row">
       <button class="btn-back" onclick="prevStep(2)">← Back</button>
       <button class="btn-next" onclick="nextStep(2)">Continue →</button>
     </div>
   </div>
 
-  <!-- ─── STEP 3: Brand Identity ─── -->
   <div class="step" id="step-3">
     <div class="step-tag">Step 3 of 9</div>
     <div class="divider"></div>
@@ -478,11 +687,43 @@ function validate(step) {
     if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return 'Please enter a valid email address.';
   }
   if (step === 2) {
-    if (!getSelected('bizType').length) return 'Please select your business type.';
-    if (!getSelected('bizStatus').length) return 'Please select your current status.';
-    if (!getSelected('targetAudience').length) return 'Please select at least one target audience.';
-    if (!document.getElementById('location').value.trim()) return 'Please enter your operating location.';
+    const bt = window._bizType || '';
+    if (!bt) return 'Please select your business type.';
+    if (bt === 'dispensary') {
+      if (!getSelected('dispState').length) return 'Please select your state.';
+      const isNY = getSelected('dispState')[0] === 'New York';
+      if (isNY && !getSelected('nyLicense').length) return 'Please select your NY license type.';
+      if (isNY && !getSelected('nyLocation').length) return 'Please select your borough or city.';
+      if (!getSelected('dispDiscovery').length) return 'Tell us how customers are finding you.';
+      if (!getSelected('dispMenu').length) return 'Tell us about your online menu setup.';
+      if (!getSelected('dispCompetitors').length) return 'Tell us about your competition nearby.';
+      if (!getSelected('dispStorefront').length) return 'Tell us about your storefront status.';
+    }
+    if (bt === 'delivery') {
+      if (!getSelected('delivState').length) return 'Please select your state.';
+      if (!getSelected('delivOrdering').length) return 'Tell us how customers are ordering.';
+      if (!getSelected('delivProblem').length) return 'Select at least one challenge.';
+    }
+    if (bt === 'product') {
+      if (!getSelected('productType').length) return 'Tell us what you are selling.';
+      if (!getSelected('productWhere').length) return 'Tell us where you are selling.';
+      if (!getSelected('productBlock').length) return 'Select at least one challenge.';
+      if (!getSelected('productSKUs').length) return 'Tell us how many SKUs you have.';
+    }
+    if (bt === 'cultivator') {
+      if (!getSelected('cultivSelling').length) return 'Tell us how you are selling.';
+      if (!getSelected('cultivGap').length) return 'Select your biggest gap.';
+    }
+    if (bt === 'processor') {
+      if (!getSelected('procType').length) return 'Tell us what you are producing.';
+      if (!getSelected('procBrand').length) return 'Tell us your brand approach.';
+    }
+    if (bt === 'other') {
+      if (!document.getElementById('otherRole').value.trim()) return 'Tell us what you do in the industry.';
+    }
+    if (!getSelected('bizStatus').length) return 'Please select your current business status.';
   }
+}
   if (step === 3) {
     if (!getSelected('hasBrand').length) return 'Please tell us about your existing branding.';
     if (!getSelected('brandNeeds').length) return 'Please select at least one brand deliverable you need.';
@@ -554,10 +795,27 @@ async function submitForm() {
     timestamp: new Date().toISOString(),
     extra: {
       current_site:      document.getElementById('currentSite').value.trim(),
-      biz_type:          getSelected('bizType')[0] || '',
+      biz_type:          window._bizType||'',
+      state:             getSelected('dispState')[0]||getSelected('delivState')[0]||'',
+      ny_license:        getSelected('nyLicense')[0]||'',
+      ny_location:       getSelected('nyLocation')[0]||'',
+      ny_challenges:     getSelected('nyChallenge').join(', '),
+      discovery:         getSelected('dispDiscovery').join(', '),
+      online_menu:       getSelected('dispMenu')[0]||'',
+      competitors:       getSelected('dispCompetitors')[0]||'',
+      storefront:        getSelected('dispStorefront')[0]||'',
+      ordering:          getSelected('delivOrdering')[0]||'',
+      delivery_problems: getSelected('delivProblem').join(', '),
+      product_types:     getSelected('productType').join(', '),
+      selling_where:     getSelected('productWhere').join(', '),
+      shelf_blocks:      getSelected('productBlock').join(', '),
+      sku_count_dynamic: getSelected('productSKUs')[0]||'',
+      cultiv_selling:    getSelected('cultivSelling')[0]||'',
+      cultiv_gap:        getSelected('cultivGap').join(', '),
+      proc_type:         getSelected('procType').join(', '),
+      proc_brand:        getSelected('procBrand')[0]||'',
+      other_role:        (document.getElementById('otherRole')||{}).value||'',
       biz_status:        getSelected('bizStatus')[0] || '',
-      target_audience:   getSelected('targetAudience').join(', '),
-      location:          document.getElementById('location').value.trim(),
       has_brand:         getSelected('hasBrand')[0] || '',
       brand_needs:       getSelected('brandNeeds').join(', '),
       aesthetic:         getSelected('aesthetic').join(', '),
@@ -606,6 +864,9 @@ async function submitForm() {
 }
 
 updateProgress();
+
+function selectBizType(el,type){document.querySelectorAll("#bizType .tile").forEach(t=>t.classList.remove("selected"));el.classList.add("selected");window._bizType=type;document.querySelectorAll(".biz-panel").forEach(p=>p.classList.remove("active"));const panel=document.getElementById("panel-"+type);if(panel)panel.classList.add("active");}
+function toggleNY(el){const b=document.getElementById("nyBlock");if(!b)return;const isNY=el&&el.querySelector("strong")&&el.querySelector("strong").textContent.trim()==="New York";b.style.display=isNY?"block":"none";}
 </script>
 </body>
 </html>
