@@ -75,7 +75,7 @@ textarea{resize:vertical;min-height:100px;}
 
 <div class="nav">
   <div class="brand">NEW URBAN <span>INFLUENCE</span></div>
-  <div style="display:flex;align-items:center;gap:12px;"><div class="nav-tag">Cannabis Intake</div><button onclick="activateDemo()" style="font-size:10px;letter-spacing:2px;text-transform:uppercase;background:rgba(201,162,39,.15);border:1px solid rgba(201,162,39,.4);color:#C9A227;padding:6px 14px;border-radius:6px;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;">Preview Mode</button></div>
+  <div class="nav-tag">Cannabis Intake</div><button onclick="activateDemo()" style="font-size:10px;letter-spacing:2px;text-transform:uppercase;background:rgba(201,162,39,.15);border:1px solid rgba(201,162,39,.4);color:#C9A227;padding:6px 14px;border-radius:6px;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;">Preview Mode</button></div>
 </div>
 
 <div class="card">
@@ -679,8 +679,6 @@ function getSelected(groupId) {
 }
 
 function validate(step) {
-  if (new URLSearchParams(window.location.search).get('demo') === '1') return null;
-  if (window._demoActive) return null;
   if (step === 1) {
     if (!document.getElementById('firstName').value.trim()) return 'First name is required.';
     if (!document.getElementById('lastName').value.trim()) return 'Last name is required.';
@@ -865,49 +863,10 @@ async function submitForm() {
 }
 
 updateProgress();
-// Demo mode init
-if (new URLSearchParams(window.location.search).get('demo') === '1') {
-  window._bizType = 'dispensary';
-  document.getElementById('firstName').value = 'Demo';
-  document.getElementById('lastName').value = 'User';
-  document.getElementById('businessName').value = 'Demo Dispensary';
-  document.getElementById('email').value = 'demo@nuidemo.com';
-  // Show dispensary panel when step 2 is reached
-  document.querySelectorAll('.biz-panel').forEach(function(p){ p.classList.remove('active'); });
-  var dp = document.getElementById('panel-dispensary');
-  if (dp) dp.classList.add('active');
-  var ny = document.getElementById('nyBlock');
-  if (ny) ny.style.display = 'block';
-  // Pre-select first tile in every group
-  ['bizStatus','dispState','nyLicense','nyLocation','dispMenu','dispCompetitors','dispStorefront','hasBrand','needsWebsite','needsPackaging','skuCount','timeline','budget','referralSource','contactPref'].forEach(function(g){
-    var t = document.querySelector('#'+g+' .tile');
-    if (t) t.classList.add('selected');
-  });
-  ['dispDiscovery','nyChallenge','brandNeeds','aesthetic','siteType','sitePages','packagingTypes','printMaterials','marketingNeeds','socialPlatforms','challenges','services'].forEach(function(g){
-    var t = document.querySelector('#'+g+' .tile');
-    if (t) t.classList.add('selected');
-  });
-}
 
 function selectBizType(el,type){document.querySelectorAll("#bizType .tile").forEach(t=>t.classList.remove("selected"));el.classList.add("selected");window._bizType=type;document.querySelectorAll(".biz-panel").forEach(p=>p.classList.remove("active"));const panel=document.getElementById("panel-"+type);if(panel)panel.classList.add("active");}
 function toggleNY(el){const b=document.getElementById("nyBlock");if(!b)return;const isNY=el&&el.querySelector("strong")&&el.querySelector("strong").textContent.trim()==="New York";b.style.display=isNY?"block":"none";}
 
-function activateDemo() {
-  window._bizType = 'dispensary';
-  window.validate = function() { return null; };
-  var f = document.getElementById('firstName'); if(f) f.value = 'Demo';
-  var l = document.getElementById('lastName');  if(l) l.value = 'User';
-  var b = document.getElementById('businessName'); if(b) b.value = 'Demo Dispensary';
-  var e = document.getElementById('email'); if(e) e.value = 'demo@nuidemo.com';
-  var single = ['bizStatus','dispState','nyLicense','nyLocation','dispMenu','dispCompetitors','dispStorefront','hasBrand','needsWebsite','needsPackaging','skuCount','timeline','budget','referralSource','contactPref'];
-  single.forEach(function(g){ var t=document.querySelector('#'+g+' .tile'); if(t) t.classList.add('selected'); });
-  var multi = ['dispDiscovery','nyChallenge','brandNeeds','aesthetic','siteType','sitePages','packagingTypes','printMaterials','marketingNeeds','socialPlatforms','challenges','services'];
-  multi.forEach(function(g){ var t=document.querySelector('#'+g+' .tile'); if(t) t.classList.add('selected'); });
-  document.querySelectorAll('.biz-panel').forEach(function(p){ p.classList.remove('active'); });
-  var dp = document.getElementById('panel-dispensary'); if(dp) dp.classList.add('active');
-  var ny = document.getElementById('nyBlock'); if(ny) ny.style.display = 'block';
-  this.textContent='✓ Preview On';this.style.background='rgba(76,175,80,.25)';this.style.borderColor='#4caf50';this.style.color='#4caf50';
-}
 
 </script>
 </body>
