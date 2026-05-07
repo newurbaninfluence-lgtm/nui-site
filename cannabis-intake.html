@@ -906,7 +906,7 @@ function activateDemo() {
   document.querySelectorAll('.biz-panel').forEach(function(p){ p.classList.remove('active'); });
   var dp = document.getElementById('panel-dispensary'); if(dp) dp.classList.add('active');
   var ny = document.getElementById('nyBlock'); if(ny) ny.style.display = 'block';
-  alert('Preview mode ON — click Continue freely through all 9 steps');
+  this.textContent='✓ Preview On';this.style.background='rgba(76,175,80,.25)';this.style.borderColor='#4caf50';this.style.color='#4caf50';
 }
 
 </script>
