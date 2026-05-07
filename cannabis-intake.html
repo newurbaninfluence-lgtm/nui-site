@@ -680,6 +680,7 @@ function getSelected(groupId) {
 
 function validate(step) {
   if (new URLSearchParams(window.location.search).get('demo') === '1') return null;
+  if (window._demoActive) return null;
   if (step === 1) {
     if (!document.getElementById('firstName').value.trim()) return 'First name is required.';
     if (!document.getElementById('lastName').value.trim()) return 'Last name is required.';
@@ -724,10 +725,9 @@ function validate(step) {
     }
     if (!getSelected('bizStatus').length) return 'Please select your current business status.';
   }
-}
   if (step === 3) {
     if (!getSelected('hasBrand').length) return 'Please tell us about your existing branding.';
-    if (!getSelected('brandNeeds').length) return 'Please select at least one brand deliverable you need.';
+    if (!getSelected('brandNeeds').length) return 'Please select at least one brand deliverable.';
     if (!getSelected('aesthetic').length) return 'Please select at least one aesthetic direction.';
   }
   if (step === 4) {
