@@ -216,6 +216,17 @@
   to = "/portal/agent-fleet.html"
   status = 200
 
+[[redirects]]
+  from = "/cannabis-intake"
+  to = "/cannabis-intake.html"
+  status = 200
+
+[[redirects]]
+  from = "/cannabis-intake.html"
+  to = "/cannabis-intake.html"
+  status = 200
+  force = true
+
 # SPA fallback — Netlify auto-routes /.netlify/functions/* before this (MUST BE LAST)
 [[redirects]]
   from = "/*"
