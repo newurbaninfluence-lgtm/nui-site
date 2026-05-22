@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Hideaway — NUI Client Intake</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+  :root{--black:#000;--white:#fff;--red:#D90429;--gold:#C9A227;--bg:#0a0a0a;--card:#111;--card2:#1a1a1a;--border:#2a2a2a;--border2:#333;--txt:#fff;--muted:#888;--dim:#444;--grn:#16a34a;--reddim:rgba(217,4,41,.12);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 16px 80px;}
+  h1,h2,h3{font-family:'Syne',sans-serif;}
+  .nui-header{width:100%;max-width:680px;display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+  .nui-logo{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;}
+  .nui-logo span{color:var(--red);}
+  .confidential{font-size:11px;color:var(--dim);}
+  .progress-wrap{width:100%;max-width:680px;margin-bottom:32px;}
+  .progress-top{display:flex;justify-content:space-between;margin-bottom:10px;}
+  .progress-label{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .progress-step{font-size:11px;color:var(--dim);}
+  .progress-bar{width:100%;height:2px;background:var(--border);border-radius:2px;}
+  .progress-fill{height:100%;background:var(--red);border-radius:2px;transition:width .4s ease;}
+  .prefill-notice{background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:#4ade80;margin-bottom:20px;}
+  .form-card{width:100%;max-width:680px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:36px 40px;}
+  .step-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);background:var(--reddim);border:1px solid rgba(217,4,41,.25);padding:4px 10px;border-radius:4px;margin-bottom:12px;}
+  .step-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;line-height:1.15;margin-bottom:8px;}
+  .step-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:28px;}
+  .field-group{display:flex;flex-direction:column;gap:18px;margin-bottom:24px;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .field{display:flex;flex-direction:column;gap:6px;}
+  label{font-size:12px;font-weight:500;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;}
+  label .req{color:var(--red);}
+  input,select,textarea{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--txt);outline:none;transition:border .2s;width:100%;}
+  input:focus,select:focus,textarea:focus{border-color:var(--red);}
+  input::placeholder,textarea::placeholder{color:var(--dim);}
+  input.prefilled{border-color:#16a34a !important;}
+  select option{background:var(--card2);}
+  textarea{resize:vertical;min-height:90px;}
+  .password-wrap{position:relative;}
+  .password-wrap input{padding-right:44px;}
+  .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--dim);font-size:16px;}
+  .cred-block{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px;}
+  .cred-label{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);}
+  .lock-note{font-size:11px;color:var(--dim);}
+  .upload-zone{border:1.5px dashed var(--border2);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+  .upload-zone:hover{border-color:var(--red);background:var(--reddim);}
+  .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .upload-icon{font-size:28px;margin-bottom:8px;}
+  .upload-title{font-size:14px;font-weight:500;margin-bottom:4px;}
+  .upload-sub{font-size:12px;color:var(--muted);}
+  .upload-list{margin-top:12px;display:flex;flex-direction:column;gap:6px;}
+  .upload-item{display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:12px;}
+  .upload-item .fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);}
+  .upload-item .fsize{color:var(--dim);font-size:11px;}
+  .upload-item .fremove{cursor:pointer;color:var(--dim);background:none;border:none;font-size:16px;margin-left:8px;}
+  .upload-item .fremove:hover{color:var(--red);}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;}
+  .pill{padding:8px 16px;border-radius:100px;border:1px solid var(--border2);font-size:13px;cursor:pointer;transition:all .2s;background:transparent;color:var(--muted);}
+  .pill:hover{border-color:var(--red);color:var(--txt);}
+  .pill.active{background:var(--red);border-color:var(--red);color:#fff;}
+  .btn-row{display:flex;gap:12px;margin-top:28px;}
+  .btn-next{flex:1;background:var(--red);color:#fff;border:none;border-radius:8px;padding:14px 24px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s;}
+  .btn-next:hover{opacity:.88;}
+  .btn-next:disabled{opacity:.5;cursor:not-allowed;}
+  .btn-back{background:transparent;color:var(--muted);border:1px solid var(--border2);border-radius:8px;padding:14px 20px;font-size:14px;cursor:pointer;}
+  .btn-back:hover{border-color:var(--muted);color:var(--txt);}
+  .err-box{background:var(--reddim);border:1px solid rgba(217,4,41,.4);border-radius:8px;padding:12px 16px;font-size:13px;color:#ff6b6b;margin-bottom:16px;display:none;width:100%;max-width:680px;}
+  .err-box.show{display:block;}
+  .step{display:none;}
+  .step.active{display:block;}
+  .success-card{width:100%;max-width:680px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:48px 40px;text-align:center;display:none;}
+  .success-card.show{display:block;}
+  .success-icon{font-size:48px;margin-bottom:20px;}
+  .success-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:12px;}
+  .success-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:460px;margin:0 auto 28px;}
+  .next-steps{display:flex;flex-direction:column;gap:10px;text-align:left;max-width:420px;margin:0 auto;}
+  .ns-row{display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--card2);border-radius:8px;}
+  .ns-num{width:24px;height:24px;border-radius:50%;background:var(--reddim);border:1px solid var(--red);color:var(--red);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .ns-text{font-size:13px;color:var(--muted);line-height:1.5;}
+  @media(max-width:600px){.form-card{padding:24px 20px;}.field-row{grid-template-columns:1fr;}.step-title{font-size:22px;}}
+</style>
+</head>
+<body>
+
+<div class="nui-header">
+  <div class="nui-logo">New <span>Urban</span> Influence</div>
+  <div class="confidential">🔒 Encrypted · Confidential</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-top">
+    <div class="progress-label" id="prog-label">Step 1 of 8</div>
+    <div class="progress-step" id="prog-title">Contact Info</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:12.5%"></div></div>
+</div>
+
+<div class="err-box" id="err-box"></div>
+
+<div class="form-card" id="form-card">
+  <div class="prefill-notice" id="prefill-notice" style="display:none;">✅ <strong>NUI pre-filled</strong> — We already pulled your business info from your current site. Review, update anything that's changed, and fill in what we couldn't get.</div>
+
+  <!-- STEP 1 -->
+  <div class="step active" id="step-1">
+    <div class="step-tag">Step 1 of 8</div>
+    <div class="step-title">Who are we working with?</div>
+    <div class="step-desc">Basic contact info for the person managing this project.</div>
+    <div class="field-group">
+      <div class="field-row">
+        <div class="field"><label>First Name <span class="req">*</span></label><input id="first_name" placeholder="Rozalein"/></div>
+        <div class="field"><label>Last Name <span class="req">*</span></label><input id="last_name" placeholder="Reynolds"/></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Email <span class="req">*</span></label><input id="email" type="email" placeholder="you@hideawaybar.com"/></div>
+        <div class="field"><label>Phone <span class="req">*</span></label><input id="phone" type="tel" placeholder="(248) 640-1165"/></div>
+      </div>
+      <div class="field"><label>Your Role</label><select id="role"><option value="">Select your role</option><option>Owner</option><option>General Manager</option><option>Marketing Manager</option><option>Partner</option><option>Other</option></select></div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step-2">
+    <div class="step-tag">Step 2 of 8</div>
+    <div class="step-title">Tell us about Hideaway</div>
+    <div class="step-desc">The details that go on your website, Google, and everywhere else.</div>
+    <div class="field-group">
+      <div class="field"><label>Business Name <span class="req">*</span></label><input id="biz_name" placeholder="Hideaway Kitchen & Bar"/></div>
+      <div class="field"><label>Full Address <span class="req">*</span></label><input id="biz_address" placeholder="29267 Southfield Rd., Southfield, MI 48076"/></div>
+      <div class="field-row">
+        <div class="field"><label>Neighborhood / Area</label><input id="biz_neighborhood" placeholder="Southfield, MI"/></div>
+        <div class="field"><label>Business Phone</label><input id="biz_phone" placeholder="(248) 382-2111"/></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Weekday Hours <span class="req">*</span></label><input id="hours_weekday" placeholder="Mon–Thu: 4pm–12am"/></div>
+        <div class="field"><label>Weekend Hours <span class="req">*</span></label><input id="hours_weekend" placeholder="Fri–Sat: 4pm–2am"/></div>
+      </div>
+      <div class="field"><label>Party / Event Nights <span class="req">*</span></label><textarea id="party_nights" placeholder="e.g. Friday — Ladies Night (DJ Tone, 9pm–2am)&#10;Saturday — Live Band (10pm–2am)"></textarea></div>
+      <div class="field"><label>Booking Platform (if any)</label><select id="booking_platform"><option value="">We just take phone calls</option><option>OpenTable</option><option>Resy</option><option>Yelp Reservations</option><option>Google Booking</option><option>Other</option></select></div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step-3">
+    <div class="step-tag">Step 3 of 8</div>
+    <div class="step-title">Domain & website access</div>
+    <div class="step-desc">We need this to connect your new site. All credentials are stored securely — only NUI has access.</div>
+    <div class="field-group">
+      <div class="field"><label>Domain Name</label><input id="domain_name" placeholder="hideawaykitchenandbar.net"/></div>
+      <div class="field"><label>Domain Registrar</label><select id="domain_registrar"><option value="">Don't have a domain yet</option><option>GoDaddy</option><option>Namecheap</option><option>Google Domains</option><option>Squarespace</option><option>Wix</option><option>Canva (registered through them)</option><option>Other</option></select></div>
+      <div class="cred-block">
+        <div class="cred-label">🔐 Domain Login Credentials</div>
+        <div class="lock-note">🔒 Used only to connect your domain to your new site</div>
+        <div class="field-row" style="margin-top:8px;">
+          <div class="field"><label>Username / Email</label><input id="domain_login" placeholder="login@email.com" autocomplete="off"/></div>
+          <div class="field"><label>Password</label><div class="password-wrap"><input id="domain_password" type="password" placeholder="••••••••" autocomplete="new-password"/><button type="button" class="eye-btn" onclick="togglePass('domain_password',this)">👁</button></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step-4">
+    <div class="step-tag">Step 4 of 8</div>
+    <div class="step-title">Google account access</div>
+    <div class="step-desc">We'll optimize your Google Business Profile, set up GA4, and connect Search Console.</div>
+    <div class="field-group">
+      <div class="cred-block">
+        <div class="cred-label">📍 Google / Gmail Credentials</div>
+        <div class="lock-note">🔒 Used to access Google Business Profile, GA4 & Search Console only</div>
+        <div class="field" style="margin-top:8px;"><label>Google / Gmail Email <span class="req">*</span></label><input id="google_email" type="email" placeholder="hideaway@gmail.com"/></div>
+        <div class="field"><label>Password</label><div class="password-wrap"><input id="google_password" type="password" placeholder="••••••••" autocomplete="new-password"/><button type="button" class="eye-btn" onclick="togglePass('google_password',this)">👁</button></div></div>
+      </div>
+      <div class="field"><label>Is your Google Business Profile already claimed?</label><select id="gbp_claimed"><option value="">Not sure</option><option value="yes">Yes — I manage it</option><option value="yes-other">Yes — someone else manages it</option><option value="no">No — not claimed yet</option></select></div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step" id="step-5">
+    <div class="step-tag">Step 5 of 8</div>
+    <div class="step-title">Facebook & Instagram access</div>
+    <div class="step-desc">We'll install the Meta Pixel, set up your Ad Account, and connect your Instagram.</div>
+    <div class="field-group">
+      <div class="cred-block">
+        <div class="cred-label">📘 Facebook Credentials</div>
+        <div class="lock-note">🔒 Used to install Pixel & set up Business Manager only</div>
+        <div class="field" style="margin-top:8px;"><label>Facebook Email <span class="req">*</span></label><input id="fb_email" type="email" placeholder="facebook@email.com"/></div>
+        <div class="field"><label>Facebook Password</label><div class="password-wrap"><input id="fb_password" type="password" placeholder="••••••••" autocomplete="new-password"/><button type="button" class="eye-btn" onclick="togglePass('fb_password',this)">👁</button></div></div>
+        <div class="field"><label>Do you have a Facebook Business Manager?</label><select id="fb_has_bm"><option value="no">No — NUI will create one</option><option value="yes">Yes — I'll add NUI as admin</option><option value="unsure">Not sure</option></select></div>
+      </div>
+      <div class="cred-block">
+        <div class="cred-label">📸 Instagram Credentials</div>
+        <div class="lock-note">🔒 Used to connect Instagram to Business Manager only</div>
+        <div class="field" style="margin-top:8px;"><label>Instagram Handle</label><input id="ig_handle" placeholder="@hideaway_kitchen_bar_sfld"/></div>
+        <div class="field-row">
+          <div class="field"><label>Instagram Email</label><input id="ig_email" type="email" placeholder="ig@email.com"/></div>
+          <div class="field"><label>Instagram Password</label><div class="password-wrap"><input id="ig_password" type="password" placeholder="••••••••" autocomplete="new-password"/><button type="button" class="eye-btn" onclick="togglePass('ig_password',this)">👁</button></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step" id="step-6">
+    <div class="step-tag">Step 6 of 8</div>
+    <div class="step-title">Upload your assets</div>
+    <div class="step-desc">Any additional photos or video footage. We already pulled images from your current site — just upload anything newer or better.</div>
+    <div class="field-group">
+      <div class="field"><label>Logo File</label>
+        <div class="upload-zone" ondragover="onDrag(event,this)" ondragleave="offDrag(this)" ondrop="onDrop(event,'logo')">
+          <input type="file" id="file-logo" accept=".png,.jpg,.jpeg,.svg,.pdf,.ai" onchange="handleFiles(this,'logo')"/>
+          <div class="upload-icon">🎨</div><div class="upload-title">Logo file</div><div class="upload-sub">PNG, SVG, AI · Max 20MB</div>
+        </div><div class="upload-list" id="list-logo"></div>
+      </div>
+      <div class="field"><label>Menu</label>
+        <div class="upload-zone" ondragover="onDrag(event,this)" ondragleave="offDrag(this)" ondrop="onDrop(event,'menu')">
+          <input type="file" id="file-menu" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx" onchange="handleFiles(this,'menu')"/>
+          <div class="upload-icon">📋</div><div class="upload-title">Menu file or photo</div><div class="upload-sub">PDF, photo, or screenshot · Max 20MB</div>
+        </div><div class="upload-list" id="list-menu"></div>
+      </div>
+      <div class="field"><label>Additional Photos</label>
+        <div class="upload-zone" ondragover="onDrag(event,this)" ondragleave="offDrag(this)" ondrop="onDrop(event,'photos')">
+          <input type="file" id="file-photos" accept="image/*" multiple onchange="handleFiles(this,'photos')"/>
+          <div class="upload-icon">📷</div><div class="upload-title">Newer photos of the bar, crowd, drinks</div><div class="upload-sub">JPG, PNG · Multiple allowed</div>
+        </div><div class="upload-list" id="list-photos"></div>
+      </div>
+      <div class="field"><label>Video Footage (for the ad)</label>
+        <div class="upload-zone" ondragover="onDrag(event,this)" ondragleave="offDrag(this)" ondrop="onDrop(event,'videos')">
+          <input type="file" id="file-videos" accept="video/*" multiple onchange="handleFiles(this,'videos')"/>
+          <div class="upload-icon">🎬</div><div class="upload-title">Event clips, bar footage, highlights</div><div class="upload-sub">MP4, MOV · Multiple allowed · Max 100MB each</div>
+        </div><div class="upload-list" id="list-videos"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="step" id="step-7">
+    <div class="step-tag">Step 7 of 8</div>
+    <div class="step-title">What's the vibe?</div>
+    <div class="step-desc">Help us nail the look and feel of your site and the video ad.</div>
+    <div class="field-group">
+      <div class="field"><label>Overall Vibe <span class="req">*</span></label>
+        <div class="pills" id="vibe-pills">
+          <button type="button" class="pill" onclick="togglePill(this)">Upscale & Elegant</button>
+          <button type="button" class="pill active" onclick="togglePill(this)">Dark & Moody</button>
+          <button type="button" class="pill" onclick="togglePill(this)">Hood Luxe</button>
+          <button type="button" class="pill" onclick="togglePill(this)">Lively & Fun</button>
+          <button type="button" class="pill" onclick="togglePill(this)">Chill Lounge</button>
+          <button type="button" class="pill" onclick="togglePill(this)">Detroit Grit</button>
+        </div>
+      </div>
+      <div class="field"><label>Brand Colors (if known)</label><input id="colors" placeholder="Black, Gold, Cream — or 'not sure yet'"/></div>
+      <div class="field"><label>Music energy for the video ad</label>
+        <select id="music_vibe"><option value="">Pick the vibe</option><option>Hip-Hop / Trap</option><option>R&B / Neo-Soul</option><option>Afrobeats</option><option>House / Electronic</option><option>Old School / Classic</option><option>Whatever fits — NUI decides</option></select>
+      </div>
+      <div class="field"><label>Inspiration (sites, bars, IG pages you like)</label><textarea id="inspo" placeholder="Links, names, or describe what you love about another spot's vibe..."></textarea></div>
+    </div>
+  </div>
+
+  <!-- STEP 8 -->
+  <div class="step" id="step-8">
+    <div class="step-tag">Step 8 of 8</div>
+    <div class="step-title">Last thing — anything we should know?</div>
+    <div class="step-desc">Any requests, things you hate, or context that'll help us build something you're proud of.</div>
+    <div class="field-group">
+      <div class="field"><label>POS System you use</label>
+        <select id="pos_system"><option value="">Select POS</option><option>Toast</option><option>Square</option><option>Clover</option><option>Lightspeed</option><option>TouchBistro</option><option>Aloha</option><option>Other</option><option>Not sure / No POS</option></select>
+      </div>
+      <div class="field"><label>Anything you absolutely don't want on the site?</label><textarea id="dont_want" placeholder="e.g. no stock photos, don't want a generic look..."></textarea></div>
+      <div class="field"><label>Additional Notes for NUI</label><textarea id="additional_notes" placeholder="Any other context, requests, or things we should know before we start building..."></textarea></div>
+    </div>
+  </div>
+
+  <div class="btn-row" id="btn-row">
+    <button class="btn-back" id="btn-back" onclick="prevStep()" style="display:none;">← Back</button>
+    <button class="btn-next" id="btn-next" onclick="nextStep()">Continue →</button>
+  </div>
+</div>
+
+<div class="success-card" id="success-card">
+  <div class="success-icon">🍸</div>
+  <div class="success-title">You're all set, Hideaway.</div>
+  <div class="success-sub">Your intake has been submitted to NUI. We have everything we need to get started. Expect a message from Faren within 24 hours.</div>
+  <div class="next-steps">
+    <div class="ns-row"><div class="ns-num">1</div><div class="ns-text">NUI reviews your credentials and assets today</div></div>
+    <div class="ns-row"><div class="ns-num">2</div><div class="ns-text">Google Business Profile gets optimized within 48 hours</div></div>
+    <div class="ns-row"><div class="ns-num">3</div><div class="ns-text">Your new site goes live within 2 weeks</div></div>
+    <div class="ns-row"><div class="ns-num">4</div><div class="ns-text">Video ad delivered before launch day</div></div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL='https://jcgvkyizoimwbolhfpta.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImppZ3ZreWl6b2ltd2JvbGhmcHRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTY5NjM5NTksImV4cCI6MjAxMjUzOTk1OX0.Qh3e-KTqFdX2P2bASTmtSdC9WXPYB7i_9-pjwmMhsEA';
+
+let currentStep=1;
+const totalSteps=8;
+const uploadedFiles={logo:[],menu:[],photos:[],videos:[]};
+const uploadedUrls={logo:null,menu:null,photos:[],videos:[]};
+const stepTitles=['Contact Info','Business Details','Domain Access','Google Access','Facebook & Instagram','Upload Assets','Brand Vibe','Final Notes'];
+
+// Pre-fill known data from site clone
+window.addEventListener('DOMContentLoaded',()=>{
+  const known={biz_name:'Hideaway Kitchen & Bar',biz_address:'29267 Southfield Rd., Southfield, MI 48076',biz_phone:'(248) 382-2111',biz_neighborhood:'Southfield, MI',domain_name:'hideawaykitchenandbar.net',ig_handle:'@hideaway_kitchen_bar_sfld',colors:'Black #000000, Gold #bc9c22, Cream #f9f6ef'};
+  let filled=0;
+  Object.keys(known).forEach(id=>{const el=document.getElementById(id);if(el&&!el.value){el.value=known[id];el.classList.add('prefilled');filled++;}});
+  if(filled>0){document.getElementById('prefill-notice').style.display='block';}
+  const pn=document.getElementById('party_nights');
+  if(pn&&!pn.value)pn.value='Happy Hour: Daily 6 PM – 9 PM (half off premium drinks)\n\n[Add your weekly party/event nights here — night name, DJ/entertainment, time]';
+});
+
+function showStep(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step-'+n).classList.add('active');
+  document.getElementById('prog-label').textContent='Step '+n+' of '+totalSteps;
+  document.getElementById('prog-title').textContent=stepTitles[n-1];
+  document.getElementById('prog-fill').style.width=(n/totalSteps*100)+'%';
+  document.getElementById('btn-back').style.display=n>1?'block':'none';
+  document.getElementById('btn-next').textContent=n===totalSteps?'Submit Intake →':'Continue →';
+  document.getElementById('err-box').classList.remove('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function prevStep(){if(currentStep>1){currentStep--;showStep(currentStep);}}
+
+async function nextStep(){
+  const err=validate(currentStep);
+  if(err){showErr(err);return;}
+  if(currentStep===totalSteps){await submitForm();return;}
+  currentStep++;showStep(currentStep);
+}
+
+function showErr(msg){const b=document.getElementById('err-box');b.textContent=msg;b.classList.add('show');b.scrollIntoView({behavior:'smooth',block:'center'});}
+
+function val(id){return(document.getElementById(id)?.value||'').trim();}
+
+function validate(step){
+  if(step===1){if(!val('first_name'))return'Please enter your first name.';if(!val('last_name'))return'Please enter your last name.';if(!val('email')||!val('email').includes('@'))return'Please enter a valid email.';if(!val('phone'))return'Please enter your phone number.';}
+  if(step===2){if(!val('biz_name'))return'Please enter your business name.';if(!val('biz_address'))return'Please enter your address.';if(!val('hours_weekday'))return'Please enter weekday hours.';if(!val('hours_weekend'))return'Please enter weekend hours.';if(!val('party_nights'))return'Please describe your event nights.';}
+  if(step===4){if(!val('google_email'))return'Please enter your Google / Gmail email.';}
+  if(step===5){if(!val('fb_email'))return'Please enter your Facebook email.';}
+  if(step===7){if(!document.querySelector('#vibe-pills .pill.active'))return'Please select a vibe.';}
+  return null;
+}
+
+function togglePill(el){document.querySelectorAll('#vibe-pills .pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');}
+function togglePass(id,btn){const i=document.getElementById(id);i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'👁':'🙈';}
+function onDrag(e,z){e.preventDefault();z.style.borderColor='var(--red)';z.style.background='var(--reddim)';}
+function offDrag(z){z.style.borderColor='';z.style.background='';}
+function onDrop(e,key){e.preventDefault();offDrag(e.currentTarget);addFiles(Array.from(e.dataTransfer.files),key);}
+function handleFiles(inp,key){addFiles(Array.from(inp.files),key);}
+function addFiles(files,key){if(['logo','menu'].includes(key)){uploadedFiles[key]=[files[0]];}else{uploadedFiles[key].push(...files);}renderList(key);}
+function removeFile(key,i){uploadedFiles[key].splice(i,1);renderList(key);}
+function fmt(b){return b<1048576?(b/1024).toFixed(1)+'KB':(b/1048576).toFixed(1)+'MB';}
+function renderList(key){const l=document.getElementById('list-'+key);l.innerHTML='';uploadedFiles[key].forEach((f,i)=>{const d=document.createElement('div');d.className='upload-item';d.innerHTML=`<span class="fname">${f.name}</span><span class="fsize">${fmt(f.size)}</span><button class="fremove" onclick="removeFile('${key}',${i})">×</button>`;l.appendChild(d);});}
+
+async function uploadFile(file,bucket,path){
+  const res=await fetch(`${SUPABASE_URL}/storage/v1/object/${bucket}/${path}`,{method:'POST',headers:{'Authorization':'Bearer '+SUPABASE_ANON,'Content-Type':file.type||'application/octet-stream','x-upsert':'true'},body:file});
+  if(!res.ok)return null;
+  return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
+}
+
+async function uploadAll(){
+  const ts=Date.now();const pfx=`hideaway/${ts}`;
+  const btn=document.getElementById('btn-next');
+  if(uploadedFiles.logo[0]){btn.textContent='Uploading logo...';uploadedUrls.logo=await uploadFile(uploadedFiles.logo[0],'client-assets',`${pfx}/logo/${uploadedFiles.logo[0].name}`);}
+  if(uploadedFiles.menu[0]){btn.textContent='Uploading menu...';uploadedUrls.menu=await uploadFile(uploadedFiles.menu[0],'client-assets',`${pfx}/menu/${uploadedFiles.menu[0].name}`);}
+  for(let i=0;i<uploadedFiles.photos.length;i++){btn.textContent=`Uploading photos (${i+1}/${uploadedFiles.photos.length})...`;const u=await uploadFile(uploadedFiles.photos[i],'client-assets',`${pfx}/photos/${uploadedFiles.photos[i].name}`);if(u)uploadedUrls.photos.push(u);}
+  for(let i=0;i<uploadedFiles.videos.length;i++){btn.textContent=`Uploading videos (${i+1}/${uploadedFiles.videos.length})...`;const u=await uploadFile(uploadedFiles.videos[i],'client-assets',`${pfx}/videos/${uploadedFiles.videos[i].name}`);if(u)uploadedUrls.videos.push(u);}
+}
+
+async function submitForm(){
+  const btn=document.getElementById('btn-next');
+  btn.disabled=true;btn.textContent='Uploading files...';
+  try{
+    await uploadAll();
+    btn.textContent='Submitting...';
+    const vibeEl=document.querySelector('#vibe-pills .pill.active');
+    const payload={first_name:val('first_name'),last_name:val('last_name'),email:val('email'),phone:val('phone'),role:val('role'),biz_name:val('biz_name'),biz_address:val('biz_address'),biz_neighborhood:val('biz_neighborhood'),biz_phone:val('biz_phone'),hours_weekday:val('hours_weekday'),hours_weekend:val('hours_weekend'),party_nights:val('party_nights'),booking_platform:val('booking_platform'),domain_name:val('domain_name'),domain_registrar:val('domain_registrar'),domain_login:val('domain_login'),domain_password:val('domain_password'),google_email:val('google_email'),google_password:val('google_password'),gbp_claimed:val('gbp_claimed'),fb_email:val('fb_email'),fb_password:val('fb_password'),fb_has_bm:val('fb_has_bm'),ig_handle:val('ig_handle'),ig_email:val('ig_email'),ig_password:val('ig_password'),logo_url:uploadedUrls.logo,menu_url:uploadedUrls.menu,photo_urls:uploadedUrls.photos,video_urls:uploadedUrls.videos,vibe:vibeEl?vibeEl.textContent:'',colors:val('colors'),music_vibe:val('music_vibe'),inspo:val('inspo'),pos_system:val('pos_system'),dont_want:val('dont_want'),additional_notes:val('additional_notes')};
+    const res=await fetch('/.netlify/functions/hideaway-intake',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data=await res.json();
+    if(!res.ok||!data.success)throw new Error(data.error||'Submission failed');
+    document.getElementById('form-card').style.display='none';
+    document.querySelector('.progress-wrap').style.display='none';
+    document.getElementById('err-box').style.display='none';
+    document.getElementById('success-card').classList.add('show');
+  }catch(err){
+    showErr('Something went wrong: '+err.message+'. Please try again or text Faren directly.');
+    btn.disabled=false;btn.textContent='Submit Intake →';
+  }
+}
+</script>
+</body>
+</html>
