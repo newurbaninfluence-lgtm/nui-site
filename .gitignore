@@ -12,3 +12,4 @@ node_modules/
 .claude/worktrees/
 .netlify/functions-serve/
 .netlify/edge-functions-serve/
+*.pricebak
