@@ -122,10 +122,36 @@ let _syncTimer = null;
 let _backendAvailable = true;
 let _lastSyncTime = localStorage.getItem('nui_last_backend_sync') || null;
 
+// ── Last-writer-wins helpers ──
+// Every local save records a per-type timestamp. Hydration only overwrites
+// local data when the backend copy is genuinely NEWER than the last local
+// edit (5s skew buffer). This replaces the old "more items wins" rule that
+// resurrected deleted records and silently dropped edits.
+function _markLocalEdit(type) {
+    try { localStorage.setItem('nui_ts_' + type, new Date().toISOString()); } catch (e) {}
+}
+function _markHydrated(type, entry) {
+    try { if (entry && entry.updatedAt) localStorage.setItem('nui_ts_' + type, entry.updatedAt); } catch (e) {}
+}
+function _backendNewer(type, entry, localLen) {
+    if (!entry || entry.data === undefined || entry.data === null) return false;
+    const bts = entry.updatedAt ? new Date(entry.updatedAt).getTime() : 0;
+    const ltsRaw = localStorage.getItem('nui_ts_' + type);
+    if (!ltsRaw) {
+        // Migration / first run on this device: no local timestamp yet.
+        // Fall back to the old count heuristic — only pull if backend has MORE.
+        const blen = Array.isArray(entry.data) ? entry.data.length : Object.keys(entry.data || {}).length;
+        return blen > (localLen || 0);
+    }
+    if (!bts) return false; // backend row has no timestamp — keep local
+    return bts > new Date(ltsRaw).getTime() + 5000; // 5s clock-skew buffer
+}
+
 // Debounced sync — batches rapid saves into one API call per type
 function syncToBackend(type, data) {
     if (!_backendAvailable) return;
     _syncQueue[type] = data;
+    _markLocalEdit(type);
 
     // Debounce: wait 2 seconds after last save before syncing
     if (_syncTimer) clearTimeout(_syncTimer);
@@ -188,31 +214,35 @@ async function hydrateFromBackend() {
         // Only hydrate if backend has newer data than localStorage
         const sd = result.syncData;
 
-        if (sd.orders?.data?.length > 0 && sd.orders.data.length >= orders.length) {
+        if (Array.isArray(sd.orders?.data) && _backendNewer('orders', sd.orders, orders.length)) {
             orders = sd.orders.data;
             localStorage.setItem('nui_orders', JSON.stringify(orders));
+            _markHydrated('orders', sd.orders);
             hydrated++;
         }
 
-        if (sd.invoices?.data?.length > 0 && sd.invoices.data.length >= invoices.length) {
+        if (Array.isArray(sd.invoices?.data) && _backendNewer('invoices', sd.invoices, invoices.length)) {
             invoices = sd.invoices.data;
             localStorage.setItem('nui_invoices', JSON.stringify(invoices));
+            _markHydrated('invoices', sd.invoices);
             hydrated++;
         }
 
-        if (sd.subscriptions?.data?.length > 0 && sd.subscriptions.data.length >= subscriptions.length) {
+        if (Array.isArray(sd.subscriptions?.data) && _backendNewer('subscriptions', sd.subscriptions, subscriptions.length)) {
             subscriptions = sd.subscriptions.data;
             localStorage.setItem('nui_subscriptions', JSON.stringify(subscriptions));
+            _markHydrated('subscriptions', sd.subscriptions);
             hydrated++;
         }
 
-        if (sd.clients?.data?.length > 0 && sd.clients.data.length >= clients.length) {
+        if (Array.isArray(sd.clients?.data) && _backendNewer('clients', sd.clients, clients.length)) {
             clients = sd.clients.data;
             localStorage.setItem('nui_clients', JSON.stringify(clients));
+            _markHydrated('clients', sd.clients);
             hydrated++;
         }
 
-        if (sd.proofs?.data?.length > 0) {
+        if (Array.isArray(sd.proofs?.data) && _backendNewer('proofs', sd.proofs, proofs.length)) {
             // Merge proof metadata from backend with local fileData
             const backendProofs = sd.proofs.data;
             backendProofs.forEach(bp => {
@@ -221,38 +251,41 @@ async function hydrateFromBackend() {
                     bp.fileData = localProof.fileData; // Preserve local file data
                 }
             });
-            if (backendProofs.length >= proofs.length) {
-                proofs = backendProofs;
-                localStorage.setItem('nui_proofs', JSON.stringify(proofs));
-                hydrated++;
-            }
-        }
-
-        if (sd.designer_messages?.data?.length > 0 && typeof designerMessages !== 'undefined') {
-            if (sd.designer_messages.data.length >= designerMessages.length) {
-                designerMessages = sd.designer_messages.data;
-                localStorage.setItem('nui_designer_messages', JSON.stringify(designerMessages));
-                hydrated++;
-            }
-        }
-
-        if (sd.client_messages?.data?.length > 0 && typeof clientMessages !== 'undefined') {
-            if (sd.client_messages.data.length >= clientMessages.length) {
-                clientMessages = sd.client_messages.data;
-                localStorage.setItem('nui_client_messages', JSON.stringify(clientMessages));
-                hydrated++;
-            }
-        }
-
-        if (sd.crm?.data && typeof sd.crm.data === 'object' && Object.keys(sd.crm.data).length > 0) {
-            crmData = sd.crm.data;
-            localStorage.setItem('nui_crm', JSON.stringify(crmData));
+            proofs = backendProofs;
+            localStorage.setItem('nui_proofs', JSON.stringify(proofs));
+            _markHydrated('proofs', sd.proofs);
             hydrated++;
         }
 
-        if (sd.comm_hub?.data && typeof sd.comm_hub.data === 'object') {
+        if (typeof designerMessages !== 'undefined' && Array.isArray(sd.designer_messages?.data)
+            && _backendNewer('designer_messages', sd.designer_messages, designerMessages.length)) {
+            designerMessages = sd.designer_messages.data;
+            localStorage.setItem('nui_designer_messages', JSON.stringify(designerMessages));
+            _markHydrated('designer_messages', sd.designer_messages);
+            hydrated++;
+        }
+
+        if (typeof clientMessages !== 'undefined' && Array.isArray(sd.client_messages?.data)
+            && _backendNewer('client_messages', sd.client_messages, clientMessages.length)) {
+            clientMessages = sd.client_messages.data;
+            localStorage.setItem('nui_client_messages', JSON.stringify(clientMessages));
+            _markHydrated('client_messages', sd.client_messages);
+            hydrated++;
+        }
+
+        if (sd.crm?.data && typeof sd.crm.data === 'object'
+            && _backendNewer('crm', sd.crm, Object.keys(crmData || {}).length)) {
+            crmData = sd.crm.data;
+            localStorage.setItem('nui_crm', JSON.stringify(crmData));
+            _markHydrated('crm', sd.crm);
+            hydrated++;
+        }
+
+        if (sd.comm_hub?.data && typeof sd.comm_hub.data === 'object'
+            && _backendNewer('comm_hub', sd.comm_hub, Object.keys(communicationsHub || {}).length)) {
             communicationsHub = sd.comm_hub.data;
             localStorage.setItem('nui_comm_hub', JSON.stringify(communicationsHub));
+            _markHydrated('comm_hub', sd.comm_hub);
             hydrated++;
         }
 
@@ -361,11 +394,51 @@ async function hydrateFromBackend() {
             console.warn('Jobs hydration skipped:', jobErr.message);
         }
         console.log(`✅ Hydrated ${hydrated} data types from backend`);
+
+        // Auto-mirror: after hydration, push any local data the cloud is
+        // missing or has fewer records of. Makes site_config a true backup
+        // without needing the manual Force Sync button.
+        _autoMirror(sd);
+
         return hydrated > 0;
     } catch (err) {
         console.warn('Backend hydration error:', err.message);
         _backendAvailable = false;
         return false;
+    }
+}
+
+// Push local data types the backend is missing or behind on (fire-and-forget)
+async function _autoMirror(sd) {
+    try {
+        const candidates = [
+            ['orders', orders],
+            ['invoices', invoices],
+            ['clients', clients],
+            ['subscriptions', subscriptions],
+            ['designer_messages', typeof designerMessages !== 'undefined' ? designerMessages : []],
+            ['client_messages', typeof clientMessages !== 'undefined' ? clientMessages : []],
+            ['crm', typeof crmData !== 'undefined' ? crmData : {}],
+            ['comm_hub', typeof communicationsHub !== 'undefined' ? communicationsHub : {}],
+            ['proofs', proofs.map(p => { const { fileData, ...meta } = p; return meta; })]
+        ];
+        let pushed = 0;
+        for (const [type, data] of candidates) {
+            const localLen = Array.isArray(data) ? data.length : Object.keys(data || {}).length;
+            if (!localLen) continue; // nothing local to protect
+            const entry = sd?.[type];
+            const bts = entry?.updatedAt ? new Date(entry.updatedAt).getTime() : 0;
+            const blen = Array.isArray(entry?.data) ? entry.data.length
+                : (entry?.data && typeof entry.data === 'object' ? Object.keys(entry.data).length : 0);
+            if (!bts || blen < localLen) {
+                await _pushToBackend(type, data);
+                _markLocalEdit(type);
+                pushed++;
+            }
+        }
+        if (pushed) console.log(`☁️ Auto-mirror: pushed ${pushed} data types to backend`);
+    } catch (e) {
+        console.warn('Auto-mirror skipped:', e.message);
     }
 }
 
@@ -741,7 +814,10 @@ async function syncNewClientsToHub() {
             brandAssets: { logo: '', colors: ['#e11d48', '#1a1a1a', '#ffffff'], fonts: ['Montserrat'] }
         };
         clients.push(testClient);
-        saveClients();
+        // IMPORTANT: write locally only — never sync seed data to the backend.
+        // A fresh browser calling saveClients() here used to overwrite the
+        // cloud `clients` blob with just this seed account.
+        localStorage.setItem('nui_clients', JSON.stringify(clients));
 
         // Seed a Logo Design order for this client
         let orders = JSON.parse(localStorage.getItem('nui_orders')) || [];

@@ -61,7 +61,7 @@ exports.handler = async (event) => {
         return `"${key}"`;
       }).join(',');
       const resp = await supabaseFetch(SUPABASE_URL, SUPABASE_SERVICE_KEY,
-        `site_config?select=key,value&key=in.(${typeList})`
+        `site_config?select=key,value,updated_at&key=in.(${typeList})`
       );
 
       if (resp.ok) {
@@ -70,14 +70,15 @@ exports.handler = async (event) => {
         rows.forEach(r => {
           // Strip agency suffix — "clients:detroit-creative" → "clients"
           const baseKey = agency_id ? r.key.replace(`:${agency_id}`, '') : r.key;
-          rowMap[baseKey] = r.value;
+          rowMap[baseKey] = { value: r.value, updatedAt: r.updated_at || null };
         });
 
         ALL_TYPES.forEach(type => {
           if (rowMap[type] !== undefined) {
             syncData[type] = {
-              data: rowMap[type],
-              count: Array.isArray(rowMap[type]) ? rowMap[type].length : 1,
+              data: rowMap[type].value,
+              count: Array.isArray(rowMap[type].value) ? rowMap[type].value.length : 1,
+              updatedAt: rowMap[type].updatedAt,
               lastSync: new Date().toISOString()
             };
           } else {
