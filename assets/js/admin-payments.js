@@ -1104,6 +1104,42 @@ async function sendInvoiceToClient(id) {
     invoice.sentAt = new Date().toISOString();
     saveInvoices();
 
+    // ── Direct Stripe Checkout link for the email ──
+    // Generated up front so the client can pay straight from the email with no
+    // portal login. Falls back to the portal link if generation fails.
+    // Nothing is marked paid here — the stripe-webhook remains the only
+    // source of payment truth. NOTE: Stripe Checkout links expire after 24h;
+    // the email keeps a portal fallback link for late openers.
+    let payUrl = (typeof window !== 'undefined' ? window.location.origin : 'https://newurbaninfluence.com') + '/app#portal';
+    let directCheckout = false;
+    const invoiceAmount = invoice.total || invoice.amount || 0;
+    if (invoiceAmount > 0) {
+        try {
+            const coResp = await fetch('/.netlify/functions/create-subscription', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    clientEmail: clientEmail,
+                    clientName: invoice.clientName || client?.name || '',
+                    clientId: String(invoice.clientId || ''),
+                    amount: invoiceAmount,
+                    description: 'Invoice ' + (invoice.invoiceNumber || '#' + invoice.id) + (invoice.projectName ? ' — ' + invoice.projectName : ''),
+                    invoiceId: String(invoice.id),
+                    billingType: invoice.billingType || 'one_time',
+                    billingCycles: invoice.billingCycles || 0,
+                    payLater: (invoice.payLater && invoice.payLater !== 'none' && !String(invoice.payLater).startsWith('split_')) ? invoice.payLater : 'afterpay'
+                })
+            });
+            const coData = await coResp.json();
+            if (coResp.ok && coData.url) {
+                payUrl = coData.url;
+                directCheckout = true;
+                invoice.stripeCheckoutUrl = coData.url;
+                invoice.stripeSessionId = coData.sessionId;
+                saveInvoices();
+            }
+        } catch (e) { console.warn('Checkout link generation failed — email will use portal link:', e); }
+    }
+
     // Build line items HTML
     const lineItemsHtml = (invoice.lineItems || []).map(item =>
         `<tr><td style="padding: 10px 16px; border-bottom: 1px solid #eee; font-size: 14px;">${item.description || item.name}</td><td style="padding: 10px 16px; border-bottom: 1px solid #eee; text-align: center; font-size: 14px;">${item.quantity || 1}</td><td style="padding: 10px 16px; border-bottom: 1px solid #eee; text-align: right; font-size: 14px;">$${(item.amount || item.price || 0).toLocaleString()}</td></tr>`
@@ -1151,15 +1187,15 @@ ${invoice.billingType && invoice.billingType !== 'one_time' ? '<div style="margi
 ${invoice.payLater && invoice.payLater !== 'none' ? '<div style="margin:16px 0;padding:16px;background:#f3e8ff;border-radius:8px;border:1px solid #d8b4fe;"><div style="font-weight:600;color:#7c3aed;margin-bottom:8px;">🏦 Flexible Payment Available</div><p style="font-size:14px;color:#666;margin:0;">' + (invoice.payLater.startsWith('split_') ? 'Split your payment into ' + invoice.payLater.replace('split_','') + ' installments with ' + (invoice.depositPct || 50) + '% deposit today — 0% interest.' : 'Pay over time with ' + invoice.payLater.charAt(0).toUpperCase() + invoice.payLater.slice(1) + '. Choose your plan at checkout.') + '</p></div>' : ''}
 
 <div style="text-align: center; margin-top: 32px;">
-<a href="${typeof window !== 'undefined' ? window.location.origin : 'https://newurbaninfluence.com'}/app#portal" style="display: inline-block; padding: 14px 32px; background: #ff0000; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600;">View Invoice & Pay →</a>
-${invoice.payLater && invoice.payLater !== 'none' ? '<p style="font-size:12px;color:#7c3aed;margin-top:12px;">💜 Afterpay & Klarna available — pay in 4 interest-free installments at checkout</p>' : ''}
+<a href="${payUrl}" style="display: inline-block; padding: 14px 32px; background: #ff0000; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600;">${directCheckout ? 'Pay Invoice Now →' : 'View Invoice & Pay →'}</a>
+${directCheckout ? '<p style="font-size:12px;color:#7c3aed;margin-top:12px;">💜 Card, Afterpay & Klarna accepted at checkout</p><p style="font-size:11px;color:#999;margin-top:8px;">Payment link expired? <a href="' + (typeof window !== 'undefined' ? window.location.origin : 'https://newurbaninfluence.com') + '/app#portal" style="color:#999;">Pay in your client portal</a></p>' : (invoice.payLater && invoice.payLater !== 'none' ? '<p style="font-size:12px;color:#7c3aed;margin-top:12px;">💜 Afterpay & Klarna available — pay in 4 interest-free installments at checkout</p>' : '')}
 </div>
 
 <p style="font-size: 12px; color: #999; margin-top: 32px; text-align: center;">New Urban Influence · Detroit, MI · (248) 487-8747</p>
 </div>
 </div>
                 `,
-                text: `Invoice ${invoice.invoiceNumber || '#' + invoice.id} from New Urban Influence. Total: $${(invoice.total || invoice.amount || 0).toLocaleString()}. Log in to your client portal to view and pay.`
+                text: `Invoice ${invoice.invoiceNumber || '#' + invoice.id} from New Urban Influence. Total: $${(invoice.total || invoice.amount || 0).toLocaleString()}. ${directCheckout ? 'Pay now: ' + payUrl : 'Log in to your client portal to view and pay.'}`
             })
         });
         alert(`Invoice ${invoice.invoiceNumber || '#' + invoice.id} sent to ${clientEmail}!`);

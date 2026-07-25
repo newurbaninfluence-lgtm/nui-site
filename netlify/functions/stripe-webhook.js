@@ -324,6 +324,16 @@ exports.handler = async (event) => {
             `<h2>Subscription Activated</h2><p>Client: ${clientEmail}</p><p>Client ID: ${meta.clientId || 'N/A'}</p><p><strong>Set their status to Active in admin panel.</strong></p>`
           );
         }
+
+        // One-time invoice paid via a direct checkout link (emailed invoices):
+        // notify admin so the invoice gets marked paid in the panel.
+        if (obj.mode === 'payment' && meta.invoiceId) {
+          const paidAmount = obj.amount_total ? '$' + (obj.amount_total / 100).toLocaleString() : '';
+          await sendNotifyEmail(ADMIN_EMAIL(),
+            `💰 Invoice PAID via checkout link — ${paidAmount}${clientEmail ? ' from ' + clientEmail : ''}`,
+            `<h2 style="color:#10b981;">Invoice Paid</h2><p>Invoice ID: ${meta.invoiceId}</p><p>Amount: ${paidAmount}</p>${clientEmail ? `<p>Client: ${clientEmail}</p>` : ''}<p><strong>Mark this invoice as Paid in the admin panel (Invoices → Mark Paid).</strong></p>`
+          );
+        }
         break;
       }
 

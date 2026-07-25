@@ -257,6 +257,17 @@ const daysFromNow = (iso) => (new Date(iso) - Date.now()) / 86400000;
   r = await fire(evSubFull({}));
   check('unpause → active again', site(SITE_A).billing_status === 'active');
 
+  // T18 — one-time invoice paid via emailed checkout link → admin alert, no site linkage
+  console.log('T18 — payment-mode checkout with invoiceId → 1 admin email, no site writes');
+  emailLog.length = 0; patchLog.length = 0;
+  r = await fire({ type: 'checkout.session.completed', data: { object: {
+    id: 'cs_onetime', mode: 'payment', customer: 'cus_ONE', customer_email: 'client@example.com',
+    amount_total: 50000, metadata: { invoiceId: 'inv_local_9', clientId: 'C_A' } } } });
+  check('returns 200', r.statusCode === 200);
+  check('1 admin paid-alert email', emailLog.length === 1, `got ${emailLog.length}`);
+  const t18SiteWrites = patchLog.filter(p => p.table === 'client_sites');
+  check('no client_sites writes for payment mode', t18SiteWrites.length === 0, `got ${t18SiteWrites.length}`);
+
   // T16b — dedicated paused/resumed event types (not just .updated)
   console.log('T16b — customer.subscription.paused / .resumed event types');
   r = await fire({ type: 'customer.subscription.paused', data: { object: {
