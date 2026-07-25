@@ -32,9 +32,10 @@ function buildSitesPanelHTML() {
                     '<th style="text-align:left;padding:12px 16px;color:#888;font-size:12px;font-weight:600;">SITE ID</th>' +
                     '<th style="text-align:left;padding:12px 16px;color:#888;font-size:12px;font-weight:600;">$/MO</th>' +
                     '<th style="text-align:left;padding:12px 16px;color:#888;font-size:12px;font-weight:600;">STATUS</th>' +
+                    '<th style="text-align:left;padding:12px 16px;color:#888;font-size:12px;font-weight:600;">BILLING</th>' +
                     '<th style="text-align:left;padding:12px 16px;color:#888;font-size:12px;font-weight:600;">ACTIONS</th>' +
                 '</tr></thead>' +
-                '<tbody id="sitesTableBody"><tr><td colspan="6" style="text-align:center;padding:40px;color:#666;">Loading...</td></tr></tbody>' +
+                '<tbody id="sitesTableBody"><tr><td colspan="7" style="text-align:center;padding:40px;color:#666;">Loading...</td></tr></tbody>' +
             '</table></div></div>';
 }
 function buildStatCard(l, v, c) {
@@ -66,7 +67,7 @@ function renderSitesTable() {
     if (el('stat_Active')) el('stat_Active').textContent = active.length;
     if (el('stat_MonthlyRevenue')) el('stat_MonthlyRevenue').textContent = '$' + revenue.toLocaleString();
     if (el('stat_Suspended')) el('stat_Suspended').textContent = suspended.length;
-    if (_clientSites.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#666;">No sites yet.</td></tr>'; return; }
+    if (_clientSites.length === 0) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#666;">No sites yet.</td></tr>'; return; }
     tbody.innerHTML = _clientSites.map(function(site) {
         var sc = { active:'#10b981', suspended:'#ef4444', building:'#3b82f6', paused:'#f59e0b', overdue:'#f59e0b', maintenance:'#a855f7' };
         var color = sc[site.status] || '#888';
@@ -78,16 +79,155 @@ function renderSitesTable() {
                 '<button onclick="reactivateSite(\'' + site.id + '\')" style="background:#0d3320;border:1px solid #10b981;color:#10b981;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;">✅ Reactivate</button>' : '');
         var suspInfo = isSuspended && site.suspended_reason ?
             '<div style="font-size:10px;color:#ef4444;margin-top:3px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + escHtml(site.suspended_reason) + '">⚠ ' + escHtml(site.suspended_reason) + '</div>' : '';
+        // ── Phase 1B billing cell ──
+        // Not linked → one-time "Checkout Link" action (only while
+        // stripe_subscription_id is empty). Linked → billing status + sub ID +
+        // Stripe management link. Only the checkout.session.completed webhook
+        // ever stores IDs / flips billing_status — generating a link changes nothing.
+        var billingCell;
+        if (site.stripe_subscription_id) {
+            var bcMap = { active: '#10b981', overdue: '#f59e0b', unbilled: '#888' };
+            var bcolor = bcMap[site.billing_status] || '#888';
+            var graceInfo = site.billing_status === 'overdue' && site.grace_until ?
+                '<div style="font-size:10px;color:#f59e0b;margin-top:2px;">grace until ' + new Date(site.grace_until).toLocaleDateString() + '</div>' : '';
+            billingCell =
+                '<span style="padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;background:' + bcolor + '20;color:' + bcolor + ';text-transform:uppercase;">' + escHtml(site.billing_status || 'unbilled') + '</span>' +
+                '<div style="font-size:10px;color:#666;font-family:monospace;margin-top:3px;" title="' + escHtml(site.stripe_subscription_id) + '">' + escHtml(String(site.stripe_subscription_id).slice(0, 14)) + '…</div>' +
+                '<a href="https://dashboard.stripe.com/subscriptions/' + encodeURIComponent(site.stripe_subscription_id) + '" target="_blank" style="font-size:10px;color:#a855f7;text-decoration:none;">Manage in Stripe ↗</a>' +
+                graceInfo;
+        } else {
+            billingCell =
+                '<span style="padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;background:#88888820;color:#888;text-transform:uppercase;">' + escHtml(site.billing_status || 'unbilled') + '</span><br>' +
+                '<button id="checkoutBtn_' + escHtml(String(site.id)) + '" onclick="sendHostingCheckout(\'' + site.id + '\')" style="background:#1a1033;border:1px solid #a855f7;color:#a855f7;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;margin-top:4px;">💳 Checkout Link</button>';
+        }
         return '<tr style="border-bottom:1px solid #222;">' +
             '<td style="padding:12px 16px;color:#fff;font-size:13px;">' + escHtml(site.client_name || '—') + '</td>' +
             '<td style="padding:12px 16px;color:#fff;font-size:13px;font-weight:600;">' + escHtml(site.site_name || '—') + '</td>' +
             '<td style="padding:12px 16px;color:#888;font-size:12px;font-family:monospace;">' + escHtml(site.site_id || '—') + '</td>' +
             '<td style="padding:12px 16px;color:#10b981;font-size:13px;font-weight:600;">$' + (parseFloat(site.monthly_fee) || 0) + '</td>' +
             '<td style="padding:12px 16px;"><span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;background:' + color + '20;color:' + color + ';text-transform:uppercase;">' + (site.status || 'active') + '</span>' + suspInfo + '</td>' +
+            '<td style="padding:12px 16px;">' + billingCell + '</td>' +
             '<td style="padding:12px 16px;white-space:nowrap;">' +
                 '<button onclick="editSite(\'' + site.id + '\')" style="background:#333;border:1px solid #555;color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px;margin-right:4px;">Edit</button>' +
                 suspendBtn + '</td></tr>';
     }).join('');
+}
+
+// ---- PHASE 1B: SEND HOSTING CHECKOUT LINK ----
+// Generates a Stripe Checkout link priced SERVER-SIDE from client_sites.monthly_fee.
+// Does NOT mark the site linked/active/paid — only the webhook does that.
+async function sendHostingCheckout(siteId) {
+    var site = _clientSites.find(function(s) { return String(s.id) === String(siteId); });
+    if (!site) { alert('Site not found. Refresh the panel.'); return; }
+    if (site.stripe_subscription_id) { alert('This site is already linked to subscription ' + site.stripe_subscription_id); return; }
+    if (!(parseFloat(site.monthly_fee) > 0)) { alert('Set a monthly fee on this site first (Edit → $/Month).'); return; }
+    var trialInput = prompt('Free trial days before the first charge (0 = charge immediately, max 90):', '0');
+    if (trialInput === null) return; // admin cancelled
+    var trialDays = Math.min(90, Math.max(0, parseInt(trialInput, 10) || 0));
+    var btn = document.getElementById('checkoutBtn_' + siteId);
+    if (btn) { btn.disabled = true; btn.textContent = 'Generating…'; }
+    try {
+        var resp = await fetch('/.netlify/functions/create-subscription', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ site_checkout: true, site_id: String(siteId), trial_days: trialDays })
+        });
+        var data = await resp.json();
+        if (!resp.ok || !data.url) throw new Error(data.error || 'Checkout link generation failed');
+        showCheckoutLinkModal(site, data.url, data.amount, data.trial_days);
+    } catch (err) {
+        alert('Error: ' + err.message);
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = '💳 Checkout Link'; }
+    }
+}
+
+function _siteClientContact(site) {
+    // Resolve the client's email/phone from the global clients array (best effort).
+    var c = (typeof clients !== 'undefined' && clients.length) ?
+        clients.find(function(x) { return String(x.id) === String(site.client_id); }) : null;
+    return { email: c && c.email ? c.email : '', phone: c && c.phone ? c.phone : '', name: (c && c.name) || site.client_name || '' };
+}
+
+function showCheckoutLinkModal(site, url, amount, trialDays) {
+    var ex = document.getElementById('checkoutLinkModal'); if (ex) ex.remove();
+    var contact = _siteClientContact(site);
+    var fee = amount || parseFloat(site.monthly_fee) || 0;
+    var trialNote = trialDays > 0 ? ' after a ' + trialDays + '-day free trial' : '';
+    var modal = document.createElement('div'); modal.id = 'checkoutLinkModal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:9999;';
+    modal.innerHTML =
+        '<div style="background:#1a1a1a;border:1px solid #333;border-radius:16px;padding:32px;width:560px;max-width:92vw;">' +
+        '<h3 style="margin:0 0 6px;color:#fff;font-size:18px;">💳 Hosting Checkout — ' + escHtml(site.site_name || '') + '</h3>' +
+        '<p style="margin:0 0 16px;color:#888;font-size:13px;">$' + fee + '/mo' + trialNote + ' · One-time link (expires in 24h). The site links itself automatically when the client completes checkout — nothing is marked paid until then.</p>' +
+        '<div style="display:flex;gap:8px;margin-bottom:16px;">' +
+            '<input id="checkoutLinkInput" readonly value="' + escHtml(url) + '" style="flex:1;padding:10px;background:#111;border:1px solid #333;border-radius:8px;color:#a855f7;font-size:12px;font-family:monospace;" onclick="this.select()">' +
+            '<button onclick="copyCheckoutLink()" style="background:#333;border:1px solid #555;color:#fff;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">Copy</button>' +
+        '</div>' +
+        '<div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">' +
+            (contact.email ?
+                '<button onclick="emailCheckoutLink(\'' + escHtml(String(site.id)) + '\')" style="background:#0d2033;border:1px solid #3b82f6;color:#3b82f6;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">📧 Email ' + escHtml(contact.email) + '</button>' :
+                '<span style="color:#666;font-size:11px;align-self:center;">No client email on file</span>') +
+            (contact.phone ?
+                '<button onclick="smsCheckoutLink(\'' + escHtml(String(site.id)) + '\')" style="background:#0d3320;border:1px solid #10b981;color:#10b981;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">💬 SMS ' + escHtml(contact.phone) + '</button>' : '') +
+            '<button onclick="document.getElementById(\'checkoutLinkModal\').remove()" style="background:#333;border:1px solid #555;color:#fff;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:12px;">Close</button>' +
+        '</div></div>';
+    document.body.appendChild(modal);
+    modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
+    window._checkoutLinkCache = { siteId: String(site.id), url: url, fee: fee, trialDays: trialDays || 0 };
+}
+
+function copyCheckoutLink() {
+    var input = document.getElementById('checkoutLinkInput');
+    if (!input) return;
+    input.select();
+    var done = function() { if (typeof showNotification === 'function') showNotification('Checkout link copied', 'success'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(input.value).then(done); }
+    else { document.execCommand('copy'); done(); }
+}
+
+async function emailCheckoutLink(siteId) {
+    var cache = window._checkoutLinkCache || {};
+    var site = _clientSites.find(function(s) { return String(s.id) === String(siteId); });
+    if (!site || cache.siteId !== String(siteId) || !cache.url) { alert('Regenerate the link first.'); return; }
+    var contact = _siteClientContact(site);
+    if (!contact.email) { alert('No client email on file.'); return; }
+    try {
+        var resp = await fetch('/.netlify/functions/send-email', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                to: contact.email,
+                subject: 'Set up automatic payments for ' + (site.site_name || 'your website'),
+                html: '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:40px;border-radius:12px;">' +
+                    '<h2 style="color:#10b981;">Website Hosting &amp; Maintenance</h2>' +
+                    '<p style="color:#ccc;line-height:1.7;">Hi ' + escHtml(contact.name || 'there') + ', you can now pay your website hosting &amp; maintenance for <strong>' + escHtml(site.site_name || '') + '</strong> automatically — <strong>$' + cache.fee + '/month</strong>' + (cache.trialDays > 0 ? ' after a <strong>' + cache.trialDays + '-day free trial</strong>' : '') + ', cancel anytime.</p>' +
+                    '<div style="text-align:center;margin:24px 0;"><a href="' + escHtml(cache.url) + '" style="display:inline-block;padding:14px 40px;background:#e63946;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;">Set Up Auto-Pay →</a></div>' +
+                    '<p style="color:#666;font-size:13px;">Questions? Call (248) 487-8747.</p>' +
+                    '<div style="border-top:1px solid #222;margin-top:24px;padding-top:16px;text-align:center;color:#555;font-size:12px;">New Urban Influence • Detroit, MI</div></div>',
+                contactId: null
+            })
+        });
+        if (!resp.ok) { var d = await resp.json().catch(function() { return {}; }); throw new Error(d.error || 'Send failed'); }
+        if (typeof showNotification === 'function') showNotification('Checkout link emailed to ' + contact.email, 'success');
+    } catch (err) { alert('Email error: ' + err.message); }
+}
+
+async function smsCheckoutLink(siteId) {
+    var cache = window._checkoutLinkCache || {};
+    var site = _clientSites.find(function(s) { return String(s.id) === String(siteId); });
+    if (!site || cache.siteId !== String(siteId) || !cache.url) { alert('Regenerate the link first.'); return; }
+    var contact = _siteClientContact(site);
+    if (!contact.phone) { alert('No client phone on file.'); return; }
+    try {
+        var resp = await fetch('/.netlify/functions/send-sms', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                to: contact.phone,
+                message: 'NUI: Set up auto-pay for ' + (site.site_name || 'your website') + ' hosting ($' + cache.fee + '/mo' + (cache.trialDays > 0 ? ', first ' + cache.trialDays + ' days free' : '') + '): ' + cache.url
+            })
+        });
+        if (!resp.ok) { var d = await resp.json().catch(function() { return {}; }); throw new Error(d.error || 'Send failed'); }
+        if (typeof showNotification === 'function') showNotification('Checkout link texted to ' + contact.phone, 'success');
+    } catch (err) { alert('SMS error: ' + err.message); }
 }
 
 // ---- SUSPEND / REACTIVATE ----

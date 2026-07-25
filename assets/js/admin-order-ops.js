@@ -292,10 +292,18 @@ async function createClient(e) {
             };
             subscriptions.push(hostingSub);
             saveSubscriptions();
+            // Phase 1 billing linkage: attach the client's client_sites.id as site_id
+            // (only when exactly one site matches this client — never guess).
+            let hostingSiteId = '';
+            try {
+                const _cs = JSON.parse(localStorage.getItem('nui_client_sites') || '[]');
+                const _matches = _cs.filter(s => String(s.client_id) === String(client.id));
+                if (_matches.length === 1 && _matches[0].id) hostingSiteId = String(_matches[0].id);
+            } catch (e) { /* no site cache — webhook clientId fallback covers it */ }
             try {
                 const resp = await fetch('/.netlify/functions/create-subscription', {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ clientEmail: client.email, clientName: client.name, clientId: String(client.id), amount: hostingPlan.price, description: hostingPlan.name + ' — Monthly Website Hosting', invoiceId: String(hostingSub.id), billingType: 'monthly', billingCycles: 0 })
+                    body: JSON.stringify({ clientEmail: client.email, clientName: client.name, clientId: String(client.id), amount: hostingPlan.price, description: hostingPlan.name + ' — Monthly Website Hosting', invoiceId: String(hostingSub.id), billingType: 'monthly', billingCycles: 0, site_id: hostingSiteId })
                 });
                 const data = await resp.json();
                 if (data.url) { hostingStripeUrl = data.url; hostingSub.stripeCheckoutUrl = data.url; hostingSub.stripeSessionId = data.sessionId; saveSubscriptions(); }
