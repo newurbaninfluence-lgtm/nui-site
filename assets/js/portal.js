@@ -177,6 +177,7 @@ function loadPortalView() {
 <div id="adminMontyPanel" class="admin-panel"></div>
 <div id="adminSubscriptionsPanel" class="admin-panel"></div>
 <div id="adminSitesPanel" class="admin-panel"></div>
+<div id="adminDatahealthPanel" class="admin-panel"></div>
 <div id="adminSubaccountsPanel" class="admin-panel"></div>
 <div id="adminVisitorsPanel" class="admin-panel"></div>
 </main>
