@@ -6,6 +6,7 @@
 // EMAIL WARMUP: auto-ramping cap based on successful run count.
 
 const nodemailer = require('nodemailer');
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 const dns = require('dns').promises;
 const categories = require('../../assets/js/business-categories.js');
 
@@ -529,7 +530,7 @@ exports.handler = async (event) => {
       // Verify domain MX records
       const valid = await verifyEmailDomain(email);
       if (!valid) {
-        console.log(`[Broadcast] Bad MX: ${email} — marking bounced`);
+        console.log(`[Broadcast] Bad MX: ${maskEmail(email)} — marking bounced`);
         await markContact(contact.id, 'MX_VERIFY_FAILED', null, false, true, 'mx_invalid');
         bounced++;
         results.push({ email, status: 'mx_invalid' });
@@ -574,7 +575,7 @@ exports.handler = async (event) => {
         if (contact._isNew) newEnrolled++;
         if (step.isFinal) completed++;
         results.push({ email, status: 'sent', sequence: step.sequenceKey, position: step.position, isNew: contact._isNew, industry: step.isIndustry });
-        console.log(`[Broadcast] ✓ ${email} — ${stepLabel} (day ${step.delay_days}${contact._isNew ? ', NEW' : ''})`);
+        console.log(`[Broadcast] ✓ ${maskEmail(email)} — ${stepLabel} (day ${step.delay_days}${contact._isNew ? ', NEW' : ''})`);
       } catch (e) {
         // Only flag as HARD bounce on definitive permanent-failure signals.
         // "temporarily unavailable", "try again", "deferred" are SOFT bounces.
@@ -603,7 +604,7 @@ exports.handler = async (event) => {
           failed++;
           results.push({ email, status: 'failed', error: msg.slice(0, 80) });
         }
-        console.warn(`[Broadcast] ✗ ${email}:`, msg.slice(0, 80));
+        console.warn(`[Broadcast] ✗ ${maskEmail(email)}:`, msg.slice(0, 80));
       }
 
       // Natural delay — don't blast Hostinger

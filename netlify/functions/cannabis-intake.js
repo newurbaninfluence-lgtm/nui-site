@@ -1,4 +1,5 @@
 // netlify/functions/cannabis-intake.js
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 // Cannabis brand intake — correct schema for leads + crm_contacts tables
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -125,7 +126,7 @@ exports.handler = async function(event) {
     created_at:      now,
   });
 
-  console.log(`[cannabis-intake] leads=${leadsOk} crm=${crmOk} email=${email}`);
+  console.log(`[cannabis-intake] leads=${leadsOk} crm=${crmOk} email=${maskEmail(email)}`);
 
   return {
     statusCode: 200,

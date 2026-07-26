@@ -1,4 +1,5 @@
 // email-track.js — Tracking pixel for opens + click-through redirector
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 // No `url` param  -> returns 1x1 GIF, logs 'email_opened' to activity_log
 // With `url` param -> logs 'email_clicked' + clickedUrl, returns 302 redirect
 // Hot-lead off-ramp: first click pauses sequence, elevates to hot_lead, fires SMS to Faren
@@ -70,7 +71,7 @@ exports.handler = async (event) => {
           from: OPENPHONE_FROM_ID
         })
       });
-      if (r.ok) console.log('📲 Hot-lead SMS sent to Faren:', msg);
+      if (r.ok) console.log('📲 Hot-lead SMS sent to Faren:', scrub(msg));
       else console.warn('[email-track] OpenPhone error:', r.status, await r.text().catch(() => ''));
     } catch (err) {
       console.warn('[email-track] SMS send failed:', err.message);

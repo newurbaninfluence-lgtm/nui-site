@@ -1,4 +1,5 @@
 const { checkRateLimit, rateLimitResponse } = require('./rate-limiter');
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 const { sanitizePhone, sanitizeText } = require('./sanitizer');
 // monty-sms.js — Legacy webhook alias (OpenPhone "monty" webhook Feb 27)
 // Guards: blocks automated/Stripe messages + drops outbound to prevent loops
@@ -34,7 +35,7 @@ exports.handler = async function(event) {
 
     // Block automated/system messages
     if (AUTOMATED_PATTERNS.some(p => p.test(body))) {
-      console.log('[monty-sms] Blocked automated msg:', body.slice(0, 60));
+      console.log('[monty-sms] Blocked automated msg:', redact(body));
       return { statusCode: 200, body: JSON.stringify({ skipped: true, reason: 'automated_blocked' }) };
     }
 

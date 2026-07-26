@@ -3,6 +3,7 @@
 // Called by rb2b-webhook after visitor identification
 
 const nodemailer = require('nodemailer');
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 const { createClient } = require('@supabase/supabase-js');
 const { getBrand, getFromAddress, getTransporter, buildEmailSignature } = require('./utils/agency-brand');
 
@@ -274,7 +275,7 @@ async function sendVisitorEmail(visitorId, currentUrl) {
 
     // 2. Must have email
     if (!visitor.business_email) {
-        console.log('No email for visitor:', visitor.first_name, visitor.last_name);
+        console.log('No email for visitor:', maskName(visitor.first_name), maskName(visitor.last_name));
         return { sent: false, reason: 'no_email' };
     }
 
@@ -288,7 +289,7 @@ async function sendVisitorEmail(visitorId, currentUrl) {
         .limit(1);
 
     if (recentEmails && recentEmails.length > 0) {
-        console.log('Cooldown active for:', visitor.business_email);
+        console.log('Cooldown active for:', maskEmail(visitor.business_email));
         return { sent: false, reason: 'cooldown_active' };
     }
 
@@ -301,7 +302,7 @@ async function sendVisitorEmail(visitorId, currentUrl) {
 
     // 5. Analyze interest
     const { topInterest, pagesViewed } = analyzeInterest(pageViews || [], currentUrl);
-    console.log(`Visitor ${visitor.first_name} — top interest: ${topInterest}`);
+    console.log(`Visitor ${maskName(visitor.first_name)} — top interest: ${topInterest}`);
 
     // 6. Get email template
     const template = getEmailTemplate(visitor, topInterest, pagesViewed);
@@ -330,7 +331,7 @@ async function sendVisitorEmail(visitorId, currentUrl) {
         replyTo: MAIL_FROM
     });
 
-    console.log(`✅ Auto-email sent to ${visitor.business_email} (${topInterest})`);
+    console.log(`✅ Auto-email sent to ${maskEmail(visitor.business_email)} (${topInterest})`);
 
     // 8. Log the email
     await supabase.from('visitor_auto_emails').insert({

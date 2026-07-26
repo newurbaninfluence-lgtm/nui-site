@@ -1,4 +1,5 @@
 // openphone-webhook.js — NUI Contact Hub Webhook Receiver
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 // Handles ALL Quo (OpenPhone) webhook events:
 //   message.received, message.delivered,
 //   call.ringing, call.completed,
@@ -176,7 +177,7 @@ async function ensureContact(phone, source) {
   let contact = await findContactByPhone(phone);
   if (!contact) {
     contact = await createContact(phone, source);
-    console.log(`[NUI] New contact created: ${phone} → ${contact?.id}`);
+    console.log(`[NUI] New contact created: ${maskPhone(phone)} → ${contact?.id}`);
   }
   return contact;
 }
@@ -200,7 +201,7 @@ async function handleMessageReceived(obj) {
   const body = (obj.body || '').trim().toUpperCase();
   const STOP_KEYWORDS = /^(STOP|STOPALL|UNSUBSCRIBE|CANCEL|END|QUIT|OPTOUT|OPT\s*OUT|REMOVE)(\s|$|\.|!)/;
   if (STOP_KEYWORDS.test(body)) {
-    console.log(`🛑 STOP keyword from ${phone} — opting out contact ${contact.id}`);
+    console.log(`🛑 STOP keyword from ${maskPhone(phone)} — opting out contact ${contact.id}`);
     await fetch(`${SUPABASE_URL}/rest/v1/crm_contacts?id=eq.${contact.id}`, {
       method: 'PATCH',
       headers: { ...supaHeaders, 'Prefer': 'return=minimal' },
@@ -433,7 +434,7 @@ async function triggerMissedCallSMS(phone, contactName) {
       headers: { 'Authorization': OP_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: sms, from: OP_FROM, to: [phone] })
     });
-    console.log('[OpenPhone] Missed call SMS sent to', phone);
+    console.log('[OpenPhone] Missed call SMS sent to', maskPhone(phone));
   } catch(e) { console.warn('[OpenPhone] Missed call SMS failed:', e.message); }
 }
 // ── Main Handler ──────────────────────────────────────────────────

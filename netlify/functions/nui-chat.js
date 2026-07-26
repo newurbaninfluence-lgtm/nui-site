@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 const { createClient } = require('@supabase/supabase-js');
 
 // NUI Brand Knowledge — everything the chatbot needs to know
@@ -298,7 +299,7 @@ async function extractAndSaveLead(apiKey, messages, sessionId) {
       .insert(newContact).select().single();
 
     if (created) {
-      console.log('✅ Monty created new lead:', created.id, newContact.first_name);
+      console.log('✅ Monty created new lead:', created.id, maskName(newContact.first_name));
 
       // Log the chat activity
       await supabase.from('activity_log').insert({

@@ -1,122 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-
-  <!-- Magazine Hub -->
   <url>
-    <loc>https://newurbaninfluence.com/magazine</loc>
-    <lastmod>2026-03-16</lastmod>
+    <loc>https://newurbanmagazine.com/</loc>
+    <lastmod>2026-04-21</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
   </url>
-
-  <!-- Awards -->
   <url>
-    <loc>https://newurbaninfluence.com/magazine/awards</loc>
-    <lastmod>2026-03-16</lastmod>
+    <loc>https://newurbanmagazine.com/awards</loc>
+    <lastmod>2026-04-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- Subscribe -->
   <url>
-    <loc>https://newurbaninfluence.com/magazine/subscribe</loc>
-    <lastmod>2026-03-16</lastmod>
+    <loc>https://newurbanmagazine.com/subscribe</loc>
+    <lastmod>2026-04-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-
-  <!-- Submit -->
   <url>
-    <loc>https://newurbaninfluence.com/magazine/submit</loc>
-    <lastmod>2026-03-16</lastmod>
+    <loc>https://newurbanmagazine.com/submit</loc>
+    <lastmod>2026-04-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
-  <!-- Article: AJ Photography Studio -->
   <url>
-    <loc>https://newurbaninfluence.com/magazine/article?slug=aj-photography-studio-detroit</loc>
+    <loc>https://newurbanmagazine.com/aj-photography-studio-detroit</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://newurbaninfluence.com/images/magazine/aj-photography-hero.jpg</image:loc>
+      <image:title>AJ Photography Studio: Detroit&#39;s Full-Service Photography Experience Since 2012</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://newurbanmagazine.com/larry-castleberry-detroit-storyteller-speaker</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://newurbaninfluence.com/images/magazine/larry-castleberry-hero.jpg</image:loc>
+      <image:title>Larry Castleberry: Detroit&#39;s Master Storyteller, Speaker, and Voice Actor</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://newurbanmagazine.com/faren-young-new-urban-influence-detroit</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <news:news>
-      <news:publication>
-        <news:name>NUI Magazine</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-03-16</news:publication_date>
-      <news:title>AJ Photography Studio: Detroit's Full-Service Photography Experience Since 2012</news:title>
-    </news:news>
     <image:image>
-      <image:loc>https://newurbaninfluence.com/.netlify/functions/og-image?slug=aj-photography-studio-detroit</image:loc>
-      <image:title>AJ Photography Studio Detroit — NUI Magazine Feature</image:title>
+      <image:loc>https://newurbaninfluence.com/images/about-story.png</image:loc>
+      <image:title>Faren Young Is Building Detroit&#39;s Creative Economy — One Brand at a Time</image:title>
     </image:image>
   </url>
-
-  <!-- Article: Larry Castleberry -->
   <url>
-    <loc>https://newurbaninfluence.com/magazine/article?slug=larry-castleberry-detroit-storyteller-speaker</loc>
+    <loc>https://newurbanmagazine.com/built-heavy-faren-young-book</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <news:news>
-      <news:publication>
-        <news:name>NUI Magazine</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-03-16</news:publication_date>
-      <news:title>Larry Castleberry: Detroit's Master Storyteller, Speaker, and Voice Actor</news:title>
-    </news:news>
     <image:image>
-      <image:loc>https://newurbaninfluence.com/images/magazine/larry-castleberry-mic-stage.jpg</image:loc>
-      <image:title>Larry Castleberry on stage — Detroit storyteller and speaker</image:title>
+      <image:loc>https://newurbaninfluence.com/images/about-story.png</image:loc>
+      <image:title>Built Heavy: Forged by Pressure, Driven by Purpose</image:title>
     </image:image>
   </url>
-  <!-- Article: Faren Young — Premium Founder Feature -->
   <url>
-    <loc>https://newurbaninfluence.com/magazine/article?slug=faren-young-new-urban-influence-detroit</loc>
-    <lastmod>2026-03-16</lastmod>
+    <loc>https://newurbanmagazine.com/sonya-meadows-bosstress-detroit-author</loc>
+    <lastmod>2026-03-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-    <news:news>
-      <news:publication>
-        <news:name>NUI Magazine</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-03-16</news:publication_date>
-      <news:title>Faren Young Is Building Detroit's Creative Economy — One Brand at a Time</news:title>
-    </news:news>
+    <priority>0.8</priority>
     <image:image>
-      <image:loc>https://newurbaninfluence.com/images/magazine/faren-young-studio.png</image:loc>
-      <image:title>Faren Young — Founder, New Urban Influence Detroit</image:title>
+      <image:loc>https://newurbaninfluence.com/images/magazine/sonya-meadows-hero.jpg</image:loc>
+      <image:title>Sonya Meadows: From Detroit&#39;s West Side to Magic City&#39;s Stage to the BOSSTRESS® Movement</image:title>
     </image:image>
   </url>
-  <!-- Article: Built Heavy — Faren Young -->
   <url>
-    <loc>https://newurbaninfluence.com/magazine/article?slug=built-heavy-faren-young-book</loc>
-    <lastmod>2026-03-16</lastmod>
+    <loc>https://newurbanmagazine.com/keith-jackson-deep-drama-design-detroit</loc>
+    <lastmod>2026-03-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <news:news>
-      <news:publication><news:name>NUI Magazine</news:name><news:language>en</news:language></news:publication>
-      <news:publication_date>2026-03-16</news:publication_date>
-      <news:title>Built Heavy: Forged by Pressure, Driven by Purpose — Faren Young</news:title>
-    </news:news>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://newurbaninfluence.com/images/magazine/keith-jackson-hero.jpg</image:loc>
+      <image:title>Keith Jackson Is the Set Doctor: Detroit&#39;s Master of Stage Design and Theatrical Production</image:title>
+    </image:image>
   </url>
-
-  <!-- Article: Ashley Mathaw — Backyard Comedy Battle -->
   <url>
-    <loc>https://newurbaninfluence.com/magazine/article?slug=ashley-mathaw-backyard-comedy-battle-detroit</loc>
+    <loc>https://newurbanmagazine.com/ashley-mathaw-backyard-comedy-battle-detroit</loc>
     <lastmod>2026-04-21</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <news:news>
-      <news:publication><news:name>NUI Magazine</news:name><news:language>en</news:language></news:publication>
-      <news:publication_date>2026-04-21</news:publication_date>
-      <news:title>Ashley Mathaw and the Backyard Comedy Battle: The Host Turning Every Show Into an Event</news:title>
-    </news:news>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://newurbaninfluence.com/images/magazine/ashley-mathaw-hero.png</image:loc>
+      <image:title>Ashley Mathaw and the Backyard Comedy Battle: The Host Turning Every Show Into an Event</image:title>
+    </image:image>
   </url>
-
 </urlset>

@@ -5,6 +5,7 @@
 //           SUPABASE_URL, SUPABASE_SERVICE_KEY, ADMIN_EMAIL, CALENDLY_URL
 
 const { getBrand, buildSmsSystemPrompt } = require('./utils/agency-brand');
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 const { requireAdmin } = require('./utils/security');
 
 const CORS_HEADERS = {
@@ -342,7 +343,7 @@ exports.handler = async function(event) {
       const prefix3 = clean.slice(-10, -7); // area code of last 10 digits
       const TOLLFREE_PREFIXES = ['800','888','877','866','855','844','833'];
       if (TOLLFREE_PREFIXES.includes(prefix3)) {
-        console.log(`[Monty] Blocked toll-free number: ${fromNumber}`);
+        console.log(`[Monty] Blocked toll-free number: ${maskPhone(fromNumber)}`);
         return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'toll_free_blocked' }) };
       }
     }
@@ -406,7 +407,7 @@ exports.handler = async function(event) {
       /openphone/i,
     ];
     if (incomingMessage && AUTOMATED_PATTERNS.some(p => p.test(incomingMessage))) {
-      console.log('[Monty] Blocked automated message:', (incomingMessage || '').slice(0, 80));
+      console.log('[Monty] Blocked automated message:', redact(incomingMessage));
       return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ skipped: true, reason: 'automated_blocked' }) };
     }
 
@@ -446,7 +447,7 @@ exports.handler = async function(event) {
     }
     if (!ANTHROPIC_API_KEY) return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'API key not configured' }) };
 
-    console.log(`📱 SMS from ${fromNumber}: "${incomingMessage}"`);
+    console.log(`📱 SMS from ${maskPhone(fromNumber)}: "${redact(incomingMessage)}"`);
     const cleanPhone = normalizePhone(fromNumber);
     const extractedName = extractNameFromText(incomingMessage);
 
@@ -543,7 +544,7 @@ COACHING:
           contact = created[0];
           contactId = contact.id;
           clientContext = `NEW CONTACT AUTO-CREATED: Phone ${cleanPhone}. Name: ${extractedName || 'Not given yet'}. This is their first message — treat as a fresh lead.`;
-          console.log(`[Monty] New contact: ${cleanPhone} → ${contactId}`);
+          console.log(`[Monty] New contact: ${maskPhone(cleanPhone)} → ${contactId}`);
         }
       }
 
@@ -615,7 +616,7 @@ Respond casually and helpfully as Monty. Short reply. No sales pitch. No NEPQ. J
       replyText += `\n\n📅 Book a free 15-min strategy call: ${CALENDLY_URL}`;
     }
 
-    console.log(`🤖 Monty → ${fromNumber}: "${replyText.slice(0,80)}..." | Score:${intelResult.intent_score} | Sentiment:${intelResult.sentiment}`);
+    console.log(`🤖 Monty → ${maskPhone(fromNumber)}: "${redact(replyText)}" | Score:${intelResult.intent_score} | Sentiment:${intelResult.sentiment}`);
 
     // ── Step 3: Send reply via OpenPhone ────────────────────────────────────
     if (OPENPHONE_API_KEY && FROM_NUMBER_ID) {
@@ -644,7 +645,7 @@ Respond casually and helpfully as Monty. Short reply. No sales pitch. No NEPQ. J
             headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
             body: JSON.stringify({ sms_undeliverable: true, notes: `SMS failed: ${err?.message || 'bad number'}` })
           }).catch(() => {});
-          console.log(`[Monty] Marked ${cleanPhone} as sms_undeliverable`);
+          console.log(`[Monty] Marked ${maskPhone(cleanPhone)} as sms_undeliverable`);
         }
         return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ sent: false, reason: 'openphone_send_failed', error: err }) };
       } else {

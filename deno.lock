@@ -13,6 +13,9 @@
       "dependencies": [
         "npm:@resvg/resvg-js@^2.6.2",
         "npm:@supabase/supabase-js@^2.45.0",
+        "npm:form-data@^4.0.5",
+        "npm:lambda-local@^2.2.0",
+        "npm:netlify-cli@^25.1.1",
         "npm:node-fetch@^2.7.0",
         "npm:nodemailer@^6.10.1",
         "npm:satori@~0.10.14",

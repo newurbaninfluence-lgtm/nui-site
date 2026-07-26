@@ -37,13 +37,13 @@ function freshSites() {
   sites = [
     { id: SITE_A, site_id: 'test-site', site_name: 'Test Site', client_id: 'C_A', status: 'active',
       suspended_reason: null, suspended_at: null, billing_status: 'unbilled',
-      stripe_customer_id: null, stripe_subscription_id: null, grace_until: null },
+      stripe_customer_id: null, stripe_subscription_id: null, grace_until: null, next_due_date: null },
     { id: SITE_B, site_id: 'dupe-one', site_name: 'Dupe One', client_id: 'C_DUP', status: 'active',
       suspended_reason: null, suspended_at: null, billing_status: 'unbilled',
-      stripe_customer_id: null, stripe_subscription_id: null, grace_until: null },
+      stripe_customer_id: null, stripe_subscription_id: null, grace_until: null, next_due_date: null },
     { id: SITE_C, site_id: 'dupe-two', site_name: 'Dupe Two', client_id: 'C_DUP', status: 'active',
       suspended_reason: null, suspended_at: null, billing_status: 'unbilled',
-      stripe_customer_id: null, stripe_subscription_id: null, grace_until: null }
+      stripe_customer_id: null, stripe_subscription_id: null, grace_until: null, next_due_date: null }
   ];
 }
 
@@ -288,6 +288,62 @@ const daysFromNow = (iso) => (new Date(iso) - Date.now()) / 86400000;
   check('1 admin heads-up email', emailLog.length === 1, `got ${emailLog.length}`);
   const twWrites = patchLog.filter(p => p.table === 'client_sites' && p.body);
   check('zero site writes from trial_will_end', twWrites.length === 0, `got ${twWrites.length}`);
+
+  // T19 — AUTO-BILL: next_due_date tracks the real Stripe billing cycle
+  console.log('T19 — auto-bill due-date sync');
+  freshSites(); await fire(evCheckout());
+  const DAY = 86400;
+  const nowS = Math.floor(Date.now() / 1000);
+  const ts = (days) => nowS + days * DAY;
+  const asDate = (t) => new Date(t * 1000).toISOString().slice(0, 10);
+
+  // invoice.paid → due date rolls to the paid period's end
+  r = await fire(evPaid({ lines: { data: [{ period: { end: ts(30) } }] } }));
+  check('invoice.paid sets next_due_date from line period end', site(SITE_A).next_due_date === asDate(ts(30)), `got ${site(SITE_A).next_due_date}`);
+
+  // invoice.paid fallback to period_end when lines are absent
+  r = await fire(evPaid({ period_end: ts(60) }));
+  check('falls back to invoice.period_end', site(SITE_A).next_due_date === asDate(ts(60)), `got ${site(SITE_A).next_due_date}`);
+
+  // subscription.updated (legacy API shape) → current_period_end
+  r = await fire({ type: 'customer.subscription.updated', data: { object: {
+    id: 'sub_TEST1', customer: 'cus_TEST1', status: 'active', current_period_end: ts(90), metadata: { site_id: SITE_A } } } });
+  check('subscription.current_period_end wins (legacy shape)', site(SITE_A).next_due_date === asDate(ts(90)), `got ${site(SITE_A).next_due_date}`);
+
+  // subscription.updated (2025+ API shape) → items[0].current_period_end
+  r = await fire({ type: 'customer.subscription.updated', data: { object: {
+    id: 'sub_TEST1', customer: 'cus_TEST1', status: 'active',
+    items: { data: [{ current_period_end: ts(120) }] }, metadata: { site_id: SITE_A } } } });
+  check('items[].current_period_end used (2025+ shape)', site(SITE_A).next_due_date === asDate(ts(120)), `got ${site(SITE_A).next_due_date}`);
+
+  // payment failure must NOT advance the due date (it stays past-due in the panel)
+  const dueBeforeFail = site(SITE_A).next_due_date;
+  r = await fire(evFailed({ lines: { data: [{ period: { end: ts(150) } }] } }));
+  check('payment_failed does NOT advance due date', site(SITE_A).next_due_date === dueBeforeFail, `got ${site(SITE_A).next_due_date}`);
+  check('...and still sets overdue + grace', site(SITE_A).billing_status === 'overdue' && !!site(SITE_A).grace_until);
+
+  // pause clears the date so no false "past due" shows
+  r = await fire({ type: 'customer.subscription.paused', data: { object: {
+    id: 'sub_TEST1', customer: 'cus_TEST1', status: 'paused', metadata: { site_id: SITE_A } } } });
+  check('pause clears next_due_date', site(SITE_A).next_due_date === null, `got ${site(SITE_A).next_due_date}`);
+
+  // resume restores it from the subscription period
+  r = await fire({ type: 'customer.subscription.resumed', data: { object: {
+    id: 'sub_TEST1', customer: 'cus_TEST1', status: 'active', current_period_end: ts(30), metadata: { site_id: SITE_A } } } });
+  check('resume restores due date', site(SITE_A).next_due_date === asDate(ts(30)), `got ${site(SITE_A).next_due_date}`);
+
+  // cancel clears it — no further invoices will ever arrive
+  r = await fire({ type: 'customer.subscription.deleted', data: { object: {
+    id: 'sub_TEST1', customer: 'cus_TEST1', status: 'canceled', metadata: { site_id: SITE_A } } } });
+  check('cancel clears next_due_date', site(SITE_A).next_due_date === null, `got ${site(SITE_A).next_due_date}`);
+  check('...and sets billing_status=canceled', site(SITE_A).billing_status === 'canceled');
+
+  // malformed/missing timestamps must never write garbage
+  freshSites(); await fire(evCheckout());
+  const dueBeforeJunk = site(SITE_A).next_due_date || null;
+  r = await fire(evPaid({ lines: { data: [{ period: { end: 'not-a-number' } }] }, period_end: null }));
+  check('junk timestamp writes no due date', site(SITE_A).next_due_date === dueBeforeJunk || site(SITE_A).next_due_date == null, `got ${site(SITE_A).next_due_date}`);
+  check('...and the event still succeeds', r.statusCode === 200);
 
   // T12 — configurable grace period
   console.log('T12 — GRACE_PERIOD_DAYS=3 env override');

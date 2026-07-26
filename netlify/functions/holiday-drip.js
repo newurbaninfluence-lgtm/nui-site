@@ -4,6 +4,7 @@
 // Emails upsell print products (social graphics, signage, banners).
 
 const nodemailer = require('nodemailer');
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 const { getBrand, getFromAddress, getTransporter, buildEmailFooter } = require('./utils/agency-brand');
 
 // ==================== HOLIDAY CALENDAR ====================
@@ -486,7 +487,7 @@ exports.handler = async (event) => {
                 );
                 const existing = await dedupRes.json();
                 if (Array.isArray(existing) && existing.length > 0) {
-                    console.log(`⏭️ Skip ${client.email} — already sent week ${holiday.week} for ${holiday.name}`);
+                    console.log(`⏭️ Skip ${maskEmail(client.email)} — already sent week ${holiday.week} for ${holiday.name}`);
                     continue;
                 }
 

@@ -10,6 +10,7 @@
 //          pauses the sequence when openphone-webhook.js detects inbound.
 
 const categories = require('../../assets/js/business-categories.js');
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -284,17 +285,17 @@ exports.handler = async (event) => {
         sent++;
         tally[stepLabel] = (tally[stepLabel] || 0) + 1;
         results.push({ phone: contact.phone, status: 'sent', step: stepLabel, isNew: contact._isNew });
-        console.log(`[sms-sequence] ✓ ${contact.phone} — ${stepLabel}${contact._isNew ? ' NEW' : ''}`);
+        console.log(`[sms-sequence] ✓ ${maskPhone(contact.phone)} — ${stepLabel}${contact._isNew ? ' NEW' : ''}`);
       } else {
         failed++;
         const err = body?.message || body?.error || `HTTP ${resp.status}`;
         results.push({ phone: contact.phone, status: 'failed', error: err });
-        console.warn(`[sms-sequence] ✗ ${contact.phone}: ${err}`);
+        console.warn(`[sms-sequence] ✗ ${maskPhone(contact.phone)}: ${err}`);
       }
     } catch (err) {
       failed++;
       results.push({ phone: contact.phone, status: 'failed', error: err.message });
-      console.warn(`[sms-sequence] ✗ ${contact.phone}:`, err.message);
+      console.warn(`[sms-sequence] ✗ ${maskPhone(contact.phone)}:`, err.message);
     }
 
     // 5s spacing between sends within a single invocation

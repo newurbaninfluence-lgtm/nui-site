@@ -61,7 +61,29 @@ function isNonpaymentReason(reason) {
   return typeof reason === 'string' && /^payment[ _]overdue/i.test(reason.trim());
 }
 
-const SITE_COLS = 'id,site_id,site_name,status,suspended_reason,billing_status,stripe_customer_id,stripe_subscription_id,grace_until';
+const SITE_COLS = 'id,site_id,site_name,status,suspended_reason,billing_status,stripe_customer_id,stripe_subscription_id,grace_until,next_due_date';
+
+// ── Auto-billing date sync ────────────────────────────────────────────
+// Extracts the NEXT charge date from a Stripe object so client_sites.next_due_date
+// mirrors the real billing cycle instead of being hand-maintained.
+// Handles both Stripe API generations: current_period_end lived on the subscription
+// in older versions and moved onto subscription ITEMS in 2025-03-31+.
+function unixToDateStr(ts) {
+  if (!ts || typeof ts !== 'number') return null;
+  const d = new Date(ts * 1000);
+  return isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+}
+
+function resolveNextBilling(obj, eventType) {
+  if (!obj) return null;
+  if (eventType && eventType.startsWith('customer.subscription.')) {
+    return unixToDateStr(obj.current_period_end)
+      || unixToDateStr(obj.items?.data?.[0]?.current_period_end);
+  }
+  // invoice.* — the period covered by the paid line item ends when the next one begins
+  return unixToDateStr(obj.lines?.data?.[0]?.period?.end)
+    || unixToDateStr(obj.period_end);
+}
 
 // Resolve a Stripe event object to EXACTLY ONE client_sites row.
 // Chain (first match wins); ambiguity or no match → null (caller logs + no-op):
@@ -213,6 +235,9 @@ exports.handler = async (event) => {
           const site = await resolveSite(SUPABASE_URL, SUPABASE_SERVICE_KEY, obj, eventType);
           if (site) {
             const patch = { billing_status: 'active', grace_until: null };
+            // Auto-bill: roll the due date forward to the next charge date.
+            const nextDue = resolveNextBilling(obj, eventType);
+            if (nextDue) patch.next_due_date = nextDue;
             if (site.status === 'suspended' && isNonpaymentReason(site.suspended_reason)) {
               patch.status = 'active';
               patch.suspended_reason = null;
@@ -366,21 +391,26 @@ exports.handler = async (event) => {
             const isPaused = obj.status === 'paused' || !!obj.pause_collection;
             // 'trialing' = service is live and will bill later → same as active.
             const isCurrent = (obj.status === 'active' || obj.status === 'trialing') && !isPaused;
+            // Auto-bill: the subscription's own period end is the authoritative next charge date.
+            const subDue = resolveNextBilling(obj, eventType);
             if (isPaused && site.billing_status !== 'paused') {
+              // Paused = no scheduled charge; clear the date so it can't show a false "past due".
               await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'client_sites',
-                { id: site.id }, { billing_status: 'paused', grace_until: null });
+                { id: site.id }, { billing_status: 'paused', grace_until: null, next_due_date: null });
               console.log(`site ${site.site_id || site.id}: subscription paused → billing paused`);
             } else if (!isPaused && (obj.status === 'past_due' || obj.status === 'unpaid') && site.billing_status !== 'overdue') {
               const graceUntil = new Date(Date.now() + GRACE_PERIOD_DAYS * 86400000).toISOString();
+              // Due date deliberately NOT advanced — it stays in the past so the panel shows overdue.
               await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'client_sites',
                 { id: site.id }, { billing_status: 'overdue', grace_until: graceUntil });
               console.log(`site ${site.site_id || site.id}: subscription ${obj.status} → overdue, grace until ${graceUntil}`);
-            } else if (isCurrent && site.billing_status !== 'active') {
-              await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'client_sites',
-                { id: site.id }, { billing_status: 'active', grace_until: null });
+            } else if (isCurrent && (site.billing_status !== 'active' || (subDue && site.next_due_date !== subDue))) {
+              const patch = { billing_status: 'active', grace_until: null };
+              if (subDue) patch.next_due_date = subDue;
+              await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'client_sites', { id: site.id }, patch);
             } else if (obj.status === 'canceled' && site.billing_status !== 'canceled') {
               await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'client_sites',
-                { id: site.id }, { billing_status: 'canceled', grace_until: null });
+                { id: site.id }, { billing_status: 'canceled', grace_until: null, next_due_date: null });
             }
           }
         }
@@ -400,8 +430,9 @@ exports.handler = async (event) => {
           const site = await resolveSite(SUPABASE_URL, SUPABASE_SERVICE_KEY,
             { subscription: obj.id, customer: obj.customer, metadata: obj.metadata }, eventType);
           if (site && site.stripe_subscription_id) {
+            // No further invoices will arrive → clear the due date along with the status.
             await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'client_sites',
-              { id: site.id }, { billing_status: 'canceled', grace_until: null });
+              { id: site.id }, { billing_status: 'canceled', grace_until: null, next_due_date: null });
             await sendNotifyEmail(ADMIN_EMAIL(),
               '⚠️ Hosting subscription CANCELED — ' + (site.site_name || site.site_id || site.id),
               `<h2 style="color:#f59e0b;">Hosting Subscription Canceled</h2><p>Site: <strong>${site.site_name || ''}</strong> (${site.site_id || site.id})</p><p>Subscription: ${obj.id}</p><p>The site is still live. Decide whether to suspend it or win the client back.</p>`

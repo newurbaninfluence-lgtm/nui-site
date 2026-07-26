@@ -3,6 +3,7 @@
 // Env vars: HOSTINGER_EMAIL, HOSTINGER_PASSWORD, MAIL_FROM
 
 const { requireAdmin } = require('./utils/security');
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 const { getBrand, hasSMTP, getTransporter, getFromAddress } = require('./utils/agency-brand');
 
 const nodemailer = require('nodemailer');
@@ -81,7 +82,7 @@ exports.handler = async (event) => {
       text: text || ''
     });
 
-    console.log('📧 Email sent:', info.messageId, '→', to);
+    console.log('📧 Email sent:', info.messageId, '→', maskEmail(to));
 
     // Log to Supabase if service key is available
     const SUPABASE_URL = process.env.SUPABASE_URL;

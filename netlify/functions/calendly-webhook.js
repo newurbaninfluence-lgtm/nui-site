@@ -34,6 +34,7 @@ async function triggerBookingConfirmation(clientName, clientEmail, clientPhone, 
       const emailBody = d.content?.[0]?.text?.trim();
       if (emailBody) {
         const nodemailer = require('nodemailer');
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
         const mailer = nodemailer.createTransport({ host: SMTP_HOST, port: 465, secure: true, auth: { user: SMTP_USER, pass: SMTP_PASS } });
         await mailer.sendMail({
           from: '"Faren Young | NUI" <' + SMTP_USER + '>',
@@ -42,7 +43,7 @@ async function triggerBookingConfirmation(clientName, clientEmail, clientPhone, 
           text: emailBody,
           html: '<div style="font-family:sans-serif;max-width:600px;line-height:1.7;">' + emailBody.replace(/\n/g,'<br>') + '<br><br><img src="https://newurbaninfluence.com/assets/images/nui-logo.png" alt="NUI" style="height:40px;"></div>'
         });
-        console.log('[Calendly] Confirmation email sent to', clientEmail);
+        console.log('[Calendly] Confirmation email sent to', maskEmail(clientEmail));
       }
     } catch(e) { console.warn('[Calendly] Confirm email failed:', e.message); }
   }
@@ -50,7 +51,7 @@ async function triggerBookingConfirmation(clientName, clientEmail, clientPhone, 
     try {
       const sms = 'Hey ' + firstName + ", you're confirmed for your NUI strategy call on " + meetingDate + ' at ' + meetingTime + ' ET. See you then — Faren';
       await fetch('https://api.openphone.com/v1/messages', { method: 'POST', headers: { 'Authorization': OP_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ content: sms, from: OP_FROM, to: [clientPhone] }) });
-      console.log('[Calendly] Confirmation SMS sent to', clientPhone);
+      console.log('[Calendly] Confirmation SMS sent to', maskPhone(clientPhone));
     } catch(e) { console.warn('[Calendly] Confirm SMS failed:', e.message); }
   }
 }
@@ -104,7 +105,7 @@ exports.handler = async (event) => {
     const scheduledEvent = payload.payload?.scheduled_event || payload.payload?.event || {};
     const questionsAndAnswers = payload.payload?.questions_and_answers || [];
 
-    console.log(`Calendly webhook: ${eventType}`, JSON.stringify({ invitee: invitee.name, email: invitee.email }));
+    console.log(`Calendly webhook: ${eventType}`, JSON.stringify({ invitee: maskName(invitee.name), email: maskEmail(invitee.email) }));
 
     // Extract data from Calendly payload
     const clientName = invitee.name || 'Unknown';
@@ -181,7 +182,7 @@ exports.handler = async (event) => {
         meeting_id: meeting.id
       });
 
-      console.log(`Meeting saved: ${meeting.id}, Lead upserted for ${clientEmail}`);
+      console.log(`Meeting saved: ${meeting.id}, Lead upserted for ${maskEmail(clientEmail)}`);
       const zoomLink = scheduledEvent.location?.join_url || scheduledEvent.location?.data?.url || '';
       triggerBookingConfirmation(clientName, clientEmail, clientPhone, serviceInterest, meetingDate, meetingTime, zoomLink).catch(e => console.warn('[Calendly] Confirm failed:', e.message));
       return {

@@ -1,4 +1,5 @@
 // fb-messenger-webhook.js — Netlify Function
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 // Handles Facebook & Instagram DMs → Monty auto-reply → Supabase CRM
 // Env vars: FB_PAGE_ACCESS_TOKEN, FB_VERIFY_TOKEN, FB_PAGE_ID,
 //           ANTHROPIC_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_KEY
@@ -99,7 +100,7 @@ exports.handler = async (event) => {
         const commentorId = val.from?.id;
         if (!commentorId || commentorId === PAGE_ID) continue;
 
-        console.log(`💬 FB Comment from ${commentorId}: "${val.message}"`);
+        console.log(`💬 FB Comment from ${commentorId}: "${redact(val.message)}"`);
         await replyToComment({ commentId: val.comment_id, text: val.message, PAGE_TOKEN, API_KEY, SUPA_URL, SUPA_KEY });
       }
     }

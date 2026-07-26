@@ -5,6 +5,7 @@
 // Env: SUPABASE_URL, SUPABASE_SERVICE_KEY, SMTP_HOST, SMTP_USER, SMTP_PASS, MAIL_FROM
 
 const nodemailer = require('nodemailer');
+const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -143,7 +144,7 @@ exports.handler = async () => {
         body: JSON.stringify({ upsell_trigger_date: null, last_upsell_at: new Date().toISOString(), last_upsell_offered: upsell.next })
       }).catch(e => console.warn('Client update failed:', e.message));
 
-      console.log(`[Upsell] Fired for ${client.name} → ${upsell.next}`);
+      console.log(`[Upsell] Fired for ${maskName(client.name)} → ${upsell.next}`);
     }
 
     return { statusCode: 200, body: JSON.stringify({ processed: clients.length }) };
