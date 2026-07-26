@@ -150,7 +150,7 @@ async function runDataHealthScan() {
                     '<div style="color:#666;font-size:11px;">' + escHtml(s.client_name || 'no client name') + '</div></div>' +
                     '<div style="display:flex;gap:8px;">' +
                     (s.client_name ? '<button onclick="dhCreateClientForSite(\'' + escHtml(String(s.id)) + '\')" style="background:#0d3320;border:1px solid #10b981;color:#10b981;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">+ Create client account</button>' : '') +
-                    '<button onclick="showAdminPanel(\'sites\')" style="background:#333;border:1px solid #555;color:#fff;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:12px;">Fix in Sites →</button>' +
+                    '<button onclick="dhOpenSiteEditor(\'' + escHtml(String(s.id)) + '\')" style="background:#333;border:1px solid #555;color:#fff;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:12px;">Edit site →</button>' +
                     '</div></div>';
             }).join('')) +
 
@@ -170,6 +170,25 @@ async function runDataHealthScan() {
             }).join('') + (noCrm.length > 40 ? '<div style="color:#666;font-size:11px;padding-top:8px;">+ ' + (noCrm.length - 40) + ' more</div>' : '')) +
 
         '<button onclick="runDataHealthScan()" style="background:#e63946;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;margin-top:8px;">Re-scan</button>';
+}
+
+// Jump to the Sites panel AND open this exact site's editor, instead of dumping
+// the user on the table to hunt for the row.
+function dhOpenSiteEditor(siteId) {
+    showAdminPanel('sites');
+    var tries = 0;
+    var open = function() {
+        tries++;
+        // Wait for the Sites panel to finish loading its rows before opening the modal.
+        if (typeof showAddSiteModal === 'function' && typeof _clientSites !== 'undefined' &&
+            _clientSites.some(function(s) { return String(s.id) === String(siteId); })) {
+            showAddSiteModal(siteId);
+            return;
+        }
+        if (tries < 20) setTimeout(open, 200);
+        // After ~4s give up quietly — the user is already on the Sites panel.
+    };
+    setTimeout(open, 250);
 }
 
 // ── Create a client account FROM a site, and link them in one step ──
