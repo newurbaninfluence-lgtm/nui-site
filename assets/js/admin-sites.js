@@ -100,15 +100,21 @@ function renderSitesTable() {
                 '<span style="padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;background:#88888820;color:#888;text-transform:uppercase;">' + escHtml(site.billing_status || 'unbilled') + '</span><br>' +
                 '<button id="checkoutBtn_' + escHtml(String(site.id)) + '" onclick="sendHostingCheckout(\'' + site.id + '\')" style="background:#1a1033;border:1px solid #a855f7;color:#a855f7;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;margin-top:4px;">💳 Checkout Link</button>';
         }
+        // Live-link cell: the domain is the ground truth of WHICH deployment this
+        // row controls — always visible, always clickable.
+        var liveLink = site.domain ?
+            '<a href="https://' + escHtml(site.domain) + '" target="_blank" rel="noopener" style="font-size:11px;color:#3b82f6;text-decoration:none;display:inline-block;margin-top:3px;">' + escHtml(site.domain) + ' ↗</a>' :
+            '<div style="font-size:10px;color:#ef4444;margin-top:3px;">⚠ no domain set</div>';
         return '<tr style="border-bottom:1px solid #222;">' +
             '<td style="padding:12px 16px;color:#fff;font-size:13px;">' + escHtml(site.client_name || '—') + '</td>' +
-            '<td style="padding:12px 16px;color:#fff;font-size:13px;font-weight:600;">' + escHtml(site.site_name || '—') + '</td>' +
+            '<td style="padding:12px 16px;"><div style="color:#fff;font-size:13px;font-weight:600;">' + escHtml(site.site_name || '—') + '</div>' + liveLink + '</td>' +
             '<td style="padding:12px 16px;color:#888;font-size:12px;font-family:monospace;">' + escHtml(site.site_id || '—') + '</td>' +
             '<td style="padding:12px 16px;color:#10b981;font-size:13px;font-weight:600;">$' + (parseFloat(site.monthly_fee) || 0) + '</td>' +
             '<td style="padding:12px 16px;"><span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;background:' + color + '20;color:' + color + ';text-transform:uppercase;">' + (site.status || 'active') + '</span>' + suspInfo + '</td>' +
             '<td style="padding:12px 16px;">' + billingCell + '</td>' +
             '<td style="padding:12px 16px;white-space:nowrap;">' +
                 '<button onclick="editSite(\'' + site.id + '\')" style="background:#333;border:1px solid #555;color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px;margin-right:4px;">Edit</button>' +
+                '<button onclick="showSiteCredentials(\'' + site.id + '\')" title="Admin login for this site" style="background:#1a2033;border:1px solid #3b82f6;color:#3b82f6;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;margin-right:4px;">🔑 Login</button>' +
                 suspendBtn + '</td></tr>';
     }).join('');
 }
@@ -339,5 +345,67 @@ async function saveSite(editId) {
         loadSitesFromSupabase();
     } catch (err) { alert('Error saving: ' + err.message); }
 }
+// ---- SITE ADMIN-LOGIN CREDENTIALS (stored in the RLS-locked site_credentials table) ----
+async function showSiteCredentials(siteId) {
+    var site = _clientSites.find(function(s) { return String(s.id) === String(siteId); });
+    if (!site) { alert('Site not found. Refresh the panel.'); return; }
+    var cred = { login_url: '', username: '', password: '', notes: '' };
+    try {
+        if (typeof supabaseClient !== 'undefined') {
+            var res = await supabaseClient.from('site_credentials').select('*').eq('site_id', siteId);
+            if (!res.error && res.data && res.data[0]) cred = res.data[0];
+        }
+    } catch (e) { console.warn('cred load:', e.message); }
+    renderCredModal(site, cred);
+}
+
+function renderCredModal(site, cred) {
+    var ex = document.getElementById('siteCredModal'); if (ex) ex.remove();
+    var IS = 'width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;box-sizing:border-box;';
+    var modal = document.createElement('div'); modal.id = 'siteCredModal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:9999;';
+    modal.innerHTML =
+        '<div style="background:#1a1a1a;border:1px solid #333;border-radius:16px;padding:32px;width:480px;max-width:92vw;">' +
+        '<h3 style="margin:0 0 4px;color:#fff;font-size:18px;">🔑 Admin Login — ' + escHtml(site.site_name || '') + '</h3>' +
+        '<p style="margin:0 0 20px;color:#888;font-size:12px;">Private. Stored in the locked credentials table — never exposed publicly.</p>' +
+        '<div style="display:grid;gap:14px;">' +
+            '<div><label style="color:#888;font-size:12px;display:block;margin-bottom:4px;">Login URL</label><input id="credUrl" value="' + escHtml(cred.login_url || (site.domain ? 'https://' + site.domain + '/admin' : '')) + '" style="' + IS + '"></div>' +
+            '<div><label style="color:#888;font-size:12px;display:block;margin-bottom:4px;">Username / Email</label><input id="credUser" value="' + escHtml(cred.username || '') + '" style="' + IS + '"></div>' +
+            '<div><label style="color:#888;font-size:12px;display:block;margin-bottom:4px;">Password</label>' +
+                '<div style="display:flex;gap:8px;"><input id="credPass" type="password" value="' + escHtml(cred.password || '') + '" style="' + IS + '">' +
+                '<button onclick="var p=document.getElementById(\'credPass\');p.type=p.type===\'password\'?\'text\':\'password\';" style="background:#333;border:1px solid #555;color:#fff;padding:0 14px;border-radius:8px;cursor:pointer;font-size:12px;">👁</button>' +
+                '<button onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById(\'credPass\').value);if(typeof showNotification===\'function\')showNotification(\'Password copied\',\'success\');" style="background:#333;border:1px solid #555;color:#fff;padding:0 14px;border-radius:8px;cursor:pointer;font-size:12px;">Copy</button></div></div>' +
+            '<div><label style="color:#888;font-size:12px;display:block;margin-bottom:4px;">Notes</label><textarea id="credNotes" rows="2" style="' + IS + 'resize:vertical;">' + escHtml(cred.notes || '') + '</textarea></div>' +
+        '</div>' +
+        '<div style="display:flex;gap:12px;margin-top:20px;justify-content:space-between;align-items:center;">' +
+            (site.domain ? '<a href="https://' + escHtml(site.domain) + '" target="_blank" rel="noopener" style="color:#3b82f6;font-size:12px;">Open site ↗</a>' : '<span></span>') +
+            '<div style="display:flex;gap:12px;">' +
+            '<button onclick="document.getElementById(\'siteCredModal\').remove()" style="background:#333;border:1px solid #555;color:#fff;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:13px;">Cancel</button>' +
+            '<button onclick="saveSiteCredentials(\'' + site.id + '\')" style="background:#e63946;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;">Save</button>' +
+            '</div></div></div>';
+    document.body.appendChild(modal);
+    modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
+}
+
+async function saveSiteCredentials(siteId) {
+    var payload = {
+        site_id: siteId,
+        login_url: (document.getElementById('credUrl')?.value || '').trim(),
+        username: (document.getElementById('credUser')?.value || '').trim(),
+        password: document.getElementById('credPass')?.value || '',
+        notes: (document.getElementById('credNotes')?.value || '').trim(),
+        updated_at: new Date().toISOString()
+    };
+    try {
+        if (typeof supabaseClient !== 'undefined') {
+            // Upsert on the unique site_id
+            var res = await supabaseClient.from('site_credentials').upsert(payload, { onConflict: 'site_id' });
+            if (res.error) throw res.error;
+        }
+        if (typeof showNotification === 'function') showNotification('Login saved for ' + siteId, 'success');
+        var m = document.getElementById('siteCredModal'); if (m) m.remove();
+    } catch (err) { alert('Error saving login: ' + err.message); }
+}
+
 if (typeof escHtml === 'undefined') { window.escHtml = function(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }; }
 console.log('✅ admin-sites.js v2 loaded — suspend/reactivate ready');

@@ -27,7 +27,7 @@
     'crm_contacts', 'agent_logs', 'communications', 'client_sites', 'site_config',
     'identified_visitors', 'push_subscriptions', 'clients', 'invoices', 'leads',
     'orders', 'payments', 'projects', 'proofs', 'push_campaigns', 'sms_campaigns',
-    'visitor_auto_emails', 'visitor_page_views'
+    'visitor_auto_emails', 'visitor_page_views', 'site_credentials'
   ]);
 
   const SUPABASE_REST_PREFIX = SUPABASE_URL.replace(/\/$/, '') + '/rest/v1/';
