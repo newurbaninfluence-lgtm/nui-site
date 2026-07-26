@@ -100,6 +100,18 @@ function renderSitesTable() {
                 '<span style="padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;background:#88888820;color:#888;text-transform:uppercase;">' + escHtml(site.billing_status || 'unbilled') + '</span><br>' +
                 '<button id="checkoutBtn_' + escHtml(String(site.id)) + '" onclick="sendHostingCheckout(\'' + site.id + '\')" style="background:#1a1033;border:1px solid #a855f7;color:#a855f7;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;margin-top:4px;">💳 Checkout Link</button>';
         }
+        // Due-date line: red when past due, amber within 7 days, grey otherwise.
+        if (site.next_due_date) {
+            // Compare calendar days in local time (not timestamps) so "today" reads as today.
+            var due = new Date(String(site.next_due_date).slice(0, 10) + 'T00:00:00');
+            var _today = new Date(); _today.setHours(0, 0, 0, 0);
+            var days = Math.round((due - _today) / 86400000);
+            var dCol = days < 0 ? '#ef4444' : (days <= 7 ? '#f59e0b' : '#888');
+            var dTxt = days < 0 ? ('past due ' + Math.abs(days) + 'd') : (days === 0 ? 'due today' : 'due in ' + days + 'd');
+            billingCell += '<div style="font-size:10px;color:' + dCol + ';margin-top:4px;">📅 ' + due.toLocaleDateString() + ' · ' + dTxt + '</div>';
+        } else {
+            billingCell += '<div style="font-size:10px;color:#555;margin-top:4px;">no due date</div>';
+        }
         // Live-link cell: the domain is the ground truth of WHICH deployment this
         // row controls — always visible, always clickable.
         var liveLink = site.domain ?
@@ -299,6 +311,10 @@ function showAddSiteModal(editId) {
                 '<div><label style="color:#888;font-size:12px;display:block;margin-bottom:4px;">$/Month</label><input id="siteFee" type="number" value="' + (site ? site.monthly_fee || 0 : 0) + '" style="' + IS + '"></div>' +
                 '<div><label style="color:#888;font-size:12px;display:block;margin-bottom:4px;">Status</label><select id="siteStatus" style="' + IS + '">' + so + '</select></div>' +
             '</div>' +
+            '<div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;">' +
+                '<div><label style="color:#888;font-size:12px;display:block;margin-bottom:4px;">Next Payment Due</label><input id="siteDueDate" type="date" value="' + escHtml(site && site.next_due_date ? String(site.next_due_date).slice(0,10) : '') + '" style="' + IS + '"></div>' +
+                '<button type="button" onclick="bumpDueDate(1)" style="background:#333;border:1px solid #555;color:#fff;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:12px;white-space:nowrap;">+1 Month</button>' +
+            '</div>' +
             '<div><label style="color:#888;font-size:12px;display:block;margin-bottom:4px;">Notes</label><textarea id="siteNotes" rows="2" style="' + IS + 'resize:vertical;">' + escHtml(site ? site.notes || '' : '') + '</textarea></div>' +
         '</div>' +
         '<div style="display:flex;gap:12px;margin-top:20px;justify-content:flex-end;">' +
@@ -308,6 +324,14 @@ function showAddSiteModal(editId) {
     document.body.appendChild(modal);
     modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
 }
+// Advance the due-date field by N months (from today if empty) — quick monthly roll-forward.
+function bumpDueDate(months) {
+    var el = document.getElementById('siteDueDate'); if (!el) return;
+    var d = el.value ? new Date(el.value + 'T12:00:00') : new Date();
+    d.setMonth(d.getMonth() + (months || 1));
+    el.value = d.toISOString().slice(0, 10);
+}
+
 function autoFillClientName() { var s = document.getElementById('siteClientId'); if (!s) return; var o = s.options[s.selectedIndex]; if (o && o.dataset.name) { var n = document.getElementById('siteName'); if (n && !n.value) n.value = o.dataset.name + ' Website'; } }
 function editSite(id) { showAddSiteModal(id); }
 function viewSiteLive(d) { if (d) window.open('https://' + d, '_blank'); }
@@ -326,6 +350,7 @@ async function saveSite(editId) {
         netlify_site_id: (document.getElementById('siteNetlifyId')?.value || '').trim(),
         plan: document.getElementById('sitePlan')?.value || 'basic',
         monthly_fee: parseFloat(document.getElementById('siteFee')?.value) || 0,
+        next_due_date: (document.getElementById('siteDueDate')?.value || '') || null,
         status: document.getElementById('siteStatus')?.value || 'active',
         notes: (document.getElementById('siteNotes')?.value || '').trim()
     };
