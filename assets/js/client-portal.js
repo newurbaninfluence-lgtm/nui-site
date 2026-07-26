@@ -200,7 +200,7 @@ ${activeOrders.length > 0 ? '<h3 style="font-size: 16px; font-weight: 600; margi
 ${clientOrders.length > 0 ? clientOrders.map(o => {
     const inv = invoices.find(i => i.orderId === o.id || i.orderId == o.id);
     const statusColors = { pending: '#f59e0b', 'in-progress': '#3b82f6', review: '#8b5cf6', delivered: '#10b981', cancelled: '#ef4444' };
-    return '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 16px;"><div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;"><div><h3 style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px;">' + (o.projectName || o.packageName || 'Order #' + o.id) + '</h3><div class="text-muted-sm">' + (o.packageName || 'Custom') + ' • Created ' + new Date(o.createdAt).toLocaleDateString() + '</div></div><div style="display: flex; gap: 12px; align-items: center;"><span style="display: inline-block; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: ' + (statusColors[o.status] || '#888') + '20; color: ' + (statusColors[o.status] || '#888') + ';">' + (o.status || 'pending') + '</span>' + (o.total || o.estimate ? '<span style="font-size: 18px; font-weight: 700; color: #e11d48;">$' + (o.total || o.estimate || 0).toLocaleString() + '</span>' : '') + '</div></div>' + (o.turnaround ? '<div style="margin-top: 12px; font-size: 13px; color: #888;">⏱ Turnaround: ' + o.turnaround + (o.dueDate ? ' • Due: ' + new Date(o.dueDate).toLocaleDateString() : '') + '</div>' : '') + (inv ? '<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #222; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;"><span class="text-muted-sm">Invoice #' + (inv.invoiceNumber || inv.id) + '</span><div style="display:flex;align-items:center;gap:8px;"><span style="font-size: 13px; font-weight: 600; color: ' + (inv.status === 'paid' ? '#10b981' : '#f59e0b') + ';">' + (inv.status === 'paid' ? '✅ Paid in Full' : '⏳ Unpaid — $' + (inv.total || inv.amount || 0).toLocaleString()) + '</span>' + (inv.status !== 'paid' ? '<button onclick="portalPayInvoice(' + inv.id + ')" style="padding:8px 20px;background:#e11d48;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;">Pay Now →</button>' : '') + '</div></div>' : '') + '</div>';
+    return '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 16px;"><div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;"><div><h3 style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px;">' + (o.projectName || o.packageName || 'Order #' + o.id) + '</h3><div class="text-muted-sm">' + (o.packageName || 'Custom') + ' • Created ' + new Date(o.createdAt).toLocaleDateString() + '</div></div><div style="display: flex; gap: 12px; align-items: center;"><span style="display: inline-block; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; background: ' + (statusColors[o.status] || '#888') + '20; color: ' + (statusColors[o.status] || '#888') + ';">' + (o.status || 'pending') + '</span>' + (o.total || o.estimate ? '<span style="font-size: 18px; font-weight: 700; color: #e11d48;">$' + (o.total || o.estimate || 0).toLocaleString() + '</span>' : '') + '</div></div>' + (o.turnaround ? '<div style="margin-top: 12px; font-size: 13px; color: #888;">⏱ Turnaround: ' + o.turnaround + (o.dueDate ? ' • Due: ' + new Date(o.dueDate).toLocaleDateString() : '') + '</div>' : '') + (!inv && (o.total || o.estimate) && o.paymentStatus !== 'paid' && o.status !== 'cancelled' ? '<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #222; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;"><span style="font-size: 13px; font-weight: 600; color: #f59e0b;">⏳ Unpaid — $' + (o.total || o.estimate || 0).toLocaleString() + '</span><button onclick="portalPayOrder(' + o.id + ')" style="padding:8px 20px;background:#e11d48;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;">Pay Now →</button></div>' : '') + (inv ? '<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #222; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;"><span class="text-muted-sm">Invoice #' + (inv.invoiceNumber || inv.id) + '</span><div style="display:flex;align-items:center;gap:8px;"><span style="font-size: 13px; font-weight: 600; color: ' + (inv.status === 'paid' ? '#10b981' : '#f59e0b') + ';">' + (inv.status === 'paid' ? '✅ Paid in Full' : '⏳ Unpaid — $' + (inv.total || inv.amount || 0).toLocaleString()) + '</span>' + (inv.status !== 'paid' ? '<button onclick="portalPayInvoice(' + inv.id + ')" style="padding:8px 20px;background:#e11d48;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;">Pay Now →</button>' : '') + '</div></div>' : '') + '</div>';
 }).join('') : ''}
 ${clientOrders.length === 0 && clientStandaloneInvoices.length === 0 ? '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 48px; text-align: center;"><div style="font-size: 48px; margin-bottom: 16px;">📦</div><div style="color: #888; font-size: 16px;">No orders yet</div><div style="color: #666; font-size: 14px; margin-top: 8px;">Your orders and invoices will appear here</div></div>' : ''}
 ${clientStandaloneInvoices.length > 0 ? '<div style="margin-top: 24px;"><h3 style="font-size: 16px; font-weight: 600; color: #888; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; font-size: 12px;">Additional Invoices</h3>' + clientStandaloneInvoices.map(inv => '<div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;"><div><div style="font-weight: 600; color: #fff; font-size: 16px;">' + (inv.description || inv.projectName || 'Invoice') + '</div><div style="font-size: 13px; color: #888; margin-top: 4px;">Invoice #' + (inv.invoiceNumber || inv.id) + ' • ' + new Date(inv.createdAt).toLocaleDateString() + '</div></div><div style="display:flex;align-items:center;gap:12px;"><span style="font-size: 16px; font-weight: 700; color: #e11d48;">$' + (inv.total || inv.amount || 0).toLocaleString() + '</span><span style="padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; background: ' + (inv.status === 'paid' ? '#10b98120' : '#f59e0b20') + '; color: ' + (inv.status === 'paid' ? '#10b981' : '#f59e0b') + ';">' + (inv.status === 'paid' ? '✅ Paid' : '⏳ Unpaid') + '</span>' + (inv.status !== 'paid' ? '<button onclick="portalPayInvoice(' + inv.id + ')" style="padding:8px 20px;background:#e11d48;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;">Pay Now →</button>' : '') + '</div></div>').join('') + '</div>' : ''}
@@ -1107,6 +1107,45 @@ function _submitProjectFeedback(projectId, clientId) {
     document.getElementById('projectFeedbackModal').remove();
     alert('✅ Feedback sent! We\'ll review it and follow up.');
 }
+// Pay an ORDER that has no invoice record attached. Without this, an unpaid
+// order renders with no payment option at all — the client sees the amount but
+// has no way to pay it.
+async function portalPayOrder(orderId) {
+    var btn = (typeof event !== 'undefined' && event && event.target) ? event.target : null;
+    try {
+        var order = (typeof orders !== 'undefined' ? orders : []).find(function(o) { return o.id == orderId; });
+        if (!order) { alert('Order not found. Please contact your designer.'); return; }
+        var amount = order.total || order.estimate || 0;
+        if (!amount) { alert('No amount due on this order.'); return; }
+        var client = (typeof clients !== 'undefined' ? clients : []).find(function(c) { return c.id == order.clientId; });
+
+        if (btn) { btn.textContent = 'Loading...'; btn.disabled = true; }
+
+        var resp = await fetch('/.netlify/functions/create-subscription', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                clientEmail: client?.email || '',
+                clientName: client?.name || '',
+                clientId: String(order.clientId || ''),
+                amount: amount,
+                description: order.projectName || order.packageName || ('NUI Order #' + order.id),
+                invoiceId: 'order-' + order.id,
+                billingType: order.billingType || 'one_time',
+                billingCycles: 0,
+                payLater: 'afterpay'
+            })
+        });
+        var data = await resp.json();
+        if (data.url) { window.location.href = data.url; return; }
+        throw new Error(data.error || 'Could not create checkout session');
+    } catch (err) {
+        console.error('portalPayOrder error:', err);
+        alert('Payment error: ' + err.message + '. Please try again, or call (248) 487-8747.');
+        if (btn) { btn.textContent = 'Pay Now →'; btn.disabled = false; }
+    }
+}
+
 async function portalPayInvoice(invoiceId) {
     try {
         // Find the invoice from global data
