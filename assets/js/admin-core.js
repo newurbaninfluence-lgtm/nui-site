@@ -165,6 +165,7 @@ function showAdminPanel(panel) {
         'usermanagement': loadAdminUserManagementPanel,
         'monty': loadAdminMontyPanel,
         'sites': loadAdminSitesPanel,
+        'datahealth': loadDataHealthPanel,
         'subaccounts': loadAdminSubAccountsPanel,
         'visitors': loadAdminVisitorsPanel,
         'citations': loadAdminCitationsPanel,
