@@ -27,15 +27,24 @@ async function runDataHealthScan() {
     var od = _dhArr('orders'), iv = _dhArr('invoices'), pm = _dhArr('payments'), pj = _dhArr('projects'), pf = _dhArr('proofs');
 
     // ── Sites + CRM contacts come from the database ──
-    var sites = [], crmEmails = new Set();
+    var sites = [], crmEmails = new Set(), dbError = '';
     try {
         if (typeof supabaseClient !== 'undefined') {
-            var sr = await supabaseClient.from('client_sites').select('id,site_id,site_name,client_id,client_name,contact_email');
-            if (!sr.error) sites = sr.data || [];
+            // select('*') on purpose: naming optional columns (contact_email etc.)
+            // makes the WHOLE query fail with a 400 if a migration hasn't run yet,
+            // which silently showed "0 sites" instead of the real list.
+            var sr = await supabaseClient.from('client_sites').select('*');
+            if (sr.error) { dbError = 'client_sites: ' + (sr.error.message || 'query failed'); }
+            else { sites = sr.data || []; }
             var cr = await supabaseClient.from('crm_contacts').select('email').limit(5000);
             if (!cr.error) (cr.data || []).forEach(function(c) { if (c.email) crmEmails.add(_dhEmail(c.email)); });
+        } else {
+            dbError = 'Database client not loaded — reload the page.';
         }
-    } catch (e) { console.warn('data-health db read:', e.message); }
+    } catch (e) {
+        dbError = e.message;
+        console.warn('data-health db read:', e.message);
+    }
 
     var idSet = new Set(cl.map(function(c) { return String(c.id); }));
 
@@ -94,6 +103,8 @@ async function runDataHealthScan() {
     }
 
     body.innerHTML =
+        // Never let a failed read masquerade as "all clean".
+        (dbError ? '<div style="background:#3a1515;border:1px solid #ef4444;border-radius:12px;padding:16px 20px;margin-bottom:20px;color:#ef4444;font-size:13px;">⚠ Couldn\'t read the database, so site counts below are incomplete: ' + escHtml(dbError) + '</div>' : '') +
         '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px;">' +
             ['clients', 'orders', 'invoices', 'payments', 'sites'].map(function(k) {
                 return '<div style="background:#111;border:1px solid #222;border-radius:10px;padding:16px;">' +
@@ -137,8 +148,10 @@ async function runDataHealthScan() {
                 return '<div style="border-top:1px solid #222;padding:10px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">' +
                     '<div><span style="color:#fff;font-size:13px;">' + escHtml(s.site_name || s.site_id || '') + '</span>' +
                     '<div style="color:#666;font-size:11px;">' + escHtml(s.client_name || 'no client name') + '</div></div>' +
+                    '<div style="display:flex;gap:8px;">' +
+                    (s.client_name ? '<button onclick="dhCreateClientForSite(\'' + escHtml(String(s.id)) + '\')" style="background:#0d3320;border:1px solid #10b981;color:#10b981;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">+ Create client account</button>' : '') +
                     '<button onclick="showAdminPanel(\'sites\')" style="background:#333;border:1px solid #555;color:#fff;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:12px;">Fix in Sites →</button>' +
-                '</div>';
+                    '</div></div>';
             }).join('')) +
 
         // Missing email
@@ -157,6 +170,108 @@ async function runDataHealthScan() {
             }).join('') + (noCrm.length > 40 ? '<div style="color:#666;font-size:11px;padding-top:8px;">+ ' + (noCrm.length - 40) + ' more</div>' : '')) +
 
         '<button onclick="runDataHealthScan()" style="background:#e63946;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;margin-top:8px;">Re-scan</button>';
+}
+
+// ── Create a client account FROM a site, and link them in one step ──
+// The site already knows the owner's name; the CRM usually knows their email and
+// phone. This stitches those together into a real client account so the portal,
+// reminders and billing have something to hang off. Shows everything it found
+// (and lets you correct it) before writing anything.
+async function dhCreateClientForSite(siteId) {
+    if (!_dhReport) return;
+    var site = (_dhReport.unlinkedSites || []).find(function(s) { return String(s.id) === String(siteId); });
+    if (!site) { alert('Site not found — re-scan and try again.'); return; }
+    var name = (site.client_name || '').trim();
+    if (!name) { alert('This site has no client name. Add one in the Sites panel first.'); return; }
+
+    // Look the person up in the CRM so we inherit their real contact details.
+    var found = null;
+    try {
+        if (typeof supabaseClient !== 'undefined') {
+            var parts = name.split(/\s+/);
+            var r = await supabaseClient.from('crm_contacts')
+                .select('id,first_name,last_name,email,phone,company')
+                .ilike('first_name', parts[0] || name).limit(25);
+            if (!r.error && r.data && r.data.length) {
+                var last = (parts.length > 1 ? parts[parts.length - 1] : '').toLowerCase();
+                found = r.data.find(function(c) {
+                    return last && String(c.last_name || '').toLowerCase() === last;
+                }) || r.data.find(function(c) { return c.email; }) || r.data[0];
+            }
+        }
+    } catch (e) { console.warn('CRM lookup:', e.message); }
+
+    var email = (site.contact_email || (found && found.email) || '').trim();
+    var phone = (site.contact_phone || (found && found.phone) || '').trim();
+
+    var typedEmail = prompt(
+        'Create a client account for "' + name + '"' +
+        (found ? '\n\nMatched CRM contact: ' + [found.first_name, found.last_name].filter(Boolean).join(' ') + (found.company ? ' · ' + found.company : '') : '\n\n(No CRM match found)') +
+        '\n\nEmail (used for their portal login and billing reminders):',
+        email);
+    if (typedEmail === null) return;
+    typedEmail = typedEmail.trim();
+    if (!typedEmail) { alert('An email is required — it is how they log in and receive reminders.'); return; }
+
+    var existing = _dhArr('clients').find(function(c) { return _dhEmail(c.email) === _dhEmail(typedEmail); });
+    if (existing) {
+        if (!confirm('A client with that email already exists (' + (existing.name || existing.email) + ').\n\nLink this site to that existing account instead?')) return;
+        await _dhLinkSite(site, existing);
+        return;
+    }
+
+    var typedPhone = prompt('Phone for SMS reminders (optional):', phone);
+    if (typedPhone === null) typedPhone = '';
+
+    if (!confirm('Create this client account?\n\n' +
+        'Name: ' + name + '\nEmail: ' + typedEmail + (typedPhone ? '\nPhone: ' + typedPhone : '') +
+        '\n\nThe site "' + (site.site_name || site.site_id) + '" will be linked to them, and they will appear in your Clients list.')) return;
+
+    var client = {
+        id: Date.now(),
+        name: name,
+        contact: name,
+        email: typedEmail,
+        phone: typedPhone,
+        company: (found && found.company) || '',
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        source: 'account-linkage',
+        password: 'nui' + Math.floor(1000 + Math.random() * 9000),
+        assets: {}, colors: []
+    };
+    var arr = _dhArr('clients');
+    arr.push(client);
+    if (typeof saveClients === 'function') saveClients();
+    else { try { localStorage.setItem('nui_clients', JSON.stringify(arr)); } catch (e) {} }
+
+    await _dhLinkSite(site, client, true);
+}
+
+// Write the client link onto the client_sites row (and carry contact details over).
+async function _dhLinkSite(site, client, isNew) {
+    try {
+        if (typeof supabaseClient !== 'undefined') {
+            var patch = { client_id: String(client.id), client_name: client.name };
+            // Only set contact fields if that migration has run — otherwise the
+            // whole update would fail on an unknown column.
+            if ('contact_email' in site) {
+                if (!site.contact_email && client.email) patch.contact_email = client.email;
+                if (!site.contact_phone && client.phone) patch.contact_phone = client.phone;
+            }
+            var res = await supabaseClient.from('client_sites').update(patch).eq('id', site.id);
+            if (res.error) throw res.error;
+        }
+        if (typeof showNotification === 'function') {
+            showNotification((isNew ? 'Created ' : 'Linked to ') + client.name + ' — site connected', 'success');
+        } else {
+            alert((isNew ? 'Created account for ' : 'Linked to ') + client.name + '. Site is now connected.');
+        }
+        await runDataHealthScan();
+    } catch (err) {
+        alert('Account was created, but linking the site failed: ' + err.message +
+              '\n\nOpen the Sites panel and pick the client manually.');
+    }
 }
 
 // Reassign one orphaned record to a client. Shows exactly what will change first.
