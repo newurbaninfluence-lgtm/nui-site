@@ -117,8 +117,14 @@ function renderSitesTable() {
         var liveLink = site.domain ?
             '<a href="https://' + escHtml(site.domain) + '" target="_blank" rel="noopener" style="font-size:11px;color:#3b82f6;text-decoration:none;display:inline-block;margin-top:3px;">' + escHtml(site.domain) + ' ↗</a>' :
             '<div style="font-size:10px;color:#ef4444;margin-top:3px;">⚠ no domain set</div>';
+        // Flag sites not tied to a client account — those can't show in a client
+        // portal and their reminders have no account to fall back on.
+        var linkFlag = site.client_id ? '' :
+            '<div style="font-size:10px;color:#f59e0b;margin-top:3px;" title="Open Edit and pick this site\'s Client to tie it to their account">⚠ no client account</div>';
+        var contactFlag = (site.contact_email || site.contact_phone) ? '' :
+            '<div style="font-size:10px;color:#666;margin-top:2px;">no reminder contact</div>';
         return '<tr style="border-bottom:1px solid #222;">' +
-            '<td style="padding:12px 16px;color:#fff;font-size:13px;">' + escHtml(site.client_name || '—') + '</td>' +
+            '<td style="padding:12px 16px;color:#fff;font-size:13px;">' + escHtml(site.client_name || '—') + linkFlag + contactFlag + '</td>' +
             '<td style="padding:12px 16px;"><div style="color:#fff;font-size:13px;font-weight:600;">' + escHtml(site.site_name || '—') + '</div>' + liveLink + '</td>' +
             '<td style="padding:12px 16px;color:#888;font-size:12px;font-family:monospace;">' + escHtml(site.site_id || '—') + '</td>' +
             '<td style="padding:12px 16px;color:#10b981;font-size:13px;font-weight:600;">$' + (parseFloat(site.monthly_fee) || 0) + '</td>' +
@@ -315,6 +321,14 @@ function showAddSiteModal(editId) {
                 '<div><label style="color:#888;font-size:12px;display:block;margin-bottom:4px;">Next Payment Due</label><input id="siteDueDate" type="date" value="' + escHtml(site && site.next_due_date ? String(site.next_due_date).slice(0,10) : '') + '" style="' + IS + '"></div>' +
                 '<button type="button" onclick="bumpDueDate(1)" style="background:#333;border:1px solid #555;color:#fff;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:12px;white-space:nowrap;">+1 Month</button>' +
             '</div>' +
+            '<div style="border-top:1px solid #2a2a2a;padding-top:14px;">' +
+                '<div style="color:#888;font-size:12px;margin-bottom:8px;">📣 Billing reminders — sent 7 days before the due date (email + SMS)</div>' +
+                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+                    '<div><label style="color:#888;font-size:12px;display:block;margin-bottom:4px;">Contact Email</label><input id="siteContactEmail" value="' + escHtml(site && site.contact_email ? site.contact_email : '') + '" placeholder="client@example.com" style="' + IS + '"></div>' +
+                    '<div><label style="color:#888;font-size:12px;display:block;margin-bottom:4px;">Contact Phone</label><input id="siteContactPhone" value="' + escHtml(site && site.contact_phone ? site.contact_phone : '') + '" placeholder="248-555-0100" style="' + IS + '"></div>' +
+                '</div>' +
+                '<label style="display:flex;align-items:center;gap:8px;margin-top:10px;color:#ccc;font-size:13px;cursor:pointer;"><input id="siteRemindersEnabled" type="checkbox"' + (!site || site.reminders_enabled !== false ? ' checked' : '') + ' style="width:16px;height:16px;cursor:pointer;"> Send automatic reminders for this site</label>' +
+            '</div>' +
             '<div><label style="color:#888;font-size:12px;display:block;margin-bottom:4px;">Notes</label><textarea id="siteNotes" rows="2" style="' + IS + 'resize:vertical;">' + escHtml(site ? site.notes || '' : '') + '</textarea></div>' +
         '</div>' +
         '<div style="display:flex;gap:12px;margin-top:20px;justify-content:flex-end;">' +
@@ -332,7 +346,50 @@ function bumpDueDate(months) {
     el.value = d.toISOString().slice(0, 10);
 }
 
-function autoFillClientName() { var s = document.getElementById('siteClientId'); if (!s) return; var o = s.options[s.selectedIndex]; if (o && o.dataset.name) { var n = document.getElementById('siteName'); if (n && !n.value) n.value = o.dataset.name + ' Website'; } }
+function autoFillClientName() {
+    var s = document.getElementById('siteClientId'); if (!s) return;
+    var o = s.options[s.selectedIndex];
+    if (o && o.dataset.name) {
+        var n = document.getElementById('siteName');
+        if (n && !n.value) n.value = o.dataset.name + ' Website';
+    }
+    // Pull the client's email/phone straight from their account record so
+    // reminders go to the same contact the rest of the system uses.
+    var c = (typeof clients !== 'undefined' && clients.length)
+        ? clients.find(function(x) { return String(x.id) === String(s.value); }) : null;
+    if (c) {
+        var em = document.getElementById('siteContactEmail');
+        var ph = document.getElementById('siteContactPhone');
+        if (em && !em.value && c.email) em.value = c.email;
+        if (ph && !ph.value && (c.phone || c.contactPhone)) ph.value = c.phone || c.contactPhone;
+    }
+}
+
+// Mirror a compact website summary onto the linked client's account record so it
+// shows up in their portal. Uses the existing clients array + sync layer — no new
+// tables, no extra permissions. Refreshed every time the site is saved.
+function syncSiteToClientAccount(siteData) {
+    try {
+        if (!siteData.client_id || typeof clients === 'undefined') return;
+        var c = clients.find(function(x) { return String(x.id) === String(siteData.client_id); });
+        if (!c) return;
+        if (!Array.isArray(c.websites)) c.websites = [];
+        var key = siteData.site_id || siteData.site_name;
+        var entry = {
+            site_id: siteData.site_id,
+            site_name: siteData.site_name,
+            domain: siteData.domain || '',
+            plan: siteData.plan || '',
+            monthly_fee: siteData.monthly_fee || 0,
+            status: siteData.status || 'active',
+            next_due_date: siteData.next_due_date || null,
+            updated_at: new Date().toISOString()
+        };
+        var idx = c.websites.findIndex(function(w) { return (w.site_id || w.site_name) === key; });
+        if (idx >= 0) c.websites[idx] = entry; else c.websites.push(entry);
+        if (typeof saveClients === 'function') saveClients();
+    } catch (e) { console.warn('client account sync skipped:', e.message); }
+}
 function editSite(id) { showAddSiteModal(id); }
 function viewSiteLive(d) { if (d) window.open('https://' + d, '_blank'); }
 
@@ -351,6 +408,9 @@ async function saveSite(editId) {
         plan: document.getElementById('sitePlan')?.value || 'basic',
         monthly_fee: parseFloat(document.getElementById('siteFee')?.value) || 0,
         next_due_date: (document.getElementById('siteDueDate')?.value || '') || null,
+        contact_email: (document.getElementById('siteContactEmail')?.value || '').trim() || null,
+        contact_phone: (document.getElementById('siteContactPhone')?.value || '').trim() || null,
+        reminders_enabled: document.getElementById('siteRemindersEnabled')?.checked !== false,
         status: document.getElementById('siteStatus')?.value || 'active',
         notes: (document.getElementById('siteNotes')?.value || '').trim()
     };
@@ -365,6 +425,7 @@ async function saveSite(editId) {
             else { sd.id = 'local_' + Date.now(); sd.created_at = new Date().toISOString(); _clientSites.push(sd); }
             localStorage.setItem('nui_client_sites', JSON.stringify(_clientSites));
         }
+        syncSiteToClientAccount(sd);
         if (typeof showNotification === 'function') showNotification('Site ' + (editId ? 'updated' : 'added') + ': ' + sd.site_name, 'success');
         var m = document.getElementById('addSiteModal'); if (m) m.remove();
         loadSitesFromSupabase();

@@ -1134,6 +1134,18 @@ async function handlePortalLogin(e) {
             else { completeDesignerLogin(designer); }
         } else { alert('Invalid designer credentials.'); }
     } else {
+        // Client login goes through the server first, so it works on a device with
+        // no local data AND so the browser only ever receives THIS client's records.
+        // See netlify/functions/client-portal-data.js.
+        const serverClient = await loadClientScopedData({ email: email, password: password });
+        if (serverClient) {
+            currentUser = { type: 'client', ...serverClient };
+            document.getElementById('portalLogin').style.display = 'none';
+            document.getElementById('clientPortal').style.display = 'block';
+            showClientPortal(serverClient);
+            return;
+        }
+        // Fallback: local match (offline, or server unreachable).
         const client = clients.find(c => c.email.toLowerCase() === email && c.password === password && !c.blocked);
         if (client) {
             currentUser = { type: 'client', ...client };
@@ -1141,6 +1153,59 @@ async function handlePortalLogin(e) {
             document.getElementById('clientPortal').style.display = 'block';
             showClientPortal(client);
         } else { alert('Invalid client credentials.'); }
+    }
+}
+
+// ── Client-scoped data loader ────────────────────────────────────────
+// Authenticates the client server-side and populates the in-memory arrays the
+// portal renders from — with ONLY their own records. Returns the client record,
+// or null if the server rejected them / was unreachable.
+async function loadClientScopedData(creds) {
+    try {
+        const payload = {};
+        if (creds.session_token) payload.session_token = creds.session_token;
+        if (creds.email) payload.email = creds.email;
+        if (creds.password) payload.password = creds.password;
+        const headers = { 'Content-Type': 'application/json' };
+        if (creds.jwt) headers['Authorization'] = 'Bearer ' + creds.jwt;
+
+        const resp = await fetch('/.netlify/functions/client-portal-data', {
+            method: 'POST', headers: headers, body: JSON.stringify(payload)
+        });
+        if (!resp.ok) {
+            if (resp.status === 403) {
+                const e = await resp.json().catch(() => ({}));
+                alert(e.error || 'This account is inactive — please contact us.');
+            }
+            return null;
+        }
+        const data = await resp.json();
+        if (!data.success || !data.client) return null;
+
+        // Populate the globals the portal renders from — scoped to this client only.
+        if (typeof orders !== 'undefined')   { orders.length = 0;   (data.orders   || []).forEach(o => orders.push(o)); }
+        if (typeof invoices !== 'undefined') { invoices.length = 0; (data.invoices || []).forEach(i => invoices.push(i)); }
+        if (typeof projects !== 'undefined') { projects.length = 0; (data.projects || []).forEach(p => projects.push(p)); }
+        if (typeof proofs !== 'undefined')   { proofs.length = 0;   (data.proofs   || []).forEach(p => proofs.push(p)); }
+        if (typeof clients !== 'undefined')  { clients.length = 0;  clients.push(data.client); }
+
+        // Websites come from the relational table — authoritative, not the mirror.
+        if (Array.isArray(data.sites) && data.sites.length) {
+            data.client.websites = data.sites.map(s => ({
+                site_id: s.site_id, site_name: s.site_name, domain: s.domain,
+                plan: s.plan, monthly_fee: s.monthly_fee, status: s.status,
+                billing_status: s.billing_status, next_due_date: s.next_due_date,
+                on_autopay: !!s.stripe_subscription_id, id: s.id
+            }));
+        }
+        window._clientMessages = data.messages || [];
+        if (data.session_token) {
+            try { localStorage.setItem('nui_client_session', data.session_token); } catch (e) {}
+        }
+        return data.client;
+    } catch (err) {
+        console.warn('client data load failed, falling back to local:', err.message);
+        return null;
     }
 }
 

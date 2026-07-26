@@ -41,6 +41,24 @@ exports.handler = async (event) => {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }
 
+  // ── ADMIN ONLY ──
+  // requireAdmin was imported here but never called, leaving the ENTIRE business
+  // dataset (clients, orders, invoices, payments, CRM) readable AND writable by
+  // anyone with the URL. Client portals no longer depend on this endpoint — they
+  // use client-portal-data.js, which authenticates the client and returns only
+  // their own records.
+  // SYNC_DATA_OPEN=1 in Netlify env is a temporary rollback lever, nothing else.
+  if (process.env.SYNC_DATA_OPEN !== '1') {
+    const auth = requireAdmin(event);
+    if (!auth.authorized) {
+      return {
+        statusCode: 401,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({ error: auth.error || 'Unauthorized' })
+      };
+    }
+  }
+
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 

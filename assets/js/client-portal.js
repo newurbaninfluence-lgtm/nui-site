@@ -124,6 +124,43 @@ ${(() => {
     return pendingProofs.length > 0 ? '<div style="background: #f59e0b15; border: 1px solid #f59e0b40; border-radius: 12px; padding: 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;"><div><span class="fs-20">⏳</span> <strong style="color: #f59e0b;">' + pendingProofs.length + ' proof' + (pendingProofs.length > 1 ? 's' : '') + ' waiting for your review</strong><div style="color: #888; font-size: 13px; margin-top: 4px;">' + pendingProofs.map(p => p.title || p.name || 'Proof').join(', ') + '</div></div><button onclick="switchPortalSection(\'proofs\', ' + client.id + ')" style="padding: 12px 24px; background: #f59e0b; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit;">Review Now →</button></div>' : '';
 })()}
 
+<!-- MY WEBSITE(S) — hosting & maintenance status, mirrored from client_sites -->
+${(() => {
+    const ws = Array.isArray(client.websites) ? client.websites : [];
+    if (!ws.length) return '';
+    const cards = ws.map(w => {
+        const fee = parseFloat(w.monthly_fee) || 0;
+        const sCol = w.status === 'active' ? '#10b981' : (w.status === 'suspended' ? '#ef4444' : '#f59e0b');
+        let dueLine = '<span style="color:#666;">No renewal date set</span>';
+        if (w.next_due_date) {
+            const due = new Date(String(w.next_due_date).slice(0,10) + 'T00:00:00');
+            const t = new Date(); t.setHours(0,0,0,0);
+            const days = Math.round((due - t) / 86400000);
+            const dCol = days < 0 ? '#ef4444' : (days <= 7 ? '#f59e0b' : '#888');
+            const dTxt = days < 0 ? `past due ${Math.abs(days)} days` : (days === 0 ? 'due today' : `renews in ${days} days`);
+            dueLine = `<span style="color:${dCol};">📅 ${due.toLocaleDateString()} · ${dTxt}</span>`;
+        }
+        return `<div style="background:#111;border:1px solid #222;border-radius:12px;padding:20px;">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+<div style="min-width:200px;">
+<div style="font-size:16px;font-weight:600;color:#fff;">${w.site_name || 'Your Website'}</div>
+${w.domain ? `<a href="https://${w.domain}" target="_blank" rel="noopener" style="font-size:13px;color:#3b82f6;text-decoration:none;">${w.domain} ↗</a>` : ''}
+</div>
+<span style="padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;background:${sCol}20;color:${sCol};text-transform:uppercase;height:fit-content;">${w.status || 'active'}</span>
+</div>
+<div style="display:flex;gap:24px;margin-top:16px;flex-wrap:wrap;font-size:13px;">
+<div><div style="color:#666;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Plan</div><div style="color:#ccc;margin-top:2px;">${w.plan || 'Hosting & Maintenance'}</div></div>
+<div><div style="color:#666;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Monthly</div><div style="color:#10b981;font-weight:600;margin-top:2px;">$${fee}</div></div>
+<div><div style="color:#666;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Next Renewal</div><div style="margin-top:2px;">${dueLine}</div></div>
+</div></div>`;
+    }).join('');
+    return `<div style="margin-bottom:32px;">
+<h3 style="font-size:16px;font-weight:700;color:#fff;margin:0 0 14px;">🌐 My Website${ws.length > 1 ? 's' : ''}</h3>
+<div style="display:grid;gap:16px;">${cards}</div>
+<p style="color:#666;font-size:12px;margin:12px 0 0;">Hosting keeps your site online, secure, and backed up. We'll email you before every renewal.</p>
+</div>`;
+})()}
+
 <!-- Quick Actions: Contact Designer & Book a Call -->
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px;">
 <button onclick="openClientMessageDesigner(${client.id})" style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; cursor: pointer; text-align: left; font-family: inherit; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#e11d48'" onmouseout="this.style.borderColor='#222'">
