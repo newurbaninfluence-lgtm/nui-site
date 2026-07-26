@@ -55,6 +55,9 @@ schedule = "0 12 * * 3"
 [functions.upsell-trigger]
 schedule = "0 15 * * *"
 
+[functions.site-reminders]
+schedule = "0 16 * * *"
+
 [functions."*"]
 external_node_modules = ["web-push", "nodemailer"]
 node_bundler = "esbuild"

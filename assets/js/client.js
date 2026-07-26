@@ -648,11 +648,6 @@ async function payInvoice(invoiceId) {
 }
 
 async function proceedToPayment(inv) {
-    if (!window.STRIPE_PUBLISHABLE_KEY) {
-        alert('Payment system not configured. Contact admin to complete payment.');
-        return;
-    }
-
     const amount = inv.total || 0;
     if (amount <= 0) {
         alert('Invalid invoice amount.');
@@ -662,8 +657,12 @@ async function proceedToPayment(inv) {
     // --- FINANCING REDIRECT: Afterpay/Klarna → Stripe Checkout ---
     const hasFinancing = inv.payLater && inv.payLater !== 'none' && !inv.payLater.startsWith('split_');
     const hasSubscription = inv.billingType && inv.billingType !== 'one_time';
+    // No publishable key = the in-page card form can't initialise, so ALWAYS use
+    // Stripe's hosted checkout instead of dead-ending the client with an alert.
+    // Hosted checkout also carries card + Afterpay + Klarna on its own.
+    const mustRedirect = !window.STRIPE_PUBLISHABLE_KEY;
 
-    if (hasFinancing || hasSubscription) {
+    if (hasFinancing || hasSubscription || mustRedirect) {
         try {
             const loadingDiv = document.createElement('div');
             loadingDiv.id = 'financingRedirect';
@@ -695,9 +694,14 @@ async function proceedToPayment(inv) {
                 throw new Error(data.error || 'Failed to create checkout');
             }
         } catch (err) {
-            console.error('Financing checkout error:', err);
+            console.error('Checkout error:', err);
             const el = document.getElementById('financingRedirect');
             if (el) el.remove();
+            if (mustRedirect) {
+                // No card form to fall back to — say something the client can act on.
+                alert('We couldn\'t open the payment page just now. Please try again in a moment, or call (248) 487-8747 and we\'ll take payment directly.');
+                return;
+            }
             alert('Could not set up financing checkout. You can still pay by card below.');
             // Fall through to card payment
         }
