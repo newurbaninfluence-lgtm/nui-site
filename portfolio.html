@@ -75,6 +75,11 @@
         .project-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
         .project-card .tag { font-size: 13px; color: #dc2626; font-weight: 600; margin-bottom: 12px; }
         .project-card p { color: rgba(255,255,255,0.6); font-size: 14px; line-height: 1.6; }
+        .project-card.has-img { padding: 0; overflow: hidden; }
+        .project-card.has-img .card-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; object-position: top; display: block; }
+        .project-card.has-img .card-body { padding: 28px; }
+        .project-card.featured { grid-column: 1 / -1; }
+        @media (min-width: 700px) { .project-card.featured .card-img { aspect-ratio: 21/9; } }
         .filter-bar { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px; justify-content: center; }
         .filter-btn { padding: 8px 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 100px; font-size: 14px; color: rgba(255,255,255,0.7); cursor: pointer; transition: all 0.3s; }
         .filter-btn:hover, .filter-btn.active { border-color: #dc2626; color: #fff; background: rgba(220,38,38,0.1); }
@@ -157,6 +162,15 @@
             </div>
 
             <div class="project-grid">
+                <a href="https://hideaway-v2.netlify.app" target="_blank" rel="noopener noreferrer" class="project-card has-img featured" data-category="web-design" style="border-color: rgba(123,47,255,0.35);">
+                    <img class="card-img" src="/images/portfolio/hideaway-website.jpg" alt="Hideaway Kitchen &amp; Bar website — designed and built by New Urban Influence" loading="lazy">
+                    <div class="card-body">
+                        <div class="tag">Web Design &bull; Full Digital Platform</div>
+                        <h3>Hideaway Kitchen &amp; Bar — Southfield</h3>
+                        <p>Complete digital platform for Southfield's premier kitchen &amp; bar: custom React website, online booth reservations with a live interactive floor plan, staff CRM &amp; booking back office, SMS loyalty program, installable mobile app (PWA), and local-SEO pages that own the neighborhood searches.</p>
+                    </div>
+                </a>
+
                 <a href="#" class="project-card" data-category="brand-identity" style="border-color: rgba(220,38,38,0.25); background: rgba(220,38,38,0.04);">
                     <div class="tag">Campaign &bull; Political</div>
                     <h3>Gov. Rick Snyder — State of Michigan</h3>
