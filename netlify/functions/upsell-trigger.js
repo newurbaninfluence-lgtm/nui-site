@@ -51,7 +51,7 @@ async function sendMail(to, subject, html) {
     host: process.env.SMTP_HOST || 'smtp.hostinger.com', port: 465, secure: true,
     auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
   });
-  await mailer.sendMail({ from: `"NUI System" <${process.env.SMTP_USER}>`, to, subject, html });
+  await mailer.sendMail({ from: `"New Urban Influence" <${process.env.MAIL_FROM_HELLO || 'hello@newurbaninfluence.com'}>`, replyTo: process.env.SMTP_USER, to, subject, html });
 }
 
 exports.handler = async () => {

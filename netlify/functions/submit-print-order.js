@@ -107,7 +107,8 @@ exports.handler = async (event) => {
     });
 
     await transporter.sendMail({
-      from: `"${brand.agency_name} Orders" <${brand.smtp_user || process.env.SMTP_USER || process.env.EMAIL_USER}>`,
+      from: `"${brand.agency_name} Orders" <${brand.smtp_user || process.env.MAIL_FROM_ORDERS || process.env.SMTP_USER || process.env.EMAIL_USER}>`,
+      replyTo: brand.smtp_user || process.env.SMTP_USER || process.env.EMAIL_USER,
       to: brand.company_email || 'info@newurbaninfluence.com',
       subject: `🖨️ New Print Order: $${total} — ${client_name}`,
       html: `
@@ -168,7 +169,8 @@ exports.handler = async (event) => {
     `).join('');
 
     await transporter.sendMail({
-      from: `"${brand.agency_name}" <${brand.smtp_user || process.env.SMTP_USER || process.env.EMAIL_USER}>`,
+      from: `"${brand.agency_name}" <${brand.smtp_user || process.env.MAIL_FROM_ORDERS || process.env.SMTP_USER || process.env.EMAIL_USER}>`,
+      replyTo: brand.smtp_user || process.env.SMTP_USER || process.env.EMAIL_USER,
       to: client_email,
       subject: `Your Print Order — $${total} | ${brand.agency_name}`,
       html: `

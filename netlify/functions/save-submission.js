@@ -259,7 +259,8 @@ async function notifyFarenSetup(submission) {
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
     });
     await mailer.sendMail({
-      from: `"NUI System" <${process.env.SMTP_USER}>`,
+      from: `"NUI System" <${process.env.MAIL_FROM_NOTIFICATIONS || 'notifications@newurbaninfluence.com'}>`,
+      replyTo: process.env.SMTP_USER,
       to: ADMIN_EMAIL,
       subject: `🔔 New Inquiry: ${checklist.label} — ${submission.contact_name || 'Unknown'} (${submission.business_name || ''})`,
       html
@@ -302,7 +303,8 @@ async function sendEmail(toEmail, toName, emailBody) {
     auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
   });
   await mailer.sendMail({
-    from: `"Faren Young | NUI" <${process.env.SMTP_USER}>`,
+    from: `"Faren Young | NUI" <${process.env.MAIL_FROM_HELLO || 'hello@newurbaninfluence.com'}>`,
+    replyTo: process.env.SMTP_USER,
     to: toEmail,
     subject: `Re: Your inquiry to New Urban Influence`,
     text: emailBody,

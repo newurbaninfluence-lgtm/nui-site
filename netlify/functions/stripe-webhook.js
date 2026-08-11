@@ -141,7 +141,8 @@ async function sendNotifyEmail(to, subject, html) {
       host: 'smtp.hostinger.com', port: 465, secure: true,
       auth: { user: SMTP_USER, pass: SMTP_PASS }
     });
-    await transporter.sendMail({ from: `"New Urban Influence" <${SMTP_USER}>`, to, subject, html });
+    const BILLING_FROM = process.env.MAIL_FROM_BILLING || 'billing@newurbaninfluence.com';
+    await transporter.sendMail({ from: `"New Urban Influence Billing" <${BILLING_FROM}>`, replyTo: SMTP_USER, to, subject, html });
     console.log('Email sent to', maskEmail(to));
   } catch (e) { console.error('Email error:', e); }
 }

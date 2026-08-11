@@ -37,7 +37,8 @@ async function triggerBookingConfirmation(clientName, clientEmail, clientPhone, 
 const { maskEmail, maskPhone, maskName, redact, scrub } = require('./utils/log-safe');
         const mailer = nodemailer.createTransport({ host: SMTP_HOST, port: 465, secure: true, auth: { user: SMTP_USER, pass: SMTP_PASS } });
         await mailer.sendMail({
-          from: '"Faren Young | NUI" <' + SMTP_USER + '>',
+          from: '"New Urban Influence Bookings" <' + (process.env.MAIL_FROM_BOOKINGS || 'bookings@newurbaninfluence.com') + '>',
+          replyTo: SMTP_USER,
           to: clientEmail,
           subject: "You're booked — NUI Strategy Call " + meetingDate,
           text: emailBody,
@@ -63,7 +64,8 @@ async function triggerCancellationNotice(clientName, clientEmail, clientPhone, m
       const nodemailer = require('nodemailer');
       const mailer = nodemailer.createTransport({ host: SMTP_HOST, port: 465, secure: true, auth: { user: SMTP_USER, pass: SMTP_PASS } });
       await mailer.sendMail({
-        from: '"Faren Young | NUI" <' + SMTP_USER + '>',
+        from: '"New Urban Influence Bookings" <' + (process.env.MAIL_FROM_BOOKINGS || 'bookings@newurbaninfluence.com') + '>',
+        replyTo: SMTP_USER,
         to: clientEmail,
         subject: 'Your NUI call on ' + meetingDate + ' has been canceled',
         html: '<div style="font-family:sans-serif;max-width:600px;"><p>Hey ' + firstName + ',</p><p>Your call on <strong>' + meetingDate + ' at ' + meetingTime + '</strong> was canceled.</p><p>Rebook anytime: <a href="https://newurbaninfluence.com/book">newurbaninfluence.com/book</a></p><p>— Faren</p></div>'
