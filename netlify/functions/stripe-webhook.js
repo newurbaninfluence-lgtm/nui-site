@@ -51,8 +51,9 @@ async function supabaseSelect(url, serviceKey, table, query) {
 }
 
 // ── Client-site billing linkage (Phase 1) ─────────────────────────────
-// Grace period is configurable: GRACE_PERIOD_DAYS env var, default 7.
-const GRACE_PERIOD_DAYS = Math.max(1, parseInt(process.env.GRACE_PERIOD_DAYS || '7', 10) || 7);
+// Grace period is configurable: GRACE_PERIOD_DAYS env var, default 2.
+// Must match the 48-hour window promised in the site-reminders email.
+const GRACE_PERIOD_DAYS = Math.max(1, parseInt(process.env.GRACE_PERIOD_DAYS || '2', 10) || 2);
 
 // A site auto-reactivates on payment ONLY if it was suspended for nonpayment:
 // the Phase 2 cron constant 'payment_overdue', or the admin UI's prefilled

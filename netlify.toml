@@ -364,6 +364,16 @@
 [functions."upsell-trigger"]
   schedule = "0 15 * * *"
 
+# Billing enforcer — Phase 2 of the billing lifecycle. Daily 1pm ET (17:00 UTC),
+# one hour after site-reminders so the day's reminders go out first.
+# SUSPENDS sites whose grace_until has passed while billing_status='overdue'.
+# RESTORES sites automatically once billing_status returns to 'active'.
+# Only reverses suspensions whose reason starts "Payment overdue" — manual
+# suspensions are never auto-cleared. reminders_enabled=false opts a site out.
+# Set BILLING_ENFORCER_DRY_RUN=1 to log intended actions without writing.
+[functions."billing-enforcer"]
+  schedule = "0 17 * * *"
+
 # Client site billing reminders — daily 12pm ET (16:00 UTC).
 # Emails + texts every client whose hosting payment is due in 3 days
 # (REMINDER_DAYS_BEFORE env var to change the lead time).
