@@ -365,9 +365,12 @@
   schedule = "0 15 * * *"
 
 # Client site billing reminders — daily 12pm ET (16:00 UTC).
-# Emails + texts every client whose hosting payment is due in 7 days
+# Emails + texts every client whose hosting payment is due in 3 days
 # (REMINDER_DAYS_BEFORE env var to change the lead time).
-# Notify-only: never charges, never suspends. Idempotent per due date.
+# Shows list price / discount / amount due, and warns about the 48-hour
+# grace period before suspension. Sites sharing a billing_group get ONE
+# combined reminder. Notify-only: never charges, never suspends.
+# Idempotent per due date via reminder_sent_for.
 [functions."site-reminders"]
   schedule = "0 16 * * *"
 

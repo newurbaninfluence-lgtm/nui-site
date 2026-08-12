@@ -107,6 +107,12 @@ async function buildCheckoutLink(site) {
 
 function buildEmailHtml(site, dueDateStr, payUrl, onStripe) {
   const fee = parseFloat(site.monthly_fee) || 0;
+  const listPrice = parseFloat(site.list_price) || 0;
+  const discount = parseFloat(site.discount_amount) || 0;
+  const discountRow = discount > 0
+    ? `<tr><td style="padding:4px 0;">List price</td><td style="text-align:right;color:#888;text-decoration:line-through;">$${listPrice}/month</td></tr>
+<tr><td style="padding:4px 0;color:#4ade80;">Your discount${site.discount_reason ? ` <span style="color:#666;font-size:12px;">(${site.discount_reason})</span>` : ''}</td><td style="text-align:right;color:#4ade80;">-$${discount}/month</td></tr>`
+    : '';
   const due = new Date(dueDateStr + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   const cta = onStripe
     ? `<p style="color:#ccc;line-height:1.7;">No action needed — your card on file will be charged automatically.</p>`
@@ -121,9 +127,14 @@ function buildEmailHtml(site, dueDateStr, payUrl, onStripe) {
 <div style="background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:20px;margin:22px 0;">
 <table style="width:100%;font-size:14px;color:#ccc;">
 <tr><td style="padding:4px 0;">Website</td><td style="text-align:right;color:#fff;">${site.site_name}</td></tr>
-<tr><td style="padding:4px 0;">Amount</td><td style="text-align:right;color:#fff;font-weight:700;">$${fee}/month</td></tr>
+${discountRow}
+<tr><td style="padding:4px 0;">Amount due</td><td style="text-align:right;color:#fff;font-weight:700;">$${fee}/month</td></tr>
 <tr><td style="padding:4px 0;">Due</td><td style="text-align:right;color:#fff;">${due}</td></tr>
 </table></div>
+<div style="background:#2a1a1a;border:1px solid #5a2a2a;border-left:4px solid #e63946;border-radius:8px;padding:16px 18px;margin:22px 0;">
+<p style="color:#fff;margin:0 0 6px;font-weight:700;font-size:14px;">Please don't miss this date</p>
+<p style="color:#ccc;margin:0;line-height:1.6;font-size:13px;">To keep things running smoothly, we allow a <strong style="color:#fff;">48-hour grace period</strong> after the due date. If payment isn't received by then, your website will be temporarily taken offline until the account is brought current. Your site and all your data stay safe — everything comes right back the moment payment clears.</p>
+</div>
 ${cta}
 <p style="color:#666;font-size:13px;">Questions? Just reply to this email or call (248) 487-8747.</p>
 <div style="border-top:1px solid #222;margin-top:24px;padding-top:16px;text-align:center;color:#555;font-size:12px;">New Urban Influence • Detroit, MI</div></div>`;
@@ -137,8 +148,8 @@ function buildSmsText(site, dueDateStr, payUrl, onStripe) {
     return `NUI: Heads-up — hosting for ${name} ($${fee}/mo) renews ${due}. Your card on file will be charged automatically. Questions? (248) 487-8747. Reply STOP to opt out.`;
   }
   return payUrl
-    ? `NUI: Hosting for ${name} ($${fee}/mo) is due ${due}. Set up auto-pay here: ${payUrl} — Reply STOP to opt out.`
-    : `NUI: Hosting for ${name} ($${fee}/mo) is due ${due}. Call (248) 487-8747 to pay. Reply STOP to opt out.`;
+    ? `NUI: Hosting for ${name} ($${fee}/mo) is due ${due}. Sites are taken offline 48hrs after the due date if unpaid. Set up auto-pay: ${payUrl} — Reply STOP to opt out.`
+    : `NUI: Hosting for ${name} ($${fee}/mo) is due ${due}. Sites are taken offline 48hrs after the due date if unpaid. Call (248) 487-8747 to pay. Reply STOP to opt out.`;
 }
 
 async function sendEmail(to, subject, html) {
@@ -177,7 +188,7 @@ exports.handler = async (event) => {
   try {
     // Sites due exactly DAYS_BEFORE days out, reminders on, not paused/canceled.
     const url = `${SUPABASE_URL}/rest/v1/client_sites`
-      + `?select=id,site_id,site_name,client_name,domain,monthly_fee,billing_status,next_due_date,contact_email,contact_phone,reminders_enabled,reminder_sent_for,stripe_subscription_id`
+      + `?select=id,site_id,site_name,client_name,domain,monthly_fee,list_price,discount_amount,discount_reason,billing_group,billing_status,next_due_date,contact_email,contact_phone,reminders_enabled,reminder_sent_for,stripe_subscription_id`
       + `&next_due_date=eq.${target}`
       + `&reminders_enabled=is.true`
       + `&billing_status=not.in.(paused,canceled)`;
@@ -186,7 +197,44 @@ exports.handler = async (event) => {
     const sites = await resp.json();
     summary.considered = sites.length;
 
+    // Billing-group rollup: sites sharing a billing_group bill together, so the
+    // client gets ONE reminder showing the combined total, not one per site.
+    const groupTotals = {};
+    for (const s of sites) {
+      if (!s.billing_group) continue;
+      const g = groupTotals[s.billing_group] || (groupTotals[s.billing_group] = { fee: 0, list: 0, discount: 0, names: [], primary: null });
+      g.fee += parseFloat(s.monthly_fee) || 0;
+      g.list += parseFloat(s.list_price) || 0;
+      g.discount += parseFloat(s.discount_amount) || 0;
+      g.names.push(s.site_name || s.site_id);
+      if (!g.primary || (parseFloat(s.discount_amount) || 0) > 0) {
+        if (!g.primary) g.primary = s.site_id;
+      }
+      if (s.discount_reason) g.reason = s.discount_reason;
+    }
+    // The site that carries the discount speaks for the group; others stay silent.
+    const groupSpokesman = {};
+    for (const s of sites) {
+      if (!s.billing_group) continue;
+      if (!groupSpokesman[s.billing_group]) groupSpokesman[s.billing_group] = s.site_id;
+      if ((parseFloat(s.discount_amount) || 0) > 0) groupSpokesman[s.billing_group] = s.site_id;
+    }
+
     for (const site of sites) {
+      // Grouped billing — only the spokesman site sends; it reports the group total.
+      if (site.billing_group) {
+        if (groupSpokesman[site.billing_group] !== site.site_id) {
+          summary.skipped.push({ site: site.site_id, why: 'grouped_under_' + site.billing_group });
+          continue;
+        }
+        const g = groupTotals[site.billing_group];
+        site.monthly_fee = g.fee;
+        site.list_price = g.list;
+        site.discount_amount = g.discount;
+        if (g.reason) site.discount_reason = g.reason;
+        if (g.names.length > 1) site.site_name = g.names.join(' + ');
+      }
+
       // Idempotency guard — already reminded about this exact due date.
       if (site.reminder_sent_for === site.next_due_date) {
         summary.skipped.push({ site: site.site_id, why: 'already_sent' });
