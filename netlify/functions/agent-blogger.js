@@ -82,10 +82,15 @@ Return ONLY valid JSON — no markdown, no fences, no explanation:
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'x-api-key': CLAUDE, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 3000, messages: [{ role: 'user', content: prompt }] })
+    body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 8000, messages: [{ role: 'user', content: prompt }] })
   });
   const d = await r.json();
   const raw = d.content?.[0]?.text?.trim() || '{}';
+  // stop_reason 'max_tokens' means the model was cut off mid-JSON — the #1 cause
+  // of parse failures here. Surface it plainly instead of a confusing syntax error.
+  if (d.stop_reason === 'max_tokens') {
+    throw new Error('Blog generation truncated (hit max_tokens) — raise the limit or shorten the prompt');
+  }
   try { return JSON.parse(raw.replace(/```json|```/g, '').trim()); }
   catch { const match = raw.match(/\{[\s\S]*\}/); if (match) { try { return JSON.parse(match[0]); } catch {} } throw new Error('Blog JSON parse failed: ' + raw.slice(0, 200)); }
 }
@@ -127,7 +132,13 @@ async function generateAndSave(topicObj, autoPublish = false) {
   const blog = await generateBlogPost(topic, category, keywords);
   if (!blog.title) throw new Error('Blog generation failed — no title');
   const now = new Date();
-  const slug = slugify(blog.title) + '-' + now.getFullYear();
+  // Slug must be unique. Title + year alone collides whenever the same topic is
+  // regenerated in the same year — which is exactly what happens when a run fails
+  // before logging topic_slug, so getNextTopic picks the same topic again.
+  // Full date + short random suffix makes repeats safe.
+  const datePart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const rand = Math.random().toString(36).slice(2, 6);
+  const slug = `${slugify(blog.title)}-${datePart}-${rand}`;
   const dateStr = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   const [voiceover, heroImage] = await Promise.all([generateVoiceover(blog.voice_script), getHeroImage(blog.image_search_query)]);
   let fullContent = blog.content || '';
@@ -148,7 +159,16 @@ exports.handler = async (event) => {
     const body = event.httpMethod === 'POST' ? JSON.parse(event.body || '{}') : {};
     const autoPublish = body.auto_publish === true;
     let topicObj = body.topic ? { topic: body.topic, category: body.category || 'Branding', keywords: body.keywords || ['Detroit branding', 'NUI agency', 'brand strategy'] } : await getNextTopic();
-    const result = await generateAndSave(topicObj, autoPublish);
+    let result;
+    try {
+      result = await generateAndSave(topicObj, autoPublish);
+    } catch (genErr) {
+      // Record which topic failed. Without this, getNextTopic() sees no
+      // topic_slug in the logs and hands back the SAME topic next run —
+      // the loop that produced 75 identical failures.
+      await logRun({ success: false, error: genErr.message, topic: topicObj.topic, topic_slug: slugify(topicObj.topic) });
+      throw genErr;
+    }
     await logRun(result);
     return { statusCode: 200, headers: CORS, body: JSON.stringify(result) };
   } catch (err) {
