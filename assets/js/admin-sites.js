@@ -77,6 +77,15 @@ function renderSitesTable() {
             '<button onclick="promptSuspendSite(\'' + site.id + '\',\'' + escHtml(site.site_name || '') + '\')" style="background:#3a1515;border:1px solid #ef4444;color:#ef4444;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;">⛔ Suspend</button>' :
             (isSuspended ?
                 '<button onclick="reactivateSite(\'' + site.id + '\')" style="background:#0d3320;border:1px solid #10b981;color:#10b981;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;">✅ Reactivate</button>' : '');
+        // ── Manual "Send reminder now" ──
+        // The scheduled job only fires 7 days before next_due_date; this sends
+        // the same email/SMS on demand. Disabled (with the reason in the
+        // tooltip) when the site can't actually be reminded yet.
+        var remindWhy = !site.next_due_date ? 'No due date set on this site' :
+            (!site.contact_email && !site.contact_phone ? 'No billing email or phone on this site' : '');
+        var remindBtn = remindWhy ?
+            '<button disabled title="' + escHtml(remindWhy) + '" style="background:#1a1a1a;border:1px solid #333;color:#555;padding:6px 10px;border-radius:6px;cursor:not-allowed;font-size:11px;margin-right:4px;">🔔 Remind</button>' :
+            '<button onclick="showRemindModal(\'' + site.id + '\')" title="Send the payment reminder now" style="background:#2a2010;border:1px solid #f59e0b;color:#f59e0b;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;margin-right:4px;">🔔 Remind</button>';
         var suspInfo = isSuspended && site.suspended_reason ?
             '<div style="font-size:10px;color:#ef4444;margin-top:3px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + escHtml(site.suspended_reason) + '">⚠ ' + escHtml(site.suspended_reason) + '</div>' : '';
         // ── Phase 1B billing cell ──
@@ -133,7 +142,7 @@ function renderSitesTable() {
             '<td style="padding:12px 16px;white-space:nowrap;">' +
                 '<button onclick="editSite(\'' + site.id + '\')" style="background:#333;border:1px solid #555;color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px;margin-right:4px;">Edit</button>' +
                 '<button onclick="showSiteCredentials(\'' + site.id + '\')" title="Admin login for this site" style="background:#1a2033;border:1px solid #3b82f6;color:#3b82f6;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;margin-right:4px;">🔑 Login</button>' +
-                suspendBtn + '</td></tr>';
+                remindBtn + suspendBtn + '</td></tr>';
     }).join('');
 }
 
@@ -305,6 +314,64 @@ async function smsCheckoutLink(siteId) {
         if (!resp.ok) { var d = await resp.json().catch(function() { return {}; }); throw new Error(d.error || 'Send failed'); }
         if (typeof showNotification === 'function') showNotification('Checkout link texted to ' + contact.phone, 'success');
     } catch (err) { _checkoutToast('SMS error: ' + err.message); }
+}
+
+// ---- MANUAL PAYMENT REMINDER ----
+// Sends the same reminder email/SMS as the scheduled 7-day job, on demand.
+// Confirmation is an in-page modal, never confirm()/alert() — see the note on
+// the checkout flow above for why native dialogs can't be trusted here.
+function showRemindModal(siteId) {
+    var site = _clientSites.find(function(s) { return String(s.id) === String(siteId); });
+    if (!site) { _checkoutToast('Site not found. Refresh the panel.'); return; }
+    var ex = document.getElementById('remindModal'); if (ex) ex.remove();
+    var fee = parseFloat(site.monthly_fee) || 0;
+    var due = site.next_due_date ? new Date(String(site.next_due_date).slice(0, 10) + 'T12:00:00').toLocaleDateString() : '—';
+    var onStripe = !!site.stripe_subscription_id;
+    var rows = '';
+    if (site.contact_email) rows += '<div style="color:#3b82f6;font-size:13px;margin-bottom:4px;">📧 ' + escHtml(site.contact_email) + '</div>';
+    if (site.contact_phone) rows += '<div style="color:#10b981;font-size:13px;">💬 ' + escHtml(site.contact_phone) + '</div>';
+    var modal = document.createElement('div'); modal.id = 'remindModal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:9999;';
+    modal.innerHTML =
+        '<div style="background:#1a1a1a;border:1px solid #333;border-radius:16px;padding:32px;width:480px;max-width:92vw;">' +
+        '<h3 style="margin:0 0 6px;color:#fff;font-size:18px;">🔔 Send reminder — ' + escHtml(site.site_name || '') + '</h3>' +
+        '<p style="margin:0 0 16px;color:#888;font-size:13px;">$' + fee + '/mo · due ' + escHtml(due) + '. ' +
+            (onStripe ? 'This site is on auto-pay, so it gets a heads-up only — no payment link.' : 'Includes a one-tap auto-pay link.') + '</p>' +
+        '<div style="background:#111;border:1px solid #333;border-radius:8px;padding:14px 16px;margin-bottom:20px;">' +
+            '<div style="color:#666;font-size:11px;text-transform:uppercase;margin-bottom:8px;">Sending to</div>' + rows + '</div>' +
+        '<div id="remindError" style="display:none;color:#ef4444;font-size:12px;margin:-10px 0 16px;"></div>' +
+        '<div style="display:flex;gap:10px;justify-content:flex-end;">' +
+            '<button onclick="document.getElementById(\'remindModal\').remove()" style="background:#333;border:1px solid #555;color:#fff;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;">Cancel</button>' +
+            '<button id="remindGo" onclick="confirmSendReminder(\'' + escHtml(String(site.id)) + '\')" style="background:#2a2010;border:1px solid #f59e0b;color:#f59e0b;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">Send Now</button>' +
+        '</div></div>';
+    document.body.appendChild(modal);
+    modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
+}
+
+async function confirmSendReminder(siteId) {
+    var go = document.getElementById('remindGo');
+    var errEl = document.getElementById('remindError');
+    if (go) { go.disabled = true; go.textContent = 'Sending…'; }
+    if (errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
+    try {
+        var resp = await fetch('/.netlify/functions/send-site-reminder', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ site_id: String(siteId) })
+        });
+        var data = {};
+        try { data = await resp.json(); } catch (e) { data = {}; }
+        if (!resp.ok) throw new Error(data.error || ('Send failed (HTTP ' + resp.status + ')'));
+        var sent = [];
+        if (data.emailed) sent.push('emailed');
+        if (data.texted) sent.push('texted');
+        var m = document.getElementById('remindModal'); if (m) m.remove();
+        _checkoutToast('Reminder ' + (sent.join(' + ') || 'sent'), 'success');
+    } catch (err) {
+        if (errEl) { errEl.textContent = err.message; errEl.style.display = 'block'; }
+        else { _checkoutToast(err.message); }
+    } finally {
+        if (go) { go.disabled = false; go.textContent = 'Send Now'; }
+    }
 }
 
 // ---- SUSPEND / REACTIVATE ----

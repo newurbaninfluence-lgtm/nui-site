@@ -298,3 +298,11 @@ exports.handler = async (event) => {
     return { statusCode: 500, body: JSON.stringify({ error: err.message, summary }) };
   }
 };
+
+// ── Exported for the manual "Send reminder now" admin action ──
+// (netlify/functions/send-site-reminder.js). The scheduled handler above is
+// unchanged — this only makes its building blocks reusable for a single site.
+module.exports.helpers = {
+  sbHeaders, toE164, isSmsSuppressed, buildCheckoutLink,
+  buildEmailHtml, buildSmsText, sendEmail, sendSms, DAYS_BEFORE
+};
