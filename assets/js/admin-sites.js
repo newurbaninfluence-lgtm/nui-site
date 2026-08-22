@@ -140,14 +140,63 @@ function renderSitesTable() {
 // ---- PHASE 1B: SEND HOSTING CHECKOUT LINK ----
 // Generates a Stripe Checkout link priced SERVER-SIDE from client_sites.monthly_fee.
 // Does NOT mark the site linked/active/paid — only the webhook does that.
-async function sendHostingCheckout(siteId) {
+// NOTE: this flow uses NO native prompt()/alert(). Chrome suppresses further
+// dialogs on a tab once the user ticks "prevent this page from creating
+// additional dialogs" (and prompt() returns null), which made this button
+// silently do nothing. Everything is in-page now.
+function _checkoutToast(msg, type) {
+    if (typeof showNotification === 'function') { showNotification(msg, type || 'error'); return; }
+    var ex = document.getElementById('checkoutToast'); if (ex) ex.remove();
+    var t = document.createElement('div'); t.id = 'checkoutToast';
+    t.style.cssText = 'position:fixed;top:20px;right:20px;z-index:10001;max-width:420px;padding:14px 18px;border-radius:10px;font-size:13px;font-weight:600;color:#fff;background:' + (type === 'success' ? '#0d3320' : '#3a1515') + ';border:1px solid ' + (type === 'success' ? '#10b981' : '#ef4444') + ';box-shadow:0 8px 24px rgba(0,0,0,.5);';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function() { if (t.parentNode) t.remove(); }, 6000);
+}
+
+function sendHostingCheckout(siteId) {
     var site = _clientSites.find(function(s) { return String(s.id) === String(siteId); });
-    if (!site) { alert('Site not found. Refresh the panel.'); return; }
-    if (site.stripe_subscription_id) { alert('This site is already linked to subscription ' + site.stripe_subscription_id); return; }
-    if (!(parseFloat(site.monthly_fee) > 0)) { alert('Set a monthly fee on this site first (Edit → $/Month).'); return; }
-    var trialInput = prompt('Free trial days before the first charge (0 = charge immediately, max 90):', '0');
-    if (trialInput === null) return; // admin cancelled
-    var trialDays = Math.min(90, Math.max(0, parseInt(trialInput, 10) || 0));
+    if (!site) { _checkoutToast('Site not found. Refresh the panel.'); return; }
+    if (site.stripe_subscription_id) { _checkoutToast('This site is already linked to subscription ' + site.stripe_subscription_id); return; }
+    if (!(parseFloat(site.monthly_fee) > 0)) { _checkoutToast('Set a monthly fee on this site first (Edit → $/Month).'); return; }
+    showTrialDaysModal(site);
+}
+
+// In-page replacement for the old prompt('Free trial days…').
+function showTrialDaysModal(site) {
+    var ex = document.getElementById('trialDaysModal'); if (ex) ex.remove();
+    var fee = parseFloat(site.monthly_fee) || 0;
+    var modal = document.createElement('div'); modal.id = 'trialDaysModal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:9999;';
+    modal.innerHTML =
+        '<div style="background:#1a1a1a;border:1px solid #333;border-radius:16px;padding:32px;width:460px;max-width:92vw;">' +
+        '<h3 style="margin:0 0 6px;color:#fff;font-size:18px;">💳 Checkout Link — ' + escHtml(site.site_name || '') + '</h3>' +
+        '<p style="margin:0 0 18px;color:#888;font-size:13px;">$' + fee + '/mo subscription. Set a free trial before the first charge, or leave 0 to charge immediately.</p>' +
+        '<label style="display:block;color:#aaa;font-size:12px;margin-bottom:6px;">Free trial days (0–90)</label>' +
+        '<input id="trialDaysInput" type="number" min="0" max="90" step="1" value="0" style="width:100%;padding:12px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;margin-bottom:20px;">' +
+        '<div id="trialDaysError" style="display:none;color:#ef4444;font-size:12px;margin:-12px 0 16px;"></div>' +
+        '<div style="display:flex;gap:10px;justify-content:flex-end;">' +
+            '<button onclick="document.getElementById(\'trialDaysModal\').remove()" style="background:#333;border:1px solid #555;color:#fff;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;">Cancel</button>' +
+            '<button id="trialDaysGo" onclick="confirmHostingCheckout(\'' + escHtml(String(site.id)) + '\')" style="background:#1a1033;border:1px solid #a855f7;color:#a855f7;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">Generate Link</button>' +
+        '</div></div>';
+    document.body.appendChild(modal);
+    modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
+    var input = document.getElementById('trialDaysInput');
+    if (input) {
+        input.focus(); input.select();
+        input.addEventListener('keydown', function(e) { if (e.key === 'Enter') confirmHostingCheckout(String(site.id)); });
+    }
+}
+
+async function confirmHostingCheckout(siteId) {
+    var site = _clientSites.find(function(s) { return String(s.id) === String(siteId); });
+    if (!site) { _checkoutToast('Site not found. Refresh the panel.'); return; }
+    var raw = (document.getElementById('trialDaysInput') || {}).value;
+    var trialDays = Math.min(90, Math.max(0, parseInt(raw, 10) || 0));
+    var errEl = document.getElementById('trialDaysError');
+    var go = document.getElementById('trialDaysGo');
+    if (go) { go.disabled = true; go.textContent = 'Generating…'; }
+    if (errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
     var btn = document.getElementById('checkoutBtn_' + siteId);
     if (btn) { btn.disabled = true; btn.textContent = 'Generating…'; }
     try {
@@ -155,12 +204,16 @@ async function sendHostingCheckout(siteId) {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ site_checkout: true, site_id: String(siteId), trial_days: trialDays })
         });
-        var data = await resp.json();
-        if (!resp.ok || !data.url) throw new Error(data.error || 'Checkout link generation failed');
+        var data = {};
+        try { data = await resp.json(); } catch (e) { data = {}; }
+        if (!resp.ok || !data.url) throw new Error(data.error || ('Checkout link generation failed (HTTP ' + resp.status + ')'));
+        var tm = document.getElementById('trialDaysModal'); if (tm) tm.remove();
         showCheckoutLinkModal(site, data.url, data.amount, data.trial_days);
     } catch (err) {
-        alert('Error: ' + err.message);
+        if (errEl) { errEl.textContent = err.message; errEl.style.display = 'block'; }
+        else { _checkoutToast(err.message); }
     } finally {
+        if (go) { go.disabled = false; go.textContent = 'Generate Link'; }
         if (btn) { btn.disabled = false; btn.textContent = '💳 Checkout Link'; }
     }
 }
@@ -212,9 +265,9 @@ function copyCheckoutLink() {
 async function emailCheckoutLink(siteId) {
     var cache = window._checkoutLinkCache || {};
     var site = _clientSites.find(function(s) { return String(s.id) === String(siteId); });
-    if (!site || cache.siteId !== String(siteId) || !cache.url) { alert('Regenerate the link first.'); return; }
+    if (!site || cache.siteId !== String(siteId) || !cache.url) { _checkoutToast('Regenerate the link first.'); return; }
     var contact = _siteClientContact(site);
-    if (!contact.email) { alert('No client email on file.'); return; }
+    if (!contact.email) { _checkoutToast('No client email on file.'); return; }
     try {
         var resp = await fetch('/.netlify/functions/send-email', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -232,15 +285,15 @@ async function emailCheckoutLink(siteId) {
         });
         if (!resp.ok) { var d = await resp.json().catch(function() { return {}; }); throw new Error(d.error || 'Send failed'); }
         if (typeof showNotification === 'function') showNotification('Checkout link emailed to ' + contact.email, 'success');
-    } catch (err) { alert('Email error: ' + err.message); }
+    } catch (err) { _checkoutToast('Email error: ' + err.message); }
 }
 
 async function smsCheckoutLink(siteId) {
     var cache = window._checkoutLinkCache || {};
     var site = _clientSites.find(function(s) { return String(s.id) === String(siteId); });
-    if (!site || cache.siteId !== String(siteId) || !cache.url) { alert('Regenerate the link first.'); return; }
+    if (!site || cache.siteId !== String(siteId) || !cache.url) { _checkoutToast('Regenerate the link first.'); return; }
     var contact = _siteClientContact(site);
-    if (!contact.phone) { alert('No client phone on file.'); return; }
+    if (!contact.phone) { _checkoutToast('No client phone on file.'); return; }
     try {
         var resp = await fetch('/.netlify/functions/send-sms', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -251,7 +304,7 @@ async function smsCheckoutLink(siteId) {
         });
         if (!resp.ok) { var d = await resp.json().catch(function() { return {}; }); throw new Error(d.error || 'Send failed'); }
         if (typeof showNotification === 'function') showNotification('Checkout link texted to ' + contact.phone, 'success');
-    } catch (err) { alert('SMS error: ' + err.message); }
+    } catch (err) { _checkoutToast('SMS error: ' + err.message); }
 }
 
 // ---- SUSPEND / REACTIVATE ----
