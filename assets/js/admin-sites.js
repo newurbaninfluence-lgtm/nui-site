@@ -228,10 +228,19 @@ async function confirmHostingCheckout(siteId) {
 }
 
 function _siteClientContact(site) {
-    // Resolve the client's email/phone from the global clients array (best effort).
+    // Resolve who to send to. Prefer the linked client account, but fall back to
+    // the contact_email / contact_phone columns ON THE SITE ROW — those are what
+    // site-reminders.js already uses, and most sites have no client account
+    // linked. Without this fallback the Email/SMS buttons never appeared.
     var c = (typeof clients !== 'undefined' && clients.length) ?
         clients.find(function(x) { return String(x.id) === String(site.client_id); }) : null;
-    return { email: c && c.email ? c.email : '', phone: c && c.phone ? c.phone : '', name: (c && c.name) || site.client_name || '' };
+    var email = (c && c.email) || site.contact_email || '';
+    var phone = (c && c.phone) || site.contact_phone || '';
+    return {
+        email: String(email).trim(),
+        phone: String(phone).trim(),
+        name: (c && c.name) || site.client_name || ''
+    };
 }
 
 function showCheckoutLinkModal(site, url, amount, trialDays) {
