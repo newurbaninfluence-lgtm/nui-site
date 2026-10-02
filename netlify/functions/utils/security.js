@@ -26,15 +26,15 @@ function getCorsHeaders(event) {
 
 // ── Admin Auth Check ──
 // Requires X-Admin-Token header matching ADMIN_SECRET env var
-// SOFT ROLLOUT: If ADMIN_SECRET is not set, logs warning but allows through
-// Once you set ADMIN_SECRET in Netlify Dashboard, auth is enforced
+// Fails closed: if ADMIN_SECRET is not set, every request is rejected.
 function requireAdmin(event) {
   const token = event.headers['x-admin-token'] || event.headers['X-Admin-Token'] || '';
   const secret = process.env.ADMIN_SECRET;
 
   if (!secret) {
-    console.warn('⚠️ ADMIN_SECRET not set — admin endpoint is UNPROTECTED. Set it in Netlify Dashboard.');
-    return { authorized: true, warning: 'No ADMIN_SECRET configured' };
+    // FAIL CLOSED: no secret configured = nobody is admin.
+    console.error('ADMIN_SECRET not set — admin endpoint locked.');
+    return { authorized: false, error: 'Admin auth not configured' };
   }
 
   if (!token) {

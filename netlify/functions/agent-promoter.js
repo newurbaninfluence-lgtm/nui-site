@@ -1,3 +1,4 @@
+const { skipIfDuplicateSchedule } = require('./utils/primary-site');
 // agent-promoter.js — The Promoter Agent v3
 // CAROUSEL DESIGN SYSTEM — NUI Black Slides (Satori + resvg-js)
 // Schedule: daily 9am CT (netlify.toml)
@@ -413,6 +414,7 @@ async function generateCarouselContent(pillar) {
 
 // ── MAIN HANDLER ─────────────────────────────────────────────
 exports.handler = async (event) => {
+  const __dup = skipIfDuplicateSchedule(event, 'agent-promoter'); if (__dup) return __dup;
   // ── PAUSED — do not remove this guard until cover bugs are fixed ──
   return { statusCode: 200, headers: CORS, body: JSON.stringify({ paused: true }) };
 

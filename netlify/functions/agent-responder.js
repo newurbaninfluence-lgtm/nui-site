@@ -1,3 +1,4 @@
+const { skipIfDuplicateSchedule } = require('./utils/primary-site');
 // agent-responder.js — The Responder Agent v2
 // Upgraded: claude-sonnet-4-6, better review response prompts
 // Handles: GBP review replies only (form replies handled by save-submission.js)
@@ -83,6 +84,7 @@ async function logRun(data) {
 }
 
 exports.handler = async (event) => {
+  const __dup = skipIfDuplicateSchedule(event, 'agent-responder'); if (__dup) return __dup;
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
   if (GMB_TOKEN && GMB_LOC) {
     try {

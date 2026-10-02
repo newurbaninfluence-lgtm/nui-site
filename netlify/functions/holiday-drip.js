@@ -1,3 +1,4 @@
+const { skipIfDuplicateSchedule } = require('./utils/primary-site');
 // holiday-drip.js — Netlify Scheduled Function
 // Runs daily. Checks upcoming US holidays.
 // Sends weekly countdown emails starting 60 days before each holiday.
@@ -321,6 +322,7 @@ function buildHolidayEmail(firstName, holiday, week, printUrl, resolved, holiday
 
 // ==================== MAIN HANDLER ====================
 exports.handler = async (event) => {
+  const __dup = skipIfDuplicateSchedule(event, 'holiday-drip'); if (__dup) return __dup;
     console.log('🎄 Holiday drip check running...');
     // Resolve brand — holiday drip uses NUI by default (no agency_id on scheduled functions)
     // To run for a specific agency, pass agency_id in event body

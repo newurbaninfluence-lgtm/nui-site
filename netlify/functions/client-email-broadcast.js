@@ -1,3 +1,4 @@
+const { skipIfDuplicateSchedule } = require('./utils/primary-site');
 // client-email-broadcast.js — Industry-Routed Closing Machine v3
 // Each contact walks the sequence for their business_category.
 // Tagged contacts → drip_emails industry sequence (nightlife, hvac, etc.)
@@ -484,6 +485,7 @@ async function markContact(contactId, subject, step = null, isNew = false, bounc
 
 // ── Main handler ──────────────────────────────────────────────────────────
 exports.handler = async (event) => {
+  const __dup = skipIfDuplicateSchedule(event, 'client-email-broadcast'); if (__dup) return __dup;
   const isManual = event.httpMethod === 'POST';
 
   if (!SMTP_USER || !SMTP_PASS) return { statusCode: 500, body: JSON.stringify({ error: 'SMTP not configured' }) };

@@ -1,3 +1,4 @@
+const { skipIfDuplicateSchedule } = require('./utils/primary-site');
 // netlify/functions/billing-enforcer.js
 // ─────────────────────────────────────────────────────────────────────────────
 // PHASE 2 of the billing lifecycle. stripe-webhook.js marks sites 'overdue'
@@ -62,7 +63,8 @@ async function logRun(status, metadata) {
   }
 }
 
-exports.handler = async () => {
+exports.handler = async (event) => {
+  const __dup = skipIfDuplicateSchedule(event, 'billing-enforcer'); if (__dup) return __dup;
   const summary = { suspended: [], restored: [], skipped: [], errors: [] };
 
   if (!SUPABASE_URL || !SERVICE_KEY) {

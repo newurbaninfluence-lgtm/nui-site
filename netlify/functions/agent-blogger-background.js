@@ -1,3 +1,4 @@
+const { callClaudeJSON } = require('./utils/claude-json');
 // agent-blogger-background.js — Background version for manual admin triggers
 // Netlify background functions: 15-min timeout, returns 202 immediately
 // Results written to agent_logs + blog_posts in Supabase
@@ -85,29 +86,14 @@ Return ONLY valid JSON with these fields:
   "image_search_query": "4-6 word Pexels query for hero image"
 }
 
-Return ONLY valid JSON. No markdown fences.`;
+Return the post by calling the save_blog_post tool with these fields.`;
 
-  const r = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'x-api-key': CLAUDE, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 2000,
-      messages: [{ role: 'user', content: prompt }]
-    })
+  // Forced tool call = parsed object back; raised from 2000 tokens (truncated long posts).
+  return callClaudeJSON({
+    apiKey: CLAUDE, model: 'claude-haiku-4-5-20251001', maxTokens: 6000, prompt,
+    toolName: 'save_blog_post', toolDescription: 'Save the finished blog post.',
+    schema: { type: 'object', properties: { title: { type: 'string' }, meta_description: { type: 'string' }, excerpt: { type: 'string' }, read_time: { type: 'string' }, content: { type: 'string' }, voice_script: { type: 'string' }, image_search_query: { type: 'string' } }, required: ['title', 'meta_description', 'excerpt', 'read_time', 'content', 'voice_script', 'image_search_query'] },
   });
-  const d = await r.json();
-  const raw = d.content?.[0]?.text?.trim() || '{}';
-  try {
-    return JSON.parse(raw.replace(/```json|```/g, '').trim());
-  } catch {
-    // Try to extract JSON from response
-    const match = raw.match(/\{[\s\S]*\}/);
-    if (match) {
-      try { return JSON.parse(match[0]); } catch {}
-    }
-    throw new Error('Failed to parse blog JSON from Claude: ' + raw.slice(0, 200));
-  }
 }
 
 // ── Step 2: Generate voiceover with Synthesys ────────────────────────────────

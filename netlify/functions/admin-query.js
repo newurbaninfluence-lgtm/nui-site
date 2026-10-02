@@ -1,3 +1,4 @@
+const { requireAdmin } = require('./utils/security');
 // ========================================================================
 // admin-query.js  -  Transparent PostgREST proxy for NUI admin panel
 // ========================================================================
@@ -32,15 +33,15 @@ exports.handler = async (event) => {
 
   const SUPABASE_URL         = process.env.SUPABASE_URL;
   const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
-  const ADMIN_TOKEN          = process.env.NUI_ADMIN_TOKEN;
 
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
     return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'Supabase not configured' }) };
   }
 
-  // Auth — if the env var is set, the header must match
-  const supplied = event.headers['x-admin-token'] || event.headers['X-Admin-Token'] || '';
-  if (ADMIN_TOKEN && supplied !== ADMIN_TOKEN) {
+  // Auth — FAIL CLOSED via shared requireAdmin (ADMIN_SECRET, same token the /app/ admin sends).
+  // Previously only checked when NUI_ADMIN_TOKEN was set; it never was, so this was open to anyone.
+  const __auth = requireAdmin(event);
+  if (!__auth.authorized) {
     return { statusCode: 401, headers: CORS, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 

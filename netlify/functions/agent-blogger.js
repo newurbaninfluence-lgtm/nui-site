@@ -1,3 +1,5 @@
+const { callClaudeJSON } = require('./utils/claude-json');
+const { skipIfDuplicateSchedule } = require('./utils/primary-site');
 // agent-blogger.js — The Blogger Agent v2
 // Upgraded: claude-sonnet-4-6, stronger prompts, better SEO structure
 // TODO: Move to Cowork task (Mac Mini) when back online — will add web research
@@ -68,7 +70,7 @@ SEO REQUIREMENTS:
 — One Detroit-specific example or scenario minimum
 — CTA at the end linking to https://newurbaninfluence.com/contact
 
-Return ONLY valid JSON — no markdown, no fences, no explanation:
+Return the post by calling the save_blog_post tool with these fields:
 {
   "title": "SEO title 55-60 chars — direct, specific, Detroit or small business angle",
   "meta_description": "155 chars max — lead with the benefit, include primary keyword",
@@ -79,20 +81,24 @@ Return ONLY valid JSON — no markdown, no fences, no explanation:
   "image_search_query": "4-6 word Pexels search query — specific to the topic"
 }`;
 
-  const r = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'x-api-key': CLAUDE, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 8000, messages: [{ role: 'user', content: prompt }] })
+  // Forced tool call = the API hands back a parsed object. No more JSON.parse on long HTML.
+  return callClaudeJSON({
+    apiKey: CLAUDE, model: 'claude-sonnet-4-6', maxTokens: 8000, prompt,
+    toolName: 'save_blog_post', toolDescription: 'Save the finished blog post.',
+    schema: {
+    type: 'object',
+    properties: {
+      title: { type: 'string' },
+      meta_description: { type: 'string' },
+      excerpt: { type: 'string' },
+      read_time: { type: 'string' },
+      content: { type: 'string', description: 'Full post HTML' },
+      voice_script: { type: 'string' },
+      image_search_query: { type: 'string' },
+    },
+    required: ['title', 'meta_description', 'excerpt', 'read_time', 'content', 'voice_script', 'image_search_query'],
+  },
   });
-  const d = await r.json();
-  const raw = d.content?.[0]?.text?.trim() || '{}';
-  // stop_reason 'max_tokens' means the model was cut off mid-JSON — the #1 cause
-  // of parse failures here. Surface it plainly instead of a confusing syntax error.
-  if (d.stop_reason === 'max_tokens') {
-    throw new Error('Blog generation truncated (hit max_tokens) — raise the limit or shorten the prompt');
-  }
-  try { return JSON.parse(raw.replace(/```json|```/g, '').trim()); }
-  catch { const match = raw.match(/\{[\s\S]*\}/); if (match) { try { return JSON.parse(match[0]); } catch {} } throw new Error('Blog JSON parse failed: ' + raw.slice(0, 200)); }
 }
 
 async function generateVoiceover(script) {
@@ -154,6 +160,7 @@ async function generateAndSave(topicObj, autoPublish = false) {
 }
 
 exports.handler = async (event) => {
+  const __dup = skipIfDuplicateSchedule(event, 'agent-blogger'); if (__dup) return __dup;
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
   try {
     const body = event.httpMethod === 'POST' ? JSON.parse(event.body || '{}') : {};

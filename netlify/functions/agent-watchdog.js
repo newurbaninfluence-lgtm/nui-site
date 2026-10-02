@@ -1,3 +1,4 @@
+const { skipIfDuplicateSchedule } = require('./utils/primary-site');
 // netlify/functions/agent-watchdog.js
 // ─────────────────────────────────────────────────────────────────────────────
 // Watches the other agents so silent failures don't run for weeks.
@@ -106,7 +107,8 @@ ${rows}
   return { sent: true, to: ALERT_TO };
 }
 
-exports.handler = async () => {
+exports.handler = async (event) => {
+  const __dup = skipIfDuplicateSchedule(event, 'agent-watchdog'); if (__dup) return __dup;
   if (!SUPABASE_URL || !SERVICE_KEY) {
     return { statusCode: 500, body: JSON.stringify({ error: 'Missing Supabase config' }) };
   }

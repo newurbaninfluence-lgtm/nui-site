@@ -1,3 +1,4 @@
+const { skipIfDuplicateSchedule } = require('./utils/primary-site');
 // monty-followup.js — Scheduled NEPQ Follow-up + Reactivation v2
 // Upgraded: claude-sonnet-4-6, NEPQ-aligned prompts from Obsidian vault
 // Runs every hour via netlify.toml cron
@@ -88,6 +89,7 @@ async function getDailySmsSent() {
 const DAILY_SMS_CAP = 15;
 
 exports.handler = async function(event) {
+  const __dup = skipIfDuplicateSchedule(event, 'monty-followup'); if (__dup) return __dup;
   if (!SUPABASE_URL || !SUPABASE_KEY || !ANTHROPIC_API_KEY) return { statusCode: 200, body: JSON.stringify({ skipped: 'missing env vars' }) };
 
   const now = new Date();

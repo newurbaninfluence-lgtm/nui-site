@@ -1,3 +1,4 @@
+const { requireAdmin } = require('./utils/security');
 // ========================================================================
 // push-reinvite.js  -  Admin-triggered SMS that links recipients back to
 //                      the site with ?push=1 so the opt-in banner fires.
@@ -30,9 +31,10 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers: CORS, body: JSON.stringify({ error: 'POST only' }) };
   }
 
-  const ADMIN_TOKEN = process.env.NUI_ADMIN_TOKEN;
-  const supplied = event.headers['x-admin-token'] || event.headers['X-Admin-Token'] || '';
-  if (ADMIN_TOKEN && supplied !== ADMIN_TOKEN) {
+  // Auth — FAIL CLOSED via shared requireAdmin (ADMIN_SECRET, same token the /app/ admin sends).
+  // Previously only checked when NUI_ADMIN_TOKEN was set; it never was, so this was open to anyone.
+  const __auth = requireAdmin(event);
+  if (!__auth.authorized) {
     return { statusCode: 401, headers: CORS, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 

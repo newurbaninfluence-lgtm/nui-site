@@ -20,8 +20,8 @@ exports.handler = async (event) => {
     const secret = process.env.ADMIN_SECRET;
 
     if (!secret) {
-      // Soft rollout: no secret configured, accept anything (same behavior as requireAdmin)
-      return { statusCode: 200, headers, body: JSON.stringify({ valid: true, warning: 'No ADMIN_SECRET configured — auth disabled' }) };
+      // Fail closed: no secret configured = no one can log in as admin.
+      return { statusCode: 200, headers, body: JSON.stringify({ valid: false, reason: 'not_configured' }) };
     }
 
     if (!token || typeof token !== 'string') {

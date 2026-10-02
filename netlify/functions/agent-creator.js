@@ -1,3 +1,4 @@
+const { skipIfDuplicateSchedule } = require('./utils/primary-site');
 // agent-creator.js — The Creator Agent v2
 // Upgraded: claude-sonnet-4-6, stronger prompts, better content packages
 // TODO: Move to Cowork task (Mac Mini) when back online
@@ -92,6 +93,7 @@ async function saveDraft(data) {
 }
 
 exports.handler = async (event) => {
+  const __dup = skipIfDuplicateSchedule(event, 'agent-creator'); if (__dup) return __dup;
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
   try {
     const body = event.httpMethod === 'POST' ? JSON.parse(event.body || '{}') : {};

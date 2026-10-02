@@ -1,3 +1,4 @@
+const { skipIfDuplicateSchedule } = require('./utils/primary-site');
 // site-reminders.js — Netlify Scheduled Function
 // Sends each client an email + SMS reminder 7 days before their hosting/maintenance
 // payment is due. Sites NOT yet on Stripe get a live checkout link so they can set
@@ -178,6 +179,7 @@ async function sendSms(to, message) {
 }
 
 exports.handler = async (event) => {
+  const __dup = skipIfDuplicateSchedule(event, 'site-reminders'); if (__dup) return __dup;
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
     return { statusCode: 500, body: JSON.stringify({ error: 'Database not configured' }) };
   }

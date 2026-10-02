@@ -1,3 +1,4 @@
+const { skipIfDuplicateSchedule } = require('./utils/primary-site');
 // upsell-trigger.js — Netlify Scheduled Function
 // Runs daily at 10am ET — checks for clients at 90-day mark
 // Sends Faren an upsell prompt email + sends client a value-check email
@@ -54,7 +55,8 @@ async function sendMail(to, subject, html) {
   await mailer.sendMail({ from: `"New Urban Influence" <${process.env.MAIL_FROM_HELLO || 'hello@newurbaninfluence.com'}>`, replyTo: process.env.SMTP_USER, to, subject, html });
 }
 
-exports.handler = async () => {
+exports.handler = async (event) => {
+  const __dup = skipIfDuplicateSchedule(event, 'upsell-trigger'); if (__dup) return __dup;
   if (!SUPABASE_URL || !SUPABASE_KEY) {
     console.error('[Upsell] Supabase not configured');
     return { statusCode: 200, body: JSON.stringify({ skipped: 'no db' }) };

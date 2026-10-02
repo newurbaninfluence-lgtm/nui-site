@@ -132,7 +132,7 @@ exports.handler = async (event) => {
             'content-type': 'application/json'
           },
           body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
+            model: 'claude-sonnet-4-6',
             max_tokens: 1024,
             system: SYSTEM_PROMPT,
             messages: [
@@ -459,7 +459,7 @@ Content must be helpful, NUI-branded, and end with a soft CTA toward booking a s
             const blogAI = await nfetch('https://api.anthropic.com/v1/messages', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
-              body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 2000, messages: [{ role: 'user', content: blogPrompt }] })
+              body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2000, messages: [{ role: 'user', content: blogPrompt }] })
             });
             const blogData = await blogAI.json();
             let blogText = blogData.content?.[0]?.text || '';
