@@ -997,6 +997,7 @@
  </script>
  <link rel="stylesheet" href="/assets/css/global.css?v=20261124v3">
  <link rel="stylesheet" href="/assets/css/components.css?v=5">
+<link rel="stylesheet" href="/assets/css/home.css?v=20261124v1">
     <!-- Geo Meta Tags -->
     <meta name="geo.region" content="US-MI">
     <meta name="geo.placename" content="Detroit, Michigan">
@@ -1006,7 +1007,7 @@
     <!-- RB2B Visitor Identification -->
     <script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("E63P0HZ53POW");</script>
 </head>
-<body>
+<body class="nh-site">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N5ZZT3"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -1014,30 +1015,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="cursor-ring"></div>
  <div class="scroll-progress" id="scrollProgress"></div>
  <nav class="nav">
-<a class="logo" href="/" id="mainNavLogo" onclick="event.preventDefault(); showView('home');"><img src="icons/icon-192.png" alt="NUI Icon" width="30" height="30" style="height:30px;width:30px;display:block;" onerror="this.style.display='none';"><span class="logo-text" style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:2px;text-transform:uppercase;line-height:1;">New Urban <span style="color:#dc2626;">Influence</span><span style="display:block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:4px;" class="logo-slogan">We don't design. We influence.</span></span></a>
+<a class="logo" href="/" id="mainNavLogo" onclick="event.preventDefault(); showView('home');"><img src="icons/icon-192.png" alt="" width="26" height="26" onerror="this.style.display='none';"><span class="logo-text">New Urban Influence</span></a>
 <div class="nav-links">
-<a href="/" class="active" data-view="home" onclick="event.preventDefault(); showView('home');">Home</a>
-<a href="/#what-we-build" onclick="event.preventDefault(); nuiGoTo('what-we-build');">What We Build</a>
-<a href="/#builds" onclick="event.preventDefault(); nuiGoTo('builds');">Our Work</a>
-<a href="/#how-it-works" onclick="event.preventDefault(); nuiGoTo('how-it-works');">How It Works</a>
+<a href="/#what-we-build" onclick="event.preventDefault(); nuiGoTo('what-we-build');">What we build</a>
+<a href="/#builds" onclick="event.preventDefault(); nuiGoTo('builds');">Our work</a>
+<a href="/#how-it-works" onclick="event.preventDefault(); nuiGoTo('how-it-works');">How it works</a>
 <a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers</a>
 <a href="/about" data-view="about" onclick="event.preventDefault(); showView('about');">About</a>
-<a href="/app/" data-view="portal">Client Login</a>
+<a href="/app/" data-view="portal">Client login</a>
 </div>
-<a href="/contact" class="btn-cta btn-cta-desktop" onclick="event.preventDefault(); showView('intake');">Book Free Audit</a>
+<div class="nav-right">
+<button type="button" class="nav-cta" onclick="nuiOpenAudit()">Book free audit</button>
 <div class="hamburger" onclick="toggleMobileMenu()">
 <span></span><span></span><span></span>
+</div>
 </div>
  </nav>
  <div class="mobile-menu" id="mobileMenu">
 <a href="/" data-view="home" onclick="event.preventDefault(); showView('home'); toggleMobileMenu();">Home</a>
-<a href="/#what-we-build" onclick="event.preventDefault(); toggleMobileMenu(); nuiGoTo('what-we-build');">What We Build</a>
-<a href="/#builds" onclick="event.preventDefault(); toggleMobileMenu(); nuiGoTo('builds');">Our Work</a>
-<a href="/#how-it-works" onclick="event.preventDefault(); toggleMobileMenu(); nuiGoTo('how-it-works');">How It Works</a>
+<a href="/#what-we-build" onclick="event.preventDefault(); toggleMobileMenu(); nuiGoTo('what-we-build');">What we build</a>
+<a href="/#builds" onclick="event.preventDefault(); toggleMobileMenu(); nuiGoTo('builds');">Our work</a>
+<a href="/#how-it-works" onclick="event.preventDefault(); toggleMobileMenu(); nuiGoTo('how-it-works');">How it works</a>
 <a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers</a>
 <a href="/about" data-view="about" onclick="event.preventDefault(); showView('about'); toggleMobileMenu();">About</a>
-<a href="/app/" data-view="portal" onclick="toggleMobileMenu();">Client Login</a>
-<a href="/contact" class="btn-cta" style="margin-top: 24px;" onclick="event.preventDefault(); showView('intake'); toggleMobileMenu();">Book Free Audit</a>
+<a href="/app/" data-view="portal" onclick="toggleMobileMenu();">Client login</a>
  </div>
 
  <div class="view active" id="homeView"></div>
@@ -1062,6 +1063,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="view" id="portfolioView"></div>
  <div class="view" id="intakeView"></div>
  <div class="view" id="blogView"></div>
+<div id="nuiAuditRoot"><div class="audit" id="audit" hidden role="dialog" aria-modal="true" aria-labelledby="auditTitle"><div class="sheet" id="sheet"></div></div></div>
 
 <!-- GSAP for premium animations -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -1069,8 +1071,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- Marketing only — admin/portal/designer scripts live in /app/ -->
 <script src="/assets/js/core.js?v=20261124v5"></script>
-<script src="/assets/js/router.js?v=20261124v5"></script>
-<script src="/assets/js/marketing.js?v=20261124v5"></script>
+<script src="/assets/js/router.js?v=20261124v6"></script>
+<script src="/assets/js/home.js?v=20261124v1"></script>
+<script src="/assets/js/marketing.js?v=20261124v6"></script>
 <script src="/assets/js/service-intake.js?v=7"></script>
 
 <!-- Supabase & Stripe already loaded in <head> with defer -->
