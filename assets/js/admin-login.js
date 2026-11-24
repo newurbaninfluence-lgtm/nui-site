@@ -10,17 +10,28 @@
   const SESSION_ENDPOINT = '/.netlify/functions/admin-session';
   const VERIFY_ENDPOINT = '/.netlify/functions/admin-verify';
   const STYLE_ID = 'nui-admin-login-style';
-  const AUTH_STORAGE_KEY = 'nui-admin-auth';
+  // Same storage key as the portal's client (supabase-client.js), so ONE sign-in
+  // is seen by both this gate and the portal dashboard behind it.
+  const AUTH_STORAGE_KEY = 'nui-auth-token';
 
-  // ── Supabase client (own storage key so it never collides with other logins) ──
+  // ── Supabase client: reuse the portal's client when it's ready ──
   let _sb = null;
   function sb() {
     if (_sb) return _sb;
+    try { if (typeof db !== 'undefined' && db && db.auth) { _sb = db; return _sb; } } catch (e) { /* not loaded yet */ }
     if (!window.supabase || !window.SUPABASE_URL || !window.SUPABASE_ANON_KEY) return null;
     _sb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY, {
       auth: { storageKey: AUTH_STORAGE_KEY, persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
     });
     return _sb;
+  }
+
+  // After signing in, reload once so the dashboard behind this screen picks up the sign-in.
+  function openBackOffice(overlay) {
+    setTimeout(() => {
+      try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
+      window.location.reload();
+    }, 450);
   }
 
   // Trade a signed-in session for the back-office key. Returns {ok, reason}.
@@ -253,7 +264,7 @@
         shake(); return;
       }
       btn.innerHTML = 'Signed in'; msg(m, 'Signed in. Opening your back office...', 'success');
-      setTimeout(() => close(overlay), 450);
+      openBackOffice(overlay);
     });
 
     // ── Forgot password: send reset email ──
@@ -284,7 +295,7 @@
       if (!res.ok) { busy(btn, false, 'Save password and sign in'); msg(m, 'Password saved. ' + (REASONS[res.reason] || 'Now sign in.'), 'error'); return; }
       btn.innerHTML = 'Saved'; msg(m, 'Password saved. Opening your back office...', 'success');
       try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
-      setTimeout(() => close(overlay), 450);
+      openBackOffice(overlay);
     });
 
     // ── Backup: access code ──
