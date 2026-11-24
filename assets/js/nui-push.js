@@ -117,7 +117,7 @@
             }
             #nui-push-sub {
                 font-size: 12.5px;
-                color: rgba(255,255,255,0.45);
+                color: rgba(255,255,255,0.82);
                 line-height: 1.5;
                 margin-bottom: 20px;
             }
@@ -158,7 +158,7 @@
             #nui-push-note {
                 text-align: center;
                 font-size: 10.5px;
-                color: rgba(255,255,255,0.2);
+                color: rgba(255,255,255,0.82);
                 margin-top: 10px;
             }
         `;

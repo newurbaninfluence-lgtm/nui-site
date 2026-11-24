@@ -15,19 +15,19 @@ function loadHomeView() {
 <div class="hero-media-overlay"></div>
 </div>
 <div class="hero-content">
-<div class="badge">10+ Years Elevating Detroit Brands</div>
-<h1 class="empire-headline"><span class="empire-word">BUILD</span> <span class="empire-word">YOUR</span><br><span class="empire-word red">INFLUENCE</span></h1>
-<p>You built something real. Now let the world see it. <span>Branding, websites & digital strategy for entrepreneurs, coaches, and creators ready to stand out.</span></p>
+<div class="badge">Detroit-Built Websites &amp; Business Software</div>
+<h1 class="empire-headline"><span class="empire-word">FIND</span> <span class="empire-word">THE</span><br><span class="empire-word red">LEAK.</span></h1>
+<p>We find the leaks in your business and fix them. <span>With software built for your industry, a website that works, and engagement that brings customers back.</span></p>
 <div class="hero-buttons">
-<a href="/contact" class="btn-cta" onclick="event.preventDefault(); showView('intake');">Book Strategy Call</a>
-<a href="/portfolio" class="btn-outline" onclick="event.preventDefault(); showView('portfolio');">View Our Work</a>
+<a href="/contact" class="btn-cta" onclick="event.preventDefault(); showView('intake');">Book Your Free Audit</a>
+<a href="tel:+12484878747" class="btn-outline">Call (248) 487-8747</a>
 </div>
-<div style="margin-top:16px;font-size:13px;color:rgba(255,255,255,0.5);">💳 Start for as low as <strong style="color:#C9A227;">$89/mo</strong> — 0% financing through Afterpay &amp; Klarna &nbsp;·&nbsp; <a href="/services/brand-kit-detroit" style="color:#C9A227;font-weight:600;">See plans →</a></div>
+<div style="margin-top:16px;font-size:14px;color:rgba(255,255,255,0.82);">Free, no pressure. You’ll leave knowing where your money is going.</div>
 </div>
 <div class="scroll-indicator">Scroll</div>
 </section>
 <section class="stats-ticker">
-<div class="ticker-text">50+ BRANDS ELEVATED &bull; <span class="ticker-outline">$2M+ REVENUE GENERATED</span> &bull; 10+ YEARS IN BUSINESS &bull; DETROIT BORN & RAISED &bull; 50+ BRANDS ELEVATED &bull; <span class="ticker-outline">$2M+ REVENUE GENERATED</span> &bull; 10+ YEARS IN BUSINESS &bull; DETROIT BORN & RAISED &bull;</div>
+<div class="ticker-text">WEBSITES THAT WORK &bull; <span class="ticker-outline">SOFTWARE BUILT FOR YOUR INDUSTRY</span> &bull; 10+ YEARS IN BUSINESS &bull; DETROIT BORN &amp; RAISED &bull; WEBSITES THAT WORK &bull; <span class="ticker-outline">SOFTWARE BUILT FOR YOUR INDUSTRY</span> &bull; 10+ YEARS IN BUSINESS &bull; DETROIT BORN &amp; RAISED &bull; </div>
 </section>
 <section class="ticker-section">
 <div style="text-align:center;margin-bottom:32px;">
@@ -91,33 +91,33 @@ function loadHomeView() {
 <section class="section dark struggle-wrapper">
 <div class="struggle-section">
 <div class="struggle-left nui-reveal-left">
-<h2>THE<br><span class="red">STRUGGLE</span><br>IS REAL.</h2>
-<p>Most brands fade into the background noise. In a city that never sleeps and a digital world that never stops, being "good enough" is a death sentence.</p>
-<div class="lets-fix-it" style="margin-top:24px;display:flex;align-items:center;gap:12px;"><span style="color:#f5c518;font-family:'Syne',sans-serif;font-size:clamp(18px,2vw,24px);font-weight:700;text-transform:uppercase;letter-spacing:2px;">Let's fix it</span><svg width="48" height="24" viewBox="0 0 48 24" fill="none" style="flex-shrink:0;"><path d="M0 12h40m0 0l-8-8m8 8l-8 8" stroke="#f5c518" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<h2>WHERE'S<br>THE <span class="red">MONEY</span><br>GOING?</h2>
+<p>You’re making money. So why isn’t more of it staying? Most growing businesses don’t have a marketing problem. They have a leak.</p>
+<div class="lets-fix-it" style="margin-top:24px;display:flex;align-items:center;gap:12px;"><span style="color:#f5c518;font-family:'Syne',sans-serif;font-size:clamp(18px,2vw,24px);font-weight:700;text-transform:uppercase;letter-spacing:2px;">We find it and plug it</span><svg width="48" height="24" viewBox="0 0 48 24" fill="none" style="flex-shrink:0;"><path d="M0 12h40m0 0l-8-8m8 8l-8 8" stroke="#f5c518" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 </div>
 <div class="problem-cards nui-stagger">
-<div class="problem-card"><div class="problem-meta"><div class="number">01</div><span class="problem-detect">Problem Detected</span></div><h3>Your brand looks generic and forgettable</h3></div>
-<div class="problem-card"><div class="problem-meta"><div class="number">02</div><span class="problem-detect">Problem Detected</span></div><h3>Your website doesn't convert visitors into customers</h3></div>
-<div class="problem-card"><div class="problem-meta"><div class="number">03</div><span class="problem-detect">Problem Detected</span></div><h3>Your social media feels disconnected from your brand</h3></div>
-<div class="problem-card"><div class="problem-meta"><div class="number">04</div><span class="problem-detect">Problem Detected</span></div><h3>You're not standing out in a crowded market</h3></div>
+<div class="problem-card"><div class="problem-meta"><div class="number">01</div><span class="problem-detect">Leak Found</span></div><h3>Leads that never convert: people call, DM and visit, then nobody follows up</h3></div>
+<div class="problem-card"><div class="problem-meta"><div class="number">02</div><span class="problem-detect">Leak Found</span></div><h3>Customers who don’t come back, so you keep paying to find new ones</h3></div>
+<div class="problem-card"><div class="problem-meta"><div class="number">03</div><span class="problem-detect">Leak Found</span></div><h3>Costs eating your margin: forgotten subscriptions, waste you can’t see</h3></div>
+<div class="problem-card"><div class="problem-meta"><div class="number">04</div><span class="problem-detect">Leak Found</span></div><h3>Six apps, a notebook and whatever’s in your head running the business</h3></div>
 </div>
 </div>
 </section>
-<section class="services-white nui-glow-line">
+<section class="services-white nui-glow-line" id="what-we-build">
 <div class="services-layout">
 <div class="services-header nui-reveal-left">
-<div class="label">Our Expertise</div>
-<h2 class="section-title">WHAT WE<br><span class="red">CREATE</span></h2>
-<p style="color: #555; margin-top: 24px;">We don't just make things look pretty. We build systems, brands, and experiences that print money and build legacy.</p>
-<button class="btn-cta mt-32" onclick="showView('services')">Explore All Services</button>
+<div class="label">What We Build</div>
+<h2 class="section-title">A WEBSITE<br><span class="red">+ YOUR OS</span></h2>
+<p style="color: #333; margin-top: 24px;">Two products that work as one. The website brings people in. The OS (your business software) runs everything behind it: bookings, payments, customers and follow-up, in one place.</p>
+<button class="btn-cta mt-32" onclick="showView('intake')">Book Your Free Audit</button>
 </div>
 <div class="services-grid home-services nui-stagger">
-<div class="service-card-simple" onclick="window.location.href='/services/brand-kit-detroit'"><div class="arrow">↗</div><h3>Brand Architect</h3><p>Your full brand identity — logo, colors, voice, and print. Three build levels for new businesses, product brands, and service companies. Built to make people trust you before they call.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="window.location.href='/services/business-website-detroit'"><div class="arrow">↗</div><h3>Digital HQ</h3><p>Not just a website — the systems, payments, and infrastructure that keep your business open 24/7.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="window.location.href='/services/digital-staff-detroit'"><div class="arrow">↗</div><h3>Digital Staff</h3><p>A real AI that answers your calls 24/7, learns your business, and talks in your brand voice. Not auto-reply — it thinks, adapts, and gets smarter every day. You decide how much it handles.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="window.location.href='/services/social-media-management-detroit'"><div class="arrow">↗</div><h3>Digital Promotion Team</h3><p>AI sends digital flyers, text blasts, and push notifications straight to customer phones — in front of your store, at your event, or while you're closed. Your brand stays loud 24/7 without you doing a thing.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="window.location.href='/services/press-feature-detroit'"><div class="arrow">↗</div><h3>The Publicist</h3><p>NUI Magazine feature. The difference between you saying you're the best and a publication proving it.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="window.location.href='/services/event-team-detroit'"><div class="arrow">↗</div><h3>The Event Team</h3><p>Day-rate staff for vendor shows and events. Capture every face, collect every contact, send every photo.</p><div class="learn-more">LEARN MORE →</div></div>
+<div class="service-card-simple" onclick="window.location.href='/services/business-website-detroit'"><div class="arrow">↗</div><h3>Websites That Work</h3><p>A branded site built to turn visitors into calls, bookings and sales, with a staff login to the back office.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Every build</div></div>
+<div class="service-card-simple" onclick="window.location.href='/contact'"><div class="arrow">↗</div><h3>Pour OS</h3><p>For restaurants &amp; bars. Reservations, regulars, food and pour costs, and promos in one place.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Built for Hideaway Kitchen &amp; Bar</div></div>
+<div class="service-card-simple" onclick="window.location.href='/contact'"><div class="arrow">↗</div><h3>Shooters OS</h3><p>For photographers. Bookings, deposits, contracts, proof galleries and rentals, without the back-and-forth.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Built for AJ VIP Studio</div></div>
+<div class="service-card-simple" onclick="window.location.href='/contact'"><div class="arrow">↗</div><h3>Promoters OS</h3><p>For nightlife &amp; promoters. Events, RSVPs, tables and your crowd’s phone numbers, all yours.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Built for Michigan After Dark</div></div>
+<div class="service-card-simple" onclick="window.location.href='/contact'"><div class="arrow">↗</div><h3>Your Industry’s OS</h3><p>Authors, online brands, rentals and more. Don’t see your industry? We’ll build your OS around how you run.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Author OS · Bundle OS · Stay OS</div></div>
+<div class="service-card-simple" onclick="window.open('https://nuiflyers.com','_blank')"><div class="arrow">↗</div><h3>Flyers &amp; Motion Flyers</h3><p>Event flyers, motion flyers and promo videos for promoters and venues. Order online at NU Flyers.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">nuiflyers.com</div></div>
 </div>
 </div>
 </section>
@@ -153,7 +153,7 @@ function loadHomeView() {
 <div class="stats-boxes nui-stagger">
 <div class="stat-box">
 <div class="stat-number">50+</div>
-<div class="stat-label">Brands Elevated</div>
+<div class="stat-label">Businesses Served</div>
 </div>
 <div class="stat-box">
 <div class="stat-number">$2M+</div>
@@ -170,60 +170,56 @@ function loadHomeView() {
 </div>
 </section>
 <section style="padding: 60px 0; background: #080808; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06);">
-<div class="label" style="justify-content: center; margin-bottom: 32px;">Industries We Serve</div>
+<div class="label" style="justify-content: center; margin-bottom: 32px;">Industries We Build For</div>
 <div style="overflow: hidden; position: relative;">
 <div style="display: flex; gap: 48px; animation: industriesScroll 25s linear infinite; white-space: nowrap;">
-<span class="pkg-section-title">RESTAURANTS</span>
+<span class="pkg-section-title">RESTAURANTS &amp; BARS</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">REAL ESTATE</span>
+<span class="pkg-section-title">PHOTOGRAPHERS</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">FITNESS & WELLNESS</span>
+<span class="pkg-section-title">NIGHTLIFE &amp; PROMOTERS</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">E-COMMERCE</span>
+<span class="pkg-section-title">AUTHORS &amp; SPEAKERS</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">PROFESSIONAL SERVICES</span>
+<span class="pkg-section-title">ONLINE PRODUCT BRANDS</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">COACHES & CONSULTANTS</span>
+<span class="pkg-section-title">RENTALS &amp; STAYS</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">HEALTHCARE</span>
+<span class="pkg-section-title">EVENT VENUES</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">BEAUTY & SALONS</span>
+<span class="pkg-section-title">RESTAURANTS &amp; BARS</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">RESTAURANTS</span>
+<span class="pkg-section-title">PHOTOGRAPHERS</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">REAL ESTATE</span>
+<span class="pkg-section-title">NIGHTLIFE &amp; PROMOTERS</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">FITNESS & WELLNESS</span>
+<span class="pkg-section-title">AUTHORS &amp; SPEAKERS</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">E-COMMERCE</span>
+<span class="pkg-section-title">ONLINE PRODUCT BRANDS</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">PROFESSIONAL SERVICES</span>
+<span class="pkg-section-title">RENTALS &amp; STAYS</span>
 <span class="text-red">◆</span>
-<span class="pkg-section-title">COACHES & CONSULTANTS</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">HEALTHCARE</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">BEAUTY & SALONS</span>
+<span class="pkg-section-title">EVENT VENUES</span>
 <span class="text-red">◆</span>
 </div>
 </div>
 </section>
-<section class="section dark brands-elevated-section nui-glow-line proven-section">
+<section class="section dark brands-elevated-section nui-glow-line proven-section" id="builds">
 <div class="proven-results-header">
-<h2 class="proven-title nui-reveal-left">PROVEN <span class="red">RESULTS</span></h2>
-<a class="view-portfolio-link nui-reveal-right" onclick="showView('portfolio')">VIEW FULL PORTFOLIO →</a>
+<h2 class="proven-title nui-reveal-left">REAL <span class="red">BUILDS</span></h2>
+<a class="view-portfolio-link nui-reveal-right" onclick="showView('intake')">GET ONE BUILT FOR YOU →</a>
 </div>
 <div class="case-study-grid" id="homepageCaseStudies"></div>
 </section>
-<section class="section dark nui-glow-line whyus-section">
+<section class="section dark nui-glow-line whyus-section" id="how-it-works">
 <div class="section-header nui-reveal">
-<h2 class="section-title">WHY <span class="red">US?</span></h2>
-<p class="section-subtitle">We're not for everyone. We're for the ones who want to win.</p>
+<h2 class="section-title">HOW IT <span class="red">WORKS</span></h2>
+<p class="section-subtitle">Three steps. Nothing to figure out.</p>
 </div>
 <div class="why-grid nui-stagger">
-<div class="why-card"><div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h3>Detroit-Rooted Creativity</h3><p>We bring the bold, unapologetic energy of Detroit to every project.</p></div>
-<div class="why-card"><div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><h3>Revenue-Focused Design</h3><p>Beautiful brands that actually drive business results and conversions.</p></div>
-<div class="why-card"><div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>Elite but Approachable</h3><p>Premium quality without the corporate stuffiness or agency BS.</p></div>
+<div class="why-card"><div class="why-icon" style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#ff0000;">01</div><h3>Book your free audit</h3><p>We look at how you run today, what you pay for, and where money is slipping out.</p><p style="margin-top:12px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.85);">Free · about 30 min</p></div>
+<div class="why-card"><div class="why-icon" style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#ff0000;">02</div><h3>Get your plan and price</h3><p>A clear plan for your leak, what we’ll build, and exactly what it costs. No surprises.</p><p style="margin-top:12px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.85);">Yours to keep</p></div>
+<div class="why-card"><div class="why-icon" style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#ff0000;">03</div><h3>We build it</h3><p>Your branded site and your OS, set up with your data, plus training so it runs without you guessing.</p><p style="margin-top:12px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.85);">We handle the setup</p></div>
 </div>
 </section>
 <section class="section dark streetcred-section">
@@ -276,168 +272,81 @@ function loadHomeView() {
 <div style="text-align: center; margin-bottom: 48px;">
 <p class="faq-label">GOT QUESTIONS?</p>
 <h2 class="faq-title">FREQUENTLY <span class="text-red">ASKED</span></h2>
-<p class="faq-subtitle">Everything you need to know about working with Detroit's top-rated branding agency.</p>
+<p class="faq-subtitle">Straight answers about our websites, business software and how we work.</p>
 </div>
 
 <div class="faq-grid">
 
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
 <button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>What is New Urban Influence?</span>
+<span itemprop="name">What does New Urban Influence do?</span>
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">New Urban Influence (NUI) is a Detroit-based creative agency specializing in brand identity design, web design, and digital marketing. Founded to help small businesses and startups build professional, competitive brands, NUI offers full branding packages starting at $1,500 including logo design, color systems, typography, social media templates, and brand guidelines. They serve clients throughout Detroit, Southeast Michigan, and nationwide.</div>
+<div class="faq-answer-text" itemprop="text">We build websites and business software for growing businesses. Your website brings customers in, and your OS (the back office we build for your industry) runs bookings, payments, customers and follow-up in one place. We’re based in Detroit and have served local businesses for 10+ years.</div>
 </div>
 </div>
-
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
 <button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>What services does New Urban Influence offer?</span>
+<span itemprop="name">What is an “OS”?</span>
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">New Urban Influence offers three main branding packages: Brand Kit ($1,500 flat rate) for startups and new businesses, Service Business Brand Identity ($4,500+) for consultants, agencies, and service providers, and Product Brand Identity ($5,500+) for businesses selling physical products. Additional services include logo design ($500), business card design ($150), social media templates ($300), print design and printing (banners, yard signs, business cards, vehicle magnets, postcards, acrylic signs, Dibond panels), packaging design ($600/SKU), and brand guidelines documentation ($400).</div>
+<div class="faq-answer-text" itemprop="text">It’s your business software: one back office built around how your business actually runs. Restaurants and bars get Pour OS, photographers get Shooters OS, promoters get Promoters OS, and we build new ones for other industries.</div>
 </div>
 </div>
-
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
 <button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>How much does branding cost in Detroit?</span>
+<span itemprop="name">What happens in the free audit?</span>
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">In Detroit, professional branding packages at New Urban Influence range from $1,500 to $7,000+. The Brand Kit starts at $1,500 (logo, colors, typography, social templates), Service Business Brand Identity starts at $4,500, and Product Brand Identity starts at $5,500. Individual services like logo design start at $500. Payment plans are available including pay-in-full (5% discount), 50/25/25 split, or 3 monthly payments.</div>
+<div class="faq-answer-text" itemprop="text">About 30 minutes. We look at how you run today, what tools and subscriptions you pay for, and where money is slipping out, like leads that never get a follow-up or customers who don’t come back. You leave knowing where your money is going, whether you hire us or not.</div>
 </div>
 </div>
-
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
 <button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>How much does a logo design cost?</span>
+<span itemprop="name">How much does a website and system cost?</span>
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">At New Urban Influence, standalone logo design starts at $500 and includes a primary logo, secondary logo variation, icon/mark version, and all file formats (PNG, SVG, PDF). For a complete brand identity that includes the logo plus color palette, typography, social media templates, and brand guidelines, packages start at $1,500.</div>
+<div class="faq-answer-text" itemprop="text">It depends on what your business needs, so every build is priced after the free audit, with a clear plan and an exact price up front. Cancelling subscriptions you no longer need often helps pay for it.</div>
 </div>
 </div>
-
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
 <button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>How long does a branding project take?</span>
+<span itemprop="name">How long does a build take?</span>
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">At New Urban Influence, most branding projects take 2 to 4 weeks depending on complexity. The Brand Kit (starter package) typically completes in 7-10 business days, while comprehensive Service and Product Brand Identity packages take 10-21 business days. Rush delivery is available for an additional fee. Every project follows a structured process: discovery call, strategy, initial concepts, revisions, and final delivery with all files and brand guidelines.</div>
+<div class="faq-answer-text" itemprop="text">Most websites and systems are built in a few weeks. We set it up with your real data and train you and your staff so it runs without guessing.</div>
 </div>
 </div>
-
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
 <button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>Do you offer free consultations?</span>
+<span itemprop="name">Do I have to switch everything at once?</span>
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Yes, New Urban Influence offers free strategy consultations for every potential client. During the call, they discuss your business goals, target audience, competitive landscape, and branding needs. You'll receive a custom pricing estimate after the consultation with no obligation to proceed. You can book directly through the website at newurbaninfluence.com.</div>
+<div class="faq-answer-text" itemprop="text">No. We start with the leak that’s costing you the most, then add what you actually use. No bloated software, nothing you have to figure out yourself.</div>
 </div>
 </div>
-
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
 <button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>What is the best branding agency in Detroit?</span>
+<span itemprop="name">I took over a business I didn’t build. Can you help?</span>
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">New Urban Influence is one of Detroit's top-rated creative agencies with a 4.9-star rating across 28+ reviews. They specialize in helping small businesses and startups build professional brand identities at accessible price points starting at $1,500. What sets them apart is their strategic approach to branding, transparent flat-rate pricing, payment plans, and a dedicated client portal for real-time project tracking.</div>
+<div class="faq-answer-text" itemprop="text">Yes. If the systems live in someone else’s head or on paper, we’ll map how it runs, show you where the money is going, and give you one system that runs it.</div>
 </div>
 </div>
-
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
 <button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>What payment options are available?</span>
+<span itemprop="name">Do you still make flyers?</span>
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">New Urban Influence offers flexible payment options for all branding packages: pay in full and receive a 5% discount, split payments 50/25/25, or choose 3 monthly installments. They also offer 0% interest financing through Afterpay (pay in 4 over 6 weeks) and Klarna (flexible monthly plans). Financing options appear at checkout with instant approval — no paperwork required. They accept credit cards, debit cards, Apple Pay, Google Pay, and Cash App Pay. No one should have to delay building their brand because of budget.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>Do you work with businesses outside Detroit?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Yes! While New Urban Influence is based in Detroit, they serve clients nationwide. Most of the branding process is handled remotely through their online client portal, video consultations, and digital proof approvals. They work with businesses in Ann Arbor, Southfield, Troy, Royal Oak, and across Michigan, as well as clients in other states. Local clients can also meet in person for strategy sessions.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>What file formats will I receive for my logo and branding?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Every NUI branding package includes your logo and brand assets in all major file formats: PNG (transparent background), SVG (scalable vector), PDF (print-ready), and high-resolution JPG. You'll also receive a complete brand guidelines document, social media templates sized for Instagram, Facebook, TikTok, and LinkedIn, plus a brand asset folder organized for easy access.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>Can I see examples of your branding work?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Absolutely. Visit the NUI portfolio page to see completed branding projects across bakeries, art galleries, coaching businesses, and more. Featured projects include Good Cakes and Bakes, Cloud Nine, Jos Gallery Art Gallery, and AJ VIP. Each case study showcases the full brand transformation along with the results achieved.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>What industries does New Urban Influence specialize in?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">New Urban Influence works with businesses across many industries, with particular strength in restaurants and food service, beauty and wellness, professional services, coaching and consulting, retail and e-commerce, cannabis brands, and creative businesses. They understand the unique branding needs of each industry and tailor their approach accordingly.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>How many logo concepts will I receive?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">NUI provides 2-3 unique logo concepts during the initial design phase based on your brand strategy and discovery call insights. Each concept explores a different creative direction. After you select your preferred direction, they refine it through unlimited revisions until you're completely satisfied. The final logo includes primary, secondary, and icon variations.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>Do you offer web design services?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Yes, New Urban Influence offers custom web design starting at $3,500. Websites are built mobile-first, SEO-optimized, and designed to convert visitors into customers. Services include custom design, development, hosting setup, domain configuration, SSL security, and Google Analytics integration. They also offer website maintenance packages for ongoing support.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>How do I get started with New Urban Influence?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Getting started is simple: book a free strategy call through the website at newurbaninfluence.com or call (248) 487-8747. During the call, you'll discuss your business, goals, and branding needs. After the consultation, you'll receive a custom proposal with pricing. Once approved, NUI kicks off your project with a discovery questionnaire and brand strategy session within 48 hours.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>Do you build AI systems and automations for small businesses?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Yes. New Urban Influence now offers AI-powered systems and automation for small businesses, coaches, and creators. Services include custom AI chatbots for your website, automated lead follow-up systems, AI content engines trained on your brand voice, workflow automation connecting your tools, and custom AI assistants trained on your specific business data. Packages start at $2,500 with monthly maintenance plans available. Book a free strategy call to find out which AI solutions would save you the most time and money.</div>
+<div class="faq-answer-text" itemprop="text">Yes. Event flyers, motion flyers and promo videos are ordered online at nuiflyers.com, our flyer studio.</div>
 </div>
 </div>
 
@@ -446,9 +355,9 @@ function loadHomeView() {
 </section>
 
 <section class="cta-section" id="contact" style="background:var(--red);position:relative;overflow:hidden;">
-<h2 style="position:relative;z-index:1;">READY TO<br>DOMINATE?</h2>
-<p style="position:relative;z-index:1;">Stop playing small. Let's build a brand that demands attention and drives real revenue.</p>
-<button class="btn-white" style="position:relative;z-index:1;" onclick="showView('intake')">Book Your Strategy Call</button>
+<h2 style="position:relative;z-index:1;">LET'S FIND<br>YOUR LEAK.</h2>
+<p style="position:relative;z-index:1;">Book a free audit or just call. Either way, you’ll talk to a real person who’ll tell you straight.</p>
+<button class="btn-white" style="position:relative;z-index:1;" onclick="showView('intake')">Book Your Free Audit</button>
 </section>
         ${getFooterHTML()}
     `;
@@ -866,7 +775,7 @@ function loadAboutView() {
                 ${teamHTML}
 </div>
 </section>
-<section class="section" style="background: var(--red);"><div class="stats-grid"><div class="stat-item"><div class="value">50+</div><div class="stat-label">Brands Elevated</div></div><div class="stat-item"><div class="value">$2M+</div><div class="stat-label">Revenue Generated</div></div><div class="stat-item"><div class="value">100%</div><div class="stat-label">Detroit Pride</div></div><div class="stat-item"><div class="value">313</div><div class="stat-label">Area Code Strong</div></div></div></section>
+<section class="section" style="background: var(--red);"><div class="stats-grid"><div class="stat-item"><div class="value">50+</div><div class="stat-label">Businesses Served</div></div><div class="stat-item"><div class="value">$2M+</div><div class="stat-label">Revenue Generated</div></div><div class="stat-item"><div class="value">100%</div><div class="stat-label">Detroit Pride</div></div><div class="stat-item"><div class="value">313</div><div class="stat-label">Area Code Strong</div></div></div></section>
 <section class="cta-section"><h2>READY TO <span>WORK</span> WITH US?</h2><p>Let's build something legendary together.</p><button class="btn-white" onclick="scrollToContact()">Book Your Strategy Call</button></section>
         ${getFooterHTML()}
     `;
