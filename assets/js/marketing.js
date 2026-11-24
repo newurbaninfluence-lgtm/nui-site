@@ -107,16 +107,16 @@ function loadHomeView() {
 <div class="services-layout">
 <div class="services-header nui-reveal-left">
 <div class="label">What We Build</div>
-<h2 class="section-title">A WEBSITE<br><span class="red">+ YOUR OS</span></h2>
-<p style="color: #333; margin-top: 24px;">Two products that work as one. The website brings people in. The OS (your business software) runs everything behind it: bookings, payments, customers and follow-up, in one place.</p>
+<h2 class="section-title">YOUR WEBSITE<br><span class="red">+ YOUR SOFTWARE</span></h2>
+<p style="color: #333; margin-top: 24px;">Two products that work as one. The website brings people in. The software runs everything behind it: bookings, payments, staff, customers and follow-up, in one place.</p>
 <button class="btn-cta mt-32" onclick="showView('intake')">Book Your Free Audit</button>
 </div>
 <div class="services-grid home-services nui-stagger">
-<div class="service-card-simple" onclick="window.location.href='/services/business-website-detroit'"><div class="arrow">↗</div><h3>Websites That Work</h3><p>A branded site built to turn visitors into calls, bookings and sales, with a staff login to the back office.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Every build</div></div>
-<div class="service-card-simple" onclick="window.location.href='/contact'"><div class="arrow">↗</div><h3>Pour OS</h3><p>For restaurants &amp; bars. Reservations, regulars, food and pour costs, and promos in one place.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Built for Hideaway Kitchen &amp; Bar</div></div>
-<div class="service-card-simple" onclick="window.location.href='/contact'"><div class="arrow">↗</div><h3>Shooters OS</h3><p>For photographers. Bookings, deposits, contracts, proof galleries and rentals, without the back-and-forth.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Built for AJ VIP Studio</div></div>
-<div class="service-card-simple" onclick="window.location.href='/contact'"><div class="arrow">↗</div><h3>Promoters OS</h3><p>For nightlife &amp; promoters. Events, RSVPs, tables and your crowd’s phone numbers, all yours.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Built for Michigan After Dark</div></div>
-<div class="service-card-simple" onclick="window.location.href='/contact'"><div class="arrow">↗</div><h3>Your Industry’s OS</h3><p>Authors, online brands, rentals and more. Don’t see your industry? We’ll build your OS around how you run.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Author OS · Bundle OS · Stay OS</div></div>
+<div class="service-card-simple" onclick="window.location.href='/services/business-website-detroit'"><div class="arrow">↗</div><h3>Websites</h3><p>A website that turns visitors into calls, bookings and sales, with a login for you and your staff.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Every business</div></div>
+<div class="service-card-simple" onclick="window.location.href='/contact'"><div class="arrow">↗</div><h3>Restaurant &amp; Bar Software</h3><p>Reservations, guest lists, staff schedules, bar and kitchen inventory, and texts to your regulars, in one place. Works with your register.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Restaurants &amp; bars</div></div>
+<div class="service-card-simple" onclick="window.location.href='/contact'"><div class="arrow">↗</div><h3>Photography Studio Software</h3><p>Bookings, deposits, contracts, client galleries and rentals, so clients book and pay without the back-and-forth.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Photographers</div></div>
+<div class="service-card-simple" onclick="window.location.href='/contact'"><div class="arrow">↗</div><h3>Event &amp; Nightlife Software</h3><p>Tickets, RSVPs, table and booth sales, promoter links, and your crowd’s phone numbers, all yours.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Promoters &amp; venues</div></div>
+<div class="service-card-simple" onclick="window.location.href='/contact'"><div class="arrow">↗</div><h3>Software Built for Your Business</h3><p>Don’t see your business here? We build one around how you run: bookings, orders, staff, payments and follow-up.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">Any industry</div></div>
 <div class="service-card-simple" onclick="window.open('https://nuiflyers.com','_blank')"><div class="arrow">↗</div><h3>Flyers &amp; Motion Flyers</h3><p>Event flyers, motion flyers and promo videos for promoters and venues. Order online at NU Flyers.</p><div class="service-tag" style="margin-top:12px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c00;">nuiflyers.com</div></div>
 </div>
 </div>
@@ -219,7 +219,7 @@ function loadHomeView() {
 <div class="why-grid nui-stagger">
 <div class="why-card"><div class="why-icon" style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#ff0000;">01</div><h3>Book your free audit</h3><p>We look at how you run today, what you pay for, and where money is slipping out.</p><p style="margin-top:12px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.85);">Free · about 30 min</p></div>
 <div class="why-card"><div class="why-icon" style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#ff0000;">02</div><h3>Get your plan and price</h3><p>A clear plan for your leak, what we’ll build, and exactly what it costs. No surprises.</p><p style="margin-top:12px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.85);">Yours to keep</p></div>
-<div class="why-card"><div class="why-icon" style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#ff0000;">03</div><h3>We build it</h3><p>Your branded site and your OS, set up with your data, plus training so it runs without you guessing.</p><p style="margin-top:12px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.85);">We handle the setup</p></div>
+<div class="why-card"><div class="why-icon" style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#ff0000;">03</div><h3>We build it</h3><p>Your website and your software, set up with your data, plus training so it runs without you guessing.</p><p style="margin-top:12px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.85);">We handle the setup</p></div>
 </div>
 </section>
 <section class="section dark streetcred-section">
@@ -283,16 +283,16 @@ function loadHomeView() {
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text" itemprop="text">We build websites and business software for growing businesses. Your website brings customers in, and your OS (the back office we build for your industry) runs bookings, payments, customers and follow-up in one place. We’re based in Detroit and have served local businesses for 10+ years.</div>
+<div class="faq-answer-text" itemprop="text">We build websites and business software for growing businesses. Your website brings customers in, and your software (the back office we build for your kind of business) runs bookings, payments, customers and follow-up in one place. We’re based in Detroit and have served local businesses for 10+ years.</div>
 </div>
 </div>
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">
 <button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span itemprop="name">What is an “OS”?</span>
+<span itemprop="name">What do you mean by business software?</span>
 <span class="faq-icon">+</span>
 </button>
 <div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text" itemprop="text">It’s your business software: one back office built around how your business actually runs. Restaurants and bars get Pour OS, photographers get Shooters OS, promoters get Promoters OS, and we build new ones for other industries.</div>
+<div class="faq-answer-text" itemprop="text">One back office built around how your business actually runs, so bookings, payments, staff, inventory and customer follow-up live in one place instead of five apps. We have ready-built versions for restaurants and bars, photography studios, and event promoters, and we build new ones for other businesses.</div>
 </div>
 </div>
 <div itemscope itemtype="https://schema.org/Question" class="faq-card">

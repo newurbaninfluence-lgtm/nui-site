@@ -1972,7 +1972,7 @@ function getFooterHTML() {
 <div class="footer-col">
 <div class="footer-col-title">What We Build</div>
 <a href="/services/business-website-detroit">Websites That Work</a>
-<a href="/#what-we-build" onclick="event.preventDefault(); nuiGoTo('what-we-build');">Business Software (OS)</a>
+<a href="/#what-we-build" onclick="event.preventDefault(); nuiGoTo('what-we-build');">Business Software</a>
 <a href="/services/crm-integration-detroit">CRM &amp; Automation</a>
 <a href="/#builds" onclick="event.preventDefault(); nuiGoTo('builds');">Our Work</a>
 <a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers &amp; Motion Flyers</a>

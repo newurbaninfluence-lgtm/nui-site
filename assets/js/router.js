@@ -372,15 +372,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Render homepage case study cards from portfolioData (reusable for cloud sync refresh)
 // Homepage "Real Builds": the websites + systems NUI has built (screenshots of the live sites).
 var HOME_SITE_BUILDS = [
-    { name: 'Hideaway Kitchen & Bar', tag: 'Restaurant & bar \u00b7 Website + Pour OS', url: 'https://hideawaykitchenandbar.net', img: '/images/work/hideaway-site.webp',
-      desc: 'A booking-first site for a Southfield restaurant and lounge, backed by Pour OS: reservations, booths, regulars, promoter nights, and food and pour costs in one back office.' },
-    { name: 'AJ VIP Full Studio', tag: 'Photography \u00b7 Website + Shooters OS', url: 'https://ajvip.com', img: '/images/work/ajvip-site.webp',
-      desc: 'A portfolio and booking site for a Metro Detroit photo studio, with Shooters OS behind it: packages, deposits, contracts, galleries and booth rentals without the back-and-forth.' },
-    { name: 'Michigan After Dark', tag: 'Nightlife \u00b7 Website + Promoters OS', url: 'https://michiganafterdark.com', img: '/images/work/mad-site.webp',
+    { name: 'Hideaway Kitchen & Bar', tag: 'Restaurant & bar \u00b7 Website + restaurant & bar software', url: 'https://hideawaykitchenandbar.net', img: '/images/work/hideaway-site.webp',
+      desc: 'A booking-first site for a Southfield restaurant and lounge, backed by our restaurant & bar software: reservations, booths, regulars, promoter nights, and food and pour costs in one back office.' },
+    { name: 'AJ VIP Full Studio', tag: 'Photography \u00b7 Website + studio software', url: 'https://ajvip.com', img: '/images/work/ajvip-site.webp',
+      desc: 'A portfolio and booking site for a Metro Detroit photo studio, with our studio software behind it: packages, deposits, contracts, galleries and booth rentals without the back-and-forth.' },
+    { name: 'Michigan After Dark', tag: 'Nightlife \u00b7 Website + event software', url: 'https://michiganafterdark.com', img: '/images/work/mad-site.webp',
       desc: 'Pick your club, book your booth. A party platform with tickets, tables, RSVPs, promoter codes and a text list the promoters actually own.' },
-    { name: 'Sonya Meadows', tag: 'Author & speaker \u00b7 Website + Author OS', url: 'https://sonyameadows.com', img: '/images/work/sonya-site.webp',
+    { name: 'Sonya Meadows', tag: 'Author & speaker \u00b7 Website + book & speaking sales', url: 'https://sonyameadows.com', img: '/images/work/sonya-site.webp',
       desc: 'An author and speaker site that sells her books directly, takes speaking requests and grows a reader list she owns.' },
-    { name: 'Ultimate Hair Co.', tag: 'Online product brand \u00b7 Website + Bundle OS', url: 'https://ultimatehairco.com', img: '/images/work/uhc-site.webp',
+    { name: 'Ultimate Hair Co.', tag: 'Online product brand \u00b7 Website + online store', url: 'https://ultimatehairco.com', img: '/images/work/uhc-site.webp',
       desc: 'An online hair store built to sell and bring buyers back, with order tracking and reorder reminders on the way.' }
 ];
 function _refreshHomepageCaseStudies(csGrid) {
