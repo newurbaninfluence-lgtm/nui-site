@@ -73,9 +73,9 @@
 
   <!-- Security: Supabase admin-table fetch proxy (must load AFTER admin-auth.js) -->
   <script src="/assets/js/admin-db.js?v=20260418v2"></script>
-  <script src="/assets/js/admin-login.js?v=20260419v2"></script>
+  <script src="/assets/js/admin-login.js?v=20261124v1"></script>
   <script>
-    // Gate /app/ behind admin token. Validates on submit (no browser prompt).
+    // Gate /app/ behind email + password sign-in (access code kept as backup).
     (function() {
       function gate() {
         if (window.NuiAdminLogin) {
