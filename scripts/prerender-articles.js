@@ -363,9 +363,7 @@ function buildArticleHTML(a, mag) {
 ${schemaJsonLD.map(s => '<script type="application/ld+json">' + JSON.stringify(s) + '</script>').join('\n')}
 
 <!-- Fonts + CSS -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/magazine.css">
 <style>* { margin:0; padding:0; box-sizing:border-box; } body { background:#000; color:#fff; font-family:'Montserrat',sans-serif; }</style>
 </head>
