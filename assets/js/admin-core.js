@@ -99,7 +99,11 @@ function injectBreadcrumb(crumbs) {
 function showAdminPanel(panel) {
     document.querySelectorAll('.admin-nav-link').forEach(l => l.classList.remove('active'));
     const activeLink = document.querySelector(`[data-panel="${panel}"]`);
-    if (activeLink) activeLink.classList.add('active');
+    if (activeLink) {
+        activeLink.classList.add('active');
+        const moreGroup = activeLink.closest('details.admin-nav-more');
+        if (moreGroup) moreGroup.open = true;
+    }
     document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
     const panelEl = document.getElementById('admin' + panel.charAt(0).toUpperCase() + panel.slice(1) + 'Panel');
     if (panelEl) panelEl.classList.add('active');
@@ -245,8 +249,10 @@ function loadAdminDashboardPanel() {
     const deliveredOrders = orders.filter(o => o.status === 'delivered').length;
     const totalRevenue = orders.reduce((sum, o) => sum + (o.estimate || 0), 0);
     const paidRevenue = orders.filter(o => o.paymentStatus === 'paid').reduce((sum, o) => sum + (o.estimate || 0), 0);
-    const avgReview = siteAnalytics.googleReviews?.avgRating || 4.8;
-    const reviewCount = siteAnalytics.googleReviews?.count || 47;
+    // Real numbers only — no sample fallbacks.
+    const avgReview = siteAnalytics.googleReviews?.avgRating ?? null;
+    const reviewCount = siteAnalytics.googleReviews?.count ?? null;
+    const visitorTotal = siteAnalytics.visitors?.total ?? null;
     const outstandingRev = totalRevenue - paidRevenue;
 
     // Recent activity feed
@@ -358,8 +364,8 @@ function loadAdminDashboardPanel() {
             </div>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
         </div>
-        <div style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -1px;">${(siteAnalytics.visitors?.total || 2847).toLocaleString()}</div>
-        <div style="color: rgba(255,255,255,0.4); font-size: 12px; font-weight: 500; margin-top: 2px;">Site Visitors</div>
+        <div style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -1px;">${visitorTotal != null ? Number(visitorTotal).toLocaleString() : '—'}</div>
+        <div style="color: rgba(255,255,255,0.8); font-size: 12px; font-weight: 500; margin-top: 2px;">${visitorTotal != null ? 'Site Visitors' : 'Site Visitors · not connected'}</div>
     </div>
 
     <!-- Revenue Card (spans 2 cols) -->
@@ -399,10 +405,10 @@ function loadAdminDashboardPanel() {
             <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px;">Reviews</span>
         </div>
         <div style="display: flex; align-items: baseline; gap: 8px;">
-            <span style="font-size: 36px; font-weight: 800; color: #f59e0b;">${avgReview}</span>
-            <div style="display: flex; gap: 2px;">${'★'.repeat(Math.floor(avgReview)).split('').map(() => '<svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>').join('')}</div>
+            <span style="font-size: 36px; font-weight: 800; color: #f59e0b;">${avgReview != null ? avgReview : '\u2014'}</span>
+            <div style="display: flex; gap: 2px;">${'★'.repeat(Math.floor(avgReview || 0)).split('').map(() => '<svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>').join('')}</div>
         </div>
-        <div style="color: rgba(255,255,255,0.35); font-size: 12px; margin-top: 4px;">${reviewCount} Google reviews</div>
+        <div style="color: rgba(255,255,255,0.8); font-size: 12px; margin-top: 4px;">${reviewCount != null ? reviewCount + ' Google reviews' : 'Google reviews \u00b7 not connected'}</div>
     </div>
 
     <!-- Quick Actions Card -->
@@ -575,25 +581,21 @@ function renderDashIntegration(name, connected, color, panel) {
 
 // Site Analytics Data
 let siteAnalytics = JSON.parse(localStorage.getItem('nui_analytics')) || {
-    visitors: { total: 2847, today: 156, week: 892 },
-    pageViews: { total: 12453, today: 543, week: 3241 },
-    topPages: [
-        { page: 'Home', views: 4521, bounce: 32 },
-        { page: 'Services', views: 2891, bounce: 41 },
-        { page: 'Portfolio', views: 2143, bounce: 28 },
-        { page: 'Blog', views: 1654, bounce: 35 },
-        { page: 'Contact', views: 1244, bounce: 52 }
-    ],
-    trafficSources: [
-        { source: 'Organic Search', percent: 45, color: '#ff0000' },
-        { source: 'Direct', percent: 28, color: '#ff6b6b' },
-        { source: 'Social', percent: 18, color: '#ff9999' },
-        { source: 'Referral', percent: 9, color: '#ffcccc' }
-    ],
-    googleReviews: { avgRating: 4.8, count: 47 },
+    visitors: { total: null, today: null, week: null },
+    pageViews: { total: null, today: null, week: null },
+    topPages: [],
+    trafficSources: [],
+    googleReviews: { avgRating: null, count: null },
     stripeConnected: false,
     googleReviewsConnected: false
 };
+// Older versions saved sample numbers in this browser; clear them so they never show as real.
+if (siteAnalytics && siteAnalytics.visitors && siteAnalytics.visitors.total === 2847 && siteAnalytics.pageViews && siteAnalytics.pageViews.total === 12453) {
+    siteAnalytics.visitors = { total: null, today: null, week: null };
+    siteAnalytics.pageViews = { total: null, today: null, week: null };
+    siteAnalytics.topPages = []; siteAnalytics.trafficSources = [];
+    if (siteAnalytics.googleReviews && siteAnalytics.googleReviews.count === 47) siteAnalytics.googleReviews = { avgRating: null, count: null };
+}
 // Sync stripeConnected status from actual Stripe settings on load
 (function() {
     try {
@@ -737,7 +739,7 @@ async function loadAdminCalendarPanel() {
 
     document.getElementById('adminCalendarPanel').innerHTML = `
 <div class="flex-between mb-32">
-<h2 style="font-size: 28px; font-weight: 700; color: var(--admin-text);">📅 Calendar</h2>
+<h2 style="font-size: 28px; font-weight: 700; color: var(--admin-text);">Calendar</h2>
 <div class="flex-gap-12">
 <button onclick="openMeetingModal()" class="btn-admin primary">+ Schedule Meeting</button>
 </div>
@@ -1047,7 +1049,7 @@ function loadAdminUserManagementPanel() {
 
     document.getElementById('adminUsermanagementPanel').innerHTML = `
 <div class="flex-between mb-32">
-<h2 class="fs-28 fw-700">🔐 User Management</h2>
+<h2 class="fs-28 fw-700">User Management</h2>
 <div class="flex-gap-12">
 <button onclick="showAddAdminModal()" style="padding: 10px 20px; background: linear-gradient(135deg, #ff0000, #cc0000); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">+ Add Admin User</button>
 </div>
@@ -1070,7 +1072,7 @@ function loadAdminUserManagementPanel() {
 </div>
 </div>
 <div class="mt-16">
-<button onclick="showChangeMasterPasswordModal()" style="padding: 8px 16px; background: #333; border: 1px solid #ff0000; color: #ff4444; border-radius: 8px; cursor: pointer; font-size: 13px;">Change Master Password</button>
+<button onclick="sendMasterPasswordReset(this)" style="padding: 8px 16px; background: #333; border: 1px solid #ff0000; color: #fff; border-radius: 8px; cursor: pointer; font-size: 13px; min-height: 40px;">Email me a password reset link</button>
 </div>
 </div>
 
@@ -1256,12 +1258,27 @@ function showChangeMasterPasswordModal() {
     document.body.appendChild(modal);
 }
 
+// Password changes go through Supabase (email link) — no passwords stored in the browser.
+async function sendMasterPasswordReset(btn) {
+    const email = (currentUser && currentUser.email) || 'newurbaninfluence@gmail.com';
+    try {
+        btn.disabled = true; btn.textContent = 'Sending...';
+        if (!(window.NuiAuth && NuiAuth.isAvailable())) throw new Error('Login service not loaded');
+        const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/app/' });
+        if (error) throw error;
+        btn.textContent = 'Sent \u2713 Check ' + email;
+    } catch (e) {
+        btn.disabled = false; btn.textContent = 'Couldn\u2019t send \u2014 try again';
+    }
+}
+
 function updateMasterPassword() {
     const currentPw = document.getElementById('currentMasterPw').value;
     const newPw = document.getElementById('newMasterPw').value;
     const confirmPw = document.getElementById('confirmMasterPw').value;
 
-    const storedMasterPw = localStorage.getItem('nui_master_admin_pw') || 'newurban';
+    const storedMasterPw = localStorage.getItem('nui_master_admin_pw');
+    if (!storedMasterPw) { alert('Use "Email me a password reset link" instead.'); return; }
     if (currentPw !== storedMasterPw) { alert('Current password is incorrect.'); return; }
     if (newPw.length < 4) { alert('New password must be at least 4 characters.'); return; }
     if (newPw !== confirmPw) { alert('New passwords do not match.'); return; }
@@ -1431,7 +1448,7 @@ function loadAdminStripePanel() {
 
     document.getElementById('adminStripePanel').innerHTML = `
 <div class="flex-between mb-32">
-<h2 class="fs-28 fw-700">💎 Stripe Integration</h2>
+<h2 class="fs-28 fw-700">Stripe Integration</h2>
 <span style="padding: 8px 16px; background: ${stripeSettings.connected ? '#d1fae5' : '#fee2e2'}; color: ${stripeSettings.connected ? '#059669' : '#dc2626'}; border-radius: 8px; font-size: 14px;">
                 ${stripeSettings.connected ? '✓ Connected' : '✗ Not Connected'}
 </span>
@@ -1620,7 +1637,7 @@ function saveIntegrations() {
 function loadAdminIntegrationsPanel() {
     document.getElementById('adminIntegrationsPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">🔗 Integrations Hub</h2>
+<h2 class="panel-title">Integrations Hub</h2>
 <p class="panel-subtitle">Connect your favorite tools and services to automate workflows</p>
 </div>
 

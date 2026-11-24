@@ -3241,16 +3241,21 @@ const portalStyles = `
 .form-input:focus { outline: none; border-color: rgba(255,68,68,0.5); box-shadow: 0 0 0 3px rgba(255,68,68,0.08); }
 .form-select { width: 100%; padding: 14px 16px; border: 1px solid rgba(255,255,255,0.2); background: #0a0a0a; color: #fff; font-size: 15px; border-radius: 8px; font-family: inherit; }
 .form-textarea { width: 100%; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #fff; font-size: 14px; border-radius: 10px; font-family: inherit; min-height: 100px; resize: vertical; transition: border-color 0.2s; }
-.admin-header { background: rgba(10,10,10,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: #fff; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 76px; left: 0; right: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.admin-container { display: flex; padding-top: 132px; min-height: 100vh; background: #080808; }
-.admin-sidebar { width: 260px; background: #0c0c0c; border-right: 1px solid rgba(255,255,255,0.06); padding: 0 12px 20px; position: fixed; left: 0; top: 132px; bottom: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent; }
+.admin-header { background: rgba(10,10,10,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: #fff; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.admin-container { display: flex; padding-top: 65px; min-height: 100vh; background: #080808; }
+.admin-sidebar { width: 260px; background: #0c0c0c; border-right: 1px solid rgba(255,255,255,0.06); padding: 0 12px 20px; position: fixed; left: 0; top: 65px; bottom: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent; }
 .admin-sidebar::-webkit-scrollbar { width: 4px; }
 .admin-sidebar::-webkit-scrollbar-track { background: transparent; }
 .admin-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
 .sidebar-brand { display: flex; align-items: center; gap: 10px; padding: 20px 12px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; color: #fff; }
 .admin-nav { display: flex; flex-direction: column; gap: 2px; }
 .admin-nav-group { margin-bottom: 16px; }
-.admin-nav-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: rgba(255,255,255,0.25); padding: 8px 12px 6px; text-transform: uppercase; }
+.admin-nav-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: rgba(255,255,255,0.72); padding: 8px 12px 6px; text-transform: uppercase; }
+.admin-nav-more > summary { cursor: pointer; list-style: none; min-height: 32px; display: flex; align-items: center; justify-content: space-between; border-radius: 8px; }
+.admin-nav-more > summary::-webkit-details-marker { display: none; }
+.admin-nav-more > summary::after { content: '+'; font-size: 16px; font-weight: 600; letter-spacing: 0; }
+.admin-nav-more[open] > summary::after { content: '−'; }
+.admin-nav-more > summary:hover { color: #fff; background: rgba(255,255,255,0.04); }
 .admin-nav-link { display: flex; align-items: center; gap: 10px; padding: 9px 12px; color: rgba(255,255,255,0.5); cursor: pointer; border-radius: 10px; font-weight: 500; font-size: 13px; transition: all 0.2s; text-decoration: none; }
 .admin-nav-link svg { flex-shrink: 0; opacity: 0.5; transition: opacity 0.2s; }
 .admin-nav-link:hover { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.85); }
@@ -5535,7 +5540,7 @@ async function loadAdminBlogPanel() {
 
     document.getElementById('adminBlogPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">📝 Blog Manager</h2>
+<h2 class="panel-title">Blog Manager</h2>
 <p class="panel-subtitle">Create, edit, and manage your blog posts</p>
 </div>
 

@@ -63,7 +63,7 @@ function showCsvImportModal() {
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 9999;">
 <div style="background: #242424; border-radius: 16px; padding: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
 <div class="flex-between mb-24">
-<h2 class="fs-24 fw-700">📥 Import Clients from CSV</h2>
+<h2 class="fs-24 fw-700">Import Clients from CSV</h2>
 <button onclick="closeCsvImportModal()" style="background: none; border: none; color: #888; font-size: 24px; cursor: pointer;">&times;</button>
 </div>
 

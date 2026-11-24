@@ -302,7 +302,7 @@ function deletePortfolioCase(id) {
 function loadAdminAboutPanel() {
     document.getElementById('adminAboutPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">📄 About Page Settings</h2>
+<h2 class="panel-title">About Page Settings</h2>
 <p class="panel-subtitle">Manage your team members and story section</p>
 </div>
 
@@ -473,7 +473,7 @@ function loadDesignerDashboard(designer) {
 function loadAdminSiteImagesPanel() {
     document.getElementById('adminSiteimagesPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">🖼️ Site Images & Branding</h2>
+<h2 class="panel-title">Site Images & Branding</h2>
 <p class="panel-subtitle">Manage logos, taglines, and images across the entire website</p>
 </div>
 
@@ -653,7 +653,7 @@ function loadAdminDesignersPanel(searchTerm = '') {
 
     document.getElementById('adminDesignersPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">🎨 Designer Management</h2>
+<h2 class="panel-title">Designer Management</h2>
 <p class="panel-subtitle">Manage designer accounts and permissions (${filtered.length} of ${designers.length})</p>
 </div>
 <div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: center;">
@@ -839,7 +839,7 @@ function _legacy_loadAdminBrandGuidePanel() {
 
     document.getElementById('adminBrandguidePanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">📘 Brand Guide & Proof System</h2>
+<h2 class="panel-title">Brand Guide & Proof System</h2>
 <p class="panel-subtitle">Create brand guides, manage proofs, and client asset storage</p>
 </div>
 

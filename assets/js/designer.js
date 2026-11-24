@@ -303,7 +303,7 @@ function handleDesignerProofUpload(projectId) {
                         subject: `📤 New Proof Uploaded: ${project?.projectName || 'Project'} (v${version}) by ${currentUser.name}`,
                         html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #e63946, #ff6b6b); padding: 24px; text-align: center;">
-<h2 style="margin: 0; font-size: 20px; color: #fff;">📤 New Proof Ready for Review</h2>
+<h2 style="margin: 0; font-size: 20px; color: #fff;">New Proof Ready for Review</h2>
 </div>
 <div class="p-32">
 <table style="width: 100%; border-collapse: collapse;">

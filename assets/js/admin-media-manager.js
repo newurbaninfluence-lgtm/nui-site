@@ -9,7 +9,7 @@ function loadAdminMediaPanel() {
     const panel = document.getElementById('adminMediaPanel');
     panel.innerHTML = `
 <div class="panel-header">
-  <h2 class="panel-title">🖼️ Media Manager</h2>
+  <h2 class="panel-title">Media Manager</h2>
   <p class="panel-subtitle">Replace site images & videos — changes go live instantly, no redeploy needed</p>
 </div>
 

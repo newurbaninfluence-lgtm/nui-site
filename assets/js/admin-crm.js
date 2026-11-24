@@ -88,7 +88,7 @@ function loadAdminCrmPanel() {
 </style>
 
 <div class="panel-header">
-<h2 class="panel-title">💼 CRM Pipeline</h2>
+<h2 class="panel-title">CRM Pipeline</h2>
 <p class="panel-subtitle">Manage your sales pipeline, contacts, and communications</p>
 </div>
 
@@ -756,7 +756,7 @@ function composeNewMessage() {
     modal.innerHTML = `
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 9999;">
 <div style="background: #242424; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%;">
-<h2 style="font-size: 20px; margin-bottom: 24px;">✉️ Compose Message</h2>
+<h2 style="font-size: 20px; margin-bottom: 24px;">Compose Message</h2>
 
 <div class="mb-16">
 <label style="display: block; font-size: 14px; margin-bottom: 8px;">To</label>

@@ -24,7 +24,7 @@ function loadAdminBrandGuidePanel() {
 
     panel.innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">📘 Brand Guide System</h2>
+<h2 class="panel-title">Brand Guide System</h2>
 <p class="panel-subtitle">Deliverable tracking for Brand Kit, Service Identity & Product Identity packages</p>
 </div>
 

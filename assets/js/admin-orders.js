@@ -25,7 +25,7 @@ function loadAdminOrdersPanel(searchTerm = '', statusFilter = 'all') {
 
     document.getElementById('adminOrdersPanel').innerHTML = `
 <div class="flex-between mb-24">
-<h2 class="fs-28 fw-700">📋 Order Tracking</h2>
+<h2 class="fs-28 fw-700">Order Tracking</h2>
 <span class="text-muted">${filtered.length} of ${orders.length} orders</span>
 </div>
 

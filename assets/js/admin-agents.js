@@ -57,7 +57,7 @@ async function loadAdminAgentsPanel() {
     <div class="agents-wrap">
       <div class="agents-header">
         <div>
-          <h2 class="agents-title">🤖 Agent Command Center</h2>
+          <h2 class="agents-title">Agent Command Center</h2>
           <p class="agents-subtitle">Your 3 AI agents running NUI around the clock</p>
         </div>
         <button class="btn-refresh-logs" onclick="agentsRefreshLogs()">↻ Refresh Logs</button>

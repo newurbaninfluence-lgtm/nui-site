@@ -10,7 +10,7 @@ function loadAdminLeadsPanel() {
 
     document.getElementById('adminLeadsPanel').innerHTML = `
 <div class="flex-between mb-32">
-    <h2 class="fs-28 fw-700">Submissions</h2>
+    <h2 class="fs-28 fw-700">Leads</h2>
     <div style="display: flex; gap: 8px;">
         <button onclick="addManualLead()" class="btn-cta">+ Add Submission</button>
         <button onclick="syncMeetingsToLeads(); loadAdminLeadsPanel();" style="padding: 10px 16px; background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); border-radius: 8px; cursor: pointer; font-size: 13px;">🔄 Sync Meetings</button>
