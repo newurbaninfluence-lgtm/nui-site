@@ -869,3 +869,14 @@ html{scroll-behavior:smooth;}
 .faq-grid .faq-card{margin-bottom:0 !important;}
 @media(max-width:968px){.services-white{padding:60px 24px;}.services-white .services-grid{grid-template-columns:1fr !important;}.faq-grid{grid-template-columns:1fr;}}
 @media(max-width:580px){.services-white{padding:48px 16px;}}
+
+
+/* Readability fixes (Nov 2026): footer and small headings were too faint on black */
+.ticker-heading { color: #b3b3b3 !important; }
+.footer-col a, .footer-areas-grid a { color: #b8b8b8 !important; }
+.footer-col a:hover, .footer-areas-grid a:hover { color: #fff !important; }
+.footer-copyright, .footer-legal span, .footer-legal a { color: #a3a3a3 !important; }
+.footer-badge, .footer-bottom-content > a { color: #9a9a9a !important; }
+@media (max-width: 768px) {
+  .footer-col a, .footer-areas-grid a, .footer-legal a { display: inline-block; padding: 8px 0; min-height: 32px; }
+}

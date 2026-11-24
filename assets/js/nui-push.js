@@ -8,7 +8,7 @@
     // ── Config ───────────────────────────────────────────────────
     const VAPID_PUBLIC_KEY = 'BHX1swSI56wudpcQ9npOWXg1bf7LMQnoF_L1YbQhouv4gNOQ0aEki7mcu0f7mc0R-nRKBP5Kz1yhxQzoya_bH8s';
     const SUBSCRIBE_ENDPOINT = '/.netlify/functions/push-subscribe';
-    const PROMPT_DELAY = 15000; // Show opt-in after 15 seconds
+    const PROMPT_DELAY = 20000; // Earliest time the opt-in can show
     const PROMPT_COOKIE = 'nui_push_prompted';
 
     // ── Remove the VAPID skip check since key is now configured ─
@@ -24,7 +24,19 @@
     navigator.serviceWorker.register('/sw-push.js').then(function(reg) {
         reg.pushManager.getSubscription().then(function(sub) {
             if (sub) return;
-            setTimeout(function() { showPushPrompt(reg); }, PROMPT_DELAY);
+            // Only ask after real interest: 20s on the page AND scrolled past half of it.
+            // Never on the back office.
+            if (location.pathname.indexOf('/app') === 0) return;
+            var waited = false, shown = false;
+            function tryShow() {
+                if (shown || !waited) return;
+                var scrolled = (window.scrollY + window.innerHeight) / Math.max(1, document.body.scrollHeight);
+                if (scrolled < 0.5) return;
+                shown = true; window.removeEventListener('scroll', tryShow);
+                showPushPrompt(reg);
+            }
+            setTimeout(function() { waited = true; tryShow(); }, PROMPT_DELAY);
+            window.addEventListener('scroll', tryShow, { passive: true });
         });
     });
 
@@ -43,12 +55,11 @@
             }
             #nui-push-wrap {
                 position: fixed;
-                bottom: 28px;
-                left: 50%;
-                transform: translateX(-50%);
+                bottom: 20px;
+                left: 20px; /* chat bubble lives bottom-right */
                 z-index: 999999;
-                width: 90%;
-                max-width: 440px;
+                width: calc(100% - 40px);
+                max-width: 340px;
                 animation: nuiPushSlideUp 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
             }
             #nui-push-card {
@@ -160,17 +171,8 @@
             <div id="nui-push-card">
                 <button id="nui-push-close" aria-label="Close">✕</button>
                 <div id="nui-push-icon">🔔</div>
-                <div id="nui-push-title">Get Brand Insights First</div>
-                <div id="nui-push-sub">
-                    Michigan businesses get <span>exclusive tips, limited offers,</span> and
-                    real-world branding strategies — delivered straight to your device.
-                </div>
-                <div id="nui-push-perks">
-                    <span class="nui-push-perk">⚡ Instant alerts</span>
-                    <span class="nui-push-perk">🎯 Detroit-focused</span>
-                    <span class="nui-push-perk">🚫 No spam</span>
-                    <span class="nui-push-perk">📵 Turn off anytime</span>
-                </div>
+                <div id="nui-push-title">Get tips &amp; offers first</div>
+                <div id="nui-push-sub">Occasional alerts with offers and business tips. No spam, turn off anytime.</div>
                 <button id="nui-push-btn">🔔 Yes, Keep Me in the Loop</button>
                 <div id="nui-push-note">Your info is never shared. One tap to unsubscribe.</div>
             </div>

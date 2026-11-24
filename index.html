@@ -952,7 +952,7 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-MBZ3CDG9CG');
-        gtag('config', 'AW-XXXXXXXXXX');
+        // Google Ads: add the real AW- ID here when the Ads account is set up (was a placeholder).
     </script>
 
     <!-- Meta Pixel (Facebook + Instagram) — replace YOUR_PIXEL_ID with your Meta Pixel ID -->
@@ -997,7 +997,7 @@
  function loadStripe(){if(window.Stripe)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://js.stripe.com/v3/';s.onload=r;document.head.appendChild(s);});}
  function loadGoogleIdentity(){if(window.google&&window.google.accounts)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=r;document.head.appendChild(s);});}
  </script>
- <link rel="stylesheet" href="/assets/css/global.css?v=20260225c">
+ <link rel="stylesheet" href="/assets/css/global.css?v=20261124v3">
  <link rel="stylesheet" href="/assets/css/components.css?v=5">
     <!-- Geo Meta Tags -->
     <meta name="geo.region" content="US-MI">
@@ -1176,7 +1176,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- Marketing only — admin/portal/designer scripts live in /app/ -->
 <script src="/assets/js/core.js?v=4"></script>
 <script src="/assets/js/router.js?v=3"></script>
-<script src="/assets/js/marketing.js?v=20260321v4"></script>
+<script src="/assets/js/marketing.js?v=20261124v3"></script>
 <script src="/assets/js/service-intake.js?v=7"></script>
 
 <!-- Supabase & Stripe already loaded in <head> with defer -->
@@ -1227,10 +1227,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </script>
 
 <!-- NUI Tracking: GA4 events + Google Ads + Meta Pixel remarketing audiences -->
-<script src="assets/js/nui-tracking.js" defer></script>
+<script src="assets/js/nui-tracking.js?v=20261124v3" defer></script>
 
 <!-- Web Push Notifications: iPhone, Android, Desktop -->
-<script src="assets/js/nui-push.js?v=20260321" defer></script>
+<script src="assets/js/nui-push.js?v=20261124v3" defer></script>
 <script src="assets/js/nui-chat.js?v=20260226" defer></script>
   <script src="/assets/js/push-opt-in.js?v=20260418v1" defer></script>
 </body>
