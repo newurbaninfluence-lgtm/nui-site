@@ -11,8 +11,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 SHARED = os.path.join(ROOT, 'scripts', 'city-pages')
 NAV = open(os.path.join(SHARED, 'nav.html')).read()
 FOOT = open(os.path.join(SHARED, 'footer.html')).read()
+COMPARE = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'compare.html')).read()
 SITE = 'https://newurbaninfluence.com'
-V = '20261124v5'
+V = '20261124v6'
 
 ICONS = {
     'calendar': '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
@@ -146,6 +147,7 @@ BAR = f'''
   <p class="section-text" style="margin-top:28px">Typical POS add-ons for a 20-person bar: about $400 to $650 a month. With us: all of it included, plus your website, hosting, maintenance and support.</p>
 </div></section>
 
+{COMPARE}
 <section><div class="container">
   <p class="section-label">Two people, one system</p>
   <h2>Built for the owner. Run by the GM.</h2>
