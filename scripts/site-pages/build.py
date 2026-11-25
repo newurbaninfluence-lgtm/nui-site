@@ -99,11 +99,11 @@ def shell(slug, title, desc, crumb, body, faq):
 
 BUILDS = [
     ('Hideaway Kitchen &amp; Bar', 'Restaurant and bar · Southfield', 'https://hideawaykitchenandbar.net', 'hideaway-site'),
-    ('Yoshi Hibachi Grille', 'Hibachi restaurant · concept for the franchise', 'https://yoshi-hibachi-grille.netlify.app', 'yoshi-site'),
+    ('Yoshi Hibachi Grille', 'Hibachi restaurant · concept for the franchise', 'https://yoshi.demo.newurbaninfluence.com', 'yoshi-site'),
     ('Michigan After Dark', 'Nightlife · Detroit', 'https://michiganafterdark.com', 'mad-site'),
-    ('Larry Castleberry', 'Storyteller and voice actor', 'https://main--larrycastleberry.netlify.app', 'larry-site'),
+    ('Larry Castleberry', 'Storyteller and voice actor', 'https://larry.demo.newurbaninfluence.com', 'larry-site'),
     ('AJ Photography', 'Photo studio · Metro Detroit', 'https://ajvip.com', 'ajvip-site'),
-    ('Ruut &amp; Ryze Wellness', 'Therapy and holistic healing', 'https://ruutandryze.netlify.app', 'ruut-site'),
+    ('Ruut &amp; Ryze Wellness', 'Therapy and holistic healing', 'https://ruut.demo.newurbaninfluence.com', 'ruut-site'),
     ('Sonya Meadows', 'Author and speaker', 'https://sonyameadows.com', 'sonya-site'),
     ('Ultimate Hair Co.', 'Hair brand · Oak Park', 'https://ultimatehairco.com', 'uhc-site'),
     ('VividVerse TV', 'Film distribution', 'https://vividversetv.com', 'vividverse-site'),
