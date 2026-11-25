@@ -125,6 +125,26 @@ body.nh-page .nh-faq summary:focus-visible{outline:2px solid #fff;outline-offset
 body.nh-page .nh-faq p{padding:0 0 20px;color:rgba(255,255,255,.84);font-size:17px;max-width:700px}
 @media (max-width:760px){body.nh-page .nh-devices{margin:40px auto -72px}}
 
+/* restaurants-bars and websites pages (scripts/site-pages/build.py) */
+body.nh-page .nh-note{margin-top:10px;font-size:14px;font-weight:600;color:#ff5a64}
+body.nh-page .nh-list{list-style:none;margin-top:12px;display:grid;gap:10px;padding:0}
+body.nh-page .nh-list li{position:relative;padding-left:26px;color:rgba(255,255,255,.86);font-size:16px;line-height:1.45}
+body.nh-page .nh-list li:before{content:"";position:absolute;left:2px;top:6px;width:12px;height:7px;border-left:2.2px solid var(--nh-red);border-bottom:2.2px solid var(--nh-red);transform:rotate(-45deg)}
+body.nh-page .nh-split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+body.nh-page .nh-split .btn{margin-top:8px}
+body.nh-page .nh-shot{width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+body.nh-page .nh-builds{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:36px}
+body.nh-page .nh-builds a{display:block;text-decoration:none;min-width:0}
+body.nh-page .nh-builds img{width:100%;height:auto;border-radius:14px;border:1px solid rgba(255,255,255,.12);transition:transform .25s}
+body.nh-page .nh-builds a:hover img{transform:translateY(-4px)}
+body.nh-page .nh-builds b{display:block;margin-top:12px;font-size:17px}
+body.nh-page .nh-builds small{display:block;font-size:14px;color:rgba(255,255,255,.78)}
+body.nh-page .nh-builds a:focus-visible,body.nh-page a.nh-link:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:14px}
+body.nh-page a.nh-link{display:block;text-decoration:none;transition:border-color .2s,transform .2s}
+body.nh-page a.nh-link:hover{border-color:rgba(229,9,26,.6);transform:translateY(-3px)}
+@media (max-width:760px){body.nh-page .nh-split{grid-template-columns:1fr;gap:28px}body.nh-page .nh-builds{grid-template-columns:1fr}}
+@media (min-width:761px) and (max-width:1000px){body.nh-page .nh-builds{grid-template-columns:1fr 1fr}}
+
 /* old footers are replaced by .nh-foot */
 .nh-foot{background:#000;border-top:1px solid rgba(255,255,255,.1);padding:56px max(24px,env(safe-area-inset-right,0px)) 40px max(24px,env(safe-area-inset-left,0px));font:15px/1.55 Inter,system-ui,sans-serif;color:rgba(255,255,255,.82);text-align:left}
 .nh-foot .in{max-width:1072px;margin:0 auto}

@@ -153,6 +153,17 @@
   to = "/locations/:city.html"
   status = 200
 
+# Restaurants & bars, Websites
+[[redirects]]
+  from = "/restaurants-bars"
+  to = "/restaurants-bars.html"
+  status = 200
+
+[[redirects]]
+  from = "/websites"
+  to = "/websites.html"
+  status = 200
+
 # About page
 [[redirects]]
   from = "/about"
