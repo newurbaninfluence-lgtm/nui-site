@@ -109,7 +109,7 @@ def page(slug, c):
 <link rel="stylesheet" href="/assets/css/site.css?v={V}">
 <script src="/assets/js/site-edits.js?v=20261124v1" defer></script>
 </head>
-<body class="nh-page">
+<body class="nh-page nh-gen">
 {NAV}
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <span>Locations</span> <span aria-hidden="true">&rsaquo;</span> <span>{e(name)}</span></nav>
 
@@ -127,7 +127,7 @@ def page(slug, c):
   {local}
 </div></section>
 
-<section><div class="container">
+<section class="dk"><div class="container">
   <p class="section-label">Where the money goes</p>
   <h2>Three leaks we find in {e(name)}</h2>
   <div class="nh-grid">{leaks}</div>

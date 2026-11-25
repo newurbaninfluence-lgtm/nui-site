@@ -145,6 +145,31 @@ body.nh-page a.nh-link:hover{border-color:rgba(229,9,26,.6);transform:translateY
 @media (max-width:760px){body.nh-page .nh-split{grid-template-columns:1fr;gap:28px}body.nh-page .nh-builds{grid-template-columns:1fr}}
 @media (min-width:761px) and (max-width:1000px){body.nh-page .nh-builds{grid-template-columns:1fr 1fr}}
 
+/* generated pages (body.nh-gen): light sections like the homepage, dark ones marked .dk */
+body.nh-page.nh-gen section{background:#f5f5f7;color:#1d1d1f}
+body.nh-page.nh-gen section:nth-of-type(even){background:#fff}
+body.nh-page.nh-gen section .section-label{color:#b3000c}
+body.nh-page.nh-gen section .section-text{color:#424245}
+body.nh-page.nh-gen section :is(.nh-card,.nh-steps li){background:#fff;border:0;box-shadow:0 1px 2px rgba(0,0,0,.04),0 16px 40px rgba(0,0,0,.07)}
+body.nh-page.nh-gen section:nth-of-type(even) :is(.nh-card,.nh-steps li){background:#f5f5f7;box-shadow:none}
+body.nh-page.nh-gen section :is(.nh-card p,.nh-steps p,.nh-faq p,.nh-list li){color:#424245}
+body.nh-page.nh-gen section .nh-note{color:#1a7f37}
+body.nh-page.nh-gen section a.nh-link .nh-note{color:#b3000c}
+body.nh-page.nh-gen section :is(.nh-faqs,.nh-faq){border-color:#e3e3e6}
+body.nh-page.nh-gen section .nh-faq summary:focus-visible{outline-color:#e5091a}
+body.nh-page.nh-gen section .nh-builds small{color:#424245}
+body.nh-page.nh-gen section .nh-builds img,body.nh-page.nh-gen section .nh-shot{border:0;box-shadow:0 1px 2px rgba(0,0,0,.06),0 16px 40px rgba(0,0,0,.14)}
+body.nh-page.nh-gen section .nearby-grid a{background:#fff;border-color:#d9d9de;color:#1d1d1f}
+body.nh-page.nh-gen section .btn-outline{color:#1d1d1f;border-color:#b9b9c0}
+body.nh-page.nh-gen section .btn-outline:hover{border-color:#1d1d1f}
+body.nh-page.nh-gen section .nh-builds a:focus-visible,body.nh-page.nh-gen section a.nh-link:focus-visible{outline-color:#e5091a}
+body.nh-page.nh-gen section.dk{background:radial-gradient(50% 60% at 50% 0%,rgba(229,9,26,.22),transparent 70%),#000;color:#fff}
+body.nh-page.nh-gen section.dk .section-label{color:#ff5a64}
+body.nh-page.nh-gen section.dk .section-text{color:rgba(255,255,255,.84)}
+body.nh-page.nh-gen section.dk :is(.nh-card,.nh-steps li){background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);box-shadow:none}
+body.nh-page.nh-gen section.dk .nh-card p{color:rgba(255,255,255,.84)}
+body.nh-page.nh-gen section.dk .nh-note,body.nh-page.nh-gen section.dk a.nh-link .nh-note{color:#ff5a64}
+
 /* old footers are replaced by .nh-foot */
 .nh-foot{background:#000;border-top:1px solid rgba(255,255,255,.1);padding:56px max(24px,env(safe-area-inset-right,0px)) 40px max(24px,env(safe-area-inset-left,0px));font:15px/1.55 Inter,system-ui,sans-serif;color:rgba(255,255,255,.82);text-align:left}
 .nh-foot .in{max-width:1072px;margin:0 auto}

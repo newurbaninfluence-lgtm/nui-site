@@ -12,7 +12,7 @@ SHARED = os.path.join(ROOT, 'scripts', 'city-pages')
 NAV = open(os.path.join(SHARED, 'nav.html')).read()
 FOOT = open(os.path.join(SHARED, 'footer.html')).read()
 SITE = 'https://newurbaninfluence.com'
-V = '20261124v3'
+V = '20261124v4'
 
 ICONS = {
     'calendar': '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
@@ -89,7 +89,7 @@ def shell(slug, title, desc, crumb, body, faq):
 <link rel="stylesheet" href="/assets/css/site.css?v={V}">
 <script src="/assets/js/site-edits.js?v=20261124v1" defer></script>
 </head>
-<body class="nh-page">
+<body class="nh-page nh-gen">
 {NAV}
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">&rsaquo;</span> <span>{crumb}</span></nav>
 {body}
@@ -119,7 +119,7 @@ BAR = f'''
   <img class="nh-devices" src="/assets/img/home/system-devices.webp" width="1090" height="560" alt="The owner's daily report on a laptop and the restaurant's website on a phone">
 </header>
 
-<section><div class="container">
+<section class="dk"><div class="container">
   <p class="section-label">Where the money goes</p>
   <h2>Four leaks we find in almost every bar</h2>
   <div class="nh-grid">
@@ -193,6 +193,10 @@ BUILDS = [
     ('Michigan After Dark', 'Nightlife · Detroit', 'https://michiganafterdark.com', 'mad-site'),
     ('Sonya Meadows', 'Author and speaker', 'https://sonyameadows.com', 'sonya-site'),
     ('Ultimate Hair Co.', 'Hair brand · Oak Park', 'https://ultimatehairco.com', 'uhc-site'),
+    ('VividVerse TV', 'Film distribution', 'https://vividversetv.com', 'vividverse-site'),
+    ('Backyard Comedy Battle', 'Live comedy shows and tickets', 'https://gooddaytofengshui.com', 'comedy-site'),
+    ('Smile For Me Photography', 'Photo booths and photography · Detroit', 'https://smile-for-me-photography.netlify.app', 'smile-site'),
+    ('Built Heavy', 'Album site · Faren Young', 'https://farenyoung.com', 'builtheavy-site'),
 ]
 WEB_FAQ = [
     ("How much does a website cost?", "It depends on what your business needs, so every site is priced after the free audit, with a clear plan and an exact price up front. Hosting, maintenance and support are included."),
@@ -228,7 +232,7 @@ WEB = f'''
   </div>
 </div></section>
 
-<section><div class="container">
+<section class="dk"><div class="container">
   <p class="section-label">Goes further</p>
   <h2>Add software that runs the business behind it</h2>
   <p class="section-text">The website brings people in. The software behind it runs bookings, customers, staff and follow-up in one place.</p>
