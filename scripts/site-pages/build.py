@@ -194,6 +194,7 @@ BUILDS = [
     ('Backyard Comedy Battle', 'Live comedy shows and tickets', 'https://gooddaytofengshui.com', 'comedy-site'),
     ('Smile For Me Photography', 'Photo booths and photography · Detroit', 'https://smile-for-me-photography.netlify.app', 'smile-site'),
     ('Built Heavy', 'Album site · Faren Young', 'https://farenyoung.com', 'builtheavy-site'),
+    ('Larry Castleberry', 'Storyteller and voice actor', 'https://www.larrycastleberry.com', 'larry-site'),
 ]
 WEB_FAQ = [
     ("How much does a website cost?", "It depends on what your business needs, so every site is priced after the free audit, with a clear plan and an exact price up front. Hosting, maintenance and support are included."),
