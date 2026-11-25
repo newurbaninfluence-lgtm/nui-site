@@ -50,7 +50,7 @@ function _buildImportShell(preselectedId) {
         + '<div style="background:#111;padding:24px 28px;border-bottom:1px solid #2a2a2a;'
         + 'display:flex;justify-content:space-between;align-items:center;">'
         + '<div>'
-        + '<h2 style="margin:0;font-size:22px;font-weight:700;">📥 Client History Import</h2>'
+        + '<h2 style="margin:0;font-size:22px;font-weight:700;">Client History Import</h2>'
         + '<p style="margin:4px 0 0;color:#888;font-size:13px;">Add old clients with their full order, invoice &amp; project history in one shot</p>'
         + '</div>'
         + '<button onclick="document.getElementById(\'clientHistoryImportModal\').remove()" '

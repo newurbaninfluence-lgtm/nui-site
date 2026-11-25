@@ -260,10 +260,13 @@ async function loadAdminPushPanel() {
     panel.innerHTML = `
 <div class="flex-between mb-32">
     <div>
-        <h2 class="fs-28 fw-700">🔔 Push Notifications</h2>
+        <h2 class="fs-28 fw-700">Push Notifications</h2>
         <p style="color:rgba(255,255,255,0.4);font-size:13px;margin-top:4px;">Send campaigns directly to subscribers' phones and desktops</p>
     </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <button onclick="window.openPushReinvite && window.openPushReinvite()" class="btn-outline">Re-invite people</button>
     <button onclick="_pushOpenSendModal()" class="btn-cta">+ Send Campaign</button>
+    </div>
 </div>
 
 <!-- Stats -->

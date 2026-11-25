@@ -11,7 +11,7 @@ async function loadDataHealthPanel() {
     var panel = document.getElementById('adminDataHealthPanel') || document.querySelector('.admin-panel.active');
     if (!panel) return;
     panel.innerHTML = '<div class="admin-panel-content" style="padding:24px;">' +
-        '<div style="margin-bottom:24px;"><h2 style="margin:0;font-size:22px;font-weight:700;color:#fff;">Account Linkage Check</h2>' +
+        '<div style="margin-bottom:24px;"><h2 style="margin:0;font-size:22px;font-weight:700;color:#fff;">Data Check</h2>' +
         '<p style="margin:4px 0 0;color:#888;font-size:13px;">Everything a client owns should sit under one client ID. This finds what doesn\'t.</p></div>' +
         '<div id="dhBody" style="color:#666;">Scanning…</div></div>';
     await runDataHealthScan();

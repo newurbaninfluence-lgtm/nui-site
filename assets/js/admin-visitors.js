@@ -15,7 +15,7 @@ function buildVisitorsPanelHTML() {
     return '<div style="padding:24px;">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">' +
             '<div>' +
-                '<h2 style="margin:0;font-size:22px;font-weight:700;color:#fff;">🔍 Identified Visitors</h2>' +
+                '<h2 style="margin:0;font-size:22px;font-weight:700;color:#fff;">Identified Visitors</h2>' +
                 '<p style="margin:4px 0 0;color:#888;font-size:13px;">Anonymous website visitors identified by RB2B — reach out before they forget you</p>' +
             '</div>' +
             '<div style="display:flex;gap:10px;">' +

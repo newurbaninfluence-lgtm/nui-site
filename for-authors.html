@@ -13,9 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@newurbaninfluence">
 <meta name="geo.region" content="US-MI">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="icon" href="/favicon.ico">
 <script type="application/ld+json">
 {
@@ -46,16 +44,16 @@ a{text-decoration:none;color:inherit;}
 
 /* NAV */
 .nav{background:#000;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.nav-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;letter-spacing:3px;text-transform:uppercase;color:#fff;}
+.nav-brand{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:15px;letter-spacing:3px;text-transform:uppercase;color:#fff;}
 .nav-brand span{color:#D90429;}
 .nav-links{display:flex;gap:28px;}
-.nav-links a{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);transition:color 0.2s;}
+.nav-links a{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.78);transition:color 0.2s;}
 .nav-links a:hover,.nav-links a.active{color:#fff;}
 .ham{display:none;flex-direction:column;gap:5px;cursor:pointer;}
 .ham span{width:22px;height:2px;background:#fff;display:block;}
 .mob{display:none;position:fixed;inset:0;background:#000;z-index:200;flex-direction:column;justify-content:center;align-items:center;gap:32px;}
 .mob.open{display:flex;}
-.mob a{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
+.mob a{font-family:'Inter Tight',sans-serif;font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
 .mob a:hover{color:#D90429;}
 .mob-x{position:absolute;top:24px;right:24px;background:none;border:none;color:#fff;font-size:24px;cursor:pointer;}
 
@@ -67,13 +65,13 @@ a{text-decoration:none;color:inherit;}
 .red-sec{background:#D90429;}
 
 /* LABEL */
-.lbl{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;margin-bottom:20px;color:#D90429;}
+.lbl{font-size:12px;font-weight:700;letter-spacing:4px;text-transform:uppercase;margin-bottom:20px;color:#D90429;}
 
 /* TYPE */
-h1,h2{font-family:'Syne',sans-serif;font-weight:800;text-transform:uppercase;line-height:1.0;letter-spacing:-0.5px;}
+h1,h2{font-family:'Inter Tight',sans-serif;font-weight:800;text-transform:uppercase;line-height:1.0;letter-spacing:-0.5px;}
 h1{font-size:clamp(44px,6.5vw,88px);margin-bottom:28px;}
 h2{font-size:clamp(28px,4vw,52px);margin-bottom:24px;}
-h3{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+h3{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:14px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
 .white h2,.white h3{color:#000;}
 .white p,.white li{color:#333;}
 .rw{color:#D90429;}
@@ -81,7 +79,7 @@ h3{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;letter-spacing:2
 .center-divider{width:40px;height:3px;background:#D90429;margin:0 auto 36px;}
 
 /* BODY */
-p{font-size:16px;line-height:1.8;color:rgba(255,255,255,0.6);}
+p{font-size:16px;line-height:1.8;color:rgba(255,255,255,0.78);}
 .lead{font-size:18px;line-height:1.75;color:rgba(255,255,255,0.75);max-width:640px;}
 .white p{color:#444;}
 .white .lead{color:#222;}
@@ -102,25 +100,25 @@ p{font-size:16px;line-height:1.8;color:rgba(255,255,255,0.6);}
 .case-study{display:block;margin-top:48px;background:#0a0a0a;border-top:3px solid #D90429;text-decoration:none;color:inherit;overflow:hidden;transition:transform 0.2s ease;}
 .case-study:hover{transform:translateY(-2px);}
 .case-thumb{position:relative;width:100%;aspect-ratio:16/9;background:#1a1a1a center top/cover no-repeat;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;}
-.case-thumb-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:112px;font-weight:800;color:rgba(255,255,255,0.08);letter-spacing:-4px;z-index:0;}
+.case-thumb-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Inter Tight',sans-serif;font-size:112px;font-weight:800;color:rgba(255,255,255,0.78);letter-spacing:-4px;z-index:0;}
 .case-thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 0%,transparent 70%,rgba(10,10,10,0.4) 100%);pointer-events:none;}
 .case-body{padding:44px 48px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
 .case-body-left{display:flex;flex-direction:column;}
-.case-role{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#D90429;margin-bottom:14px;}
-.case-name{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;letter-spacing:-0.5px;line-height:1;margin-bottom:22px;color:#fff;}
-.case-desc{font-size:15px;line-height:1.7;color:rgba(255,255,255,0.6);margin-bottom:22px;}
-.case-link{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#D90429;display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding-top:12px;}
+.case-role{font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#D90429;margin-bottom:14px;}
+.case-name{font-family:'Inter Tight',sans-serif;font-size:36px;font-weight:800;letter-spacing:-0.5px;line-height:1;margin-bottom:22px;color:#fff;}
+.case-desc{font-size:15px;line-height:1.7;color:rgba(255,255,255,0.78);margin-bottom:22px;}
+.case-link{font-family:'Inter Tight',sans-serif;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#D90429;display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding-top:12px;}
 .case-study:hover .case-link{color:#fff;}
 .case-systems{list-style:none;padding:0;margin:0;}
-.case-systems-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:14px;}
-.case-systems li{font-size:13px;color:rgba(255,255,255,0.6);padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.case-systems-label{font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.78);margin-bottom:14px;}
+.case-systems li{font-size:13px;color:rgba(255,255,255,0.78);padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
 .case-systems li::before{content:'— ';color:#D90429;}
 .case-systems li:last-child{border-bottom:none;}
 
 /* HOW IT WORKS */
 .steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;margin-top:48px;}
 .step{background:#f0f0f0;padding:36px 28px;border-top:3px solid #000;}
-.step-num{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:#D90429;line-height:1;margin-bottom:14px;}
+.step-num{font-family:'Inter Tight',sans-serif;font-size:36px;font-weight:800;color:#D90429;line-height:1;margin-bottom:14px;}
 .step h3{color:#000;font-size:13px;margin-bottom:10px;}
 .step p{color:#555;font-size:14px;line-height:1.7;}
 
@@ -130,7 +128,7 @@ p{font-size:16px;line-height:1.8;color:rgba(255,255,255,0.6);}
 .final-cta p{color:rgba(255,255,255,0.85);font-size:17px;max-width:540px;margin:0 auto 36px;line-height:1.7;}
 
 /* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;padding:16px 40px;border:none;cursor:pointer;transition:all 0.2s;}
+.btn{display:inline-flex;align-items:center;justify-content:center;font-family:'Inter Tight',sans-serif;font-weight:700;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;padding:16px 40px;border:none;cursor:pointer;transition:all 0.2s;}
 .btn-red{background:#D90429;color:#fff;}
 .btn-red:hover{background:#b5001f;}
 .btn-wh{background:#fff;color:#000;}
@@ -148,7 +146,7 @@ p{font-size:16px;line-height:1.8;color:rgba(255,255,255,0.6);}
 
 /* FOOTER */
 footer{border-top:1px solid rgba(255,255,255,0.06);padding:28px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
-footer p,footer a{font-size:12px;color:rgba(255,255,255,0.25);}
+footer p,footer a{font-size:12px;color:rgba(255,255,255,0.78);}
 footer a:hover{color:#D90429;}
 
 @media(max-width:768px){
@@ -160,30 +158,17 @@ footer a:hover{color:#D90429;}
   footer{flex-direction:column;text-align:center;padding:24px;}
 }
 </style>
+<link rel="stylesheet" href="/assets/css/site.css?v=20261124v5">
+<script src="/assets/js/site-edits.js?v=20261124v1" defer></script>
 </head>
-<body data-service="For Authors">
+<body class="nh-page" data-service="For Authors">
 
-<nav class="nav">
-  <a href="/" class="nav-brand">New Urban <span>Influence</span></a>
-  <div class="nav-links">
-    <a href="/services/brand-kit-detroit">The Blueprint</a>
-    <a href="/services/business-website-detroit">Digital HQ</a>
-    <a href="/services/digital-staff-detroit">Digital Staff</a>
-    <a href="/services/social-media-management-detroit">Promotion Team</a>
-    <a href="/services/press-feature-detroit">The Publicist</a>
-    <a href="/services/event-team-detroit">The Event Team</a>
-  </div>
-  <div class="ham" onclick="document.getElementById('m').classList.toggle('open')"><span></span><span></span><span></span></div>
+<nav class="nh-nav" aria-label="Main">
+<a class="nh-logo" href="/"><img src="/icons/icon-192.png" alt="" width="26" height="26"><span>New Urban Influence</span></a>
+<div class="nh-links"><a href="/restaurants-bars">Restaurants &amp; bars</a><a href="/websites">Websites</a><a href="/websites#builds">Our work</a><a href="/how-it-works">How it works</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Promotions</a><a href="/about">About</a><a href="/app/">Client login</a></div>
+<div class="nh-right"><a class="nh-cta" href="/?audit=1">Book free audit</a><button type="button" class="nh-burger" aria-label="Menu" aria-expanded="false" aria-controls="nhMenu"><span></span><span></span><span></span></button></div>
 </nav>
-<div class="mob" id="m">
-  <button class="mob-x" onclick="document.getElementById('m').classList.remove('open')">✕</button>
-  <a href="/services/brand-kit-detroit">The Blueprint</a>
-  <a href="/services/business-website-detroit">Digital HQ</a>
-  <a href="/services/digital-staff-detroit">Digital Staff</a>
-  <a href="/services/social-media-management-detroit">Promotion Team</a>
-  <a href="/services/press-feature-detroit">The Publicist</a>
-  <a href="/services/event-team-detroit">The Event Team</a>
-</div>
+<div class="nh-menu" id="nhMenu" hidden><a href="/">Home</a><a href="/restaurants-bars">Restaurants &amp; bars</a><a href="/websites">Websites</a><a href="/websites#builds">Our work</a><a href="/how-it-works">How it works</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Promotions</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/app/">Client login</a></div>
 
 <!-- HERO -->
 <section class="hero black">
@@ -374,21 +359,14 @@ footer a:hover{color:#D90429;}
 </section>
 
 <!-- FOOTER -->
-<footer>
-  <p>© 2026 New Urban Influence · Detroit, MI</p>
-  <div style="display:flex;gap:24px;">
-    <a href="/">Home</a>
-    <a href="/book">Book A Call</a>
-    <a href="/contact">Contact</a>
-    <a href="/privacy-policy">Privacy</a>
-  </div>
-</footer>
+<footer class="nh-foot"><div class="in"><div class="nh-fgrid">
+<div><a class="nh-flogo" href="/"><img src="/icons/icon-192.png" alt="" width="26" height="26">New Urban Influence</a><p style="margin-top:12px;max-width:280px">Websites and business software, built in Detroit.</p><p style="margin-top:8px;color:#fff;font-weight:600;user-select:all">(248) 487-8747</p><p style="margin-top:4px;user-select:all">info@newurbaninfluence.com</p></div>
+<div><h4>What we build</h4><a href="/websites">Websites</a><a href="/restaurants-bars">Restaurant &amp; bar software</a><a href="/services/crm-integration-detroit">CRM &amp; automation</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers &amp; videos</a><a href="/print">Print &amp; signage</a></div>
+<div><h4>Company</h4><a href="/about">About</a><a href="/websites#builds">Our work</a><a href="/how-it-works">How it works</a><a href="/contact">Contact</a><a href="/magazine">NUI Magazine</a><a href="/blog">Blog</a></div>
+<div><h4>Log in</h4><a href="/app/">Client login</a><a href="/app/">Staff login</a></div>
+</div>
+<div class="nh-fareas"><h4>Service areas</h4><div><a href="/locations/detroit">Detroit</a><a href="/locations/southfield">Southfield</a><a href="/locations/farmington-hills">Farmington Hills</a><a href="/locations/royal-oak">Royal Oak</a><a href="/locations/troy">Troy</a><a href="/locations/dearborn">Dearborn</a><a href="/locations/ann-arbor">Ann Arbor</a><a href="/locations/birmingham">Birmingham</a><a href="/locations/novi">Novi</a><a href="/locations/sterling-heights">Sterling Heights</a><a href="/locations/livonia">Livonia</a><a href="/locations/warren">Warren</a><a href="/locations/pontiac">Pontiac</a><a href="/locations/hamtramck">Hamtramck</a><a href="/locations/highland-park">Highland Park</a></div></div>
+<div class="nh-fbase"><span>&copy; 2026 New Urban Influence. Detroit, Michigan.</span><span><a href="/privacy-policy">Privacy</a> &nbsp;&middot;&nbsp; <a href="/terms-of-service">Terms</a> &nbsp;&middot;&nbsp; <a href="/sitemap.xml">Sitemap</a></span></div></div></footer>
 
-<script>
-// Close mobile menu on link click
-document.querySelectorAll('.mob a').forEach(a => {
-  a.addEventListener('click', () => document.getElementById('m').classList.remove('open'));
-});
-</script>
-
+<script src="/assets/js/site-nav.js?v=20261124v1" defer></script>
 </body></html>

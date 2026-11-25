@@ -326,7 +326,7 @@ function loadAdminEmailTemplatesPanel() {
 
     document.getElementById('adminEmailmarketingPanel').innerHTML = `
 <div class="flex-between mb-24">
-<h2 class="fs-28 fw-700">📧 Email Templates</h2>
+<h2 class="fs-28 fw-700">Email Templates</h2>
 <button onclick="showCreateTemplateModal()" class="btn-cta">+ New Template</button>
 </div>
 

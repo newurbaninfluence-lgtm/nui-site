@@ -127,6 +127,8 @@
 @media (max-width: 768px) {
   /* Show hamburger */
   .admin-mobile-toggle { display: flex; }
+  /* Sit inside the header next to the name, not on top of it */
+  .admin-header .admin-mobile-toggle { position: static; flex-shrink: 0; }
 
   /* Sidebar slides in from left */
   .admin-sidebar, .portal-sidebar {

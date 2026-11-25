@@ -180,7 +180,7 @@ async function deliverBrandGuidePackage(guideId) {
                     subject: '🎉 Your Brand Package Has Been Delivered! — ' + g.packageName,
                     html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #202020; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #2ecc71, #27ae60); padding: 32px; text-align: center;">
-<h2 style="margin:0;font-size:24px;color:#fff;">🎉 Brand Package Delivered!</h2>
+<h2 style="margin:0;font-size:24px;color:#fff;">Brand Package Delivered!</h2>
 </div>
 <div style="padding: 32px;">
 <p style="color: #ccc;">Hey ${g.clientName},</p>

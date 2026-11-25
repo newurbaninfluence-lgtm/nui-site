@@ -1,3 +1,5 @@
+// Set to the real Google Ads ID (AW-...) when the Ads account exists. Conversions are skipped until then.
+const GOOGLE_ADS_ID = null;
 // nui-tracking.js — Unified tracking: GA4 + Google Ads + Meta Pixel (Facebook/Instagram)
 // Tracks page sections, scroll depth, CTA clicks → builds retargeting audiences
 // Interest categories match RB2B auto-email templates for unified targeting across all platforms
@@ -109,7 +111,7 @@
             text.includes('book') || text.includes('strategy call') ||
             text.includes('get started') || text.includes('schedule')) {
             track('nui_cta_click', { cta_text: btn.textContent.trim(), cta_type: 'booking', interest_category: 'hot_lead' });
-            track('conversion', { send_to: 'AW-XXXXXXXXXX/CONVERSION_LABEL', event_category: 'engagement', event_label: 'booking_click' });
+            if (GOOGLE_ADS_ID) track('conversion', { send_to: GOOGLE_ADS_ID + '/CONVERSION_LABEL', event_category: 'engagement', event_label: 'booking_click' });
             // Meta: Schedule event (standard event for bookings)
             metaStandard('Schedule', { content_name: 'Strategy Call', content_category: 'booking' });
         }
@@ -169,7 +171,7 @@
     document.addEventListener('submit', function(e) {
         const formId = (e.target.id || e.target.className || 'unknown');
         track('nui_form_submit', { form_id: formId, page_section: lastHash || 'home', interest_category: 'hot_lead' });
-        track('conversion', { send_to: 'AW-XXXXXXXXXX/LEAD_LABEL', event_category: 'conversion', event_label: 'form_submission' });
+        if (GOOGLE_ADS_ID) track('conversion', { send_to: GOOGLE_ADS_ID + '/LEAD_LABEL', event_category: 'conversion', event_label: 'form_submission' });
         // Meta: Lead standard event (highest value for ad optimization)
         metaStandard('Lead', { content_name: 'Form Submission', content_category: lastHash || 'general' });
     });

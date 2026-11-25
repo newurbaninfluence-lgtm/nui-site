@@ -33,7 +33,7 @@
       background: #111; border: 1px solid rgba(255,255,255,0.08);
       border-radius: 16px; overflow: hidden; display: none; flex-direction: column;
       box-shadow: 0 12px 48px rgba(0,0,0,0.6);
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Inter', sans-serif;
     }
     #nui-chat-window.open { display: flex; animation: chatSlideUp 0.25s ease-out; }
     @keyframes chatSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
@@ -45,7 +45,7 @@
     .nui-chat-avatar {
       width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #e63946, #c1121f);
       display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; font-size: 14px;
-      font-family: 'Syne', sans-serif;
+      font-family: 'Inter Tight', sans-serif;
     }
     .nui-chat-header-info h4 { margin: 0; font-size: 14px; font-weight: 700; color: #fff; }
     .nui-chat-header-info span { font-size: 11px; color: rgba(255,255,255,0.5); }
@@ -81,7 +81,7 @@
     .nui-chat-input-area input {
       flex: 1; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.08);
       border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 13px;
-      font-family: 'Montserrat', sans-serif; outline: none; transition: border-color 0.2s;
+      font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s;
     }
     .nui-chat-input-area input:focus { border-color: rgba(230,57,70,0.4); }
     .nui-chat-input-area input::placeholder { color: rgba(255,255,255,0.3); }
@@ -97,7 +97,7 @@
     .nui-chat-quick {
       background: rgba(230,57,70,0.1); border: 1px solid rgba(230,57,70,0.2);
       color: #e63946; border-radius: 20px; padding: 6px 14px; font-size: 11px;
-      cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600;
       transition: background 0.2s; white-space: nowrap;
     }
     .nui-chat-quick:hover { background: rgba(230,57,70,0.2); }

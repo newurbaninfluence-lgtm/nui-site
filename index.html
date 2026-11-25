@@ -3,7 +3,7 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>New Urban Influence | Detroit Business Infrastructure — Digital HQ, Digital Staff & The Blueprint</title>
+ <title>New Urban Influence | Detroit Websites & Business Software</title>
 
  <!-- ONE-TIME CACHE BUST: v4 — kills old service workers on Safari/mobile -->
  <!-- Does NOT clear portfolio or site image data (only SW caches) -->
@@ -46,7 +46,7 @@
  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
 
     <!-- SEO Meta Tags -->
- <meta name="description" content="Detroit branding agency for small businesses and startups. Brand identity packages from $1,000. Logo design, web, packaging, print, AI systems, email & SMS automation.">
+ <meta name="description" content="We find the leaks in your business and fix them, with software built for your industry, a website that works, and engagement that brings customers back. Free audit. Detroit, MI.">
  <meta name="keywords" content="digital hq detroit, digital staff detroit, the blueprint branding detroit, brand identity detroit, website design detroit, AI receptionist detroit small business, geo-fencing detroit, geo-gridding detroit, neighborhood captain marketing, digital promotion team detroit, content crew detroit, lead catcher detroit, block captain advertising, restaurant marketing detroit, hvac marketing detroit, roofing marketing detroit, nightclub marketing detroit, salon branding detroit, contractor website detroit, small business branding detroit, all things detroit vendor marketing, eastern market vendor branding, avenue of fashion detroit business, southfield business marketing, dearborn michigan business, financing branding 89 per month detroit">
  <meta name="author" content="New Urban Influence">
  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -56,8 +56,8 @@
     <!-- Open Graph / Facebook -->
  <meta property="og:type" content="website">
  <meta property="og:url" content="https://newurbaninfluence.com">
- <meta property="og:title" content="New Urban Influence | Detroit Business Infrastructure — Digital HQ, Digital Staff &amp; The Blueprint">
- <meta property="og:description" content="Professional branding for small businesses. Logo design, brand identity, packaging, social media templates, AI systems & automation. 4.9★ rated. Free consultation. 0% financing available.">
+ <meta property="og:title" content="New Urban Influence | Detroit Websites &amp; Business Software">
+ <meta property="og:description" content="We find the leaks in your business and fix them, with software built for your industry, a website that works, and engagement that brings customers back. Free audit. Detroit, MI.">
  <meta property="og:image" content="https://newurbaninfluence.com/og-image.jpg">
  <meta property="og:image:width" content="1200">
  <meta property="og:image:height" content="630">
@@ -68,8 +68,8 @@
  <meta name="twitter:card" content="summary_large_image">
  <meta name="twitter:site" content="@newurbaninfluence">
  <meta name="twitter:creator" content="@newurbaninfluence">
- <meta name="twitter:title" content="New Urban Influence | Detroit Business Infrastructure — Digital HQ, Digital Staff &amp; The Blueprint">
- <meta name="twitter:description" content="Professional branding for small businesses. Logo design, brand identity, packaging, social templates, AI systems & automation. 4.9★ rated. Free consultation.">
+ <meta name="twitter:title" content="New Urban Influence | Detroit Websites &amp; Business Software">
+ <meta name="twitter:description" content="We find the leaks in your business and fix them, with software built for your industry, a website that works, and engagement that brings customers back. Free audit. Detroit, MI.">
  <meta name="twitter:image" content="https://newurbaninfluence.com/twitter-card.jpg">
 
     <!-- Local Business Schema -->
@@ -952,7 +952,7 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-MBZ3CDG9CG');
-        gtag('config', 'AW-XXXXXXXXXX');
+        // Google Ads: add the real AW- ID here when the Ads account is set up (was a placeholder).
     </script>
 
     <!-- Meta Pixel (Facebook + Instagram) — replace YOUR_PIXEL_ID with your Meta Pixel ID -->
@@ -977,15 +977,13 @@
  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
     <!-- Preconnect for performance -->
- <link rel="preconnect" href="https://fonts.googleapis.com">
- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1920&q=80" fetchpriority="high">
  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
  <link rel="dns-prefetch" href="https://js.stripe.com">
- <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&family=Teko:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap">
- <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&family=Teko:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
- <noscript><link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&family=Teko:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+ <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-tight-latin-800-normal.woff2" crossorigin>
+ <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-latin-wght-normal.woff2" crossorigin>
+ <link rel="stylesheet" href="/assets/fonts/fonts.css">
 
     <!-- Critical scripts only — env + supabase needed for data -->
  <script src="/env.js" defer></script>
@@ -997,8 +995,9 @@
  function loadStripe(){if(window.Stripe)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://js.stripe.com/v3/';s.onload=r;document.head.appendChild(s);});}
  function loadGoogleIdentity(){if(window.google&&window.google.accounts)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=r;document.head.appendChild(s);});}
  </script>
- <link rel="stylesheet" href="/assets/css/global.css?v=20260225c">
+ <link rel="stylesheet" href="/assets/css/global.css?v=20261124v4">
  <link rel="stylesheet" href="/assets/css/components.css?v=5">
+<link rel="stylesheet" href="/assets/css/home.css?v=20261124v2">
     <!-- Geo Meta Tags -->
     <meta name="geo.region" content="US-MI">
     <meta name="geo.placename" content="Detroit, Michigan">
@@ -1007,8 +1006,9 @@
 
     <!-- RB2B Visitor Identification -->
     <script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("E63P0HZ53POW");</script>
+<script src="/assets/js/site-edits.js?v=20261124v1" defer></script>
 </head>
-<body>
+<body class="nh-site">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N5ZZT3"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -1016,150 +1016,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="cursor-ring"></div>
  <div class="scroll-progress" id="scrollProgress"></div>
  <nav class="nav">
-<a class="logo" href="/" id="mainNavLogo" onclick="event.preventDefault(); showView('home');"><img src="icons/icon-192.png" alt="NUI Icon" width="30" height="30" style="height:30px;width:30px;display:block;" onerror="this.style.display='none';"><span class="logo-text" style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:2px;text-transform:uppercase;line-height:1;">New Urban <span style="color:#dc2626;">Influence</span><span style="display:block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:4px;" class="logo-slogan">We don't design. We influence.</span></span></a>
+<a class="logo" href="/" id="mainNavLogo" onclick="event.preventDefault(); showView('home');"><img src="icons/icon-192.png" alt="" width="26" height="26" onerror="this.style.display='none';"><span class="logo-text">New Urban Influence</span></a>
 <div class="nav-links">
-<a href="/" class="active" data-view="home" onclick="event.preventDefault(); showView('home');">Home</a>
-<a href="/about" data-view="about" onclick="event.preventDefault(); showView('about');">About</a>
-<div class="nav-dropdown-wrap" id="svcDropWrap">
-  <a href="/services/brand-identity-packages-detroit" class="nav-dropdown-trigger" data-view="services" onclick="event.preventDefault(); showView('services');">Services <span class="nav-arrow">▾</span></a>
-  <div class="nav-mega-menu" id="svcMegaMenu">
-    <div class="nav-mega-inner">
-      <div class="nav-mega-col">
-        <div class="nav-mega-label">Brand</div>
-        <a href="/services/brand-kit-detroit" class="nav-mega-link" onclick="event.preventDefault(); window.location='/services/brand-kit-detroit';">
-          <span class="nav-mega-icon">◆</span>
-          <span><strong>Brand Architect</strong><em>Logo, identity &amp; brand system</em></span>
-        </a>
-      </div>
-      <div class="nav-mega-col">
-        <div class="nav-mega-label">Digital Infrastructure</div>
-        <a href="/services/business-website-detroit" class="nav-mega-link" onclick="event.preventDefault(); window.location='/services/business-website-detroit';">
-          <span class="nav-mega-icon">🏢</span>
-          <span><strong>Digital HQ</strong><em>Website &amp; business system</em></span>
-        </a>
-        <a href="/services/digital-staff-detroit" class="nav-mega-link" onclick="event.preventDefault(); window.location='/services/digital-staff-detroit';">
-          <span class="nav-mega-icon">🤖</span>
-          <span><strong>Digital Staff</strong><em>AI phone, email &amp; follow-up</em></span>
-        </a>
-      </div>
-      <div class="nav-mega-col">
-        <div class="nav-mega-label">Promotion &amp; Visibility</div>
-        <a href="/services/social-media-management-detroit" class="nav-mega-link" onclick="event.preventDefault(); window.location='/services/social-media-management-detroit';">
-          <span class="nav-mega-icon">📣</span>
-          <span><strong>Digital Promotion Team</strong><em>Content, SMS, geofencing &amp; maps</em></span>
-        </a>
-        <a href="/services/press-feature-detroit" class="nav-mega-link" onclick="event.preventDefault(); window.location='/services/press-feature-detroit';">
-          <span class="nav-mega-icon">📰</span>
-          <span><strong>The Publicist</strong><em>NUI Magazine press feature</em></span>
-        </a>
-      </div>
-      <div class="nav-mega-col">
-        <div class="nav-mega-label">Events &amp; Print</div>
-        <a href="/services/event-team-detroit" class="nav-mega-link" onclick="event.preventDefault(); window.location='/services/event-team-detroit';">
-          <span class="nav-mega-icon">📸</span>
-          <span><strong>The Event Team</strong><em>Vendor day-rate lead capture</em></span>
-        </a>
-        <a href="/print" class="nav-mega-link">
-          <span class="nav-mega-icon">🖨️</span>
-          <span><strong>Print &amp; Packaging</strong><em>Signs, cards, banners &amp; labels</em></span>
-        </a>
-      </div>
-    </div>
-    <div class="nav-mega-footer">
-      <a href="/services/brand-identity-packages-detroit" onclick="event.preventDefault(); showView('services');" class="nav-mega-all">View All Services →</a>
-      <a href="/contact" onclick="event.preventDefault(); showView('intake');" class="nav-mega-cta">Book Free Strategy Call →</a>
-    </div>
-  </div>
+<a href="/restaurants-bars">Restaurants &amp; bars</a>
+<a href="/websites">Websites</a>
+<a href="/websites#builds">Our work</a>
+<a href="/how-it-works">How it works</a>
+<a href="https://nuiflyers.com" target="_blank" rel="noopener">Promotions</a>
+<a href="/about">About</a>
+<a href="/app/" data-view="portal">Client login</a>
 </div>
-<a href="/portfolio" data-view="portfolio" onclick="event.preventDefault(); showView('portfolio');">Portfolio</a>
-<a href="/blog">Blog</a>
-<a href="/magazine">Magazine</a>
-<a href="/print">Print</a>
-<a href="/app/" data-view="portal">Client Portal</a>
-</div>
-<a href="/contact" class="btn-cta btn-cta-desktop" onclick="event.preventDefault(); showView('intake');">Book a Strategy Call</a>
+<div class="nav-right">
+<button type="button" class="nav-cta" onclick="nuiOpenAudit()">Book free audit</button>
 <div class="hamburger" onclick="toggleMobileMenu()">
 <span></span><span></span><span></span>
+</div>
 </div>
  </nav>
  <div class="mobile-menu" id="mobileMenu">
 <a href="/" data-view="home" onclick="event.preventDefault(); showView('home'); toggleMobileMenu();">Home</a>
-<a href="/about" data-view="about" onclick="event.preventDefault(); showView('about'); toggleMobileMenu();">About</a>
-<div style="width:100%;text-align:center;">
-<div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#D90429;margin-bottom:12px;">Services</div>
-<div style="display:flex;flex-direction:column;gap:10px;align-items:center;">
-<a href="/services/brand-kit-detroit" style="font-size:16px;" onclick="toggleMobileMenu();">Brand Architect</a>
-<a href="/services/business-website-detroit" style="font-size:16px;" onclick="toggleMobileMenu();">Digital HQ</a>
-<a href="/services/digital-staff-detroit" style="font-size:16px;" onclick="toggleMobileMenu();">Digital Staff</a>
-<a href="/services/social-media-management-detroit" style="font-size:16px;" onclick="toggleMobileMenu();">Digital Promotion Team</a>
-<a href="/services/press-feature-detroit" style="font-size:16px;" onclick="toggleMobileMenu();">The Publicist</a>
-<a href="/services/event-team-detroit" style="font-size:16px;" onclick="toggleMobileMenu();">The Event Team</a>
-<a href="/services/brand-identity-packages-detroit" data-view="services" style="font-size:13px;color:rgba(255,255,255,0.4);" onclick="event.preventDefault(); showView('services'); toggleMobileMenu();">View All Services →</a>
-</div>
-</div>
-<a href="/portfolio" data-view="portfolio" onclick="event.preventDefault(); showView('portfolio'); toggleMobileMenu();">Portfolio</a>
-<a href="/blog">Blog</a>
-<a href="/magazine">Magazine</a>
-<a href="/print">Print</a>
-<a href="/app/" data-view="portal" onclick="toggleMobileMenu();">Client Portal</a>
-<a href="/contact" class="btn-cta" style="margin-top: 24px;" onclick="event.preventDefault(); showView('intake'); toggleMobileMenu();">Book a Strategy Call</a>
+<a href="/restaurants-bars">Restaurants &amp; bars</a>
+<a href="/websites">Websites</a>
+<a href="/websites#builds">Our work</a>
+<a href="/how-it-works">How it works</a>
+<a href="https://nuiflyers.com" target="_blank" rel="noopener">Promotions</a>
+<a href="/about">About</a>
+<a href="/app/" data-view="portal" onclick="toggleMobileMenu();">Client login</a>
  </div>
 
  <div class="view active" id="homeView"></div>
 <noscript>
 <section style="padding:40px 5%;max-width:1000px;margin:0 auto;">
-<h1>New Urban Influence — Detroit Branding Agency</h1>
-<p>We don't design. We influence. New Urban Influence is a boutique branding and design agency in Detroit, Michigan, building premium brand identities for small businesses and startups. Brand identity packages start at $1,000 with 0% financing available.</p>
-<h2>Services</h2>
-<h3>Brand Identity Design</h3>
-<p>Complete brand identity packages for service businesses and product brands. Includes logo design, color system, typography, brand guidelines, social media templates, and all collateral. Brand Kit from $1,000. Service Brand Identity from $2,500. Product Brand Identity from $3,500.</p>
-<h3>Website Design &amp; Development</h3>
-<p>Custom websites built for conversion. Landing pages from $1,000, business websites from $3,500, e-commerce stores from $5,500. Mobile responsive, SEO optimized, CMS integration included.</p>
-<h3>Marketing Technology</h3>
-<p>Individual marketing tools you can buy separately or bundle for savings.</p>
-<ul>
-<li>Silent Visitor ID — $500 setup + $97/mo. Identify 15-30% of anonymous website visitors with full name, email, company, and LinkedIn profile.</li>
-<li>Email Automation — $750 setup + $97/mo. Interest-based email sequences triggered by pages visitors view. 5 custom sequences, behavior-based triggers, A/B testing.</li>
-<li>SMS Automation — $500 setup + $79/mo. 98% open rate text message follow-ups with two-way messaging and appointment reminders.</li>
-<li>AI Phone Assistant — $1,000 setup + $197/mo. AI receptionist that answers calls 24/7, books appointments, and qualifies leads.</li>
-<li>Facebook Pixel &amp; Ads — $500 setup + $199/mo. Meta Pixel installation, custom audiences, retargeting campaigns on Facebook and Instagram.</li>
-<li>Google Ads Pixel — $500 setup + $199/mo. Google Tag Manager setup, conversion tracking, remarketing across 2M+ websites and YouTube.</li>
-<li>Geo-Fencing — $1,000 setup + $997/mo. Draw invisible fences around competitor locations. Anyone who walks in sees your ads for 30 days.</li>
-<li>Geo-Grid Tracking — $750 setup + $297/mo. See exactly where you rank on Google Maps block by block across your entire service area.</li>
-<li>CRM Integration — $1,000 one-time. Connect all marketing data into one custom dashboard.</li>
-</ul>
-<h3>Bundle Packages</h3>
-<p><strong>Brand Ready — $397/mo + $1,000 setup.</strong> Silent Visitor ID, Email Automation, and CRM Integration. The essentials for businesses just starting with marketing technology.</p>
-<p><strong>Brand Loaded — $997/mo + $3,000 setup.</strong> Everything in Brand Ready plus Facebook Pixel, Google Ads Pixel, SMS Automation, and Geo-Grid Tracking. Full digital coverage.</p>
-<p><strong>Brand Heavy — $1,997/mo + $5,000 setup.</strong> All 9 services including Geo-Fencing and AI Phone Assistant. Total market control — every tool, every channel.</p>
-<p><strong>Brand System — $6,500 setup + $1,997/mo.</strong> The premium all-in-one launch package. Complete brand identity, custom website, print collateral, and all 9 marketing services — one team builds everything, one price launches everything. Save thousands versus purchasing separately.</p>
-<h3>Print Design &amp; Printing</h3>
-<p>Design and print together with $10 overnight shipping anywhere in Michigan. Business cards, banners, yard signs, vehicle magnets, postcards, vinyl decals, acrylic signs, and Dibond panels.</p>
-<h3>AI Systems &amp; Automation</h3>
-<p>Custom AI solutions for business automation. AI content creation, workflow automation, client onboarding systems, and AI-generated insight reports.</p>
-<h3>Social Media &amp; Ads</h3>
-<p>Social media template packages, content calendars, ad creative, and campaign management for Facebook, Instagram, and Google.</p>
-<h3>Motion &amp; Video</h3>
-<p>Promotional videos, logo animations, social media reels, and brand story videos to bring your brand to life.</p>
-<h2>Why Choose New Urban Influence</h2>
-<ul>
-<li>4.9-star rated Detroit branding agency</li>
-<li>Brand identity packages from $1,000 with 0% financing</li>
-<li>Full-service: branding, web, print, marketing tech, AI automation</li>
-<li>Serving Detroit, Southfield, Royal Oak, Ann Arbor, and all of Michigan</li>
-<li>Free strategy consultation available</li>
-</ul>
-<h2>Recent Work</h2>
-<p><strong>Michigan After Dark</strong> — <a href="https://michiganafterdark.com">michiganafterdark.com</a>. A nightlife booking platform for Metro Detroit built by New Urban Influence: booth and table reservations with a live floor plan, advance entry tickets with QR check-in, a promoter program with commission tracking, and a host console for guest lists and payouts. See more at <a href="/portfolio">our portfolio</a>.</p>
-<h2>Frequently Asked Questions</h2>
-<p><strong>How much does branding cost?</strong> Brand Kit packages start at $1,000 flat rate. Service Brand Identity starts at $2,500. Product Brand Identity starts at $3,500. All packages include 0% financing options.</p>
-<p><strong>How long does a brand identity project take?</strong> Brand Kit takes 1-2 weeks. Full brand identity projects take 3-6 weeks depending on scope.</p>
-<p><strong>Do you offer payment plans?</strong> Yes. All services over $500 qualify for 0% interest financing through Stripe. Split your project into monthly payments with instant approval.</p>
-<p><strong>What is Silent Visitor ID?</strong> Technology that identifies 15-30% of anonymous website visitors by name, email, company, and LinkedIn — so you can follow up with people who visited your site but never filled out a form.</p>
-<p><strong>What is Brand Heavy?</strong> Brand Heavy is our all-inclusive marketing technology bundle at $1,997/mo. It includes all 9 services: Silent Visitor ID, Email Automation, SMS Automation, AI Phone Assistant, Facebook Pixel, Google Ads Pixel, Geo-Fencing, Geo-Grid Tracking, and CRM Integration.</p>
-<p><strong>What is Brand System?</strong> Brand System is our premium all-in-one launch package at $6,500 setup + $1,997/mo. It includes complete brand identity, custom website, print collateral (business cards, banners, vehicle magnets), and all 9 marketing technology services. One team builds and launches everything in 6-8 weeks.</p>
-<p><strong>What areas do you serve?</strong> We serve businesses across Metro Detroit including Detroit, Southfield, Royal Oak, Ferndale, Ann Arbor, Dearborn, Troy, and all of Michigan. We also work with clients nationwide.</p>
-<p>Contact New Urban Influence at info@newurbaninfluence.com or book a free strategy call at newurbaninfluence.com.</p>
+<h1>New Urban Influence: Detroit Websites &amp; Business Software</h1>
+<p>We find the leaks in your business and fix them, with software built for your industry, a website that works, and engagement that brings customers back. Based in Detroit, Michigan, serving local businesses for 10+ years.</p>
+<h2>What we build</h2>
+<h3>Websites that work</h3><p>Branded websites built to turn visitors into calls, bookings and sales, with a staff login to the back office.</p>
+<h3>Restaurant and bar software</h3><p>Reservations, regulars, food and pour costs, and promos in one place. Built for Hideaway Kitchen &amp; Bar.</p>
+<h3>Photography studio software</h3><p>Bookings, deposits, contracts, proof galleries and rentals. Built for AJ VIP Full Studio.</p>
+<h3>Event and nightlife software</h3><p>Events, RSVPs, tables and your crowd's phone numbers. Built for Michigan After Dark.</p>
+<h3>Flyers and motion flyers</h3><p>Order event flyers, motion flyers and promo videos at <a href="https://nuiflyers.com">nuiflyers.com</a>.</p>
+<h2>How it works</h2>
+<ol><li>Book your free audit (about 30 minutes).</li><li>Get your plan and price.</li><li>We build it, set it up with your data and train you.</li></ol>
+<p>Call <a href="tel:+12484878747">(248) 487-8747</a> or <a href="/contact">book a free audit</a>.</p>
 </section>
 </noscript>
  <div class="view" id="aboutView"></div>
@@ -1168,15 +1066,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <div class="view" id="portfolioView"></div>
  <div class="view" id="intakeView"></div>
  <div class="view" id="blogView"></div>
+<div id="nuiAuditRoot"><div class="audit" id="audit" hidden role="dialog" aria-modal="true" aria-labelledby="auditTitle"><div class="sheet" id="sheet"></div></div></div>
 
 <!-- GSAP for premium animations -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
 <!-- Marketing only — admin/portal/designer scripts live in /app/ -->
-<script src="/assets/js/core.js?v=4"></script>
-<script src="/assets/js/router.js?v=3"></script>
-<script src="/assets/js/marketing.js?v=20260321v4"></script>
+<script src="/assets/js/core.js?v=20261124v5"></script>
+<script src="/assets/js/router.js?v=20261124v6"></script>
+<script src="/assets/js/home.js?v=20261124v3"></script>
+<script src="/assets/js/marketing.js?v=20261124v8"></script>
 <script src="/assets/js/service-intake.js?v=7"></script>
 
 <!-- Supabase & Stripe already loaded in <head> with defer -->
@@ -1227,11 +1127,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </script>
 
 <!-- NUI Tracking: GA4 events + Google Ads + Meta Pixel remarketing audiences -->
-<script src="assets/js/nui-tracking.js" defer></script>
+<script src="assets/js/nui-tracking.js?v=20261124v3" defer></script>
 
 <!-- Web Push Notifications: iPhone, Android, Desktop -->
-<script src="assets/js/nui-push.js?v=20260321" defer></script>
+<script src="assets/js/nui-push.js?v=20261124v5" defer></script>
 <script src="assets/js/nui-chat.js?v=20260226" defer></script>
-  <script src="/assets/js/push-opt-in.js?v=20260418v1" defer></script>
 </body>
 </html>

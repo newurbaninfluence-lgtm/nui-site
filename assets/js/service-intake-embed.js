@@ -42,9 +42,9 @@ style.textContent = `
 .nui-intake-close:hover{background:rgba(255,255,255,0.15);}
 /* SALES PANEL */
 .nui-sales{padding:40px 40px 32px;border-bottom:1px solid rgba(255,255,255,0.08);}
-.nui-badge{display:inline-block;background:#D90429;color:#fff;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;margin-bottom:20px;}
-.nui-svc-name{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:4px;line-height:1;}
-.nui-svc-price{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#D90429;margin-bottom:24px;}
+.nui-badge{display:inline-block;background:#D90429;color:#fff;font-family:'Inter Tight',sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;margin-bottom:20px;}
+.nui-svc-name{font-family:'Inter Tight',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:4px;line-height:1;}
+.nui-svc-price{font-family:'Inter Tight',sans-serif;font-size:28px;font-weight:800;color:#D90429;margin-bottom:24px;}
 .nui-copy-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:28px 32px;margin-bottom:20px;}
 .nui-copy-hook{font-size:18px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:12px;}
 .nui-copy-body{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.75;margin-bottom:12px;}
@@ -60,7 +60,7 @@ style.textContent = `
 .nui-step-item{display:flex;flex-direction:column;align-items:center;flex:1;position:relative;}
 .nui-step-item:not(:last-child)::after{content:'';position:absolute;top:14px;left:50%;width:100%;height:1px;background:rgba(255,255,255,0.1);}
 .nui-step-item.done::after{background:#D90429;}
-.nui-step-num{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:rgba(255,255,255,0.4);position:relative;z-index:1;margin-bottom:6px;transition:all .25s;}
+.nui-step-num{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-family:'Inter Tight',sans-serif;font-size:11px;font-weight:800;color:rgba(255,255,255,0.4);position:relative;z-index:1;margin-bottom:6px;transition:all .25s;}
 .nui-step-item.active .nui-step-num{background:#D90429;border-color:#D90429;color:#fff;}
 .nui-step-item.done .nui-step-num{background:#D90429;border-color:#D90429;color:#fff;font-size:14px;}
 .nui-step-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.25);text-align:center;}
@@ -68,11 +68,11 @@ style.textContent = `
 /* PANELS */
 .nui-panel{display:none;padding:36px 40px 24px;}
 .nui-panel.active{display:block;}
-.nui-panel-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:4px;}
+.nui-panel-title{font-family:'Inter Tight',sans-serif;font-size:20px;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:4px;}
 .nui-panel-sub{font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:28px;letter-spacing:.5px;}
 /* FIELDS */
 .nui-field{margin-bottom:20px;}
-.nui-label{font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;display:block;}
+.nui-label{font-family:'Inter Tight',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;display:block;}
 .nui-label .req{color:#D90429;}
 .nui-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#fff;font-family:'Inter',sans-serif;font-size:14px;padding:14px 16px;outline:none;transition:border-color .2s;}
 .nui-input:focus{border-color:rgba(255,255,255,0.3);}
@@ -82,12 +82,12 @@ style.textContent = `
 .nui-radio-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .nui-radio-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:16px;cursor:pointer;transition:all .2s;position:relative;}
 .nui-radio-card.selected{background:rgba(217,4,41,0.1);border-color:#D90429;}
-.nui-radio-card h5{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:4px;}
+.nui-radio-card h5{font-family:'Inter Tight',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:4px;}
 .nui-radio-card p{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;}
 .nui-field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 /* BUTTONS */
 .nui-btn-row{display:flex;gap:12px;padding:20px 40px 32px;border-top:1px solid rgba(255,255,255,0.06);margin-top:8px;}
-.nui-btn{font-family:'Syne',sans-serif;font-weight:800;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:16px 32px;border:none;cursor:pointer;flex:1;transition:all .2s;}
+.nui-btn{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:16px 32px;border:none;cursor:pointer;flex:1;transition:all .2s;}
 .nui-btn-back{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);}
 .nui-btn-back:hover{background:rgba(255,255,255,0.1);}
 .nui-btn-next{background:#D90429;color:#fff;}
@@ -103,11 +103,11 @@ style.textContent = `
 .nui-book-card:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.25);}
 .nui-book-card.selected{background:rgba(217,4,41,0.1);border-color:#D90429;}
 .nui-book-icon{font-size:28px;margin-bottom:10px;}
-.nui-book-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:4px;}
+.nui-book-title{font-family:'Inter Tight',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:4px;}
 .nui-book-desc{font-size:12px;color:rgba(255,255,255,0.4);line-height:1.5;}
 /* SUCCESS */
 .nui-success{padding:60px 40px;text-align:center;}
-.nui-success h3{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:12px;}
+.nui-success h3{font-family:'Inter Tight',sans-serif;font-size:28px;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:12px;}
 .nui-success p{font-size:15px;color:rgba(255,255,255,0.55);margin-bottom:28px;line-height:1.75;}
 .nui-success-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
 @media(max-width:600px){
@@ -221,7 +221,7 @@ function renderReview(steps) {
     '<div class="nui-panel-title">Review &amp; Book</div>' +
     '<div class="nui-panel-sub">Almost there — choose how to proceed</div>' +
     '<div class="nui-review-summary">'+rowsHtml+'</div>' +
-    '<div style="font-family:Syne,sans-serif;font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:14px;">How Would You Like to Proceed?</div>' +
+    '<div style="font-family:Inter Tight,sans-serif;font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:14px;">How Would You Like to Proceed?</div>' +
     '<div class="nui-book-opts">' +
       '<div class="nui-book-card" id="nui-book-call" onclick="window._nuiChoose(\'call\')">' +
         '<div class="nui-book-icon">📞</div>' +
@@ -295,7 +295,7 @@ function renderField(f) {
     var sChecked = state.data.optinSMS !== false ? 'checked' : '';
     var pChecked = state.data.optinPush !== false ? 'checked' : '';
     return `<div class="nui-field" style="border:1px solid rgba(255,255,255,0.08);padding:20px;background:rgba(255,255,255,0.02);margin-top:8px;">
-<div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">Exclusive Access — Optional</div>
+<div style="font-family:'Inter Tight',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">Exclusive Access — Optional</div>
 <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-bottom:12px;">
 <input type="checkbox" id="nui_optinEmail" onchange="window._nuiOptin('optinEmail',this.checked)" ${eChecked} style="margin-top:3px;accent-color:#D90429;width:16px;height:16px;flex-shrink:0;">
 <div><div style="font-size:13px;color:#fff;font-weight:600;margin-bottom:2px;">📧 Send me tips &amp; exclusive discounts by email</div><div style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">Get first-access offers, brand-building tips, and Detroit business insights. Unsubscribe anytime.</div></div>
@@ -417,8 +417,8 @@ window._nuiSubmit = function() {
       '<h3>We\'ll Be in Touch Within 24 Hours.</h3>' +
       '<p>Your intake has been submitted. A member of our Detroit team will reach out to schedule your free strategy call. No pitch — just a real conversation about what we\'d build for you.</p>' +
       '<div class="nui-success-actions">' +
-        '<a href="tel:2484878747" style="display:inline-flex;align-items:center;background:#D90429;color:#fff;font-family:Syne,sans-serif;font-weight:800;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:16px 32px;text-decoration:none;">Call Now: (248) 487-8747</a>' +
-        '<button onclick="document.getElementById(\'nui-intake-overlay\').classList.remove(\'open\')" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);font-family:Syne,sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:16px 32px;border:none;cursor:pointer;">Close</button>' +
+        '<a href="tel:2484878747" style="display:inline-flex;align-items:center;background:#D90429;color:#fff;font-family:Inter Tight,sans-serif;font-weight:800;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:16px 32px;text-decoration:none;">Call Now: (248) 487-8747</a>' +
+        '<button onclick="document.getElementById(\'nui-intake-overlay\').classList.remove(\'open\')" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);font-family:Inter Tight,sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:16px 32px;border:none;cursor:pointer;">Close</button>' +
       '</div></div>';
   } else {
     wrap.innerHTML = '<div class="nui-success">' +
@@ -426,8 +426,8 @@ window._nuiSubmit = function() {
       '<h3>Your Intake Is Submitted.</h3>' +
       '<p>We\'ll reach out within 24 hours with your invoice and payment link. You\'ll be able to pay via Afterpay, Klarna, or card — 0% interest on qualifying orders.</p>' +
       '<div class="nui-success-actions">' +
-        '<a href="tel:2484878747" style="display:inline-flex;align-items:center;background:#D90429;color:#fff;font-family:Syne,sans-serif;font-weight:800;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:16px 32px;text-decoration:none;">Speed It Up: Call Us</a>' +
-        '<button onclick="document.getElementById(\'nui-intake-overlay\').classList.remove(\'open\')" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);font-family:Syne,sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:16px 32px;border:none;cursor:pointer;">Close</button>' +
+        '<a href="tel:2484878747" style="display:inline-flex;align-items:center;background:#D90429;color:#fff;font-family:Inter Tight,sans-serif;font-weight:800;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:16px 32px;text-decoration:none;">Speed It Up: Call Us</a>' +
+        '<button onclick="document.getElementById(\'nui-intake-overlay\').classList.remove(\'open\')" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);font-family:Inter Tight,sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:16px 32px;border:none;cursor:pointer;">Close</button>' +
       '</div></div>';
   }
 };

@@ -62,9 +62,29 @@ const EXACT_PASSTHROUGH = new Set([
   '/sw.js',
 ]);
 
+// ── Bot guard (runs on every host) ──────────────────────────────────
+// 1) Hacker scanners probe for password files, PHP and WordPress pages.
+//    This site has none of those, so answer with a plain 404.
+// 2) Private project files (notes, scripts, database files, backups)
+//    live in the repo but must never be downloadable.
+const SCANNER_RE = /(\/\.(env|git|svn|hg|aws|ssh|htaccess|htpasswd|DS_Store|vscode|idea)(\/|\.|$)|\.(php\d?|phtml|asp|aspx|jsp|cgi|bak|old|orig|swp|sql|sqlite|db|log|ini|yml|yaml|lock)$|\/wp-(admin|login|content|includes|json)|xmlrpc|\/cgi-bin\/|phpmyadmin|\/vendor\/phpunit|\/server-status|\/actuator)/i;
+const PRIVATE_PREFIXES = ['/docs/', '/scripts/', '/supabase/', '/supabase-migrations/', '/.backups/', '/_to_delete/', '/configs/', '/netlify/'];
+const PRIVATE_FILE_RE = /^\/([A-Z0-9_-]+\.md|package(-lock)?\.json|deno\.lock|portal-netlify\.toml|netlify\.toml|[a-z0-9-]+-migration\.sql)$/;
+
+function isBlocked(path) {
+  return SCANNER_RE.test(path) ||
+    PRIVATE_PREFIXES.some((p) => path.startsWith(p)) ||
+    PRIVATE_FILE_RE.test(path);
+}
+
 export default async (request, context) => {
   const url = new URL(request.url);
   const host = (request.headers.get('host') || '').toLowerCase();
+
+  // Turn away scanners and keep private files private (all hosts)
+  if (isBlocked(url.pathname)) {
+    return new Response('Not found', { status: 404, headers: { 'Content-Type': 'text/plain', 'Cache-Control': 'public, max-age=3600', 'X-Robots-Tag': 'noindex' } });
+  }
 
   // Not a magazine-host request — let everything else handle it.
   if (!MAGAZINE_HOSTS.has(host)) return;

@@ -6,7 +6,7 @@ function loadAdminPaymentsPanel() {
 
     document.getElementById('adminPaymentsPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">💳 Payments</h2>
+<h2 class="panel-title">Payments</h2>
 <p class="panel-subtitle">Track payments, auto-pay schedules, and revenue</p>
 </div>
 
@@ -315,7 +315,7 @@ function loadAdminInvoicesPanel(searchTerm = '', statusFilter = '') {
 
     document.getElementById('adminInvoicesPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">📄 Invoices</h2>
+<h2 class="panel-title">Invoices</h2>
 <p class="panel-subtitle">Create, send, and track invoices</p>
 </div>
 
@@ -1262,7 +1262,7 @@ function loadAdminPayoutsPanel() {
     document.getElementById('adminPayoutsPanel').innerHTML = `
 <div class="panel-header flex-between">
 <div>
-<h2 class="panel-title">💰 Payouts & Profit</h2>
+<h2 class="panel-title">Payouts & Profit</h2>
 <p class="panel-subtitle">Revenue breakdown, designer payouts, and profit tracking</p>
 </div>
 <button onclick="openPayoutSettingsModal()" style="padding:10px 20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;">⚙️ Settings</button>
@@ -1444,7 +1444,7 @@ function openPayoutSettingsModal() {
     modal.innerHTML = `
 <div style="background:#242424;border:1px solid rgba(255,255,255,0.1);border-radius:16px;max-width:480px;width:90%;padding:32px;position:relative;">
 <button onclick="document.getElementById('payoutSettingsModal').remove()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:24px;cursor:pointer;color:rgba(255,255,255,0.5);">&times;</button>
-<h2 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:24px;">⚙️ Payout Settings</h2>
+<h2 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:24px;">Payout Settings</h2>
 <div style="display:flex;flex-direction:column;gap:16px;">
 <div>
 <label style="display:block;font-size:12px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Designer Rate (%)</label>

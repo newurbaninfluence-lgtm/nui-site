@@ -1349,7 +1349,7 @@ function renderIntakeWizard(serviceId) {
             <!-- HORMOZI-STYLE SALES SECTION -->
 <div style="max-width: 700px; margin: 0 auto 40px; padding: 0 20px;">
 <div style="background: linear-gradient(135deg, rgba(255,59,48,0.1) 0%, rgba(0,0,0,0.3) 100%); border: 1px solid rgba(255,59,48,0.2); border-radius: 16px; padding: 32px; margin-bottom: 24px;">
-<h2 style="font-family:'Syne',sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 16px; line-height: 1.3;">${copy.hook}</h2>
+<h2 style="font-family:'Inter Tight',sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 16px; line-height: 1.3;">${copy.hook}</h2>
 <p style="color: rgba(255,255,255,0.7); font-size: 15px; line-height: 1.7; margin-bottom: 16px;">${copy.problem}</p>
 <p style="color: rgba(255,255,255,0.9); font-size: 15px; line-height: 1.7; margin-bottom: 16px; font-weight: 500;">${copy.agitate}</p>
 <p style="color: #fff; font-size: 15px; line-height: 1.7; margin-bottom: 20px;"><strong class="text-red">The Solution:</strong> ${copy.solution}</p>

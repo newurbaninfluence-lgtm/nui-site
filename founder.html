@@ -903,12 +903,12 @@
  
 
     <!-- Google Analytics 4 -->
- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+ <script async src="https://www.googletagmanager.com/gtag/js?id=G-MBZ3CDG9CG"></script>
  <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
+        gtag('config', 'G-MBZ3CDG9CG');
  </script>
 
     <!-- Favicon -->
@@ -916,15 +916,12 @@
  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
     <!-- Preconnect for performance -->
- <link rel="preconnect" href="https://fonts.googleapis.com">
- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1920&q=80" fetchpriority="high">
  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
  <link rel="dns-prefetch" href="https://js.stripe.com">
- <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&family=Teko:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap">
- <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&family=Teko:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
- <noscript><link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&family=Teko:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+ <link rel="stylesheet" href="/assets/fonts/fonts.css">
+ 
 
     <!-- Critical scripts only — env + supabase needed for data -->
  <script src="/env.js" defer></script>
@@ -936,41 +933,47 @@
  function loadStripe(){if(window.Stripe)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://js.stripe.com/v3/';s.onload=r;document.head.appendChild(s);});}
  function loadGoogleIdentity(){if(window.google&&window.google.accounts)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=r;document.head.appendChild(s);});}
  </script>
- <link rel="stylesheet" href="/assets/css/global.css?v=28">
+ <link rel="stylesheet" href="/assets/css/global.css?v=20261124v4">
  <link rel="stylesheet" href="/assets/css/components.css?v=5">
+<link rel="stylesheet" href="/assets/css/home.css?v=20261124v2">
     <!-- Geo Meta Tags -->
     <meta name="geo.region" content="US-MI">
     <meta name="geo.placename" content="Detroit, Michigan">
     <meta name="geo.position" content="42.3314;-83.0458">
     <meta name="ICBM" content="42.3314, -83.0458">
+<script src="/assets/js/site-edits.js?v=20261124v1" defer></script>
 </head>
-<body>
+<body class="nh-site">
 <div class="cursor-dot"></div>
 <div class="cursor-ring"></div>
  <div class="scroll-progress" id="scrollProgress"></div>
  <nav class="nav">
-<a class="logo" href="/" id="mainNavLogo" onclick="event.preventDefault(); showView('home');"><img src="icons/icon-192.png" alt="NUI Icon" width="36" height="36" style="height:36px;width:36px;display:block;" onerror="this.style.display='none';"><span class="logo-text" style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:2px;text-transform:uppercase;line-height:1;">New Urban <span style="color:#dc2626;">Influence</span><span style="display:block;font-family:'Montserrat',sans-serif;font-weight:700;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:6px;" class="logo-slogan">We don't design. We influence.</span></span></a>
+<a class="logo" href="/" id="mainNavLogo" onclick="event.preventDefault(); showView('home');"><img src="icons/icon-192.png" alt="" width="26" height="26" onerror="this.style.display='none';"><span class="logo-text">New Urban Influence</span></a>
 <div class="nav-links">
-<a href="/" class="active" data-view="home" onclick="event.preventDefault(); showView('home');">Home</a>
-<a href="/about" data-view="about" onclick="event.preventDefault(); showView('about');">About</a>
-<a href="/services/brand-identity-packages-detroit" data-view="services" onclick="event.preventDefault(); showView('services');">Services</a>
-<a href="/portfolio" data-view="portfolio" onclick="event.preventDefault(); showView('portfolio');">Portfolio</a>
-<a href="/blog" data-view="blog" onclick="event.preventDefault(); showView('blog');">Blog</a>
-<a href="/app/" data-view="portal">Client Portal</a>
+<a href="/restaurants-bars">Restaurants &amp; bars</a>
+<a href="/websites">Websites</a>
+<a href="/websites#builds">Our work</a>
+<a href="/how-it-works">How it works</a>
+<a href="https://nuiflyers.com" target="_blank" rel="noopener">Promotions</a>
+<a href="/about">About</a>
+<a href="/app/" data-view="portal">Client login</a>
 </div>
-<a href="/contact" class="btn-cta btn-cta-desktop" onclick="event.preventDefault(); showView('intake');">Book a Strategy Call</a>
+<div class="nav-right">
+<button type="button" class="nav-cta" onclick="nuiOpenAudit()">Book free audit</button>
 <div class="hamburger" onclick="toggleMobileMenu()">
 <span></span><span></span><span></span>
+</div>
 </div>
  </nav>
  <div class="mobile-menu" id="mobileMenu">
 <a href="/" data-view="home" onclick="event.preventDefault(); showView('home'); toggleMobileMenu();">Home</a>
-<a href="/about" data-view="about" onclick="event.preventDefault(); showView('about'); toggleMobileMenu();">About</a>
-<a href="/services/brand-identity-packages-detroit" data-view="services" onclick="event.preventDefault(); showView('services'); toggleMobileMenu();">Services</a>
-<a href="/portfolio" data-view="portfolio" onclick="event.preventDefault(); showView('portfolio'); toggleMobileMenu();">Portfolio</a>
-<a href="/blog" data-view="blog" onclick="event.preventDefault(); showView('blog'); toggleMobileMenu();">Blog</a>
-<a href="/app/" data-view="portal" onclick="toggleMobileMenu();">Client Portal</a>
-<a href="/contact" class="btn-cta" style="margin-top: 24px;" onclick="event.preventDefault(); showView('intake'); toggleMobileMenu();">Book a Strategy Call</a>
+<a href="/restaurants-bars">Restaurants &amp; bars</a>
+<a href="/websites">Websites</a>
+<a href="/websites#builds">Our work</a>
+<a href="/how-it-works">How it works</a>
+<a href="https://nuiflyers.com" target="_blank" rel="noopener">Promotions</a>
+<a href="/about">About</a>
+<a href="/app/" data-view="portal" onclick="toggleMobileMenu();">Client login</a>
  </div>
 
  <div class="view active" id="homeView"></div>
@@ -982,13 +985,15 @@
  <div class="view" id="blogView"></div>
 
 <!-- GSAP for premium animations -->
+<div id="nuiAuditRoot"><div class="audit" id="audit" hidden role="dialog" aria-modal="true" aria-labelledby="auditTitle"><div class="sheet" id="sheet"></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
 <!-- Marketing only — admin/portal/designer scripts live in /app/ -->
-<script src="/assets/js/core.js?v=4"></script>
-<script src="/assets/js/router.js?v=3"></script>
-<script src="/assets/js/marketing.js?v=21"></script>
+<script src="/assets/js/core.js?v=20261124v5"></script>
+<script src="/assets/js/router.js?v=20261124v6"></script>
+<script src="/assets/js/home.js?v=20261124v3"></script>
+<script src="/assets/js/marketing.js?v=20261124v8"></script>
 <script src="/assets/js/service-intake.js?v=5"></script>
 
 <!-- Supabase & Stripe already loaded in <head> with defer -->
@@ -1037,6 +1042,6 @@
 })();
 </script>
     <script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("E63P0HZ53POW");</script>
-  <script src="/assets/js/push-opt-in.js?v=20260418v1" defer></script>
+  <script src="/assets/js/nui-push.js?v=20261124v5" defer></script>
 </body>
 </html>

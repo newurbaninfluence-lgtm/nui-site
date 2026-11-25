@@ -22,6 +22,17 @@ async function loadAdminAnalyticsPanel() {
     } catch(e) { console.warn('Analytics fetch failed:', e); }
 
     const isLive = !!ga4;
+    // No made-up numbers: if Google Analytics isn't connected, say so plainly.
+    if (!isLive) {
+        document.getElementById('adminAnalyticsPanel').innerHTML = `
+<div class="mb-32"><h2 class="fs-28 fw-700">Site Analytics</h2></div>
+<div style="max-width:560px;padding:32px;border-radius:16px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);">
+<div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">Google Analytics isn’t connected yet</div>
+<p style="font-size:15px;line-height:1.6;color:#e5e5e5;margin:0 0 20px;">Real visitor numbers will show here once it’s connected. Until then this page stays empty on purpose — no sample numbers.</p>
+<button onclick="loadAdminAnalyticsPanel()" class="btn-outline">Check again</button>
+</div>`;
+        return;
+    }
     const visitors = {
         total: ga4?.overview?.totalUsers ?? (siteAnalytics.visitors?.total ?? 2847),
         week: ga4?.overview?.totalSessions ?? (siteAnalytics.visitors?.week ?? 892),
@@ -41,7 +52,7 @@ async function loadAdminAnalyticsPanel() {
     document.getElementById('adminAnalyticsPanel').innerHTML = `
 <div class="flex-between mb-32">
 <div>
-<h2 class="fs-28 fw-700">📈 Site Analytics</h2>
+<h2 class="fs-28 fw-700">Site Analytics</h2>
 <div style="margin-top:6px;">
 <span style="font-size:11px;padding:4px 10px;border-radius:100px;background:${isLive ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)'};color:${isLive ? '#34d399' : '#fbbf24'};">${isLive ? '● Live from GA4' : '● Demo Data — configure GA4 env vars to go live'}</span>
 ${ga4 ? `<span style="font-size:11px;color:rgba(255,255,255,0.3);margin-left:8px;">${ga4.startDate} → ${ga4.endDate}</span>` : ''}
@@ -343,7 +354,7 @@ function loadAdminReviewsPanel() {
     document.getElementById('adminReviewsPanel').innerHTML = `
 <div class="admin-row-between">
 <div>
-<h2 style="font-size: 28px; font-weight: 700; color: #fff;">⭐ Google Reviews</h2>
+<h2 style="font-size: 28px; font-weight: 700; color: #fff;">Google Reviews</h2>
 <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
 <span style="font-size: 11px; padding: 4px 10px; border-radius: 100px; background: ${isLiveData ? 'rgba(16,185,129,0.15); color: #34d399;' : 'rgba(245,158,11,0.15); color: #fbbf24;'}">${isLiveData ? '● Live from Google' : '● Demo Data'}</span>
                     ${lastSync ? '<span style="font-size: 11px; color: rgba(255,255,255,0.3);">Last sync: ' + new Date(lastSync).toLocaleString() + '</span>' : ''}
@@ -465,7 +476,7 @@ function requestReview() {
 function loadAdminSeoPanel() {
     document.getElementById('adminSeoPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">🔍 SEO / AEO / GEO Management</h2>
+<h2 class="panel-title">SEO / AEO / GEO Management</h2>
 <p class="panel-subtitle">Optimize for search engines, AI answer engines, and local search</p>
 </div>
 <div class="seo-grid">
@@ -544,7 +555,7 @@ function removeFaq(idx) {
 function loadAdminGmbPanel() {
     document.getElementById('adminGmbPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">📍 Google My Business</h2>
+<h2 class="panel-title">Google My Business</h2>
 <p class="panel-subtitle">Manage your local SEO and Google Business Profile</p>
 </div>
 <div class="seo-grid">
@@ -639,7 +650,7 @@ function loadAdminEmailMarketingPanel() {
     const em = emailMarketing;
     document.getElementById('adminEmailmarketingPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">📧 Email Marketing</h2>
+<h2 class="panel-title">Email Marketing</h2>
 <p class="panel-subtitle">Send newsletters and promotions to your subscribers</p>
 </div>
 
@@ -1073,7 +1084,7 @@ function loadAdminLoyaltyPanel() {
     const lp = loyaltyProgram;
     document.getElementById('adminLoyaltyPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">🎁 Loyalty Program</h2>
+<h2 class="panel-title">Loyalty Program</h2>
 <p class="panel-subtitle">Reward your loyal clients with points and discounts</p>
 </div>
 
@@ -1244,7 +1255,7 @@ function loadAdminCommunicationsPanel() {
 
     document.getElementById('adminCommunicationsPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">💬 Communications Hub</h2>
+<h2 class="panel-title">Communications Hub</h2>
 <p class="panel-subtitle">All your client communications in one place</p>
 </div>
 
@@ -1371,7 +1382,7 @@ function loadAdminSocialDmPanel() {
 
     document.getElementById('adminSocialdmPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">💬 Social Media Quick Links</h2>
+<h2 class="panel-title">Social Media Quick Links</h2>
 <p class="panel-subtitle">Send DMs directly to clients without API - store handles, draft messages, click to open</p>
 </div>
 
@@ -1794,7 +1805,7 @@ function loadAdminSmsPanel() {
     const sms = smsSystem;
     document.getElementById('adminSmsPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">📲 SMS Communications</h2>
+<h2 class="panel-title">SMS Communications</h2>
 <p class="panel-subtitle">Manage SMS through OpenPhone integration</p>
 </div>
 

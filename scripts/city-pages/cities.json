@@ -1,0 +1,363 @@
+{
+ "detroit": {
+  "name": "Detroit", "county": "Wayne County",
+  "hero": "From Downtown and Midtown to Corktown, New Center and the Avenue of Fashion on Livernois, we help Detroit owners see where their money goes and stop it slipping out.",
+  "local": [
+   "Detroit runs on independent businesses: restaurants and bars Downtown and in Corktown, salons and boutiques along Livernois, vendors at Eastern Market, and service businesses in every neighborhood. Most of them are run by owners who wear every hat.",
+   "We're Detroit-born. Good Cakes and Bakes on the Avenue of Fashion is one of the businesses we've grown with. What we see most here isn't a lack of customers. It's money leaking through no-show reservations, untracked comps, and customers who came once and never heard from the business again."
+  ],
+  "leaks": [
+   ["calendar", "Weekend no-shows", "Tables and booths held for parties who never come, with no deposit to cover the empty seats."],
+   ["message", "One-time customers", "Game-day and event crowds come in once. Without their number, there's no way to bring them back."],
+   ["layout", "Too many apps", "Separate tools for bookings, texts, payroll and stock, none of them talking to each other."]
+  ],
+  "who": [
+   ["glass", "Restaurants, bars and lounges", "Bookings with deposits, guest lists, pour cost and a nightly report for the owner."],
+   ["scissors", "Salons and barbershops", "Online booking, reminders that cut no-shows, and rebooking texts."],
+   ["cake", "Bakeries and food makers", "Online orders, pickup times and a customer list you own."],
+   ["music", "Promoters and event hosts", "Tickets, booths, promoter links and a text list for every party."]
+  ],
+  "faq": [
+   ["Do you work with businesses in every Detroit neighborhood?", "Yes. We work with owners Downtown, in Midtown, Corktown, New Center, along Livernois, on the east side and the west side. Audits happen by phone or video, so where you're located doesn't change anything."],
+   ["Can the software work with the register my Detroit restaurant already uses?", "Yes, if you're on Union POS it connects today, and Clover and Square are next. You keep ringing up sales the way you do now. The system pulls sales, voids and tips in on its own, so nobody types anything twice."],
+   ["What does the free audit cover for a Detroit business?", "About 30 minutes on how you run today: what you pay for each month, where bookings and customers fall through, and where money slips out. You leave with a plain list of leaks whether you hire us or not."],
+   ["How much does a website and system cost?", "Every build is priced after the free audit, with a clear plan and an exact price up front. The price covers the system, your website, hosting, maintenance and support, and dropping apps you no longer need often helps pay for it."]
+  ]
+ },
+ "southfield": {
+  "name": "Southfield", "county": "Oakland County",
+  "hero": "Along Northwestern Highway, Telegraph and the Evergreen corridor, Southfield owners use our websites and software to fill tables, keep regulars and see every night's numbers.",
+  "local": [
+   "Southfield mixes big office towers along Northwestern Highway with restaurants, lounges, salons and professional offices that serve the people who work and live here. Weeknight business depends on the office crowd, and weekends depend on regulars and parties.",
+   "Our restaurant and bar software was built inside a Southfield business: Hideaway Kitchen & Bar. Bookings, booths, promoters, regulars and food and pour costs run from one back office there, with a report the owner reads every morning."
+  ],
+  "leaks": [
+   ["calendar", "Booths without deposits", "Weekend booths and parties held on a promise, then empty when plans change."],
+   ["glass", "Pours nobody tracks", "Free drinks and over-pours that never show up anywhere until the month's numbers look off."],
+   ["message", "Regulars who drift away", "No reminder, no birthday text, no reason to come back on a slow Tuesday."]
+  ],
+  "who": [
+   ["glass", "Restaurants and lounges", "Reservations, booth deposits, promoter nights and pour cost in one place."],
+   ["briefcase", "Offices and professional services", "A website that brings in calls and a simple system for leads and follow-up."],
+   ["scissors", "Salons and spas", "Booking, reminders and rebooking texts that keep the chair full."]
+  ],
+  "faq": [
+   ["Is the restaurant software really used in Southfield?", "Yes. It runs at Hideaway Kitchen & Bar in Southfield: bookings and deposits, booths, promoters, guest rewards, staff schedules and bar stock, with a plain-English report every morning."],
+   ["Can my Southfield GM run it day to day?", "That's how it's built. The owner sees the big picture and the alerts that matter. The GM runs the night: call-outs, checklists, low stock and tonight's bookings, all from a phone."],
+   ["Do I have to switch everything at once?", "No. We start with the leak that's costing you the most, usually no-shows or untracked pours, then add what you'll actually use."],
+   ["How do I start?", "Book the free audit or call (248) 487-8747. It takes about 30 minutes by phone or video, and you'll know where your money is going either way."]
+  ]
+ },
+ "farmington-hills": {
+  "name": "Farmington Hills", "county": "Oakland County",
+  "hero": "Farmington Hills is full of offices, practices and family businesses along Orchard Lake Road, 12 Mile and Grand River. We build the websites and systems that keep their calendars full.",
+  "local": [
+   "A lot of Farmington Hills business happens by appointment: medical and dental offices, accountants, insurance and law practices, salons and home-service companies. When the calendar has gaps, money walks out the door.",
+   "Most of these businesses already have a website. The problem is what happens after someone visits: no fast way to book, no reminder, and no follow-up when a lead goes quiet."
+  ],
+  "leaks": [
+   ["calendar", "Missed appointments", "No reminders means empty slots you still pay staff for."],
+   ["message", "Leads that go cold", "A form fill or missed call with no reply in the first few minutes usually goes to the next office on Google."],
+   ["globe", "A site that doesn't book", "Visitors read your page, then call someone whose site lets them book in two taps."]
+  ],
+  "who": [
+   ["pulse", "Medical, dental and wellness", "Booking, reminders and a patient list you can reach with one text."],
+   ["briefcase", "Professional offices", "Lead capture, quick replies and a follow-up system that runs itself."],
+   ["wrench", "Home services and trades", "Quote requests, scheduling and review requests after every job."]
+  ],
+  "faq": [
+   ["Can you add online booking to my Farmington Hills office's website?", "Yes. Clients pick a time, get a confirmation and a reminder, and you see the day in one place. If you need deposits for certain services, those can be paid up front."],
+   ["What happens when someone fills out the form at night?", "They get a text right away, answer a couple of quick questions, and you get a summary with the best time to call them back."],
+   ["Do you work with practices that have several staff calendars?", "Yes. Each person gets their own schedule, and the owner sees all of them together."],
+   ["What does the free audit look at?", "How people find you, how they book, what happens after they reach out, and what you pay for each month. About 30 minutes by phone or video."]
+  ]
+ },
+ "royal-oak": {
+  "name": "Royal Oak", "county": "Oakland County",
+  "hero": "Downtown Royal Oak packs restaurants, bars and shops along Main Street and Washington Avenue. We help them turn busy weekends into regulars who come back on a Wednesday.",
+  "local": [
+   "Royal Oak is one of Metro Detroit's busiest nights out. Main Street, Washington and Fourth Street draw crowds for dinner, drinks and shows, and the Farmers Market keeps weekends moving. Competition for those customers is right next door.",
+   "With that much foot traffic, the leak usually isn't new customers. It's knowing who came in, getting them back on slower nights, and keeping a handle on costs when the bar is three deep."
+  ],
+  "leaks": [
+   ["message", "Crowds you can't reach again", "Hundreds of guests on a Saturday, and almost none of their numbers."],
+   ["glass", "Busy-night pour loss", "When the bar is slammed, comps and over-pours are easy to miss."],
+   ["calendar", "Slow weeknights", "No easy way to fill a Tuesday with a text to the people who already love you."]
+  ],
+  "who": [
+   ["glass", "Bars, restaurants and venues", "Guest lists, bookings, texts to regulars and a nightly sales report."],
+   ["store", "Boutiques and shops", "A site that sells online, plus a customer list for new arrivals and sales."],
+   ["music", "Live music and events", "Tickets, table bookings and a list of fans you can text about the next show."]
+  ],
+  "faq": [
+   ["How do Royal Oak bars collect guests' numbers without slowing service?", "Through bookings, guest lists and rewards sign-ups that happen on the guest's own phone. The numbers land in your system with permission to text them."],
+   ["Can I send a text to fill a slow night?", "Yes. Write it once, pick who gets it (regulars, birthdays this month, last week's guests) and send it. You'll see how many booked from it."],
+   ["Will this replace my POS?", "No. Keep your register. We connect to it (Union today, Clover and Square next) and handle everything around it."],
+   ["What does it cost?", "It's priced after the free audit, with an exact price up front that covers the system, website, hosting, maintenance and support."]
+  ]
+ },
+ "troy": {
+  "name": "Troy", "county": "Oakland County",
+  "hero": "Troy's Big Beaver corridor is home to corporate offices, upscale retail near Somerset Collection, and practices that sell on trust. We build websites and systems that match that standard.",
+  "local": [
+   "Troy is one of Michigan's biggest business hubs. Corporate offices line Big Beaver Road, Somerset Collection draws shoppers from across the state, and medical, dental, financial and legal practices serve a demanding clientele.",
+   "Customers here expect polish. A slow site, a voicemail box or a week-late follow-up costs more in Troy than almost anywhere, because the next option is a few minutes away and just as qualified."
+  ],
+  "leaks": [
+   ["message", "Slow follow-up", "High-value leads that wait a day for a reply often book with someone else."],
+   ["globe", "A site that looks dated", "Clients judge the business by the website before they ever call."],
+   ["layout", "Data in five places", "Calendar, CRM, invoicing and email tools that don't share a thing."]
+  ],
+  "who": [
+   ["briefcase", "Professional and financial services", "A premium site, fast lead replies and one place to track every client."],
+   ["pulse", "Medical, dental and aesthetics", "Online booking, reminders and treatment follow-ups."],
+   ["store", "Retail and luxury brands", "An online store and a customer list for launches and private sales."]
+  ],
+  "faq": [
+   ["Do you build premium websites for Troy firms?", "Yes. Every site is designed around your brand, fast on a phone and easy to book or buy from. No templates."],
+   ["Can one system replace our separate CRM, calendar and invoicing tools?", "Usually, yes. We look at what you use today in the free audit, then build one system with only what you need, so you can cancel the rest."],
+   ["How fast do leads get a reply?", "Right away. Form fills and missed calls get an instant text, and you get a summary with what they need and when to call."],
+   ["How long does a build take?", "Most websites and systems are built in a few weeks, set up with your real data, with training for your team."]
+  ]
+ },
+ "dearborn": {
+  "name": "Dearborn", "county": "Wayne County",
+  "hero": "From the restaurants and bakeries on Warren Avenue to the shops along Michigan Avenue, Dearborn businesses use our websites and software to keep busy kitchens and loyal customers running smoothly.",
+  "local": [
+   "Dearborn has some of the best-known food in Michigan. Warren Avenue and Michigan Avenue are lined with restaurants, bakeries, cafés, markets and family businesses, many run across generations, with Ford's world headquarters and The Henry Ford bringing visitors in every day.",
+   "Busy family kitchens tend to lose money in the details: catering orders taken by phone and written down, food costs that change weekly, and big holiday rushes that bring crowds but no way to reach those customers again."
+  ],
+  "leaks": [
+   ["truck", "Phone and paper orders", "Catering and large orders written down by hand, with no deposit and no record."],
+   ["utensils", "Food costs nobody updates", "Prices from suppliers change, menu prices don't, and the margin quietly shrinks."],
+   ["message", "Holiday crowds that don't return", "Big seasonal rushes with no list to invite those customers back."]
+  ],
+  "who": [
+   ["utensils", "Restaurants and cafés", "Online orders, catering with deposits, and recipe and food cost tracking."],
+   ["cake", "Bakeries and sweet shops", "Pre-orders, pickup times and a list for holiday specials."],
+   ["store", "Markets and family retail", "A site customers can find on Google and a simple way to reach regulars."]
+  ],
+  "faq": [
+   ["Can customers place catering orders online with a deposit?", "Yes. They pick the date, the trays or menu, and pay a deposit up front. You get the order in one place with everything your kitchen needs."],
+   ["Can the system track what each dish costs us to make?", "Yes. Recipes are built from your ingredients, so when a supplier price changes you see which dishes lost margin."],
+   ["Can the website be in more than one language?", "We can build your site to show your menu and key pages in the languages your customers speak. We'll cover what you need in the free audit."],
+   ["How do I get started?", "Book the free audit or call (248) 487-8747. About 30 minutes by phone or video."]
+  ]
+ },
+ "ann-arbor": {
+  "name": "Ann Arbor", "county": "Washtenaw County",
+  "hero": "Between the University of Michigan crowd, Main Street dining and Kerrytown shops, Ann Arbor businesses need websites and systems that keep up with a town that changes every semester.",
+  "local": [
+   "Ann Arbor's business calendar follows the University of Michigan. Football Saturdays pack State Street and Main Street, graduation weeks book every table, and summer can go quiet. Kerrytown shops, cafés and service businesses ride the same waves.",
+   "The challenge is keeping revenue steady when the crowd turns over every year. That means capturing customers while they're here, filling slow weeks, and making every busy weekend count."
+  ],
+  "leaks": [
+   ["calendar", "Feast-or-famine weeks", "Game days and graduations overflow while summer weeks sit half empty."],
+   ["message", "Customers who move on", "Students and visitors come and go, and nobody captures who they were."],
+   ["layout", "Startup tool sprawl", "New businesses pile on subscriptions before they know what they need."]
+  ],
+  "who": [
+   ["utensils", "Restaurants and cafés", "Big-weekend bookings with deposits and texts to fill the slow weeks."],
+   ["rocket", "Startups and small teams", "A website that explains what you do and one system instead of ten subscriptions."],
+   ["store", "Shops and services", "Online booking or ordering and a customer list you own."]
+  ],
+  "faq": [
+   ["Can I take deposits for game days and graduation weekend?", "Yes. Set which dates need a deposit, and guests pay when they book. No-shows stop costing you your busiest nights."],
+   ["We're a new Ann Arbor business. Is this too much for us?", "No. We start with the one thing that's costing you the most and add only what you'll use. Fewer subscriptions, not more."],
+   ["Do you meet in person in Ann Arbor?", "Audits and check-ins happen by phone or video, by appointment, so we can move fast on your schedule."],
+   ["What does it cost?", "It's priced after the free audit, with an exact price up front covering the system, website, hosting, maintenance and support."]
+  ]
+ },
+ "birmingham": {
+  "name": "Birmingham", "county": "Oakland County",
+  "hero": "Downtown Birmingham's boutiques, salons and restaurants along Old Woodward sell an experience. We build websites and systems that feel as polished as your storefront.",
+  "local": [
+   "Birmingham is one of Metro Detroit's most walkable downtowns. Old Woodward and Maple are lined with boutiques, galleries, salons, spas and restaurants that depend on repeat clients who expect to be remembered.",
+   "Here, the leak is usually personal touch at scale: knowing a client's last visit, sending the right offer at the right time, and keeping a premium look online that matches the shop."
+  ],
+  "leaks": [
+   ["message", "Clients nobody follows up with", "A great first visit, then silence until they find someone else."],
+   ["calendar", "Last-minute cancellations", "Premium appointment slots lost without a deposit or a waitlist."],
+   ["globe", "A site below your standard", "A storefront that looks luxury and a website that doesn't."]
+  ],
+  "who": [
+   ["scissors", "Salons, spas and med spas", "Booking with deposits, reminders and rebooking texts."],
+   ["store", "Boutiques and galleries", "An online shop and a client list for new arrivals and private events."],
+   ["utensils", "Restaurants", "Reservations, deposits for big parties and a list of regulars."]
+  ],
+  "faq": [
+   ["Can my Birmingham salon take deposits when clients book?", "Yes. Choose which services need a deposit and clients pay when they book. Cancellations stop costing you prime time."],
+   ["Can the system remember each client's preferences and last visit?", "Yes. Every client has a profile with visits, purchases and notes, so your team can treat them like a regular."],
+   ["Will the website match our brand?", "Every site is designed around your brand. No templates."],
+   ["How do we start?", "Book the free audit or call (248) 487-8747."]
+  ]
+ },
+ "novi": {
+  "name": "Novi", "county": "Oakland County",
+  "hero": "From Twelve Oaks Mall to the Suburban Collection Showplace and the restaurants along Novi Road and Grand River, Novi businesses use our websites and systems to win customers in a crowded market.",
+  "local": [
+   "Novi pulls shoppers and event crowds from across southeast Michigan. Twelve Oaks Mall and the restaurants around it draw steady traffic, and the Suburban Collection Showplace brings in expos and shows all year.",
+   "With that many choices nearby, customers compare quickly. The businesses that win are the ones easiest to find, easiest to book and quickest to follow up."
+  ],
+  "leaks": [
+   ["globe", "Hard to book online", "Customers searching on their phone pick whoever lets them book first."],
+   ["message", "Event leads left in a pile", "Expo and show contacts collected on paper and never followed up."],
+   ["layout", "Franchise tools that don't fit", "Generic software built for someone else's business."]
+  ],
+  "who": [
+   ["utensils", "Restaurants", "Online bookings, deposits for parties and texts that bring guests back."],
+   ["camera", "Event and expo vendors", "A lead capture page and an automatic follow-up for every contact."],
+   ["wrench", "Home and auto services", "Quotes, scheduling and review requests after every job."]
+  ],
+  "faq": [
+   ["Can you help us follow up with leads from a Novi expo?", "Yes. Contacts sign up on their phone at your booth, get an instant thank-you text, and land in a follow-up sequence. You see who's ready to buy."],
+   ["Can customers book online from Google?", "Yes. Your site and booking page are built to be found and to book in a couple of taps."],
+   ["Do I need to replace my current software?", "Not all at once. The free audit shows what to keep, what to drop and what to connect."],
+   ["How long does a build take?", "Most builds take a few weeks, set up with your real data and training for your team."]
+  ]
+ },
+ "sterling-heights": {
+  "name": "Sterling Heights", "county": "Macomb County",
+  "hero": "Along Van Dyke, Hall Road and the industrial corridors, Sterling Heights runs on manufacturers, trades and family businesses. We build websites and systems that keep their jobs and customers organized.",
+  "local": [
+   "Sterling Heights is one of Macomb County's biggest business centers. Manufacturing and defense suppliers fill the industrial parks, Hall Road and Van Dyke carry the retail and restaurants, and family-owned trades and service companies work across the county.",
+   "These businesses tend to lose money between the phone call and the invoice: quotes that never get followed up, jobs tracked on paper, and invoices that go out late."
+  ],
+  "leaks": [
+   ["message", "Quotes that go quiet", "Estimates sent and never followed up, so the job goes to whoever calls back."],
+   ["layout", "Jobs on paper", "Schedules and job notes on whiteboards and in someone's head."],
+   ["calendar", "Late invoices", "Work done this week, billed next month."]
+  ],
+  "who": [
+   ["wrench", "Trades and contractors", "Quote requests, scheduling, job tracking and invoices in one place."],
+   ["briefcase", "Manufacturers and suppliers", "A professional site and a simple pipeline for new accounts."],
+   ["utensils", "Restaurants and family businesses", "Online orders, bookings and a customer list you can reach."]
+  ],
+  "faq": [
+   ["Can the system send automatic follow-ups on quotes?", "Yes. When a quote goes out, the customer gets a reminder if they haven't answered, and you see which quotes are still open."],
+   ["Can my crew see their jobs on their phones?", "Yes. Each person sees their schedule and job notes, and the office sees everything."],
+   ["Do you work with manufacturers, or only shops and restaurants?", "Both. We build around how your business runs, whether that's job tickets or table bookings."],
+   ["How do I start?", "Book the free audit or call (248) 487-8747."]
+  ]
+ },
+ "livonia": {
+  "name": "Livonia", "county": "Wayne County",
+  "hero": "Livonia's family businesses, trades and shops along Seven Mile, Middlebelt and Plymouth Road use our websites and software to win local jobs and keep customers coming back.",
+  "local": [
+   "Livonia is a city of established, often family-run businesses: contractors and home-service companies, auto shops, restaurants and retail along Seven Mile, Middlebelt, Plymouth Road and around Laurel Park Place.",
+   "Many have been around for years on word of mouth. The leak now is that customers search on their phone first, and a business that's hard to find or slow to answer loses the job before the phone ever rings."
+  ],
+  "leaks": [
+   ["globe", "Invisible on Google", "Great reputation in person, hard to find in a search."],
+   ["message", "Missed calls", "A missed call during a job is often a lost customer."],
+   ["star", "Reviews nobody asks for", "Happy customers who would leave a review if someone asked."]
+  ],
+  "who": [
+   ["wrench", "Home services and contractors", "Quote requests, scheduling and review requests after every job."],
+   ["truck", "Auto shops", "Appointment booking, service reminders and follow-ups."],
+   ["utensils", "Restaurants and family retail", "Online ordering and a list of regulars to text."]
+  ],
+  "faq": [
+   ["What happens when I miss a call while I'm on a job?", "The caller gets a text right away asking what they need. You get their answers and the best time to call back."],
+   ["Can the system ask happy customers for reviews?", "Yes. After a job or visit, customers get a short text with a link to review you on Google."],
+   ["We've been in Livonia for years. Do we really need a new website?", "If customers can't find you or can't book from their phone, yes. We'll show you in the free audit how people find you today."],
+   ["What does it cost?", "It's priced after the free audit, with an exact price up front."]
+  ]
+ },
+ "warren": {
+  "name": "Warren", "county": "Macomb County",
+  "hero": "Warren is home to the GM Technical Center, busy corridors along Van Dyke and Mound Road, and hundreds of trades and family businesses. We build websites and systems that keep their work organized and paid.",
+  "local": [
+   "Warren is Macomb County's largest city and one of Michigan's industrial centers. The GM Technical Center, suppliers and shops fill the business corridors, and restaurants, auto shops and contractors serve the neighborhoods.",
+   "For most businesses here, the work is steady. The money slips out in the admin: missed calls during the workday, jobs scheduled by memory, and invoices chased by hand."
+  ],
+  "leaks": [
+   ["message", "Calls missed on the job", "Customers who call once and move on when nobody answers."],
+   ["calendar", "Scheduling by memory", "Double bookings and forgotten jobs when the calendar lives in someone's head."],
+   ["layout", "Chasing payments", "Invoices sent late and followed up by hand, if at all."]
+  ],
+  "who": [
+   ["wrench", "Contractors and trades", "Quotes, scheduling, job tracking and automatic invoice reminders."],
+   ["truck", "Auto repair and body shops", "Online booking, status texts and service reminders."],
+   ["briefcase", "Suppliers and manufacturers", "A professional website and a simple system for accounts and orders."]
+  ],
+  "faq": [
+   ["Can customers get a text when their car or job is ready?", "Yes. Status updates go out by text, so your front desk spends less time on the phone."],
+   ["Can the system remind customers to pay?", "Yes. Invoices go out on time and reminders follow automatically until they're paid."],
+   ["Do you work with industrial and B2B businesses in Warren?", "Yes. We build around how your business runs, whether that's purchase orders or service appointments."],
+   ["How do I start?", "Book the free audit or call (248) 487-8747."]
+  ]
+ },
+ "pontiac": {
+  "name": "Pontiac", "county": "Oakland County",
+  "hero": "As downtown Pontiac grows around Saginaw Street and M1 Concourse draws car lovers from across Michigan, new and returning businesses need websites and systems built to grow with them.",
+  "local": [
+   "Pontiac is Oakland County's seat and a city in the middle of a comeback. Downtown along Saginaw Street is adding restaurants, venues and small businesses, and M1 Concourse brings car events and enthusiasts to town.",
+   "Newer businesses lose money by starting with too many tools and no system: paying for apps they don't need while the basics, like bookings and follow-up, fall through the cracks."
+  ],
+  "leaks": [
+   ["layout", "Paying for apps you don't need", "Subscriptions stacked up at launch that never get used."],
+   ["message", "Event crowds you never hear from again", "Big event days with no way to bring those visitors back."],
+   ["globe", "No clear website", "Customers can't tell what you offer or how to book."]
+  ],
+  "who": [
+   ["utensils", "Restaurants and venues", "Bookings, event tickets and texts that bring visitors back."],
+   ["truck", "Auto and car culture businesses", "Booking for services and events, and a list of enthusiasts you can reach."],
+   ["rocket", "New and growing businesses", "A clear website and one simple system from day one."]
+  ],
+  "faq": [
+   ["We're just opening in Pontiac. Where do we start?", "With the free audit. We'll look at what you plan to sell and build only what you need now, so you're not paying for tools you won't use."],
+   ["Can we sell tickets for events at our venue?", "Yes. Tickets, table bookings and guest lists, plus a text list of everyone who came."],
+   ["Can the website grow as we add services?", "Yes. You can update menus, prices and services from your back office without paying for a rebuild."],
+   ["What does it cost?", "It's priced after the free audit, with an exact price up front."]
+  ]
+ },
+ "hamtramck": {
+  "name": "Hamtramck", "county": "Wayne County",
+  "hero": "Along Joseph Campau and Conant, Hamtramck's restaurants, bakeries and markets serve one of Michigan's most diverse cities. We build websites and systems that help them reach every customer.",
+  "local": [
+   "Hamtramck packs a lot into two square miles: Polish bakeries famous for paczki, Bangladeshi and Yemeni restaurants and markets, cafés, music venues and small shops along Joseph Campau and Conant.",
+   "Many of these businesses are family-run and busy, with customers who speak several languages. The leaks are usually orders taken by phone, holiday rushes with no pre-orders, and regulars nobody can reach when something new is coming."
+  ],
+  "leaks": [
+   ["cake", "Holiday rush with no pre-orders", "Lines out the door on big days, and sales lost when items run out."],
+   ["truck", "Orders taken by phone", "Busy phones, handwritten orders and mix-ups at pickup."],
+   ["message", "No way to reach regulars", "New items and specials that only walk-ins ever hear about."]
+  ],
+  "who": [
+   ["cake", "Bakeries", "Pre-orders with pickup times and deposits for big holidays."],
+   ["utensils", "Restaurants and cafés", "Online orders, catering and a list of regulars to text."],
+   ["store", "Markets and shops", "A site customers can find on Google and simple texts for specials."]
+  ],
+  "faq": [
+   ["Can customers pre-order for holidays like Paczki Day?", "Yes. Customers choose items and a pickup time and can pay ahead, so you know exactly how much to make."],
+   ["Can the site be in more than one language?", "We can show your menu and key pages in the languages your customers speak. We'll go over it in the free audit."],
+   ["Will this work for a small family business?", "Yes. It's built around how you already run, and we train everyone who'll use it."],
+   ["How do I start?", "Book the free audit or call (248) 487-8747."]
+  ]
+ },
+ "highland-park": {
+  "name": "Highland Park", "county": "Wayne County",
+  "hero": "On Woodward Avenue in the city that built the Model T, Highland Park's small businesses are building what's next. We make websites and systems that help them get found and get paid.",
+  "local": [
+   "Highland Park is a small city surrounded by Detroit, with a big history: Ford's Highland Park Plant, where the moving assembly line began. Today Woodward Avenue and the neighborhoods are home to small businesses, food spots, salons, churches and community organizations.",
+   "For small teams here, every dollar counts. The leak is usually time: answering the same questions, chasing bookings by phone and paying for tools that don't fit."
+  ],
+  "leaks": [
+   ["message", "Same questions all day", "Hours, prices and booking questions answered one call at a time."],
+   ["globe", "Hard to find online", "Customers nearby who never see you in a search."],
+   ["layout", "Tools that don't fit", "Apps built for big companies, priced like it too."]
+  ],
+  "who": [
+   ["utensils", "Food spots and caterers", "Online ordering, catering requests and a list of regulars."],
+   ["scissors", "Salons and barbers", "Booking, reminders and rebooking texts."],
+   ["home", "Churches and community groups", "Event sign-ups, donations and texts to members."]
+  ],
+  "faq": [
+   ["Can a small Highland Park business afford this?", "Every build is priced after the free audit to fit what you actually need. Dropping apps you no longer use often helps pay for it."],
+   ["Can customers book or order without calling?", "Yes. Your website takes bookings and orders directly, with confirmations by text."],
+   ["Do you work with churches and community organizations?", "Yes. Event sign-ups, donations and member texts work the same way bookings do."],
+   ["How do I start?", "Book the free audit or call (248) 487-8747."]
+  ]
+ }
+}

@@ -13,18 +13,16 @@
     <meta property="og:description" content="Custom printing for Michigan businesses. Instant quotes. Ships overnight statewide.">
     <meta property="og:image" content="https://newurbaninfluence.com/og-image.jpg">
     <meta property="og:url" content="https://newurbaninfluence.com/print">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; font-weight: 500; background: #000; color: #fff; line-height: 1.7; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; font-weight: 500; background: #000; color: #fff; line-height: 1.7; overflow-x: hidden; }
         a { color: #dc2626; text-decoration: none; }
         a:hover { text-decoration: underline; }
 
         /* Nav */
         .nav { background: rgba(0,0,0,0.95); padding: 20px 48px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: #fff; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .nav-logo { font-family: 'Inter Tight', sans-serif; font-weight: 800; font-size: 20px; color: #fff; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 10px; }
         .nav-logo img { height: 36px; width: auto; }
         .nav-links a { color: rgba(255,255,255,0.7); margin-left: 24px; font-size: 14px; font-weight: 500; }
         .nav-links a:hover { color: #fff; text-decoration: none; }
@@ -40,48 +38,48 @@
 
         /* Hero */
         .hero { padding: 120px 24px 80px; text-align: center; background: linear-gradient(180deg, rgba(220,38,38,0.08) 0%, transparent 60%); }
-        .hero .badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #dc2626; margin-bottom: 24px; padding: 8px 20px; border: 1px solid rgba(220,38,38,0.3); border-radius: 100px; }
-        .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(36px, 6vw, 72px); font-weight: 900; line-height: 1.05; text-transform: uppercase; margin-bottom: 24px; }
+        .hero .badge { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #dc2626; margin-bottom: 24px; padding: 8px 20px; border: 1px solid rgba(220,38,38,0.3); border-radius: 100px; }
+        .hero h1 { font-family: 'Inter Tight', sans-serif; font-size: clamp(36px, 6vw, 72px); font-weight: 900; line-height: 1.05; text-transform: uppercase; margin-bottom: 24px; }
         .hero h1 .red { color: #dc2626; }
         .hero p { color: rgba(255,255,255,0.7); font-size: 18px; max-width: 600px; margin: 0 auto 20px; }
-        .hero .subtext { color: rgba(255,255,255,0.45); font-size: 14px; }
+        .hero .subtext { color: rgba(255,255,255,0.78); font-size: 14px; }
 
         /* Two Doors Hero */
         .doors { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 700px; margin: 32px auto 0; }
         .door-hero { padding: 28px 24px; border-radius: 16px; border: 2px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; transition: all 0.3s; }
         .door-hero:hover { border-color: rgba(220,38,38,0.5); transform: translateY(-2px); }
         .door-hero .door-icon { font-size: 36px; margin-bottom: 8px; }
-        .door-hero h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 4px; }
-        .door-hero p { color: rgba(255,255,255,0.5); font-size: 13px; margin: 0; }
+        .door-hero h3 { font-family: 'Inter Tight', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+        .door-hero p { color: rgba(255,255,255,0.78); font-size: 13px; margin: 0; }
 
         /* Industry Filter Tabs */
         .filter-bar { padding: 0 24px; text-align: center; margin-bottom: 48px; }
         .filter-bar-inner { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 900px; margin: 0 auto; }
-        .filter-btn { padding: 10px 20px; font-size: 13px; font-weight: 600; border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; background: transparent; color: rgba(255,255,255,0.6); cursor: pointer; transition: all 0.3s; font-family: 'Montserrat', sans-serif; }
+        .filter-btn { padding: 10px 20px; font-size: 13px; font-weight: 600; border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; background: transparent; color: rgba(255,255,255,0.78); cursor: pointer; transition: all 0.3s; font-family: 'Inter', sans-serif; }
         .filter-btn:hover { border-color: rgba(220,38,38,0.5); color: #fff; }
         .filter-btn.active { background: #dc2626; border-color: #dc2626; color: #fff; }
 
         /* Product Grid */
         .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-        .section-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #dc2626; margin-bottom: 12px; }
-        .section-title { font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 800; text-transform: uppercase; margin-bottom: 12px; line-height: 1.15; }
-        .section-text { color: rgba(255,255,255,0.55); font-size: 16px; margin-bottom: 40px; max-width: 650px; }
+        .section-label { font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #dc2626; margin-bottom: 12px; }
+        .section-title { font-family: 'Inter Tight', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 800; text-transform: uppercase; margin-bottom: 12px; line-height: 1.15; }
+        .section-text { color: rgba(255,255,255,0.78); font-size: 16px; margin-bottom: 40px; max-width: 650px; }
 
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-bottom: 80px; }
         .product-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; transition: all 0.3s; }
         .product-card:hover { border-color: rgba(220,38,38,0.4); transform: translateY(-4px); }
         .product-img { width: 100%; height: 200px; object-fit: cover; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; }
-        .product-img .placeholder { color: rgba(255,255,255,0.2); font-size: 48px; }
+        .product-img .placeholder { color: rgba(255,255,255,0.78); font-size: 48px; }
         .product-body { padding: 24px; }
-        .product-body h3 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+        .product-body h3 { font-family: 'Inter Tight', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 6px; }
         .product-body .price { font-size: 28px; font-weight: 900; color: #dc2626; margin: 8px 0 4px; }
-        .product-body .price span { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.45); }
-        .product-body .desc { color: rgba(255,255,255,0.55); font-size: 14px; margin-bottom: 16px; line-height: 1.6; }
+        .product-body .price span { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.78); }
+        .product-body .desc { color: rgba(255,255,255,0.78); font-size: 14px; margin-bottom: 16px; line-height: 1.6; }
         .product-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-        .product-tag { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; background: rgba(220,38,38,0.1); color: #dc2626; }
+        .product-tag { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; background: rgba(220,38,38,0.1); color: #dc2626; }
 
         /* Buttons */
-        .btn { display: inline-block; padding: 16px 36px; font-weight: 700; font-size: 15px; border-radius: 6px; cursor: pointer; transition: all 0.3s; border: none; font-family: 'Montserrat', sans-serif; text-align: center; }
+        .btn { display: inline-block; padding: 16px 36px; font-weight: 700; font-size: 15px; border-radius: 6px; cursor: pointer; transition: all 0.3s; border: none; font-family: 'Inter', sans-serif; text-align: center; }
         .btn-red { background: #dc2626; color: #fff; }
         .btn-red:hover { background: #b91c1c; text-decoration: none; }
         .btn-outline { border: 2px solid rgba(255,255,255,0.2); color: #fff; background: transparent; }
@@ -94,13 +92,13 @@
         .bundle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
         .bundle-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 36px 28px; transition: all 0.3s; position: relative; }
         .bundle-card:hover { border-color: rgba(220,38,38,0.4); transform: translateY(-4px); }
-        .bundle-card .popular { position: absolute; top: -1px; right: 24px; background: #dc2626; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px; border-radius: 0 0 8px 8px; }
-        .bundle-card h3 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+        .bundle-card .popular { position: absolute; top: -1px; right: 24px; background: #dc2626; color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px; border-radius: 0 0 8px 8px; }
+        .bundle-card h3 { font-family: 'Inter Tight', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 8px; }
         .bundle-card .bundle-price { font-size: 36px; font-weight: 900; color: #dc2626; margin-bottom: 4px; }
-        .bundle-card .bundle-price span { font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.4); }
-        .bundle-card .bundle-desc { color: rgba(255,255,255,0.5); font-size: 14px; margin-bottom: 20px; }
+        .bundle-card .bundle-price span { font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.78); }
+        .bundle-card .bundle-desc { color: rgba(255,255,255,0.78); font-size: 14px; margin-bottom: 20px; }
         .bundle-card ul { list-style: none; margin-bottom: 24px; }
-        .bundle-card ul li { padding: 8px 0; color: rgba(255,255,255,0.65); font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .bundle-card ul li { padding: 8px 0; color: rgba(255,255,255,0.78); font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .bundle-card ul li::before { content: '✓ '; color: #dc2626; font-weight: 700; }
         .bundle-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
@@ -108,25 +106,25 @@
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 9999; align-items: center; justify-content: center; padding: 24px; }
         .modal-overlay.active { display: flex; }
         .modal { background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 40px 32px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
-        .modal h2 { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; margin-bottom: 8px; }
-        .modal p { color: rgba(255,255,255,0.5); font-size: 14px; margin-bottom: 24px; }
-        .close-btn { position: absolute; top: 16px; right: 20px; background: none; border: none; color: rgba(255,255,255,0.5); font-size: 28px; cursor: pointer; }
+        .modal h2 { font-family: 'Inter Tight', sans-serif; font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+        .modal p { color: rgba(255,255,255,0.78); font-size: 14px; margin-bottom: 24px; }
+        .close-btn { position: absolute; top: 16px; right: 20px; background: none; border: none; color: rgba(255,255,255,0.78); font-size: 28px; cursor: pointer; }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 6px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 15px; font-family: 'Montserrat', sans-serif; outline: none; transition: border-color 0.3s; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 15px; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.3s; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #dc2626; }
         .form-group textarea { resize: vertical; min-height: 80px; }
         .form-group select option { background: #111; color: #fff; }
         .form-success { text-align: center; padding: 40px 20px; }
         .form-success .check { font-size: 64px; margin-bottom: 16px; }
-        .form-success h3 { font-family: 'Syne', sans-serif; font-size: 24px; margin-bottom: 8px; }
-        .form-success p { color: rgba(255,255,255,0.5); font-size: 14px; }
+        .form-success h3 { font-family: 'Inter Tight', sans-serif; font-size: 24px; margin-bottom: 8px; }
+        .form-success p { color: rgba(255,255,255,0.78); font-size: 14px; }
 
         /* Cart Drawer */
         .cart-drawer { position: fixed; top: 0; right: -420px; width: 400px; max-width: 90vw; height: 100vh; background: #0a0a0a; border-left: 1px solid rgba(255,255,255,0.08); z-index: 10000; transition: right 0.3s ease; display: flex; flex-direction: column; }
         .cart-drawer.active { right: 0; }
         .cart-header { padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; }
-        .cart-header h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; }
+        .cart-header h3 { font-family: 'Inter Tight', sans-serif; font-weight: 800; font-size: 18px; }
         .cart-body { flex: 1; overflow-y: auto; padding: 0 24px; }
         .cart-footer { padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.08); }
         .cart-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; }
@@ -134,20 +132,20 @@
 
         /* Cart Badge */
         .cart-btn { position: relative; background: none; border: none; color: #fff; cursor: pointer; font-size: 22px; padding: 8px; margin-left: 16px; }
-        .cart-badge { position: absolute; top: 0; right: -2px; background: #dc2626; color: #fff; font-size: 10px; font-weight: 800; width: 18px; height: 18px; border-radius: 50%; display: none; align-items: center; justify-content: center; }
+        .cart-badge { position: absolute; top: 0; right: -2px; background: #dc2626; color: #fff; font-size: 12px; font-weight: 800; width: 18px; height: 18px; border-radius: 50%; display: none; align-items: center; justify-content: center; }
 
         /* CTA & Footer */
         .cta-section { text-align: center; padding: 100px 24px; background: linear-gradient(180deg, transparent 0%, rgba(220,38,38,0.06) 100%); }
-        .cta-section h2 { font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 800; text-transform: uppercase; margin-bottom: 16px; }
-        .cta-section p { color: rgba(255,255,255,0.5); font-size: 17px; margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
-        .footer { padding: 40px 24px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; color: rgba(255,255,255,0.35); font-size: 13px; }
-        .footer a { color: rgba(255,255,255,0.5); }
+        .cta-section h2 { font-family: 'Inter Tight', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 800; text-transform: uppercase; margin-bottom: 16px; }
+        .cta-section p { color: rgba(255,255,255,0.78); font-size: 17px; margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .footer { padding: 40px 24px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; color: rgba(255,255,255,0.78); font-size: 13px; }
+        .footer a { color: rgba(255,255,255,0.78); }
 
         /* Trust Strip */
         .trust-strip { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; padding: 32px 24px; margin-bottom: 48px; }
         .trust-item { text-align: center; }
-        .trust-item .num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 900; color: #dc2626; }
-        .trust-item .lbl { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 4px; }
+        .trust-item .num { font-family: 'Inter Tight', sans-serif; font-size: 32px; font-weight: 900; color: #dc2626; }
+        .trust-item .lbl { font-size: 12px; color: rgba(255,255,255,0.78); margin-top: 4px; }
 
         /* Mobile */
         @media (max-width: 768px) {
@@ -173,33 +171,18 @@
             .hero h1 { font-size: clamp(28px, 8vw, 48px); }
         }
     </style>
+<link rel="stylesheet" href="/assets/css/site.css?v=20261124v5">
+<script src="/assets/js/site-edits.js?v=20261124v1" defer></script>
 </head>
-<body>
+<body class="nh-page">
 
     <!-- Nav -->
-    <nav class="nav">
-        <a href="/" class="nav-logo">
-            <img src="/logo-nav-cropped.png" alt="NUI">
-            New Urban Influence
-        </a>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/services/branding-agency-detroit">Services</a>
-            <a href="/portfolio">Work</a>
-            <a href="/contact">Contact</a>
-            <button class="cart-btn" onclick="NUI_PRINT.showCartDrawer()">
-                🛒 <span class="cart-badge" id="cartBadge">0</span>
-            </button>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px">
-            <button class="cart-btn" style="display:none" id="mobileCartBtn" onclick="NUI_PRINT.showCartDrawer()">
-                🛒 <span class="cart-badge" id="cartBadgeMobile">0</span>
-            </button>
-            <div class="hamburger" onclick="document.querySelector('.mobile-menu').classList.toggle('active'); this.classList.toggle('active');">
-                <span></span><span></span><span></span>
-            </div>
-        </div>
-    </nav>
+    <nav class="nh-nav" aria-label="Main">
+<a class="nh-logo" href="/"><img src="/icons/icon-192.png" alt="" width="26" height="26"><span>New Urban Influence</span></a>
+<div class="nh-links"><a href="/restaurants-bars">Restaurants &amp; bars</a><a href="/websites">Websites</a><a href="/websites#builds">Our work</a><a href="/how-it-works">How it works</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Promotions</a><a href="/about">About</a><a href="/app/">Client login</a><button type="button" class="cart-btn nh-cart" onclick="NUI_PRINT.showCartDrawer()">Cart <span class="cart-badge" id="cartBadge">0</span></button></div>
+<div class="nh-right"><button type="button" class="cart-btn nh-cart nh-cart-m" id="mobileCartBtn" onclick="NUI_PRINT.showCartDrawer()">Cart <span class="cart-badge" id="cartBadgeMobile">0</span></button><a class="nh-cta" href="/?audit=1">Book free audit</a><button type="button" class="nh-burger" aria-label="Menu" aria-expanded="false" aria-controls="nhMenu"><span></span><span></span><span></span></button></div>
+</nav>
+<div class="nh-menu" id="nhMenu" hidden><a href="/">Home</a><a href="/restaurants-bars">Restaurants &amp; bars</a><a href="/websites">Websites</a><a href="/websites#builds">Our work</a><a href="/how-it-works">How it works</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Promotions</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/app/">Client login</a></div>
     <div class="mobile-menu">
         <a href="/" onclick="document.querySelector('.mobile-menu').classList.remove('active')">Home</a>
         <a href="/services/branding-agency-detroit">Services</a>
@@ -210,19 +193,19 @@
 
     <!-- Hero -->
     <section class="hero">
-        <div class="badge">🖨️ Instant Quotes · Design Included</div>
+        <div class="badge">Instant Quotes · Design Included</div>
         <h1>Your Brand.<br><span class="red">Printed.</span></h1>
         <p>Custom signage, banners, business cards, and more for Michigan businesses. Pick your product, get an instant price, and we handle the rest.</p>
         <p class="subtext">No minimums on most items · Ships statewide overnight · Design available on everything</p>
 
         <div class="doors">
             <div class="door-hero" onclick="document.getElementById('productSection').scrollIntoView({behavior:'smooth'})">
-                <div class="door-icon">✅</div>
+                <div class="door-icon">✓</div>
                 <h3>I Have Artwork</h3>
                 <p>Upload files, get instant quote, we print and ship</p>
             </div>
             <div class="door-hero" onclick="document.getElementById('productSection').scrollIntoView({behavior:'smooth'})">
-                <div class="door-icon">🎨</div>
+                <div class="door-icon"></div>
                 <h3>I Need Design</h3>
                 <p>We design it, you approve it, then we print and ship</p>
             </div>
@@ -382,7 +365,7 @@
                 <button class="btn btn-red btn-block" id="submitRequest" onclick="submitLegacyRequest()">Send Request</button>
             </div>
             <div id="requestSuccess" class="form-success" style="display:none">
-                <div class="check">✅</div>
+                <div class="check">✓</div>
                 <h3>Request Sent!</h3>
                 <p>We'll get back to you within 24 hours with a final quote and timeline.</p>
             </div>
@@ -394,13 +377,13 @@
     <div class="cart-drawer" id="cartDrawer">
         <div class="cart-header">
             <h3>Your Order</h3>
-            <button style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:24px;cursor:pointer" onclick="NUI_PRINT.hideCartDrawer()">&times;</button>
+            <button style="background:none;border:none;color:rgba(255,255,255,0.78);font-size:24px;cursor:pointer" onclick="NUI_PRINT.hideCartDrawer()">&times;</button>
         </div>
         <div class="cart-body" id="cartItems">
-            <p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px 0">Your order is empty</p>
+            <p style="text-align:center;color:rgba(255,255,255,0.78);padding:40px 0">Your order is empty</p>
         </div>
         <div class="cart-footer">
-            <p id="cartShipNote" style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:8px"></p>
+            <p id="cartShipNote" style="font-size:12px;color:rgba(255,255,255,0.78);margin-bottom:8px"></p>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
                 <span style="font-weight:700;font-size:16px">Total</span>
                 <span id="cartTotal" style="font-weight:900;font-size:24px;color:#dc2626">$0</span>
@@ -446,10 +429,10 @@
                 </div>
                 <div class="form-group"><label>Notes / Special Instructions</label><textarea id="coNotes" placeholder="Anything we should know?"></textarea></div>
                 <button class="btn btn-red btn-block" id="coSubmitBtn" onclick="NUI_PRINT.submitOrder()">Submit Order</button>
-                <p style="font-size:11px;color:rgba(255,255,255,0.3);text-align:center;margin-top:12px">No payment required now. We'll review your order and send a final invoice.</p>
+                <p style="font-size:12px;color:rgba(255,255,255,0.78);text-align:center;margin-top:12px">No payment required now. We'll review your order and send a final invoice.</p>
             </div>
             <div id="checkoutSuccess" class="form-success" style="display:none">
-                <div class="check">🎉</div>
+                <div class="check"></div>
                 <h3>Order Submitted!</h3>
                 <p>We've got your order and we're on it. Check your email for confirmation and next steps. Most items ship within 24 hours of approval.</p>
                 <a href="/print" class="btn btn-outline" style="margin-top:24px">Back to Print Shop</a>
@@ -458,9 +441,14 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2025 New Urban Influence. Detroit, Michigan. <a href="/contact">Contact Us</a> · <a href="tel:2484878747">(248) 487-8747</a></p>
-    </footer>
+    <footer class="nh-foot"><div class="in"><div class="nh-fgrid">
+<div><a class="nh-flogo" href="/"><img src="/icons/icon-192.png" alt="" width="26" height="26">New Urban Influence</a><p style="margin-top:12px;max-width:280px">Websites and business software, built in Detroit.</p><p style="margin-top:8px;color:#fff;font-weight:600;user-select:all">(248) 487-8747</p><p style="margin-top:4px;user-select:all">info@newurbaninfluence.com</p></div>
+<div><h4>What we build</h4><a href="/websites">Websites</a><a href="/restaurants-bars">Restaurant &amp; bar software</a><a href="/services/crm-integration-detroit">CRM &amp; automation</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers &amp; videos</a><a href="/print">Print &amp; signage</a></div>
+<div><h4>Company</h4><a href="/about">About</a><a href="/websites#builds">Our work</a><a href="/how-it-works">How it works</a><a href="/contact">Contact</a><a href="/magazine">NUI Magazine</a><a href="/blog">Blog</a></div>
+<div><h4>Log in</h4><a href="/app/">Client login</a><a href="/app/">Staff login</a></div>
+</div>
+<div class="nh-fareas"><h4>Service areas</h4><div><a href="/locations/detroit">Detroit</a><a href="/locations/southfield">Southfield</a><a href="/locations/farmington-hills">Farmington Hills</a><a href="/locations/royal-oak">Royal Oak</a><a href="/locations/troy">Troy</a><a href="/locations/dearborn">Dearborn</a><a href="/locations/ann-arbor">Ann Arbor</a><a href="/locations/birmingham">Birmingham</a><a href="/locations/novi">Novi</a><a href="/locations/sterling-heights">Sterling Heights</a><a href="/locations/livonia">Livonia</a><a href="/locations/warren">Warren</a><a href="/locations/pontiac">Pontiac</a><a href="/locations/hamtramck">Hamtramck</a><a href="/locations/highland-park">Highland Park</a></div></div>
+<div class="nh-fbase"><span>&copy; 2026 New Urban Influence. Detroit, Michigan.</span><span><a href="/privacy-policy">Privacy</a> &nbsp;&middot;&nbsp; <a href="/terms-of-service">Terms</a> &nbsp;&middot;&nbsp; <a href="/sitemap.xml">Sitemap</a></span></div></div></footer>
 
     <!-- Config + Print Store Engine -->
     <script src="/env.js"></script>
@@ -497,7 +485,7 @@
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     to: 'info@newurbaninfluence.com',
-                    subject: `🖨️ Print Quote Request: ${data.product} — ${name}`,
+                    subject: `Print Quote Request: ${data.product} — ${name}`,
                     html: `<div style="font-family:Arial;background:#111;color:#fff;padding:32px;border-radius:12px"><h2 style="color:#dc2626">Print Quote Request</h2><p><strong>${data.product}</strong> — ${data.price_shown}</p><p>Client: ${name} / ${email} / ${data.client_phone || 'no phone'}</p><p>Business: ${data.business_name || 'n/a'} / ${data.industry || 'n/a'}</p><p>Details: ${data.details || 'none'}</p></div>`
                 })
             });
@@ -528,5 +516,6 @@
     NUI_PRINT.hideCartDrawer = function() { origHide(); document.getElementById('cartOverlay').classList.remove('active'); };
     </script>
     <script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("E63P0HZ53POW");</script>
+<script src="/assets/js/site-nav.js?v=20261124v1" defer></script>
 </body>
 </html>

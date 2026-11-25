@@ -12,7 +12,7 @@ function loadAdminAssetsPanel() {
 
     document.getElementById('adminAssetsPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">📁 Client Brand Asset Storage</h2>
+<h2 class="panel-title">Client Brand Asset Storage</h2>
 <p class="panel-subtitle">Centralized storage for all client brand assets</p>
 </div>
 

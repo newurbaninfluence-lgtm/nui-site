@@ -1,11 +1,11 @@
 // ==================== PER-PAGE SEO METADATA ====================
 const pageSEO = {
     home: {
-        title: 'New Urban Influence | Detroit Branding Agency — Logo Design & Brand Identity from $1,500',
-        description: 'Detroit branding agency for small businesses and startups. Professional brand identity packages from $1,500 — logo design, packaging, social media templates, brand guidelines. 4.9★ rated. Free consultation. Serving Metro Detroit, Southfield, Royal Oak, Ann Arbor and all of Michigan.',
-        keywords: 'branding agency detroit, logo design detroit, brand identity detroit, graphic design agency detroit, detroit creative agency, michigan branding agency, affordable branding packages, small business branding detroit, packaging design detroit, branding near me, best branding agency detroit',
-        ogTitle: 'New Urban Influence | Detroit Branding Agency — Packages from $1,500',
-        ogDescription: 'Professional branding for small businesses. Logo design, brand identity, packaging, social media templates. 4.9★ rated. Free consultation. Payment plans available.',
+        title: 'New Urban Influence | Detroit Websites & Business Software',
+        description: 'We find the leaks in your business and fix them, with software built for your industry, a website that works, and engagement that brings customers back. Free audit. Detroit, MI.',
+        keywords: 'detroit web design, business software detroit, restaurant software, bar management software, photography booking software, nightlife promoter software, small business website detroit, custom crm detroit, website and back office, new urban influence',
+        ogTitle: 'New Urban Influence | Detroit Websites & Business Software',
+        ogDescription: 'A website that brings customers in, plus software built for your industry that runs everything behind it. Free audit.',
         hash: ''
     },
     about: {
@@ -260,6 +260,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadHomeView();
         updatePageSEO('home');
     }
+    // Links like /#builds or /#how-it-works jump to that homepage section
+    var _sectionHash = hashView;
+    if (!routeView && ['what-we-build', 'builds', 'how-it-works', 'faq'].indexOf(_sectionHash) !== -1 && typeof nuiGoTo === 'function') {
+        setTimeout(function() { nuiGoTo(_sectionHash); }, 700);
+    }
 
     // Handle browser back/forward buttons
     window.addEventListener('popstate', (e) => {
@@ -364,32 +369,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// Render homepage case study cards from portfolioData (reusable for cloud sync refresh)
+// Homepage "Websites we've built" row: screenshots of the live sites NUI built.
+var HOME_SITE_BUILDS = [
+    { name: 'Hideaway Kitchen & Bar', tag: 'Restaurant and bar \u00b7 Southfield', url: 'https://hideawaykitchenandbar.net', img: '/images/work/hideaway-site.webp' },
+    { name: 'AJ Photography', tag: 'Photo studio \u00b7 Metro Detroit', url: 'https://ajvip.com', img: '/images/work/ajvip-site.webp' },
+    { name: 'Michigan After Dark', tag: 'Nightlife \u00b7 Detroit', url: 'https://michiganafterdark.com', img: '/images/work/mad-site.webp' },
+    { name: 'Sonya Meadows', tag: 'Author and speaker', url: 'https://sonyameadows.com', img: '/images/work/sonya-site.webp' },
+    { name: 'Ultimate Hair Co.', tag: 'Hair brand \u00b7 Oak Park', url: 'https://ultimatehairco.com', img: '/images/work/uhc-site.webp' }
+];
 function _refreshHomepageCaseStudies(csGrid) {
     if (!csGrid) csGrid = document.getElementById('homepageCaseStudies');
     if (!csGrid) return;
-    csGrid.innerHTML = portfolioData.slice(0, 4).map(function(p, idx) {
-        const imgIsIdb = p.img && p.img.startsWith('idb://');
-        const imgSrc = (!imgIsIdb && p.img) ? p.img : '';
-        const isEven = idx % 2 === 0;
-        const categories = (p.tag || '').toUpperCase().replace(/\+/g, ',').replace(/\s*,\s*/g, ', ');
-        const longDesc = p.mission ? p.desc + ' ' + p.mission : p.desc;
-        const testimonialText = p.testimonial ? p.testimonial.text : '';
-        const fullText = longDesc + (testimonialText ? ' ' + testimonialText : '');
-        return '<div class="proven-card ' + (isEven ? '' : 'proven-card-reverse') + '">' +
-            '<div class="proven-card-image" ' + (imgIsIdb ? 'data-idb-bg="' + p.img + '"' : '') + '>' +
-                (imgSrc ? '<img src="' + imgSrc + '" alt="' + (p.name || '') + ' case study by New Urban Influence Detroit" loading="lazy">' : '') +
-            '</div>' +
-            '<div class="proven-card-info">' +
-                '<div class="proven-card-categories">' + categories + '</div>' +
-                '<hr class="proven-card-divider">' +
-                '<h3 class="proven-card-title">' + (p.name || '') + '</h3>' +
-                '<p class="proven-card-desc">' + fullText + '</p>' +
-                '<a href="/work/' + (p.id || '') + '" class="proven-card-btn">View Case Study</a>' +
-            '</div>' +
-        '</div>';
+    csGrid.innerHTML = HOME_SITE_BUILDS.map(function(p) {
+        return '<a class="build" href="' + p.url + '" target="_blank" rel="noopener">' +
+            '<img class="bimg" src="' + p.img + '" alt="' + p.name.replace('&', '&amp;') + ' website built by New Urban Influence" loading="lazy" width="1200" height="750">' +
+            '<b>' + p.name.replace('&', '&amp;') + '</b><small>' + p.tag + '</small></a>';
     }).join('');
-    setTimeout(function() { if (typeof resolveAllImages === 'function') resolveAllImages(); }, 100);
 }
 
 // ==================== HOME VIEW ====================

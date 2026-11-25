@@ -811,7 +811,7 @@ async function syncNewClientsToHub() {
             createdVia: 'seed',
             emailVerified: true,
             colors: ['#e11d48', '#1a1a1a', '#ffffff'],
-            brandAssets: { logo: '', colors: ['#e11d48', '#1a1a1a', '#ffffff'], fonts: ['Montserrat'] }
+            brandAssets: { logo: '', colors: ['#e11d48', '#1a1a1a', '#ffffff'], fonts: ['Inter'] }
         };
         clients.push(testClient);
         // IMPORTANT: write locally only — never sync seed data to the backend.
@@ -1918,6 +1918,14 @@ function pushPortfolioToFrontend() {
 }
 
 // Generate footer HTML with CMS logo
+// Jump to a homepage section (menu + footer links). Works from any page.
+function nuiGoTo(id) {
+    var go = function() { var el = document.getElementById(id); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'smooth' }); };
+    var home = document.getElementById('homeView');
+    if (typeof showView !== 'function' || !home) { window.location.href = '/#' + id; return; }
+    if (!home.classList.contains('active') || !document.getElementById(id)) { showView('home'); setTimeout(go, 450); } else { go(); }
+}
+
 function getFooterHTML() {
     const footerLogoSrc = siteImages.footerLogo?.url || 'icons/icon-192.png';
     const footerLogoAlt = siteImages.footerLogo?.alt || 'NUI';
@@ -1932,7 +1940,7 @@ function getFooterHTML() {
                     ${footerLogoSrc ? '<img loading="lazy" src="' + footerLogoSrc + '" alt="' + footerLogoAlt + '" onerror="this.style.display=\'none\'">' : ''}
 <span class="text-red">NUI</span>
 </a>
-<p class="footer-brand-desc">Detroit-based creative agency specializing in brand identity, web design, and digital marketing. Unapologetically Detroit.</p>
+<p class="footer-brand-desc">Detroit-built websites and business software. We find the leaks in your business and fix them. Unapologetically Detroit.</p>
 <div class="footer-socials">
 <a href="https://instagram.com/newurbaninfluence" target="_blank" class="footer-social-link" title="Instagram">📷</a>
 <a href="https://twitter.com/newurbaninfluence" target="_blank" class="footer-social-link" title="X / Twitter">𝕏</a>
@@ -1962,37 +1970,32 @@ function getFooterHTML() {
 
             <!-- Services -->
 <div class="footer-col">
-<div class="footer-col-title">Services</div>
-<a href="/services/brand-identity-packages-detroit">Brand Identity Packages</a>
-<a href="/services/logo-design-detroit">Logo Design</a>
-<a href="/services/web-design-detroit">Web Design</a>
-<a href="/services/packaging-design-detroit">Packaging Design</a>
-<a href="/services/social-media-templates-detroit">Social Media</a>
-<a href="/services/marketing-automation-detroit">Automation & Funnels</a>
-<a href="/services/print-design-detroit">Print & Signage</a>
-<a href="/services/brand-guidelines-detroit">Brand Guidelines</a>
+<div class="footer-col-title">What We Build</div>
+<a href="/services/business-website-detroit">Websites That Work</a>
+<a href="/#what-we-build" onclick="event.preventDefault(); nuiGoTo('what-we-build');">Business Software</a>
+<a href="/services/crm-integration-detroit">CRM &amp; Automation</a>
+<a href="/#builds" onclick="event.preventDefault(); nuiGoTo('builds');">Our Work</a>
+<a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers &amp; Motion Flyers</a>
+<a href="/contact" onclick="event.preventDefault(); showView('intake');">Book a Free Audit</a>
 </div>
 
             <!-- Company -->
 <div class="footer-col">
 <div class="footer-col-title">Company</div>
 <a href="/about" onclick="event.preventDefault(); showView('about');">About Us</a>
-<a href="/portfolio" onclick="event.preventDefault(); showView('portfolio');">Portfolio</a>
+<a href="/magazine">NUI Magazine</a>
 <a href="/blog" onclick="event.preventDefault(); showView('blog');">Blog</a>
-<a href="/services/brand-identity-packages-detroit" onclick="event.preventDefault(); showView('services');">Pricing</a>
 <a href="/contact" onclick="event.preventDefault(); showView('intake');">Contact</a>
-<a href="/portal" onclick="event.preventDefault(); showView('portal');">Client Portal</a>
+<a href="/app/">Client Login</a>
 <a href="/#faq" onclick="event.preventDefault(); document.getElementById('faq')?.scrollIntoView({behavior:'smooth'});">FAQ</a>
 </div>
 
             <!-- Resources -->
 <div class="footer-col">
 <div class="footer-col-title">Resources</div>
-<a href="/blog/how-much-does-logo-design-cost-detroit">Logo Design Pricing</a>
-<a href="/blog/branding-mistakes-small-businesses">Branding Tips</a>
+<a href="/#how-it-works" onclick="event.preventDefault(); nuiGoTo('how-it-works');">How It Works</a>
 <a href="/blog/restaurant-branding-guide-detroit">Restaurant Guide</a>
-<a href="/work/good-cakes-and-bakes">Case Studies</a>
-<a href="/portal" onclick="event.preventDefault(); showView('portal');">Designer Login</a>
+<a href="/print">Print &amp; Signage</a>
 <a href="/sitemap.xml" target="_blank">Sitemap</a>
 </div>
 

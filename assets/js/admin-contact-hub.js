@@ -156,7 +156,7 @@ function renderContactHub() {
 
 <div class="ch-header">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-    <h2 style="font-size:24px;font-weight:800;">📡 Contact Hub</h2>
+    <h2 style="font-size:24px;font-weight:800;">Contacts</h2>
     <div style="display:flex;gap:8px;">
       <button onclick="contactHubView='smartlists'; renderContactHub();" class="ch-filter-btn" style="${contactHubView === 'smartlists' ? 'background:#dc2626;border-color:#dc2626;color:#fff;' : 'background:#1c1c1c;'}">🎯 Smart Lists</button>
       <button onclick="contactHubView = contactHubView === 'campaigns' ? 'contacts' : 'campaigns'; renderContactHub();" class="ch-filter-btn" style="${contactHubView === 'campaigns' ? 'background:#7c3aed;border-color:#7c3aed;color:#fff;' : 'background:#1c1c1c;'}">📲 Campaigns</button>

@@ -1,7 +1,7 @@
 /* ============================================================
    NUI MAGAZINE — Styles
    Version: 20260316v1
-   Fonts: Syne (headings), Montserrat (body) — matches NUI global
+   Fonts: Inter Tight (headings), Inter (body) — matches NUI global
    Colors: --black #000, --red #ff0000, --white #fff, --gray #888
    ============================================================ */
 
@@ -14,7 +14,7 @@
   padding: 9px 16px;
   letter-spacing: .08em;
   font-weight: 700;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   text-transform: uppercase;
 }
 .mag-topbar a { color: #fff; text-decoration: underline; cursor: pointer; }
@@ -41,7 +41,7 @@
   text-decoration: none;
 }
 .mag-wordmark-main {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 26px;
   font-weight: 700;
   letter-spacing: .06em;
@@ -49,7 +49,7 @@
   text-transform: uppercase;
 }
 .mag-wordmark-sub {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: .2em;
@@ -83,7 +83,7 @@
 }
 .mag-cat-nav-inner::-webkit-scrollbar { display: none; }
 .mag-cat-tab {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 11px; font-weight: 700; letter-spacing: .08em;
   text-transform: uppercase; color: rgba(255,255,255,0.4);
   padding: 14px 20px; border-bottom: 2px solid transparent;
@@ -107,14 +107,14 @@
   padding: 72px 0;
 }
 .mag-hero-kicker {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 11px; font-weight: 700; letter-spacing: .14em;
   text-transform: uppercase; color: #ff0000;
   display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
 }
 .mag-hero-kicker::before { content: ''; width: 32px; height: 2px; background: #ff0000; }
 .mag-hero-title {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: clamp(36px,4.5vw,62px);
   font-weight: 700; letter-spacing: .02em;
   line-height: .95; color: #fff;
@@ -132,7 +132,7 @@
 .mag-hero-btn {
   display: inline-flex; align-items: center; gap: 10px;
   background: #ff0000; color: #fff; border: none;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 11px; font-weight: 700; letter-spacing: .1em;
   text-transform: uppercase; padding: 14px 28px;
   cursor: pointer; transition: opacity .15s;
@@ -159,7 +159,7 @@
   padding: 56px 48px 80px;
 }
 .mag-section-head {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 20px; font-weight: 700; letter-spacing: .08em;
   text-transform: uppercase; color: #fff;
   margin-bottom: 28px;
@@ -194,10 +194,10 @@
 .mag-card-cat {
   font-size: 10px; font-weight: 700; letter-spacing: .12em;
   text-transform: uppercase; color: #ff0000; margin-bottom: 7px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 .mag-card-title {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 17px; font-weight: 700; line-height: 1.2;
   color: #fff; margin-bottom: 9px; text-transform: uppercase;
 }
@@ -207,7 +207,7 @@
 .mag-card-meta {
   font-size: 11px; color: #555;
   display: flex; align-items: center; gap: 8px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 .mag-card-award-chip {
   font-size: 10px; font-weight: 700; color: #ffd700;
@@ -230,14 +230,14 @@
   text-transform: uppercase; color: #ffd700; margin-bottom: 10px;
 }
 .mag-awards-banner-title {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: clamp(28px,3vw,40px); font-weight: 700;
   text-transform: uppercase; color: #fff; margin-bottom: 10px; line-height: .95;
 }
 .mag-awards-banner p { font-size: 14px; color: #666; line-height: 1.6; max-width: 520px; }
 .mag-awards-btn {
   background: #ffd700; color: #000; border: none;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 11px; font-weight: 700; letter-spacing: .1em;
   text-transform: uppercase; padding: 14px 28px;
   cursor: pointer; white-space: nowrap; text-decoration: none;
@@ -256,11 +256,11 @@
   font-size: 11px; font-weight: 700; letter-spacing: .14em;
   text-transform: uppercase; color: #ff0000;
   display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 .mag-article-kicker::before { content:''; width:24px; height:2px; background:#ff0000; }
 .mag-article-title {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: clamp(32px,4.5vw,56px); font-weight: 700;
   letter-spacing: .02em; line-height: .95;
   color: #fff; text-transform: uppercase; margin-bottom: 18px;
@@ -284,7 +284,7 @@
 .mag-byline-name { font-size: 13px; font-weight: 700; color: #fff; }
 .mag-byline-pub  { font-size: 11px; color: #555; }
 .mag-byline-sep  { width: 1px; height: 18px; background: rgba(255,255,255,.1); }
-.mag-byline-info { font-size: 12px; color: #555; font-family: 'Montserrat', sans-serif; }
+.mag-byline-info { font-size: 12px; color: #555; font-family: 'Inter', sans-serif; }
 .mag-verified-tag {
   display: inline-flex; align-items: center; gap: 6px;
   font-size: 11px; font-weight: 700; color: #10b981;
@@ -319,7 +319,7 @@
   color: rgba(255,255,255,.8); margin-bottom: 22px;
 }
 .mag-body h2 {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 22px; font-weight: 700; letter-spacing: .06em;
   text-transform: uppercase; color: #fff;
   margin: 40px 0 14px; border-left: 3px solid #ff0000; padding-left: 16px;
@@ -342,7 +342,7 @@
 .mag-body-tag {
   font-size: 11px; padding: 4px 12px;
   border: 1px solid rgba(255,255,255,.1); color: #555;
-  font-family: 'Montserrat', sans-serif; letter-spacing: .04em;
+  font-family: 'Inter', sans-serif; letter-spacing: .04em;
 }
 .mag-share-row {
   display: flex; align-items: center; gap: 10px;
@@ -373,14 +373,14 @@
 .mag-citation-head span {
   font-size: 10px; font-weight: 700; letter-spacing: .1em;
   text-transform: uppercase; color: #fff;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 .mag-citation-check {
   font-size: 11px; color: #fff; background: rgba(255,255,255,.2);
   padding: 2px 8px; font-weight: 700;
 }
 .mag-citation-body { padding: 16px; }
-.mag-biz-name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 2px; font-family: 'Syne', sans-serif; }
+.mag-biz-name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 2px; font-family: 'Inter Tight', sans-serif; }
 .mag-biz-cat {
   font-size: 10px; font-weight: 600; letter-spacing: .08em;
   text-transform: uppercase; color: #555; margin-bottom: 14px;
@@ -394,7 +394,7 @@
   border-bottom: 1px solid rgba(255,255,255,.08);
   margin-bottom: 12px; display: flex; flex-direction: column; gap: 9px;
 }
-.mag-nap-label { font-size: 10px; color: #555; display: block; letter-spacing: .04em; font-family: 'Montserrat', sans-serif; }
+.mag-nap-label { font-size: 10px; color: #555; display: block; letter-spacing: .04em; font-family: 'Inter', sans-serif; }
 .mag-nap-val { font-size: 12px; color: rgba(255,255,255,.75); line-height: 1.4; }
 .mag-same-as-label {
   font-size: 10px; font-weight: 700; letter-spacing: .1em;
@@ -440,13 +440,13 @@
 
 /* -- BADGE CARD -- */
 .mag-badge-card { border: 1px solid rgba(255,255,255,.08); padding: 16px; background: #0a0a0a; text-align: center; }
-.mag-badge-title { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px; font-family: 'Syne', sans-serif; }
+.mag-badge-title { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px; font-family: 'Inter Tight', sans-serif; }
 .mag-badge-sub   { font-size: 11px; color: #555; line-height: 1.5; margin-bottom: 12px; }
 .mag-badge-btn {
   background: #ff0000; color: #fff; border: none; width: 100%;
   padding: 10px; font-size: 11px; font-weight: 700; cursor: pointer;
   letter-spacing: .06em; text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 .mag-badge-btn:hover { opacity: .9; }
 .mag-embed-code {
@@ -475,7 +475,7 @@
   margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
 }
 .mag-reviews-title {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 20px; font-weight: 700; letter-spacing: .06em;
   text-transform: uppercase; color: #fff;
 }
@@ -484,7 +484,7 @@
   font-size: 11px; font-weight: 700; padding: 8px 18px;
   border: 1px solid rgba(255,255,255,.1); background: none;
   color: #555; cursor: pointer; letter-spacing: .06em; text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 .mag-review-btn:hover { border-color: #ff0000; color: #ff0000; }
 .mag-review-list { border: 1px solid rgba(255,255,255,.08); }
@@ -531,7 +531,7 @@
 .mag-footer-col h4 {
   font-size: 10px; font-weight: 700; letter-spacing: .1em;
   text-transform: uppercase; color: #333; margin-bottom: 16px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 .mag-footer-col a {
   display: block; font-size: 13px; color: #444;
@@ -614,7 +614,7 @@
 }
 .mag-author-info {}
 .mag-author-name {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 16px;
   font-weight: 700;
   color: #fff;
@@ -730,7 +730,7 @@
 }
 
 .mag-owner-overlay-name {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 22px;
   font-weight: 800;
   text-transform: uppercase;
@@ -806,7 +806,7 @@
 }
 
 .mag-owner-bio-headline {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: clamp(20px, 2.5vw, 28px);
   font-weight: 700;
   text-transform: uppercase;
@@ -837,7 +837,7 @@
 }
 
 .mag-owner-stat-val {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 22px;
   font-weight: 700;
   color: #fff;
@@ -910,7 +910,7 @@
 }
 .mag-pull-quote::before {
   content: '\201C';
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 120px;
   color: rgba(255,0,0,.15);
   position: absolute;
@@ -919,7 +919,7 @@
   pointer-events: none;
 }
 .mag-pull-quote p {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: clamp(18px, 2.5vw, 26px);
   font-weight: 600;
   font-style: italic;
@@ -945,7 +945,7 @@
   display: flex; gap: 24px; align-items: center; flex-wrap: wrap;
 }
 .mag-press-item {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 12px; font-weight: 700;
   color: #444; letter-spacing: .04em;
   text-transform: uppercase;
@@ -966,7 +966,7 @@
   padding: 20px;
 }
 .mag-service-tile-num {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 32px; font-weight: 800;
   color: rgba(255,0,0,.25);
   line-height: 1; margin-bottom: 6px;
@@ -1019,7 +1019,7 @@
   text-align: center;
 }
 .mag-stat-cell-val {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 36px; font-weight: 800;
   color: #fff; line-height: 1;
   margin-bottom: 6px;
@@ -1120,7 +1120,7 @@
 }
 
 .mag-editorial-nui {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: clamp(72px, 10vw, 130px);
   font-weight: 800;
   color: #fff;
@@ -1129,7 +1129,7 @@
 }
 
 .mag-editorial-mag-word {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: clamp(16px, 2.2vw, 30px);
   font-weight: 700;
   color: #ff0000;
@@ -1160,7 +1160,7 @@
 }
 
 .mag-editorial-stat-val {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 28px;
   font-weight: 800;
   color: #fff;
@@ -1182,7 +1182,7 @@
   background: #ff0000;
   color: #fff;
   text-decoration: none;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: .1em;
@@ -1259,7 +1259,7 @@
 }
 
 .mag-editorial-cover-title {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: clamp(18px, 2.2vw, 26px);
   font-weight: 700;
   text-transform: uppercase;
@@ -1419,7 +1419,7 @@
   margin-bottom: 3px;
 }
 .mag-podcast-title {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 15px;
   font-weight: 700;
   color: #fff;
@@ -1448,7 +1448,7 @@
   gap: 10px;
   background: #ff0000;
   color: #fff !important;
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: .08em;
@@ -1506,7 +1506,7 @@
   background: #ff0000;
 }
 .mag-book-face-title {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 22px;
   font-weight: 900;
   line-height: .95;

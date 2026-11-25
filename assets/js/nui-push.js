@@ -8,7 +8,7 @@
     // ── Config ───────────────────────────────────────────────────
     const VAPID_PUBLIC_KEY = 'BHX1swSI56wudpcQ9npOWXg1bf7LMQnoF_L1YbQhouv4gNOQ0aEki7mcu0f7mc0R-nRKBP5Kz1yhxQzoya_bH8s';
     const SUBSCRIBE_ENDPOINT = '/.netlify/functions/push-subscribe';
-    const PROMPT_DELAY = 15000; // Show opt-in after 15 seconds
+    const PROMPT_DELAY = 20000; // Earliest time the opt-in can show
     const PROMPT_COOKIE = 'nui_push_prompted';
 
     // ── Remove the VAPID skip check since key is now configured ─
@@ -24,7 +24,19 @@
     navigator.serviceWorker.register('/sw-push.js').then(function(reg) {
         reg.pushManager.getSubscription().then(function(sub) {
             if (sub) return;
-            setTimeout(function() { showPushPrompt(reg); }, PROMPT_DELAY);
+            // Only ask after real interest: 20s on the page AND scrolled past half of it.
+            // Never on the back office.
+            if (location.pathname.indexOf('/app') === 0) return;
+            var waited = false, shown = false;
+            function tryShow() {
+                if (shown || !waited) return;
+                var scrolled = (window.scrollY + window.innerHeight) / Math.max(1, document.body.scrollHeight);
+                if (scrolled < 0.5) return;
+                shown = true; window.removeEventListener('scroll', tryShow);
+                showPushPrompt(reg);
+            }
+            setTimeout(function() { waited = true; tryShow(); }, PROMPT_DELAY);
+            window.addEventListener('scroll', tryShow, { passive: true });
         });
     });
 
@@ -43,12 +55,11 @@
             }
             #nui-push-wrap {
                 position: fixed;
-                bottom: 28px;
-                left: 50%;
-                transform: translateX(-50%);
+                bottom: 20px;
+                left: 20px; /* chat bubble lives bottom-right */
                 z-index: 999999;
-                width: 90%;
-                max-width: 440px;
+                width: calc(100% - 40px);
+                max-width: 340px;
                 animation: nuiPushSlideUp 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
             }
             #nui-push-card {
@@ -57,7 +68,7 @@
                 border-radius: 18px;
                 padding: 24px;
                 box-shadow: 0 24px 64px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
-                font-family: 'Montserrat', 'Inter', sans-serif;
+                font-family: 'Inter', 'Inter', sans-serif;
                 position: relative;
                 overflow: hidden;
             }
@@ -90,8 +101,8 @@
             #nui-push-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
             #nui-push-icon {
                 width: 48px; height: 48px;
-                background: rgba(220,38,38,0.12);
-                border: 1px solid rgba(220,38,38,0.3);
+                background: linear-gradient(150deg,#ff3b3b,#b3000c);
+                border: 0;
                 border-radius: 14px;
                 display: flex; align-items: center; justify-content: center;
                 font-size: 22px;
@@ -106,7 +117,7 @@
             }
             #nui-push-sub {
                 font-size: 12.5px;
-                color: rgba(255,255,255,0.45);
+                color: rgba(255,255,255,0.82);
                 line-height: 1.5;
                 margin-bottom: 20px;
             }
@@ -146,8 +157,8 @@
             #nui-push-btn:active { transform: translateY(0); }
             #nui-push-note {
                 text-align: center;
-                font-size: 10.5px;
-                color: rgba(255,255,255,0.2);
+                font-size: 12px;
+                color: rgba(255,255,255,0.82);
                 margin-top: 10px;
             }
         `;
@@ -159,19 +170,10 @@
         wrap.innerHTML = `
             <div id="nui-push-card">
                 <button id="nui-push-close" aria-label="Close">✕</button>
-                <div id="nui-push-icon">🔔</div>
-                <div id="nui-push-title">Get Brand Insights First</div>
-                <div id="nui-push-sub">
-                    Michigan businesses get <span>exclusive tips, limited offers,</span> and
-                    real-world branding strategies — delivered straight to your device.
-                </div>
-                <div id="nui-push-perks">
-                    <span class="nui-push-perk">⚡ Instant alerts</span>
-                    <span class="nui-push-perk">🎯 Detroit-focused</span>
-                    <span class="nui-push-perk">🚫 No spam</span>
-                    <span class="nui-push-perk">📵 Turn off anytime</span>
-                </div>
-                <button id="nui-push-btn">🔔 Yes, Keep Me in the Loop</button>
+                <div id="nui-push-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+                <div id="nui-push-title">Get tips &amp; offers first</div>
+                <div id="nui-push-sub">Occasional alerts with offers and business tips. No spam, turn off anytime.</div>
+                <button id="nui-push-btn">Yes, keep me in the loop</button>
                 <div id="nui-push-note">Your info is never shared. One tap to unsubscribe.</div>
             </div>
         `;
@@ -185,7 +187,7 @@
         // Subscribe
         document.getElementById('nui-push-btn').addEventListener('click', function() {
             const btn = document.getElementById('nui-push-btn');
-            btn.textContent = '⏳ Connecting...';
+            btn.textContent = 'Connecting...';
             btn.disabled = true;
             wrap.remove();
             subscribeToPush(registration);

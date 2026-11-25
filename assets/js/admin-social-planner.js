@@ -51,7 +51,7 @@ function loadAdminSocialPlannerPanel() {
 
     <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
       <div>
-        <h2 style="font-size:26px; font-weight:800; color:#fff; margin:0;">📣 Social Planner</h2>
+        <h2 style="font-size:26px; font-weight:800; color:#fff; margin:0;">Social Planner</h2>
         <p style="color:rgba(255,255,255,0.4); font-size:13px; margin-top:4px;">Create, schedule and post to Facebook & Instagram</p>
       </div>
       <div style="display:flex; gap:8px; align-items:center;">

@@ -91,16 +91,16 @@
     style.textContent = STYLE;
     document.head.appendChild(style);
 
+    // No floating button (it covered content on every screen).
+    // Opened from the "Re-invite people" button on the Push Alerts page instead.
     const fab = document.createElement('button');
     fab.id = 'nui-preinvite-fab';
-    fab.innerHTML = '📲 Re-invite to Push';
-    document.body.appendChild(fab);
 
     const modal = document.createElement('div');
     modal.id = 'nui-preinvite-modal';
     modal.innerHTML =
       '<div class="pm-box">' +
-      '  <h2>📲 Push Re-invite</h2>' +
+      '  <h2>Push Re-invite</h2>' +
       '  <p class="pm-sub">Sends each recipient an SMS with a link that pops the opt-in prompt on arrival. One line per person: <code>Name, phone</code> (or just a phone number).</p>' +
       '  <label for="pm-recipients">Recipients</label>' +
       '  <textarea id="pm-recipients" rows="6" placeholder="Ashley, 313-555-0101&#10;Damon, +12485551234&#10;555-987-6543"></textarea>' +
@@ -116,6 +116,7 @@
     modal.querySelector('#pm-msg').value = DEFAULT_MSG;
 
     fab.addEventListener('click', function() { modal.classList.add('open'); });
+    window.openPushReinvite = function() { modal.classList.add('open'); };
     modal.querySelector('.pm-cancel').addEventListener('click', function() {
       modal.classList.remove('open');
       modal.querySelector('#pm-result').classList.remove('show', 'ok', 'err');

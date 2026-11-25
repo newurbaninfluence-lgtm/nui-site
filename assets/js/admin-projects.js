@@ -3,7 +3,7 @@ function loadAdminProjectsPanel() {
     const projectStages = ['Discovery', 'Design', 'Development', 'Review', 'Delivery', 'Complete'];
     document.getElementById('adminProjectsPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">📂 Project Tracker</h2>
+<h2 class="panel-title">Project Tracker</h2>
 <p class="panel-subtitle">Track project progress, timers, and payments</p>
 </div>
 
@@ -1055,7 +1055,7 @@ function loadAdminProofsPanel() {
 
     document.getElementById('adminProofsPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">✅ Proof Approval Center</h2>
+<h2 class="panel-title">Proof Approval Center</h2>
 <p class="panel-subtitle">Create, manage, and approve design proofs across all formats</p>
 </div>
 
@@ -1910,7 +1910,7 @@ function requestRevisionModal(id) {
     modal.innerHTML = `
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
 <div style="background: #242424; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%;">
-<h2 style="font-size: 20px; margin-bottom: 8px;">🔄 Request Revision</h2>
+<h2 style="font-size: 20px; margin-bottom: 8px;">Request Revision</h2>
 <p style="color: #888; font-size: 14px; margin-bottom: 24px;">Provide feedback for "${proof.name}"</p>
 
 <div class="mb-20">
@@ -1985,7 +1985,7 @@ async function submitProofRevision(id) {
                         subject: `🔄 Revision Requested: ${proof.name}`,
                         html: `<div style="font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #202020; color: #fff; border-radius: 12px; overflow: hidden;">
 <div style="background: linear-gradient(135deg, #f59e0b, #ef4444); padding: 24px; text-align: center;">
-<h2 style="margin: 0; font-size: 20px; color: #fff;">🔄 Revision Requested</h2>
+<h2 style="margin: 0; font-size: 20px; color: #fff;">Revision Requested</h2>
 </div>
 <div class="p-32">
 <p class="text-light">Hey ${designer.name || 'Designer'},</p>
@@ -2279,7 +2279,7 @@ function showStorageManager() {
 <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
 <div style="background: #242424; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%;">
 <div class="flex-between mb-24">
-<h2 class="fs-20">💾 Storage Manager</h2>
+<h2 class="fs-20">Storage Manager</h2>
 <button onclick="document.getElementById('storageManagerModal').remove()" style="background: none; border: none; color: #888; font-size: 24px; cursor: pointer;">&times;</button>
 </div>
 
@@ -2404,7 +2404,7 @@ function loadAdminDeliveryPanel() {
 
     document.getElementById('adminDeliveryPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">📦 Delivery & Proofing</h2>
+<h2 class="panel-title">Delivery & Proofing</h2>
 <p class="panel-subtitle">Manage proofs, deliverables, and client handoff — all activity in one place</p>
 </div>
 

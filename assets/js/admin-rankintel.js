@@ -22,7 +22,7 @@ function loadAdminRankIntelPanel() {
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px;">
             <div>
                 <h2 style="font-size: 24px; font-weight: 800; margin: 0; letter-spacing: -0.5px;">
-                    <span style="color: var(--red);">Rank Intel</span> — Geo-Grid Tracking
+                    Map Rankings
                 </h2>
                 <p style="color: rgba(255,255,255,0.5); margin: 6px 0 0; font-size: 14px;">
                     See exactly where your clients rank on Google Maps, block by block.

@@ -131,7 +131,7 @@
       <div style="padding:24px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
           <div>
-            <h2 style="margin:0 0 4px 0;font-size:22px;color:#fff;font-weight:700;">🎯 Smart Lists + Drips</h2>
+            <h2 style="margin:0 0 4px 0;font-size:22px;color:#fff;font-weight:700;">Smart Lists + Drips</h2>
             <div style="font-size:13px;color:rgba(255,255,255,0.5);">Auto-grouped by category. Click Start Drip to queue 5-email sequence (spaced with daily caps).</div>
           </div>
           <div style="display:flex;gap:8px;">

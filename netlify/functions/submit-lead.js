@@ -72,7 +72,11 @@ exports.handler = async function(event) {
     optinEmail, optinSMS, optinPush,
     source, timestamp,
   } = data;
-  const extras = {};
+  // Free audit (homepage): what kind of business and where they think money is slipping
+  const extras = {
+    businessType: sanitizeText(raw.businessType, 60),
+    leaks: Array.isArray(raw.leaks) ? raw.leaks.slice(0, 6).map(l => sanitizeText(l, 60)) : [],
+  };
 
   if (!email && !phone) return { statusCode: 400, body: JSON.stringify({ error: 'Email or phone required' }) };
 
@@ -161,7 +165,7 @@ exports.handler = async function(event) {
         method: 'POST',
         headers: { Authorization: OPENPHONE_KEY, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          content: `🔥 NEW INTAKE — ${serviceName || service}\nName: ${name || 'Unknown'}\nPhone: ${phone}\nEmail: ${email || ''}\nBusiness: ${business || ''}\nChoice: ${bookingChoice || 'N/A'}\nSMS Opt-in: ${optinSMS ? 'YES' : 'no'}\nEmail Opt-in: ${optinEmail ? 'YES' : 'no'}`,
+          content: `🔥 NEW INTAKE — ${serviceName || service}\nName: ${name || 'Unknown'}\nPhone: ${phone}\nEmail: ${email || ''}\nBusiness: ${business || ''}\nChoice: ${bookingChoice || 'N/A'}\n${extras.leaks.length ? 'Leaks: ' + extras.leaks.join(', ') + '\n' : ''}SMS Opt-in: ${optinSMS ? 'YES' : 'no'}\nEmail Opt-in: ${optinEmail ? 'YES' : 'no'}`,
           from: process.env.OPENPHONE_FROM || '+12484878747',
           to: ['+12484878747']
         })

@@ -5,517 +5,111 @@ function _svcInitNavObserver(){var sections=['svc-branding','svc-web','svc-ai','
 
 function loadHomeView() {
     document.getElementById('homeView').innerHTML = `
-<section class="hero">
-<div class="hero-media">
-<div class="hero-media-container">
-<video id="heroVideo" muted loop playsinline autoplay preload="auto">
-<source src="/assets/video/hero-bg.mp4" type="video/mp4">
-</video>
-</div>
-<div class="hero-media-overlay"></div>
-</div>
-<div class="hero-content">
-<div class="badge">10+ Years Elevating Detroit Brands</div>
-<h1 class="empire-headline"><span class="empire-word">BUILD</span> <span class="empire-word">YOUR</span><br><span class="empire-word red">INFLUENCE</span></h1>
-<p>You built something real. Now let the world see it. <span>Branding, websites & digital strategy for entrepreneurs, coaches, and creators ready to stand out.</span></p>
-<div class="hero-buttons">
-<a href="/contact" class="btn-cta" onclick="event.preventDefault(); showView('intake');">Book Strategy Call</a>
-<a href="/portfolio" class="btn-outline" onclick="event.preventDefault(); showView('portfolio');">View Our Work</a>
-</div>
-<div style="margin-top:16px;font-size:13px;color:rgba(255,255,255,0.5);">💳 Start for as low as <strong style="color:#C9A227;">$89/mo</strong> — 0% financing through Afterpay &amp; Klarna &nbsp;·&nbsp; <a href="/services/brand-kit-detroit" style="color:#C9A227;font-weight:600;">See plans →</a></div>
-</div>
-<div class="scroll-indicator">Scroll</div>
-</section>
-<section class="stats-ticker">
-<div class="ticker-text">50+ BRANDS ELEVATED &bull; <span class="ticker-outline">$2M+ REVENUE GENERATED</span> &bull; 10+ YEARS IN BUSINESS &bull; DETROIT BORN & RAISED &bull; 50+ BRANDS ELEVATED &bull; <span class="ticker-outline">$2M+ REVENUE GENERATED</span> &bull; 10+ YEARS IN BUSINESS &bull; DETROIT BORN & RAISED &bull;</div>
-</section>
-<section class="ticker-section">
-<div style="text-align:center;margin-bottom:32px;">
-<h3 class="ticker-heading">TRUSTED BY ARTISTS & BUSINESSES ACROSS DETROIT</h3>
-</div>
-<div class="ticker-strip">
-<div class="ticker-row">
-<span class="ticker-name">Gov. Rick Snyder</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Kash Doll</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Rep. Leslie Love</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Eric Sabree, Wayne Co. Treasurer</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Beacon Park</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Chambora Vodka</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Detroit Design Festival</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Light It Up Livernois</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Bouzouki (Bouki) Greektown</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Niki's Lounge</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Ask Jennyfer</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">National All Things Detroit Day</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Good Cakes & Bakes</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">I Rep Small Business Saturday</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Crab House Detroit</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">House of Morrison</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Detroit Possible</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Esteem We Inc.</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Fatboyz Detroit</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Deep Drama Designs</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Chevelles Bar</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Jo's Gallery</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Loco's Tex-Mex Grille</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">AJ VIP Photography</span><span class="ticker-bull">&bull;</span>
-</div>
-<div class="ticker-row">
-<span class="ticker-name">Gov. Rick Snyder</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Kash Doll</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Rep. Leslie Love</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Eric Sabree, Wayne Co. Treasurer</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Beacon Park</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Chambora Vodka</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Detroit Design Festival</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Light It Up Livernois</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Bouzouki (Bouki) Greektown</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Niki's Lounge</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Ask Jennyfer</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">National All Things Detroit Day</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Good Cakes & Bakes</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">I Rep Small Business Saturday</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Crab House Detroit</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">House of Morrison</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Detroit Possible</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Esteem We Inc.</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Fatboyz Detroit</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Deep Drama Designs</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Chevelles Bar</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Jo's Gallery</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">Loco's Tex-Mex Grille</span><span class="ticker-bull">&bull;</span>
-<span class="ticker-name">AJ VIP Photography</span><span class="ticker-bull">&bull;</span>
-</div>
-</div>
-</section>
-<section class="section dark struggle-wrapper">
-<div class="struggle-section">
-<div class="struggle-left nui-reveal-left">
-<h2>THE<br><span class="red">STRUGGLE</span><br>IS REAL.</h2>
-<p>Most brands fade into the background noise. In a city that never sleeps and a digital world that never stops, being "good enough" is a death sentence.</p>
-<div class="lets-fix-it" style="margin-top:24px;display:flex;align-items:center;gap:12px;"><span style="color:#f5c518;font-family:'Syne',sans-serif;font-size:clamp(18px,2vw,24px);font-weight:700;text-transform:uppercase;letter-spacing:2px;">Let's fix it</span><svg width="48" height="24" viewBox="0 0 48 24" fill="none" style="flex-shrink:0;"><path d="M0 12h40m0 0l-8-8m8 8l-8 8" stroke="#f5c518" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-</div>
-<div class="problem-cards nui-stagger">
-<div class="problem-card"><div class="problem-meta"><div class="number">01</div><span class="problem-detect">Problem Detected</span></div><h3>Your brand looks generic and forgettable</h3></div>
-<div class="problem-card"><div class="problem-meta"><div class="number">02</div><span class="problem-detect">Problem Detected</span></div><h3>Your website doesn't convert visitors into customers</h3></div>
-<div class="problem-card"><div class="problem-meta"><div class="number">03</div><span class="problem-detect">Problem Detected</span></div><h3>Your social media feels disconnected from your brand</h3></div>
-<div class="problem-card"><div class="problem-meta"><div class="number">04</div><span class="problem-detect">Problem Detected</span></div><h3>You're not standing out in a crowded market</h3></div>
-</div>
-</div>
-</section>
-<section class="services-white nui-glow-line">
-<div class="services-layout">
-<div class="services-header nui-reveal-left">
-<div class="label">Our Expertise</div>
-<h2 class="section-title">WHAT WE<br><span class="red">CREATE</span></h2>
-<p style="color: #555; margin-top: 24px;">We don't just make things look pretty. We build systems, brands, and experiences that print money and build legacy.</p>
-<button class="btn-cta mt-32" onclick="showView('services')">Explore All Services</button>
-</div>
-<div class="services-grid home-services nui-stagger">
-<div class="service-card-simple" onclick="window.location.href='/services/brand-kit-detroit'"><div class="arrow">↗</div><h3>Brand Architect</h3><p>Your full brand identity — logo, colors, voice, and print. Three build levels for new businesses, product brands, and service companies. Built to make people trust you before they call.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="window.location.href='/services/business-website-detroit'"><div class="arrow">↗</div><h3>Digital HQ</h3><p>Not just a website — the systems, payments, and infrastructure that keep your business open 24/7.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="window.location.href='/services/digital-staff-detroit'"><div class="arrow">↗</div><h3>Digital Staff</h3><p>A real AI that answers your calls 24/7, learns your business, and talks in your brand voice. Not auto-reply — it thinks, adapts, and gets smarter every day. You decide how much it handles.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="window.location.href='/services/social-media-management-detroit'"><div class="arrow">↗</div><h3>Digital Promotion Team</h3><p>AI sends digital flyers, text blasts, and push notifications straight to customer phones — in front of your store, at your event, or while you're closed. Your brand stays loud 24/7 without you doing a thing.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="window.location.href='/services/press-feature-detroit'"><div class="arrow">↗</div><h3>The Publicist</h3><p>NUI Magazine feature. The difference between you saying you're the best and a publication proving it.</p><div class="learn-more">LEARN MORE →</div></div>
-<div class="service-card-simple" onclick="window.location.href='/services/event-team-detroit'"><div class="arrow">↗</div><h3>The Event Team</h3><p>Day-rate staff for vendor shows and events. Capture every face, collect every contact, send every photo.</p><div class="learn-more">LEARN MORE →</div></div>
-</div>
-</div>
-</section>
-<section class="section dark detroit-roots-section">
-<div class="detroit-roots-bg"></div>
-<div class="detroit-roots-content">
-<div class="detroit-roots-left nui-reveal-left">
-<div class="label"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> OUR ROOTS</div>
-<h2>BUILT IN<br><span>DETROIT.</span></h2>
-<p>We don't just work here. We are part of the fabric of this city. The grit, the hustle, the innovation—it's in our DNA and in every pixel we push.</p>
-<a class="btn-outline" onclick="showView('about')" style="margin-top:32px;display:inline-block;cursor:pointer;">Explore Our Legacy</a>
-</div>
-<div class="detroit-roots-right nui-reveal-scale">
-<div class="rotating-circle-wrapper">
-<svg class="rotating-circle-svg" viewBox="0 0 400 400">
-<circle cx="200" cy="200" r="180" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-<circle cx="200" cy="200" r="140" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-<defs>
-<path id="circlePath" d="M200,200 m-160,0 a160,160 0 1,1 320,0 a160,160 0 1,1 -320,0"/>
-</defs>
-<text class="rotating-313-text">
-<textPath href="#circlePath" startOffset="0%">313 • DETROIT • 313 • MOTOR CITY • 313 • DETROIT • 313 • MOTOR CITY • </textPath>
-</text>
-<image href="/icons/icon-192.png" x="110" y="110" width="180" height="180" opacity="1"/>
-</svg>
-</div>
-</div>
-</div>
-</section>
-<section class="section dark results-section nui-glow-line">
-<div class="label" style="text-align: center; justify-content: center; margin-bottom: 24px;">The Results Speak</div>
-<div style="text-align:center;margin-bottom:48px;"><img src="/logo-signature.png" alt="New Urban Influence" style="height:100px;width:auto;opacity:0.85;"></div>
-<div class="stats-boxes nui-stagger">
-<div class="stat-box">
-<div class="stat-number">50+</div>
-<div class="stat-label">Brands Elevated</div>
-</div>
-<div class="stat-box">
-<div class="stat-number">$2M+</div>
-<div class="stat-label">Revenue Generated</div>
-</div>
-<div class="stat-box">
-<div class="stat-number">100%</div>
-<div class="stat-label">Client Satisfaction</div>
-</div>
-<div class="stat-box">
-<div class="stat-number">48hr</div>
-<div class="stat-label">Avg Response Time</div>
-</div>
-</div>
-</section>
-<section style="padding: 60px 0; background: #080808; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06);">
-<div class="label" style="justify-content: center; margin-bottom: 32px;">Industries We Serve</div>
-<div style="overflow: hidden; position: relative;">
-<div style="display: flex; gap: 48px; animation: industriesScroll 25s linear infinite; white-space: nowrap;">
-<span class="pkg-section-title">RESTAURANTS</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">REAL ESTATE</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">FITNESS & WELLNESS</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">E-COMMERCE</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">PROFESSIONAL SERVICES</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">COACHES & CONSULTANTS</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">HEALTHCARE</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">BEAUTY & SALONS</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">RESTAURANTS</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">REAL ESTATE</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">FITNESS & WELLNESS</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">E-COMMERCE</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">PROFESSIONAL SERVICES</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">COACHES & CONSULTANTS</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">HEALTHCARE</span>
-<span class="text-red">◆</span>
-<span class="pkg-section-title">BEAUTY & SALONS</span>
-<span class="text-red">◆</span>
-</div>
-</div>
-</section>
-<section class="section dark brands-elevated-section nui-glow-line proven-section">
-<div class="proven-results-header">
-<h2 class="proven-title nui-reveal-left">PROVEN <span class="red">RESULTS</span></h2>
-<a class="view-portfolio-link nui-reveal-right" onclick="showView('portfolio')">VIEW FULL PORTFOLIO →</a>
-</div>
-<div class="case-study-grid" id="homepageCaseStudies"></div>
-</section>
-<section class="section dark nui-glow-line whyus-section">
-<div class="section-header nui-reveal">
-<h2 class="section-title">WHY <span class="red">US?</span></h2>
-<p class="section-subtitle">We're not for everyone. We're for the ones who want to win.</p>
-</div>
-<div class="why-grid nui-stagger">
-<div class="why-card"><div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h3>Detroit-Rooted Creativity</h3><p>We bring the bold, unapologetic energy of Detroit to every project.</p></div>
-<div class="why-card"><div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><h3>Revenue-Focused Design</h3><p>Beautiful brands that actually drive business results and conversions.</p></div>
-<div class="why-card"><div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>Elite but Approachable</h3><p>Premium quality without the corporate stuffiness or agency BS.</p></div>
-</div>
-</section>
-<section class="section dark streetcred-section">
-<div class="streetcred-header nui-reveal">
-<h2 class="streetcred-title">STREET <span class="yellow">CRED</span></h2>
-</div>
-<div class="streetcred-grid nui-stagger">
-<div class="streetcred-card"><div class="streetcred-card-top"><div class="streetcred-stars">★★★★★</div><div class="streetcred-quote">"</div></div><p>"I would recommend working with New Urban Influence. My experience with Faren was great...even when I was being a difficult customer. The care and attention that was put into making sure they understood my vision for my brand was amazing."</p><div class="streetcred-author"><div class="streetcred-avatar"><div class="streetcred-avatar-initial">M</div></div><div><div class="streetcred-name">Miss B</div><div class="streetcred-role">Local Guide · Google Review</div></div></div></div>
-<div class="streetcred-card"><div class="streetcred-card-top"><div class="streetcred-stars">★★★★★</div><div class="streetcred-quote">"</div></div><p>"Farren did a great job on a few flyers for me. Prices were reasonable and the quality was superb. My go to company for all my promotional needs. The best at what he does!"</p><div class="streetcred-author"><div class="streetcred-avatar"><div class="streetcred-avatar-initial">C</div></div><div><div class="streetcred-name">Chevelles Bar</div><div class="streetcred-role">Local Guide · Google Review</div></div></div></div>
-<div class="streetcred-card"><div class="streetcred-card-top"><div class="streetcred-stars">★★★★★</div><div class="streetcred-quote">"</div></div><p>"The best graphic designing company in the world! I've been a customer for over 10 years and every time they exceed my expectations! Faren and his team has always been very professional and prompt with all my services! I highly recommend this company!"</p><div class="streetcred-author"><div class="streetcred-avatar"><div class="streetcred-avatar-initial">S</div></div><div><div class="streetcred-name">Sierra Meriwether</div><div class="streetcred-role">10+ Year Client · Google Review</div></div></div></div>
-<div class="streetcred-card"><div class="streetcred-card-top"><div class="streetcred-stars">★★★★★</div><div class="streetcred-quote">"</div></div><p>"Great experience. Urban Influence gives you personal/detailed attention (making you feel like you are their most important customer). Love not only the services they offer but the personal touch they provide."</p><div class="streetcred-author"><div class="streetcred-avatar"><div class="streetcred-avatar-initial">L</div></div><div><div class="streetcred-name">Larry Castleberry</div><div class="streetcred-role">Google Review</div></div></div></div>
-</div>
-</section>
-<section style="padding: 60px 0; background: #000; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); overflow: hidden;">
-<div style="text-align: center; margin-bottom: 40px;">
-<h3 style="font-size: 14px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); font-weight: 600;">AS SEEN ON</h3>
-</div>
-<div style="display: flex; animation: logoScroll 40s linear infinite; width: max-content; will-change: transform;">
-<div style="display: flex; align-items: center; gap: 64px; padding: 0 32px;">
-<a href="https://share.google/0zJCv7QH0SXk4sY7X" rel="noopener noreferrer" target="_blank" style="opacity: 0.5; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'"><svg height="28" viewBox="0 0 272 92" fill="white"><path d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"/><path d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"/><path d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z"/><path d="M225 3v65h-9.5V3h9.5z"/><path d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z"/><path d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.89.36 34.91.36 15.93 16.32.47 35.3.47c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.65l-22.49.01z"/></svg></a>
-<a href="https://www.yelp.com/biz/new-urban-influence-detroit" rel="noopener noreferrer" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 22px; font-weight: 800; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Yelp</a>
-<a href="https://www.dandb.com/businessdirectory/newurbaninfluence-detroit-mi" rel="noopener noreferrer" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 20px; font-weight: 800; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Dun & Bradstreet</a>
-<a href="https://clutch.co/profile/new-urban-influence" rel="noopener noreferrer" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 22px; font-weight: 800; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Clutch</a>
-<a href="https://businessconnect.apple.com" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 18px; font-weight: 700; color: white; text-decoration: none; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'"><svg height="20" viewBox="0 0 814 1000" fill="white"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105.6-57-155.5-127C46.7 781.5 0 643.9 0 453.8c0-243.2 158.1-372.2 313.9-372.2 62.9 0 115.3 41.3 154.9 41.3 37.7 0 96.5-43.9 168.3-43.9 27.1 0 124.5 2.5 188.9 95.9zm-237.5-173c31.3-37.5 53.9-89.6 53.9-141.9 0-7.2-.6-14.5-1.9-20.4-51.4 1.9-112.2 34.3-148.9 77.4-28.9 33-57 85.2-57 138.1 0 7.9 1.3 15.8 1.9 18.3 3.2.6 8.4 1.3 13.5 1.3 46.1 0 103.7-30.8 138.5-72.8z"/></svg>Business Connect</a>
-<a href="https://www.instagram.com/newurbaninfluence/" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 20px; font-weight: 700; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Instagram</a>
-<a href="https://www.scottmax.com/company/new-urban-influence" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 18px; font-weight: 700; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">ScottMax</a>
-<a href="https://www.manta.com/c/m1x03t9/new-urban-influence" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 20px; font-weight: 800; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Manta</a>
-<a href="https://detroitdesignfestival.com" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 16px; font-weight: 700; color: white; text-decoration: none; text-transform: uppercase; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Detroit Design Festival</a>
-<a href="https://techtowndetroit.org" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 18px; font-weight: 800; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">TechTown Detroit</a>
-<a href="https://autorama.com" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 16px; font-weight: 700; color: white; text-decoration: none; text-transform: uppercase; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Detroit Autorama</a>
-</div>
-<div style="display: flex; align-items: center; gap: 64px; padding: 0 32px;">
-<a href="https://share.google/0zJCv7QH0SXk4sY7X" rel="noopener noreferrer" target="_blank" style="opacity: 0.5; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'"><svg height="28" viewBox="0 0 272 92" fill="white"><path d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"/><path d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"/><path d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z"/><path d="M225 3v65h-9.5V3h9.5z"/><path d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z"/><path d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.89.36 34.91.36 15.93 16.32.47 35.3.47c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.65l-22.49.01z"/></svg></a>
-<a href="https://www.yelp.com/biz/new-urban-influence-detroit" rel="noopener noreferrer" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 22px; font-weight: 800; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Yelp</a>
-<a href="https://www.dandb.com/businessdirectory/newurbaninfluence-detroit-mi" rel="noopener noreferrer" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 20px; font-weight: 800; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Dun & Bradstreet</a>
-<a href="https://clutch.co/profile/new-urban-influence" rel="noopener noreferrer" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 22px; font-weight: 800; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Clutch</a>
-<a href="https://businessconnect.apple.com" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 18px; font-weight: 700; color: white; text-decoration: none; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'"><svg height="20" viewBox="0 0 814 1000" fill="white"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105.6-57-155.5-127C46.7 781.5 0 643.9 0 453.8c0-243.2 158.1-372.2 313.9-372.2 62.9 0 115.3 41.3 154.9 41.3 37.7 0 96.5-43.9 168.3-43.9 27.1 0 124.5 2.5 188.9 95.9zm-237.5-173c31.3-37.5 53.9-89.6 53.9-141.9 0-7.2-.6-14.5-1.9-20.4-51.4 1.9-112.2 34.3-148.9 77.4-28.9 33-57 85.2-57 138.1 0 7.9 1.3 15.8 1.9 18.3 3.2.6 8.4 1.3 13.5 1.3 46.1 0 103.7-30.8 138.5-72.8z"/></svg>Business Connect</a>
-<a href="https://www.instagram.com/newurbaninfluence/" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 20px; font-weight: 700; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Instagram</a>
-<a href="https://www.scottmax.com/company/new-urban-influence" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 18px; font-weight: 700; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">ScottMax</a>
-<a href="https://www.manta.com/c/m1x03t9/new-urban-influence" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 20px; font-weight: 800; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Manta</a>
-<a href="https://detroitdesignfestival.com" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 16px; font-weight: 700; color: white; text-decoration: none; text-transform: uppercase; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Detroit Design Festival</a>
-<a href="https://techtowndetroit.org" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 18px; font-weight: 800; color: white; text-decoration: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">TechTown Detroit</a>
-<a href="https://autorama.com" target="_blank" style="opacity: 0.5; transition: opacity 0.3s; font-size: 16px; font-weight: 700; color: white; text-decoration: none; text-transform: uppercase; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Detroit Autorama</a>
-</div>
-</div>
-</section>
-<!-- ==================== FAQ SECTION (Visible for Google Crawlers + Users) ==================== -->
-<section class="section dark" id="faq"  style="padding: 80px 0; background: #0a0a0a; border-top: 1px solid rgba(255,255,255,0.06);">
-<div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
-<div style="text-align: center; margin-bottom: 48px;">
-<p class="faq-label">GOT QUESTIONS?</p>
-<h2 class="faq-title">FREQUENTLY <span class="text-red">ASKED</span></h2>
-<p class="faq-subtitle">Everything you need to know about working with Detroit's top-rated branding agency.</p>
-</div>
-
-<div class="faq-grid">
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>What is New Urban Influence?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">New Urban Influence (NUI) is a Detroit-based creative agency specializing in brand identity design, web design, and digital marketing. Founded to help small businesses and startups build professional, competitive brands, NUI offers full branding packages starting at $1,500 including logo design, color systems, typography, social media templates, and brand guidelines. They serve clients throughout Detroit, Southeast Michigan, and nationwide.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>What services does New Urban Influence offer?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">New Urban Influence offers three main branding packages: Brand Kit ($1,500 flat rate) for startups and new businesses, Service Business Brand Identity ($4,500+) for consultants, agencies, and service providers, and Product Brand Identity ($5,500+) for businesses selling physical products. Additional services include logo design ($500), business card design ($150), social media templates ($300), print design and printing (banners, yard signs, business cards, vehicle magnets, postcards, acrylic signs, Dibond panels), packaging design ($600/SKU), and brand guidelines documentation ($400).</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>How much does branding cost in Detroit?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">In Detroit, professional branding packages at New Urban Influence range from $1,500 to $7,000+. The Brand Kit starts at $1,500 (logo, colors, typography, social templates), Service Business Brand Identity starts at $4,500, and Product Brand Identity starts at $5,500. Individual services like logo design start at $500. Payment plans are available including pay-in-full (5% discount), 50/25/25 split, or 3 monthly payments.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>How much does a logo design cost?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">At New Urban Influence, standalone logo design starts at $500 and includes a primary logo, secondary logo variation, icon/mark version, and all file formats (PNG, SVG, PDF). For a complete brand identity that includes the logo plus color palette, typography, social media templates, and brand guidelines, packages start at $1,500.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>How long does a branding project take?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">At New Urban Influence, most branding projects take 2 to 4 weeks depending on complexity. The Brand Kit (starter package) typically completes in 7-10 business days, while comprehensive Service and Product Brand Identity packages take 10-21 business days. Rush delivery is available for an additional fee. Every project follows a structured process: discovery call, strategy, initial concepts, revisions, and final delivery with all files and brand guidelines.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>Do you offer free consultations?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Yes, New Urban Influence offers free strategy consultations for every potential client. During the call, they discuss your business goals, target audience, competitive landscape, and branding needs. You'll receive a custom pricing estimate after the consultation with no obligation to proceed. You can book directly through the website at newurbaninfluence.com.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>What is the best branding agency in Detroit?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">New Urban Influence is one of Detroit's top-rated creative agencies with a 4.9-star rating across 28+ reviews. They specialize in helping small businesses and startups build professional brand identities at accessible price points starting at $1,500. What sets them apart is their strategic approach to branding, transparent flat-rate pricing, payment plans, and a dedicated client portal for real-time project tracking.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>What payment options are available?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">New Urban Influence offers flexible payment options for all branding packages: pay in full and receive a 5% discount, split payments 50/25/25, or choose 3 monthly installments. They also offer 0% interest financing through Afterpay (pay in 4 over 6 weeks) and Klarna (flexible monthly plans). Financing options appear at checkout with instant approval — no paperwork required. They accept credit cards, debit cards, Apple Pay, Google Pay, and Cash App Pay. No one should have to delay building their brand because of budget.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>Do you work with businesses outside Detroit?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Yes! While New Urban Influence is based in Detroit, they serve clients nationwide. Most of the branding process is handled remotely through their online client portal, video consultations, and digital proof approvals. They work with businesses in Ann Arbor, Southfield, Troy, Royal Oak, and across Michigan, as well as clients in other states. Local clients can also meet in person for strategy sessions.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>What file formats will I receive for my logo and branding?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Every NUI branding package includes your logo and brand assets in all major file formats: PNG (transparent background), SVG (scalable vector), PDF (print-ready), and high-resolution JPG. You'll also receive a complete brand guidelines document, social media templates sized for Instagram, Facebook, TikTok, and LinkedIn, plus a brand asset folder organized for easy access.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>Can I see examples of your branding work?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Absolutely. Visit the NUI portfolio page to see completed branding projects across bakeries, art galleries, coaching businesses, and more. Featured projects include Good Cakes and Bakes, Cloud Nine, Jos Gallery Art Gallery, and AJ VIP. Each case study showcases the full brand transformation along with the results achieved.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>What industries does New Urban Influence specialize in?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">New Urban Influence works with businesses across many industries, with particular strength in restaurants and food service, beauty and wellness, professional services, coaching and consulting, retail and e-commerce, cannabis brands, and creative businesses. They understand the unique branding needs of each industry and tailor their approach accordingly.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>How many logo concepts will I receive?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">NUI provides 2-3 unique logo concepts during the initial design phase based on your brand strategy and discovery call insights. Each concept explores a different creative direction. After you select your preferred direction, they refine it through unlimited revisions until you're completely satisfied. The final logo includes primary, secondary, and icon variations.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>Do you offer web design services?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Yes, New Urban Influence offers custom web design starting at $3,500. Websites are built mobile-first, SEO-optimized, and designed to convert visitors into customers. Services include custom design, development, hosting setup, domain configuration, SSL security, and Google Analytics integration. They also offer website maintenance packages for ongoing support.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>How do I get started with New Urban Influence?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Getting started is simple: book a free strategy call through the website at newurbaninfluence.com or call (248) 487-8747. During the call, you'll discuss your business, goals, and branding needs. After the consultation, you'll receive a custom proposal with pricing. Once approved, NUI kicks off your project with a discovery questionnaire and brand strategy session within 48 hours.</div>
-</div>
-</div>
-
-<div itemscope itemtype="https://schema.org/Question" class="faq-card">
-<button onclick="const card=this.parentElement; const wasOpen=card.classList.contains('faq-open'); card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c=>{c.classList.remove('faq-open');c.querySelector('.faq-icon').textContent='+';}); if(!wasOpen){card.classList.add('faq-open');this.querySelector('.faq-icon').textContent='−';}" class="faq-toggle">
-<span>Do you build AI systems and automations for small businesses?</span>
-<span class="faq-icon">+</span>
-</button>
-<div itemscope itemtype="https://schema.org/Answer" class="faq-answer">
-<div class="faq-answer-text">Yes. New Urban Influence now offers AI-powered systems and automation for small businesses, coaches, and creators. Services include custom AI chatbots for your website, automated lead follow-up systems, AI content engines trained on your brand voice, workflow automation connecting your tools, and custom AI assistants trained on your specific business data. Packages start at $2,500 with monthly maintenance plans available. Book a free strategy call to find out which AI solutions would save you the most time and money.</div>
-</div>
-</div>
-
-</div><!-- end faq-grid -->
-</div>
+<section class="nh-hero"><div class="wrap">
+<h1>Is your business leaking money?</h1>
+<p class="sub">We find where it's slipping out, then stop it with a website that brings customers in and software built for how you run.</p>
+<div class="ctas"><button type="button" class="btn solid" data-audit>Book your free audit</button><a class="btn line" href="tel:+12484878747">Call (248) 487-8747</a></div>
+<p class="note">Free, no pressure. You'll leave knowing where your money is going.</p>
+<div class="pick" role="tablist" aria-label="Pick your business">
+ <button role="tab" aria-selected="true" data-k="food">Restaurants &amp; bars</button>
+ <button role="tab" aria-selected="false" data-k="photo">Photographers</button>
+ <button role="tab" aria-selected="false" data-k="night">Nightlife &amp; promoters</button>
+ <button role="tab" aria-selected="false" data-k="author">Authors &amp; speakers</button>
+ <button role="tab" aria-selected="false" data-k="beauty">Hair &amp; beauty brands</button>
+</div>
+<p class="pick-line" id="pickLine"></p>
+</div>
+<div class="stage" id="stage"><div class="rim"></div><div class="floor"></div>
+<div class="rig" id="rig">
+ <div class="laptop"><img class="frame" src="/assets/img/home/macbook-frame.webp" width="1208" height="700" alt=""><div class="screen" id="lapScreen">
+  <div class="app"><div class="side"><b>Corner Kitchen</b><span class="on">Today</span><span>Bookings</span><span>Guests &amp; rewards</span><span>Staff schedule</span><span>Payroll</span><span>Bar stock</span><span>Kitchen &amp; recipes</span><span>Promoters</span><span>Text campaigns</span><span>Reviews</span><span>Bills</span><span>Reports</span></div>
+  <div class="main"><h4>Good evening, Dana</h4><p class="greet">2 things need attention today. Start at the top.</p>
+   <div class="report"><small>Last night, in plain words</small><p>Friday brought in <b>$8,420</b>, up 12% on last Friday. The bar ran clean: voids were 2.1%, under the 3% goal. One thing to fix: two bartenders stayed on the clock 70 minutes after the last sale, about $48 in pay with nothing to sell.</p></div>
+   <div class="kpis"><div class="kpi"><small>Sales, last 7 nights</small><strong>$41,380</strong><em>up 9% on the week before</em></div><div class="kpi"><small><i class="dot"></i>Voids</small><strong>2.1%</strong><em>aim under 3%</em></div><div class="kpi"><small><i class="dot w"></i>Pour cost</small><strong>24%</strong><em class="y">aim 18 to 22%</em></div><div class="kpi"><small><i class="dot"></i>Labor</small><strong>27%</strong><em>aim 25 to 30% of sales</em></div><div class="kpi"><small>Bookings this week</small><strong>64</strong><em>11 tonight, 3 birthdays</em></div><div class="kpi"><small>Guests coming back</small><strong>41%</strong><em>up from 29% in March</em></div></div>
+   <div class="rows"><div class="row"><span><i class="dot r"></i>Deposit missing: party of 10, Saturday 9:15 pm</span><span class="act">Send reminder</span></div><div class="row"><span><i class="dot w"></i>Tito's is low: 2 bottles left, order by Thursday</span><span class="act">Add to order</span></div></div>
+  </div></div>
+ </div></div>
+ <div class="phone"><div class="scr" id="phoneScr"></div><img class="frame" src="/assets/img/home/iphone-frame.webp" width="639" height="1314" alt=""></div>
+ <div class="ping p1" id="ping1"><i><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></i><div><b>Deposit paid, booth 4</b><span>$150 · just now</span></div></div>
+ <div class="ping p2" id="ping2"><i><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></i><div><b>Maria came back</b><span>3rd visit this month</span></div></div>
+ <div class="ping p3" id="ping3"><i><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></i><div><b>Friday text: 38 tables booked</b><span>sent to 1,240 guests</span></div></div>
+</div></div>
 </section>
 
-<section class="cta-section" id="contact" style="background:var(--red);position:relative;overflow:hidden;">
-<h2 style="position:relative;z-index:1;">READY TO<br>DOMINATE?</h2>
-<p style="position:relative;z-index:1;">Stop playing small. Let's build a brand that demands attention and drives real revenue.</p>
-<button class="btn-white" style="position:relative;z-index:1;" onclick="showView('intake')">Book Your Strategy Call</button>
+<section class="trust" aria-label="Why owners trust us"><div class="wrap">
+<a class="tr rate" href="https://share.google/sylcsAreGRMVbTfLw" target="_blank" rel="noopener" aria-label="Rated 5.0 out of 5 on Google"><span class="rt"><span class="st" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span><b>5.0</b></span><span class="rn">Google reviews</span></a>
+<a class="tr rate" href="https://clutch.co/profile/new-urban-influence" target="_blank" rel="noopener" aria-label="Rated 5.0 out of 5 on Clutch"><span class="rt"><span class="st" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span><b>5.0</b></span><span class="rn">Clutch reviews</span></a>
+<a class="tr rate" href="https://themanifest.com/company/new-urban-influence" target="_blank" rel="noopener" aria-label="Rated 5.0 out of 5 on The Manifest"><span class="rt"><span class="st" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span><b>5.0</b></span><span class="rn">The Manifest reviews</span></a>
+<div class="tr"><b>10+ years</b><span>building for Detroit businesses</span></div>
+<div class="tr"><b>Union POS</b><span>plugs in today, Clover and Square next</span></div>
+<div class="tr"><b>A real person</b><span>answers when you call</span></div>
+</div></section>
+
+<section class="nh-light" id="what-we-build"><div class="wrap">
+<h2 style="max-width:none">Two ways we <span style="color:#e5091a">stop</span> the leak.</h2>
+<p class="lede">Pick one or get both. They're built to work together.</p>
+<div class="tiles">
+ <div class="tile w"><h3>Need a website that brings customers in?</h3><p>Fast on a phone, easy to book or buy from, and found on Google. Designed around your brand, not a template.</p><a class="more" href="/websites">More about our websites</a><div class="shot" style="background-image:url(/images/work/hideaway-site.webp)"></div></div>
+ <div class="tile k"><h3>Need software that runs your business?</h3><p>Bookings, staff, stock, texts and reports in one place, on your phone, so you can see what's really happening.</p><a class="more" href="/restaurants-bars">See the restaurant and bar software</a><div class="shot appshot"><div class="app"><div class="side"><b>Corner Kitchen</b><span class="on">Today</span><span>Bookings</span><span>Guests &amp; rewards</span><span>Staff schedule</span><span>Payroll</span><span>Bar stock</span><span>Kitchen &amp; recipes</span><span>Promoters</span><span>Text campaigns</span><span>Reviews</span><span>Bills</span><span>Reports</span></div>
+  <div class="main"><h4>Good evening, Dana</h4><p class="greet">2 things need attention today. Start at the top.</p>
+   <div class="report"><small>Last night, in plain words</small><p>Friday brought in <b>$8,420</b>, up 12% on last Friday. The bar ran clean: voids were 2.1%, under the 3% goal. One thing to fix: two bartenders stayed on the clock 70 minutes after the last sale, about $48 in pay with nothing to sell.</p></div>
+   <div class="kpis"><div class="kpi"><small>Sales, last 7 nights</small><strong>$41,380</strong><em>up 9% on the week before</em></div><div class="kpi"><small><i class="dot"></i>Voids</small><strong>2.1%</strong><em>aim under 3%</em></div><div class="kpi"><small><i class="dot w"></i>Pour cost</small><strong>24%</strong><em class="y">aim 18 to 22%</em></div><div class="kpi"><small><i class="dot"></i>Labor</small><strong>27%</strong><em>aim 25 to 30% of sales</em></div><div class="kpi"><small>Bookings this week</small><strong>64</strong><em>11 tonight, 3 birthdays</em></div><div class="kpi"><small>Guests coming back</small><strong>41%</strong><em>up from 29% in March</em></div></div>
+   <div class="rows"><div class="row"><span><i class="dot r"></i>Deposit missing: party of 10, Saturday 9:15 pm</span><span class="act">Send reminder</span></div><div class="row"><span><i class="dot w"></i>Tito's is low: 2 bottles left, order by Thursday</span><span class="act">Add to order</span></div></div>
+  </div></div></div>
+</div>
+<div class="builds" id="builds"><h3 class="bh">Websites we've built</h3><div class="brow" id="homepageCaseStudies"></div></div>
+</div></section>
+
+<section class="away" aria-labelledby="awayTitle">
+<div class="away-img" role="img" aria-label="A restaurant owner on a terrace above the sea on Italy's Amalfi Coast, checking his phone at sunset">
+ <div class="ping"><i><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></i><div><b>Tonight: $4,210 so far</b><span>on pace for a good Friday</span></div></div>
+</div>
+<div class="away-copy"><h2 id="awayTitle">We sell freedom.</h2><p>Be anywhere in the world and still see everything. Sales, bookings and alerts land on your phone while your team runs the night.</p></div>
 </section>
-        ${getFooterHTML()}
-    `;
-    // Dynamically render homepage case studies from portfolio data
-    const csGrid = document.getElementById('homepageCaseStudies');
-    if (csGrid) { _refreshHomepageCaseStudies(csGrid); }
 
-    const video = document.getElementById('heroVideo');
-    if (video) {
-        video.muted = true;
-        video.play().catch(e => {});
-        // Fade video in once loaded (prevents black flash)
-        function _showVideo() { video.classList.add('loaded'); }
-        if (video.readyState >= 3) _showVideo();
-        else video.addEventListener('canplay', _showVideo, { once: true });
-    }
+<section class="roles" aria-labelledby="rolesTitle"><div class="wrap">
+<h2 id="rolesTitle">Built for the owner. Run by the GM.</h2>
+<p class="lede">The owner gets the big picture. The GM gets the tools to run a tighter night, and the proof to show for it. Same system, same numbers, nobody chasing anybody by text.</p>
+<div class="rgrid"><div class="role"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></i><p class="who">For the owner</p><h3>See the money without being there.</h3><ul><li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>One plain-English report every morning</span></li><li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Alerts only when something needs you</span></li><li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Every leak in dollars: voids, comps, stock, late clock-outs</span></li><li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Check it from anywhere, on your phone</span></li></ul></div><div class="role"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M9 11l2 2 4-4M8 17h8"/></svg></i><p class="who">For the GM</p><h3>Run a tighter night. Show the owner.</h3><ul><li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Someone calls out? The open shift goes to your team and gets covered. No group text at 6 pm.</span></li><li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Who's working tonight, and who's late</span></li><li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Opening and closing checklists your staff tick off</span></li><li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>What's running low, and what to order</span></li><li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Tonight's bookings, deposits and birthdays</span></li><li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>A night report the owner sees, so your good work gets noticed</span></li></ul></div></div>
+</div></section>
 
-    // GSAP Empire Reveal — deferred to window.load so browser has calculated 3D space
-    function _nuiEmpireReveal() {
-        if (typeof gsap === 'undefined') return;
-        // Bail if hero isn't in DOM (user navigated away before load)
-        var hero = document.querySelector('.hero');
-        if (!hero || !document.querySelector('.empire-word')) return;
+<section class="incl" aria-labelledby="inclTitle"><div class="wrap">
+<h2 id="inclTitle">Keep your POS. Drop the add-ons.</h2>
+<p class="lede">Your POS charges extra every month for each add-on, on top of its own fee. We do everything they charge extra for, plus what your POS can't do. One price covers the system, your website, hosting, maintenance and support. No add-on fees.</p>
+<div class="inc-list"><div class="inc"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></i><b>Bookings and deposits</b><span>Tables, booths and parties, paid up front</span><em>Included, instead of OpenTable or Resy</em></div><div class="inc"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></i><b>Text and email marketing</b><span>Send a Friday text to every regular</span><em>Included, instead of Mailchimp or a texting app</em></div><div class="inc"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></i><b>Rewards</b><span>Points and perks that bring people back</span><em>Included, instead of Fivestars or a POS loyalty add-on</em></div><div class="inc"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 11l2 2 4-4"/><rect x="4" y="3" width="16" height="18" rx="3"/></svg></i><b>Staff schedule and checklists</b><span>Who's working, and what got done</span><em>Included, instead of 7shifts or Homebase</em></div><div class="inc"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 3h8l-1 6a3 3 0 0 1-6 0zM12 12v6M8 21h8"/></svg></i><b>Bar and kitchen stock</b><span>Counts, pour cost and what to reorder</span><em>Included, instead of BevSpot or MarketMan</em></div><div class="inc"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1zM15 9a3 3 0 0 1 0 6M18 6a7 7 0 0 1 0 12"/></svg></i><b>Promoters and events</b><span>Guest lists, flyers and who brought who</span><em>Included, instead of spreadsheets and group texts</em></div></div>
+<p class="close">Typical POS add-ons for a 20-person bar: about $400 to $650 a month. With us: all of it included, plus your website, hosting, maintenance and support.</p>
+<p class="lede" style="margin-top:10px">Your register keeps ringing up sales. We plug into it and handle everything around it: bookings, marketing, staff and stock.</p>
+<div class="coo"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></i><div><b>Optional: add a fractional COO</b><span>Our team works alongside your GM to set the system up, onboard every staff member and find the leaks in your numbers. Hands-on, for as long as you need it.</span></div><img class="coo-img" src="/assets/img/home/coo-team.webp" loading="lazy" alt="A consulting team reviewing numbers on a tablet with a bar manager"></div>
+<div class="coo"><i class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1zM15 9a3 3 0 0 1 0 6M18 6a7 7 0 0 1 0 12"/></svg></i><div><b>Optional: promotions done for you</b><span>Flyers and motion flyers for every night, promo videos with radio-style voiceovers, menu design and redesigns, birthday templates for your guests, and discounted banners shipped anywhere in the US. Printed menus for Michigan bars. From the team behind <a href="https://nuiflyers.com" target="_blank" rel="noopener" style="color:#b3000c;font-weight:600">NU Flyers</a>.</span></div></div>
+</div></section>
 
-        // Signal GSAP is handling it — cancels CSS safety-net animation
-        hero.classList.add('gsap-controlled');
+<section class="nh-dark"><div class="wrap">
+<h2>Where's the money going?</h2>
+<div class="drain"><p class="drain-cap">Example from a bar audit: where every $100 in sales went</p>
+<div class="bar" role="img" aria-label="Of every $100, $78 was kept and $22 leaked out"><div class="kept">$78 kept</div><div class="lk" style="flex:9">$9</div><div class="lk" style="flex:6">$6</div><div class="lk" style="flex:4">$4</div><div class="lk" style="flex:3">$3</div></div>
+<div class="drain-key"><div><b>$9</b>No-shows and unpaid deposits</div><div><b>$6</b>Voided and free drinks</div><div><b>$4</b>Staff paid after closing</div><div><b>$3</b>Apps nobody uses</div></div>
+<p class="drain-sum">$22 of every $100, gone before anyone noticed. That's what we find and plug.</p></div>
+<div class="leaks">
+ <div class="leak"><h3>People look, but don't buy</h3><p>Visitors land on your site and leave. We fix the path from first look to paid.</p></div>
+ <div class="leak"><h3>Customers don't come back</h3><p>No follow-up, no reason to return. We set up the texts and rewards that bring them back.</p></div>
+ <div class="leak"><h3>Costs eat the margin</h3><p>Lost stock, extra apps, hours nobody tracks. We put it all where you can see it.</p></div>
+</div></div></section>
 
-        var tl = gsap.timeline({ delay: 0.3 });
-        // Badge drops in first with bounce
-        tl.fromTo('.badge',
-            { opacity: 0, y: -30, scale: 0.8 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: 'back.out(1.7)' }
-        );
-        // BUILD and YOUR stagger up from deep below with scale punch + 3D tilt
-        tl.fromTo('.empire-word:not(.red)',
-            { opacity: 0, y: 80, scale: 0.85, rotationX: 15 },
-            { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 1.0, ease: 'expo.out', stagger: 0.25 },
-            '-=0.1'
-        );
-        // EMPIRE lands heavy — bigger, slower, with 3D depth
-        tl.fromTo('.empire-word.red',
-            { opacity: 0, y: 100, scale: 0.7, rotationX: 20 },
-            { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 1.4, ease: 'expo.out' },
-            '-=0.3'
-        );
-        // Paragraph and buttons slide up
-        tl.fromTo('.hero-content p',
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out' }, '-=0.5');
-        tl.fromTo('.hero-buttons',
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out' }, '-=0.5');
-        // Scroll indicator fades in last
-        tl.fromTo('.scroll-indicator',
-            { opacity: 0 },
-            { opacity: 1, duration: 1, ease: 'power1.out' }, '-=0.2');
-    }
-
-    // Fire on window.load if page is still loading, otherwise fire on next frame
-    if (document.readyState === 'complete') {
-        requestAnimationFrame(_nuiEmpireReveal);
-    } else {
-        window.addEventListener('load', _nuiEmpireReveal, { once: true });
-    }
-
-    // Initialize scroll animations for this page
-    requestAnimationFrame(function() { _nuiMotionEngine(); });
+<section class="steps3" id="how-it-works" aria-labelledby="howT"><div class="wrap"><h2 id="howT">How it works</h2><p class="lede">Three steps. Nothing to figure out.</p><ol class="s3"><li><span class="n">1</span><h3>Book your free audit</h3><p>We look at how you run today, what you pay for, and where money is slipping out.</p><small>Free, about 30 minutes</small></li><li><span class="n">2</span><h3>Get your plan and price</h3><p>A clear plan for your leak, what we'll build, and exactly what it costs. No surprises.</p><small>Yours to keep</small></li><li><span class="n">3</span><h3>We build it</h3><p>Your website and your software, set up with your real data, plus training so your team knows it on day one.</p><small>We handle the setup</small></li></ol></div></section>
+<section class="revs" aria-labelledby="revT"><div class="wrap"><h2 id="revT">What clients say</h2><p class="listed">Find us on <a href="https://share.google/sylcsAreGRMVbTfLw" target="_blank" rel="noopener">Google</a>, <a href="https://www.yelp.com/biz/new-urban-influence-detroit" target="_blank" rel="noopener">Yelp</a>, <a href="https://clutch.co/profile/new-urban-influence" target="_blank" rel="noopener">Clutch</a>, <a href="https://themanifest.com/company/new-urban-influence" target="_blank" rel="noopener">The Manifest</a> and <a href="https://www.dandb.com/businessdirectory/newurbaninfluence-detroit-mi" target="_blank" rel="noopener">Dun &amp; Bradstreet</a>. Part of Detroit's business and design scene with <a href="https://techtowndetroit.org" target="_blank" rel="noopener">TechTown Detroit</a>, the <a href="https://detroitdesignfestival.com" target="_blank" rel="noopener">Detroit Design Festival</a> and <a href="https://autorama.com" target="_blank" rel="noopener">Detroit Autorama</a>.</p><div class="rgrid2"><figure class="rev"><span class="nh-stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><p>&ldquo;Great experience. Urban Influence gives you personal/detailed attention (making you feel like you are their most important customer). Love not only the services they offer but the personal touch they provide.&rdquo;</p><b>Larry Castleberry</b></figure><figure class="rev"><span class="nh-stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><p>&ldquo;I would recommend working with New Urban Influence. My experience with Faren was great...even when I was being a difficult customer. The care and attention that was put into making sure they understood my vision for my brand was amazing.&rdquo;</p><b>Miss B</b></figure><figure class="rev"><span class="nh-stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><p>&ldquo;We were impressed with New Urban Influence&rsquo;s design, the confidence it would work, and the process.&rdquo; Menus, signage and business consulting, including setting up their POS.</p><b>Jane Montes, Co-Owner, Shady Tree Snacks Bar, 5.0 on <a href="https://clutch.co/profile/new-urban-influence" target="_blank" rel="noopener" style="color:#b3000c">Clutch</a></b></figure><figure class="rev"><span class="nh-stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><p>&ldquo;Farren did a great job on a few flyers for me. Prices were reasonable and the quality was superb. My go to company for all my promotional needs. The best at what he does!&rdquo;</p><b>Chevelles Bar</b></figure></div></div></section>
+<section class="faqs" id="faq" aria-labelledby="faqT"><div class="wrap"><h2 id="faqT">Questions owners ask</h2><div class="flist" itemscope itemtype="https://schema.org/FAQPage"><details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><summary itemprop="name">What does New Urban Influence do?</summary><div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">We build websites and business software for growing businesses. Your website brings customers in, and your software (the back office we build for your kind of business) runs bookings, payments, customers and follow-up in one place. We’re based in Detroit and have served local businesses for 10+ years.</p></div></details><details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><summary itemprop="name">What do you mean by business software?</summary><div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">One back office built around how your business actually runs, so bookings, payments, staff, inventory and customer follow-up live in one place instead of five apps. We have ready-built versions for restaurants and bars, photography studios, and event promoters, and we build new ones for other businesses.</p></div></details><details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><summary itemprop="name">What happens in the free audit?</summary><div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">About 30 minutes. We look at how you run today, what tools and subscriptions you pay for, and where money is slipping out, like leads that never get a follow-up or customers who don’t come back. You leave knowing where your money is going, whether you hire us or not.</p></div></details><details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><summary itemprop="name">How much does a website and system cost?</summary><div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">It depends on what your business needs, so every build is priced after the free audit, with a clear plan and an exact price up front. Cancelling subscriptions you no longer need often helps pay for it.</p></div></details><details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><summary itemprop="name">How long does a build take?</summary><div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">Most websites and systems are built in a few weeks. We set it up with your real data and train you and your staff so it runs without guessing.</p></div></details><details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><summary itemprop="name">Do I have to switch everything at once?</summary><div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">No. We start with the leak that’s costing you the most, then add what you actually use. No bloated software, nothing you have to figure out yourself.</p></div></details><details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><summary itemprop="name">I took over a business I didn’t build. Can you help?</summary><div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">Yes. If the systems live in someone else’s head or on paper, we’ll map how it runs, show you where the money is going, and give you one system that runs it.</p></div></details><details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"><summary itemprop="name">Do you still make flyers?</summary><div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">Yes. Event flyers, motion flyers and promo videos are ordered online at nuiflyers.com, our flyer studio.</p></div></details></div></div></section>
+<section class="final" aria-labelledby="finT"><div class="wrap"><h2 id="finT">Let's find your leak.</h2><p>One free audit. You'll leave knowing where your money is going, even if you never hire us.</p><div class="ctas"><button type="button" class="btn solid" data-audit>Book your free audit</button><a class="btn line" href="tel:+12484878747">Call (248) 487-8747</a></div></div></section>
+<footer class="foot"><div class="wrap"><div class="fgrid">
+<div><a class="flogo" href="/" onclick="event.preventDefault();showView('home');window.scrollTo(0,0)"><img src="/icons/icon-192.png" alt="" width="26" height="26">New Urban Influence</a><p style="margin-top:12px;max-width:280px">Websites and business software, built in Detroit.</p><p style="margin-top:8px;color:#fff;font-weight:600;user-select:all">(248) 487-8747</p><p style="margin-top:4px;user-select:all">info@newurbaninfluence.com</p></div>
+<div><h4>What we build</h4><a href="/websites">Websites</a><a href="/restaurants-bars">Restaurant &amp; bar software</a><a href="/services/crm-integration-detroit">CRM &amp; automation</a><a href="/#rolesTitle" onclick="event.preventDefault();nuiGoTo('rolesTitle')">For owners and GMs</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers &amp; videos</a><a href="/print">Print &amp; signage</a></div>
+<div><h4>Company</h4><a href="/about">About</a><a href="/websites#builds">Our work</a><a href="/how-it-works">How it works</a><a href="/#faq" onclick="event.preventDefault();nuiGoTo('faq')">Questions</a><a href="/magazine">NUI Magazine</a><a href="/blog" onclick="event.preventDefault();showView('blog')">Blog</a><a href="/blog/restaurant-branding-guide-detroit">Restaurant guide</a></div>
+<div><h4>Log in</h4><a href="/app/">Client login</a><a href="/app/">Staff login</a></div>
+</div>
+<div class="fareas"><h4>Service areas</h4><div><a href="/locations/detroit">Detroit</a><a href="/locations/southfield">Southfield</a><a href="/locations/farmington-hills">Farmington Hills</a><a href="/locations/royal-oak">Royal Oak</a><a href="/locations/troy">Troy</a><a href="/locations/dearborn">Dearborn</a><a href="/locations/ann-arbor">Ann Arbor</a><a href="/locations/birmingham">Birmingham</a><a href="/locations/novi">Novi</a><a href="/locations/sterling-heights">Sterling Heights</a><a href="/locations/livonia">Livonia</a><a href="/locations/warren">Warren</a><a href="/locations/pontiac">Pontiac</a></div></div>
+<div class="fbase"><span>&copy; ${new Date().getFullYear()} New Urban Influence. Detroit, Michigan.</span><span><a href="/privacy-policy">Privacy</a> &nbsp;&middot;&nbsp; <a href="/terms-of-service">Terms</a> &nbsp;&middot;&nbsp; <a href="/sitemap.xml">Sitemap</a></span></div></div></footer>
+`;
+    _refreshHomepageCaseStudies(document.getElementById('homepageCaseStudies'));
+    initHome();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -808,7 +402,7 @@ function loadAboutView() {
 <section class="section dark" style="padding: 100px 0;">
 <div style="max-width: 1100px; margin: 0 auto; padding: 0 48px;">
 <div class="label" style="color: var(--red); text-align: center; margin-bottom: 16px;">What We Bring</div>
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 700; text-align: center; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 64px;">OUR <span style="color: var(--red);">APPROACH</span></h2>
+<h2 style="font-family: 'Inter Tight', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 700; text-align: center; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 64px;">OUR <span style="color: var(--red);">APPROACH</span></h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px;">
 <div style="border-left: 3px solid var(--red); padding-left: 32px;">
 <h3 style="font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;">Strategy First</h3>
@@ -828,23 +422,23 @@ function loadAboutView() {
 
 <section class="section dark" style="padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.06);">
 <div style="max-width: 1200px; margin: 0 auto; padding: 0 48px;">
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4);">Clients & Sectors <span style="color: var(--red);">We Serve</span></h2>
+<h2 style="font-family: 'Inter Tight', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4);">Clients & Sectors <span style="color: var(--red);">We Serve</span></h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px;">
 <div style="text-align: center;">
-<h3 style="font-family: 'Syne', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Unions & Workforce</h3>
+<h3 style="font-family: 'Inter Tight', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Unions & Workforce</h3>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 32px;">
 <span style="font-size: 22px; font-weight: 900; color: white; opacity: 0.6; letter-spacing: 2px;">UAW</span>
 <span style="font-size: 20px; font-weight: 700; color: white; opacity: 0.6; letter-spacing: 3px; text-transform: uppercase;">Chrysler</span>
 </div>
 </div>
 <div style="text-align: center;">
-<h3 style="font-family: 'Syne', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Government</h3>
+<h3 style="font-family: 'Inter Tight', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Government</h3>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 32px;">
 <span style="font-size: 16px; font-weight: 700; color: white; opacity: 0.6; letter-spacing: 1px;">State of Michigan — Office of the Governor</span>
 </div>
 </div>
 <div style="text-align: center;">
-<h3 style="font-family: 'Syne', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Non-Profits</h3>
+<h3 style="font-family: 'Inter Tight', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Non-Profits</h3>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 32px;">
 <span style="font-size: 18px; font-weight: 700; color: white; opacity: 0.6;">Kiwanis International</span>
 <span style="font-size: 18px; font-weight: 700; color: white; opacity: 0.6;">Beacon Park</span>
@@ -866,7 +460,7 @@ function loadAboutView() {
                 ${teamHTML}
 </div>
 </section>
-<section class="section" style="background: var(--red);"><div class="stats-grid"><div class="stat-item"><div class="value">50+</div><div class="stat-label">Brands Elevated</div></div><div class="stat-item"><div class="value">$2M+</div><div class="stat-label">Revenue Generated</div></div><div class="stat-item"><div class="value">100%</div><div class="stat-label">Detroit Pride</div></div><div class="stat-item"><div class="value">313</div><div class="stat-label">Area Code Strong</div></div></div></section>
+<section class="section" style="background: var(--red);"><div class="stats-grid"><div class="stat-item"><div class="value">50+</div><div class="stat-label">Businesses Served</div></div><div class="stat-item"><div class="value">$2M+</div><div class="stat-label">Revenue Generated</div></div><div class="stat-item"><div class="value">100%</div><div class="stat-label">Detroit Pride</div></div><div class="stat-item"><div class="value">313</div><div class="stat-label">Area Code Strong</div></div></div></section>
 <section class="cta-section"><h2>READY TO <span>WORK</span> WITH US?</h2><p>Let's build something legendary together.</p><button class="btn-white" onclick="scrollToContact()">Book Your Strategy Call</button></section>
         ${getFooterHTML()}
     `;
@@ -901,7 +495,7 @@ function loadFounderView() {
 <section class="section dark" style="padding: 100px 0;">
 <div style="max-width: 900px; margin: 0 auto; padding: 0 48px;">
 <div class="label" style="color: var(--red); text-align: center; margin-bottom: 16px;">Chapter One</div>
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 2px; text-transform: uppercase;">The Bravo <span style="color: var(--red);">Graphix</span> Era</h2>
+<h2 style="font-family: 'Inter Tight', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 2px; text-transform: uppercase;">The Bravo <span style="color: var(--red);">Graphix</span> Era</h2>
 <p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">In 2007, Faren co-founded <strong style="color: white;">Bravo Graphix</strong> — a full-service multicultural advertising, creative marketing, design, and print agency — alongside Donald Hand. What started on Detroit's upper West Side at Huntington and 7 Mile Rd. quickly earned a reputation for delivering everything a business needed to start, grow, and dominate.</p>
 <p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">By 2013, the buzz was undeniable. Bravo Graphix relocated to a completely renovated <strong style="color: white;">1,700-square-foot studio at 19434 Livernois Avenue</strong> — right on Detroit's iconic <strong style="color: white;">Avenue of Fashion</strong>. The new space featured an open floor plan, bright colors that captured the agency's energy, and a dedicated photography studio for fashion and beauty clients. The move brought five new positions: two designers, two photographers, and a secretary.</p>
 <p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">The Avenue of Fashion studio didn't just serve clients — it became part of the community. Bravo Graphix was embedded in multiple Detroit economic and creative programs, including <strong style="color: white;">Revolve Detroit</strong>, <strong style="color: white;">TechTown's SWOT City</strong>, and the <strong style="color: white;">Detroit Design Festival</strong>, which brought festival visitors, fellow creatives, and new clients directly to their door.</p>
@@ -914,7 +508,7 @@ function loadFounderView() {
 <section class="section dark" style="padding: 100px 0; border-top: 1px solid rgba(255,255,255,0.06);">
 <div style="max-width: 900px; margin: 0 auto; padding: 0 48px;">
 <div class="label" style="color: var(--red); text-align: center; margin-bottom: 16px;">Chapter Two</div>
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 2px; text-transform: uppercase;">The Evolution to <span style="color: var(--red);">NUI</span></h2>
+<h2 style="font-family: 'Inter Tight', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 2px; text-transform: uppercase;">The Evolution to <span style="color: var(--red);">NUI</span></h2>
 <p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">The creative landscape was shifting. Print was meeting digital. Logos were becoming brand ecosystems. Businesses didn't just need a designer — they needed a strategist, a builder, a partner who understood that branding is a revenue system, not just a pretty face.</p>
 <p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">Faren saw the gap. And he filled it. <strong style="color: white;">New Urban Influence</strong> was born — a full-spectrum creative agency that doesn't just design brands but builds entire systems that generate revenue. From brand identity and packaging to websites, digital marketing, SEO, AI automation, and business strategy, NUI became the one-stop empire builder for businesses who refuse to blend in.</p>
 <p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">Over 50 brands elevated. Over $2M in revenue generated for clients. Unions, nonprofits, government agencies, restaurants, product brands, service businesses — all transformed by the same Detroit energy that started it all.</p>
@@ -923,7 +517,7 @@ function loadFounderView() {
 
 <section class="section dark" style="padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.06);">
 <div style="max-width: 1100px; margin: 0 auto; padding: 0 48px;">
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4);">Clients & Sectors Served</h2>
+<h2 style="font-family: 'Inter Tight', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4);">Clients & Sectors Served</h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; text-align: center;">
 <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 32px 20px;">
 <div style="font-size: 28px; margin-bottom: 12px;">🏭</div>
@@ -961,7 +555,7 @@ function loadFounderView() {
 
 <section class="section dark" style="padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.06);">
 <div style="max-width: 900px; margin: 0 auto; padding: 0 48px; text-align: center;">
-<h3 style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-style: italic; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-bottom: 48px;">Press & Features</h3>
+<h3 style="font-family: 'Inter', sans-serif; font-size: 18px; font-style: italic; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-bottom: 48px;">Press & Features</h3>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 48px; margin-bottom: 32px;">
 <a href="https://www.scottmax.com/company/new-urban-influence" target="_blank" rel="noopener noreferrer" style="opacity: 0.5; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 26px; font-weight: 800; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">ScottMax</a>
 <a href="https://modeldmedia.com/bravographixavenueoffashion" target="_blank" rel="noopener noreferrer" style="opacity: 0.5; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 26px; font-weight: 300; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">model <span style="font-size: 38px; font-weight: 800; color: rgba(255,255,255,0.6);">D</span></a>
@@ -974,7 +568,7 @@ function loadFounderView() {
 
 <section class="section" style="background: var(--red); padding: 100px 0;">
 <div style="max-width: 800px; margin: 0 auto; padding: 0 48px; text-align: center;">
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px;">LET'S BUILD YOUR <span style="text-decoration: underline; text-underline-offset: 8px;">EMPIRE</span></h2>
+<h2 style="font-family: 'Inter Tight', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px;">LET'S BUILD YOUR <span style="text-decoration: underline; text-underline-offset: 8px;">EMPIRE</span></h2>
 <p style="font-size: 18px; opacity: 0.9; max-width: 600px; margin: 0 auto 40px; line-height: 1.7;">20+ years of Detroit grit, creative fire, and business strategy — ready to work for your brand.</p>
 <button class="btn-white" onclick="scrollToContact()" style="font-size: 16px; padding: 20px 56px;">Book Your Strategy Call</button>
 </div>
@@ -2580,7 +2174,7 @@ function loadServicesView() {
 <section style="padding:80px 5%;background:linear-gradient(180deg,#000 0%,#0a0a0a 100%);text-align:center;">
 <div style="max-width:900px;margin:0 auto;">
 <p style="font-size:13px;text-transform:uppercase;letter-spacing:3px;color:#a855f7;font-weight:600;margin-bottom:12px;">FLEXIBLE FINANCING</p>
-<h2 style="font-size:clamp(32px,5vw,52px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;font-family:'Syne',sans-serif;">Don't Let Budget<br>Hold Your Brand Back</h2>
+<h2 style="font-size:clamp(32px,5vw,52px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;font-family:'Inter Tight',sans-serif;">Don't Let Budget<br>Hold Your Brand Back</h2>
 <p style="font-size:18px;color:rgba(255,255,255,0.6);max-width:600px;margin:0 auto 48px;line-height:1.6;">Invest in your brand now, pay over time. 0% interest, no hidden fees, instant approval at checkout.</p>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;text-align:left;margin-bottom:48px;">
 <div style="background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.25);border-radius:16px;padding:32px;">
@@ -2609,7 +2203,7 @@ function loadServicesView() {
 </section>
 
 <section style="padding:80px 5%;background:linear-gradient(180deg,#0a0a0a,#111);text-align:center;">
-<h2 style="font-size:clamp(28px,5vw,48px);font-family:'Syne',sans-serif;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:12px;">Invest In Your Brand. <span style="color:#a855f7;">Pay On Your Terms.</span></h2>
+<h2 style="font-size:clamp(28px,5vw,48px);font-family:'Inter Tight',sans-serif;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:12px;">Invest In Your Brand. <span style="color:#a855f7;">Pay On Your Terms.</span></h2>
 <p style="max-width:640px;margin:0 auto 48px;color:rgba(255,255,255,0.55);font-size:16px;line-height:1.7;">We believe budget should never hold you back from looking professional. That's why we offer 0% interest financing through Afterpay and Klarna — so you can get started now and pay over time. No credit check required for most purchases.</p>
 <div style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap;max-width:900px;margin:0 auto 48px;">
 <div style="flex:1;min-width:260px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.25);border-radius:16px;padding:32px 28px;text-align:left;">
@@ -2699,7 +2293,6 @@ function submitCustomPackage() {
 // Default portfolio data — used as fallback when localStorage is empty or has broken refs
 var _defaultPortfolio = [
     { id: 'good-cakes-and-bakes', name: 'Good Cakes and Bakes', tag: 'Brand Identity + Web', desc: 'Complete brand transformation for Detroit\'s favorite bakery', mission: 'To bring joy to Detroit one delicious bake at a time, crafting memories with every bite.', slogan: 'Baked with Love, Served with Soul', websiteUrl: 'https://goodcakesandbakes.com', img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=800', colors: ['#D4A574', '#2C1810', '#F5E6D3', '#8B4513'], fonts: { heading: 'Playfair Display', body: 'Lato' }, assets: { primaryLogo: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400', secondaryLogo: '', iconMark: '', mockups: [] }, results: { revenue: '+340%', traffic: '+520%', engagement: '+280%' }, testimonial: { text: 'NUI transformed our small bakery into a recognized Detroit brand. Our online orders tripled within 3 months!', author: 'Sarah Mitchell', title: 'Owner' } },
-    { id: 'motor-city-bistro', name: 'Cloud nine', tag: 'Web Design + Marketing', desc: 'Culinary excellence meets digital sophistication', mission: 'Elevating Detroit\'s culinary scene with innovative cuisine and exceptional hospitality.', slogan: 'Where Detroit Dines Different', websiteUrl: '', img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800', colors: ['#1A1A2E', '#C4A35A', '#F0F0F0', '#2C2C54'], fonts: { heading: 'Cormorant Garamond', body: 'Montserrat' }, assets: { primaryLogo: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400', secondaryLogo: '', iconMark: '', mockups: [] }, results: { revenue: '+280%', traffic: '+410%', engagement: '+190%' }, testimonial: { text: 'The website they built us is stunning. Reservations are up 200% and we\'re now booked weeks in advance.', author: 'Marcus Johnson', title: 'Executive Chef' } },
     { id: 'detroit-canvas-co', name: 'Jos Gallerry Art Gallery', tag: 'Social Media + Video', desc: 'Art meets commerce with scroll-stopping content', mission: 'Empowering artists to share their vision and build sustainable creative businesses.', slogan: 'Your Art. Your Story. Your Canvas.', websiteUrl: '', img: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800', colors: ['#FF6B6B', '#4ECDC4', '#1A1A1A', '#F8F8F8'], fonts: { heading: 'Bebas Neue', body: 'Open Sans' }, assets: { primaryLogo: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400', secondaryLogo: '', iconMark: '', mockups: [] }, results: { revenue: '+190%', traffic: '+680%', engagement: '+450%' }, testimonial: { text: 'Our Instagram went from 2K to 50K followers. The content they create is absolutely fire.', author: 'Jamal Greene', title: 'Founder' } },
     { id: 'ascend-coaching-group', name: 'Aj VIP', tag: 'Funnels + Automation', desc: 'Lead generation systems that convert 24/7', mission: 'Helping entrepreneurs unlock their potential and build thriving businesses through expert coaching.', slogan: 'Rise. Lead. Succeed.', websiteUrl: '', img: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800', colors: ['#2D3436', '#00B894', '#FDFDFD', '#636E72'], fonts: { heading: 'Poppins', body: 'Inter' }, assets: { primaryLogo: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400', secondaryLogo: '', iconMark: '', mockups: [] }, results: { revenue: '+520%', traffic: '+310%', engagement: '+240%' }, testimonial: { text: 'The funnel they built generates leads while I sleep. Best investment I ever made for my business.', author: 'Sarah Chen', title: 'CEO' } }
 ];
@@ -3241,16 +2834,21 @@ const portalStyles = `
 .form-input:focus { outline: none; border-color: rgba(255,68,68,0.5); box-shadow: 0 0 0 3px rgba(255,68,68,0.08); }
 .form-select { width: 100%; padding: 14px 16px; border: 1px solid rgba(255,255,255,0.2); background: #0a0a0a; color: #fff; font-size: 15px; border-radius: 8px; font-family: inherit; }
 .form-textarea { width: 100%; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #fff; font-size: 14px; border-radius: 10px; font-family: inherit; min-height: 100px; resize: vertical; transition: border-color 0.2s; }
-.admin-header { background: rgba(10,10,10,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: #fff; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 76px; left: 0; right: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.admin-container { display: flex; padding-top: 132px; min-height: 100vh; background: #080808; }
-.admin-sidebar { width: 260px; background: #0c0c0c; border-right: 1px solid rgba(255,255,255,0.06); padding: 0 12px 20px; position: fixed; left: 0; top: 132px; bottom: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent; }
+.admin-header { background: rgba(10,10,10,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: #fff; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.admin-container { display: flex; padding-top: 65px; min-height: 100vh; background: #080808; }
+.admin-sidebar { width: 260px; background: #0c0c0c; border-right: 1px solid rgba(255,255,255,0.06); padding: 0 12px 20px; position: fixed; left: 0; top: 65px; bottom: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent; }
 .admin-sidebar::-webkit-scrollbar { width: 4px; }
 .admin-sidebar::-webkit-scrollbar-track { background: transparent; }
 .admin-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
 .sidebar-brand { display: flex; align-items: center; gap: 10px; padding: 20px 12px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; color: #fff; }
 .admin-nav { display: flex; flex-direction: column; gap: 2px; }
 .admin-nav-group { margin-bottom: 16px; }
-.admin-nav-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: rgba(255,255,255,0.25); padding: 8px 12px 6px; text-transform: uppercase; }
+.admin-nav-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: rgba(255,255,255,0.72); padding: 8px 12px 6px; text-transform: uppercase; }
+.admin-nav-more > summary { cursor: pointer; list-style: none; min-height: 32px; display: flex; align-items: center; justify-content: space-between; border-radius: 8px; }
+.admin-nav-more > summary::-webkit-details-marker { display: none; }
+.admin-nav-more > summary::after { content: '+'; font-size: 16px; font-weight: 600; letter-spacing: 0; }
+.admin-nav-more[open] > summary::after { content: '−'; }
+.admin-nav-more > summary:hover { color: #fff; background: rgba(255,255,255,0.04); }
 .admin-nav-link { display: flex; align-items: center; gap: 10px; padding: 9px 12px; color: rgba(255,255,255,0.5); cursor: pointer; border-radius: 10px; font-weight: 500; font-size: 13px; transition: all 0.2s; text-decoration: none; }
 .admin-nav-link svg { flex-shrink: 0; opacity: 0.5; transition: opacity 0.2s; }
 .admin-nav-link:hover { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.85); }
@@ -5535,7 +5133,7 @@ async function loadAdminBlogPanel() {
 
     document.getElementById('adminBlogPanel').innerHTML = `
 <div class="panel-header">
-<h2 class="panel-title">📝 Blog Manager</h2>
+<h2 class="panel-title">Blog Manager</h2>
 <p class="panel-subtitle">Create, edit, and manage your blog posts</p>
 </div>
 
