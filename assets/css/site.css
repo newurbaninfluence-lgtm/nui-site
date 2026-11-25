@@ -115,5 +115,5 @@ body.nh-page :is(.form-label,label){font-family:Inter,system-ui,sans-serif;text-
 .nh-fareas div{display:flex;flex-wrap:wrap;gap:4px 18px}
 .nh-fareas a{padding:5px 0}
 .nh-fbase{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14px;color:rgba(255,255,255,.72)}
-@media (max-width:760px){.nh-fgrid{grid-template-columns:1fr 1fr}body.nh-page section{padding-block:72px}body.nh-page .hero{padding:96px 20px 72px}body.nh-page .hero .btn{display:flex;width:100%;max-width:320px;margin:12px auto 0}}
+@media (max-width:760px){.nh-fgrid{grid-template-columns:1fr 1fr}body.nh-page section{padding-block:72px}body.nh-page .hero{padding:96px 20px 72px}body.nh-page .hero .btn{display:flex;width:100%;max-width:320px;margin:12px auto 0!important}}
 @media (prefers-reduced-motion:reduce){body.nh-page *{transition:none!important}}
