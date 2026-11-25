@@ -13,7 +13,7 @@ NAV = open(os.path.join(SHARED, 'nav.html')).read()
 FOOT = open(os.path.join(SHARED, 'footer.html')).read()
 COMPARE = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'compare.html')).read()
 SITE = 'https://newurbaninfluence.com'
-V = '20261124v6'
+V = '20261124v7'
 
 ICONS = {
     'calendar': '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
@@ -46,12 +46,6 @@ def faqs(items):
 
 def strip(s):
     return s.replace('&amp;', '&').replace('&rsquo;', "'")
-
-STEPS = '''<ol class="nh-steps">
-    <li><span class="n">1</span><h3>Book your free audit</h3><p>About 30 minutes by phone or video. We look at how you run, what you pay for, and where money slips out.</p></li>
-    <li><span class="n">2</span><h3>Get your plan and price</h3><p>A clear plan, what we'll build, and exactly what it costs. No surprises.</p></li>
-    <li><span class="n">3</span><h3>We build it</h3><p>Set up with your real data, plus training so your team knows it on day one.</p></li>
-  </ol>'''
 
 CTA = '''<div class="cta">
   <h2>Let's find your leak.</h2>
@@ -117,7 +111,7 @@ BAR = f'''
   <div class="badge">Restaurant and bar software</div>
   <h1>Is your bar <span class="red">leaking</span> money?</h1>
   <p>No-shows, free pours, staff on the clock after close. Our software shows you where the money is going and plugs it. It works with the register you already have.</p>
-  <div class="hero-btns"><a href="/?audit=1" class="btn btn-red">Book your free audit</a><a href="tel:+12484878747" class="btn btn-outline">Call (248) 487-8747</a></div>
+  <div class="hero-btns"><a href="/?audit=1" class="btn btn-red">Book your free audit</a><a href="/how-it-works#demo" class="btn btn-outline">Get the demo</a></div>
   <img class="nh-devices" src="/assets/img/home/system-devices.webp" width="1090" height="560" alt="The owner's daily report on a laptop and the restaurant's website on a phone">
 </header>
 
@@ -178,8 +172,8 @@ BAR = f'''
 
 <section><div class="container">
   <p class="section-label">How it works</p>
-  <h2>Three steps. Nothing to figure out.</h2>
-  {STEPS}
+  <h2>Free audit, then a plan and price, then we build it.</h2>
+  <a class="btn btn-outline" href="/how-it-works">See how it works</a>
 </div></section>
 
 <section><div class="container">
@@ -249,8 +243,8 @@ WEB = f'''
 
 <section><div class="container">
   <p class="section-label">How it works</p>
-  <h2>Three steps. Nothing to figure out.</h2>
-  {STEPS}
+  <h2>Free audit, then a plan and price, then we build it.</h2>
+  <a class="btn btn-outline" href="/how-it-works">See how it works</a>
 </div></section>
 
 <section><div class="container">
