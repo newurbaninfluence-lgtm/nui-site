@@ -1,68 +1,39 @@
-// admin-login.js — NUI back office login.
-// Email + password (Supabase Auth). Stays signed in on this device.
-// After sign-in, /admin-session checks the person is an admin and returns the
-// back-office key that every admin function already expects (X-Admin-Token).
-// The old access-code box is still available behind a small link, as a backup.
+// admin-login.js — NUI back office sign-in.
+// 4-digit PIN, checked on the server by /admin-pin (NUI only — does not use the
+// shared Supabase sign-in that tenant apps like MAD use). A correct PIN returns the
+// back-office key every admin function already expects (X-Admin-Token), and this
+// device stays signed in. The old 64-character access code is kept as a backup.
 
 (function () {
   'use strict';
 
-  const SESSION_ENDPOINT = '/.netlify/functions/admin-session';
+  const PIN_ENDPOINT = '/.netlify/functions/admin-pin';
   const VERIFY_ENDPOINT = '/.netlify/functions/admin-verify';
   const STYLE_ID = 'nui-admin-login-style';
-  // Same storage key as the portal's client (supabase-client.js), so ONE sign-in
-  // is seen by both this gate and the portal dashboard behind it.
-  const AUTH_STORAGE_KEY = 'nui-auth-token';
+  const PIN_LENGTH = 4;
+  const STAY_SIGNED_IN_DAYS = 30;
 
-  // ── Supabase client: reuse the portal's client when it's ready ──
-  let _sb = null;
-  function sb() {
-    if (_sb) return _sb;
-    try { if (typeof db !== 'undefined' && db && db.auth) { _sb = db; return _sb; } } catch (e) { /* not loaded yet */ }
-    if (!window.supabase || !window.SUPABASE_URL || !window.SUPABASE_ANON_KEY) return null;
-    _sb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY, {
-      auth: { storageKey: AUTH_STORAGE_KEY, persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-    });
-    return _sb;
+  // The dashboard behind this gate (portal.js) opens for a saved master-admin
+  // session, so a correct PIN saves one and the dashboard never asks again.
+  function rememberDashboardSession() {
+    try {
+      localStorage.setItem('nui_admin_session', JSON.stringify({
+        isMasterAdmin: true,
+        email: 'newurbaninfluence@gmail.com',
+        name: 'Faren Young',
+        expires: Date.now() + STAY_SIGNED_IN_DAYS * 24 * 60 * 60 * 1000
+      }));
+    } catch (e) { /* storage blocked — dashboard will ask, PIN still works */ }
+  }
+  function forgetDashboardSession() {
+    try { localStorage.removeItem('nui_admin_session'); } catch (e) {}
   }
 
-  // After signing in, reload once so the dashboard behind this screen picks up the sign-in.
-  function openBackOffice(overlay) {
+  function openBackOffice() {
     setTimeout(() => {
       try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
       window.location.reload();
     }, 450);
-  }
-
-  // Trade a signed-in session for the back-office key. Returns {ok, reason}.
-  async function exchange(session) {
-    if (!session || !session.access_token) return { ok: false, reason: 'no_session' };
-    try {
-      const r = await fetch(SESSION_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + session.access_token }
-      });
-      const data = await r.json().catch(() => ({}));
-      if (r.ok && data.ok && data.token) {
-        window.NuiAdminAuth.setToken(data.token);
-        return { ok: true, email: data.email };
-      }
-      return { ok: false, reason: data.reason || 'denied' };
-    } catch (e) {
-      return { ok: false, reason: 'network' };
-    }
-  }
-
-  // Signed in already on this device? Unlock quietly, no screen.
-  async function silentUnlock() {
-    const client = sb();
-    if (!client) return false;
-    try {
-      const { data } = await client.auth.getSession();
-      if (!data || !data.session) return false;
-      const res = await exchange(data.session);
-      return res.ok;
-    } catch (e) { return false; }
   }
 
   function injectStyles() {
@@ -133,27 +104,19 @@
         margin-right: 8px; vertical-align: middle;
       }
       @keyframes nuiSpin { to { transform: rotate(360deg); } }
+      .nui-pin-input {
+        width: 100%; box-sizing: border-box; padding: 16px; font-size: 32px; text-align: center;
+        letter-spacing: 18px; text-indent: 18px; font-family: ui-monospace, 'SF Mono', Monaco, monospace;
+        background: #141414; border: 1px solid rgba(255,255,255,0.22); border-radius: 12px; color: #fff; outline: none;
+      }
+      .nui-pin-input:focus { border-color: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.2); }
+      .nui-pin-input.error { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.2); }
       .nui-hidden { display: none !important; }
     `;
     document.head.appendChild(s);
   }
 
-  const REASONS = {
-    not_admin: 'This account isn’t set up as an admin. Ask Faren to add it.',
-    bad_session: 'Your sign-in expired. Please sign in again.',
-    not_configured: 'The back office login isn’t switched on yet on the server.',
-    lookup_failed: 'Couldn’t check admin access right now. Try again in a minute.',
-    network: 'Can’t reach the server. Check your internet and try again.'
-  };
-
-  function close(overlay) {
-    overlay.style.transition = 'opacity 0.25s';
-    overlay.style.opacity = '0';
-    setTimeout(() => overlay.remove(), 250);
-  }
-
-  // mode: 'signin' | 'reset' (set a new password after the email link)
-  function render(mode) {
+  function render() {
     injectStyles();
     const existing = document.getElementById('nuiAdminLoginOverlay');
     if (existing) existing.remove();
@@ -167,39 +130,22 @@
       <main class="nui-login-card" id="nuiLoginCard">
         <div class="nui-login-brand"><div class="nui-login-brand-dot" aria-hidden="true"></div><div class="nui-login-brand-text">NUI Back Office</div></div>
 
-        <!-- Sign in -->
-        <form id="nuiSignInForm" novalidate>
-          <h1 class="nui-login-title" id="nuiLoginTitle">Sign in</h1>
-          <p class="nui-login-subtitle">Use your New Urban Influence email and password. You’ll stay signed in on this device.</p>
+        <!-- PIN -->
+        <form id="nuiPinForm" novalidate>
+          <h1 class="nui-login-title" id="nuiLoginTitle">Enter your PIN</h1>
+          <p class="nui-login-subtitle">4 digits. You’ll stay signed in on this device.</p>
           <div class="nui-login-field">
-            <label class="nui-login-label" for="nuiLoginEmail">Email</label>
-            <input id="nuiLoginEmail" class="nui-login-input" type="email" autocomplete="username" inputmode="email" autocapitalize="off" spellcheck="false" placeholder="you@email.com" required />
+            <label class="nui-login-label" for="nuiPin">PIN</label>
+            <input id="nuiPin" class="nui-pin-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="${PIN_LENGTH}" autocomplete="off" aria-describedby="nuiPinMsg" />
           </div>
-          <div class="nui-login-field">
-            <label class="nui-login-label" for="nuiLoginPassword">Password</label>
-            <input id="nuiLoginPassword" class="nui-login-input" type="password" autocomplete="current-password" placeholder="Your password" required />
-          </div>
-          <div id="nuiLoginMsg" class="nui-login-msg" role="status" aria-live="polite"></div>
-          <button type="submit" id="nuiLoginSubmit" class="nui-login-submit">Sign in</button>
+          <div id="nuiPinMsg" class="nui-login-msg" role="status" aria-live="polite"></div>
+          <button type="submit" id="nuiPinSubmit" class="nui-login-submit">Unlock</button>
           <div class="nui-login-row">
-            <button type="button" class="nui-login-link" id="nuiForgot">Forgot password?</button>
             <button type="button" class="nui-login-link" id="nuiUseCode">Use access code instead</button>
           </div>
         </form>
 
-        <!-- Set new password (after reset email) -->
-        <form id="nuiResetForm" class="nui-hidden" novalidate>
-          <h1 class="nui-login-title">Set a new password</h1>
-          <p class="nui-login-subtitle">Pick a password you’ll remember. At least 8 characters.</p>
-          <div class="nui-login-field">
-            <label class="nui-login-label" for="nuiNewPassword">New password</label>
-            <input id="nuiNewPassword" class="nui-login-input" type="password" autocomplete="new-password" minlength="8" required />
-          </div>
-          <div id="nuiResetMsg" class="nui-login-msg" role="status" aria-live="polite"></div>
-          <button type="submit" id="nuiResetSubmit" class="nui-login-submit">Save password and sign in</button>
-        </form>
-
-        <!-- Backup: old access code -->
+        <!-- Backup: access code -->
         <form id="nuiCodeForm" class="nui-hidden" novalidate>
           <h1 class="nui-login-title">Access code</h1>
           <p class="nui-login-subtitle">Backup way in. Paste the 64-character admin code.</p>
@@ -209,7 +155,7 @@
           </div>
           <div id="nuiCodeMsg" class="nui-login-msg" role="status" aria-live="polite"></div>
           <button type="submit" id="nuiCodeSubmit" class="nui-login-submit">Unlock</button>
-          <button type="button" class="nui-login-link" id="nuiBackToEmail">Back to email sign in</button>
+          <button type="button" class="nui-login-link" id="nuiBackToPin">Back to PIN</button>
         </form>
 
         <div class="nui-login-footer"><span style="font-size:13px;color:#d4d4d4">Secure sign in</span><a href="/">Back to site</a></div>
@@ -219,7 +165,7 @@
 
     const $ = (id) => document.getElementById(id);
     const card = $('nuiLoginCard');
-    const forms = { signin: $('nuiSignInForm'), reset: $('nuiResetForm'), code: $('nuiCodeForm') };
+    const forms = { pin: $('nuiPinForm'), code: $('nuiCodeForm') };
     function showForm(name) {
       Object.keys(forms).forEach(k => forms[k].classList.toggle('nui-hidden', k !== name));
       const first = forms[name].querySelector('input');
@@ -236,71 +182,52 @@
       btn.innerHTML = on ? '<span class="nui-login-spinner"></span>' + label : label;
     }
 
-    // ── Sign in with email + password ──
-    forms.signin.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = $('nuiLoginEmail').value.trim();
-      const password = $('nuiLoginPassword').value;
-      const m = $('nuiLoginMsg'), btn = $('nuiLoginSubmit');
-      $('nuiLoginEmail').classList.toggle('error', !email);
-      $('nuiLoginPassword').classList.toggle('error', !password);
-      if (!email || !password) { msg(m, 'Enter your email and password.', 'error'); shake(); return; }
-      const client = sb();
-      if (!client) { msg(m, 'Login is still loading. Wait a second and try again.', 'error'); return; }
-
-      busy(btn, true, 'Signing in...'); msg(m, '');
-      const { data, error } = await client.auth.signInWithPassword({ email, password });
-      if (error || !data.session) {
-        busy(btn, false, 'Sign in');
-        $('nuiLoginPassword').classList.add('error');
-        msg(m, 'That email and password don’t match. Try again, or tap “Forgot password?”', 'error');
-        shake(); return;
-      }
-      const res = await exchange(data.session);
-      if (!res.ok) {
-        busy(btn, false, 'Sign in');
-        if (res.reason === 'not_admin') { try { await client.auth.signOut(); } catch (_) {} }
-        msg(m, REASONS[res.reason] || 'Couldn’t open the back office. Try again.', 'error');
-        shake(); return;
-      }
-      btn.innerHTML = 'Signed in'; msg(m, 'Signed in. Opening your back office...', 'success');
-      openBackOffice(overlay);
+    // ── PIN ──
+    const pinInput = $('nuiPin');
+    let sending = false;
+    pinInput.addEventListener('input', () => {
+      pinInput.value = pinInput.value.replace(/\D/g, '').slice(0, PIN_LENGTH);
+      pinInput.classList.remove('error');
+      if (pinInput.value.length === PIN_LENGTH) forms.pin.requestSubmit ? forms.pin.requestSubmit() : forms.pin.dispatchEvent(new Event('submit', { cancelable: true }));
     });
-
-    // ── Forgot password: send reset email ──
-    $('nuiForgot').addEventListener('click', async () => {
-      const email = $('nuiLoginEmail').value.trim();
-      const m = $('nuiLoginMsg');
-      if (!email) { $('nuiLoginEmail').classList.add('error'); msg(m, 'Type your email above first, then tap “Forgot password?” again.', 'error'); $('nuiLoginEmail').focus(); return; }
-      const client = sb();
-      if (!client) { msg(m, 'Login is still loading. Try again in a second.', 'error'); return; }
-      msg(m, 'Sending reset email...');
-      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/app/' });
-      if (error) { msg(m, 'Couldn’t send the email: ' + error.message, 'error'); return; }
-      msg(m, 'Check your email for a link to set a new password.', 'success');
-    });
-
-    // ── Set new password (arrived from reset email) ──
-    forms.reset.addEventListener('submit', async (e) => {
+    forms.pin.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const pw = $('nuiNewPassword').value;
-      const m = $('nuiResetMsg'), btn = $('nuiResetSubmit');
-      if (!pw || pw.length < 8) { $('nuiNewPassword').classList.add('error'); msg(m, 'Use at least 8 characters.', 'error'); shake(); return; }
-      const client = sb();
-      busy(btn, true, 'Saving...');
-      const { error } = await client.auth.updateUser({ password: pw });
-      if (error) { busy(btn, false, 'Save password and sign in'); msg(m, 'Couldn’t save it: ' + error.message, 'error'); shake(); return; }
-      const { data } = await client.auth.getSession();
-      const res = await exchange(data && data.session);
-      if (!res.ok) { busy(btn, false, 'Save password and sign in'); msg(m, 'Password saved. ' + (REASONS[res.reason] || 'Now sign in.'), 'error'); return; }
-      btn.innerHTML = 'Saved'; msg(m, 'Password saved. Opening your back office...', 'success');
-      try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
-      openBackOffice(overlay);
+      if (sending) return;
+      const pin = pinInput.value;
+      const m = $('nuiPinMsg'), btn = $('nuiPinSubmit');
+      if (pin.length !== PIN_LENGTH) { pinInput.classList.add('error'); msg(m, 'Enter all 4 digits.', 'error'); shake(); return; }
+      sending = true; busy(btn, true, 'Checking...'); msg(m, '');
+      let data = {}, status = 0;
+      try {
+        const r = await fetch(PIN_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'login', pin }) });
+        status = r.status; data = await r.json().catch(() => ({}));
+      } catch (err) { data = { reason: 'network' }; }
+      sending = false;
+
+      if (data.ok && data.token) {
+        window.NuiAdminAuth.setToken(data.token);
+        rememberDashboardSession();
+        btn.innerHTML = 'Unlocked'; msg(m, 'Unlocked. Opening your back office...', 'success');
+        openBackOffice();
+        return;
+      }
+      busy(btn, false, 'Unlock');
+      pinInput.value = ''; pinInput.classList.add('error'); pinInput.focus();
+      if (data.reason === 'wrong_pin') {
+        msg(m, 'Wrong PIN.' + (data.triesLeft > 0 ? ' ' + data.triesLeft + (data.triesLeft === 1 ? ' try' : ' tries') + ' left before a short lock.' : ''), 'error');
+      } else if (data.reason === 'locked') {
+        msg(m, 'Too many wrong tries. Try again in ' + (data.minutes || 15) + ' minutes, or use the access code.', 'error');
+      } else if (data.reason === 'network') {
+        msg(m, 'Can’t reach the server. Check your internet and try again.', 'error');
+      } else {
+        msg(m, 'PIN sign-in isn’t working right now (' + (data.reason || status) + '). Use the access code instead.', 'error');
+      }
+      shake();
     });
 
     // ── Backup: access code ──
     $('nuiUseCode').addEventListener('click', () => showForm('code'));
-    $('nuiBackToEmail').addEventListener('click', () => showForm('signin'));
+    $('nuiBackToPin').addEventListener('click', () => showForm('pin'));
     forms.code.addEventListener('submit', async (e) => {
       e.preventDefault();
       const token = $('nuiLoginToken').value.trim();
@@ -312,54 +239,42 @@
         const data = await r.json();
         if (data.valid) {
           window.NuiAdminAuth.setToken(token);
+          rememberDashboardSession();
           btn.innerHTML = 'Unlocked'; msg(m, 'Opening your back office...', 'success');
-          setTimeout(() => close(overlay), 450);
+          openBackOffice();
           return;
         }
         msg(m, data.reason === 'wrong_length' ? 'That code is the wrong length. It should be 64 characters.' : 'That code doesn’t match. Double-check it.', 'error');
-      } catch (err) { msg(m, REASONS.network, 'error'); }
+      } catch (err) { msg(m, 'Can’t reach the server. Check your internet and try again.', 'error'); }
       busy(btn, false, 'Unlock'); shake();
     });
 
-    showForm(mode === 'reset' ? 'reset' : 'signin');
-  }
-
-  // Came back from the "reset password" email → show the new-password form.
-  function watchRecovery() {
-    const client = sb();
-    if (!client) return;
-    client.auth.onAuthStateChange((event) => {
-      if (event === 'PASSWORD_RECOVERY') render('reset');
-    });
+    showForm('pin');
   }
 
   // ═══════════════════════════════════════════════════════════════
   // Public API
   // ═══════════════════════════════════════════════════════════════
-  let _unlocking = null;
   window.NuiAdminLogin = {
     show() {
-      // Try a quiet unlock first (already signed in on this device), then the screen.
-      if (_unlocking) return;
-      _unlocking = silentUnlock().then(ok => { _unlocking = null; if (!ok) render('signin'); });
+      if (!document.getElementById('nuiAdminLoginOverlay')) render();
     },
     async requireAuth() {
-      watchRecovery();
-      if (/type=recovery/.test(window.location.hash)) { render('reset'); return false; }
-
       if (window.NuiAdminAuth && window.NuiAdminAuth.isAuthenticated()) {
+        // Signed in on this device: keep the dashboard session fresh, then double-check the key.
+        rememberDashboardSession();
         const token = window.NuiAdminAuth.getToken();
         try {
           const r = await fetch(VERIFY_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }) });
           const data = await r.json();
           if (data.valid) return true;
           window.NuiAdminAuth.clear();
+          forgetDashboardSession();
         } catch (e) {
-          return true; // network blip — let normal 401 handling catch real problems
+          return true; // network blip — normal 401 handling catches real problems
         }
       }
-      if (await silentUnlock()) return true;
-      render('signin');
+      render();
       return false;
     }
   };
@@ -368,15 +283,16 @@
     window.NuiAdminAuth.promptIfNeeded = () => { window.NuiAdminLogin.show(); return false; };
   }
 
-  // Any admin endpoint says 401 → clear the key, try a quiet re-unlock, else show sign-in.
+  // Any admin endpoint says 401 → clear the key and show the PIN screen.
   const _origFetch = window.fetch;
   window.fetch = async function (url, options) {
     const res = await _origFetch.call(this, url, options);
-    if (typeof url === 'string' && url.includes('/.netlify/functions/') && !url.includes('admin-session') && res.status === 401) {
+    if (typeof url === 'string' && url.includes('/.netlify/functions/') && !url.includes('admin-pin') && res.status === 401) {
       try {
         const txt = await res.clone().text();
         if (txt.includes('Unauthorized') || txt.includes('Missing authentication') || txt.includes('Invalid token')) {
           if (window.NuiAdminAuth) window.NuiAdminAuth.clear();
+          forgetDashboardSession();
           if (!document.getElementById('nuiAdminLoginOverlay')) window.NuiAdminLogin.show();
         }
       } catch (e) { /* ignore */ }

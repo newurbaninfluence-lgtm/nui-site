@@ -1077,7 +1077,7 @@ function loadAdminUserManagementPanel() {
 </div>
 </div>
 <div class="mt-16">
-<button onclick="sendMasterPasswordReset(this)" style="padding: 8px 16px; background: #333; border: 1px solid #ff0000; color: #fff; border-radius: 8px; cursor: pointer; font-size: 13px; min-height: 40px;">Email me a password reset link</button>
+<button onclick="showChangePinModal()" style="padding: 8px 16px; background: #333; border: 1px solid #ff0000; color: #fff; border-radius: 8px; cursor: pointer; font-size: 13px; min-height: 40px;">Change PIN</button>
 </div>
 </div>
 
@@ -1229,68 +1229,68 @@ function saveNewAdminAccount() {
     loadAdminUserManagementPanel();
 }
 
-function showChangeMasterPasswordModal() {
+function showChangePinModal() {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
-    modal.id = 'changeMasterPwModal';
+    modal.id = 'changePinModal';
     modal.style.display = 'flex';
     modal.innerHTML = `
-<div class="modal" style="max-width: 450px;">
+<div class="modal" style="max-width: 420px;">
 <div class="modal-header">
-<h3 class="modal-title">Change Master Password</h3>
-<button class="modal-close" onclick="document.getElementById('changeMasterPwModal').remove()">×</button>
+<h3 class="modal-title">Change PIN</h3>
+<button class="modal-close" aria-label="Close" onclick="document.getElementById('changePinModal').remove()">×</button>
 </div>
 <div class="modal-body p-24">
 <div class="form-group mb-16">
-<label class="form-label">Current Password</label>
-<input type="password" id="currentMasterPw" class="form-input" placeholder="Enter current password">
+<label class="form-label" for="currentPin">Current PIN</label>
+<input type="password" id="currentPin" class="form-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off">
 </div>
 <div class="form-group mb-16">
-<label class="form-label">New Password</label>
-<input type="password" id="newMasterPw" class="form-input" placeholder="Enter new password">
+<label class="form-label" for="newPin">New PIN (4 digits)</label>
+<input type="password" id="newPin" class="form-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off">
 </div>
 <div class="form-group mb-16">
-<label class="form-label">Confirm New Password</label>
-<input type="password" id="confirmMasterPw" class="form-input" placeholder="Confirm new password">
+<label class="form-label" for="confirmPin">Type the new PIN again</label>
+<input type="password" id="confirmPin" class="form-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off">
 </div>
+<div id="changePinMsg" role="status" aria-live="polite" style="min-height: 20px; font-size: 14px; color: #fff;"></div>
 </div>
 <div class="modal-footer">
-<button onclick="document.getElementById('changeMasterPwModal').remove()" class="btn-outline">Cancel</button>
-<button onclick="updateMasterPassword()" class="btn-cta">Update Password</button>
+<button onclick="document.getElementById('changePinModal').remove()" class="btn-outline">Cancel</button>
+<button onclick="updatePin(this)" class="btn-cta">Save PIN</button>
 </div>
 </div>
     `;
     document.body.appendChild(modal);
+    setTimeout(() => document.getElementById('currentPin').focus(), 50);
 }
 
-// Password changes go through Supabase (email link) — no passwords stored in the browser.
-async function sendMasterPasswordReset(btn) {
-    const email = (currentUser && currentUser.email) || 'newurbaninfluence@gmail.com';
+async function updatePin(btn) {
+    const pin = document.getElementById('currentPin').value.trim();
+    const newPin = document.getElementById('newPin').value.trim();
+    const confirmPin = document.getElementById('confirmPin').value.trim();
+    const m = document.getElementById('changePinMsg');
+    const say = (text, ok) => { m.textContent = text; m.style.color = ok ? '#34d399' : '#f87171'; };
+    if (!/^\d{4}$/.test(newPin)) { say('The new PIN must be exactly 4 digits.'); return; }
+    if (newPin !== confirmPin) { say('The two new PINs don’t match.'); return; }
+    btn.disabled = true; btn.textContent = 'Saving...';
     try {
-        btn.disabled = true; btn.textContent = 'Sending...';
-        if (!(window.NuiAuth && NuiAuth.isAvailable())) throw new Error('Login service not loaded');
-        const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/app/' });
-        if (error) throw error;
-        btn.textContent = 'Sent \u2713 Check ' + email;
+        const r = await fetch('/.netlify/functions/admin-pin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'change', pin, newPin })
+        });
+        const data = await r.json().catch(() => ({}));
+        if (data.ok) {
+            say('PIN saved ✓', true); btn.textContent = 'Saved ✓';
+            setTimeout(() => { const el = document.getElementById('changePinModal'); if (el) el.remove(); }, 1200);
+            return;
+        }
+        say(data.reason === 'wrong_current_pin' ? 'Current PIN is wrong.' : 'Couldn’t save the PIN. Try again.');
     } catch (e) {
-        btn.disabled = false; btn.textContent = 'Couldn\u2019t send \u2014 try again';
+        say('Can’t reach the server. Try again.');
     }
-}
-
-function updateMasterPassword() {
-    const currentPw = document.getElementById('currentMasterPw').value;
-    const newPw = document.getElementById('newMasterPw').value;
-    const confirmPw = document.getElementById('confirmMasterPw').value;
-
-    const storedMasterPw = localStorage.getItem('nui_master_admin_pw');
-    if (!storedMasterPw) { alert('Use "Email me a password reset link" instead.'); return; }
-    if (currentPw !== storedMasterPw) { alert('Current password is incorrect.'); return; }
-    if (newPw.length < 4) { alert('New password must be at least 4 characters.'); return; }
-    if (newPw !== confirmPw) { alert('New passwords do not match.'); return; }
-
-    localStorage.setItem('nui_master_admin_pw', newPw);
-    document.getElementById('changeMasterPwModal').remove();
-    alert('Master password updated successfully!');
+    btn.disabled = false; btn.textContent = 'Save PIN';
 }
 
 function filterUserTable() {
