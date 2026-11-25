@@ -107,6 +107,7 @@ def page(slug, c):
 <link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css?v={V}">
+<script src="/assets/js/site-edits.js?v=20261124v1" defer></script>
 </head>
 <body class="nh-page">
 {NAV}
