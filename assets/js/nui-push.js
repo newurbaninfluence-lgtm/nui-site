@@ -101,8 +101,8 @@
             #nui-push-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
             #nui-push-icon {
                 width: 48px; height: 48px;
-                background: rgba(220,38,38,0.12);
-                border: 1px solid rgba(220,38,38,0.3);
+                background: linear-gradient(150deg,#ff3b3b,#b3000c);
+                border: 0;
                 border-radius: 14px;
                 display: flex; align-items: center; justify-content: center;
                 font-size: 22px;
@@ -157,7 +157,7 @@
             #nui-push-btn:active { transform: translateY(0); }
             #nui-push-note {
                 text-align: center;
-                font-size: 10.5px;
+                font-size: 12px;
                 color: rgba(255,255,255,0.82);
                 margin-top: 10px;
             }
@@ -170,10 +170,10 @@
         wrap.innerHTML = `
             <div id="nui-push-card">
                 <button id="nui-push-close" aria-label="Close">✕</button>
-                <div id="nui-push-icon">🔔</div>
+                <div id="nui-push-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
                 <div id="nui-push-title">Get tips &amp; offers first</div>
                 <div id="nui-push-sub">Occasional alerts with offers and business tips. No spam, turn off anytime.</div>
-                <button id="nui-push-btn">🔔 Yes, Keep Me in the Loop</button>
+                <button id="nui-push-btn">Yes, keep me in the loop</button>
                 <div id="nui-push-note">Your info is never shared. One tap to unsubscribe.</div>
             </div>
         `;
@@ -187,7 +187,7 @@
         // Subscribe
         document.getElementById('nui-push-btn').addEventListener('click', function() {
             const btn = document.getElementById('nui-push-btn');
-            btn.textContent = '⏳ Connecting...';
+            btn.textContent = 'Connecting...';
             btn.disabled = true;
             wrap.remove();
             subscribeToPush(registration);
