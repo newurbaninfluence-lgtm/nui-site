@@ -227,6 +227,16 @@ body.nh-page .bo-kpis b{font:800 20px 'Inter Tight',Inter,sans-serif}
 body.nh-page .bo-sync{display:flex;align-items:center;font-weight:600;background:#eef7f0;border:1px solid #cfe8d5;border-radius:999px;padding:7px 12px;justify-self:start}
 @media (max-width:900px){body.nh-page .cmp{grid-template-columns:1fr}body.nh-page .cmp-after{grid-template-columns:1fr}body.nh-page .bo-side{display:none}body.nh-page .bo-card{flex-wrap:wrap}body.nh-page .bo-kpis{grid-template-columns:1fr 1fr}body.nh-page .bo-kpis div:last-child{grid-column:1/-1}}
 
+body.nh-page .nh-builds2{grid-template-columns:repeat(2,1fr)}
+body.nh-page .nh-fan{position:relative;max-width:1000px;height:clamp(230px,38vw,430px);margin:56px auto -90px}
+body.nh-page .nh-fan span{position:absolute;display:block;width:52%;border-radius:12px;overflow:hidden;background:#1b1b1f;box-shadow:0 30px 70px rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.14)}
+body.nh-page .nh-fan i{display:block;height:22px;background:#26262b url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='22'%3E%3Ccircle cx='12' cy='11' r='4' fill='%23ff5f57'/%3E%3Ccircle cx='25' cy='11' r='4' fill='%23febc2e'/%3E%3Ccircle cx='38' cy='11' r='4' fill='%2328c840'/%3E%3C/svg%3E") no-repeat left center}
+body.nh-page .nh-fan img{display:block;width:100%;height:auto}
+body.nh-page .nh-fan .f1{left:0;top:12%;transform:rotate(-5deg)}
+body.nh-page .nh-fan .f3{right:0;top:12%;transform:rotate(5deg)}
+body.nh-page .nh-fan .f2{left:22%;top:0;width:56%;z-index:2}
+@media (max-width:760px){body.nh-page .nh-builds2{grid-template-columns:1fr}body.nh-page .nh-fan{margin:40px auto -60px}}
+
 /* old footers are replaced by .nh-foot */
 .nh-foot{background:#000;border-top:1px solid rgba(255,255,255,.1);padding:56px max(24px,env(safe-area-inset-right,0px)) 40px max(24px,env(safe-area-inset-left,0px));font:15px/1.55 Inter,system-ui,sans-serif;color:rgba(255,255,255,.82);text-align:left}
 .nh-foot .in{max-width:1072px;margin:0 auto}

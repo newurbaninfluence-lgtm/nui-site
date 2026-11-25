@@ -13,7 +13,7 @@ NAV = open(os.path.join(SHARED, 'nav.html')).read()
 FOOT = open(os.path.join(SHARED, 'footer.html')).read()
 COMPARE = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'compare.html')).read()
 SITE = 'https://newurbaninfluence.com'
-V = '20261124v7'
+V = '20261124v8'
 
 ICONS = {
     'calendar': '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
@@ -97,6 +97,20 @@ def shell(slug, title, desc, crumb, body, faq):
 </html>
 '''
 
+BUILDS = [
+    ('Hideaway Kitchen &amp; Bar', 'Restaurant and bar · Southfield', 'https://hideawaykitchenandbar.net', 'hideaway-site'),
+    ('Yoshi Hibachi Grille', 'Hibachi restaurant · concept for the franchise', 'https://yoshi-hibachi-grille.netlify.app', 'yoshi-site'),
+    ('Michigan After Dark', 'Nightlife · Detroit', 'https://michiganafterdark.com', 'mad-site'),
+    ('Larry Castleberry', 'Storyteller and voice actor', 'https://main--larrycastleberry.netlify.app', 'larry-site'),
+    ('AJ Photography', 'Photo studio · Metro Detroit', 'https://ajvip.com', 'ajvip-site'),
+    ('Ruut &amp; Ryze Wellness', 'Therapy and holistic healing', 'https://ruutandryze.netlify.app', 'ruut-site'),
+    ('Sonya Meadows', 'Author and speaker', 'https://sonyameadows.com', 'sonya-site'),
+    ('Ultimate Hair Co.', 'Hair brand · Oak Park', 'https://ultimatehairco.com', 'uhc-site'),
+    ('VividVerse TV', 'Film distribution', 'https://vividversetv.com', 'vividverse-site'),
+    ('Backyard Comedy Battle', 'Live comedy shows and tickets', 'https://gooddaytofengshui.com', 'comedy-site'),
+    ('Built Heavy', 'Independent artist streaming site', 'https://farenyoung.com', 'builtheavy-site'),
+]
+
 # ---------------------------------------------------------------- Restaurants & bars
 BAR_FAQ = [
     ("Does this replace my POS?", "No. Keep your register. We plug into it and handle everything around it: bookings, marketing, staff and stock. Sales, voids and tips flow in on their own, so nobody types anything twice."),
@@ -162,6 +176,12 @@ BAR = f'''
 </div></section>
 
 <section><div class="container">
+  <p class="section-label">Restaurant websites</p>
+  <h2>Restaurant sites we've designed</h2>
+  <div class="nh-builds nh-builds2">{''.join(f'<a href="{u}" target="_blank" rel="noopener"><img src="/images/work/{img}.webp" width="1200" height="750" loading="lazy" alt="{n} website designed by New Urban Influence"><b>{n}</b><small>{t}</small></a>' for n, t, u, img in BUILDS[:2])}</div>
+</div></section>
+
+<section><div class="container">
   <p class="section-label">Optional extras</p>
   <h2>Want more hands on it?</h2>
   <div class="nh-grid nh-grid2">
@@ -184,18 +204,6 @@ BAR = f'''
 '''
 
 # ---------------------------------------------------------------- Websites
-BUILDS = [
-    ('Hideaway Kitchen &amp; Bar', 'Restaurant and bar · Southfield', 'https://hideawaykitchenandbar.net', 'hideaway-site'),
-    ('AJ Photography', 'Photo studio · Metro Detroit', 'https://ajvip.com', 'ajvip-site'),
-    ('Michigan After Dark', 'Nightlife · Detroit', 'https://michiganafterdark.com', 'mad-site'),
-    ('Sonya Meadows', 'Author and speaker', 'https://sonyameadows.com', 'sonya-site'),
-    ('Ultimate Hair Co.', 'Hair brand · Oak Park', 'https://ultimatehairco.com', 'uhc-site'),
-    ('VividVerse TV', 'Film distribution', 'https://vividversetv.com', 'vividverse-site'),
-    ('Backyard Comedy Battle', 'Live comedy shows and tickets', 'https://gooddaytofengshui.com', 'comedy-site'),
-    ('Smile For Me Photography', 'Photo booths and photography · Detroit', 'https://smile-for-me-photography.netlify.app', 'smile-site'),
-    ('Built Heavy', 'Album site · Faren Young', 'https://farenyoung.com', 'builtheavy-site'),
-    ('Larry Castleberry', 'Storyteller and voice actor', 'https://www.larrycastleberry.com', 'larry-site'),
-]
 WEB_FAQ = [
     ("How much does a website cost?", "It depends on what your business needs, so every site is priced after the free audit, with a clear plan and an exact price up front. Hosting, maintenance and support are included."),
     ("How long does it take?", "Most websites are built in a few weeks. We set it up with your real content and show you how to use it."),
@@ -209,6 +217,11 @@ WEB = f'''
   <h1>A website that brings <span class="red">customers</span> in</h1>
   <p>Fast on a phone, easy to book or buy from, and found on Google. Designed around your brand, not a template.</p>
   <div class="hero-btns"><a href="/?audit=1" class="btn btn-red">Book your free audit</a><a href="#builds" class="btn btn-outline">See websites we've built</a></div>
+  <div class="nh-fan" aria-hidden="true">
+    <span class="f1"><i></i><img src="/images/work/yoshi-site.webp" width="1200" height="750" alt=""></span>
+    <span class="f2"><i></i><img src="/images/work/hideaway-site.webp" width="1200" height="750" alt=""></span>
+    <span class="f3"><i></i><img src="/images/work/larry-site.webp" width="1200" height="750" alt=""></span>
+  </div>
 </header>
 
 <section id="builds"><div class="container">
