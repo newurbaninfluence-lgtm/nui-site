@@ -4,6 +4,10 @@
 // ZONE 6: Breadcrumb navigation system
 // Injects dynamic breadcrumb bar below admin header as user navigates panels
 var _nuiBreadcrumbMap = {
+    'siteeditor': [
+        { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
+        { label: 'Edit website', action: '' }
+    ],
     'moodboard': [
         { label: 'Dashboard', action: "showAdminPanel('dashboard')" },
         { label: 'Projects', action: "showAdminPanel('projects')" },
@@ -169,6 +173,7 @@ function showAdminPanel(panel) {
         'usermanagement': loadAdminUserManagementPanel,
         'monty': loadAdminMontyPanel,
         'sites': loadAdminSitesPanel,
+        'siteeditor': loadAdminSiteeditorPanel,
         'datahealth': loadDataHealthPanel,
         'subaccounts': loadAdminSubAccountsPanel,
         'visitors': loadAdminVisitorsPanel,

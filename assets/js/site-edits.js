@@ -51,6 +51,9 @@
 
   function start(list) { rules = list || []; if (!rules.length) return; apply(); }
 
+  // The back office "Edit website" screen uses this to show one unsaved change on the open page.
+  window.nuiTrySiteEdit = function(rule) { rules.push(rule); apply(); };
+
   // Last known changes apply right away; fresh ones replace them as soon as they load.
   try { start(JSON.parse(sessionStorage.getItem(KEY) || '[]')); } catch (e) {}
   document.addEventListener('DOMContentLoaded', apply);
