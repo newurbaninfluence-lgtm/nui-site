@@ -179,6 +179,64 @@ body.nh-page .nh-form .btn{margin-top:10px;border:0;cursor:pointer}
 body.nh-page .nh-form-msg{min-height:20px;font-size:14px;font-weight:600;color:#ff8a92}
 body.nh-page .nh-form-done{font:600 19px/1.4 'Inter Tight',Inter,sans-serif;color:#fff}
 
+/* before and after (scripts/site-pages/compare.html) */
+body.nh-page.nh-gen section.nh-compare{background:#fff;color:#1d1d1f}
+body.nh-page .cmp{display:grid;grid-template-columns:5fr 7fr;gap:24px;margin-top:40px;align-items:stretch}
+body.nh-page .cmp-col{margin:0;min-width:0;display:flex;flex-direction:column}
+body.nh-page .cmp figcaption{margin-bottom:12px}
+body.nh-page .cmp figcaption b{display:block;font:700 20px 'Inter Tight',Inter,sans-serif;color:#1d1d1f}
+body.nh-page .cmp figcaption span{font-size:15px;color:#424245}
+body.nh-page .cmp-before{position:relative;flex:1;min-height:380px;border-radius:20px;background:#e9e9ee;padding:28px 24px 96px;overflow:hidden}
+body.nh-page .pos{background:#fff;border:1px solid #cfcfd6;border-radius:6px;font:13px/1.4 ui-monospace,Menlo,monospace;color:#1d1d1f;max-width:340px}
+body.nh-page .pos-top{display:flex;justify-content:space-between;padding:8px 12px;background:#3a3a40;color:#fff;border-radius:5px 5px 0 0}
+body.nh-page .pos-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:7px 12px;border-top:1px solid #e3e3e8}
+body.nh-page .pos-row.hd{font-weight:700;background:#f3f3f6}
+body.nh-page .pos-foot{padding:10px 12px;border-top:1px solid #cfcfd6;color:#424245;font-family:Inter,sans-serif;font-size:13px}
+body.nh-page .note{position:absolute;padding:10px 14px;border-radius:4px;background:#ffe98a;color:#1d1d1f;font:600 14px Inter,sans-serif;box-shadow:0 6px 14px rgba(0,0,0,.18)}
+body.nh-page .note.n1{right:18px;top:26px;transform:rotate(4deg)}
+body.nh-page .note.n2{right:34px;top:124px;transform:rotate(-5deg);background:#bfe3ff}
+body.nh-page .note.n3{left:28px;bottom:54px;transform:rotate(-3deg);background:#c9f2c7}
+body.nh-page .note.n4{right:22px;bottom:22px;transform:rotate(3deg);background:#ffc9c9}
+body.nh-page .cmp-after{flex:1;display:grid;grid-template-columns:168px 1fr;border-radius:20px;overflow:hidden;background:#f7f5ff;border:1px solid #e3dcfa;box-shadow:0 30px 70px rgba(91,33,182,.22);font:13px/1.4 Inter,sans-serif;color:#1d1d1f;text-align:left}
+body.nh-page .bo-side{background:#fff;border-right:1px solid #e9e4fb;padding:14px 10px;display:flex;flex-direction:column;gap:2px}
+body.nh-page .bo-brand{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+body.nh-page .bo-brand i{display:grid;place-items:center;width:32px;height:32px;border-radius:9px;background:linear-gradient(150deg,#8b5cf6,#6d28d9);color:#fff;font:800 12px 'Inter Tight',sans-serif;font-style:normal}
+body.nh-page .bo-brand span{font-weight:700;font-size:13px;line-height:1.2}
+body.nh-page .bo-brand small{display:block;font-weight:600;font-size:12px;color:#6d28d9}
+body.nh-page .bo-h{font-size:12px;font-weight:700;color:#424245;margin:4px 6px}
+body.nh-page .bo-side>span{padding:7px 8px;border-radius:8px;color:#1d1d1f;font-weight:500}
+body.nh-page .bo-side>span.on{background:#f1ebff;color:#6d28d9;font-weight:700}
+body.nh-page .bo-main{padding:16px;display:grid;gap:10px;align-content:start;min-width:0}
+body.nh-page .bo-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+body.nh-page .bo-tiles span{background:#fff;border:1px solid #e3dcfa;border-radius:12px;padding:10px 12px;font-weight:700}
+body.nh-page .bo-greet b{display:block;font:700 19px 'Inter Tight',Inter,sans-serif}
+body.nh-page .bo-greet span{color:#424245}
+body.nh-page .bo-card{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid #e3dcfa;border-radius:14px;padding:11px 12px}
+body.nh-page .bo-card div{flex:1;min-width:0}
+body.nh-page .bo-card b{display:block}
+body.nh-page .bo-card span{color:#424245}
+body.nh-page .bo-card em{font-style:normal;font-weight:700;color:#fff;background:#7c3aed;border-radius:999px;padding:6px 12px;white-space:nowrap}
+body.nh-page .cmp .d{flex:none;width:9px;height:9px;border-radius:50%;display:inline-block}
+body.nh-page .cmp .d.r{background:#e5091a}
+body.nh-page .cmp .d.w{background:#d97706}
+body.nh-page .cmp .d.g{background:#1a7f37;margin-right:8px}
+body.nh-page .bo-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+body.nh-page .bo-kpis div{background:#fff;border:1px solid #e3dcfa;border-radius:12px;padding:10px 12px;min-width:0}
+body.nh-page .bo-kpis small{display:block;font-size:12px;color:#424245}
+body.nh-page .bo-kpis b{font:800 20px 'Inter Tight',Inter,sans-serif}
+body.nh-page .bo-sync{display:flex;align-items:center;font-weight:600;background:#eef7f0;border:1px solid #cfe8d5;border-radius:999px;padding:7px 12px;justify-self:start}
+@media (max-width:900px){body.nh-page .cmp{grid-template-columns:1fr}body.nh-page .cmp-after{grid-template-columns:1fr}body.nh-page .bo-side{display:none}body.nh-page .bo-card{flex-wrap:wrap}body.nh-page .bo-kpis{grid-template-columns:1fr 1fr}body.nh-page .bo-kpis div:last-child{grid-column:1/-1}}
+
+body.nh-page .nh-builds2{grid-template-columns:repeat(2,1fr)}
+body.nh-page .nh-fan{position:relative;max-width:1000px;height:clamp(230px,38vw,430px);margin:56px auto -90px}
+body.nh-page .nh-fan span{position:absolute;display:block;width:52%;border-radius:12px;overflow:hidden;background:#1b1b1f;box-shadow:0 30px 70px rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.14)}
+body.nh-page .nh-fan i{display:block;height:22px;background:#26262b url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='22'%3E%3Ccircle cx='12' cy='11' r='4' fill='%23ff5f57'/%3E%3Ccircle cx='25' cy='11' r='4' fill='%23febc2e'/%3E%3Ccircle cx='38' cy='11' r='4' fill='%2328c840'/%3E%3C/svg%3E") no-repeat left center}
+body.nh-page .nh-fan img{display:block;width:100%;height:auto}
+body.nh-page .nh-fan .f1{left:0;top:12%;transform:rotate(-5deg)}
+body.nh-page .nh-fan .f3{right:0;top:12%;transform:rotate(5deg)}
+body.nh-page .nh-fan .f2{left:22%;top:0;width:56%;z-index:2}
+@media (max-width:760px){body.nh-page .nh-builds2{grid-template-columns:1fr}body.nh-page .nh-fan{margin:40px auto -60px}}
+
 /* old footers are replaced by .nh-foot */
 .nh-foot{background:#000;border-top:1px solid rgba(255,255,255,.1);padding:56px max(24px,env(safe-area-inset-right,0px)) 40px max(24px,env(safe-area-inset-left,0px));font:15px/1.55 Inter,system-ui,sans-serif;color:rgba(255,255,255,.82);text-align:left}
 .nh-foot .in{max-width:1072px;margin:0 auto}

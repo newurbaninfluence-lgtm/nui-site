@@ -77,6 +77,7 @@ function loadPortalView() {
 <a onclick="showAdminPanel('proofs')" class="admin-nav-link" data-panel="proofs"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Proofs</a>
 <a onclick="showAdminPanel('clients')" class="admin-nav-link" data-panel="clients"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Clients</a>
 <a onclick="showAdminPanel('sites')" class="admin-nav-link" data-panel="sites"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Client Websites</a>
+<a onclick="showAdminPanel('siteeditor')" class="admin-nav-link" data-panel="siteeditor"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Edit website</a>
 </div>
 <div class="admin-nav-group">
 <span class="admin-nav-label">MONEY</span>
@@ -167,6 +168,7 @@ function loadPortalView() {
 <div id="adminMontyPanel" class="admin-panel"></div>
 <div id="adminSubscriptionsPanel" class="admin-panel"></div>
 <div id="adminSitesPanel" class="admin-panel"></div>
+<div id="adminSiteeditorPanel" class="admin-panel"></div>
 <div id="adminDatahealthPanel" class="admin-panel"></div>
 <div id="adminSubaccountsPanel" class="admin-panel"></div>
 <div id="adminVisitorsPanel" class="admin-panel"></div>

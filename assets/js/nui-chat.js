@@ -123,7 +123,7 @@
       <div class="nui-chat-quick-btns" id="nuiQuickBtns">
         <button class="nui-chat-quick" onclick="nuiQuickAsk(this)">What services do you offer?</button>
         <button class="nui-chat-quick" onclick="nuiQuickAsk(this)">I need more customers</button>
-        <button class="nui-chat-quick" onclick="nuiQuickAsk(this)">What's Brand Heavy?</button>
+        <button class="nui-chat-quick" onclick="nuiQuickAsk(this)">Restaurant and bar software</button>
         <button class="nui-chat-quick" onclick="nuiQuickAsk(this)">Pricing for a website</button>
       </div>
       <div class="nui-chat-input-area">
@@ -145,7 +145,7 @@
 
   // ── Welcome message ────────────────────────────────────────
   function showWelcome() {
-    addBotMessage("Hey! I'm Sona, NUI's AI assistant. I can help you find the right branding, marketing, or tech service for your business. What are you looking for?");
+    addBotMessage("Hey! I'm Sona, NUI's AI assistant. I can help with websites and business software, or book your free audit. What are you looking for?");
   }
 
   // ── Toggle chat ────────────────────────────────────────────

@@ -11,8 +11,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 SHARED = os.path.join(ROOT, 'scripts', 'city-pages')
 NAV = open(os.path.join(SHARED, 'nav.html')).read()
 FOOT = open(os.path.join(SHARED, 'footer.html')).read()
+COMPARE = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'compare.html')).read()
 SITE = 'https://newurbaninfluence.com'
-V = '20261124v5'
+V = '20261124v8'
 
 ICONS = {
     'calendar': '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
@@ -45,12 +46,6 @@ def faqs(items):
 
 def strip(s):
     return s.replace('&amp;', '&').replace('&rsquo;', "'")
-
-STEPS = '''<ol class="nh-steps">
-    <li><span class="n">1</span><h3>Book your free audit</h3><p>About 30 minutes by phone or video. We look at how you run, what you pay for, and where money slips out.</p></li>
-    <li><span class="n">2</span><h3>Get your plan and price</h3><p>A clear plan, what we'll build, and exactly what it costs. No surprises.</p></li>
-    <li><span class="n">3</span><h3>We build it</h3><p>Set up with your real data, plus training so your team knows it on day one.</p></li>
-  </ol>'''
 
 CTA = '''<div class="cta">
   <h2>Let's find your leak.</h2>
@@ -87,7 +82,7 @@ def shell(slug, title, desc, crumb, body, faq):
 <link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css?v={V}">
-<script src="/assets/js/site-edits.js?v=20261124v1" defer></script>
+<script src="/assets/js/site-edits.js?v=20261124v2" defer></script>
 </head>
 <body class="nh-page nh-gen">
 {NAV}
@@ -101,6 +96,20 @@ def shell(slug, title, desc, crumb, body, faq):
 </body>
 </html>
 '''
+
+BUILDS = [
+    ('Hideaway Kitchen &amp; Bar', 'Restaurant and bar · Southfield', 'https://hideawaykitchenandbar.net', 'hideaway-site'),
+    ('Yoshi Hibachi Grille', 'Hibachi restaurant · concept for the franchise', 'https://yoshi.demo.newurbaninfluence.com', 'yoshi-site'),
+    ('Michigan After Dark', 'Nightlife · Detroit', 'https://michiganafterdark.com', 'mad-site'),
+    ('Larry Castleberry', 'Storyteller and voice actor', 'https://larry.demo.newurbaninfluence.com', 'larry-site'),
+    ('AJ Photography', 'Photo studio · Metro Detroit', 'https://ajvip.com', 'ajvip-site'),
+    ('Ruut &amp; Ryze Wellness', 'Therapy and holistic healing', 'https://ruut.demo.newurbaninfluence.com', 'ruut-site'),
+    ('Sonya Meadows', 'Author and speaker', 'https://sonyameadows.com', 'sonya-site'),
+    ('Ultimate Hair Co.', 'Hair brand · Oak Park', 'https://ultimatehairco.com', 'uhc-site'),
+    ('VividVerse TV', 'Film distribution', 'https://vividversetv.com', 'vividverse-site'),
+    ('Backyard Comedy Battle', 'Live comedy shows and tickets', 'https://gooddaytofengshui.com', 'comedy-site'),
+    ('Built Heavy', 'Independent artist streaming site', 'https://farenyoung.com', 'builtheavy-site'),
+]
 
 # ---------------------------------------------------------------- Restaurants & bars
 BAR_FAQ = [
@@ -116,7 +125,7 @@ BAR = f'''
   <div class="badge">Restaurant and bar software</div>
   <h1>Is your bar <span class="red">leaking</span> money?</h1>
   <p>No-shows, free pours, staff on the clock after close. Our software shows you where the money is going and plugs it. It works with the register you already have.</p>
-  <div class="hero-btns"><a href="/?audit=1" class="btn btn-red">Book your free audit</a><a href="tel:+12484878747" class="btn btn-outline">Call (248) 487-8747</a></div>
+  <div class="hero-btns"><a href="/?audit=1" class="btn btn-red">Book your free audit</a><a href="/how-it-works#demo" class="btn btn-outline">Get the demo</a></div>
   <img class="nh-devices" src="/assets/img/home/system-devices.webp" width="1090" height="560" alt="The owner's daily report on a laptop and the restaurant's website on a phone">
 </header>
 
@@ -146,6 +155,7 @@ BAR = f'''
   <p class="section-text" style="margin-top:28px">Typical POS add-ons for a 20-person bar: about $400 to $650 a month. With us: all of it included, plus your website, hosting, maintenance and support.</p>
 </div></section>
 
+{COMPARE}
 <section><div class="container">
   <p class="section-label">Two people, one system</p>
   <h2>Built for the owner. Run by the GM.</h2>
@@ -166,6 +176,12 @@ BAR = f'''
 </div></section>
 
 <section><div class="container">
+  <p class="section-label">Restaurant websites</p>
+  <h2>Restaurant sites we've designed</h2>
+  <div class="nh-builds nh-builds2">{''.join(f'<a href="{u}" target="_blank" rel="noopener"><img src="/images/work/{img}.webp" width="1200" height="750" loading="lazy" alt="{n} website designed by New Urban Influence"><b>{n}</b><small>{t}</small></a>' for n, t, u, img in BUILDS[:2])}</div>
+</div></section>
+
+<section><div class="container">
   <p class="section-label">Optional extras</p>
   <h2>Want more hands on it?</h2>
   <div class="nh-grid nh-grid2">
@@ -176,8 +192,8 @@ BAR = f'''
 
 <section><div class="container">
   <p class="section-label">How it works</p>
-  <h2>Three steps. Nothing to figure out.</h2>
-  {STEPS}
+  <h2>Free audit, then a plan and price, then we build it.</h2>
+  <a class="btn btn-outline" href="/how-it-works">See how it works</a>
 </div></section>
 
 <section><div class="container">
@@ -188,17 +204,6 @@ BAR = f'''
 '''
 
 # ---------------------------------------------------------------- Websites
-BUILDS = [
-    ('Hideaway Kitchen &amp; Bar', 'Restaurant and bar · Southfield', 'https://hideawaykitchenandbar.net', 'hideaway-site'),
-    ('AJ Photography', 'Photo studio · Metro Detroit', 'https://ajvip.com', 'ajvip-site'),
-    ('Michigan After Dark', 'Nightlife · Detroit', 'https://michiganafterdark.com', 'mad-site'),
-    ('Sonya Meadows', 'Author and speaker', 'https://sonyameadows.com', 'sonya-site'),
-    ('Ultimate Hair Co.', 'Hair brand · Oak Park', 'https://ultimatehairco.com', 'uhc-site'),
-    ('VividVerse TV', 'Film distribution', 'https://vividversetv.com', 'vividverse-site'),
-    ('Backyard Comedy Battle', 'Live comedy shows and tickets', 'https://gooddaytofengshui.com', 'comedy-site'),
-    ('Smile For Me Photography', 'Photo booths and photography · Detroit', 'https://smile-for-me-photography.netlify.app', 'smile-site'),
-    ('Built Heavy', 'Album site · Faren Young', 'https://farenyoung.com', 'builtheavy-site'),
-]
 WEB_FAQ = [
     ("How much does a website cost?", "It depends on what your business needs, so every site is priced after the free audit, with a clear plan and an exact price up front. Hosting, maintenance and support are included."),
     ("How long does it take?", "Most websites are built in a few weeks. We set it up with your real content and show you how to use it."),
@@ -212,6 +217,11 @@ WEB = f'''
   <h1>A website that brings <span class="red">customers</span> in</h1>
   <p>Fast on a phone, easy to book or buy from, and found on Google. Designed around your brand, not a template.</p>
   <div class="hero-btns"><a href="/?audit=1" class="btn btn-red">Book your free audit</a><a href="#builds" class="btn btn-outline">See websites we've built</a></div>
+  <div class="nh-fan" aria-hidden="true">
+    <span class="f1"><i></i><img src="/images/work/yoshi-site.webp" width="1200" height="750" alt=""></span>
+    <span class="f2"><i></i><img src="/images/work/hideaway-site.webp" width="1200" height="750" alt=""></span>
+    <span class="f3"><i></i><img src="/images/work/larry-site.webp" width="1200" height="750" alt=""></span>
+  </div>
 </header>
 
 <section id="builds"><div class="container">
@@ -247,8 +257,8 @@ WEB = f'''
 
 <section><div class="container">
   <p class="section-label">How it works</p>
-  <h2>Three steps. Nothing to figure out.</h2>
-  {STEPS}
+  <h2>Free audit, then a plan and price, then we build it.</h2>
+  <a class="btn btn-outline" href="/how-it-works">See how it works</a>
 </div></section>
 
 <section><div class="container">
