@@ -1,36 +1,7 @@
 // ==================== ADMIN CLIENTS ====================
 // Clients, Orders, Leads, New Order/Client, Assets, CRM, Projects, Proofs, Delivery, Portal, Payments, Invoices, Payouts
 
-function loadAdminClientsPanel(searchTerm = '') {
-    const filtered = searchTerm
-        ? clients.filter(c =>
-            (c.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (c.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (c.industry || '').toLowerCase().includes(searchTerm.toLowerCase())
-          )
-        : clients;
-
-    document.getElementById('adminClientsPanel').innerHTML = `
-<div class="flex-between mb-24">
-<h2 class="fs-28 fw-700">All Clients</h2>
-<span class="text-muted">${filtered.length} of ${clients.length} clients</span>
-</div>
-<div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: center;">
-<input type="text" id="clientSearch" placeholder="Search clients by name, email, or industry..." value="${searchTerm}"
-                oninput="loadAdminClientsPanel(this.value)"
-                style="flex: 1; min-width: 250px; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 14px;">
-<button onclick="showCsvImportModal()" style="padding: 10px 16px; background: #10b981; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">📥 Import CSV</button>
-<button onclick="exportClientsCSV()" style="padding: 10px 16px; background: #f3f4f6; border: 1px solid #e5e5e5; border-radius: 8px; cursor: pointer;">📤 Export CSV</button>
-<button onclick="showAdminPanel('newclient')" class="btn-cta">+ New Client</button>
-<button onclick="showAdminPanel('migrateclient')" class="btn-cta" style="background:#1a1a1a;border:1px solid #444;color:#aaa;margin-left:8px;">↩️ Migrate Existing</button>
-<button onclick="showClientHistoryImport()" style="padding: 10px 16px; background: #7c3aed; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit;">📥 Import History</button>
-</div>
-<input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="handleCsvUpload(event)">
-        ${filtered.length > 0 ? `
-<div class="card-grid">${filtered.map(c => renderClientCard(c)).join('')}</div>
-        ` : '<p style="color: #888; text-align: center; padding: 40px;">No clients found.</p>'}
-    `;
-}
+// The Clients list itself lives in admin-client-hub.js (loadAdminClientsPanel).
 
 // Export clients to CSV
 function exportClientsCSV() {
