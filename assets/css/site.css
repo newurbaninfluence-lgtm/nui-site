@@ -170,6 +170,15 @@ body.nh-page.nh-gen section.dk :is(.nh-card,.nh-steps li){background:rgba(255,25
 body.nh-page.nh-gen section.dk .nh-card p{color:rgba(255,255,255,.84)}
 body.nh-page.nh-gen section.dk .nh-note,body.nh-page.nh-gen section.dk a.nh-link .nh-note{color:#ff5a64}
 
+body.nh-page .nh-form{display:grid;gap:8px}
+body.nh-page .nh-form label{font-size:14px;font-weight:600;margin-top:6px}
+body.nh-page .nh-form input{min-height:48px;border:1.5px solid rgba(255,255,255,.25);border-radius:12px;padding:0 14px;font:16px Inter,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.35)}
+body.nh-page .nh-form input::placeholder{color:rgba(255,255,255,.6)}
+body.nh-page .nh-form input:focus-visible{outline:2px solid #fff;outline-offset:2px}
+body.nh-page .nh-form .btn{margin-top:10px;border:0;cursor:pointer}
+body.nh-page .nh-form-msg{min-height:20px;font-size:14px;font-weight:600;color:#ff8a92}
+body.nh-page .nh-form-done{font:600 19px/1.4 'Inter Tight',Inter,sans-serif;color:#fff}
+
 /* old footers are replaced by .nh-foot */
 .nh-foot{background:#000;border-top:1px solid rgba(255,255,255,.1);padding:56px max(24px,env(safe-area-inset-right,0px)) 40px max(24px,env(safe-area-inset-left,0px));font:15px/1.55 Inter,system-ui,sans-serif;color:rgba(255,255,255,.82);text-align:left}
 .nh-foot .in{max-width:1072px;margin:0 auto}

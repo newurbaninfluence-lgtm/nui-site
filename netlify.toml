@@ -164,6 +164,11 @@
   to = "/websites.html"
   status = 200
 
+[[redirects]]
+  from = "/how-it-works"
+  to = "/how-it-works.html"
+  status = 200
+
 # About page
 [[redirects]]
   from = "/about"

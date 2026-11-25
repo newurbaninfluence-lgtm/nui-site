@@ -12,7 +12,7 @@ SHARED = os.path.join(ROOT, 'scripts', 'city-pages')
 NAV = open(os.path.join(SHARED, 'nav.html')).read()
 FOOT = open(os.path.join(SHARED, 'footer.html')).read()
 SITE = 'https://newurbaninfluence.com'
-V = '20261124v4'
+V = '20261124v5'
 
 ICONS = {
     'calendar': '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
@@ -96,6 +96,7 @@ def shell(slug, title, desc, crumb, body, faq):
 {CTA}
 {FOOT}
 <script src="/assets/js/site-nav.js?v={V}" defer></script>
+<script src="/assets/js/lead-form.js?v={V}" defer></script>
 <script src="/assets/js/nui-push.js?v=20261124v5" defer></script>
 </body>
 </html>
@@ -257,6 +258,72 @@ WEB = f'''
 </div></section>
 '''
 
+# ---------------------------------------------------------------- How it works
+HOW_FAQ = [
+    ("Is the audit really free?", "Yes. About 30 minutes by phone or video. You keep the list of leaks we find whether you hire us or not."),
+    ("What do I need to bring?", "Nothing formal. It helps to know which apps you pay for each month and roughly what a good and a slow week look like."),
+    ("How long until it's running?", "Most websites and systems are built in a few weeks. We start with the leak that's costing you the most."),
+    ("What happens after launch?", "Hosting, maintenance and support are included. When something needs changing or fixing, a real person answers."),
+]
+HOW = f'''
+<header class="hero">
+  <div class="badge">How it works</div>
+  <h1>From first call to <span class="red">running</span> in three steps</h1>
+  <p>No long contracts to read first, nothing to install yourself. We look at your business, show you the plan and price, then build it and train your team.</p>
+  <div class="hero-btns"><a href="/?audit=1" class="btn btn-red">Book your free audit</a><a href="#demo" class="btn btn-outline">Get the demo</a></div>
+</header>
+
+<section><div class="container nh-split">
+  <div>
+    <p class="section-label">Step 1</p>
+    <h2>Book your free audit</h2>
+    <p class="section-text">About 30 minutes by phone or video. We ask how you run today and look for where money slips out.</p>
+    <ul class="nh-list"><li>What you pay for each month, app by app</li><li>How customers find you, book and come back</li><li>Where staff time, stock or sales go missing</li><li>You leave with a plain list of leaks, yours to keep</li></ul>
+  </div>
+  <div class="nh-card">{ico('search')}<h3>What we usually find</h3><p>People who look but don't buy, customers who never come back, and costs nobody is watching. Most owners have at least two of the three.</p></div>
+</div></section>
+
+<section><div class="container nh-split">
+  <div>
+    <p class="section-label">Step 2</p>
+    <h2>Get your plan and price</h2>
+    <p class="section-text">Within a few days you get a clear plan: which leak we fix first, what we'll build, and exactly what it costs.</p>
+    <ul class="nh-list"><li>One price for the system, website, hosting, maintenance and support</li><li>Which apps you can cancel once it's live</li><li>No surprises and no add-on fees later</li></ul>
+  </div>
+  <div class="nh-card">{ico('layout')}<h3>Start small if you want</h3><p>You don't have to switch everything at once. We start with the leak that's costing you the most, then add what you'll actually use.</p></div>
+</div></section>
+
+<section><div class="container nh-split">
+  <div>
+    <p class="section-label">Step 3</p>
+    <h2>We build it and train your team</h2>
+    <p class="section-text">Most builds take a few weeks. We set it up with your real menus, staff, customers and prices, so day one isn't an empty screen.</p>
+    <ul class="nh-list"><li>Your website and your back office, connected</li><li>Plugs into your register: Union today, Clover and Square next</li><li>Training for you, your GM and your staff</li><li>Support from a real person after launch</li></ul>
+  </div>
+  <img class="nh-shot" src="/assets/img/home/coo-team.webp" width="1200" height="900" loading="lazy" alt="A consulting team reviewing numbers on a tablet with a bar manager">
+</div></section>
+
+<section class="dk" id="demo"><div class="container nh-split">
+  <div>
+    <p class="section-label">See it first</p>
+    <h2>Get the demo</h2>
+    <p class="section-text">We're finishing a demo you can click through yourself: a sample bar with its bookings, staff, stock and morning report. Leave your number and we'll text you the link as soon as it's ready.</p>
+  </div>
+  <form class="nh-card nh-form" data-lead-form data-service="demo-request" data-label="Demo request" data-done="We'll text you the demo link as soon as it's ready." novalidate>
+    <label for="dName">Your name</label><input id="dName" name="name" autocomplete="name" placeholder="e.g. Dana Brooks">
+    <label for="dPhone">Mobile number</label><input id="dPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. (313) 555-0142">
+    <p class="nh-form-msg" role="alert"></p>
+    <button type="submit" class="btn btn-red">Text me the demo</button>
+  </form>
+</div></section>
+
+<section><div class="container">
+  <p class="section-label">Questions</p>
+  <h2>Questions about getting started</h2>
+  <div class="nh-faqs">{faqs(HOW_FAQ)}</div>
+</div></section>
+'''
+
 PAGES = [
     ('restaurants-bars', 'Restaurant &amp; Bar Software | Bookings, Staff, Stock | New Urban Influence',
      'Software for restaurants and bars: bookings and deposits, texts to regulars, staff schedules, bar stock and a daily owner report. Works with your POS. Free audit.',
@@ -264,6 +331,9 @@ PAGES = [
     ('websites', 'Websites That Bring Customers In | New Urban Influence, Detroit',
      'Custom websites for local businesses: fast on a phone, easy to book or buy from, found on Google. Hosting, maintenance and support included. Free audit.',
      'Websites', WEB, WEB_FAQ),
+    ('how-it-works', 'How It Works | Free Audit, Plan and Price, Build | New Urban Influence',
+     'How working with New Urban Influence goes: a free 30-minute audit, a clear plan and exact price, then we build it and train your team.',
+     'How it works', HOW, HOW_FAQ),
 ]
 for slug, title, desc, crumb, body, faq in PAGES:
     open(os.path.join(ROOT, slug + '.html'), 'w').write(shell(slug, title, desc, crumb, body, faq))
