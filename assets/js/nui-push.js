@@ -68,7 +68,7 @@
                 border-radius: 18px;
                 padding: 24px;
                 box-shadow: 0 24px 64px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
-                font-family: 'Montserrat', 'Inter', sans-serif;
+                font-family: 'Inter', 'Inter', sans-serif;
                 position: relative;
                 overflow: hidden;
             }

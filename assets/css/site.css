@@ -1,0 +1,119 @@
+/* New design for the standalone pages (cities, services, work, about, contact...).
+   Loaded last in <head>; body.nh-page outranks each page's own <style> block.
+   Same look as the homepage: Inter / Inter Tight, black + white sections, red accent, purple and red glow. */
+
+body.nh-page{--nh-red:#e5091a;--nh-red-dk:#b3000c;--nh-mist:#f5f5f7;--nh-ink:#1d1d1f;--nh-body:#424245;
+  background:#000;color:#fff;font-family:Inter,system-ui,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body.nh-page :is(h1,h2,h3,h4){font-family:'Inter Tight',Inter,system-ui,sans-serif;text-transform:none;letter-spacing:-.02em;text-wrap:balance}
+body.nh-page h1{font-weight:800;letter-spacing:-.04em;line-height:1.04}
+body.nh-page h2{font-weight:800;letter-spacing:-.035em;line-height:1.05;font-size:clamp(32px,4.6vw,56px)}
+body.nh-page h3{font-weight:700}
+body.nh-page .red{color:var(--nh-red)}
+body.nh-page a{color:inherit}
+body.nh-page p,body.nh-page li{text-transform:none}
+body.nh-page .container,body.nh-page .container-lg{max-width:1120px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+
+/* ---------- nav (same as homepage) ---------- */
+.nh-nav{position:sticky;top:0;z-index:1000;height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 max(24px,calc((100% - 1120px)/2 + 24px));background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,255,255,.08);font-family:Inter,system-ui,sans-serif}
+.nh-nav a{text-decoration:none}
+.nh-logo{display:flex;align-items:center;gap:10px;color:#fff;font:600 15px 'Inter Tight',Inter,system-ui,sans-serif;letter-spacing:.2px;white-space:nowrap}
+.nh-logo img{width:26px;height:26px;border-radius:7px;display:block}
+.nh-links{display:flex;gap:28px}
+.nh-links a{font-size:13px;color:rgba(255,255,255,.86)}
+.nh-links a:hover,.nh-links a[aria-current=page]{color:#fff}
+.nh-right{display:flex;align-items:center;gap:8px}
+.nh-cta{display:inline-flex;align-items:center;min-height:36px;padding:0 16px;border-radius:999px;background:#fff;color:#000!important;font:600 13px Inter,system-ui,sans-serif;white-space:nowrap}
+.nh-burger{display:none;width:44px;height:44px;border:0;background:none;cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:5px}
+.nh-burger span{display:block;width:22px;height:2px;background:#fff;border-radius:1px;transition:transform .25s,opacity .25s}
+.nh-burger[aria-expanded=true] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nh-burger[aria-expanded=true] span:nth-child(2){opacity:0}
+.nh-burger[aria-expanded=true] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.nh-menu{position:fixed;inset:56px 0 0 0;z-index:999;background:rgba(0,0,0,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:24px max(24px,env(safe-area-inset-right,0px)) 40px max(24px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:4px;overflow:auto}
+.nh-menu[hidden]{display:none}
+.nh-menu a{display:flex;align-items:center;min-height:52px;font:700 24px 'Inter Tight',Inter,system-ui,sans-serif;letter-spacing:-.02em;color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.08)}
+.nh-nav a:focus-visible,.nh-burger:focus-visible,.nh-menu a:focus-visible{outline:2px solid #fff;outline-offset:3px}
+@media (max-width:968px){.nh-links{display:none}.nh-burger{display:flex}.nh-nav{padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}}
+@media (max-width:380px){.nh-logo span{font-size:14px}.nh-cta{padding:0 12px}}
+
+.nh-cart{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;font:600 13px Inter,system-ui,sans-serif;cursor:pointer}
+.nh-links .nh-cart{margin-left:-8px}
+.nh-cart-m{display:none!important}
+@media (max-width:968px){.nh-cart-m{display:inline-flex!important}}
+
+/* breadcrumb */
+body.nh-page nav.breadcrumb{max-width:1120px;margin:0 auto;padding:14px max(24px,env(safe-area-inset-left,0px)) 0!important;background:none!important;border:0!important;font-size:13px!important;color:rgba(255,255,255,.7)!important}
+body.nh-page nav.breadcrumb a{color:#fff!important;font-size:13px!important}
+
+/* ---------- hero: keep each page's photo, add the studio glow ---------- */
+body.nh-page .hero,body.nh-page .page-hero,body.nh-page .door-hero{position:relative;isolation:isolate;overflow:hidden;padding:120px 24px 96px;text-align:center}
+body.nh-page .hero:before,body.nh-page .page-hero:before,body.nh-page .door-hero:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(55% 45% at 35% -10%,rgba(126,34,206,.45),transparent 70%),radial-gradient(45% 40% at 70% -6%,rgba(229,9,26,.28),transparent 70%),radial-gradient(55% 60% at 15% 100%,rgba(229,9,26,.3),transparent 65%),linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.35) 50%,#000)}
+body.nh-page .hero h1,body.nh-page .page-hero h1{font-size:clamp(40px,7vw,88px);margin:0 auto 22px;max-width:980px;text-shadow:none}
+body.nh-page .hero p,body.nh-page .page-hero p{color:rgba(255,255,255,.88);font-size:clamp(17px,2vw,20px);max-width:640px;margin:0 auto 34px;text-shadow:none}
+body.nh-page .hero .badge,body.nh-page .badge{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:999px;font:600 14px Inter,system-ui,sans-serif;letter-spacing:0;text-transform:none;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+body.nh-page .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* ---------- buttons: one solid red, everything else outline ---------- */
+body.nh-page :is(.btn,.btn-red,.btn-wh,.btn-out,.btn-bk,.btn-package,.btn-outline,.btn-sm){display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:999px;font:600 16px Inter,system-ui,sans-serif;letter-spacing:0;text-transform:none;text-decoration:none;transition:transform .15s,box-shadow .2s,border-color .2s}
+body.nh-page :is(.btn-red,.btn-package,.btn-wh,.btn-bk){background:var(--nh-red);color:#fff;border:0;box-shadow:0 10px 30px rgba(229,9,26,.3),inset 0 1px 0 rgba(255,255,255,.25)}
+body.nh-page :is(.btn-red,.btn-package,.btn-wh,.btn-bk):hover{background:#cc0817;text-decoration:none;transform:translateY(-1px)}
+body.nh-page :is(.btn-outline,.btn-out){background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);margin-left:0}
+body.nh-page :is(.btn-outline,.btn-out):hover{border-color:#fff;text-decoration:none}
+body.nh-page .hero .btn+.btn{margin-left:10px}
+body.nh-page :is(.btn,.btn-red,.btn-outline,.btn-package)[style*="display: block"],body.nh-page :is(.btn,.btn-red,.btn-outline,.btn-package)[style*="display:block"],body.nh-page .btn-block{display:flex!important;width:100%}
+body.nh-page :is(.btn,.btn-red,.btn-outline):focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+/* ---------- sections ---------- */
+body.nh-page section{padding-block:96px}
+body.nh-page section:nth-child(even){background:#0b0b0c}
+body.nh-page .section-label,body.nh-page .sec-lbl,body.nh-page .label{font:600 15px Inter,system-ui,sans-serif;letter-spacing:0;text-transform:none;color:#ff5a64;margin-bottom:12px}
+body.nh-page .section-text,body.nh-page .lead{color:rgba(255,255,255,.82);font-size:18px;line-height:1.55;max-width:680px}
+body.nh-page .content-block p,body.nh-page .content-block li{color:rgba(255,255,255,.84)}
+
+/* cards */
+body.nh-page :is(.package,.price-card,.faq-item,.stat-card,.item-card,.project-card,.deliverable-card,.bundle-card,.contact-card,.team-card,.step-card,.feature,.prob,.pos,.pillar,.testimonial,.voice-card){background:#111113;border:1px solid rgba(255,255,255,.1);border-radius:22px;box-shadow:none}
+body.nh-page :is(.package,.price-card,.item-card,.project-card,.bundle-card):hover{border-color:rgba(229,9,26,.5);transform:translateY(-3px)}
+body.nh-page .package{padding:32px 28px}
+body.nh-page .package h3,body.nh-page .price-card h3{font-size:22px}
+body.nh-page :is(.price,.package-price,.bundle-price,.price-tag){font-family:'Inter Tight',Inter,system-ui,sans-serif;font-weight:800;letter-spacing:-.02em;color:#fff}
+body.nh-page :is(.price,.package-price) span{color:rgba(255,255,255,.72)}
+body.nh-page .package ul li{color:rgba(255,255,255,.84);font-size:15px;border-bottom-color:rgba(255,255,255,.08)}
+body.nh-page .package ul li:before{color:var(--nh-red)}
+body.nh-page .faq-item{padding:24px 26px}
+body.nh-page .faq-item h3,body.nh-page .faq-q{font-size:19px;letter-spacing:-.01em}
+body.nh-page .faq-item p{color:rgba(255,255,255,.82);font-size:16px}
+body.nh-page .stat-card .number,body.nh-page .num{font-family:'Inter Tight',Inter,system-ui,sans-serif;font-weight:800;letter-spacing:-.03em}
+body.nh-page :is(.chip,.tag,.pos-tag,.pillar-tag,.team-badge){border-radius:999px;text-transform:none;letter-spacing:0;font-weight:600}
+
+/* link chips: nearby cities, related services */
+body.nh-page :is(.nearby-grid,.related-grid){display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+body.nh-page :is(.nearby-grid,.related-grid) a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:15px;text-decoration:none}
+body.nh-page :is(.nearby-grid,.related-grid) a:hover{border-color:var(--nh-red);background:rgba(229,9,26,.1)}
+body.nh-page :is(.internal-services-section,.internal-locations-section){background:#0b0b0c!important;padding-block:72px!important;border-top:1px solid rgba(255,255,255,.08)}
+body.nh-page :is(.internal-services-section,.internal-locations-section) h2{font-size:clamp(26px,3.4vw,38px)}
+
+/* closing CTA: same glow as the homepage's last section */
+body.nh-page .cta{text-align:center;padding:110px 24px;background:radial-gradient(55% 60% at 50% 0%,rgba(126,34,206,.35),transparent 70%),radial-gradient(50% 60% at 50% 100%,rgba(229,9,26,.28),transparent 70%),#000}
+body.nh-page .cta h2{font-size:clamp(38px,6vw,76px)}
+body.nh-page .cta p{color:rgba(255,255,255,.86);font-size:19px;max-width:560px;margin-left:auto;margin-right:auto}
+
+/* forms */
+body.nh-page :is(.form-input,input[type=text],input[type=email],input[type=tel],textarea,select){border-radius:12px;min-height:48px;font-family:Inter,system-ui,sans-serif;font-size:16px}
+body.nh-page :is(.form-label,label){font-family:Inter,system-ui,sans-serif;text-transform:none;letter-spacing:0}
+
+/* old footers are replaced by .nh-foot */
+.nh-foot{background:#000;border-top:1px solid rgba(255,255,255,.1);padding:56px max(24px,env(safe-area-inset-right,0px)) 40px max(24px,env(safe-area-inset-left,0px));font:15px/1.55 Inter,system-ui,sans-serif;color:rgba(255,255,255,.82);text-align:left}
+.nh-foot .in{max-width:1072px;margin:0 auto}
+.nh-foot a{color:rgba(255,255,255,.82);text-decoration:none}
+.nh-foot a:hover{color:#fff}
+.nh-fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px}
+.nh-fgrid h4,.nh-fareas h4{font:600 14px Inter,system-ui,sans-serif;letter-spacing:0;text-transform:none;color:#fff;margin:0 0 12px}
+.nh-fgrid a{display:block;padding:5px 0}
+.nh-flogo{display:flex!important;align-items:center;gap:10px;padding:0!important;color:#fff!important;font:600 15px 'Inter Tight',Inter,system-ui,sans-serif}
+.nh-flogo img{width:26px;height:26px;border-radius:7px}
+.nh-fareas{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+.nh-fareas div{display:flex;flex-wrap:wrap;gap:4px 18px}
+.nh-fareas a{padding:5px 0}
+.nh-fbase{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14px;color:rgba(255,255,255,.72)}
+@media (max-width:760px){.nh-fgrid{grid-template-columns:1fr 1fr}body.nh-page section{padding-block:72px}body.nh-page .hero{padding:96px 20px 72px}body.nh-page .hero .btn{display:flex;width:100%;max-width:320px;margin:12px auto 0}}
+@media (prefers-reduced-motion:reduce){body.nh-page *{transition:none!important}}

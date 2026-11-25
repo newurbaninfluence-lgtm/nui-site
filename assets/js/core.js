@@ -811,7 +811,7 @@ async function syncNewClientsToHub() {
             createdVia: 'seed',
             emailVerified: true,
             colors: ['#e11d48', '#1a1a1a', '#ffffff'],
-            brandAssets: { logo: '', colors: ['#e11d48', '#1a1a1a', '#ffffff'], fonts: ['Montserrat'] }
+            brandAssets: { logo: '', colors: ['#e11d48', '#1a1a1a', '#ffffff'], fonts: ['Inter'] }
         };
         clients.push(testClient);
         // IMPORTANT: write locally only — never sync seed data to the backend.

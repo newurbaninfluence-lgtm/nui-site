@@ -15,7 +15,7 @@
     --card: #141414;
     --border: rgba(255,255,255,0.08);
     --text: #ffffff;
-    --muted: rgba(255,255,255,0.45);
+    --muted: rgba(255,255,255,0.78);
     --green: #10b981;
   }
   body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
@@ -38,8 +38,8 @@
   @media(max-width: 640px) { .steps { grid-template-columns: 1fr; } }
 
   .step-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
-  .step-label { font-size: 11px; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .step-num { width: 22px; height: 22px; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; }
+  .step-label { font-size: 12px; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .step-num { width: 22px; height: 22px; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
 
   /* Calendar */
   .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
@@ -47,12 +47,12 @@
   .cal-nav { background: none; border: 1px solid var(--border); color: var(--text); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
   .cal-nav:hover { background: rgba(255,255,255,0.06); }
   .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-  .cal-day-label { text-align: center; font-size: 11px; color: var(--muted); font-weight: 600; padding: 4px 0; }
+  .cal-day-label { text-align: center; font-size: 12px; color: var(--muted); font-weight: 600; padding: 4px 0; }
   .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; position: relative; }
   .cal-day:hover:not(.disabled):not(.empty) { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
   .cal-day.selected { background: var(--red); color: #fff; font-weight: 700; }
   .cal-day.today { border-color: var(--red); color: var(--red); }
-  .cal-day.disabled { color: rgba(255,255,255,0.15); cursor: default; }
+  .cal-day.disabled { color: rgba(255,255,255,0.78); cursor: default; }
   .cal-day.empty { cursor: default; }
 
   /* Time slots */
@@ -61,7 +61,7 @@
   .slot { padding: 10px 6px; text-align: center; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; color: var(--text); background: none; }
   .slot:hover:not(.booked) { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
   .slot.selected { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; }
-  .slot.booked { color: rgba(255,255,255,0.2); cursor: default; text-decoration: line-through; font-size: 11px; }
+  .slot.booked { color: rgba(255,255,255,0.78); cursor: default; text-decoration: line-through; font-size: 12px; }
   .slot-loading { text-align: center; color: var(--muted); font-size: 13px; padding: 20px 0; }
   .no-date-msg { text-align: center; color: var(--muted); font-size: 13px; padding: 20px 0; }
 
@@ -101,8 +101,16 @@
   .trust-strip { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
   .trust-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
 </style>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/css/site.css?v=20261124v1">
 </head>
-<body>
+<body class="nh-page">
+<nav class="nh-nav" aria-label="Main">
+<a class="nh-logo" href="/"><img src="/icons/icon-192.png" alt="" width="26" height="26"><span>New Urban Influence</span></a>
+<div class="nh-links"><a href="/#what-we-build">What we build</a><a href="/#builds">Our work</a><a href="/#how-it-works">How it works</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers</a><a href="/about">About</a><a href="/app/">Client login</a></div>
+<div class="nh-right"><a class="nh-cta" href="/?audit=1">Book free audit</a><button type="button" class="nh-burger" aria-label="Menu" aria-expanded="false" aria-controls="nhMenu"><span></span><span></span><span></span></button></div>
+</nav>
+<div class="nh-menu" id="nhMenu" hidden><a href="/">Home</a><a href="/#what-we-build">What we build</a><a href="/#builds">Our work</a><a href="/#how-it-works">How it works</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/app/">Client login</a></div>
 <div class="header">
   <img src="/icons/icon-192.png" alt="NUI">
   <div class="header-text">
@@ -179,15 +187,15 @@
   </div>
 
   <div class="trust-strip">
-    <div class="trust-item">✅ No spam — just your booking confirmation</div>
-    <div class="trust-item">📞 Zoom or phone call — your choice</div>
-    <div class="trust-item">🔒 Your info stays private</div>
+    <div class="trust-item">✓ No spam — just your booking confirmation</div>
+    <div class="trust-item">Zoom or phone call — your choice</div>
+    <div class="trust-item">Your info stays private</div>
   </div>
 </div>
 
 <!-- Success Screen -->
 <div class="page success-screen" id="successScreen">
-  <div class="success-icon">🎉</div>
+  <div class="success-icon"></div>
   <h2>You're Booked!</h2>
   <p>We'll send a confirmation to your phone. See you soon.</p>
   <div class="success-detail" id="successDetail"></div>
@@ -329,7 +337,7 @@ function updateSummary() {
   if (selectedDate && selectedTime) {
     const d = new Date(selectedDate + 'T12:00:00');
     const formatted = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-    el.textContent = `📅 ${formatted} at ${selectedTime} EST`;
+    el.textContent = `${formatted} at ${selectedTime} EST`;
     el.classList.add('show');
   } else {
     el.classList.remove('show');
@@ -397,7 +405,7 @@ document.getElementById('btnBook').addEventListener('click', async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: phone,
-        message: `Hey ${name.split(' ')[0]}! ✅ You're booked with NUI on ${new Date(selectedDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})} at ${selectedTime} EST. We'll send a Zoom link before the call. Questions? Text back or call (248) 487-8747. — NUI Team`
+        message: `Hey ${name.split(' ')[0]}! ✓ You're booked with NUI on ${new Date(selectedDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})} at ${selectedTime} EST. We'll send a Zoom link before the call. Questions? Text back or call (248) 487-8747. — NUI Team`
       })
     }).catch(() => {});
 
@@ -440,5 +448,14 @@ function showSuccess(name, dateStr, time, service) {
 // ── Init ──────────────────────────────────────────────────────────────────────
 renderCalendar();
 </script>
+<footer class="nh-foot"><div class="in"><div class="nh-fgrid">
+<div><a class="nh-flogo" href="/"><img src="/icons/icon-192.png" alt="" width="26" height="26">New Urban Influence</a><p style="margin-top:12px;max-width:280px">Websites and business software, built in Detroit.</p><p style="margin-top:8px;color:#fff;font-weight:600;user-select:all">(248) 487-8747</p><p style="margin-top:4px;user-select:all">info@newurbaninfluence.com</p></div>
+<div><h4>What we build</h4><a href="/services/business-website-detroit">Websites</a><a href="/#what-we-build">Restaurant &amp; bar software</a><a href="/services/crm-integration-detroit">CRM &amp; automation</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers &amp; videos</a><a href="/print">Print &amp; signage</a></div>
+<div><h4>Company</h4><a href="/about">About</a><a href="/#builds">Our work</a><a href="/#how-it-works">How it works</a><a href="/contact">Contact</a><a href="/magazine">NUI Magazine</a><a href="/blog">Blog</a></div>
+<div><h4>Log in</h4><a href="/app/">Client login</a><a href="/app/">Staff login</a></div>
+</div>
+<div class="nh-fareas"><h4>Service areas</h4><div><a href="/locations/detroit">Detroit</a><a href="/locations/southfield">Southfield</a><a href="/locations/farmington-hills">Farmington Hills</a><a href="/locations/royal-oak">Royal Oak</a><a href="/locations/troy">Troy</a><a href="/locations/dearborn">Dearborn</a><a href="/locations/ann-arbor">Ann Arbor</a><a href="/locations/birmingham">Birmingham</a><a href="/locations/novi">Novi</a><a href="/locations/sterling-heights">Sterling Heights</a><a href="/locations/livonia">Livonia</a><a href="/locations/warren">Warren</a><a href="/locations/pontiac">Pontiac</a><a href="/locations/hamtramck">Hamtramck</a><a href="/locations/highland-park">Highland Park</a></div></div>
+<div class="nh-fbase"><span>&copy; 2026 New Urban Influence. Detroit, Michigan.</span><span><a href="/privacy-policy">Privacy</a> &nbsp;&middot;&nbsp; <a href="/terms-of-service">Terms</a> &nbsp;&middot;&nbsp; <a href="/sitemap.xml">Sitemap</a></span></div></div></footer>
+<script src="/assets/js/site-nav.js?v=20261124v1" defer></script>
 </body>
 </html>

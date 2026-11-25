@@ -334,7 +334,7 @@
     var slug    = getSlug();
     var article = NUI_MAG.getBySlug(slug);
     if (!article) {
-      document.body.innerHTML = '<div style="text-align:center;padding:120px 24px;color:#fff"><h2 style="font-family:Syne,sans-serif;margin-bottom:16px">Article not found</h2><p style="color:#555;margin-bottom:24px">Slug: "' + slug + '"</p><a href="/magazine" style="color:#ff0000">← Back to Magazine</a></div>';
+      document.body.innerHTML = '<div style="text-align:center;padding:120px 24px;color:#fff"><h2 style="font-family:Inter Tight,sans-serif;margin-bottom:16px">Article not found</h2><p style="color:#555;margin-bottom:24px">Slug: "' + slug + '"</p><a href="/magazine" style="color:#ff0000">← Back to Magazine</a></div>';
       return;
     }
     injectMeta(article);

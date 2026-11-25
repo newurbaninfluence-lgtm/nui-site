@@ -85,41 +85,29 @@
     }</script>
     <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#fff;line-height:1.7}a{color:#dc2626;text-decoration:none}a:hover{text-decoration:underline}.red{color:#dc2626}.container{max-width:900px;margin:0 auto;padding:0 24px}.nav{background:rgba(0,0,0,0.95);padding:20px 48px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.06)}.nav-logo{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none}.nav-links a{color:rgba(255,255,255,0.7);margin-left:24px;font-size:14px;font-weight:500}.nav-links a:hover{color:#fff;text-decoration:none}.hero{padding:100px 24px 80px;text-align:center;background:linear-gradient(180deg,rgba(220,38,38,0.08) 0%,transparent 60%)}.hero .badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#dc2626;margin-bottom:24px;padding:8px 20px;border:1px solid rgba(220,38,38,0.3);border-radius:100px}.hero h1{font-size:clamp(36px,6vw,64px);font-weight:900;line-height:1.1;text-transform:uppercase;margin-bottom:24px}.hero p{color:rgba(255,255,255,0.7);font-size:18px;max-width:640px;margin:0 auto 40px}.btn{display:inline-block;padding:16px 36px;font-weight:700;font-size:15px;border-radius:6px;cursor:pointer;transition:all 0.3s;border:none}.btn-red{background:#dc2626;color:#fff}.btn-red:hover{background:#b91c1c;text-decoration:none}.btn-outline{border:2px solid rgba(255,255,255,0.2);color:#fff;background:transparent;margin-left:12px}.btn-outline:hover{border-color:#dc2626;text-decoration:none}section{padding:80px 24px}section:nth-child(even){background:rgba(255,255,255,0.02)}.section-label{font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#dc2626;margin-bottom:16px}h2{font-size:clamp(28px,4vw,42px);font-weight:800;text-transform:uppercase;margin-bottom:20px;line-height:1.15}.section-text{color:rgba(255,255,255,0.65);font-size:16px;margin-bottom:32px;max-width:700px}.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;margin:40px 0}.stat-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:28px;text-align:center}.stat-card .number{font-size:36px;font-weight:900;color:#dc2626}.stat-card .label{font-size:13px;color:rgba(255,255,255,0.5);margin-top:4px}.content-block{margin-bottom:48px}.content-block h3{font-size:22px;font-weight:700;margin-bottom:12px}.content-block p{color:rgba(255,255,255,0.65);font-size:16px;margin-bottom:16px;line-height:1.8}.content-block ul{list-style:none;margin:16px 0}.content-block ul li{padding:8px 0;color:rgba(255,255,255,0.65);font-size:15px}.content-block ul li::before{content:'✓ ';color:#dc2626;font-weight:700}.faq-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:24px;margin-bottom:16px}.faq-item h3{font-size:16px;font-weight:700;margin-bottom:8px}.faq-item p{color:rgba(255,255,255,0.6);font-size:14px}.cta{text-align:center;padding:100px 24px;background:linear-gradient(180deg,transparent 0%,rgba(220,38,38,0.06) 100%)}.cta h2{margin-bottom:16px}.cta p{color:rgba(255,255,255,0.6);margin-bottom:36px;font-size:17px}.related-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}.related-grid a{display:inline-block;padding:10px 20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;font-size:14px;color:rgba(255,255,255,0.7);transition:all 0.3s}.related-grid a:hover{border-color:#dc2626;color:#fff;text-decoration:none}.footer{padding:40px 24px;border-top:1px solid rgba(255,255,255,0.06);text-align:center;color:rgba(255,255,255,0.4);font-size:13px}.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:10px;z-index:1001}.hamburger span{display:block;width:24px;height:2px;background:#fff;transition:all 0.3s}.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.hamburger.active span:nth-child(2){opacity:0}.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}.mobile-menu{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.97);z-index:1000;flex-direction:column;justify-content:center;align-items:center;gap:32px}.mobile-menu.active{display:flex}.mobile-menu a{color:#fff;font-size:22px;font-weight:600;text-decoration:none;padding:12px 24px}.mobile-menu a:hover{color:#dc2626}html,body{overflow-x:hidden}
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#fff;line-height:1.7}a{color:#dc2626;text-decoration:none}a:hover{text-decoration:underline}.red{color:#dc2626}.container{max-width:900px;margin:0 auto;padding:0 24px}.nav{background:rgba(0,0,0,0.95);padding:20px 48px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.06)}.nav-logo{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none}.nav-links a{color:rgba(255,255,255,0.7);margin-left:24px;font-size:14px;font-weight:500}.nav-links a:hover{color:#fff;text-decoration:none}.hero{padding:100px 24px 80px;text-align:center;background:linear-gradient(180deg,rgba(220,38,38,0.08) 0%,transparent 60%)}.hero .badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#dc2626;margin-bottom:24px;padding:8px 20px;border:1px solid rgba(220,38,38,0.3);border-radius:100px}.hero h1{font-size:clamp(36px,6vw,64px);font-weight:900;line-height:1.1;text-transform:uppercase;margin-bottom:24px}.hero p{color:rgba(255,255,255,0.7);font-size:18px;max-width:640px;margin:0 auto 40px}.btn{display:inline-block;padding:16px 36px;font-weight:700;font-size:15px;border-radius:6px;cursor:pointer;transition:all 0.3s;border:none}.btn-red{background:#dc2626;color:#fff}.btn-red:hover{background:#b91c1c;text-decoration:none}.btn-outline{border:2px solid rgba(255,255,255,0.2);color:#fff;background:transparent;margin-left:12px}.btn-outline:hover{border-color:#dc2626;text-decoration:none}section{padding:80px 24px}section:nth-child(even){background:rgba(255,255,255,0.02)}.section-label{font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#dc2626;margin-bottom:16px}h2{font-size:clamp(28px,4vw,42px);font-weight:800;text-transform:uppercase;margin-bottom:20px;line-height:1.15}.section-text{color:rgba(255,255,255,0.78);font-size:16px;margin-bottom:32px;max-width:700px}.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;margin:40px 0}.stat-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:28px;text-align:center}.stat-card .number{font-size:36px;font-weight:900;color:#dc2626}.stat-card .label{font-size:13px;color:rgba(255,255,255,0.78);margin-top:4px}.content-block{margin-bottom:48px}.content-block h3{font-size:22px;font-weight:700;margin-bottom:12px}.content-block p{color:rgba(255,255,255,0.78);font-size:16px;margin-bottom:16px;line-height:1.8}.content-block ul{list-style:none;margin:16px 0}.content-block ul li{padding:8px 0;color:rgba(255,255,255,0.78);font-size:15px}.content-block ul li::before{content:'✓ ';color:#dc2626;font-weight:700}.faq-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:24px;margin-bottom:16px}.faq-item h3{font-size:16px;font-weight:700;margin-bottom:8px}.faq-item p{color:rgba(255,255,255,0.78);font-size:14px}.cta{text-align:center;padding:100px 24px;background:linear-gradient(180deg,transparent 0%,rgba(220,38,38,0.06) 100%)}.cta h2{margin-bottom:16px}.cta p{color:rgba(255,255,255,0.78);margin-bottom:36px;font-size:17px}.related-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}.related-grid a{display:inline-block;padding:10px 20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;font-size:14px;color:rgba(255,255,255,0.7);transition:all 0.3s}.related-grid a:hover{border-color:#dc2626;color:#fff;text-decoration:none}.footer{padding:40px 24px;border-top:1px solid rgba(255,255,255,0.06);text-align:center;color:rgba(255,255,255,0.78);font-size:13px}.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:10px;z-index:1001}.hamburger span{display:block;width:24px;height:2px;background:#fff;transition:all 0.3s}.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.hamburger.active span:nth-child(2){opacity:0}.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}.mobile-menu{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.97);z-index:1000;flex-direction:column;justify-content:center;align-items:center;gap:32px}.mobile-menu.active{display:flex}.mobile-menu a{color:#fff;font-size:22px;font-weight:600;text-decoration:none;padding:12px 24px}.mobile-menu a:hover{color:#dc2626}html,body{overflow-x:hidden}
         @media(max-width:768px){.nav{padding:16px 20px}.nav-links{display:none}.hamburger{display:flex}.hero{padding:70px 16px 50px}.hero p{font-size:16px}.btn{padding:14px 28px;font-size:14px;display:block;text-align:center;margin:8px auto;max-width:300px}.btn-outline{margin-left:0;margin-top:8px}section{padding:50px 16px}.cta{padding:60px 16px}.stat-grid{grid-template-columns:1fr 1fr;gap:12px}.stat-card{padding:20px 16px}.stat-card .number{font-size:28px}}
         @media(max-width:480px){.stat-grid{grid-template-columns:1fr}.hero h1{font-size:clamp(24px,8vw,40px)}h2{font-size:clamp(22px,6vw,32px)}}
     </style>
+<link rel="stylesheet" href="/assets/css/site.css?v=20261124v1">
 </head>
-<body>
-<nav class="nav">
-    <a href="/" class="nav-logo"><img src="/icons/icon-192.png" alt="NUI" width="30" height="30" style="height:30px;width:30px;display:inline-block;vertical-align:middle;margin-right:8px;" onerror="this.style.display='none'"><span style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:2px;text-transform:uppercase;line-height:1;">New Urban <span style="color:#dc2626;">Influence</span></span></a>
-    <div class="nav-links">
-        <a href="https://newurbaninfluence.com/#services">Services</a>
-        <a href="https://newurbaninfluence.com/#portfolio">Portfolio</a>
-        <a href="/blog">Blog</a>
-        <a href="https://newurbaninfluence.com/#intake">Get Started</a>
-    </div>
-    <div class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></div>
+<body class="nh-page">
+<nav class="nh-nav" aria-label="Main">
+<a class="nh-logo" href="/"><img src="/icons/icon-192.png" alt="" width="26" height="26"><span>New Urban Influence</span></a>
+<div class="nh-links"><a href="/#what-we-build">What we build</a><a href="/#builds">Our work</a><a href="/#how-it-works">How it works</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers</a><a href="/about">About</a><a href="/app/">Client login</a></div>
+<div class="nh-right"><a class="nh-cta" href="/?audit=1">Book free audit</a><button type="button" class="nh-burger" aria-label="Menu" aria-expanded="false" aria-controls="nhMenu"><span></span><span></span><span></span></button></div>
 </nav>
-<nav class="breadcrumb" aria-label="Breadcrumb" style="padding:8px 20px;font-size:12px;color:rgba(255,255,255,0.5);background:rgba(0,0,0,0.9);border-bottom:1px solid rgba(255,255,255,0.06);">
+<div class="nh-menu" id="nhMenu" hidden><a href="/">Home</a><a href="/#what-we-build">What we build</a><a href="/#builds">Our work</a><a href="/#how-it-works">How it works</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/app/">Client login</a></div>
+<nav class="breadcrumb" aria-label="Breadcrumb" style="padding:8px 20px;font-size:12px;color:rgba(255,255,255,0.78);background:rgba(0,0,0,0.9);border-bottom:1px solid rgba(255,255,255,0.06);">
     <a href="/" style="color:#e63946;text-decoration:none;font-size:12px;">Home</a>
     <span style="margin:0 6px;">›</span>
     <span>Services</span>
     <span style="margin:0 6px;">›</span>
     <span>Geo-Grid Tracking</span>
 </nav>
-<div class="mobile-menu" id="mobileMenu">
-    <a href="https://newurbaninfluence.com">Home</a>
-    <a href="https://newurbaninfluence.com/#services">Services</a>
-    <a href="https://newurbaninfluence.com/#portfolio">Portfolio</a>
-    <a href="/blog">Blog</a>
-    <a href="https://newurbaninfluence.com/#intake" style="background:#dc2626;border-radius:6px;padding:14px 28px;">Get Started</a>
-</div>
-<script>function toggleMobileMenu(){var h=document.querySelector(".hamburger"),m=document.getElementById("mobileMenu");h.classList.toggle("active");m.classList.toggle("active");document.body.style.overflow=m.classList.contains("active")?"hidden":""}</script>
-
 <header class="hero">
     <div class="badge">Local SEO</div>
-    <h1>GEO-GRID<br><span class="red">TRACKING</span></h1>
+    <h1>Geo-grid<br><span class="red">tracking</span></h1>
     <p>Your Google Maps ranking changes block by block. See exactly where you rank #1, #3, or #20 across your entire service area with a 7×7 grid scan and visual heat maps. $750 setup + $297/mo.</p>
     <a href="https://newurbaninfluence.com/#intake" class="btn btn-red">Book Free Consultation</a>
     <a href="https://newurbaninfluence.com/#services" class="btn btn-outline">View All Services</a>
@@ -177,7 +165,7 @@
 <section class="faq-section">
     <div class="container">
         <div class="section-label">Frequently Asked Questions</div>
-        <h2>GEO-GRID TRACKING <span class="red">FAQ</span></h2>
+        <h2>Geo-grid tracking <span class="red">FAQ</span></h2>
         
             <div class="faq-item">
                 <h3>Why do Google Maps rankings change by location?</h3>
@@ -201,7 +189,7 @@
 <section>
     <div class="container">
         <div class="section-label">Related Services</div>
-        <h2>MORE FROM <span class="red">NUI</span></h2>
+        <h2>More from <span class="red">NUI</span></h2>
         <div class="related-grid">
             <a href="/services/silent-visitor-id-detroit">Silent Visitor ID</a>
                 <a href="/services/email-automation-detroit">Email Automation</a>
@@ -219,20 +207,17 @@
 </section>
 
 <div class="cta">
-    <h2>READY TO GET <span class="red">STARTED</span>?</h2>
+    <h2>Ready to get <span class="red">started</span>?</h2>
     <p>Book a free strategy consultation. We'll discuss your goals and build a custom plan for your business.</p>
     <a href="https://newurbaninfluence.com/#intake" class="btn btn-red">Book Free Consultation</a>
 </div>
 
-<footer class="footer">
-    <p>&copy; 2026 New Urban Influence. Detroit-based creative agency.</p>
-    <p style="margin-top:8px;"><a href="https://newurbaninfluence.com">Home</a> · <a href="/services/brand-identity-packages-detroit">Branding</a> · <a href="/services/web-design-detroit">Web Design</a> · <a href="/services/brand-heavy-marketing-bundle-detroit">Brand Heavy</a> · <a href="/blog">Blog</a> · <a href="https://newurbaninfluence.com/#intake">Contact</a></p>
-</footer>
+
 
 <section style="padding:50px 0;background:#f8f8f8;">
     <div class="container">
         <div class="section-label">Areas We Serve</div>
-        <h2>GEO-GRID TRACKING ACROSS <span class="red">METRO DETROIT</span></h2>
+        <h2>Geo-grid tracking across <span class="red">Metro Detroit</span></h2>
         <p class="section-text">We provide geo-grid tracking services to businesses throughout Southeast Michigan.</p>
         <div class="related-grid">
             <a href="/locations/ann-arbor">Geo-Grid Tracking in Ann Arbor</a>
@@ -252,17 +237,16 @@
         </div>
     </div>
 </section>
-<footer style="background:#111;color:#999;padding:40px 20px;text-align:center;font-size:13px;">
-    <div style="max-width:800px;margin:0 auto;">
-        <div style="margin-bottom:16px;">
-            <a href="/" style="color:#e63946;text-decoration:none;margin:0 10px;">Home</a>
-            <a href="/about" style="color:#ccc;text-decoration:none;margin:0 10px;">About</a>
-            <a href="/contact" style="color:#ccc;text-decoration:none;margin:0 10px;">Contact</a>
-        </div>
-        <p style="margin:0;">&copy; 2026 New Urban Influence – Detroit Branding Agency</p>
-    </div>
-</footer>
+<footer class="nh-foot"><div class="in"><div class="nh-fgrid">
+<div><a class="nh-flogo" href="/"><img src="/icons/icon-192.png" alt="" width="26" height="26">New Urban Influence</a><p style="margin-top:12px;max-width:280px">Websites and business software, built in Detroit.</p><p style="margin-top:8px;color:#fff;font-weight:600;user-select:all">(248) 487-8747</p><p style="margin-top:4px;user-select:all">info@newurbaninfluence.com</p></div>
+<div><h4>What we build</h4><a href="/services/business-website-detroit">Websites</a><a href="/#what-we-build">Restaurant &amp; bar software</a><a href="/services/crm-integration-detroit">CRM &amp; automation</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers &amp; videos</a><a href="/print">Print &amp; signage</a></div>
+<div><h4>Company</h4><a href="/about">About</a><a href="/#builds">Our work</a><a href="/#how-it-works">How it works</a><a href="/contact">Contact</a><a href="/magazine">NUI Magazine</a><a href="/blog">Blog</a></div>
+<div><h4>Log in</h4><a href="/app/">Client login</a><a href="/app/">Staff login</a></div>
+</div>
+<div class="nh-fareas"><h4>Service areas</h4><div><a href="/locations/detroit">Detroit</a><a href="/locations/southfield">Southfield</a><a href="/locations/farmington-hills">Farmington Hills</a><a href="/locations/royal-oak">Royal Oak</a><a href="/locations/troy">Troy</a><a href="/locations/dearborn">Dearborn</a><a href="/locations/ann-arbor">Ann Arbor</a><a href="/locations/birmingham">Birmingham</a><a href="/locations/novi">Novi</a><a href="/locations/sterling-heights">Sterling Heights</a><a href="/locations/livonia">Livonia</a><a href="/locations/warren">Warren</a><a href="/locations/pontiac">Pontiac</a><a href="/locations/hamtramck">Hamtramck</a><a href="/locations/highland-park">Highland Park</a></div></div>
+<div class="nh-fbase"><span>&copy; 2026 New Urban Influence. Detroit, Michigan.</span><span><a href="/privacy-policy">Privacy</a> &nbsp;&middot;&nbsp; <a href="/terms-of-service">Terms</a> &nbsp;&middot;&nbsp; <a href="/sitemap.xml">Sitemap</a></span></div></div></footer>
     <script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("E63P0HZ53POW");</script>
   <script src="/assets/js/push-opt-in.js?v=20260418v1" defer></script>
+<script src="/assets/js/site-nav.js?v=20261124v1" defer></script>
 </body>
 </html>

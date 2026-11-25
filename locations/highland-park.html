@@ -131,31 +131,31 @@
         section:nth-child(even) { background: rgba(255,255,255,0.02); }
         .section-label { font-size: 12px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #dc2626; margin-bottom: 16px; }
         h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; text-transform: uppercase; margin-bottom: 20px; line-height: 1.15; }
-        .section-text { color: rgba(255,255,255,0.65); font-size: 16px; margin-bottom: 32px; max-width: 700px; }
+        .section-text { color: rgba(255,255,255,0.78); font-size: 16px; margin-bottom: 32px; max-width: 700px; }
 
         .packages { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 40px; }
         .package { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 36px 28px; transition: all 0.3s; }
         .package:hover { border-color: rgba(220,38,38,0.4); transform: translateY(-4px); }
         .package h3 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
         .package .price { font-size: 32px; font-weight: 900; color: #dc2626; margin: 12px 0 4px; }
-        .package .price span { font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.5); }
+        .package .price span { font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.78); }
         .package ul { list-style: none; margin-top: 20px; }
         .package ul li { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); font-size: 14px; }
         .package ul li::before { content: '✓ '; color: #dc2626; font-weight: 700; }
 
         .faq-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
         .faq-item h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-        .faq-item p { color: rgba(255,255,255,0.6); font-size: 14px; }
+        .faq-item p { color: rgba(255,255,255,0.78); font-size: 14px; }
 
         .cta { text-align: center; padding: 100px 24px; background: linear-gradient(180deg, transparent 0%, rgba(220,38,38,0.06) 100%); }
         .cta h2 { margin-bottom: 16px; }
-        .cta p { color: rgba(255,255,255,0.6); margin-bottom: 36px; font-size: 17px; }
+        .cta p { color: rgba(255,255,255,0.78); margin-bottom: 36px; font-size: 17px; }
 
         .nearby-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
         .nearby-grid a { display: inline-block; padding: 10px 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; font-size: 14px; color: rgba(255,255,255,0.7); transition: all 0.3s; }
         .nearby-grid a:hover { border-color: #dc2626; color: #fff; text-decoration: none; }
 
-        .footer { padding: 40px 24px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; color: rgba(255,255,255,0.4); font-size: 13px; }
+        .footer { padding: 40px 24px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; color: rgba(255,255,255,0.78); font-size: 13px; }
 
         .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 10px; z-index: 1001; }
         .hamburger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s; }
@@ -193,21 +193,16 @@
             h2 { font-size: clamp(22px, 6vw, 32px) !important; }
         }
     </style>
+<link rel="stylesheet" href="/assets/css/site.css?v=20261124v1">
 </head>
-<body>
-<nav class="nav">
-    <a href="/" class="nav-logo"><img src="/icons/icon-192.png" alt="NUI" width="30" height="30" style="height:30px;width:30px;display:inline-block;vertical-align:middle;margin-right:8px;" onerror="this.style.display='none'"><span style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:2px;text-transform:uppercase;line-height:1;">New Urban <span style="color:#dc2626;">Influence</span></span></a>
-    <div class="nav-links">
-        <a href="https://newurbaninfluence.com/#services">Services</a>
-        <a href="https://newurbaninfluence.com/#portfolio">Portfolio</a>
-        <a href="https://newurbaninfluence.com/#blog">Blog</a>
-        <a href="https://newurbaninfluence.com/#intake">Get Started</a>
-    </div>
-    <div class="hamburger" onclick="toggleMobileMenu()">
-        <span></span><span></span><span></span>
-    </div>
+<body class="nh-page">
+<nav class="nh-nav" aria-label="Main">
+<a class="nh-logo" href="/"><img src="/icons/icon-192.png" alt="" width="26" height="26"><span>New Urban Influence</span></a>
+<div class="nh-links"><a href="/#what-we-build">What we build</a><a href="/#builds">Our work</a><a href="/#how-it-works">How it works</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers</a><a href="/about">About</a><a href="/app/">Client login</a></div>
+<div class="nh-right"><a class="nh-cta" href="/?audit=1">Book free audit</a><button type="button" class="nh-burger" aria-label="Menu" aria-expanded="false" aria-controls="nhMenu"><span></span><span></span><span></span></button></div>
 </nav>
-<nav class="breadcrumb" aria-label="Breadcrumb" style="padding:8px 20px;font-size:12px;color:rgba(255,255,255,0.5);background:rgba(0,0,0,0.9);border-bottom:1px solid rgba(255,255,255,0.06);">
+<div class="nh-menu" id="nhMenu" hidden><a href="/">Home</a><a href="/#what-we-build">What we build</a><a href="/#builds">Our work</a><a href="/#how-it-works">How it works</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/app/">Client login</a></div>
+<nav class="breadcrumb" aria-label="Breadcrumb" style="padding:8px 20px;font-size:12px;color:rgba(255,255,255,0.78);background:rgba(0,0,0,0.9);border-bottom:1px solid rgba(255,255,255,0.06);">
     <a href="/" style="color:#e63946;text-decoration:none;font-size:12px;">Home</a>
     <span style="margin:0 6px;">›</span>
     <span>Locations</span>
@@ -215,22 +210,9 @@
     <span>Highland Park</span>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
-    <a href="https://newurbaninfluence.com">Home</a>
-    <a href="https://newurbaninfluence.com/#services">Services</a>
-    <a href="https://newurbaninfluence.com/#portfolio">Portfolio</a>
-    <a href="/blog">Blog</a>
-    <a href="https://newurbaninfluence.com/#intake" style="background:#dc2626;border-radius:6px;padding:14px 28px;">Get Started</a>
-</div>
-
-<script>
-function toggleMobileMenu(){var h=document.querySelector(".hamburger"),m=document.getElementById("mobileMenu");h.classList.toggle("active");m.classList.toggle("active");document.body.style.overflow=m.classList.contains("active")?"hidden":""}
-document.querySelectorAll(".mobile-menu a").forEach(function(a){a.addEventListener("click",function(){document.querySelector(".hamburger").classList.remove("active");document.getElementById("mobileMenu").classList.remove("active");document.body.style.overflow=""})});
-</script>
-
 <header class="hero">
     <div class="badge">Serving Highland Park, MI</div>
-    <h1>BRANDING AGENCY IN<br><span class="red">HIGHLAND PARK</span></h1>
+    <h1>Branding agency in<br><span class="red">Highland Park</span></h1>
     <p>Professional brand identity, logo design, and creative services for Highland Park businesses. Where Detroit's history meets its future — your brand should reflect that.</p>
     <a href="https://newurbaninfluence.com/#intake" class="btn btn-red">Book Free Consultation</a>
     <a href="https://newurbaninfluence.com/#services" class="btn btn-outline">View Packages</a>
@@ -239,7 +221,7 @@ document.querySelectorAll(".mobile-menu a").forEach(function(a){a.addEventListen
 <section>
     <div class="container">
         <div class="section-label">Highland Park Business Branding</div>
-        <h2>WHY HIGHLAND PARK BUSINESSES CHOOSE <span class="red">NEW URBAN INFLUENCE</span></h2>
+        <h2>Why Highland Park businesses choose <span class="red">New Urban Influence</span></h2>
         <p class="section-text">Highland Park is a city with an outsized legacy. Home to Henry Ford's first moving assembly line and one of Michigan's most storied Black communities, Highland Park carries deep roots in American innovation and urban resilience. Nestled entirely within Detroit, it has its own identity, its own pride, and its own story.</p>
         <p class="section-text">Today, Highland Park is a city in creative renaissance — community organizations, artists, food entrepreneurs, and neighborhood builders are forging something new here. Your brand needs to honor that heritage while positioning you for where Highland Park is going. That's exactly what we do.</p>
     </div>
@@ -248,13 +230,13 @@ document.querySelectorAll(".mobile-menu a").forEach(function(a){a.addEventListen
 <section>
     <div class="container">
         <div class="section-label">Packages & Pricing</div>
-        <h2>BRANDING PACKAGES FOR <span class="red">HIGHLAND PARK</span> BUSINESSES</h2>
+        <h2>Branding packages for <span class="red">Highland Park</span> businesses</h2>
         <p class="section-text">Flat-rate pricing with no hidden fees. Payment plans available on every package. We work with community organizations, food businesses, skilled trades, and creative entrepreneurs throughout Highland Park and greater Detroit.</p>
 
         <div class="packages">
             <div class="package">
                 <h3>Brand Kit</h3>
-                <p style="color: rgba(255,255,255,0.5); font-size: 13px;">Starter Package</p>
+                <p style="color: rgba(255,255,255,0.78); font-size: 13px;">Starter Package</p>
                 <div class="price">$1,500 <span>flat rate</span></div>
                 <ul>
                     <li>Primary + Secondary Logo</li>
@@ -269,7 +251,7 @@ document.querySelectorAll(".mobile-menu a").forEach(function(a){a.addEventListen
             </div>
             <div class="package">
                 <h3>Service Brand Identity</h3>
-                <p style="color: rgba(255,255,255,0.5); font-size: 13px;">For Service Businesses</p>
+                <p style="color: rgba(255,255,255,0.78); font-size: 13px;">For Service Businesses</p>
                 <div class="price">$4,500+ <span>starting at</span></div>
                 <ul>
                     <li>Everything in Brand Kit</li>
@@ -283,7 +265,7 @@ document.querySelectorAll(".mobile-menu a").forEach(function(a){a.addEventListen
             </div>
             <div class="package">
                 <h3>Product Brand Identity</h3>
-                <p style="color: rgba(255,255,255,0.5); font-size: 13px;">For Product Businesses</p>
+                <p style="color: rgba(255,255,255,0.78); font-size: 13px;">For Product Businesses</p>
                 <div class="price">$5,500+ <span>starting at</span></div>
                 <ul>
                     <li>Everything in Brand Kit</li>
@@ -302,29 +284,29 @@ document.querySelectorAll(".mobile-menu a").forEach(function(a){a.addEventListen
 <section>
     <div class="container">
         <div class="section-label">Our Process</div>
-        <h2>HOW IT <span class="red">WORKS</span></h2>
+        <h2>How it <span class="red">works</span></h2>
         <p class="section-text">Getting started is simple. We handle everything so you can focus on running your Highland Park business.</p>
 
         <div class="packages" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
             <div class="package" style="text-align: center;">
                 <div style="font-size: 36px; margin-bottom: 12px;">1</div>
                 <h3>Free Consultation</h3>
-                <p style="color: rgba(255,255,255,0.6); font-size: 14px; margin-top: 8px;">Book a strategy call. We discuss your goals, audience, and vision.</p>
+                <p style="color: rgba(255,255,255,0.78); font-size: 14px; margin-top: 8px;">Book a strategy call. We discuss your goals, audience, and vision.</p>
             </div>
             <div class="package" style="text-align: center;">
                 <div style="font-size: 36px; margin-bottom: 12px;">2</div>
                 <h3>Strategy & Design</h3>
-                <p style="color: rgba(255,255,255,0.6); font-size: 14px; margin-top: 8px;">We research, strategize, and design your complete brand identity.</p>
+                <p style="color: rgba(255,255,255,0.78); font-size: 14px; margin-top: 8px;">We research, strategize, and design your complete brand identity.</p>
             </div>
             <div class="package" style="text-align: center;">
                 <div style="font-size: 36px; margin-bottom: 12px;">3</div>
                 <h3>Review & Refine</h3>
-                <p style="color: rgba(255,255,255,0.6); font-size: 14px; margin-top: 8px;">Review proofs in your client portal. Request revisions until perfect.</p>
+                <p style="color: rgba(255,255,255,0.78); font-size: 14px; margin-top: 8px;">Review proofs in your client portal. Request revisions until perfect.</p>
             </div>
             <div class="package" style="text-align: center;">
                 <div style="font-size: 36px; margin-bottom: 12px;">4</div>
                 <h3>Launch</h3>
-                <p style="color: rgba(255,255,255,0.6); font-size: 14px; margin-top: 8px;">Receive all files, guidelines, and templates. Your brand goes live.</p>
+                <p style="color: rgba(255,255,255,0.78); font-size: 14px; margin-top: 8px;">Receive all files, guidelines, and templates. Your brand goes live.</p>
             </div>
         </div>
     </div>
@@ -333,7 +315,7 @@ document.querySelectorAll(".mobile-menu a").forEach(function(a){a.addEventListen
 <section>
     <div class="container">
         <div class="section-label">Local Industry Spotlight</div>
-        <h2>INDUSTRIES WE BRAND IN <span class="red">HIGHLAND PARK</span></h2>
+        <h2>Industries we brand in <span class="red">Highland Park</span></h2>
         <p class="section-text">Highland Park's unique position — a city within Detroit — gives businesses here a distinct story to tell.</p>
 
         <div class="faq-item">
@@ -358,7 +340,7 @@ document.querySelectorAll(".mobile-menu a").forEach(function(a){a.addEventListen
 <section>
     <div class="container">
         <div class="section-label">Common Questions</div>
-        <h2>HIGHLAND PARK <span class="red">BRANDING FAQ</span></h2>
+        <h2>Highland Park <span class="red">branding FAQ</span></h2>
 
         <div class="faq-item">
             <h3>How much does branding cost in Highland Park?</h3>
@@ -386,7 +368,7 @@ document.querySelectorAll(".mobile-menu a").forEach(function(a){a.addEventListen
 <section>
     <div class="container">
         <div class="section-label">Also Serving</div>
-        <h2>BRANDING SERVICES <span class="red">NEAR HIGHLAND PARK</span></h2>
+        <h2>Branding services <span class="red">near Highland Park</span></h2>
         <p class="section-text">We also serve businesses in these nearby communities:</p>
         <div class="nearby-grid">
             <a href="/locations/detroit">Detroit, MI</a>
@@ -399,7 +381,7 @@ document.querySelectorAll(".mobile-menu a").forEach(function(a){a.addEventListen
 </section>
 
 <div class="cta">
-    <h2>READY TO BUILD YOUR <span class="red">BRAND</span>?</h2>
+    <h2>Ready to build your <span class="red">brand</span>?</h2>
     <p>Book a free strategy consultation. No obligation. Let's talk about your Highland Park business.</p>
     <a href="https://newurbaninfluence.com/#intake" class="btn btn-red">Book Free Consultation →</a>
 </div>
@@ -413,10 +395,10 @@ document.querySelectorAll(".mobile-menu a").forEach(function(a){a.addEventListen
     </div>
 </section>
 
-<section class="internal-services-section" style="padding:50px 0;background:#f8f8f8;">
+<section class="internal-services-section">
     <div class="container">
         <div class="section-label">Our Services</div>
-        <h2>BRANDING SERVICES IN <span class="red">HIGHLAND PARK</span></h2>
+        <h2>Branding services in <span class="red">Highland Park</span></h2>
         <p class="section-text">New Urban Influence offers comprehensive branding and design services to businesses in Highland Park and throughout Metro Detroit.</p>
         <div class="related-grid">
             <a href="/services/branding-agency-detroit">Full-Service Branding</a>
@@ -432,18 +414,16 @@ document.querySelectorAll(".mobile-menu a").forEach(function(a){a.addEventListen
     </div>
 </section>
 
-<footer class="site-footer" style="background:#111;color:#999;padding:40px 20px;text-align:center;font-size:13px;">
-    <div style="max-width:800px;margin:0 auto;">
-        <div style="margin-bottom:16px;">
-            <a href="/" style="color:#e63946;text-decoration:none;margin:0 10px;">Home</a>
-            <a href="/about" style="color:#ccc;text-decoration:none;margin:0 10px;">About</a>
-            <a href="/contact" style="color:#ccc;text-decoration:none;margin:0 10px;">Contact</a>
-        </div>
-        <p style="margin:0;">© 2026 New Urban Influence – Detroit-based creative agency serving Highland Park, MI and all of Metro Detroit.</p>
-        <p style="margin-top:12px;color:rgba(255,255,255,0.25);">(248) 487-8747 · info@newurbaninfluence.com</p>
-    </div>
-</footer>
+<footer class="nh-foot"><div class="in"><div class="nh-fgrid">
+<div><a class="nh-flogo" href="/"><img src="/icons/icon-192.png" alt="" width="26" height="26">New Urban Influence</a><p style="margin-top:12px;max-width:280px">Websites and business software, built in Detroit.</p><p style="margin-top:8px;color:#fff;font-weight:600;user-select:all">(248) 487-8747</p><p style="margin-top:4px;user-select:all">info@newurbaninfluence.com</p></div>
+<div><h4>What we build</h4><a href="/services/business-website-detroit">Websites</a><a href="/#what-we-build">Restaurant &amp; bar software</a><a href="/services/crm-integration-detroit">CRM &amp; automation</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers &amp; videos</a><a href="/print">Print &amp; signage</a></div>
+<div><h4>Company</h4><a href="/about">About</a><a href="/#builds">Our work</a><a href="/#how-it-works">How it works</a><a href="/contact">Contact</a><a href="/magazine">NUI Magazine</a><a href="/blog">Blog</a></div>
+<div><h4>Log in</h4><a href="/app/">Client login</a><a href="/app/">Staff login</a></div>
+</div>
+<div class="nh-fareas"><h4>Service areas</h4><div><a href="/locations/detroit">Detroit</a><a href="/locations/southfield">Southfield</a><a href="/locations/farmington-hills">Farmington Hills</a><a href="/locations/royal-oak">Royal Oak</a><a href="/locations/troy">Troy</a><a href="/locations/dearborn">Dearborn</a><a href="/locations/ann-arbor">Ann Arbor</a><a href="/locations/birmingham">Birmingham</a><a href="/locations/novi">Novi</a><a href="/locations/sterling-heights">Sterling Heights</a><a href="/locations/livonia">Livonia</a><a href="/locations/warren">Warren</a><a href="/locations/pontiac">Pontiac</a><a href="/locations/hamtramck">Hamtramck</a><a href="/locations/highland-park">Highland Park</a></div></div>
+<div class="nh-fbase"><span>&copy; 2026 New Urban Influence. Detroit, Michigan.</span><span><a href="/privacy-policy">Privacy</a> &nbsp;&middot;&nbsp; <a href="/terms-of-service">Terms</a> &nbsp;&middot;&nbsp; <a href="/sitemap.xml">Sitemap</a></span></div></div></footer>
     <script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("E63P0HZ53POW");</script>
   <script src="/assets/js/push-opt-in.js?v=20260418v1" defer></script>
+<script src="/assets/js/site-nav.js?v=20261124v1" defer></script>
 </body>
 </html>

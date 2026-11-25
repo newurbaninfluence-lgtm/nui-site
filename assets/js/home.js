@@ -71,7 +71,7 @@ function _nhEsc(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quo
 
 function _nhAudit() {
   var A = NUI_AUDIT, el = document.getElementById('sheet');
-  var dots = '<div class="steps" aria-label="Step ' + Math.min(A.step, 3) + ' of 3">' + [1, 2, 3].map(function(i) { return '<i class="' + (i <= A.step ? 'on' : '') + '"></i>'; }).join('') + '</div>';
+  var dots = '<div class="steps"><span class="steps-txt">Step ' + Math.min(A.step, 3) + ' of 3</span>' + [1, 2, 3].map(function(i) { return '<i aria-hidden="true" class="' + (i <= A.step ? 'on' : '') + '"></i>'; }).join('') + '</div>';
   var top = '<div class="sheet-top">' + (A.step < 4 ? dots : '<span></span>') + '<button type="button" class="x" aria-label="Close" data-close>&times;</button></div>';
   var body = '';
   if (A.step === 1) body = '<h3 id="auditTitle">What kind of business?</h3><p class="hint">Tap one.</p><div class="opts">' + NUI_AUDIT_BIZ.map(function(b) { return '<button type="button" class="opt" aria-pressed="' + (A.biz === b) + '" data-biz="' + _nhEsc(b) + '">' + b + '</button>'; }).join('') + '</div><p class="err" id="aErr"></p><div class="sheet-bot"><span></span><button type="button" class="go" data-next>Next</button></div>';
@@ -155,6 +155,8 @@ function initHome() {
     b.addEventListener('click', function() { _nhShow(b.dataset.k); b.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); });
   });
   document.querySelectorAll('#homeView [data-audit]').forEach(function(b) { b.addEventListener('click', nuiOpenAudit); });
-  var q = new URLSearchParams(location.search).get('k');
+  var params = new URLSearchParams(location.search), q = params.get('k');
   _nhShow(q && NUI_IND[q] ? q : 'food');
+  // Other pages' "Book free audit" buttons link to /?audit=1
+  if (params.get('audit') === '1') setTimeout(nuiOpenAudit, 300);
 }

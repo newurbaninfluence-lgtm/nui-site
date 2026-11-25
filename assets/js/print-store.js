@@ -780,7 +780,7 @@ const NUI_PRINT = {
           <h3>${p.name}</h3>
           <div class="price">$${startPrice} <span>/ starting</span></div>
           <p class="desc">${p.desc}</p>
-          <p style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:16px">⏱ ${p.turnaround}</p>
+          <p style="font-size:12px;color:rgba(255,255,255,0.78);margin-bottom:16px">${p.turnaround}</p>
           <button class="btn btn-red btn-block btn-sm" onclick="NUI_PRINT.openConfigurator('${id}')">Get Instant Quote</button>
         </div>
       `;
@@ -831,8 +831,8 @@ const NUI_PRINT = {
 
     const body = document.getElementById('configBody');
     body.innerHTML = `
-      <h2 style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:4px">${product.name}</h2>
-      <p style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:24px">${product.desc}</p>
+      <h2 style="font-family:'Inter Tight',sans-serif;font-size:24px;font-weight:800;margin-bottom:4px">${product.name}</h2>
+      <p style="color:rgba(255,255,255,0.78);font-size:14px;margin-bottom:24px">${product.desc}</p>
 
       <!-- Size Selector -->
       <div class="form-group">
@@ -864,11 +864,11 @@ const NUI_PRINT = {
       <div style="margin:24px 0 16px">
         <label style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);display:block;margin-bottom:10px">Do you have artwork ready?</label>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <button class="door-btn active" id="doorPrint" onclick="NUI_PRINT.setDoor('${productId}','print')" style="padding:16px;border-radius:10px;border:2px solid #dc2626;background:rgba(220,38,38,0.1);color:#fff;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600;font-size:14px;text-align:center;transition:all .2s">
-            ✅ I Have Artwork<br><span style="font-size:11px;font-weight:400;color:rgba(255,255,255,0.5)">Print only</span>
+          <button class="door-btn active" id="doorPrint" onclick="NUI_PRINT.setDoor('${productId}','print')" style="padding:16px;border-radius:10px;border:2px solid #dc2626;background:rgba(220,38,38,0.1);color:#fff;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;text-align:center;transition:all .2s">
+            ✅ I Have Artwork<br><span style="font-size:12px;font-weight:400;color:rgba(255,255,255,0.78)">Print only</span>
           </button>
-          <button class="door-btn" id="doorDesign" onclick="NUI_PRINT.setDoor('${productId}','design')" style="padding:16px;border-radius:10px;border:2px solid rgba(255,255,255,0.12);background:transparent;color:#fff;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600;font-size:14px;text-align:center;transition:all .2s">
-            🎨 I Need Design<br><span style="font-size:11px;font-weight:400;color:rgba(255,255,255,0.5)">Design + Print</span>
+          <button class="door-btn" id="doorDesign" onclick="NUI_PRINT.setDoor('${productId}','design')" style="padding:16px;border-radius:10px;border:2px solid rgba(255,255,255,0.12);background:transparent;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;text-align:center;transition:all .2s">
+            🎨 I Need Design<br><span style="font-size:12px;font-weight:400;color:rgba(255,255,255,0.78)">Design + Print</span>
           </button>
         </div>
       </div>
@@ -876,25 +876,25 @@ const NUI_PRINT = {
       <!-- Live Quote Display -->
       <div id="cfgQuote" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;margin:20px 0">
         <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-          <span style="color:rgba(255,255,255,0.5);font-size:14px">Print</span>
+          <span style="color:rgba(255,255,255,0.78);font-size:14px">Print</span>
           <span id="qPrint" style="font-weight:600">$0</span>
         </div>
         <div id="qDesignRow" style="display:none;justify-content:space-between;margin-bottom:8px">
-          <span style="color:rgba(255,255,255,0.5);font-size:14px">Design</span>
+          <span style="color:rgba(255,255,255,0.78);font-size:14px">Design</span>
           <span id="qDesign" style="font-weight:600;color:#dc2626">$0</span>
         </div>
         <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-          <span style="color:rgba(255,255,255,0.5);font-size:14px">Shipping</span>
+          <span style="color:rgba(255,255,255,0.78);font-size:14px">Shipping</span>
           <span id="qShip" style="font-weight:600">$10</span>
         </div>
         <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:12px;margin-top:8px;display:flex;justify-content:space-between">
           <span style="font-weight:700;font-size:16px">Total</span>
           <span id="qTotal" style="font-weight:900;font-size:24px;color:#dc2626">$0</span>
         </div>
-        <p id="qNote" style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:8px;display:none"></p>
+        <p id="qNote" style="font-size:12px;color:rgba(255,255,255,0.78);margin-top:8px;display:none"></p>
       </div>
 
-      <p style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:16px">⏱ ${product.turnaround}${product.note ? ' · ' + product.note : ''}</p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.78);margin-bottom:16px">${product.turnaround}${product.note ? ' · ' + product.note : ''}</p>
 
       <button class="btn btn-red btn-block" id="cfgAddBtn" onclick="NUI_PRINT.addFromConfigurator('${productId}')">Add to Order</button>
       <button class="btn btn-outline btn-block" style="margin-top:8px" onclick="NUI_PRINT.closeConfigurator()">Cancel</button>
@@ -1046,7 +1046,7 @@ const NUI_PRINT = {
     if (!list) return;
 
     if (this.cart.length === 0) {
-      list.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px 0">Your order is empty</p>';
+      list.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.78);padding:40px 0">Your order is empty</p>';
       if (totalEl) totalEl.textContent = '$0';
       if (checkoutBtn) checkoutBtn.style.display = 'none';
       return;
@@ -1056,17 +1056,17 @@ const NUI_PRINT = {
       <div style="display:flex;justify-content:space-between;align-items:start;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.06)">
         <div style="flex:1">
           <div style="font-weight:700;font-size:15px">${item.productName}</div>
-          <div style="font-size:13px;color:rgba(255,255,255,0.5)">${item.sizeLabel}</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.78)">${item.sizeLabel}</div>
           <div style="font-size:12px;margin-top:4px">
             ${item.needsDesign ?
               '<span style="color:#dc2626;font-weight:600">🎨 Design + Print</span>' :
               '<span style="color:#22c55e;font-weight:600">✅ Print Only</span>'}
           </div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px">${item.vendor === 'signs365' ? '⚡ Ships overnight' : '🚚 Local delivery'}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.78);margin-top:2px">${item.vendor === 'signs365' ? '⚡ Ships overnight' : '🚚 Local delivery'}</div>
         </div>
         <div style="text-align:right;min-width:80px">
           <div style="font-weight:800;font-size:18px;color:#dc2626">$${item.price.total}</div>
-          <button onclick="NUI_PRINT.removeFromCart(${item.id})" style="background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:12px;margin-top:4px">✕ Remove</button>
+          <button onclick="NUI_PRINT.removeFromCart(${item.id})" style="background:none;border:none;color:rgba(255,255,255,0.78);cursor:pointer;font-size:12px;margin-top:4px">✕ Remove</button>
         </div>
       </div>
     `).join('');

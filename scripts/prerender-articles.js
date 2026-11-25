@@ -365,7 +365,7 @@ ${schemaJsonLD.map(s => '<script type="application/ld+json">' + JSON.stringify(s
 <!-- Fonts + CSS -->
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/magazine.css">
-<style>* { margin:0; padding:0; box-sizing:border-box; } body { background:#000; color:#fff; font-family:'Montserrat',sans-serif; }</style>
+<style>* { margin:0; padding:0; box-sizing:border-box; } body { background:#000; color:#fff; font-family:'Inter',sans-serif; }</style>
 </head>
 <body>
 

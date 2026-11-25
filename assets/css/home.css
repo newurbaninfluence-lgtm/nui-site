@@ -168,7 +168,8 @@ body.nh-site .nav-right{display:flex;align-items:center;gap:8px}
 #nuiAuditRoot .audit{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:rgba(0,0,0,.72);backdrop-filter:blur(8px)}
 #nuiAuditRoot .sheet{width:100%;max-width:560px;max-height:100%;overflow:auto;background:#fff;color:#1d1d1f;border-radius:24px;padding:28px 28px 24px;box-shadow:0 40px 100px rgba(0,0,0,.6)}
 #nuiAuditRoot .sheet-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-#nuiAuditRoot .steps{display:flex;gap:6px}
+#nuiAuditRoot .steps{display:flex;gap:6px;align-items:center}
+#nuiAuditRoot .steps-txt{font-size:14px;font-weight:600;color:#424245;margin-right:6px}
 #nuiAuditRoot .steps i{width:28px;height:4px;border-radius:2px;background:#e3e3e6}
 #nuiAuditRoot .steps i.on{background:#e5091a}
 #nuiAuditRoot .x{width:44px;height:44px;border-radius:50%;border:0;background:#f2f2f4;color:#1d1d1f;font-size:20px;cursor:pointer}

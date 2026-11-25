@@ -102,7 +102,7 @@ function loadHomeView() {
 <footer class="foot"><div class="wrap"><div class="fgrid">
 <div><a class="flogo" href="/" onclick="event.preventDefault();showView('home');window.scrollTo(0,0)"><img src="/icons/icon-192.png" alt="" width="26" height="26">New Urban Influence</a><p style="margin-top:12px;max-width:280px">Websites and business software, built in Detroit.</p><p style="margin-top:8px;color:#fff;font-weight:600;user-select:all">(248) 487-8747</p><p style="margin-top:4px;user-select:all">info@newurbaninfluence.com</p></div>
 <div><h4>What we build</h4><a href="/services/business-website-detroit">Websites</a><a href="/#inclTitle" onclick="event.preventDefault();nuiGoTo('inclTitle')">Restaurant &amp; bar software</a><a href="/services/crm-integration-detroit">CRM &amp; automation</a><a href="/#rolesTitle" onclick="event.preventDefault();nuiGoTo('rolesTitle')">For owners and GMs</a><a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers &amp; videos</a><a href="/print">Print &amp; signage</a></div>
-<div><h4>Company</h4><a href="/about" onclick="event.preventDefault();showView('about')">About</a><a href="/#builds" onclick="event.preventDefault();nuiGoTo('builds')">Our work</a><a href="/#how-it-works" onclick="event.preventDefault();nuiGoTo('how-it-works')">How it works</a><a href="/#faq" onclick="event.preventDefault();nuiGoTo('faq')">Questions</a><a href="/magazine">NUI Magazine</a><a href="/blog" onclick="event.preventDefault();showView('blog')">Blog</a><a href="/blog/restaurant-branding-guide-detroit">Restaurant guide</a></div>
+<div><h4>Company</h4><a href="/about">About</a><a href="/#builds" onclick="event.preventDefault();nuiGoTo('builds')">Our work</a><a href="/#how-it-works" onclick="event.preventDefault();nuiGoTo('how-it-works')">How it works</a><a href="/#faq" onclick="event.preventDefault();nuiGoTo('faq')">Questions</a><a href="/magazine">NUI Magazine</a><a href="/blog" onclick="event.preventDefault();showView('blog')">Blog</a><a href="/blog/restaurant-branding-guide-detroit">Restaurant guide</a></div>
 <div><h4>Log in</h4><a href="/app/">Client login</a><a href="/app/">Staff login</a></div>
 </div>
 <div class="fareas"><h4>Service areas</h4><div><a href="/locations/detroit">Detroit</a><a href="/locations/southfield">Southfield</a><a href="/locations/farmington-hills">Farmington Hills</a><a href="/locations/royal-oak">Royal Oak</a><a href="/locations/troy">Troy</a><a href="/locations/dearborn">Dearborn</a><a href="/locations/ann-arbor">Ann Arbor</a><a href="/locations/birmingham">Birmingham</a><a href="/locations/novi">Novi</a><a href="/locations/sterling-heights">Sterling Heights</a><a href="/locations/livonia">Livonia</a><a href="/locations/warren">Warren</a><a href="/locations/pontiac">Pontiac</a></div></div>
@@ -402,7 +402,7 @@ function loadAboutView() {
 <section class="section dark" style="padding: 100px 0;">
 <div style="max-width: 1100px; margin: 0 auto; padding: 0 48px;">
 <div class="label" style="color: var(--red); text-align: center; margin-bottom: 16px;">What We Bring</div>
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 700; text-align: center; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 64px;">OUR <span style="color: var(--red);">APPROACH</span></h2>
+<h2 style="font-family: 'Inter Tight', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 700; text-align: center; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 64px;">OUR <span style="color: var(--red);">APPROACH</span></h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px;">
 <div style="border-left: 3px solid var(--red); padding-left: 32px;">
 <h3 style="font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;">Strategy First</h3>
@@ -422,23 +422,23 @@ function loadAboutView() {
 
 <section class="section dark" style="padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.06);">
 <div style="max-width: 1200px; margin: 0 auto; padding: 0 48px;">
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4);">Clients & Sectors <span style="color: var(--red);">We Serve</span></h2>
+<h2 style="font-family: 'Inter Tight', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4);">Clients & Sectors <span style="color: var(--red);">We Serve</span></h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px;">
 <div style="text-align: center;">
-<h3 style="font-family: 'Syne', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Unions & Workforce</h3>
+<h3 style="font-family: 'Inter Tight', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Unions & Workforce</h3>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 32px;">
 <span style="font-size: 22px; font-weight: 900; color: white; opacity: 0.6; letter-spacing: 2px;">UAW</span>
 <span style="font-size: 20px; font-weight: 700; color: white; opacity: 0.6; letter-spacing: 3px; text-transform: uppercase;">Chrysler</span>
 </div>
 </div>
 <div style="text-align: center;">
-<h3 style="font-family: 'Syne', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Government</h3>
+<h3 style="font-family: 'Inter Tight', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Government</h3>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 32px;">
 <span style="font-size: 16px; font-weight: 700; color: white; opacity: 0.6; letter-spacing: 1px;">State of Michigan — Office of the Governor</span>
 </div>
 </div>
 <div style="text-align: center;">
-<h3 style="font-family: 'Syne', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Non-Profits</h3>
+<h3 style="font-family: 'Inter Tight', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 32px;">Non-Profits</h3>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 32px;">
 <span style="font-size: 18px; font-weight: 700; color: white; opacity: 0.6;">Kiwanis International</span>
 <span style="font-size: 18px; font-weight: 700; color: white; opacity: 0.6;">Beacon Park</span>
@@ -495,7 +495,7 @@ function loadFounderView() {
 <section class="section dark" style="padding: 100px 0;">
 <div style="max-width: 900px; margin: 0 auto; padding: 0 48px;">
 <div class="label" style="color: var(--red); text-align: center; margin-bottom: 16px;">Chapter One</div>
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 2px; text-transform: uppercase;">The Bravo <span style="color: var(--red);">Graphix</span> Era</h2>
+<h2 style="font-family: 'Inter Tight', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 2px; text-transform: uppercase;">The Bravo <span style="color: var(--red);">Graphix</span> Era</h2>
 <p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">In 2007, Faren co-founded <strong style="color: white;">Bravo Graphix</strong> — a full-service multicultural advertising, creative marketing, design, and print agency — alongside Donald Hand. What started on Detroit's upper West Side at Huntington and 7 Mile Rd. quickly earned a reputation for delivering everything a business needed to start, grow, and dominate.</p>
 <p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">By 2013, the buzz was undeniable. Bravo Graphix relocated to a completely renovated <strong style="color: white;">1,700-square-foot studio at 19434 Livernois Avenue</strong> — right on Detroit's iconic <strong style="color: white;">Avenue of Fashion</strong>. The new space featured an open floor plan, bright colors that captured the agency's energy, and a dedicated photography studio for fashion and beauty clients. The move brought five new positions: two designers, two photographers, and a secretary.</p>
 <p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">The Avenue of Fashion studio didn't just serve clients — it became part of the community. Bravo Graphix was embedded in multiple Detroit economic and creative programs, including <strong style="color: white;">Revolve Detroit</strong>, <strong style="color: white;">TechTown's SWOT City</strong>, and the <strong style="color: white;">Detroit Design Festival</strong>, which brought festival visitors, fellow creatives, and new clients directly to their door.</p>
@@ -508,7 +508,7 @@ function loadFounderView() {
 <section class="section dark" style="padding: 100px 0; border-top: 1px solid rgba(255,255,255,0.06);">
 <div style="max-width: 900px; margin: 0 auto; padding: 0 48px;">
 <div class="label" style="color: var(--red); text-align: center; margin-bottom: 16px;">Chapter Two</div>
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 2px; text-transform: uppercase;">The Evolution to <span style="color: var(--red);">NUI</span></h2>
+<h2 style="font-family: 'Inter Tight', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 2px; text-transform: uppercase;">The Evolution to <span style="color: var(--red);">NUI</span></h2>
 <p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">The creative landscape was shifting. Print was meeting digital. Logos were becoming brand ecosystems. Businesses didn't just need a designer — they needed a strategist, a builder, a partner who understood that branding is a revenue system, not just a pretty face.</p>
 <p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">Faren saw the gap. And he filled it. <strong style="color: white;">New Urban Influence</strong> was born — a full-spectrum creative agency that doesn't just design brands but builds entire systems that generate revenue. From brand identity and packaging to websites, digital marketing, SEO, AI automation, and business strategy, NUI became the one-stop empire builder for businesses who refuse to blend in.</p>
 <p style="color: rgba(255,255,255,0.8); font-size: 17px; line-height: 2; margin-bottom: 24px;">Over 50 brands elevated. Over $2M in revenue generated for clients. Unions, nonprofits, government agencies, restaurants, product brands, service businesses — all transformed by the same Detroit energy that started it all.</p>
@@ -517,7 +517,7 @@ function loadFounderView() {
 
 <section class="section dark" style="padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.06);">
 <div style="max-width: 1100px; margin: 0 auto; padding: 0 48px;">
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4);">Clients & Sectors Served</h2>
+<h2 style="font-family: 'Inter Tight', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4);">Clients & Sectors Served</h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; text-align: center;">
 <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 32px 20px;">
 <div style="font-size: 28px; margin-bottom: 12px;">🏭</div>
@@ -555,7 +555,7 @@ function loadFounderView() {
 
 <section class="section dark" style="padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.06);">
 <div style="max-width: 900px; margin: 0 auto; padding: 0 48px; text-align: center;">
-<h3 style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-style: italic; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-bottom: 48px;">Press & Features</h3>
+<h3 style="font-family: 'Inter', sans-serif; font-size: 18px; font-style: italic; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-bottom: 48px;">Press & Features</h3>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 48px; margin-bottom: 32px;">
 <a href="https://www.scottmax.com/company/new-urban-influence" target="_blank" rel="noopener noreferrer" style="opacity: 0.5; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 26px; font-weight: 800; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">ScottMax</a>
 <a href="https://modeldmedia.com/bravographixavenueoffashion" target="_blank" rel="noopener noreferrer" style="opacity: 0.5; transition: opacity 0.3s; text-decoration: none; color: white; font-size: 26px; font-weight: 300; letter-spacing: 1px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">model <span style="font-size: 38px; font-weight: 800; color: rgba(255,255,255,0.6);">D</span></a>
@@ -568,7 +568,7 @@ function loadFounderView() {
 
 <section class="section" style="background: var(--red); padding: 100px 0;">
 <div style="max-width: 800px; margin: 0 auto; padding: 0 48px; text-align: center;">
-<h2 style="font-family: 'Syne', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px;">LET'S BUILD YOUR <span style="text-decoration: underline; text-underline-offset: 8px;">EMPIRE</span></h2>
+<h2 style="font-family: 'Inter Tight', sans-serif; font-size: clamp(32px, 5vw, 56px); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px;">LET'S BUILD YOUR <span style="text-decoration: underline; text-underline-offset: 8px;">EMPIRE</span></h2>
 <p style="font-size: 18px; opacity: 0.9; max-width: 600px; margin: 0 auto 40px; line-height: 1.7;">20+ years of Detroit grit, creative fire, and business strategy — ready to work for your brand.</p>
 <button class="btn-white" onclick="scrollToContact()" style="font-size: 16px; padding: 20px 56px;">Book Your Strategy Call</button>
 </div>
@@ -2174,7 +2174,7 @@ function loadServicesView() {
 <section style="padding:80px 5%;background:linear-gradient(180deg,#000 0%,#0a0a0a 100%);text-align:center;">
 <div style="max-width:900px;margin:0 auto;">
 <p style="font-size:13px;text-transform:uppercase;letter-spacing:3px;color:#a855f7;font-weight:600;margin-bottom:12px;">FLEXIBLE FINANCING</p>
-<h2 style="font-size:clamp(32px,5vw,52px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;font-family:'Syne',sans-serif;">Don't Let Budget<br>Hold Your Brand Back</h2>
+<h2 style="font-size:clamp(32px,5vw,52px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;font-family:'Inter Tight',sans-serif;">Don't Let Budget<br>Hold Your Brand Back</h2>
 <p style="font-size:18px;color:rgba(255,255,255,0.6);max-width:600px;margin:0 auto 48px;line-height:1.6;">Invest in your brand now, pay over time. 0% interest, no hidden fees, instant approval at checkout.</p>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;text-align:left;margin-bottom:48px;">
 <div style="background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.25);border-radius:16px;padding:32px;">
@@ -2203,7 +2203,7 @@ function loadServicesView() {
 </section>
 
 <section style="padding:80px 5%;background:linear-gradient(180deg,#0a0a0a,#111);text-align:center;">
-<h2 style="font-size:clamp(28px,5vw,48px);font-family:'Syne',sans-serif;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:12px;">Invest In Your Brand. <span style="color:#a855f7;">Pay On Your Terms.</span></h2>
+<h2 style="font-size:clamp(28px,5vw,48px);font-family:'Inter Tight',sans-serif;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:12px;">Invest In Your Brand. <span style="color:#a855f7;">Pay On Your Terms.</span></h2>
 <p style="max-width:640px;margin:0 auto 48px;color:rgba(255,255,255,0.55);font-size:16px;line-height:1.7;">We believe budget should never hold you back from looking professional. That's why we offer 0% interest financing through Afterpay and Klarna — so you can get started now and pay over time. No credit check required for most purchases.</p>
 <div style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap;max-width:900px;margin:0 auto 48px;">
 <div style="flex:1;min-width:260px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.25);border-radius:16px;padding:32px 28px;text-align:left;">

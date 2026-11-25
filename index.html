@@ -981,8 +981,8 @@
  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1920&q=80" fetchpriority="high">
  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
  <link rel="dns-prefetch" href="https://js.stripe.com">
- <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/syne-latin-wght-normal.woff2" crossorigin>
- <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/montserrat-latin-wght-normal.woff2" crossorigin>
+ <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-tight-latin-800-normal.woff2" crossorigin>
+ <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-latin-wght-normal.woff2" crossorigin>
  <link rel="stylesheet" href="/assets/fonts/fonts.css">
 
     <!-- Critical scripts only — env + supabase needed for data -->
@@ -995,9 +995,9 @@
  function loadStripe(){if(window.Stripe)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://js.stripe.com/v3/';s.onload=r;document.head.appendChild(s);});}
  function loadGoogleIdentity(){if(window.google&&window.google.accounts)return Promise.resolve();return new Promise(function(r){var s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=r;document.head.appendChild(s);});}
  </script>
- <link rel="stylesheet" href="/assets/css/global.css?v=20261124v3">
+ <link rel="stylesheet" href="/assets/css/global.css?v=20261124v4">
  <link rel="stylesheet" href="/assets/css/components.css?v=5">
-<link rel="stylesheet" href="/assets/css/home.css?v=20261124v1">
+<link rel="stylesheet" href="/assets/css/home.css?v=20261124v2">
     <!-- Geo Meta Tags -->
     <meta name="geo.region" content="US-MI">
     <meta name="geo.placename" content="Detroit, Michigan">
@@ -1021,7 +1021,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <a href="/#builds" onclick="event.preventDefault(); nuiGoTo('builds');">Our work</a>
 <a href="/#how-it-works" onclick="event.preventDefault(); nuiGoTo('how-it-works');">How it works</a>
 <a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers</a>
-<a href="/about" data-view="about" onclick="event.preventDefault(); showView('about');">About</a>
+<a href="/about">About</a>
 <a href="/app/" data-view="portal">Client login</a>
 </div>
 <div class="nav-right">
@@ -1037,7 +1037,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <a href="/#builds" onclick="event.preventDefault(); toggleMobileMenu(); nuiGoTo('builds');">Our work</a>
 <a href="/#how-it-works" onclick="event.preventDefault(); toggleMobileMenu(); nuiGoTo('how-it-works');">How it works</a>
 <a href="https://nuiflyers.com" target="_blank" rel="noopener">Flyers</a>
-<a href="/about" data-view="about" onclick="event.preventDefault(); showView('about'); toggleMobileMenu();">About</a>
+<a href="/about">About</a>
 <a href="/app/" data-view="portal" onclick="toggleMobileMenu();">Client login</a>
  </div>
 
@@ -1072,8 +1072,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- Marketing only — admin/portal/designer scripts live in /app/ -->
 <script src="/assets/js/core.js?v=20261124v5"></script>
 <script src="/assets/js/router.js?v=20261124v6"></script>
-<script src="/assets/js/home.js?v=20261124v1"></script>
-<script src="/assets/js/marketing.js?v=20261124v6"></script>
+<script src="/assets/js/home.js?v=20261124v3"></script>
+<script src="/assets/js/marketing.js?v=20261124v7"></script>
 <script src="/assets/js/service-intake.js?v=7"></script>
 
 <!-- Supabase & Stripe already loaded in <head> with defer -->
