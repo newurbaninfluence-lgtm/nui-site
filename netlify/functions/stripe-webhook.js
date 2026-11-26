@@ -50,6 +50,36 @@ async function supabaseSelect(url, serviceKey, table, query) {
   return resp.json();
 }
 
+// Record a Stripe payment as a paid invoice row so it shows in the back office
+// (client page → Money). Idempotent: keyed on invoice_number, so Stripe retries
+// never double-count.
+async function recordStripePayment(url, serviceKey, p) {
+  if (!p.cents || p.cents <= 0) return;
+  const amount = p.cents / 100;
+  const row = {
+    invoice_number: p.number,
+    client_name: p.name || p.email || 'Stripe customer',
+    client_email: p.email || null,
+    type: p.type,
+    items: [{ description: p.description || 'Stripe payment', amount }],
+    subtotal: amount, total: amount, amount_paid: amount,
+    status: 'paid',
+    paid_at: p.paidAt || new Date().toISOString(),
+    stripe_payment_intent: p.paymentIntent || null,
+    notes: 'Recorded automatically from Stripe',
+    metadata: { source: 'stripe-webhook', ...(p.meta || {}) }
+  };
+  const resp = await fetch(`${url}/rest/v1/invoices?on_conflict=invoice_number`, {
+    method: 'POST',
+    headers: {
+      'apikey': serviceKey, 'Authorization': `Bearer ${serviceKey}`,
+      'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates,return=minimal'
+    },
+    body: JSON.stringify(row)
+  });
+  if (!resp.ok) console.error('payment record failed:', resp.status, (await resp.text()).slice(0, 200));
+}
+
 // ── Client-site billing linkage (Phase 1) ─────────────────────────────
 // Grace period is configurable: GRACE_PERIOD_DAYS env var, default 2.
 // Must match the 48-hour window promised in the site-reminders email.
@@ -62,7 +92,7 @@ function isNonpaymentReason(reason) {
   return typeof reason === 'string' && /^payment[ _]overdue/i.test(reason.trim());
 }
 
-const SITE_COLS = 'id,site_id,site_name,status,suspended_reason,billing_status,stripe_customer_id,stripe_subscription_id,grace_until,next_due_date';
+const SITE_COLS = 'id,site_id,site_name,client_name,status,suspended_reason,billing_status,stripe_customer_id,stripe_subscription_id,grace_until,next_due_date,monthly_fee';
 
 // ── Auto-billing date sync ────────────────────────────────────────────
 // Extracts the NEXT charge date from a Stripe object so client_sites.next_due_date
@@ -116,6 +146,13 @@ async function resolveSite(url, serviceKey, obj, eventType) {
       `select=${SITE_COLS}&stripe_customer_id=eq.${encodeURIComponent(custId)}`);
     if (rows && rows.length === 1) return rows[0];
     if (rows && rows.length > 1) {
+      // One customer, several billing lines (e.g. Hideaway: $300 system + $350
+      // marketing). Pick the line whose monthly price equals this charge.
+      const cents = obj.amount_paid ?? obj.amount_total ?? obj.items?.data?.[0]?.price?.unit_amount;
+      if (cents != null) {
+        const byAmount = rows.filter((r) => Math.round(Number(r.monthly_fee) * 100) === Number(cents));
+        if (byAmount.length === 1) return byAmount[0];
+      }
       console.warn(`site-resolution-ambiguous: customer ${custId} matches ${rows.length} sites`);
       return null;
     }
@@ -227,16 +264,25 @@ exports.handler = async (event) => {
       // ── Invoice paid (recurring subscription) ──
       case 'invoice.paid': {
         if (hasDB) {
-          await supabaseUpdate(SUPABASE_URL, SUPABASE_SERVICE_KEY, 'invoices',
-            { stripe_invoice_id: obj.id },
-            { status: 'paid', paid_at: new Date().toISOString() }
-          );
-
           // Client-site billing: mark current, clear grace, and reactivate
           // ONLY if the site was suspended specifically for nonpayment.
           const site = await resolveSite(SUPABASE_URL, SUPABASE_SERVICE_KEY, obj, eventType);
+          const paidAtIso = obj.status_transitions?.paid_at ? new Date(obj.status_transitions.paid_at * 1000).toISOString() : new Date().toISOString();
+          await recordStripePayment(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+            number: 'STRIPE-' + (obj.number || obj.id),
+            cents: obj.amount_paid,
+            name: obj.customer_name || site?.client_name,
+            email: obj.customer_email,
+            type: 'subscription',
+            description: (site?.site_name ? site.site_name + ' — ' : '') + (obj.lines?.data?.[0]?.description || 'Monthly payment'),
+            paidAt: paidAtIso,
+            paymentIntent: typeof obj.payment_intent === 'string' ? obj.payment_intent : obj.payment_intent?.id,
+            meta: { stripe_invoice_id: obj.id, site_id: site?.site_id || null }
+          });
           if (site) {
-            const patch = { billing_status: 'active', grace_until: null };
+            const patch = { billing_status: 'active', grace_until: null, last_payment_at: paidAtIso };
+            const subId = typeof obj.subscription === 'string' ? obj.subscription : obj.subscription?.id;
+            if (subId && !site.stripe_subscription_id) patch.stripe_subscription_id = subId;
             // Auto-bill: roll the due date forward to the next charge date.
             const nextDue = resolveNextBilling(obj, eventType);
             if (nextDue) patch.next_due_date = nextDue;
@@ -350,6 +396,21 @@ exports.handler = async (event) => {
             '💰 New Subscription Payment — ' + clientEmail,
             `<h2>Subscription Activated</h2><p>Client: ${clientEmail}</p><p>Client ID: ${meta.clientId || 'N/A'}</p><p><strong>Set their status to Active in admin panel.</strong></p>`
           );
+        }
+
+        // One-time payments (flyers, deposits, payment links): record them so
+        // they show in the back office. Subscriptions are recorded by invoice.paid.
+        if (hasDB && obj.mode === 'payment' && !meta.invoiceId && obj.payment_status === 'paid') {
+          await recordStripePayment(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+            number: 'STRIPE-' + (typeof obj.payment_intent === 'string' ? obj.payment_intent : obj.id),
+            cents: obj.amount_total,
+            name: obj.customer_details?.name || meta.client,
+            email: clientEmail,
+            type: 'one-time',
+            description: meta.service || meta.description || 'One-time payment',
+            paymentIntent: typeof obj.payment_intent === 'string' ? obj.payment_intent : null,
+            meta: { checkout_session: obj.id, site_id: meta.site_id || null }
+          });
         }
 
         // One-time invoice paid via a direct checkout link (emailed invoices):

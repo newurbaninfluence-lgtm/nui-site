@@ -1304,26 +1304,6 @@ function filterUserTable() {
 
 
 // ==================== RENDER HELPERS ====================
-function renderClientCard(c) {
-    const headerColor = (c.colors && c.colors[0]) ? c.colors[0] : '#e11d48';
-    const clientName = c.name || c.email || 'Unnamed';
-    return `<div class="client-card">
-<div class="client-card-header" style="background: ${headerColor};">${clientName.charAt(0).toUpperCase()}</div>
-<div class="client-card-body">
-<div class="client-card-name">${clientName}</div>
-<div class="client-card-meta">${c.industry || 'No industry'} • ${c.servicePackageName || ''} ${c.assets ? Object.values(c.assets).flat().length : 0} assets</div>
-<div class="client-card-btns">
-<button onclick="openEditClientModal(${c.id})" style="background: #3b82f6; color: #fff;">✏️ Edit</button>
-<button onclick="quickOrder(${c.id})" style="background: #e11d48; color: #fff;">⚡ Order</button>
-<button onclick="viewClientAsAdmin(${c.id})" style="background: #000; color: #fff;">View Portal</button>
-<button onclick="importHistoryForClient(${c.id})" style="background: #7c3aed; color: #fff;">📥 Import History</button>
-<button onclick="currentAdminClient = clients.find(x => x.id === ${c.id}); showAdminPanel('assets');" style="background: #f5f5f5; color: #000;">Upload</button>
-<button onclick="deleteClient(${c.id})" style="background: #fee2e2; color: #dc2626;">×</button>
-</div>
-</div>
- </div>`;
-}
-
 // ==================== EDIT CLIENT MODAL ====================
 function openEditClientModal(clientId) {
     const c = clients.find(x => x.id === clientId);
