@@ -114,6 +114,8 @@
     var res = await db().from('client_sites').select('*').order('created_at', { ascending: true });
     if (res.error) throw new Error(res.error.message);
     state.customers = groupSites(res.data || []);
+    var pr = await db().from('invoices').select('client_name,client_email,total,amount_paid,paid_at,items,type').eq('status', 'paid').not('paid_at', 'is', null).order('paid_at', { ascending: false }).limit(8);
+    state.payments = pr.error ? [] : (pr.data || []);
     return state.customers;
   }
 
@@ -175,6 +177,10 @@
       '<div class="ch-stat warn"><span>Not billed yet</span><b>' + money(unbilled.reduce(function (a, c) { return a + c.monthly; }, 0)) + '</b><small>a month · ' + unbilled.length + ' customers</small></div>' +
       '<div class="ch-stat warn"><span>Missing a phone number</span><b>' + noPhone.length + '</b><small>Can\'t text them yet</small></div>' +
       '</div>' +
+      ((state.payments || []).length ? '<div class="ch-card ch-pays"><h3>Latest payments</h3>' + state.payments.map(function (p) {
+        var what = (p.items && p.items[0] && p.items[0].description) || (p.type === 'subscription' ? 'Monthly payment' : 'Payment');
+        return '<div class="ch-inv"><div class="ch-ic g">' + I.check + '</div><div><b>' + esc(p.client_name || p.client_email || 'Customer') + '</b><span>' + esc(what) + '</span></div><div class="ch-amt"><b>' + money(p.amount_paid || p.total) + '</b><span>' + shortDate(p.paid_at) + '</span></div></div>';
+      }).join('') + '</div>' : '') +
       '<div class="ch-card ch-table">' +
       '<div class="ch-tools"><label class="ch-search">' + I.search + '<input id="chSearch" placeholder="Search by name, business, phone or website" value="' + esc(state.search) + '" oninput="NuiClientHub.search(this.value)"></label>' +
       chip('all', 'All') + chip('paying', 'Paying') + chip('unbilled', 'Not billed') + chip('setup', 'Needs setup') + '</div>' +

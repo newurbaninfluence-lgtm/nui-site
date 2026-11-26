@@ -141,3 +141,6 @@
 .nui-create-menu a{display:block;padding:9px 12px;border-radius:8px;color:var(--admin-text,#111);font-size:14px;font-weight:500;cursor:pointer}
 .nui-create-menu a:hover{background:var(--admin-card,#f3f4f6)}
 @media (max-width:600px){.nui-create-btn{font-size:0;padding:8px 12px}.nui-create-btn::after{content:"+ New";font-size:14px}}
+.ch-pays{margin-bottom:18px}
+.ch-pays .ch-inv:first-of-type{border-top:0}
+.ch-pays .ch-amt span{display:block}
